@@ -1,7 +1,8 @@
 { "name": "rendering",
   "memberOf": "wix-window",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "filename": "window.es6",
       "lineno": 254 },
@@ -153,7 +154,8 @@
           { "notes":
               [ "Rendering never occurs server-side when previewing your site." ] } },
       { "name": "warmupData",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": false,
         "type":
@@ -189,7 +191,12 @@
                     {  } },
                 { "title": "Use warmupData to run a query server-side and pass the results to client-side code",
                   "body":
-                    [ "import wixData from 'wix-data';",
+                    [ "<description>This example demonstrates how to work with passing warmup data from the server-side",
+                      " render to cycle to be used in the client-side cycle. It takes into account the",
+                      " two possible render paths: 1) Two cycles - First cycle happens on the server",
+                      " and then a second cycle in the browser. 2) One cycle - Only one cycle that",
+                      " happens in the browser.</description>",
+                      "import wixData from 'wix-data';",
                       "import wixWindow from 'wix-window';",
                       "import {local} from 'wix-storage';",
                       "",
@@ -244,7 +251,9 @@
                       "  }",
                       "} );" ],
                   "extra":
-                    {  } } ],
+                    { "description":
+                        { "description": "This example demonstrates how to work with passing warmup data from the server-side\n render to cycle to be used in the client-side cycle. It takes into account the\n two possible render paths: 1) Two cycles - First cycle happens on the server\n and then a second cycle in the browser. 2) One cycle - Only one cycle that\n happens in the browser.",
+                          "body": "import wixData from 'wix-data';\nimport wixWindow from 'wix-window';\nimport {local} from 'wix-storage';\n\nlet promise;\nlet dataResults;\n\n// start performing a query as soon as possible during\n// the first render cycle and store the returned promise\nif(wixWindow.rendering.renderCycle === 1) {\n  promise = wixData.query(\"myCollection\").find();\n}\n\n// this will run twice, once on the\n// backend and once in the browser\n$w.onReady( function () {\n  // if it's the first render cycle, set up what\n  // to do when the query promise resolves\n  if(wixWindow.rendering.renderCycle === 1) {\n    promise.then( (results) => {\n      // use the query results for page setup\n      $w(\"#text\").text = results.items[0].title;\n\n      // if the first cycle is happening on the backend\n      if(wixWindow.rendering.env === \"backend\") {\n        // return the items from the query results\n        // to be used later in the browser\n        return results.items;\n      }\n      // if the first cycle is happening in the browser, just\n      // store the items from the query results in a variable\n      dataResults = results.items;\n    } );\n  }\n  // if it's the second render cycle, get the items from the query\n  // results returned in the first cycle and store them in a variable\n  else {\n    dataResults = wixWindow.rendering.warmupData;\n  }\n\n  // regardles of cycle, if in the browser, do some stuff that can\n  // only be done in the browser, like using local storage\n  if(wixWindow.rendering.env === \"browser\") {\n    $w('#storedText').text = local.getItem(\"someKey\");\n  }\n\n  // if it's the first cycle, return the promise\n  // that rendering rendering should wait for\n  // if there will be a second cycle, the value the promise\n  // resolves to will be retrieved using warmupData\n  if(wixWindow.rendering.renderCycle === 1) {\n    return promise;\n  }\n} );\n" } } } ],
             "extra":
               {  } },
         "extra":
