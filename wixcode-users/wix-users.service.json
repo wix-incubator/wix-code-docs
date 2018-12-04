@@ -1,6 +1,7 @@
 { "name": "wix-users",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "filename": "users.js",
       "lineno": 44 },
@@ -31,7 +32,7 @@
         "type": "wix-users.User",
         "locations":
           [ { "filename": "users.js",
-              "lineno": 373 } ],
+              "lineno": 358 } ],
         "docs":
           { "summary": "Gets the current user viewing the site.",
             "description":
@@ -78,7 +79,8 @@
               [ "The APIs in `wix-users` are only partially functional when previewing your site.\n View a published version of your site to see their complete functionality.\n\n The APIs in `wix-users` can only be used once the page has loaded. Therefore,\n you must use them in code that is contained in or is called from the\n [onReady()]($w.html#onReady) event handler or any element event handler." ] } } ],
   "operations":
     [ { "name": "applySessionToken",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "sessionToken",
@@ -92,7 +94,7 @@
             "doc": "Fulfilled - When the token as been applied." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 862 } ],
+              "lineno": 849 } ],
         "docs":
           { "summary": "Logs the current user into the site using the given session token.",
             "description":
@@ -192,7 +194,6 @@
                       " * backend code - register.jsw *",
                       " *******************************/",
                       "import wixUsers from 'wix-users-backend';",
-                      "import {sendEmailUsing3rdParty} from 'some-backend-module';",
                       "",
                       "export function doRegistration(email, password, firstName, lastName) {",
                       "  // register the user",
@@ -202,14 +203,16 @@
                       "      \"lastName\": lastName",
                       "    }",
                       "  } )",
-                      "    .then( (results) => {",
-                      "      // user is now registered and pending approval",
-                      "      // send a registration verification email",
-                      "      return sendEmailUsing3rdParty('verify-registration', email,{",
+                      "  .then( (results) => {",
+                      "    // user is now registered and pending approval",
+                      "    // send a registration verification email",
+                      "    wixUsers.emailUser('verifyRegistration', results.user.id, {",
+                      "      \"variables\": {",
                       "        \"name\": firstName,",
-                      "        \"verifyLink\": `http://domain.com/post-register?token=${approvalToken}`",
-                      "      } );",
+                      "        \"verifyLink\": `http://yourdomain.com/post-register?token=${results.approvalToken}`",
+                      "      }",
                       "    } );",
+                      "  } );",
                       "}",
                       "",
                       "export function doApproval(token) {",
@@ -231,40 +234,44 @@
                       "import wixUsers from 'wix-users';",
                       "import {doRegistration} from 'backend/register';",
                       "",
-                      "// ...",
+                      "export function button_click(event) {",
+                      "  let email = // the user's email address",
+                      "  let password = // the user's password",
+                      "  let firstName = // the user's first name",
+                      "  let lastName = // the user's last name",
                       "",
-                      "let email = // the user's email address",
-                      "let password = // the user's password",
-                      "let firstName = // the user's first name",
-                      "let lastName = // the user's last name",
-                      "",
-                      "doRegistration(email, password, firstName, lastName)",
-                      "  .then( () => {",
-                      "    console.log(\"Confirmation email sent.\");",
-                      "  } );",
+                      "  doRegistration(email, password, firstName, lastName)",
+                      "    .then( () => {",
+                      "      console.log(\"Confirmation email sent.\");",
+                      "    } );",
+                      "}",
                       "",
                       "/**************************************",
                       " * client-side post-registration code *",
                       " **************************************/",
                       "import wixLocation from 'wix-location';",
+                      "import wixUsers from 'wix-users';",
                       "import {doApproval} from 'backend/register';",
                       "",
                       "$w.onReady( () => {",
                       "  // get the token from the URL",
                       "  let token = wixLocation.query.token;",
                       "",
-                      "  doAppoval(token)",
+                      "  doApproval(token)",
                       "    .then( (result) => {",
-                      "      if (result.approved)",
+                      "      if (result.approved){",
                       "        // log the user in",
                       "        wixUsers.applySessionToken(result.sessionToken);",
-                      "      else",
+                      "          console.log(\"Approved\");",
+                      "      }",
+                      "      else {",
                       "        console.log(\"Not approved!\");",
+                      "      }",
                       "    } );",
-                      "}",
+                      "} );",
                       "" ],
                   "extra":
-                    { "description": "This example demonstrates a common email verification flow. A user is initially\n registered but not yet approved. At registration, a verification email is\n sent with a link to a verification page. When a user goes to the verification\n page, the approval is granted and the user is logged into the site." } } ],
+                    { "description": "This example demonstrates a common email verification flow. A user is initially\n registered but not yet approved. At registration, a verification email is\n sent with a link to a verification page. When a user goes to the verification\n page, the approval is granted and the user is logged into the site.\n\n The code is split between three locations:\n\n + A backend web module named **register.jsw**.\n + The page code for the page where users register.\n + The page code for the page where users confirm their registration." } } ],
             "extra":
               {  } },
         "extra":
@@ -291,7 +298,7 @@
             "doc": "Fulfilled - When the email is sent.\nRejected - Error message." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 638 } ],
+              "lineno": 623 } ],
         "docs":
           { "summary": "Sends a Triggered Email to the currently logged-in site member.",
             "description":
@@ -393,7 +400,7 @@
             "doc": "Fulfilled - When the user has been logged in.\nRejected - Error message." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 812 } ],
+              "lineno": 799 } ],
         "docs":
           { "summary": "Logs a user in based on email and password.",
             "description":
@@ -446,7 +453,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 488 } ],
+              "lineno": 473 } ],
         "docs":
           { "summary": "Logs the current user out of the site.",
             "description":
@@ -478,7 +485,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 585 } ],
+              "lineno": 570 } ],
         "docs":
           { "summary": "Sets the function that runs when a user logs in.",
             "description":
@@ -524,7 +531,7 @@
             "doc": "Rejected - Message that the dialog was canceled, user is already logged in, or any other reason the password reset failed." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 522 } ],
+              "lineno": 507 } ],
         "docs":
           { "summary": "Prompts the current site visitor with a password reset.",
             "description":
@@ -579,7 +586,7 @@
             "doc": "Fulfilled - Information about the newly logged in user.\nRejected - Message that the dialog was canceled, or any other reason the user failed to log in." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 411 } ],
+              "lineno": 396 } ],
         "docs":
           { "summary": "Prompts the current site visitor to log in as a site member.",
             "description":
@@ -640,7 +647,8 @@
           { "notes":
               [ "The APIs in `wix-users` are only partially functional when previewing your site.\n View a published version of your site to see their complete functionality.\n\n The APIs in `wix-users` can only be used once the page has loaded. Therefore,\n you must use them in code that is contained in or is called from the\n [onReady()]($w.html#onReady) event handler or any element event handler." ] } },
       { "name": "register",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "email",
@@ -661,12 +669,14 @@
             "doc": "Fulfilled - When the user has been registered.\nRejected - Error message." },
         "locations":
           [ { "filename": "users.js",
-              "lineno": 727 } ],
+              "lineno": 712 } ],
         "docs":
           { "summary": "Registers a new site member.",
             "description":
               [ "The `register()` function returns a Promise that resolves to a [`RegistrationResult`](#RegistrationResult)",
                 " object when the user is either registered or is pending registration.",
+                "",
+                " The specified `password` must be between 4 and 15 characters.",
                 "",
                 " If Site Members is <a href=\"https://support.wix.com/en/article/customizing-your-approval-settings-for-site-members\" target=\"_blank\">configured for automatic approval</a>,",
                 " the `register()` function returns a status of `\"Active\"` and the user",
@@ -749,7 +759,7 @@
     [ { "name": "LoginOptions",
         "locations":
           [ { "filename": "users.js",
-              "lineno": 402 } ],
+              "lineno": 387 } ],
         "docs":
           { "summary": "An object used by the `promptLogin()` function to determine how the login dialog box appears.",
             "links":
@@ -795,7 +805,7 @@
       { "name": "RegistrationOptions",
         "locations":
           [ { "filename": "users.js",
-              "lineno": 706 } ],
+              "lineno": 691 } ],
         "docs":
           { "summary": "An object that contains information about a site registration.",
             "links":
@@ -813,7 +823,7 @@
       { "name": "RegistrationResult",
         "locations":
           [ { "filename": "users.js",
-              "lineno": 714 } ],
+              "lineno": 699 } ],
         "docs":
           { "summary": "An object that contains information about the results of a site registration.",
             "links":
@@ -838,7 +848,7 @@
       { "name": "TriggeredEmailOptions",
         "locations":
           [ { "filename": "users.js",
-              "lineno": 627 } ],
+              "lineno": 612 } ],
         "docs":
           { "summary": "An object used when sending a Triggered Email.",
             "links":
