@@ -10,6 +10,8 @@
       "description":
         [ "To process payments on your site, first set up your site to accept payments",
           " as described in <a href=\"https://support.wix.com/en/article/about-accepting-payments\" target=\"_blank\">About Accepting Payments</a>.",
+          " When setting up your site to accept payments, be sure to select the payment",
+          " methods you want to offer and <a href=\"https://support.wix.com/en/article/setting-your-currency-for-accepting-payments\" target=\"_blank\">set your payment currency</a>.",
           "",
           " <h3 id=\"payment-lifecycle\">Typical Payment Lifecycle</h3>",
           "",
@@ -42,7 +44,8 @@
   "properties": [],
   "operations":
     [ { "name": "startPayment",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "paymentId",
@@ -60,12 +63,14 @@
             "doc": "Fulfilled - The created payment." },
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 210 } ],
+              "lineno": 223 } ],
         "docs":
           { "summary": "Starts a payment.",
             "description":
               [ "Before using the startPayment() function, you will need to set up your site to",
                 " accept payments. To learn more, see [About Accepting Payments](https://support.wix.com/en/article/about-accepting-payments).",
+                " When setting up your site to accept payments, be sure to select the payment",
+                " methods you want to offer and <a href=\"https://support.wix.com/en/article/setting-your-currency-for-accepting-payments\" target=\"_blank\">set your payment currency</a>.",
                 "",
                 " The `startPayment()` function returns a Promise that resolves to a [`PaymentResult`](wix-pay.html#PaymentResult)",
                 " object when the user completes the payment process. Only use this result for display purposes.",
@@ -103,6 +108,40 @@
                       "      price: 9.99",
                       "    }],",
                       "    amount: 9.99",
+                      "  });",
+                      "}",
+                      "",
+                      "/********************",
+                      " * client-side code *",
+                      " ********************/",
+                      "",
+                      "import {createMyPayment} from 'backend/pay';",
+                      "import wixPay from 'wix-pay';",
+                      "",
+                      "export function myButton_click(event, $w) {",
+                      "  createMyPayment()",
+                      "    .then( (payment) => {",
+                      "      wixPay.startPayment(payment.id);",
+                      "    } );",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "Start a payment on button click using quantity",
+                  "body":
+                    [ "/**************************",
+                      " * backend code - pay.jsw *",
+                      " **************************/",
+                      "",
+                      "import wixPay from 'wix-pay-backend';",
+                      "",
+                      "export function createMyPayment() {",
+                      "  return wixPay.createPayment({",
+                      "    items: [{",
+                      "      name: \"Product Name\",",
+                      "      price: 9.99,",
+                      "      quantity: 2",
+                      "    }],",
+                      "    amount: 19.98",
                       "  });",
                       "}",
                       "",
@@ -277,18 +316,58 @@
                       "    } );",
                       "}" ],
                   "extra":
+                    {  } },
+                { "title": "Start a payment on button click using collection data and a quantity",
+                  "body":
+                    [ "/**************************",
+                      " * backend code - pay.jsw *",
+                      " **************************/",
+                      "",
+                      "import wixData from 'wix-data';",
+                      "import wixPay from 'wix-pay-backend';",
+                      "",
+                      "export async function createMyPayment(productId, quantity) {",
+                      "  return wixData.get(\"productCollection\", productId)",
+                      "    .then( (product) => {",
+                      "      return wixPay.createPayment( {",
+                      "        items: [{",
+                      "          name: product.name,",
+                      "          price: product.price,",
+                      "          quantity: quantity",
+                      "        }],",
+                      "        amount: product.price * quantity",
+                      "      } );",
+                      "    } );",
+                      "}",
+                      "",
+                      "/********************",
+                      " * client-side code *",
+                      " ********************/",
+                      "",
+                      "import {createMyPayment} from 'backend/pay';",
+                      "import wixPay from 'wix-pay';",
+                      "",
+                      "export function myButton_click(event, $w) {",
+                      "  let quantity = 2;",
+                      "",
+                      "  createMyPayment(event.context.itemId, quantity)",
+                      "    .then( (payment) => {",
+                      "      wixPay.startPayment(payment.id);",
+                      "    } );",
+                      "}" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
         "extra":
           { "notes":
-              [ "The backend [`createPayment()`](wix-pay-backend.html#createPayment) function\n takes a `PaymentRequest` parameter that defines the information for a payment.\n For security reasons you should always create the `PaymentRequest` object\n in backend code. Do not pass payment information from client-side code.\n Doing so opens a vulnerability that a malicious user can exploit to change\n payment information, such as the price of an item being purchased.\n To learn more about how to keep your payment code secure, see\n <a href=\"https://support.wix.com/en/article/security-considerations-when-working-with-wix-code#code-visibility\" target=\"_blank\">Security Considerations When Working with Wix Code</a>." ] } } ],
+              [ "To work with the Pay API, you need to save and publish your site.\n\n The backend [`createPayment()`](wix-pay-backend.html#createPayment) function\n takes a `PaymentRequest` parameter that defines the information for a payment.\n For security reasons you should always create the `PaymentRequest` object\n in backend code. Do not pass payment information from client-side code.\n Doing so opens a vulnerability that a malicious user can exploit to change\n payment information, such as the price of an item being purchased.\n To learn more about how to keep your payment code secure, see\n <a href=\"https://support.wix.com/en/article/security-considerations-when-working-with-wix-code#code-visibility\" target=\"_blank\">Security Considerations When Working with Wix Code</a>." ] } } ],
   "callbacks": [],
   "messages":
     [ { "name": "Payment",
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 176 } ],
+              "lineno": 189 } ],
         "docs":
           { "summary": "An object representing a payment.",
             "links":
@@ -319,7 +398,7 @@
       { "name": "PaymentItem",
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 189 } ],
+              "lineno": 202 } ],
         "docs":
           { "summary": "An object representing a payment item.",
             "links":
@@ -343,7 +422,7 @@
       { "name": "PaymentOptions",
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 199 } ],
+              "lineno": 212 } ],
         "docs":
           { "summary": "An object representing the options of a payment.",
             "links":
@@ -366,12 +445,11 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PaymentResult",
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 143 } ],
+              "lineno": 148 } ],
         "docs":
           { "summary": "An object representing a payment result.",
             "links":
@@ -385,7 +463,7 @@
               "doc": "The payment." },
             { "name": "status",
               "type": "string",
-              "doc": "Payment status. One of: \"`Successful`\",\n \"`Pending`\", \"`Failed`\", \"`Chargeback`\", \"`Refunded`\", \"`Offline`\",\n \"`PartiallyRefunded`\", \"`Cancelled`\", \"`Undefined`\"." },
+              "doc": "Payment status. One of:\n\n + \"`Successful`\": Payment was successfully received.\n + \"`Pending`\": Payment is pending payment provider approval.\n + \"`Failed`\": Payment has failed.\n + \"`Chargeback`\": Payment is chargeback.\n + \"`Refunded`\": Payment was fully refunded.\n + \"`Offline`\": Payment will be executed offline.\n + \"`PartiallyRefunded`\": Payment was partially refunded.\n + \"`Cancelled`\": Payment was cancelled and was not processed.\n + \"`Undefined`\": Payment status is pending payment provider input." },
             { "name": "transactionId",
               "type": "string",
               "doc": "ID of the payment transaction." },
@@ -394,11 +472,12 @@
               "doc": "User information." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PaymentUserInfo",
         "locations":
           [ { "filename": "pay.js",
-              "lineno": 156 } ],
+              "lineno": 169 } ],
         "docs":
           { "summary": "An object representing the user information entered in the payment\n dialog.",
             "links":
@@ -427,4 +506,5 @@
           {  },
         "labels": [] } ],
   "extra":
-    {  } }
+    { "notes":
+        [ "To work with the Pay API, you need to save and publish your site." ] } }
