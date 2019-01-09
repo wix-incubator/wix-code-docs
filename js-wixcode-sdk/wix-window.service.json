@@ -26,7 +26,7 @@
         "type": "string",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 246 } ],
+              "lineno": 299 } ],
         "docs":
           { "summary": "Gets what kind of device is being used to view the page.",
             "description":
@@ -57,7 +57,7 @@
         "type": "string",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 268 } ],
+              "lineno": 321 } ],
         "docs":
           { "summary": "Gets the locale of the current environment.",
             "description":
@@ -95,7 +95,7 @@
         "type": "string",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 1113 } ],
+              "lineno": 1203 } ],
         "docs":
           { "summary": "Gets the HTTP referrer header field.",
             "description":
@@ -140,7 +140,7 @@
         "type": "string",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 226 } ],
+              "lineno": 279 } ],
         "docs":
           { "summary": "Gets which mode the site is currently being viewed in.",
             "description":
@@ -176,7 +176,7 @@
             "doc": "Fulfilled - An object containing information about the window's size, the document's size, and the current scroll position." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 339 } ],
+              "lineno": 392 } ],
         "docs":
           { "summary": "Returns information about the window.",
             "description":
@@ -218,7 +218,7 @@
             "doc": "Fulfilled - The coordinates and timestamp of the current location.\nRejected - The user blocked the geolocation popup." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 485 } ],
+              "lineno": 538 } ],
         "docs":
           { "summary": "Returns the current geolocation of the user.",
             "description":
@@ -274,7 +274,7 @@
             "doc": "The data returned by the router." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 462 } ],
+              "lineno": 515 } ],
         "docs":
           { "summary": "Returns the data that a router passed to the page in its response.",
             "description":
@@ -321,7 +321,7 @@
             "doc": "Fulfilled - The returned data from the lightbox.\nRejected - The error that caused the rejection." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 531 } ],
+              "lineno": 584 } ],
         "docs":
           { "summary": "Opens a lightbox and optionally passes it the given data.",
             "description":
@@ -332,7 +332,28 @@
                 " with a data parameter, then the Promise resolves to that data object.",
                 "",
                 " If you send a data object to the lightbox, use the [`getContext()`](wix-window.lightbox.html#getContext)",
-                " function in the lightbox's code to access the received data." ],
+                " function in the lightbox's code to access the received data.",
+                "",
+                " To pass data to the lightbox that is opened, you must open the lightbox",
+                " programmatically using the [`openLightbox()`](wix-window.html#openLightbox)",
+                " function. If the lightbox is opened automatically when the page loads or",
+                " by a link from a page element, data will not be passed to the lightbox.",
+                " Therefore, if you want to pass data to the lightbox, make sure",
+                " **Automatically display lightbox on pages** is <a href=\"https://support.wix.com/en/article/setting-which-page-your-lightbox-appears-on\" target=\"_blank\">set</a> to **No** in the",
+                " **Lightbox Settings** panel in the Editor and don't set any element's link",
+                " to open the lightbox. Instead, create your own method for opening",
+                " the lightbox programmatically. For example, you can add a button with an `onClick` event",
+                " handler that calls the [`openLightbox()`](wix-window.html#openLightbox) function.",
+                "",
+                " To pass data back to the page that opened the lightbox, you must close the",
+                " lightbox programmatically using the `close()` function. If the lightbox is",
+                " closed by the site visitor clicking the 'X' icon, close button, or lightbox",
+                " overlay, data will not be passed back the the page that opened the lightbox.",
+                " Therefore, if you want to make sure data is passed back to the page that",
+                " opened the lightbox, <a href=\"https://support.wix.com/en/article/setting-how-your-lightbox-is-closed\" target=\"_blank\">disable",
+                " all of the methods mentioned above</a> and create your own method for closing",
+                " the lightbox programmatically. For example, you can add a button with an `onClick` event",
+                " handler that calls the `close()` function." ],
             "links":
               [ "[openModal( )](#openModal)" ],
             "examples":
@@ -377,7 +398,47 @@
                       "    let receivedData = data;",
                       "  } );" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "A scenario where information is passed between a page and a lightbox",
+                  "body":
+                    [ "/*************",
+                      " * Page Code *",
+                      " *************/",
+                      "",
+                      "import wixWindow from 'wix-window';",
+                      "",
+                      "export function openButton_click(event) {",
+                      "  wixWindow.openLightbox(\"MyLightBox\", {",
+                      "    \"pageSend1\": $w('#pageSend1').value,",
+                      "    \"pageSend2\": $w('#pageSend2').value",
+                      "  })",
+                      "  .then( (data) => {",
+                      "    $w('#pageReceive1').text = data.lightboxSend1;",
+                      "    $w('#pageReceive2').text = data.lightboxSend2;",
+                      "  } );",
+                      "}",
+                      "",
+                      "/*****************",
+                      " * Lightbox Code *",
+                      " *****************/",
+                      "",
+                      "import wixWindow from 'wix-window';",
+                      "",
+                      "$w.onReady( function () {",
+                      "  let received = wixWindow.lightbox.getContext();",
+                      "  $w('#lightBoxReceive1').text = received.pageSend1;",
+                      "  $w('#lightBoxReceive2').text = received.pageSend2;",
+                      "} );",
+                      "",
+                      "export function closeButton_click(event) {",
+                      "  wixWindow.lightbox.close( {",
+                      "    \"lightBoxSend1\": $w('#lightBoxSend1').value,",
+                      "    \"lightBoxSend2\": $w('#lightBoxSend2').value",
+                      "  } );",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates how to pass data from a page to a lightbox that\n it opens and from the lightbox back to the page as it closes.\n\n It assumes that the page has:\n\n + An open button that is used to open the lightbox.\n + Two text inputs where information that is to be passed to the lightbox is entered.\n + Two text elements where information that is passed from the lightbox is displayed.\n\n\n It assumes that the lightbox has:\n\n + An close button that is used to close the lightbox.\n + Two text inputs where information that is to be passed to the page is entered.\n + Two text elements where information that is passed from the page is displayed." } } ],
             "extra":
               {  } },
         "extra":
@@ -401,7 +462,7 @@
             "doc": "Fulfilled - When the modal window is closed.\nRejected - The error that caused the rejection." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 880 } ],
+              "lineno": 970 } ],
         "docs":
           { "summary": "Opens a modal window that displays the specified web page.",
             "description":
@@ -466,7 +527,7 @@
             "doc": "Fulfilled - The data returned from the modal window.\nRejected - The error that caused the rejection." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 938 } ],
+              "lineno": 1028 } ],
         "docs":
           { "summary": "Sends a message to the page's parent.",
             "description":
@@ -549,7 +610,7 @@
             "doc": "Fulfilled - When the scroll is complete." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 416 } ],
+              "lineno": 469 } ],
         "docs":
           { "summary": "Scrolls the page by a given number of pixels.",
             "description":
@@ -604,7 +665,7 @@
             "doc": "Fulfilled - When the scroll is complete." },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 366 } ],
+              "lineno": 419 } ],
         "docs":
           { "summary": "Scrolls the page to a specific location.",
             "description":
@@ -666,7 +727,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 797 } ],
+              "lineno": 887 } ],
         "docs":
           { "summary": "Sends a tracking event to external analytics tools.",
             "description":
@@ -746,7 +807,7 @@
     [ { "name": "OpenModalOptions",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 871 } ],
+              "lineno": 961 } ],
         "docs":
           { "summary": "An object used when opening a modal window.",
             "links":
@@ -779,7 +840,7 @@
       { "name": "WindowSizeInfo",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 278 } ],
+              "lineno": 331 } ],
         "docs":
           { "summary": "An object returned by the `getBoundingRect()` function that contains information about the window's size, the document's size, and the current scroll position.",
             "links":
