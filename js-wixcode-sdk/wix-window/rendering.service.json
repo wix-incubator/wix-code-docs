@@ -5,7 +5,7 @@
     [ "changed" ],
   "location":
     { "filename": "window.es6",
-      "lineno": 297 },
+      "lineno": 316 },
   "docs":
     { "summary": "The Rendering API is used to control when code is run as a page is being loaded.",
       "description":
@@ -35,7 +35,7 @@
         "type": "string",
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 210 } ],
+              "lineno": 228 } ],
         "docs":
           { "summary": "Gets the current environment the rendering process is running in.",
             "description":
@@ -60,6 +60,27 @@
                       "",
                       "let currentEnv = wixWindow.rendering.env; // \"browser\"" ],
                   "extra":
+                    {  } },
+                { "title": "Use rendering environment to selectively run code per environment",
+                  "body":
+                    [ "import wixWindow from 'wix-window';",
+                      "import {local} from 'wix-storage';",
+                      "",
+                      "let queryPromise;",
+                      "",
+                      "if(wixWindow.rendering.renderCycle === 1) {",
+                      "  queryPromise = wixData.query(\"myCollection\").find();",
+                      "}",
+                      "",
+                      "$w.onReady(function () {",
+                      "  if(wixWindow.rendering.env === \"browser\") {",
+                      "    $w(\"#myText\").text = local.getItem(\"someStorageKey\");",
+                      "    $w(\"#button1\").onClick( () => {",
+                      "  \t\tconsole.log(\"Button clicked\")",
+                      "  \t} );",
+                      "  }",
+                      "} );" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
@@ -76,16 +97,62 @@
           [ { "filename": "window.es6",
               "lineno": 193 } ],
         "docs":
-          { "summary": "Deprecated: Gets the current cycle in the rendering process.",
+          { "summary": "Gets the current cycle in the rendering process.",
             "description":
-              [ "Deprecation note: the renderCycle property no longer works as expected.",
-                " It will always return `1`." ],
+              [ "When possible, the rendering process is split in two in order to",
+                " improve performance. The first cycle in the process happens server-side",
+                " and the second cycle happens client-side. When not possible, all rendering",
+                " happens client-side.",
+                "",
+                " When the rendering is split, `renderCycle` returns `1` on the server",
+                " and `2` on the client.",
+                "",
+                " When all the rendering happens client-side, `renderCycle` returns `1`",
+                " while the rendering process is still running.",
+                "",
+                " In either case, after the client-side rendering has finished,",
+                " `renderCycle` returns `NaN`.",
+                "",
+                " Use the `renderCycle` property in your page's [`onReady()`]($w.html#onReady)",
+                " event handler to control during which cycles your code runs." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get the current cycle in the rendering process",
+                  "body":
+                    [ "import wixWindow from 'wix-window';",
+                      "",
+                      "// ...",
+                      "",
+                      "let currentCycle = wixWindow.rendering.renderCycle; // 1" ],
+                  "extra":
+                    {  } },
+                { "title": "Use rendering cycle number to selectively run code per cycle",
+                  "body":
+                    [ "import wixWindow from 'wix-window';",
+                      "import wixData from 'wix-data';",
+                      "",
+                      "let queryPromise;",
+                      "",
+                      "if(wixWindow.rendering.renderCycle === 1) {",
+                      "  queryPromise = wixData.query(\"myCollection\").find();",
+                      "}",
+                      "",
+                      "$w.onReady(function () {",
+                      "  if(wixWindow.rendering.renderCycle === 1) {",
+                      "    $w(\"#myText\").text = \"Some initial text.\";",
+                      "",
+                      "    return queryPromise.then(results => {",
+                      "      $w(\"#myTable\").rows = results.items;",
+                      "    } );",
+                      "  }",
+                      "} );" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
-          {  } },
+          { "notes":
+              [ "Rendering never occurs server-side when previewing your site." ] } },
       { "name": "warmupData",
         "labels": [],
         "get": true,
@@ -97,7 +164,7 @@
             "Object" ],
         "locations":
           [ { "filename": "window.es6",
-              "lineno": 242 } ],
+              "lineno": 261 } ],
         "docs":
           { "summary": "Gets data sent from server-side code to client-side code.",
             "description":
