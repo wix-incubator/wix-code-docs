@@ -36,7 +36,7 @@
             "doc": "Fulfilled - ID and version of the created price quote." },
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 124 } ],
+              "lineno": 127 } ],
         "docs":
           { "summary": "Creates a new price quote.",
             "description":
@@ -146,7 +146,8 @@
             "extra":
               {  } },
         "extra":
-          {  } },
+          { "notes":
+              [ "The customer listed on the price quote must be an existing site contact or member." ] } },
       { "name": "deletePriceQuote",
         "labels":
           [ "changed" ],
@@ -154,7 +155,7 @@
         "params":
           [ { "name": "id",
               "type": "string",
-              "doc": "The ID of the price quote to delete." } ],
+              "doc": "ID of the price quote to delete." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -163,7 +164,7 @@
             "doc": "Fulfilled - When the specified price quote is deleted." },
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 210 } ],
+              "lineno": 218 } ],
         "docs":
           { "summary": "Delete a price quote by ID.",
             "description":
@@ -185,8 +186,7 @@
         "extra":
           {  } },
       { "name": "getPriceQuote",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -200,7 +200,7 @@
             "doc": "Fulfilled - The price quote with the given ID." },
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 191 } ],
+              "lineno": 199 } ],
         "docs":
           { "summary": "Gets an existing price quote by ID.",
             "description":
@@ -336,7 +336,7 @@
             "doc": "Fulfilled - ID and version of the created price quote." },
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 155 } ],
+              "lineno": 161 } ],
         "docs":
           { "summary": "Updates an existing price quote.",
             "description":
@@ -356,10 +356,13 @@
                       "export function updatePriceQuote(id) {",
                       "  return wixCrm.priceQuotes.getPriceQuote(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
+                      "    result.title = \"Updated Title\";",
+                      "    ",
                       "    let updateRequest = {",
                       "      \"id\": result.id,",
                       "      \"data\": {",
-                      "        \"title\": \"Updated title\",",
+                      "        \"title\": result.title,",
                       "        \"customer\": result.customer,",
                       "        \"currency\": result.currency,",
                       "        \"lineItems\": result.lineItems,",
@@ -377,7 +380,8 @@
             "extra":
               {  } },
         "extra":
-          {  } } ],
+          { "notes":
+              [ "The customer listed on the price quote must be an existing site contact or member." ] } } ],
   "callbacks": [],
   "messages":
     [ { "name": "Address",
@@ -616,12 +620,11 @@
               "doc": "Address country." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "CalculatedTax",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 137 } ],
+              "lineno": 138 } ],
         "docs":
           { "summary": "An object that contains calculated tax information.",
             "links":
@@ -772,7 +775,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -864,10 +867,10 @@
               "doc": "Tax rate." },
             { "name": "taxable",
               "type": "number",
-              "doc": "???." },
+              "doc": "Total value of taxable goods." },
             { "name": "taxed",
               "type": "number",
-              "doc": "???." } ],
+              "doc": "Total amount of tax applied." } ],
         "extra":
           {  },
         "labels":
@@ -877,7 +880,7 @@
           [ { "filename": "price-quotes.js",
               "lineno": 28 } ],
         "docs":
-          { "summary": "An object that contains information needed to create price quote.",
+          { "summary": "An object that contains information needed to create a price quote.",
             "links":
               [ "[createPriceQuote( )](#createPriceQuote)" ],
             "examples":
@@ -985,7 +988,7 @@
         "members":
           [ { "name": "data",
               "type": "wix-crm-backend.priceQuotes.PriceQuoteFields",
-              "doc": "Price quote fields used to create the price quote." } ],
+              "doc": "Information used to create the price quote." } ],
         "extra":
           {  },
         "labels":
@@ -1177,7 +1180,7 @@
                       "",
                       "let dates = {",
                       "  \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      "  \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      "  \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       "  \"timeZoneCode\": \"America/New_York\"",
                       "};",
                       "",
@@ -1351,7 +1354,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -1443,22 +1446,28 @@
               "doc": "Email address." },
             { "name": "address",
               "type": "wix-crm-backend.priceQuotes.Address",
-              "doc": "Physical address." },
+              "doc": "Physical address.",
+              "optional": true },
             { "name": "phone",
               "type": "string",
-              "doc": "Phone number." },
+              "doc": "Phone number.",
+              "optional": true },
             { "name": "company",
               "type": "string",
-              "doc": "Company name." },
+              "doc": "Company name.",
+              "optional": true },
             { "name": "fullName",
               "type": "string",
-              "doc": "Full name." },
+              "doc": "Full name.",
+              "optional": true },
             { "name": "firstName",
               "type": "string",
-              "doc": "First name." },
+              "doc": "First name.",
+              "optional": true },
             { "name": "lastName",
               "type": "string",
-              "doc": "Last name." } ],
+              "doc": "Last name.",
+              "optional": true } ],
         "extra":
           {  },
         "labels":
@@ -1466,7 +1475,7 @@
       { "name": "Discount",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 122 } ],
+              "lineno": 123 } ],
         "docs":
           { "summary": "An object that contains discount information.",
             "links":
@@ -1644,7 +1653,7 @@
                       "",
                       "let dates = {",
                       "  \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      "  \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      "  \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       "  \"timeZoneCode\": \"America/New_York\"",
                       "};",
                       "",
@@ -1681,10 +1690,13 @@
                       "export function updatePriceQuote(id) {",
                       "  return wixCrm.priceQuotes.getPriceQuote(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
+                      "    result.title = \"Updated Title\";",
+                      "    ",
                       "    let updateRequest = {",
                       "      \"id\": result.id,",
                       "      \"data\": {",
-                      "        \"title\": \"Updated title\",",
+                      "        \"title\": result.title,",
                       "        \"customer\": result.customer,",
                       "        \"currency\": result.currency,",
                       "        \"lineItems\": result.lineItems,",
@@ -1706,6 +1718,7 @@
                       "export function updateInvoice(id) {",
                       "  return wixCrm.invoices.getInvoice(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
                       "    result.metadata.notes = \"An updated note.\";",
                       "",
                       "    let updateRequest = {",
@@ -1741,7 +1754,7 @@
       { "name": "ErrorResult",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 173 } ],
+              "lineno": 174 } ],
         "docs":
           { "summary": "An object that contains Error result information.",
             "links": [],
@@ -1908,7 +1921,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -1996,10 +2009,13 @@
                       "export function updatePriceQuote(id) {",
                       "  return wixCrm.priceQuotes.getPriceQuote(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
+                      "    result.title = \"Updated Title\";",
+                      "    ",
                       "    let updateRequest = {",
                       "      \"id\": result.id,",
                       "      \"data\": {",
-                      "        \"title\": \"Updated title\",",
+                      "        \"title\": result.title,",
                       "        \"customer\": result.customer,",
                       "        \"currency\": result.currency,",
                       "        \"lineItems\": result.lineItems,",
@@ -2021,6 +2037,7 @@
                       "export function updateInvoice(id) {",
                       "  return wixCrm.invoices.getInvoice(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
                       "    result.metadata.notes = \"An updated note.\";",
                       "",
                       "    let updateRequest = {",
@@ -2056,9 +2073,9 @@
       { "name": "ItemizedFee",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 113 } ],
+              "lineno": 114 } ],
         "docs":
-          { "summary": "An object that contains Itemized fee information.",
+          { "summary": "An object that contains itemized fee information.",
             "links":
               [ "[TotalPrice](#TotalPrice)" ],
             "examples":
@@ -2362,7 +2379,7 @@
                       "",
                       "let dates = {",
                       "  \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      "  \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      "  \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       "  \"timeZoneCode\": \"America/New_York\"",
                       "};",
                       "",
@@ -2536,7 +2553,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -2640,7 +2657,8 @@
                 { "name": "Array",
                   "typeParams":
                     [ "wix-crm-backend.priceQuotes.LineItemTax" ] },
-              "doc": "Line item taxes." } ],
+              "doc": "Line item taxes.",
+              "optional": true } ],
         "extra":
           {  },
         "labels":
@@ -2650,7 +2668,7 @@
           [ { "filename": "quotes-common-types.js",
               "lineno": 75 } ],
         "docs":
-          { "summary": "An object that contains Line item tax information.",
+          { "summary": "An object that contains tax information for a line item.",
             "links":
               [ "[LineItem](#LineItem)" ],
             "examples":
@@ -3028,7 +3046,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -3114,13 +3132,13 @@
         "members":
           [ { "name": "language",
               "type": "string",
-              "doc": "Locale language. An <a href=\"https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes\" target=\"_blank\">ISO 639 alpha-2</a> or\n <a href=\"https://en.wikipedia.org/wiki/ISO_639-3\" target=\"_blank\">alpha-3 language code</a>, or a language subtag." },
+              "doc": "Locale language. An <a href=\"https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes\" target=\"_blank\">ISO 639 alpha-2</a> or\n <a href=\"https://en.wikipedia.org/wiki/ISO_639-3\" target=\"_blank\">alpha-3 language code</a>, or a language\n <a href=\"https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry\" target=\"_blank\">subtag</a>." },
             { "name": "country",
               "type": "string",
               "doc": "Locale country, An <a href=\"https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\" target=\"_blank\">ISO 3166 alpha-2 country code</a> or a\n <a href=\"https://en.wikipedia.org/wiki/UN_M49\" target=\"_blank\">UN M.49 numeric-3</a> area code." },
             { "name": "invariant",
               "type": "string",
-              "doc": "Locale invariant." } ],
+              "doc": "Locale invariant (e.g. `\"en-US\"`)." } ],
         "extra":
           {  },
         "labels":
@@ -3128,7 +3146,7 @@
       { "name": "MetaData",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 150 } ],
+              "lineno": 151 } ],
         "docs":
           { "summary": "An object that contains metadata information.",
             "links":
@@ -3306,7 +3324,7 @@
                       "",
                       "let dates = {",
                       "  \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      "  \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      "  \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       "  \"timeZoneCode\": \"America/New_York\"",
                       "};",
                       "",
@@ -3480,7 +3498,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -3566,16 +3584,20 @@
         "members":
           [ { "name": "notes",
               "type": "string",
-              "doc": "Notes." },
+              "doc": "Notes.",
+              "optional": true },
             { "name": "legalTerms",
               "type": "string",
-              "doc": "Legal terms." },
+              "doc": "Legal terms.",
+              "optional": true },
             { "name": "sourceUrl",
               "type": "string",
-              "doc": "Source url." },
+              "doc": "Source url.",
+              "optional": true },
             { "name": "sourceProperties",
               "type": "Object",
-              "doc": "Metadata additional data as key:value string pairs." } ],
+              "doc": "Metadata additional data as key:value string pairs.",
+              "optional": true } ],
         "extra":
           {  },
         "labels":
@@ -3583,9 +3605,9 @@
       { "name": "PaymentTerms",
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 92 } ],
+              "lineno": 93 } ],
         "docs":
-          { "summary": "An object that contains payment terms information.",
+          { "summary": "An object that contains information about price quote payment terms.",
             "links":
               [ "[PriceQuoteFields](#PriceQuoteFields)" ],
             "examples":
@@ -3804,7 +3826,8 @@
               "doc": "Price quote term type.\n One of:\n\n + `\"DueOnReceipt\"`\n + `\"NetPlus\"`\n + `\"TimeStamp\"`\n + `\"Other\"`" },
             { "name": "termData",
               "type": "string",
-              "doc": "Price quote term data." } ],
+              "doc": "Term data. When `termType` is `\"NetPlus\"`,\n `termData` contains a positive integer indicating how many days after the charge\n payment is due.",
+              "optional": true } ],
         "extra":
           {  },
         "labels":
@@ -3814,7 +3837,7 @@
           [ { "filename": "price-quotes.js",
               "lineno": 45 } ],
         "docs":
-          { "summary": "An object that contains Price quote information.",
+          { "summary": "An object that represents a price quote.",
             "links":
               [ "[getPriceQuote( )](#getPriceQuote)" ],
             "examples":
@@ -3931,37 +3954,37 @@
         "members":
           [ { "name": "id",
               "type": "wix-crm-backend.priceQuotes.IdAndVersion",
-              "doc": "Price quote ID and version." },
+              "doc": "ID and version of the price quote." },
             { "name": "status",
               "type": "string",
-              "doc": "Price quote status.\n One of:\n\n + `\"Draft\"`\n + `\"Sent\"`\n + `\"Processing\"`\n + `\"Accepted\"`\n + `\"Rejected\"`\n + `\"Expired\"`\n + `\"Void\"`\n + `\"Deleted\"`\n + `\"Invoiced\"`" },
+              "doc": "Status of the price quote.\n One of:\n\n + `\"Draft\"`\n + `\"Sent\"`\n + `\"Processing\"`\n + `\"Accepted\"`\n + `\"Rejected\"`\n + `\"Expired\"`\n + `\"Void\"`\n + `\"Deleted\"`\n + `\"Invoiced\"`" },
             { "name": "number",
               "type": "string",
-              "doc": "Price quote number." },
+              "doc": "Number of the price quote, unique within your site." },
             { "name": "title",
               "type": "exports:String",
-              "doc": "Price quote title." },
+              "doc": "Title of the price quote." },
             { "name": "currency",
               "type": "string",
-              "doc": "Price quote currency code." },
+              "doc": "Currency code." },
             { "name": "locale",
               "type": "wix-crm-backend.priceQuotes.Locale",
-              "doc": "Price quote locale." },
+              "doc": "Locale information." },
             { "name": "customer",
               "type": "wix-crm-backend.priceQuotes.Customer",
-              "doc": "Price quote customer." },
+              "doc": "Customer listed on the price quote." },
             { "name": "lineItems",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "wix-crm-backend.priceQuotes.LineItem" ] },
-              "doc": "List of Price quote line items." },
+              "doc": "Line items listed on the price quote." },
             { "name": "discount",
               "type": "wix-crm-backend.priceQuotes.Discount",
-              "doc": "Price quote discount." },
+              "doc": "Discount included in the price quote." },
             { "name": "paymentTerms",
               "type": "wix-crm-backend.priceQuotes.PaymentTerms",
-              "doc": "Price quote payment terms." },
+              "doc": "Payment terms." },
             { "name": "taxes",
               "type":
                 { "name": "Array",
@@ -3970,10 +3993,10 @@
               "doc": "List of taxes calculated based on the line items." },
             { "name": "totals",
               "type": "wix-crm-backend.priceQuotes.TotalPrice",
-              "doc": "Price quote totals." },
+              "doc": "Total values." },
             { "name": "metadata",
               "type": "wix-crm-backend.priceQuotes.MetaData",
-              "doc": "Price quote metadata." },
+              "doc": "Additional metadata included in the price quote." },
             { "name": "companyId",
               "type": "string",
               "doc": "Price quote company ID." },
@@ -3982,7 +4005,7 @@
               "doc": "Price quote invoice ID, when converting price quote to invoice." },
             { "name": "dates",
               "type": "wix-crm-backend.priceQuotes.PriceQuoteDates",
-              "doc": "Price quote dates." } ],
+              "doc": "Dates associated with the price quote." } ],
         "extra":
           {  },
         "labels":
@@ -3992,9 +4015,10 @@
           [ { "filename": "price-quotes.js",
               "lineno": 79 } ],
         "docs":
-          { "summary": "An object that contains price quote date information.",
+          { "summary": "An object that contains date information for a price quote.",
             "links":
-              [ "[getPriceQuote( )](#getPriceQuote)" ],
+              [ "[getPriceQuote( )](#getPriceQuote)",
+                "[PriceQuoteFields](#PriceQuoteFields)" ],
             "examples":
               [ { "title": "Get a price quote by ID",
                   "body":
@@ -4103,25 +4127,127 @@
                       " * }",
                       " */" ],
                   "extra":
+                    {  } },
+                { "title": "Create a new price quote",
+                  "body":
+                    [ "import wixCrm from 'wix-crm-backend';",
+                      "",
+                      "let customer = {",
+                      "  \"contactId\": \"de1c4158-ab41-4c42-a2c9-1c2ab60ba8e7\",",
+                      "  \"email\": \"john.doe@somedomain.com\",",
+                      "  \"address\": {",
+                      "    \"street\": \"235 W 23rd St\",",
+                      "    \"city\": \"New York\",",
+                      "    \"zip\": \"10011\",",
+                      "    \"state\": \"NY\",",
+                      "    \"country\": \"USA\"",
+                      "  },",
+                      "  \"phone\": \"5555555555\",",
+                      "  \"company\": \"Some Company\",",
+                      "  \"fullName\": \"John Doe\",",
+                      "  \"firstName\": \"John\",",
+                      "  \"lastName\": \"Doe\"",
+                      "};",
+                      "",
+                      "let lineItems = [",
+                      "  {",
+                      "    \"id\": \"00001\",",
+                      "    \"name\": \"Item 1\",",
+                      "    \"description\": \"First Item\",",
+                      "    \"price\": 10.50,",
+                      "    \"quantity\": 3,",
+                      "    \"taxes\": [{",
+                      "      \"name\": \"tax name\",",
+                      "      \"rate\": 8.5",
+                      "    }]",
+                      "  },",
+                      "  {",
+                      "    \"id\": \"00002\",",
+                      "    \"name\": \"Item 2\",",
+                      "    \"description\": \"Second Item\",",
+                      "    \"price\": 50,",
+                      "    \"quantity\": 1,",
+                      "    \"taxes\": [{",
+                      "      \"name\": \"tax name\",",
+                      "      \"rate\": 8.5",
+                      "    }]",
+                      "  }",
+                      "];",
+                      "",
+                      "let discount = {",
+                      "  \"value\": 2.5,",
+                      "  \"type\": \"Fixed\"",
+                      "};",
+                      "",
+                      "let paymentTerms = {",
+                      "  \"termData\": \"some term data\",",
+                      "  \"termType\": \"DueOnReceipt\"",
+                      "};",
+                      "",
+                      "let metadata = {",
+                      "  \"notes\": \"Some note.\",",
+                      "  \"legalTerms\": \"Some legal terms\",",
+                      "  \"sourceUrl\": \"http://legalurl.com\",",
+                      "  \"sourceProperties\": {",
+                      "    \"myKey1\": \"value1\",",
+                      "    \"myKey2\": \"value2\"",
+                      "  }",
+                      "};",
+                      "",
+                      "let dates = {",
+                      "  \"issueDate\": \"2019-03-13T00:00:00Z\",",
+                      "  \"validThroughDate\": \"2019-04-12T00:00:00Z\",",
+                      "  \"timeZoneCode\": \"America/New_York\"",
+                      "};",
+                      "",
+                      "export function createPriceQuote() {",
+                      "  let createPriceQuoteRequest = {",
+                      "    \"data\": {",
+                      "      \"title\": \"My Price Quote\",",
+                      "      \"customer\": customer,",
+                      "      \"currency\": \"USD\",",
+                      "      \"lineItems\": lineItems,",
+                      "      \"discount\": discount,",
+                      "      \"paymentTerms\": paymentTerms,",
+                      "      \"metadata\": metadata,",
+                      "      \"dates\": dates",
+                      "    }",
+                      "  };",
+                      "",
+                      "  return wixCrm.priceQuotes.createPriceQuote(createPriceQuoteRequest);",
+                      "}",
+                      "",
+                      "/* Promise resolves to:",
+                      " * {",
+                      " *   \"id\": {",
+                      " *     \"id\": \"411a5551-b0f6-4826-8a41-ebae2879f857\"",
+                      " *     \"version\": 25",
+                      " *   }",
+                      " * }",
+                      "*/" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
         "members":
           [ { "name": "issueDate",
               "type": "string",
-              "doc": "Price quote issue date as ISO String. Send this date when creating a new price quote." },
+              "doc": "Date the price quote was issued, as an ISO String." },
             { "name": "validThroughDate",
               "type": "string",
-              "doc": "Price quote valid through date as ISO String. Send this date when creating a new price quote." },
+              "doc": "Date that the price quote is valid until, as an ISO String." },
             { "name": "acceptanceDate",
               "type": "string",
-              "doc": "Price quote acceptance date as ISO String." },
+              "doc": "Date the price quote was accepted, as an ISO String.",
+              "optional": true },
             { "name": "lastSeenDate",
               "type": "string",
-              "doc": "Price quote last seen date as ISO String." },
+              "doc": "Date the price quote was last seen, as an ISO String.",
+              "optional": true },
             { "name": "timeZoneCode",
               "type": "string",
-              "doc": "Price quote dates <a href=\"http://joda-time.sourceforge.net/timezones.html\">time zone code</a>.\n Send when creating a new price quote." } ],
+              "doc": "<a href=\"http://joda-time.sourceforge.net/timezones.html\">Time zone code</a> of price quote dates.",
+              "optional": true } ],
         "extra":
           {  },
         "labels":
@@ -4129,9 +4255,9 @@
       { "name": "PriceQuoteFields",
         "locations":
           [ { "filename": "price-quotes.js",
-              "lineno": 108 } ],
+              "lineno": 111 } ],
         "docs":
-          { "summary": "An object that contains Price quote information.",
+          { "summary": "An object that contains information used when creating or updating a price quote.",
             "links":
               [ "[PriceQuoteFields](#PriceQuoteFields)" ],
             "examples":
@@ -4241,10 +4367,13 @@
                       "export function updatePriceQuote(id) {",
                       "  return wixCrm.priceQuotes.getPriceQuote(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
+                      "    result.title = \"Updated Title\";",
+                      "    ",
                       "    let updateRequest = {",
                       "      \"id\": result.id,",
                       "      \"data\": {",
-                      "        \"title\": \"Updated title\",",
+                      "        \"title\": result.title,",
                       "        \"customer\": result.customer,",
                       "        \"currency\": result.currency,",
                       "        \"lineItems\": result.lineItems,",
@@ -4264,31 +4393,33 @@
         "members":
           [ { "name": "title",
               "type": "string",
-              "doc": "Price quote title." },
+              "doc": "Title of the price quote." },
             { "name": "customer",
               "type": "wix-crm-backend.priceQuotes.Customer",
-              "doc": "Price quote customer information." },
+              "doc": "Customer listed on the price quote." },
             { "name": "currency",
               "type": "string",
-              "doc": "Price quote currency code." },
+              "doc": "Currency code." },
             { "name": "lineItems",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "wix-crm-backend.priceQuotes.LineItem" ] },
-              "doc": "List of Price quote line items." },
+              "doc": "Line items listed on the price quote." },
             { "name": "discount",
               "type": "wix-crm-backend.priceQuotes.Discount",
-              "doc": "Price quote discount." },
+              "doc": "Discount included in the price quote.",
+              "optional": true },
             { "name": "paymentTerms",
               "type": "wix-crm-backend.priceQuotes.PaymentTerms",
-              "doc": "Price quote payment terms." },
+              "doc": "Payment terms." },
             { "name": "metadata",
               "type": "wix-crm-backend.priceQuotes.MetaData",
-              "doc": "Price quote metadata." },
+              "doc": "Price quote metadata.",
+              "optional": true },
             { "name": "dates",
               "type": "wix-crm-backend.priceQuotes.PriceQuoteDates",
-              "doc": "Price quote dates." } ],
+              "doc": "Dates associated with the price quote." } ],
         "extra":
           {  },
         "labels":
@@ -4296,7 +4427,7 @@
       { "name": "Response",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 167 } ],
+              "lineno": 168 } ],
         "docs":
           { "summary": "An object that contains response information.",
             "links": [],
@@ -4313,9 +4444,9 @@
       { "name": "TotalPrice",
         "locations":
           [ { "filename": "quotes-common-types.js",
-              "lineno": 99 } ],
+              "lineno": 100 } ],
         "docs":
-          { "summary": "An object that contains total price information.",
+          { "summary": "An object that contains price totals.",
             "links":
               [ "[PriceQuote](#PriceQuote)",
                 "[Invoice](wix-crm-backend.invoice.html#Invoice)" ],
@@ -4464,7 +4595,7 @@
                       " *   },",
                       " *   \"dates\": {  ",
                       " *     \"issueDate\": \"2019-03-13T00:00:00Z\",",
-                      " *     \"validThroughDate\": \"2019-06-12T00:00:00Z\",",
+                      " *     \"dueDate\": \"2019-06-12T00:00:00Z\",",
                       " *     \"timeZoneCode\": \"America/New_York\"",
                       " *   },",
                       " *   \"discount\": {",
@@ -4575,7 +4706,7 @@
           [ { "filename": "price-quotes.js",
               "lineno": 36 } ],
         "docs":
-          { "summary": "An object that contains information needed to update price quote.",
+          { "summary": "An object that contains information needed to update a price quote.",
             "links":
               [ "[updatePriceQuote( )](#updatePriceQuote)" ],
             "examples":
@@ -4586,10 +4717,13 @@
                       "export function updatePriceQuote(id) {",
                       "  return wixCrm.priceQuotes.getPriceQuote(id)",
                       "  .then( (result) => {",
+                      "    //make some changes",
+                      "    result.title = \"Updated Title\";",
+                      "    ",
                       "    let updateRequest = {",
                       "      \"id\": result.id,",
                       "      \"data\": {",
-                      "        \"title\": \"Updated title\",",
+                      "        \"title\": result.title,",
                       "        \"customer\": result.customer,",
                       "        \"currency\": result.currency,",
                       "        \"lineItems\": result.lineItems,",
@@ -4609,10 +4743,10 @@
         "members":
           [ { "name": "id",
               "type": "wix-crm-backend.priceQuotes.IdAndVersion",
-              "doc": "Price quote ID and version." },
+              "doc": "ID and version of the price quote." },
             { "name": "data",
               "type": "wix-crm-backend.priceQuotes.PriceQuoteFields",
-              "doc": "Price quote fields used to update the price quote." } ],
+              "doc": "Information used to update the price quote." } ],
         "extra":
           {  },
         "labels":
