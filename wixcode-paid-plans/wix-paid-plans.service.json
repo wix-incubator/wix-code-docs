@@ -10,15 +10,15 @@
       "description":
         [ "To process paid plans on your site, first set up your site to offer paid plans",
           " as described in <a href=\"https://support.wix.com/en/article/about-paid-plans\" target=\"_blank\">About Paid Plans</a>.",
-          " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> defne the plans you want to offer</a>,",
+          " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> define the plans you want to offer</a>,",
           " including the payment method.",
           " You can then retrieve information about paid plans, purchase a plan, and order a plan for",
           " future purchase (such as after a visitor enters payment information).",
           "",
           " <h3 id=\"paid-plan-lifecycle\">Typical Paid Plan Lifecycle</h3>",
           "",
-          " This typical paid plan lifecycle can be implemented using the purchasePlan function.",
-          " purchasePlan lets users buy plans in one direct flow by letting the user both order a plan",
+          " This typical paid plan lifecycle can be implemented using the [`purchasePlan()`](wix-paid-plans.html#purchasePlan) function.",
+          " `purchasePlan` lets users buy plans in one direct flow by letting the user both order a plan",
           " and pay for the plan.",
           "",
           " The following outlines the steps taken in a typical paid plan lifecycle:",
@@ -26,9 +26,9 @@
           " 1. A site visitor clicks a button to choose a membership plan.",
           " 1. The button's event handler calls a function to handle the selection of the plan.",
           " 1. If not logged in, the site visitor is prompted to do so.",
-          "    * If the plan is free, the plan is immediately ordered by calling createOrder() and \"purchased\" using the Wix Pay API.",
+          "    * If the plan is free, the plan is immediately ordered by calling [`orderPlan()`](wix-paid-plans.html#orderPlan) and \"purchased\" using the Wix Pay API.",
           "    * If the plan is not free, and the site visitor already has entered payment information,",
-          "      the plan is immediately ordered by calling createOrder() and purchased using the Wix Pay API.",
+          "      the plan is immediately ordered by calling [`orderPlan()`](wix-paid-plans.html#orderPlan) and purchased using the Wix Pay API.",
           "    * If the plan is not free, and the site visitor has not yet entered payment information,",
           "      the site visitor waits for a confirmation email.",
           "",
@@ -36,15 +36,15 @@
           "",
           " <h3 id=\"paid-plan-customize\">Customized Paid Plan Lifecycle</h3>",
           "",
-          " Customized paid plan lifecycles can be implemented using the createOrder() function and the Pay API.",
-          " createOrder() lets visitors order plans by placing the orders in a database with pending status. You",
+          " Customized paid plan lifecycles can be implemented using the [`orderPlan()`](wix-paid-plans.html#orderPlan) function and the Pay API.",
+          " [`orderPlan()`](wix-paid-plans.html#orderPlan) lets visitors order plans by placing the orders in a database with pending status. You",
           " can then customize the site visitors' experience before they actually pay for the plan. After the site visitor",
           " pays for the plan, the status in the database changes to paid.",
           "",
           " The following outlines the steps for customizing the paid plan lifecycle:",
           "",
           " 1. A site visitor clicks a button to choose a membership plan.",
-          " 1. The button's event handler calls the createOrder() function to handle the initial order of a plan.",
+          " 1. The button's event handler calls the [`orderPlan()`](wix-paid-plans.html#orderPlan) function to handle the initial order of a plan.",
           "    If the plan is free, the plan is ordered for immediate purchase.",
           " 1. You create and customize a series of elements for continuing the purchase, such as light boxes,",
           "    forms, and so on. The site visitor enters payment information using these elements.",
@@ -65,7 +65,8 @@
   "operations":
     [ { "name": "createOrder",
         "labels":
-          [ "changed" ],
+          [ "changed",
+            "removed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -120,7 +121,7 @@
               [ "To work with the Paid Plans API, you need to save and publish your site." ] } },
       { "name": "orderPlan",
         "labels":
-          [ "removed" ],
+          [ "new" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -134,13 +135,13 @@
             "doc": "Fulfilled - The created order." },
         "locations":
           [ { "filename": "paid-plans.js",
-              "lineno": 116 } ],
+              "lineno": 140 } ],
         "docs":
           { "summary": "Orders a paid plan.",
             "description":
               [ "To process paid plans on your site, first set up your site to offer paid plans",
                 " as described in <a href=\"https://support.wix.com/en/article/about-paid-plans\" target=\"_blank\">About Paid Plans</a>.",
-                " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> defne the plans you want to offer</a>,",
+                " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> define the plans you want to offer</a>,",
                 " including the payment method.",
                 "",
                 " The `orderPlan()` function returns a Promise that resolves to an [`OrderResult`](wix-paid-plans.html#OrderResult)",
@@ -158,13 +159,12 @@
                     [ "import wixPay from 'wix-pay';",
                       "import wixPaidPlans from 'wix-paid-plans';",
                       "",
-                      "export function myButton_click(event, $w) {",
-                      "  XXX",
-                      "  const itemObj = $w(\"#dynamicDataset\").getCurrentItem();",
-                      "  const planId = itemObj._id;",
-                      "  XXX()",
-                      "    .then( (payment) => {",
-                      "      wixPaidPlans.orderPlan(planId);",
+                      "export function myOrderButton_click(event, $w) {",
+                      "  wixPaidPlans.createOrder(planId)",
+                      "    .then(myOrder => {",
+                      "    let  myCashierOrderId = myOrder.body.cashierOrderId;",
+                      "    let  myOrderId = myOrder.body.orderId;",
+                      "    let  myStatus = myOrder.status;",
                       "    } );",
                       "}" ],
                   "extra":
@@ -175,7 +175,8 @@
           { "notes":
               [ "To work with the Paid Plans API, you need to save and publish your site." ] } },
       { "name": "purchasePlan",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -195,7 +196,7 @@
             "description":
               [ "To process paid plans on your site, first set up your site to offer paid plans",
                 " as described in <a href=\"https://support.wix.com/en/article/about-paid-plans\" target=\"_blank\">About Paid Plans</a>.",
-                " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> defne the plans you want to offer</a>,",
+                " When setting up your site to accept paid plans, be sure to <a href=\"https://support.wix.com/en/article/creating-a-plan-in-paid-plans\" target=\"_blank\"> define the plans you want to offer</a>,",
                 " including the payment method.",
                 "",
                 " The `purchasePlan()` function returns a Promise that resolves to a [`PurchaseResult`](wix-paid-plans.html#PurchaseResult)",
@@ -204,7 +205,7 @@
                 " Purchasing a plan validates the plan, orders the plan, and continues the",
                 " payment process with the Wix Pay API.",
                 "",
-                " To understand how `purhasePlan()` is used in a typical paid plan lifecycle,",
+                " To understand how `purchasePlan()` is used in a typical paid plan lifecycle,",
                 " see [Typical Paid Plan Lifecycle](wix-paid-plans.html#paid-plan-lifecycle)." ],
             "links": [],
             "examples":
@@ -236,7 +237,7 @@
         "docs":
           { "summary": "An object representing an order result.",
             "links":
-              [ "[createOrder( )](wix-paid-plans.html#createOrder)" ],
+              [ "[orderPlan( )](wix-paid-plans.html#orderPlan)" ],
             "examples": [],
             "extra":
               {  } },
