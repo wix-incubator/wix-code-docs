@@ -65,13 +65,13 @@
         "params":
           [ { "name": "workflowId",
               "type": "string",
-              "doc": "the Id of the workflow in which card should enter." },
+              "doc": "ID of the workflow to create the card in." },
             { "name": "phaseId",
               "type": "string",
-              "doc": "the Id of the phase in which card should enter." },
+              "doc": "ID of the phase to create the card in." },
             { "name": "card",
               "type": "wix-crm-backend.workflows.Card",
-              "doc": "The data required for card creation." } ],
+              "doc": "The data to use when creating the card." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -82,10 +82,12 @@
           [ { "filename": "cardsApi.js",
               "lineno": 15 } ],
         "docs":
-          { "summary": "Creates a new card.",
+          { "summary": "Creates a new workflow card.",
             "description":
-              [ "The `createCard()` function returns a Promise that resolves to the created card",
-                " ID." ],
+              [ "The `createCard()` function returns a Promise that resolves to the created card's",
+                " ID when the card is created in the specified workflow phase.",
+                "",
+                " The newly created card is added to the specified phase as the top card within the phase." ],
             "links": [],
             "examples":
               [ { "title": "Create a card",
@@ -132,10 +134,12 @@
           [ { "filename": "phasesApi.js",
               "lineno": 15 } ],
         "docs":
-          { "summary": "Creates a new phase.",
+          { "summary": "Creates a new workflow phase.",
             "description":
               [ "The `createPhase()` function returns a Promise that resolves to the created phase",
-                " ID." ],
+                " ID when the phase is created in the specified workflow.",
+                "",
+                " The newly created phase is added to the specified workflow as the last non-win phase." ],
             "links": [],
             "examples":
               [ { "title": "Create a phase",
@@ -286,10 +290,10 @@
               { "name": "Promise",
                 "typeParams":
                   [ "wix-crm-backend.workflow.Card" ] },
-            "doc": "Fulfilled - The card with the given ID.\nRejected - Error message." },
+            "doc": "Fulfilled - The card with the given ID." },
         "locations":
           [ { "filename": "cardsApi.js",
-              "lineno": 57 } ],
+              "lineno": 55 } ],
         "docs":
           { "summary": "Gets a workflow card by ID.",
             "description":
@@ -307,13 +311,12 @@
                       "",
                       "// Returns a promise that resolves to ",
                       "// {",
-                      "//   ",
+                      "//    \"name\": \"Card Name\",",
+                      "//    \"description\": \"Card description\",",
                       "//\t  \"id\": \"63c83c38-f504-4eb8-a48c-1d77c436a678\",",
+                      "//    \"contactId\": \"95bc7a80-5500-4445-9c90-adc0ff1b25ac\",",
                       "//    \"createdAt\": \"2019-05-05T12:23:43Z\",",
-                      "//    \"updatedAt\": \"2019-05-05T12:23:43Z\",",
-                      "//    \"description\": \"description..\",",
-                      "//    \"name\": \"card-title\",",
-                      "//    \"contactId\": \"95bc7a80-5500-4445-9c90-adc0ff1b25ac\", //contact-id",
+                      "//    \"updatedAt\": \"2019-05-05T12:23:43Z\"",
                       "//   ",
                       "// }" ],
                   "extra":
@@ -338,7 +341,7 @@
             "doc": "Fulfilled - The phase with the specified ID." },
         "locations":
           [ { "filename": "phasesApi.js",
-              "lineno": 53 } ],
+              "lineno": 51 } ],
         "docs":
           { "summary": "Gets a phase by ID.",
             "description":
@@ -356,8 +359,8 @@
                       "",
                       "// Returns a promise that resolves to:",
                       "// {",
-                      "//    id:\"66f6443c-884f-4b12-beae-ab864fb489db\",",
-                      "//    name:\"phase-name\",",
+                      "//    name: \"Phase Name\",",
+                      "//    id: \"66f6443c-884f-4b12-beae-ab864fb489db\"",
                       "// }" ],
                   "extra":
                     {  } } ],
@@ -380,7 +383,7 @@
             "doc": "Fulfilled - The workflow with the specified ID." },
         "locations":
           [ { "filename": "workflowsApi.js",
-              "lineno": 45 } ],
+              "lineno": 43 } ],
         "docs":
           { "summary": "Gets a workflow by ID.",
             "description":
@@ -467,11 +470,11 @@
         "nameParams": [],
         "params":
           [ { "name": "cardId",
-              "type": "wix-String",
-              "doc": "the card id." },
-            { "name": "moveCardRequest",
-              "type": "wix-crm-backend.workflows.MoveCardRequest",
-              "doc": "The new phase id and the new position to move in that phase ;" } ],
+              "type": "string",
+              "doc": "ID of the card to move." },
+            { "name": "options",
+              "type": "wix-crm-backend.workflows.MoveCardOptions",
+              "doc": "Information about where to move the card." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -480,22 +483,30 @@
             "doc": "Fulfilled - When the card has moved." },
         "locations":
           [ { "filename": "cardsApi.js",
-              "lineno": 77 } ],
+              "lineno": 72 } ],
         "docs":
           { "summary": "Moves a card to a new position with a workflow.",
             "description":
-              [ "The `moveCard()` function returns a Promise" ],
+              [ "The `moveCard()` function returns a Promise when the specified card",
+                " has been moved to the new position.",
+                "",
+                " Use the [`options`](#MoveCardOptions) parameter to specify the phase",
+                " and position within that phase to move the card to. Positions are zero-based,",
+                " meaning the first position is `0`." ],
             "links": [],
             "examples":
               [ { "title": "Move a card",
                   "body":
                     [ "import wixCrm from 'wix-crm-backend';",
                       "",
-                      "export async function moveCard(){",
-                      "\treturn await wixCrm.workflows.moveCard(\"1e629ddc-94a1-424f-81f9-c6b81719f46a\",{",
-                      "\t\t\"newPhaseId\":\"acec6d40-1bfe-42f0-a750-38d1473e0ef5\",",
-                      "\t\t\"newPosition\":0",
-                      "\t});",
+                      "export async function moveCard(cardId, phaseId){",
+                      "  return await wixCrm.workflows.moveCard(",
+                      "    cardId,",
+                      "    {",
+                      "      \"newPhaseId\": phaseId,",
+                      "      \"newPosition\": 0",
+                      "    }",
+                      "  );",
                       "}",
                       "",
                       "// Returns a promise that resolves to void." ],
@@ -512,10 +523,10 @@
         "params":
           [ { "name": "id",
               "type": "string",
-              "doc": "phase id." },
-            { "name": "movePhaseRequest",
-              "type": "wix-crm-backend.workflows.MovePhaseRequest",
-              "doc": "The new position to move phase in a workflow." } ],
+              "doc": "ID of the phase to move." },
+            { "name": "options",
+              "type": "wix-crm-backend.workflows.MovePhaseOptions",
+              "doc": "Information about where to move the phase." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -524,22 +535,30 @@
             "doc": "Fulfilled - When the phase has moved." },
         "locations":
           [ { "filename": "phasesApi.js",
-              "lineno": 72 } ],
+              "lineno": 68 } ],
         "docs":
           { "summary": "Moves a phase to a new position with a workflow.",
             "description":
-              [ "The `movePhase()` function returns a Promise." ],
+              [ "The `movePhase()` function returns a Promise when the specified phase",
+                " has been moved to the new position.",
+                "",
+                " Use the [`options`](#MovePhaseOptions) parameter to specify the new phase",
+                " position. Any non-win phase can be moved to any non-win position. The win phase cannot",
+                " be moved. Positions are zero-based, meaning the first position is `0`." ],
             "links": [],
             "examples":
               [ { "title": "Move a phase",
                   "body":
                     [ "import wixCrm from 'wix-crm-backend';",
                       "",
-                      "export async function movePhase(){",
-                      "\treturn await wixCrm.workflows.movePhase(\"66f6443c-884f-4b12-beae-ab864fb489db\",{",
-                      "\t\t\"workflowId\": \"63c83c38-f504-4eb8-a48c-1d77c436a678\",",
-                      "\t\t\"newPosition\": 0",
-                      "\t});",
+                      "export async function movePhase(phaseId, workflowId){",
+                      "  return await wixCrm.workflows.movePhase(",
+                      "    phaseId,",
+                      "    {",
+                      "      \"workflowId\": workflowId,",
+                      "      \"newPosition\": 0",
+                      "    }",
+                      "  );",
                       "}",
                       "",
                       "// Returns a promise that resolves to void." ],
@@ -556,10 +575,10 @@
         "params":
           [ { "name": "id",
               "type": "string",
-              "doc": "card id." },
-            { "name": "restoreCardRequest",
-              "type": "wix-crm-backend.workflows.MoveCardRequest",
-              "doc": "The data required for restoring a card." } ],
+              "doc": "ID of the card to restore." },
+            { "name": "options",
+              "type": "wix-crm-backend.workflows.MoveCardOptions",
+              "doc": "Information about where to restore the card to." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -568,25 +587,29 @@
             "doc": "Fulfilled - When the card has been restored." },
         "locations":
           [ { "filename": "cardsApi.js",
-              "lineno": 133 } ],
+              "lineno": 131 } ],
         "docs":
           { "summary": "Restores an archived workflow card.",
             "description":
-              [ "The `restoreCard()` function returns a Promise",
-                " ID." ],
+              [ "The `restoreCard()` function returns a Promise that resolves when the",
+                " archived card has been restored." ],
             "links": [],
             "examples":
               [ { "title": "Restore a card",
                   "body":
                     [ "import wixCrm from 'wix-crm-backend';",
                       "",
-                      "export async function restoreCard(){",
-                      "\treturn await wixCrm.workflows.restoreCard(\"1e629ddc-94a1-424f-81f9-c6b81719f46a\",{",
-                      "\t\t\"newPhaseId\":\"acec6d40-1bfe-42f0-a750-38d1473e0ef5\",",
-                      "\t\t\"newPosition\":0",
-                      "\t});",
+                      "export async function restoreCard(cardId, phaseId){",
+                      "  return await wixCrm.workflows.restoreCard(",
+                      "    cardId,",
+                      "    {",
+                      "      \"newPhaseId\": phaseId,",
+                      "      \"newPosition\": 0",
+                      "    }",
+                      "  );",
                       "}",
-                      "// Returns a promise that resolves to void" ],
+                      "",
+                      "// Returns a promise that resolves to void." ],
                   "extra":
                     {  } } ],
             "extra":
@@ -600,10 +623,10 @@
         "params":
           [ { "name": "id",
               "type": "string",
-              "doc": "card id." },
+              "doc": "ID of the card to update." },
             { "name": "card",
               "type": "wix-crm-backend.workflows.Card",
-              "doc": "subset of fields and values to update." } ],
+              "doc": "The information to update the card with." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -612,19 +635,23 @@
             "doc": "Fulfilled - When the card has been updated." },
         "locations":
           [ { "filename": "cardsApi.js",
-              "lineno": 95 } ],
+              "lineno": 93 } ],
         "docs":
           { "summary": "Updates an existing workflow card.",
             "description":
-              [ "The `updateCardFields()` function returns a Promise" ],
+              [ "The `updateCardFields()` function returns a Promise that resolves when the",
+                " card has been updated with the specified values.",
+                "",
+                " Only the properties passed in the [`Card`](#Card) object will be",
+                " updated. All other properties will remain the same." ],
             "links": [],
             "examples":
               [ { "title": "Update a card",
                   "body":
                     [ "import wixCrm from 'wix-crm-backend';",
                       "",
-                      "export function updateCard(id){",
-                      "  return wixCrm.workflows.updateCard(",
+                      "export function updateCardFields(id){",
+                      "  return wixCrm.workflows.updateCardFields(",
                       "    id, ",
                       "    {",
                       "      \"name\": \"New Name\"",
@@ -647,8 +674,8 @@
           [ { "name": "id",
               "type": "string",
               "doc": "ID of the phase to update." },
-            { "name": "phaseInfo",
-              "type": "wix-crm-backend.workflows.PhaseInfo",
+            { "name": "phase",
+              "type": "wix-crm-backend.workflows.Phase",
               "doc": "The information to update the workflow phase with." } ],
         "ret":
           { "type":
@@ -658,14 +685,14 @@
             "doc": "Fulfilled - When the phase has been updated." },
         "locations":
           [ { "filename": "phasesApi.js",
-              "lineno": 90 } ],
+              "lineno": 89 } ],
         "docs":
-          { "summary": "Update an existing phase.",
+          { "summary": "Updates an existing workflow phase.",
             "description":
               [ "The `updatePhaseFields()` function returns a Promise that resolves when the",
                 " phase has been updated with the specified values.",
                 "",
-                " Only the properties passed in the [`PhaseInfo`](#PhaseInfo) object will be",
+                " Only the properties passed in the [`Phase`](#Phase) object will be",
                 " updated. All other properties will remain the same." ],
             "links": [],
             "examples":
@@ -696,10 +723,10 @@
         "params":
           [ { "name": "id",
               "type": "string",
-              "doc": "workflow id." },
+              "doc": "ID of the workflow to update." },
             { "name": "workflow",
               "type": "wix-crm-backend.workflows.Workflow",
-              "doc": "subset of fields and values to update ." } ],
+              "doc": "The information to update the workflow with." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -708,11 +735,15 @@
             "doc": "Fulfilled - When the workflow has been updated." },
         "locations":
           [ { "filename": "workflowsApi.js",
-              "lineno": 64 } ],
+              "lineno": 60 } ],
         "docs":
-          { "summary": "Update an existing workflow.",
+          { "summary": "Updates an existing workflow.",
             "description":
-              [ "The `updateWorkflowFields()` function returns a Promise" ],
+              [ "The `updateWorkflowFields()` function returns a Promise that resolves when the",
+                " workflow has been updated with the specified values.",
+                "",
+                " Only the properties passed in the [`Workflow`](#Workflow) object will be",
+                " updated. All other properties will remain the same." ],
             "links": [],
             "examples":
               [ { "title": "Update a workflow",
@@ -739,39 +770,20 @@
   "messages":
     [ { "name": "Card",
         "locations":
-          [ { "filename": "typesDocs.js",
+          [ { "filename": "types.js",
+              "lineno": 2 },
+            { "filename": "typesDocs.js",
               "lineno": 2 } ],
         "docs":
-          { "summary": "An object contains card.",
+          { "summary": "An object containing card information.",
             "links": [],
-            "examples":
-              [ { "title": "Gets a card",
-                  "body":
-                    [ "import wixCrm from 'wix-crm-backend';",
-                      "",
-                      "export function getCard(id){",
-                      "  return wixCrm.workflows.getCard(id);",
-                      "}",
-                      "",
-                      "// Returns a promise that resolves to ",
-                      "// {",
-                      "//   ",
-                      "//\t  \"id\": \"63c83c38-f504-4eb8-a48c-1d77c436a678\",",
-                      "//    \"createdAt\": \"2019-05-05T12:23:43Z\",",
-                      "//    \"updatedAt\": \"2019-05-05T12:23:43Z\",",
-                      "//    \"description\": \"description..\",",
-                      "//    \"name\": \"card-title\",",
-                      "//    \"contactId\": \"95bc7a80-5500-4445-9c90-adc0ff1b25ac\", //contact-id",
-                      "//   ",
-                      "// }" ],
-                  "extra":
-                    {  } } ],
+            "examples": [],
             "extra":
               {  } },
         "members":
           [ { "name": "name",
               "type": "string",
-              "doc": "name of the card." },
+              "doc": "Name of the card." },
             { "name": "id",
               "type": "string",
               "doc": "Unique card identifier." },
@@ -783,7 +795,7 @@
               "doc": "Date the card was created." },
             { "name": "updatedAt",
               "type": "Date",
-              "doc": "Date the card was updated." } ],
+              "doc": "Date the card was last updated." } ],
         "extra":
           {  },
         "labels":
@@ -810,7 +822,7 @@
         "extra":
           {  },
         "labels":
-          [ "removed" ] },
+          [ "new" ] },
       { "name": "MoveCardRequest",
         "locations":
           [ { "filename": "typesDocs.js",
@@ -853,7 +865,7 @@
         "extra":
           {  },
         "labels":
-          [ "removed" ] },
+          [ "new" ] },
       { "name": "MovePhaseRequest",
         "locations":
           [ { "filename": "typesDocs.js",
@@ -876,51 +888,20 @@
         "labels": [] },
       { "name": "Phase",
         "locations":
-          [ { "filename": "typesDocs.js",
+          [ { "filename": "types.js",
+              "lineno": 12 },
+            { "filename": "typesDocs.js",
               "lineno": 14 } ],
         "docs":
-          { "summary": "An object contains Phase.",
+          { "summary": "An object containing phase information.",
             "links": [],
-            "examples":
-              [ { "title": "Create a phase",
-                  "body":
-                    [ "import wixCrm from 'wix-crm-backend';",
-                      "",
-                      "export function createPhase(workflowId){",
-                      "  return wixCrm.workflows.createPhase(",
-                      "    workflowId,",
-                      "    {",
-                      "      \"name\": \"Phase Name\"",
-                      "    }",
-                      "  );",
-                      "}",
-                      "",
-                      "// Returns a promise that resolves to:",
-                      "// \"3c9683ea-f6cc-470b-b0d1-2eb6b8cea912\"" ],
-                  "extra":
-                    {  } },
-                { "title": "Update a phase",
-                  "body":
-                    [ "import wixCrm from 'wix-crm-backend';",
-                      "",
-                      "export function updatePhaseFields(id){",
-                      "  return wixCrm.workflows.updatePhaseFields(",
-                      "    id,",
-                      "    {",
-                      "      \"name\": \"New Name\"",
-                      "    }",
-                      "  );",
-                      "}",
-                      "",
-                      "// Returns a promise that resolves to void." ],
-                  "extra":
-                    {  } } ],
+            "examples": [],
             "extra":
               {  } },
         "members":
           [ { "name": "name",
               "type": "string",
-              "doc": "name of the phase." },
+              "doc": "Name of the phase." },
             { "name": "id",
               "type": "string",
               "doc": "Unique phase identifier." } ],
@@ -954,6 +935,6 @@
         "extra":
           {  },
         "labels":
-          [ "removed" ] } ],
+          [ "new" ] } ],
   "extra":
     {  } }
