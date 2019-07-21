@@ -41,20 +41,21 @@
         {  } },
   "properties":
     [ { "name": "token",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": false,
         "type": "string",
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 45 } ],
+              "lineno": 46 } ],
         "docs":
           { "summary": "Gets the captcha token.",
             "description":
               [ "When a site visitor successfully completes a captcha challenge, a captcha `token`",
                 " is generated.",
                 "",
-                " Prior to completing the captcha challenge, or following timeout, the token returns `undefined`." ],
+                " Prior to completing the captcha challenge and following timeout, the token returns `undefined`." ],
             "links": [],
             "examples":
               [ { "title": "Get the token of the verified captcha",
@@ -79,7 +80,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 106 } ],
+              "lineno": 107 } ],
         "docs":
           { "summary": "Adds an event handler that runs when an error occurs during captcha verification.",
             "description":
@@ -103,17 +104,18 @@
         "extra":
           { "eventType": "onError" } },
       { "name": "onTimeout",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "cb",
+          [ { "name": "handler",
               "type": "$w.EventHandler",
               "doc": "The name of the function or\n the function expression to run when a captcha timeout occurs." } ],
         "ret":
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 112 } ],
+              "lineno": 151 } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha token expires.",
             "description":
@@ -124,8 +126,8 @@
                 "the token expires and `onTimeout()` is triggered.",
                 "",
                 "If a timeout occurs, you can [`reset()`]($w.Captcha.html#reset) the",
-                "captcha element and ask the user to redo the challenge. If your clickable element",
-                "for triggering a restricted operation was enabled when the captcha was verified, disable it." ],
+                "captcha element and ask the user to redo the challenge. If you enabled the clickable",
+                "element for triggering a restricted operation when the captcha was verified, disable it." ],
             "links": [],
             "examples":
               [ { "title": "Register a callback to run when a timeout occurs",
@@ -133,7 +135,7 @@
                     [ "$w(\"#myCaptcha\").onTimeout(() => {",
                       "  $w(\"#signupButton\").disable();",
                       "  $w(\"#myCaptcha\").reset();",
-                      "  showText(\"The captcha timed out. Please redo it.\");",
+                      "  showText(\"The captcha timed out. Please redo the challenge.\");",
                       "})" ],
                   "extra":
                     {  } } ],
@@ -142,26 +144,27 @@
         "extra":
           { "eventType": "onTimeout" } },
       { "name": "onVerified",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "cb",
+          [ { "name": "handler",
               "type": "$w.EventHandler",
               "doc": "The name of the function or\n the function expression to run when the captcha is verified." } ],
         "ret":
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 146 } ],
+              "lineno": 199 } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha is verified.",
             "description":
               [ "Once the captcha challenge has been successfully completed by the user, the `onVerified`",
                 " callback is triggered.",
                 "",
-                " If the clickable element for triggering a submit, login, or another restricted operation was disabled, enable it." ],
-            "links":
-              [ "[onVerified( )](#onVerified)" ],
+                " If the clickable element for triggering a submit, login, or another",
+                " restricted operation was disabled, enable it." ],
+            "links": [],
             "examples":
               [ { "title": "Register a callback to run when the captcha is verified",
                   "body":
@@ -173,13 +176,14 @@
                     {  } },
                 { "title": "Full captcha lifecycle scenario",
                   "body":
-                    [ "/**************************",
+                    [ "/******************************",
                       " * backend code - captcha.jsw *",
-                      " **************************/",
+                      " ******************************/",
                       "",
                       "import wixCaptcha from 'wix-captcha-backend';",
                       "import wixData from wix-data;",
                       "",
+                      "// Authorize token and insert data",
                       "export function processSubmission(submitRequest) {",
                       "  return wixCaptcha.authorize(submitRequest.token)",
                       "  .then (() => {",
@@ -193,22 +197,25 @@
                       "",
                       "import {processSubmission} from 'backend/captcha';",
                       "",
+                      "// Error handler",
                       "$w(\"#myCaptcha\").onError(() => {",
                       "    $w(\"#myCaptcha\").reset();",
                       "    showText(\"Something went wrong. Redo the Captcha challenge.\");",
                       "})",
                       "",
+                      "// Verification handler",
                       "$w(\"#myCaptcha\").onVerified(() => {",
                       "  $w(\"#submitDataButton\").enable();",
                       "})",
                       "",
+                      "// Timeout handler",
                       "$w(\"#myCaptcha\").onTimeout(() => {",
                       "  $w(\"#submitDataButton\").disable();",
                       "  $w(\"#myCaptcha\").reset();",
                       "  showText(\"The captcha timed out. Redo the challenge.\");",
                       "})",
                       "",
-                      "",
+                      "// When user clicks submit button",
                       "export function submitDataButton_click(event, $w) {",
                       "  let submitRequest = {",
                       "    token: $w(\"#myCaptcha\").token,",
@@ -242,7 +249,7 @@
             "doc": "Fulfilled - When the captcha has been reset." },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 62 } ],
+              "lineno": 63 } ],
         "docs":
           { "summary": "Resets the captcha challenge.",
             "description":
@@ -268,9 +275,45 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 99 } ],
+              "lineno": 100 } ],
         "docs":
           { "summary": "An error event handler.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "TimeoutHandler",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params": [],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "filename": "Captcha.js",
+              "lineno": 144 } ],
+        "docs":
+          { "summary": "A timeout event handler.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "VerificationHandler",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params": [],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "filename": "Captcha.js",
+              "lineno": 192 } ],
+        "docs":
+          { "summary": "A verification event handler.",
             "links": [],
             "examples": [],
             "extra":
