@@ -12,7 +12,7 @@
     { "summary": "The captcha element allows you to present a challenge-response test\n to site visitors to determine whether they are human or a bot.",
       "description":
         [ "Use the captcha element to verify that site visitors are human before",
-          "allowing them perform restricted operations.",
+          "allowing them to perform restricted operations.",
           "",
           " <h3 id=\"captcha-lifecycle\">Typical Captcha Validation Lifecycle</h3>",
           "",
@@ -32,8 +32,8 @@
           "",
           "",
           "  + If backend authorization does not occur within 120 seconds of token generation, the token becomes invalid. Use the [`onTimeout()`]($w.Captcha.html#onTimeout) event handler to [`reset()`]($w.Captcha.html#reset) the captcha and asks the visitor to redo the challenge.",
-          "  + Captcha protection is not fully effective without backend [authorization](wix-captcha-backend.html#authorize) as part of the captcha validation lifecycle.",
-          "  + Data submission performed by connecting input elements to a database collection via a dataset cannot be protected by the Captcha element. To protect data submission with captcha, use code to perform the data action (for example, [`insert()`](wix-data.html#insert) or [`save()`](wix-data.html#save)).",
+          "  + To ensure complete protection, you must include backend [authorization](wix-captcha-backend.html#authorize) as a mandatory step in the captcha validation lifecycle.",
+          "  + The captcha element does not offer protection for data submission performed via a dataset. To protect data submission with captcha, use code to perform the data operation (for example, [`insert()`](wix-data.html#insert) or [`save()`](wix-data.html#save)).",
           "",
           "",
           "For more information on working with your captcha element, click here (link to tutorial)." ],
@@ -43,7 +43,8 @@
         {  } },
   "properties":
     [ { "name": "token",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": false,
         "type": "string",
@@ -64,6 +65,65 @@
                     [ "let myToken = $w(\"#myCaptcha\").token;",
                       "// \"01ABCDeFG23hijKlmn4...OPQ5r6stuvWXy\"" ],
                   "extra":
+                    {  } },
+                { "title": "Full captcha lifecycle scenario",
+                  "body":
+                    [ "/******************************",
+                      " * backend code - captcha.jsw *",
+                      " ******************************/",
+                      "",
+                      "import wixCaptcha from 'wix-captcha-backend';",
+                      "import wixData from wix-data;",
+                      "",
+                      "// Authorize token and insert data",
+                      "export function processSubmission(submitRequest) {",
+                      "  return wixCaptcha.authorize(submitRequest.token)",
+                      "  .then (() => {",
+                      "    wixData.insert(\"MyCollection\", submitRequest.Data);",
+                      "  })",
+                      "}",
+                      "",
+                      "/********************",
+                      " * client-side code *",
+                      " ********************/",
+                      "",
+                      "import {processSubmission} from 'backend/captcha';",
+                      "",
+                      "// Error handler",
+                      "$w(\"#myCaptcha\").onError(() => {",
+                      "    $w(\"#myCaptcha\").reset();",
+                      "    showText(\"Something went wrong. Redo the Captcha challenge.\");",
+                      "})",
+                      "",
+                      "// Verification handler",
+                      "$w(\"#myCaptcha\").onVerified(() => {",
+                      "  $w(\"#submitDataButton\").enable();",
+                      "})",
+                      "",
+                      "// Timeout handler",
+                      "$w(\"#myCaptcha\").onTimeout(() => {",
+                      "  $w(\"#submitDataButton\").disable();",
+                      "  $w(\"#myCaptcha\").reset();",
+                      "  showText(\"The captcha timed out. Redo the challenge.\");",
+                      "})",
+                      "",
+                      "// When user clicks submit button",
+                      "export function submitDataButton_click(event, $w) {",
+                      "  let submitRequest = {",
+                      "    token: $w(\"#myCaptcha\").token,",
+                      "    data: $w(\"#myInput\").value,",
+                      "  }",
+                      "  processSubmission(submitRequest)",
+                      "    .then( () => {",
+                      "      $w(\"#myCaptcha\").reset();",
+                      "      showText(\"Data successfully submitted.\");",
+                      "    })",
+                      "    .catch(() => {",
+                      "      $w(\"#myCaptcha\").reset();",
+                      "      showText(\"Something went wrong. Redo the Captcha challenge.\");",
+                      "    })",
+                      "}" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
@@ -81,7 +141,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 108 } ],
+              "lineno": 109 } ],
         "docs":
           { "summary": "Adds an event handler that runs when an error occurs during captcha verification.",
             "description":
@@ -105,8 +165,7 @@
         "extra":
           { "eventType": "onError" } },
       { "name": "onTimeout",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -116,7 +175,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 152 } ],
+              "lineno": 153 } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha token expires.",
             "description":
@@ -145,8 +204,7 @@
         "extra":
           { "eventType": "onTimeout" } },
       { "name": "onVerified",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -156,7 +214,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 200 } ],
+              "lineno": 201 } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha is verified.",
             "description":
@@ -239,7 +297,8 @@
         "extra":
           { "eventType": "onVerified" } },
       { "name": "reset",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -250,7 +309,7 @@
             "doc": "Fulfilled - When the captcha has been reset." },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 64 } ],
+              "lineno": 65 } ],
         "docs":
           { "summary": "Resets the captcha challenge.",
             "description":
@@ -261,6 +320,65 @@
               [ { "title": "Reset the captcha element",
                   "body":
                     [ "$w(\"#myCaptcha\").reset();" ],
+                  "extra":
+                    {  } },
+                { "title": "Full captcha lifecycle scenario",
+                  "body":
+                    [ "/******************************",
+                      " * backend code - captcha.jsw *",
+                      " ******************************/",
+                      "",
+                      "import wixCaptcha from 'wix-captcha-backend';",
+                      "import wixData from wix-data;",
+                      "",
+                      "// Authorize token and insert data",
+                      "export function processSubmission(submitRequest) {",
+                      "  return wixCaptcha.authorize(submitRequest.token)",
+                      "  .then (() => {",
+                      "    wixData.insert(\"MyCollection\", submitRequest.Data);",
+                      "  })",
+                      "}",
+                      "",
+                      "/********************",
+                      " * client-side code *",
+                      " ********************/",
+                      "",
+                      "import {processSubmission} from 'backend/captcha';",
+                      "",
+                      "// Error handler",
+                      "$w(\"#myCaptcha\").onError(() => {",
+                      "    $w(\"#myCaptcha\").reset();",
+                      "    showText(\"Something went wrong. Redo the Captcha challenge.\");",
+                      "})",
+                      "",
+                      "// Verification handler",
+                      "$w(\"#myCaptcha\").onVerified(() => {",
+                      "  $w(\"#submitDataButton\").enable();",
+                      "})",
+                      "",
+                      "// Timeout handler",
+                      "$w(\"#myCaptcha\").onTimeout(() => {",
+                      "  $w(\"#submitDataButton\").disable();",
+                      "  $w(\"#myCaptcha\").reset();",
+                      "  showText(\"The captcha timed out. Redo the challenge.\");",
+                      "})",
+                      "",
+                      "// When user clicks submit button",
+                      "export function submitDataButton_click(event, $w) {",
+                      "  let submitRequest = {",
+                      "    token: $w(\"#myCaptcha\").token,",
+                      "    data: $w(\"#myInput\").value,",
+                      "  }",
+                      "  processSubmission(submitRequest)",
+                      "    .then( () => {",
+                      "      $w(\"#myCaptcha\").reset();",
+                      "      showText(\"Data successfully submitted.\");",
+                      "    })",
+                      "    .catch(() => {",
+                      "      $w(\"#myCaptcha\").reset();",
+                      "      showText(\"Something went wrong. Redo the Captcha challenge.\");",
+                      "    })",
+                      "}" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -276,7 +394,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 101 } ],
+              "lineno": 102 } ],
         "docs":
           { "summary": "An error event handler.",
             "links": [],
@@ -293,7 +411,7 @@
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 145 } ],
+              "lineno": 146 } ],
         "docs":
           { "summary": "A timeout event handler.",
             "links": [],
@@ -321,15 +439,14 @@
         "extra":
           {  } },
       { "name": "VerifiedHandler",
-        "labels":
-          [ "new" ],
+        "labels": [],
         "nameParams": [],
         "params": [],
         "ret":
           { "type": "void" },
         "locations":
           [ { "filename": "Captcha.js",
-              "lineno": 193 } ],
+              "lineno": 194 } ],
         "docs":
           { "summary": "A verification event handler.",
             "links": [],
