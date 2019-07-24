@@ -6,13 +6,14 @@
   "labels":
     [ "changed" ],
   "location":
-    { "filename": "Captcha.js",
-      "lineno": 6 },
+    { "lineno": 6,
+      "filename": "Captcha.js" },
   "docs":
     { "summary": "The captcha element allows you to present a challenge-response test\n to site visitors to determine whether they are human or a bot.",
       "description":
         [ "Use the captcha element to verify that site visitors are human before",
-          "allowing them to perform restricted operations.",
+          "allowing them to perform restricted operations such as data submission,",
+          "login, or accessing private content.",
           "",
           " <h3 id=\"captcha-lifecycle\">Typical Captcha Validation Lifecycle</h3>",
           "",
@@ -20,12 +21,12 @@
           "",
           " 1. A button or another clickable element that triggers a submit, login, or another restricted operation is disabled, pending captcha verification.",
           " 1. A site visitor completes the captcha challenge. One of the following occurs:",
-          "     * Error: Captcha fails verification. Use the [`onError()`]($w.Captcha.html#onError) event handler to [`reset()`]($w.Captcha.html#reset) the captcha and ask the visitor to redo the challenge. Return to Step 1.",
           "     * Verification: Captcha is verified. A captcha [`token`]($w.Captcha.html#token) is generated. Use the [`onVerified()`]($w.Captcha.html#onVerified) event handler to enable the disabled clickable element.",
+          "     * Error: Captcha fails verification. Use the [`onError()`]($w.Captcha.html#onError) event handler to [`reset()`]($w.Captcha.html#reset) the captcha and ask the visitor to redo the challenge. Return to Step 1.",
           " 1. The site visitor clicks the clickable element, triggering a backend function that calls [`authorize()`](wix-captcha-backend.html#authorize) with the generated [`token`]($w.Captcha.html#token).",
           " 1. [`authorize()`](wix-captcha-backend.html#authorize) checks whether the captcha token is valid. One of the following occurs:",
-          "     * Error: Token fails authorization. [`reset()`]($w.Captcha.html#reset) the captcha and ask the visitor to redo the challenge. Return to Step 1.",
           "     * Authorized: Captcha is authorized. Perform the restricted operation (such as data insert or login) in the backend function. [`reset()`]($w.Captcha.html#reset) the captcha for future operations.",
+          "     * Error: Token fails authorization. [`reset()`]($w.Captcha.html#reset) the captcha and ask the visitor to redo the challenge. Return to Step 1.",
           "",
           "",
           "Note the following:",
@@ -49,13 +50,13 @@
         "set": false,
         "type": "string",
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 47 } ],
+          [ { "lineno": 48,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "Gets the captcha token.",
             "description":
               [ "When a site visitor successfully completes a captcha challenge, a captcha `token`",
-                " is generated.",
+                " is generated. The token is used for backend authorization.",
                 "",
                 " Prior to completing the captcha challenge and following timeout, the token returns `undefined`." ],
             "links": [],
@@ -131,14 +132,15 @@
                       "});",
                       "" ],
                   "extra":
-                    { "description": "This example demonstrates how to use captcha to protect data submission. The submit button\n is disabled until the site visitor completes the captcha challenge and the captcha is verified.\n Clicking the submit button triggers backend authorization of the token. If\n authorization is successful, the data is inserted into the collection." } } ],
+                    { "description": "This example demonstrates how to use captcha to protect a data insertion.\n We use a text input for the data, a captcha element, and a submit button.\n The submit button is disabled until the site visitor completes the captcha\n challenge and the captcha is verified. Clicking the submit button triggers\n backend authorization of the token. If authorization is successful, the data\n is inserted into the collection." } } ],
             "extra":
               {  } },
         "extra":
           {  } } ],
   "operations":
     [ { "name": "onError",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -147,8 +149,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 113 } ],
+          [ { "lineno": 117,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when an error occurs during captcha verification.",
             "description":
@@ -163,7 +165,8 @@
                   "body":
                     [ "$w(\"#myCaptcha\").onError(() => {",
                       "  $w(\"#myCaptcha\").reset();",
-                      "  showText(\"Something went wrong. Redo the Captcha challenge.\");",
+                      "  $w(\"#messageText\").text = \"Something went wrong. Redo the Captcha challenge.\";",
+                      "  $w(\"#messageText\").show;",
                       "})" ],
                   "extra":
                     {  } } ],
@@ -172,17 +175,18 @@
         "extra":
           { "eventType": "onError" } },
       { "name": "onTimeout",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
-              "type": "$w.TimeoutHandler",
+              "type": "$w.Captcha.TimeoutHandler",
               "doc": "The name of the function or\n the function expression to run when a captcha timeout occurs." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 157 } ],
+          [ { "lineno": 161,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha token expires.",
             "description":
@@ -202,7 +206,8 @@
                     [ "$w(\"#myCaptcha\").onTimeout(() => {",
                       "  $w(\"#signupButton\").disable();",
                       "  $w(\"#myCaptcha\").reset();",
-                      "  showText(\"The captcha timed out. Please redo the challenge.\");",
+                      "  $w(\"#messageText\").text = \"Something went wrong. Redo the Captcha challenge.\";",
+                      "  $w(\"#messageText\").show;",
                       "})" ],
                   "extra":
                     {  } } ],
@@ -216,13 +221,13 @@
         "nameParams": [],
         "params":
           [ { "name": "handler",
-              "type": "$w.VerifiedHandler",
+              "type": "$w.Captcha.VerifiedHandler",
               "doc": "The name of the function or\n the function expression to run when the captcha is verified." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 205 } ],
+          [ { "lineno": 210,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when the captcha is verified.",
             "description":
@@ -306,7 +311,7 @@
                       "});",
                       "" ],
                   "extra":
-                    { "description": "This example demonstrates how to use captcha to protect data submission. The submit button\n is disabled until the site visitor completes the captcha challenge and the captcha is verified.\n Clicking the submit button triggers backend authorization of the token. If\n authorization is successful, the data is inserted into the collection." } } ],
+                    { "description": "This example demonstrates how to use captcha to protect a data insertion.\n We use a text input for the data, a captcha element, and a submit button.\n The submit button is disabled until the site visitor completes the captcha\n challenge and the captcha is verified. Clicking the submit button triggers\n backend authorization of the token. If authorization is successful, the data\n is inserted into the collection." } } ],
             "extra":
               {  } },
         "extra":
@@ -323,13 +328,14 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the captcha has been reset." },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 69 } ],
+          [ { "lineno": 72,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "Resets the captcha challenge.",
             "description":
-              [ "`reset()` is required when there is a captcha error, timeout, or when the action",
-                "restricted by the captcha element was successfully completed." ],
+              [ "`reset()` the captcha when there is a captcha error or timeout. Also use `reset()`",
+                "when the operation restricted by the captcha element is successfully completed",
+                "to enable the captcha for the next operation." ],
             "links": [],
             "examples":
               [ { "title": "Reset the captcha element",
@@ -402,7 +408,7 @@
                       "});",
                       "" ],
                   "extra":
-                    { "description": "This example demonstrates how to use captcha to protect data submission. The submit button\n is disabled until the site visitor completes the captcha challenge and the captcha is verified.\n Clicking the submit button triggers backend authorization of the token. If\n authorization is successful, the data is inserted into the collection." } } ],
+                    { "description": "This example demonstrates how to use captcha to protect a data insertion.\n We use a text input for the data, a captcha element, and a submit button.\n The submit button is disabled until the site visitor completes the captcha\n challenge and the captcha is verified. Clicking the submit button triggers\n backend authorization of the token. If authorization is successful, the data\n is inserted into the collection." } } ],
             "extra":
               {  } },
         "extra":
@@ -415,8 +421,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 106 } ],
+          [ { "lineno": 110,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "An error event handler.",
             "links": [],
@@ -432,8 +438,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 150 } ],
+          [ { "lineno": 154,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "A timeout event handler.",
             "links": [],
@@ -450,8 +456,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 192 } ],
+          [ { "lineno": 192,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "A verification event handler.",
             "links": [],
@@ -461,14 +467,19 @@
         "extra":
           {  } },
       { "name": "VerifiedHandler",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
-          { "type": "void" },
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "Void" ] },
+            "doc": "" },
         "locations":
-          [ { "filename": "Captcha.js",
-              "lineno": 198 } ],
+          [ { "lineno": 202,
+              "filename": "Captcha.js" } ],
         "docs":
           { "summary": "A verification event handler.",
             "links": [],
