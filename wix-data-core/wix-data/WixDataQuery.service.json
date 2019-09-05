@@ -14,7 +14,7 @@
           "",
           " Typically, you build a query using the [`query()`](#wix-data.html#query) function,",
           " refine the query by chaining `WixDataQuery` functions, and then execute the",
-          " query by chaining the [`find()`](#find) or [`count()`](#count) functions.",
+          " query by chaining *one* of the following: [`find()`](#find), [`distinct()`](#distinct), or [`count()`](#count)",
           "",
           " For example, the following code queries a collection for all male customers",
           " over the age of 20 and logs the first 15 results to the console, sorted in",
@@ -703,9 +703,7 @@
         "extra":
           {  } },
       { "name": "distinct",
-        "labels":
-          [ "changed",
-            "removed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "propertyName",
@@ -722,17 +720,26 @@
                   [ "wix-data.WixDataQueryResult" ] },
             "doc": "Fulfilled - A Promise that resolves to the results of the query.\nRejected - Error that caused the query to fail." },
         "locations":
-          [ { "lineno": 117,
+          [ { "lineno": 120,
               "filename": "query.es6" } ],
         "docs":
-          { "summary": "Returns the distinct values that match the query.",
+          { "summary": "Returns the distinct values that match the query, without duplicates.",
             "description":
-              [ "The `distinct()` function returns a Promise that resolves to the distinct values found",
-                " in the specified field when running the query and some information about the results. The Promise is",
-                " rejected if `distinct()` is called with incorrect permissions or if any of the",
+              [ "The `distinct()` function returns a Promise that resolves to:",
+                " <ul><li>The distinct values found in the specified field when running the query.</li>",
+                " <li>Additional information about the results, such as the number of values that match the query.</li></ul>",
+                "",
+                "",
+                " Unlike `find()`, which returns all item objects that match the query, `distinct()` returns matching field values, and eliminates ",
+                " duplicate field values from the query result. You cannot use `find()` and `distinct()` together.",
+                "",
+                " For an item to be resolved as distinct, only the specified field must be distinct. Other fields for that item in the",
+                " collection are not evaluated when resolving the promise.",
+                "",
+                " The Promise is rejected if `distinct()` is called with incorrect permissions or if any of the",
                 " functions used to refine the query is invalid.",
                 "",
-                " Use the `options` parameter to run `distinct()` without checking for permissions." ],
+                " Use the `options` parameter with the `suppressAuth` property to run `distinct()` without checking for permissions." ],
             "links": [],
             "examples":
               [ { "title": "Get distinct values from a query",
@@ -801,8 +808,7 @@
                       "wixData.query(\"myCollection\")",
                       "  .eq(\"status\", \"active\")",
                       "  .gt(\"age\", 25)",
-                      "  .distict(\"state\")",
-                      "  .find()",
+                      "  .distinct(\"state\")",
                       "  .then( (results) => {",
                       "    if (results.items.length > 0) {",
                       "      let items = results.items;",
@@ -833,7 +839,7 @@
                       "// ...",
                       "",
                       "let options = {",
-                      "    \"suppressAuth\": true",
+                      "    \"suppressAuth\": true",
                       "};",
                       "",
                       "wixData.query(\"myCollection\")",
@@ -844,7 +850,7 @@
                       "      let firstItem = items[0];",
                       "    } else {",
                       "      // handle case where no matching items found",
-                      "    }    ",
+                      "    }",
                       "  } )",
                       "  .catch( (error) => {",
                       "    let errorMsg = error.message;",
@@ -1079,7 +1085,7 @@
                   [ "wix-data.WixDataQueryResult" ] },
             "doc": "Fulfilled - A Promise that resolves to the results of the query.\nRejected - Error that caused the query to fail." },
         "locations":
-          [ { "lineno": 189,
+          [ { "lineno": 227,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Returns the items that match the query.",
@@ -1738,7 +1744,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the query." },
         "locations":
-          [ { "lineno": 334,
+          [ { "lineno": 370,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Includes referenced items for the specified properties in a query's results.",
@@ -2179,8 +2185,7 @@
         "extra":
           {  } },
       { "name": "limit",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "limit",
@@ -2190,21 +2195,19 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 248,
+          [ { "lineno": 286,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Limits the number of items the query returns.",
             "description":
               [ "The `limit()` function defines the number of results a query returns in each",
-                " page. Only one page of results is retrieved at a time. The [`next()`](wix-data.WixDataQueryResult.html#next)",
+                " page. Only one page of results is retreived at a time. The [`next()`](wix-data.WixDataQueryResult.html#next)",
                 " and [`prev()`](wix-data.WixDataQueryResult.html#prev) functions are used to",
                 " navigate the pages of a query result.",
                 "",
                 " By default, `limit` is set to `50`.",
                 "",
-                " The maximum value that `limit()` can accept is `1000`.",
-                "",
-                " The maximum `limit()` value for the **Stores/Products** collection is `100`." ],
+                " The maximum value that `limit()` can accept is `1000`." ],
             "links": [],
             "examples":
               [ { "title": "Add a limit to a query",
@@ -2667,7 +2670,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 292,
+          [ { "lineno": 328,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Sets the number of items to skip before returning query results.",
