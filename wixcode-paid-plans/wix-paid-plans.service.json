@@ -24,6 +24,7 @@
           " <li>Get information about paid plans.</li>",
           " <li>Let site visitors purchase a plan directly, as if they were using the Paid Plans app.</li>",
           " <li>Let site visitors purchase a plan using your own customized process.</li>",
+          " <li>Let site visitors cancel plans that they have purchased.</li>",
           " </ul>",
           "",
           "",
@@ -94,9 +95,99 @@
         {  } },
   "properties": [],
   "operations":
-    [ { "name": "orderPlan",
+    [ { "name": "cancelPlan",
         "labels":
-          [ "changed" ],
+          [ "new" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "planId",
+              "type": "string",
+              "doc": "The plan ID." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 270,
+              "filename": "paid-plans.js" } ],
+        "docs":
+          { "summary": "Cancels a plan.",
+            "description":
+              [ "The `cancelPlan()` function cancels a plan. This function verifies the user is logged in, validates the plan, and cancels the plan. An email is sent to the site visitor confirming cancellation." ],
+            "links": [],
+            "examples":
+              [ { "title": "Cancel a plan on button click",
+                  "body":
+                    [ "import wixPaidPlans from 'wix-paid-plans'; ",
+                      "import wixWindow from 'wix-window';        ",
+                      "",
+                      "let planId = // Get the ID of the plan to cancel",
+                      "",
+                      "// Call cancelPlan() when user clicks button",
+                      "export function cancelButton_click(event) {  ",
+                      "",
+                      "  wixPaidPlans.cancelPlan(planId) ",
+                      "",
+                      "    // Additional processing based on cancellation results",
+                      "    .then ( (results) => {",
+                      "       wixWindow.openLightbox(\"planCanceled\")",
+                      "     } )",
+                      "    .catch( (err) => {",
+                      "      wixWindow.openLightbox(\"cancelFailed\")",
+                      "     } );",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "A full cancel plan scenario",
+                  "body":
+                    [ "import wixPaidPlans from 'wix-paid-plans';  ",
+                      "import wixData from 'wix-data';             ",
+                      "import wixUsers from 'wix-users';           ",
+                      "import wixWindow from 'wix-window';         ",
+                      "",
+                      "let subscription = $w(\"#subscriptionDataset\").getCurrentItem();   ",
+                      "let planId = subscription.orderId; // Get the ID, needed for cancelling the subscription",
+                      "",
+                      "export function cancelButton_click(event) {",
+                      "",
+                      "  // Cancel the plan ",
+                      "  wixPaidPlans.cancelPlan(planId)",
+                      "    .then( (cancellation) => {",
+                      "",
+                      "    // Get details for updating status of existing subscription",
+                      "    let cancelId = cancellation.orderId; ",
+                      "    let user = wixUsers.currentUser;   ",
+                      "\tlet toUpdate = {",
+                      "\t\t\"_id\":         subscription._id,",
+                      "\t\t\"planName\":    subscription.planName,",
+                      "\t\t\"planId\":      subscription.planId,",
+                      "\t\t\"orderId\":     subscription.orderId,",
+                      "\t\t\"memberId\":    user.id,",
+                      "\t\t\"dateCreated\": subscription.dateCreated,",
+                      "\t\t\"canceled\":    true,            // Set cancellation to true",
+                      "\t\t\"dateUpdated\": Date().toString()\t\t",
+                      "      };",
+                      "      ",
+                      "      // Update existing subscription in collection",
+                      "      wixData.update(\"Subscriptions\", toUpdate)",
+                      "      ",
+                      "      // Let user know if cancellation succeeded",
+                      "\t\t.then( (results) => {",
+                      "\t\t\twixWindow.openLightbox(\"planCanceled\");",
+                      "\t\t})",
+                      "\t\t.catch( (err) => {",
+                      "\t\t\twixWindow.openLightbox(\"cancelFailed\");",
+                      "\t\t});",
+                      "    });",
+                      "  }",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates a full scenario for cancelling a paid plan membership. \n\n In the interest of simplicity the code does not deal with display considerations or validations\n that would normally be required to make sure users perform the flow as\n intended.\n\n Customized elements include:\n\n + A `Subscriptions` collection. This collection contains all membership plans purchased by the site visitor and and each plan's status.\n + A `cancelButton` button that the site visitor clicks to cancel a membership plan.\n + A `subsriptionDataset` dataset that connects the page to the `Subscriptions` collection. \n + Two lightboxes, `planCanceled` and `cancelFailed` that notify the site visitor if plan is cancelled." } } ],
+            "extra":
+              {  } },
+        "extra":
+          { "notes":
+              [ "To work with the Paid Plans API, you need to publish your site." ] } },
+      { "name": "orderPlan",
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -109,7 +200,7 @@
                   [ "wix-paid-plans.OrderResult" ] },
             "doc": "Fulfilled - The created order." },
         "locations":
-          [ { "lineno": 192,
+          [ { "lineno": 194,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "Orders a paid plan.",
@@ -246,7 +337,7 @@
                   [ "wix-paid-plans.PurchaseResult" ] },
             "doc": "Fulfilled - The created purchase." },
         "locations":
-          [ { "lineno": 136,
+          [ { "lineno": 138,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "Orders and purchases a paid plan.",
@@ -326,7 +417,7 @@
   "messages":
     [ { "name": "OrderResult",
         "locations":
-          [ { "lineno": 126,
+          [ { "lineno": 127,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing an order result.",
@@ -370,7 +461,7 @@
         "labels": [] },
       { "name": "PurchaseResult",
         "locations":
-          [ { "lineno": 96,
+          [ { "lineno": 97,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing a purchase result for a non-free plan.",
@@ -420,7 +511,7 @@
         "labels": [] },
       { "name": "PurchaseResultFree",
         "locations":
-          [ { "lineno": 117,
+          [ { "lineno": 118,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing a purchase result for a free plan.",
