@@ -1,8 +1,7 @@
 { "name": "WixDataQuery",
   "memberOf": "wix-data",
   "mixes": [],
-  "labels":
-    [ "changed" ],
+  "labels": [],
   "location":
     { "lineno": 12,
       "filename": "query.es6" },
@@ -318,7 +317,7 @@
                 " + Date: Compares JavaScript Date objects.",
                 " + String: Compares lexicographically, so",
                 "   + `\"A\"` and `\"M\"` are between `\"A\"` and `\"Z\"`, but `\"a\"`, `\"m\"`, `\"z\"` and `\"Z\"` are not.",
-                "   + `\"A\"`, `\"M\"`, `\"Z\"`, `\"a\"`, and `\"z\"` are between `\"A\"` and `\"z\"`, but `\"z\"` is not." ],
+                "   + `\"A\"`, `\"M\"`, `\"Z\"`, and `\"a\"` are between `\"A\"` and `\"z\"`, but `\"z\"` is not." ],
             "links": [],
             "examples":
               [ { "title": "Add a between filter to a query",
@@ -357,7 +356,7 @@
                       "  } );" ],
                   "extra":
                     {  } },
-                { "title": "Create a query, add a between filter, and run it",
+                { "title": "Create a query, add a between filter and other filters, and run it",
                   "body":
                     [ "import wixData from 'wix-data';",
                       "",
@@ -726,11 +725,12 @@
           { "summary": "Returns the distinct values that match the query, without duplicates.",
             "description":
               [ "The `distinct()` function returns a Promise that resolves to:",
-                " <ul><li>The distinct values found in the specified field when running the query.</li>",
-                " <li>Additional information about the results, such as the number of values that match the query.</li></ul>",
+                "",
+                " + The distinct values found in the specified field when running the query.",
+                " + Additional information about the results, such as the number of values that match the query.",
                 "",
                 "",
-                " Unlike `find()`, which returns all item objects that match the query, `distinct()` returns matching field values, and eliminates ",
+                " Unlike `find()`, which returns all item objects that match the query, `distinct()` returns matching field values, and eliminates",
                 " duplicate field values from the query result. You cannot use `find()` and `distinct()` together.",
                 "",
                 " For an item to be resolved as distinct, only the specified field must be distinct. Other fields for that item in the",
@@ -1085,7 +1085,7 @@
                   [ "wix-data.WixDataQueryResult" ] },
             "doc": "Fulfilled - A Promise that resolves to the results of the query.\nRejected - Error that caused the query to fail." },
         "locations":
-          [ { "lineno": 227,
+          [ { "lineno": 228,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Returns the items that match the query.",
@@ -1464,8 +1464,7 @@
         "extra":
           {  } },
       { "name": "hasAll",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "propertyName",
@@ -1584,8 +1583,7 @@
         "extra":
           {  } },
       { "name": "hasSome",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "propertyName",
@@ -1750,7 +1748,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the query." },
         "locations":
-          [ { "lineno": 370,
+          [ { "lineno": 376,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Includes referenced items for the specified properties in a query's results.",
@@ -1779,7 +1777,7 @@
                 "   and the [`partialIncludes`](wix-data.WixDataQueryResult.html#partialIncludes)",
                 "   property of the returned [`WixDataQueryResult`](wix-data.WixDataQueryResult.html)",
                 "   is `true`. To retrieve more than 50 referenced items, use the",
-                "   [`queryReferenced()`](wix-data.html#queryReferenced) function." ],
+                "   [`queryReferenced()`](wix-data.html#queryReferenced) function."],
             "links": [],
             "examples":
               [ { "title": "Add an include to a query",
@@ -1832,7 +1830,7 @@
                       "  .then( (results) => {",
                       "    if(results.items.length > 0) {",
                       "      let books = results.items;",
-                      "      let firstBook = items[0];",
+                      "      let firstBook = books[0];",
                       "      let firstAuthor = firstBook.author;",
                       "      let firstAuthorBio = firstAuthor.bio;",
                       "      let firstPublisher = firstBook.publisher.name;",
@@ -1860,7 +1858,7 @@
                       "  .then( (results) => {",
                       "    if(results.items.length > 0) {",
                       "      let books = results.items;",
-                      "      let firstBook = items[0];",
+                      "      let firstBook = books[0];",
                       "      let firstAuthor = firstBook.author;",
                       "      let firstAuthorBio = firstAuthor.bio;",
                       "    } else {",
@@ -2201,7 +2199,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 286,
+          [ { "lineno": 287,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Limits the number of items the query returns.",
@@ -2213,7 +2211,10 @@
                 "",
                 " By default, `limit` is set to `50`.",
                 "",
-                " The maximum value that `limit()` can accept is `1000`." ],
+                " The maximum value that `limit()` can accept is `1000`.",
+                "",
+                " Note that for some Wix app collections, the maximum value `limit()` can accept is",
+                " less than `1000`. For example, the maximum limit for the Wix `Stores/Product` collection is 100." ],
             "links": [],
             "examples":
               [ { "title": "Add a limit to a query",
@@ -2285,7 +2286,24 @@
                       "    let code = error.code;",
                       "  } );" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "Iterate through all pages of query results",
+                  "body":
+                    [ "let allItems = [];",
+                      "",
+                      "let results = await wixData.query(\"myCollection\")",
+                      "    .limit(1000)",
+                      "    .find();",
+                      "",
+                      "allItems.push(results.items);",
+                      "",
+                      "while(results.hasNext()) {",
+                      "    results = await results.next();",
+                      "    allItems.push(results.items);",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates how to get all query results, bypassing the maximum limit of 1000." } } ],
             "extra":
               {  } },
         "extra":
@@ -2412,7 +2430,7 @@
               "type": "string",
               "doc": "The property whose value will be compared with `value`." },
             { "name": "value",
-              "type": "any",
+              "type": "*",
               "doc": "The value to match against." } ],
         "ret":
           { "type": "wix-data.WixDataQuery",
@@ -2676,7 +2694,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 328,
+          [ { "lineno": 334,
               "filename": "query.es6" } ],
         "docs":
           { "summary": "Sets the number of items to skip before returning query results.",
