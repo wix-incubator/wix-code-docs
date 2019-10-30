@@ -1,7 +1,6 @@
 { "name": "wix-paid-plans",
   "mixes": [],
-  "labels":
-    [ "changed" ],
+  "labels": [],
   "location":
     { "lineno": 5,
       "filename": "paid-plans.js" },
@@ -24,6 +23,7 @@
           " <li>Get information about paid plans.</li>",
           " <li>Let site visitors purchase a plan directly, as if they were using the Paid Plans app.</li>",
           " <li>Let site visitors purchase a plan using your own customized process.</li>",
+          " <li>Let site visitors cancel plan subscriptions (orders) that they have purchased.</li>",
           " </ul>",
           "",
           "",
@@ -94,9 +94,110 @@
         {  } },
   "properties": [],
   "operations":
-    [ { "name": "orderPlan",
-        "labels":
-          [ "changed" ],
+    [ { "name": "cancelOrder",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "orderId",
+              "type": "string",
+              "doc": "The plan subscription's order ID." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 270,
+              "filename": "paid-plans.js" } ],
+        "docs":
+          { "summary": "Cancels a specific order (subscription) of a plan.",
+            "description":
+              [ "The `cancelOrder()` function cancels an order (subscription) of a plan, after verifying that the site member is logged in. ",
+                " ",
+                " Keep in mind that a site member can order several subscriptions of the same plan. This API does not ",
+                " cancel the plan and remove all corresponding subscriptions. This API removes only the one order (subscription) of the plan." ],
+            "links": [],
+            "examples":
+              [ { "title": "Cancel an order (subscription) on button click",
+                  "body":
+                    [ "import wixPaidPlans from 'wix-paid-plans'; ",
+                      "import wixWindow from 'wix-window';        ",
+                      "",
+                      "const orderId = // Get the order ID of the subscription to cancel",
+                      "",
+                      "// Call cancelOrder() when user clicks button",
+                      "export function cancelButton_click(event) {  ",
+                      "",
+                      "  wixPaidPlans.cancelOrder(orderId) ",
+                      "",
+                      "    // Additional processing based on cancellation results",
+                      "    .then ( (results) => {",
+                      "       wixWindow.openLightbox(\"orderCanceled\")",
+                      "      } )",
+                      "     .catch( (err) => {",
+                      "       wixWindow.openLightbox(\"cancelFailed\")",
+                      "     } );",
+                      "  }" ],
+                  "extra":
+                    {  } },
+                { "title": "A full cancel order (subscription) scenario",
+                  "body":
+                    [ "import wixPaidPlans from 'wix-paid-plans';  ",
+                      "import wixData from 'wix-data';             ",
+                      "import wixUsers from 'wix-users';           ",
+                      "import wixWindow from 'wix-window';         ",
+                      "",
+                      "$w.onReady(function () {",
+                      "  $w('#subscriptionDataset').onReady( () => {",
+                      "",
+                      "     // Get the order ID for the subscription to cancel",
+                      "     const subscription = $w(\"#subscriptionDataset\").getCurrentItem();   ",
+                      "     const orderId = subscription.orderId; ",
+                      "",
+                      "     $w(\"cancelButton\").onClick( (event) => {",
+                      "",
+                      "       // Cancel the specific subscription of the plan ",
+                      "       wixPaidPlans.cancelOrder(orderId)",
+                      "        .then( () => {",
+                      "",
+                      "          // Let user know that cancellation succeeded",
+                      "\t      wixWindow.openLightbox(\"orderCanceled\");",
+                      "",
+                      "          // Get details for updating status of existing subscription",
+                      "          $w('#subscriptionDataset').onReady( () => { ",
+                      "            const user = wixUsers.currentUser;   ",
+                      "\t        const toUpdate = {",
+                      "\t\t \t  \"_id\":         subscription._id,",
+                      "\t\t \t  \"planName\":    subscription.planName,",
+                      "\t\t \t  \"planId\":      subscription.planId,",
+                      "\t\t \t  \"orderId\":     subscription.orderId,",
+                      "              \"memberId\":    user.id,",
+                      "              \"dateCreated\": subscription.dateCreated,",
+                      "              \"canceled\":    true,            // Set cancellation to true",
+                      "              \"dateUpdated\": Date().toString()\t\t",
+                      "             };",
+                      "    ",
+                      "          // Update subscription in collection to show the subscription is canceled",
+                      "          wixData.update(\"Subscriptions\", toUpdate)",
+                      "\t\t",
+                      "\t\t })",
+                      "",
+                      "\t     // Let user know if cancellation failed",
+                      "  \t     .catch((err) => {",
+                      "\t        wixWindow.openLightbox(\"cancelFailed\");",
+                      "\t      });",
+                      "\t   })",
+                      "\t})",
+                      "  })",
+                      "})",
+                      "",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates a full scenario for cancelling a paid plan subscription. \n\n In the interest of simplicity the code does not deal with display considerations or validations\n that would normally be required to make sure users perform the flow as\n intended.\n\n Customized elements include:\n\n + A `Subscriptions` collection. This collection contains all plan orders (subscriptions) purchased by the site member and each subscription's status.\n + A `cancelButton` button that the site member clicks to cancel an order (subscription) of a plan.\n + A `subscriptionDataset` dataset that connects the page to the `Subscriptions` collection. \n + Two lightboxes, `orderCanceled` and `cancelFailed` that notify the site member if a subscription is cancelled." } } ],
+            "extra":
+              {  } },
+        "extra":
+          { "notes":
+              [ "To work with the Paid Plans API, you need to publish your site." ] } },
+      { "name": "orderPlan",
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -109,7 +210,7 @@
                   [ "wix-paid-plans.OrderResult" ] },
             "doc": "Fulfilled - The created order." },
         "locations":
-          [ { "lineno": 192,
+          [ { "lineno": 194,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "Orders a paid plan.",
@@ -246,7 +347,7 @@
                   [ "wix-paid-plans.PurchaseResult" ] },
             "doc": "Fulfilled - The created purchase." },
         "locations":
-          [ { "lineno": 136,
+          [ { "lineno": 138,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "Orders and purchases a paid plan.",
@@ -261,7 +362,7 @@
                 " object when the visitor completes the purchase process for a free plan. Use this result only for display purposes.",
                 "",
                 "",
-                " Purchasing a plan validates the plan, orders the plan, and continues the",
+                " Purchasing a plan orders the plan, and continues the",
                 " payment process with the Wix Pay API. After payment is complete, the plan ",
                 " is assigned to the visitor.",
                 "",
@@ -326,7 +427,7 @@
   "messages":
     [ { "name": "OrderResult",
         "locations":
-          [ { "lineno": 126,
+          [ { "lineno": 127,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing an order result.",
@@ -370,7 +471,7 @@
         "labels": [] },
       { "name": "PurchaseResult",
         "locations":
-          [ { "lineno": 96,
+          [ { "lineno": 97,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing a purchase result for a non-free plan.",
@@ -420,7 +521,7 @@
         "labels": [] },
       { "name": "PurchaseResultFree",
         "locations":
-          [ { "lineno": 117,
+          [ { "lineno": 118,
               "filename": "paid-plans.js" } ],
         "docs":
           { "summary": "An object representing a purchase result for a free plan.",
