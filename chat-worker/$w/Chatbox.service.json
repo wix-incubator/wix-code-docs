@@ -4,28 +4,30 @@
     [ "$w.Element",
       "$w.HiddenMixin" ],
   "labels":
-    [ "new" ],
+    [ "changed" ],
   "location":
-    { "lineno": 92,
+    { "lineno": 133,
       "filename": "chatApiPublic.js" },
   "docs":
-    { "summary": "An element for sending and receiving messages.",
+    { "summary": "An element for sending and receiving chat messages.",
       "description":
-        [ "Site visitors send and receive messages via a chatbox. a chatbox in the following scenarios:",
-          "Business Chat: Site visitors or members chat with the site itself, referred to as the \"business.\"",
-          "Social Chat: Site members chat with other site members, privately or in a group chat." ],
+        [ "Site visitors can participate in the following chat scenarios:",
+          "",
+          " + Business Chat: Site visitors and members chat with the site itself, referred to as the \"business.\"",
+          " + Social Chat: Site members chat with other site members, privately or in a group chat." ],
       "links": [],
       "examples": [],
       "extra":
         {  } },
   "properties":
     [ { "name": "maximized",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": false,
         "type": "boolean",
         "locations":
-          [ { "lineno": 239,
+          [ { "lineno": 299,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "Indicates if the chatbox is maximized.",
@@ -33,18 +35,34 @@
               [ "If `maximized` is `true`, the chatbox is expanded. If `maximized` is `false`,",
                 " the chatbox is collapsed." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get the chatbox's maximized status",
+                  "body":
+                    [ "let isMaximized = $w(\"#myChatbox\").maximized; // false" ],
+                  "extra":
+                    {  } },
+                { "title": "Toggle a chatbox's maximized state",
+                  "body":
+                    [ "if( $w(\"#myChatbox\").maximized ) {",
+                      "  $w(\"#myChatbox\").minimize();",
+                      "}",
+                      "else {",
+                      "  $w(\"#myChatbox\").maximize();",
+                      "}" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } } ],
   "operations":
     [ { "name": "focusChannel",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "channelInfo",
-              "type": "$w.ChannelInfo",
+          [ { "name": "channelFocusInfo",
+              "type": "$w.Chatbox.ChannelFocusInfo",
               "doc": "Channel information specifying which channel to focus on." } ],
         "ret":
           { "type":
@@ -53,7 +71,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - Fulfilled - When the chat box focuses on the channel." },
         "locations":
-          [ { "lineno": 198,
+          [ { "lineno": 258,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "Expands the chatbox and focuses it on the specified chat channel.",
@@ -61,26 +79,42 @@
               [ "The `focusChannel()` function returns a Promise that is resolved when",
                 " the chatbox focuses on the specified channel." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Expand the chatbox and focus it on a specific channel",
+                  "body":
+                    [ "let channelFocusInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").focusChannel(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done maximizing chatbox and focusing channel\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "getChannel",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "channelInfo",
-              "type": "$w.ChannelInfo",
-              "doc": "Channel information specifying which channel to focus on." } ],
+              "type": "$w.Chatbox.ChannelInfo",
+              "doc": "Channel information specifying which channel to get." } ],
         "ret":
           { "type":
               { "name": "Promise",
                 "typeParams":
                   [ "$w.Chatbox.Channel" ] },
-            "doc": "Fulfilled - Fulfilled - When the chat box focuses on the channel." },
+            "doc": "Fulfilled - Fulfilled - When the information associated with the specific channel has been retrieved." },
         "locations":
-          [ { "lineno": 255,
+          [ { "lineno": 315,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "Gets a chatbox channel.",
@@ -91,16 +125,97 @@
                 " + Channel ID: Gets the channel with the specified ID. `type` is ignored.",
                 " + Type: Gets the channel of the specified type:",
                 "",
-                "   + \"Focused\": Gets the currently focused channel.",
-                "   + \"Business\": Gets the business channel." ],
+                "    + \"Focused\": Gets the currently focused channel.",
+                "    + \"Business\": Gets the business channel." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get information about the channel associated with the specified channel ID",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } },
+                { "title": "Get information about the currently focused chat channel",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"type\": \"focused\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "getChannelList",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -110,23 +225,63 @@
                   [ { "name": "Array",
                       "typeParams":
                         [ "$w.Chatbox.Channel" ] } ] },
-            "doc": "Fulfilled - Fulfilled - When the chat box focuses on the channel." },
+            "doc": "Fulfilled - Fulfilled - When the list of channels has been retrieved." },
         "locations":
-          [ { "lineno": 214,
+          [ { "lineno": 274,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "Gets a list of available channels for a site visitor.",
+          { "summary": "Gets a list of available chat channels for a site visitor.",
             "description":
               [ "The `getChannelList()` function returns a Promise that resolves to a",
-                " list of available channels for the current user." ],
+                " list of available channels for the site visitor." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get a list of available chat channels",
+                  "body":
+                    [ "$w(\"#myChatbox\").getChannelList",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel list:",
+                      "*",
+                      "*   [",
+                      "*     {",
+                      "*       \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*       \"displayData\": {",
+                      "*         \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*         \"name\": \"Our Chat Group\"",
+                      "*       },",
+                      "*       \"messages\":[",
+                      "*         {",
+                      "*           \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*           \"type\": \"TEXT\",",
+                      "*           \"summary\": \"Hey, how's it going?\",",
+                      "*           \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*           \"createdAt\": 1572941713944,",
+                      "*           \"payload\": {",
+                      "*             \"text\": \"Hey, how's it going?\"",
+                      "*           }",
+                      "*         }",
+                      "*       ],",
+                      "*       \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*    },",
+                      "*    {...} // Next channel",
+                      "*  ]",
+                      "*/" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "maximize",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -136,7 +291,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - Fulfilled - When the chat box is maximized." },
         "locations":
-          [ { "lineno": 172,
+          [ { "lineno": 230,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "Expands the chatbox and sets its [`maximized`](#maximized) property to `true`.",
@@ -144,13 +299,24 @@
               [ "The `maximize()` function returns a Promise that is resolved when",
                 " the chatbox finishes expanding." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Maximize the chatbox",
+                  "body":
+                    [ "$w(\"#myChatbox\").maximize();" ],
+                  "extra":
+                    {  } },
+                { "title": "Maximize the chatbox and log a message when done",
+                  "body":
+                    [ "$w(\"#myChatbox\").maximize();" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "minimize",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -160,7 +326,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - Fulfilled - When the chat box is minimized." },
         "locations":
-          [ { "lineno": 185,
+          [ { "lineno": 244,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "Collapses the chatbox and sets its [`maximized`](#maximized) property to `false`.",
@@ -168,66 +334,174 @@
               [ "The `minimize()` function returns a Promise that is resolved when",
                 " the chatbox finishes collapsing." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Minimize the chatbox",
+                  "body":
+                    [ "$w(\"#myChatbox\").minimize();" ],
+                  "extra":
+                    {  } },
+                { "title": "Minimize the chatbox and log a message when done",
+                  "body":
+                    [ "$w(\"#myChatbox\").minimize();" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "onMaximize",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params": [],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 195,
+              "filename": "chatApiPublic.js" } ],
+        "docs":
+          { "summary": "An event that fires when the chatbox is maximized.",
+            "links": [],
+            "examples":
+              [ { "title": "Register a callback to run after the chatbox is maximized",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMaximize(() => {",
+                      "  console.log(\"Chatbox maximized\");",
+                      "});" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "onMessageReceived",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "event",
+          [ { "name": "message",
               "type": "$w.Chatbox.Message",
               "doc": "The message that was received." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 109,
+          [ { "lineno": 151,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "An event that fires when a site visitor receives a chat message.",
             "description":
-              [ "The `onMessageReceived()` event handler runs when a chat message is received. The received [`Message`](#Message)",
+              [ "The `onMessageReceived()` event handler runs when a chat message is received",
+                " by a site visitor. The received [`Message`](#Message)",
                 " object contains information about the message that was received." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get message data when a chat message is received",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMessageReceived((message) => {",
+                      "  let channelId = message.channelId;",
+                      "  let messageText = message.messageText;",
+                      "});",
+                      "",
+                      "/*  Example message object:",
+                      " *",
+                      " *  {",
+                      " *    \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      " *    \"type\": \"TEXT\",",
+                      " *    \"summary\": \"Hey, how's it going?\",",
+                      " *    \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      " *    \"createdAt\": \"1573386013932\"",
+                      " *    \"payload\": {",
+                      " *      \"text\": \"Hey, how's it going?\"",
+                      " *    }",
+                      " *  }",
+                      " */" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           { "notes":
               [ "`onMessageReceived()` runs if the message was sent via the chatbox widget. It does not run if the message was sent programatically using [`sendMessage`](#sendMessage)." ] } },
       { "name": "onMessageSent",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "event",
+          [ { "name": "message",
               "type": "$w.Chatbox.Message",
               "doc": "The message that was sent." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 125,
+          [ { "lineno": 168,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "An event that fires when a site visitor sends a chat message.",
             "description":
-              [ "The `onMessageSent()` event handler runs when a chat message is sent. The received [`Message`](#Message)",
+              [ "The `onMessageSent()` event handler runs when a chat message is sent. The sent [`Message`](#Message)",
                 " object contains information about the message that was sent." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Get message data when a chat message is sent",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMessageSent((message) => {",
+                      "  let channelId = message.channelId;",
+                      "  let messageText = message.messageText;",
+                      "});",
+                      "",
+                      "/*  Example message object:",
+                      " *",
+                      " *  {",
+                      " *    \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      " *    \"type\": \"TEXT\",",
+                      " *    \"summary\": \"Hey, how's it going?\",",
+                      " *    \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      " *    \"createdAt\": \"1573386013932\"",
+                      " *    \"payload\": {",
+                      " *      \"text\": \"Hey, how's it going?\"",
+                      " *    }",
+                      " *  }",
+                      " */" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           { "notes":
               [ "`onMessageSent()` runs if the message was sent via the chatbox widget. It does not run if the message was sent programatically using [`sendMessage`](#sendMessage)." ] } },
+      { "name": "onMinimize",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params": [],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 185,
+              "filename": "chatApiPublic.js" } ],
+        "docs":
+          { "summary": "An event that fires when the chatbox is minimized.",
+            "links": [],
+            "examples":
+              [ { "title": "Register a callback to run after the chatbox is minimized",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMinimize(() => {",
+                      "  console.log(\"Chatbox minimized\");",
+                      "});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
       { "name": "sendMessage",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "MessageInfo",
-              "type": "$w.Chatbox.SendMessageInfo",
-              "doc": "Information about the message to be sent." } ],
+          [ { "name": "messageInfo",
+              "type": "$w.Chatbox.MessageInfo",
+              "doc": "An object representing the message to be sent." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -235,33 +509,144 @@
                   [ "void" ] },
             "doc": "Fulfilled - Fulfilled - When the message is sent." },
         "locations":
-          [ { "lineno": 148,
+          [ { "lineno": 205,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "Sends a chat message from a site visitor via a specific channel.",
+          { "summary": "Sends a chat message from a site visitor.",
             "description":
               [ "The `sendMessage()` function returns a Promise that is resolved when",
                 " the message is sent.",
                 "",
                 " Currently only chat messages containing text can be sent programatically." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Send a message from a site visitor to the business",
+                  "body":
+                    [ "let messageInfo = {",
+                      "  \"messageText\": \"Hey, how's it going?\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").sendMessage(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done sending message\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } },
+                { "title": "Send a message from a site visitor over a specific channel",
+                  "body":
+                    [ "let messageInfo = {",
+                      "  \"messageText\": \"Hey, how's it going?\",",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").sendMessage(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done sending message\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           { "notes":
-              [ "Chat messages sent programatically by the `sendMessage()` function do not trigger\n the `onMessageSent()` event handler." ] } } ],
+              [ "Chat messages sent programatically by the `sendMessage()` function do not trigger\n the [`onMessageSent()`](#onMessageSent) event handler." ] } } ],
   "callbacks": [],
   "messages":
     [ { "name": "Channel",
         "locations":
-          [ { "lineno": 67,
+          [ { "lineno": 90,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "An object that contains information about a chat channel.",
+          { "summary": "An object representing a chat channel.",
             "links":
-              [ "['getChannel()'](#getChannel)" ],
-            "examples": [],
+              [ "[`getChannel()`](#getChannel)",
+                "[`getChannelList()`](#getChannelList)" ],
+            "examples":
+              [ { "title": "Use a channel ID to get information about a specific channel",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } },
+                { "title": "Get a list of available chat channels",
+                  "body":
+                    [ "$w(\"#myChatbox\").getChannelList",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel list:",
+                      "*",
+                      "*   [",
+                      "*     {",
+                      "*       \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*       \"displayData\": {",
+                      "*         \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*         \"name\": \"Our Chat Group\"",
+                      "*       },",
+                      "*       \"messages\":[",
+                      "*         {",
+                      "*           \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*           \"type\": \"TEXT\",",
+                      "*           \"summary\": \"Hey, how's it going?\",",
+                      "*           \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*           \"createdAt\": 1572941713944,",
+                      "*           \"payload\": {",
+                      "*             \"text\": \"Hey, how's it going?\"",
+                      "*           }",
+                      "*         }",
+                      "*       ],",
+                      "*       \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*    },",
+                      "*    {...} // Next channel",
+                      "*  ]",
+                      "*/" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
@@ -279,15 +664,35 @@
               "doc": "An array of messages sent over the channel. Currently only the last message is included." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "ChannelFocusInfo",
         "locations":
-          [ { "lineno": 87,
+          [ { "lineno": 122,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "An object representing information about a chatbox channel. Used to specify the channel a chatbox will focus on.",
-            "links": [],
-            "examples": [],
+          { "summary": "An object containing identifying information for a chat channel.",
+            "description":
+              [ "The `ChannelFocusInfo` object is passed as a parameter of the [`focusChannel()`](#focusChannel) function",
+                "to specify which channel the chatbox will focus on." ],
+            "links":
+              [ "[`focusChannel()`](#focusChannel)" ],
+            "examples":
+              [ { "title": "Expand the chatbox and focus it on a specific channel",
+                  "body":
+                    [ "let channelFocusInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").focusChannel(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done maximizing chatbox and focusing channel\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
@@ -296,15 +701,100 @@
               "doc": "ID of a chat channel." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "ChannelInfo",
         "locations":
-          [ { "lineno": 75,
+          [ { "lineno": 102,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "An object representing information about a chatbox channel.",
-            "links": [],
-            "examples": [],
+          { "summary": "An object containing information about a chat channel.",
+            "description":
+              [ "The `ChannelInfo` object is passed as a parameter to the [`getChannel()`](#getChannel) function",
+                "to specify which channel's information to get." ],
+            "links":
+              [ "[`getChannel()`](#getChannel)" ],
+            "examples":
+              [ { "title": "Get information about the channel associated with the specified channel ID",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } },
+                { "title": "Get information about the currently focused chat channel",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"type\": \"focused\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
@@ -319,10 +809,11 @@
         "extra":
           { "notes":
               [ "At least one of the object properties is required. If `channelId` is passed, `type` is ignored." ] },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "DisplayData",
         "locations":
-          [ { "lineno": 32,
+          [ { "lineno": 44,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "An object representing display information associated with a [`Channel`](#channel).",
@@ -342,24 +833,105 @@
                 "  </tr>",
                 "  <tr>",
                 "    <td>Private social channel</td>",
-                "    <td>Connects the current user with another member</td>",
+                "    <td>Connects the current user with one other member</td>",
                 "    <td>Display data of the other member</td>",
                 "  </tr>",
                 "  <tr>",
                 "    <td>Group social channel</td>",
-                "    <td>Connects the current user with other members</td>",
+                "    <td>Connects the current user with other members in a chat group</td>",
                 "    <td>Display data of the chat group</td>",
                 "  </tr>",
                 "</table>" ],
             "links":
-              [ "[`Channel`](#Channel)" ],
-            "examples": [],
+              [ "[`Channel`](#Channel)",
+                "[`getChannel()`](#getChannel)",
+                "[`getChannelList()`](#getChannelList)" ],
+            "examples":
+              [ { "title": "Use a channel ID to get information about a specific channel",
+                  "body":
+                    [ "let channelInfo = {",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").getChannel(channelInfo)",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel object:",
+                      "*",
+                      "*   {",
+                      "*     \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*     \"displayData\": {",
+                      "*       \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*       \"name\": \"Our Chat Group\"",
+                      "*     },",
+                      "*     \"messages\":[",
+                      "*       {",
+                      "*         \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*         \"type\": \"TEXT\",",
+                      "*         \"summary\": \"Hey, how's it going?\",",
+                      "*         \"participantId\":\"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*         \"createdAt\": 1572941713944,",
+                      "*         \"payload\": {",
+                      "*           \"text\": \"Hey, how's it going?\"",
+                      "*         }",
+                      "*       }",
+                      "*     ],",
+                      "*     \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*   }",
+                      "*/" ],
+                  "extra":
+                    {  } },
+                { "title": "Get a list of available chat channels",
+                  "body":
+                    [ "$w(\"#myChatbox\").getChannelList",
+                      "  .then((results) => {",
+                      "    let channelImage = results.displayData.image;",
+                      "    let lastMessageText = results.messages[0].payload.text;",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });",
+                      "",
+                      "/*  Example channel list:",
+                      "*",
+                      "*   [",
+                      "*     {",
+                      "*       \"id\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*       \"displayData\": {",
+                      "*         \"image\": \"https://static.wixstatic.com/media/f43338_0f431863800d41f78e515a190c0f9dd7~mv2.png\",",
+                      "*         \"name\": \"Our Chat Group\"",
+                      "*       },",
+                      "*       \"messages\":[",
+                      "*         {",
+                      "*           \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      "*           \"type\": \"TEXT\",",
+                      "*           \"summary\": \"Hey, how's it going?\",",
+                      "*           \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      "*           \"createdAt\": 1572941713944,",
+                      "*           \"payload\": {",
+                      "*             \"text\": \"Hey, how's it going?\"",
+                      "*           }",
+                      "*         }",
+                      "*       ],",
+                      "*       \"createdBy\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\"",
+                      "*    },",
+                      "*    {...} // Next channel",
+                      "*  ]",
+                      "*/" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
           [ { "name": "image",
               "type": "string",
-              "doc": "For private social channels, the image associated with the site member's account. If there is no image associated with the account, defaults to the avatar image. \\nFor group social channels, the image associated with the chat group. \\nFor business channels, `image` is currently not supported." },
+              "doc": "The image associated with the channel.\n One of the following:\n\n + For private social channels, the image associated with the site member's account. If there is no image associated with the account, defaults to the avatar image.\n + For group social channels, the image associated with the chat group.\n + For business channels, `image` is not currently supported." },
             { "name": "name",
               "type": "string",
               "doc": "For social channels, the member's name or chat group name. For business channels, the site's [display name](#wix-site-backend.generalInfo.html#getSiteDisplayName)." },
@@ -368,16 +940,62 @@
               "doc": "Only supported for business channels. Initials of the site's business." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Message",
         "locations":
-          [ { "lineno": 15,
+          [ { "lineno": 19,
               "filename": "chatApiPublic.js" } ],
         "docs":
           { "summary": "An object that contains information about a chat message.",
             "links":
-              [],
-            "examples": [],
+              [ "[`onMessageSent()`](#onMessageSent)",
+                "[`onMessageReceived()`](#onMessageReceived)" ],
+            "examples":
+              [ { "title": "Get the channel ID and message text when a chat message is sent",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMessageSent((message) => {",
+                      "  let channelId = message.channelId;",
+                      "  let messageText = message.messageText;",
+                      "});",
+                      "",
+                      "/*  Example message object:",
+                      " *",
+                      " *  {",
+                      " *    \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      " *    \"type\": \"TEXT\",",
+                      " *    \"summary\": \"Hey, how's it going?\",",
+                      " *    \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      " *    \"createdAt\": \"1573386013932\"",
+                      " *    \"payload\": {",
+                      " *      \"text\": \"Hey, how's it going?\"",
+                      " *    }",
+                      " *  }",
+                      " */" ],
+                  "extra":
+                    {  } },
+                { "title": "Get the channel ID and message text when a chat message is received",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMessageReceived((message) => {",
+                      "  let channelId = message.channelId;",
+                      "  let messageText = message.messageText;",
+                      "});",
+                      "",
+                      "/*  Example message object:",
+                      " *",
+                      " *  {",
+                      " *    \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      " *    \"type\": \"TEXT\",",
+                      " *    \"summary\": \"Hey, how's it going?\",",
+                      " *    \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      " *    \"createdAt\": \"1573386013932\"",
+                      " *    \"payload\": {",
+                      " *      \"text\": \"Hey, how's it going?\"",
+                      " *    }",
+                      " *  }",
+                      " */" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
@@ -401,38 +1019,97 @@
               "doc": "Content of the message." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "MessageInfo",
         "locations":
-          [ { "lineno": 26,
+          [ { "lineno": 34,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "An object that contains information about a chat message to be sent.",
-            "links": [],
-            "examples": [],
+          { "summary": "An object representing a chat message to be sent.",
+            "links":
+              [ "[`sendMessage()`](#sendMessage)" ],
+            "examples":
+              [ { "title": "Send a message from a site visitor to the site's business",
+                  "body":
+                    [ "let messageInfo = {",
+                      "  \"messageText\": \"Hey, how's it going?\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").sendMessage(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done sending message\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } },
+                { "title": "Send a message from a site visitor over a specific channel",
+                  "body":
+                    [ "let messageInfo = {",
+                      "  \"messageText\": \"Hey, how's it going?\",",
+                      "  \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\"",
+                      "}",
+                      "",
+                      "$w(\"#myChatbox\").sendMessage(messageInfo)",
+                      "  .then((results) => {",
+                      "    console.log(\"Done sending message\");",
+                      "  })",
+                      "  .catch((err) => {",
+                      "    console.log(err);",
+                      "  });" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
           [ { "name": "channelId",
               "type": "string",
-              "doc": "The text to be sent in the message." },
+              "doc": "The ID of the channel over which the message is sent. If empty, message is sent to the site's business.",
+              "optional": true },
             { "name": "messageText",
               "type": "string",
-              "doc": "The ID of the channel over which the message is sent. If empty, message is sent to the site's business." } ],
+              "doc": "The text to be sent in the message." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "MessagePayload",
         "locations":
           [ { "lineno": 7,
               "filename": "chatApiPublic.js" } ],
         "docs":
-          { "summary": "The content of a chat message that was sent.",
+          { "summary": "The content of a chat message.",
             "description":
-              [ "Currently only text is included in the `MessagePayload` object." ],
+              [ "Currently only content of type text is included in the `MessagePayload` object." ],
             "links":
-              [ "['Message'](#Message), ['onMessageSent()'](#onMessageSent), ['onMessageReceived()'](#onMessageReceived)" ],
-            "examples": [],
+              [ "[`Message`](#Message)",
+                "[`onMessageSent()`](#onMessageSent)",
+                "[`onMessageReceived()`](#onMessageReceived)" ],
+            "examples":
+              [ { "title": "Get the channel ID and message text when a chat message is sent",
+                  "body":
+                    [ "$w(\"#myChatbox\").onMessageSent((message) => {",
+                      "  let channelId = message.channelId;",
+                      "  let messageText = message.messageText;",
+                      "});",
+                      "",
+                      "/*  Example message object:",
+                      " *",
+                      " *  {",
+                      " *    \"channelId\": \"23b345b6-c78d-9012-e3f4-567g89h0i01k\",",
+                      " *    \"type\": \"TEXT\",",
+                      " *    \"summary\": \"Hey, how's it going?\",",
+                      " *    \"participantId\": \"12a345b6-e78f-8011-f3f5-567g89h0i12j\",",
+                      " *    \"createdAt\": \"1573386013932\"",
+                      " *    \"payload\": {",
+                      " *      \"text\": \"Hey, how's it going?\"",
+                      " *    }",
+                      " *  }",
+                      " */" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "members":
@@ -441,6 +1118,7 @@
               "doc": "Text of the chat message." } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels":
+          [ "changed" ] } ],
   "extra":
     {  } }
