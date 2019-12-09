@@ -24,6 +24,7 @@
           "",
           " Where `<prefix>` is one of `get`, `post`, `put`, `delete`, `options`, or `use` and",
           " `<functionName>` is the name users use to reach your function.",
+          "",
           " These are not functions that you call in your code, rather they are functions",
           " that you define. They are called when your users make HTTP requests using",
           " the associated URLs as described below.",
@@ -123,8 +124,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 150,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 123,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 400 (Bad Request) and the information from the options parameter.",
             "description":
@@ -137,7 +138,7 @@
                 " Use the `badRequest()` function to create a response to return from an HTTP",
                 " function. A 400 (Bad Request) response is usually used to indicate the",
                 " request was unsuccessful because of a client error, such as a request using",
-                " the incorrent syntax." ],
+                " the incorrect syntax." ],
             "links": [],
             "examples":
               [ { "title": "Create a 400 (Bad Request) response",
@@ -187,8 +188,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 69,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 51,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 201 (Created) and the information from the options parameter.",
             "description":
@@ -358,8 +359,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 178,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 148,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 403 (Forbidden) and the information from the options parameter.",
             "description":
@@ -541,8 +542,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 96,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 75,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 404 (Not Found) and the information from the options parameter.",
             "description":
@@ -604,8 +605,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 43,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 28,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 200 (OK) and the information from the options parameter.",
             "description":
@@ -678,6 +679,14 @@
                 " If defined in this way, the function should respond with a 204 (No Content) status code",
                 " and header data that indicates which methods are allowed and from which origins.",
                 "",
+                " The value for the `\"Access-Control-Allow-Origin\"` response header determines whether the",
+                " response can be shared with a given requesting origin. Its value can be one of `\"*\"`, a",
+                " single specific origin URL, or `null` as described <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin\" target=\"_blank\">here</a>.",
+                " Due to security concerns, it is recommended that you use a single specific origin URL",
+                " whenever possible. If you need to allow more than one origin URL, you should validate",
+                " that the requesting origin is allowed access and then echo it back in the response ",
+                " header.",
+                "",
                 " Respond to the request by returning a [`WixHttpFunctionResponse`](wix-http-functions.WixHttpFunctionResponse.html)",
                 " object you create using the [`response()`](wix-http-functions.html#response) function.",
                 "",
@@ -714,7 +723,7 @@
                       "",
                       "export function options_myFunction(request) {",
                       "  let headers = {",
-                      "      \"Access-Control-Allow-Origin\": \"*\",",
+                      "      \"Access-Control-Allow-Origin\": \"https://www.example.com\",",
                       "      \"Access-Control-Allow-Methods\": \"POST, GET, OPTIONS\",",
                       "      \"Access-Control-Max-Age\": \"86400\"",
                       "  }",
@@ -722,7 +731,35 @@
                       "}",
                       "" ],
                   "extra":
-                    { "description": "This example creates an OPTIONS HTTP function named myFunction." } } ],
+                    { "description": "This example creates an OPTIONS HTTP function named myFunction." } },
+                { "title": "Create an OPTIONS HTTP function that validates the origin",
+                  "body":
+                    [ "// In http-functions.js",
+                      "",
+                      "import {response} from 'wix-http-functions';",
+                      "",
+                      "// URL looks like:",
+                      "// https://www.mysite.com/_functions/myFunction/",
+                      "// or:",
+                      "// https://user.wixsite.com/mysite/_functions/myFunction/",
+                      "",
+                      "export function options_myFunction(request) {",
+                      "  let headers = {",
+                      "      \"Access-Control-Allow-Methods\": \"POST, GET, OPTIONS\",",
+                      "      \"Access-Control-Max-Age\": \"86400\"",
+                      "  }",
+                      "",
+                      "  // send allowed origin header only if origin",
+                      "  // is validated by some validation function",
+                      "  if(validate(request.headers.origin)) {",
+                      "    headers[\"Access-Control-Allow-Origin\"] = request.headers.origin;",
+                      "  }",
+                      "",
+                      "  return response({\"status\": 204, \"headers\": headers});",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example creates an OPTIONS HTTP function named myFunction which validates\n the origin using a `validate()` function that you must define." } } ],
             "extra":
               {  } },
         "extra":
@@ -965,8 +1002,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 21,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 9,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response populated with the information from the options parameter.\n The `response()` function creates a custom response built with the\n information passed to the `options` parameter in a [`WixHttpFunctionResponseOptions`](#WixHttpFunctionResponseOptions)\n object.\n\n Use the `response()` function to create a response to return from an HTTP\n function.",
             "links": [],
@@ -1020,8 +1057,8 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 123,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 99,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "Returns a response with status code 500 (Internal Server Error) and the information from the options parameter.",
             "description":
@@ -1083,7 +1120,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 361,
+          [ { "lineno": 372,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with any HTTP method.",
@@ -1151,8 +1188,8 @@
   "messages":
     [ { "name": "WixHttpFunctionResponseOptions",
         "locations":
-          [ { "lineno": 13,
-              "filename": "http-functions-response-factory.js" } ],
+          [ { "lineno": 1,
+              "filename": "response-options.js" } ],
         "docs":
           { "summary": "An object used to customize a response to an HTTP function call.",
             "links": [],
