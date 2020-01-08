@@ -70,7 +70,9 @@
                 "regular pages that have SEO indexing enabled. Note that all Wix site pages are indexed by default.",
                 "Dynamic pages, custom router pages, and some Wix app pages are not currently included in the search.",
                 "",
-                "Setting the document type to a Wix app collection restricts the search to items in the specified collection." ],
+                "Setting the document type to a Wix app collection restricts the search to items in the specified collection.",
+                "",
+                "You cannot chain multiple `documentType()` functions to search for multiple document types. Only the last specified document type will be searched." ],
             "links": [],
             "examples":
               [ { "title": "Add a document type filter to a search",
@@ -156,7 +158,7 @@
                   [ "wix-search.WixSearchResult" ] },
             "doc": "Fulfilled - A Promise that resolves to the results of the search.\nRejected - Error that caused the search to fail." },
         "locations":
-          [ { "lineno": 116,
+          [ { "lineno": 123,
               "filename": "builder.js" } ],
         "docs":
           { "summary": "Returns the documents that match the search.",
@@ -282,7 +284,8 @@
         "extra":
           {  } },
       { "name": "language",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "language",
@@ -292,14 +295,17 @@
           { "type": "wix-search.WixSearchBuilder",
             "doc": "A `WixSearchBuilder` object representing the refined search." },
         "locations":
-          [ { "lineno": 61,
+          [ { "lineno": 63,
               "filename": "builder.js" } ],
         "docs":
           { "summary": "Refines a search builder to search in the specified language.",
             "description":
               [ "The value of the search language must be a two-letter language code string of <a href=\"https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\" target=\"_blank\">ISO 639-1 format</a>.",
                 "",
-                "By default, `language` is set to your site language." ],
+                "Defaults for `language`:",
+                "",
+                " + If your site is multilingual, default is the [current language](wix-window.multilingual.html#currentLanguage).",
+                " + If your site is not multilingual, default is the [site language](wix-site-backend.generalInfo.html#getLanguage)." ],
             "links": [],
             "examples":
               [ { "title": "Add a language filter to a search",
@@ -338,7 +344,8 @@
         "extra":
           {  } },
       { "name": "limit",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "limit",
@@ -348,7 +355,7 @@
           { "type": "wix-search.WixSearchBuilder",
             "doc": "A `WixSearchBuilder` object representing the refined search." },
         "locations":
-          [ { "lineno": 75,
+          [ { "lineno": 80,
               "filename": "builder.js" } ],
         "docs":
           { "summary": "Limits the number of documents the search returns.",
@@ -396,17 +403,21 @@
                     {  } },
                 { "title": "Iterate through all pages of search results",
                   "body":
-                    [ "let allDocuments = [];",
-                      "",
-                      "let results = await wixSearch.search(phrase)",
+                    [ "async function retrieveAllDocuments(phrase){",
+                      "  let allDocuments = [];",
+                      "    ",
+                      "  let results = await wixSearch.search(phrase)",
                       "    .limit(1000)",
                       "    .find();",
-                      "",
-                      "allDocuments.push(results.documents);",
-                      "",
-                      "while(results.hasNext()) {",
+                      "    ",
+                      "  allDocuments.push(results.documents);",
+                      "    ",
+                      "  while(results.hasNext()) {",
                       "    results = await results.next();",
                       "    allDocuments.push(results.documents);",
+                      "  }",
+                      "    ",
+                      "  return allDocuments;",
                       "}" ],
                   "extra":
                     { "description": "This example demonstrates how to get all search results, bypassing the maximum limit of 1000." } } ],
@@ -415,7 +426,8 @@
         "extra":
           {  } },
       { "name": "skip",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "skip",
@@ -425,7 +437,7 @@
           { "type": "wix-search.WixSearchBuilder",
             "doc": "A `WixSearchBuilder` object representing the refined search." },
         "locations":
-          [ { "lineno": 96,
+          [ { "lineno": 101,
               "filename": "builder.js" } ],
         "docs":
           { "summary": "Sets the number of documents to skip before returning search results.",
@@ -437,7 +449,9 @@
                 " you set `skip` to 5, the results returned will skip the first 5 documents",
                 " that match and return the 6th through 20th documents.",
                 "",
-                " By default, `skip` is set to 0." ],
+                " By default, `skip` is set to 0.",
+                "",
+                "The maximum value that `skip()` can accept is `10000`." ],
             "links": [],
             "examples":
               [ { "title": "Add a skip to a search",
