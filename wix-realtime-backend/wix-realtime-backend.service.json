@@ -1,6 +1,7 @@
 { "name": "wix-realtime-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "publisher.js" },
@@ -23,7 +24,8 @@
   "properties": [],
   "operations":
     [ { "name": "publish",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "channel",
@@ -52,7 +54,9 @@
                 " channel resource. ",
                 "",
                 " To publish a message to specific users only, specify the users by ID in",
-                " the [`PublishOptions`](#PublishOptions) object sent to the `options` parameter." ],
+                " the [`PublishOptions`](#PublishOptions) object sent to the `options` parameter.",
+                "",
+                " XXXX Who's ID is the includePublisher's ID? XXXX" ],
             "links": [],
             "examples":
               [ { "title": "Publish to a channel",
@@ -116,7 +120,133 @@
             "extra":
               {  } },
         "extra":
-          {  } } ],
+          {  } },
+      { "name": "realtime_check_permission",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "channel",
+              "type": "wix-realtime-backend.Channel",
+              "doc": "The channel, and optionally the resource,\n to check permissions for." },
+            { "name": "subscriber",
+              "type": "wix-realtime-backend.Subscriber",
+              "doc": "The subscriber to check permissions\n for." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "wix-realtime-backend.ChannelPermissions" ] },
+            "doc": "Fulfilled - The permissions granted to the subscriber\n on the channel or channel resource." },
+        "locations":
+          [ { "lineno": 75,
+              "filename": "permissions-router.js" } ],
+        "docs":
+          { "summary": "Checks permissions for a subscriber on a channel or channel resource.",
+            "description":
+              [ "The `realtime_check_permission` hook is triggered when a site visitor subscribes",
+                " to a channel in order to check what permissions the subscriber will have. ",
+                "",
+                " The `realtime_check_permission()` function is not a function that you call from",
+                " your code. You define the function in a file named **realtime-permissions.js**",
+                " in your site's Backend section. The function is called as described above.",
+                "",
+                " If this function is not defined, all subscribers will receive the default permissions,",
+                " which are `{\"read\": true, \"write\": false}`.",
+                "",
+                " Implement permissions logic for channels and subscribers by either:",
+                "",
+                " + Including all permissions logic in the body of this function.",
+                " + Use the [`PermissionsRouter`](#PermissionsRouter) to add permissions",
+                "   logic per channel. Then call [`check()`](XXXXX#check) in the body of",
+                "   this function and return the permissions object it returns." ],
+            "links": [],
+            "examples":
+              [ { "title": "Grant permissions for a channel based on subscriber type",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "export function realtime_check_permission(channel, subscriber) {",
+                      "  // set default permissions",
+                      "  let permissions =  {\"read\": true, \"write\": false};",
+                      "  ",
+                      "  if(channel.name === \"MembersOnly\") {",
+                      "    if(subscriber.type === \"MEMBER\"){",
+                      "      permissions.write = true; ",
+                      "    }",
+                      "    else {",
+                      "      permissions.read = false;",
+                      "    }",
+                      "  return permissions;",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "Grant permissions for a channel based on subscriber type using the permissions router",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "export function realtime_check_permission(channel, subscriber) {",
+                      "  // set default permissions",
+                      "  let permissions =  {\"read\": true, \"write\": false};",
+                      "  ",
+                      "  if(channel.name === \"MembersOnly\") {",
+                      "    if(subscriber.type === \"MEMBER\"){",
+                      "      permissions.write = true; ",
+                      "    }",
+                      "    else {",
+                      "      permissions.read = false;",
+                      "    }",
+                      "  return permissions;",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "Grant permissions based on user data",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "import wixUsersBackend from `wix-users-backend`;",
+                      "",
+                      "export async function realtime_check_permission(channel, subscriber) {",
+                      "  // set default permissions",
+                      "  let permissions =  {\"read\": true, \"write\": false};",
+                      "",
+                      "  if(channel.name === \"BobsOnly\") {",
+                      "    let user = await getUser(subscriber.id);",
+                      "    if(user.firstName === \"Bob\") {",
+                      "      permissions.write = true;",
+                      "    }",
+                      "    else {",
+                      "      permissions.read = false;",
+                      "    }",
+                      "  }",
+                      "  return permissions;",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "Grant permissions based on user data using the permissions router",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "export function realtime_check_permission(channel, subscriber) {",
+                      "  // set default permissions",
+                      "  let permissions =  {\"read\": true, \"write\": false};",
+                      "  ",
+                      "  if(channel.name === \"MembersOnly\") {",
+                      "    if(subscriber.type === \"MEMBER\"){",
+                      "      permissions.write = true; ",
+                      "    }",
+                      "    else {",
+                      "      permissions.read = false;",
+                      "    }",
+                      "  return permissions;",
+                      "}" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          { "notes":
+              [ "When previewing your site, permissions for read and write are always granted." ] } } ],
   "callbacks": [],
   "messages":
     [ { "name": "Channel",
@@ -172,6 +302,30 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "ChannelPermissions",
+        "locations":
+          [ { "lineno": 51,
+              "filename": "permissions-router.js" } ],
+        "docs":
+          { "summary": "An object containing permission settings for a channel.",
+            "links":
+              [ "[XXXX( )](#XXXX)" ],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "read",
+              "type": "boolean",
+              "doc": "Whether the subscriber has read permissions. Defaults to `true`.",
+              "optional": true },
+            { "name": "write",
+              "type": "boolean",
+              "doc": "Whether the subscriber has write permissions. Defaults to `false`.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "PublishOptions",
         "locations":
           [ { "lineno": 26,
@@ -222,6 +376,28 @@
               "doc": "Whether to include information about the message publisher.\n Defaults to `false`." } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels": [] },
+      { "name": "Subscriber",
+        "locations":
+          [ { "lineno": 60,
+              "filename": "permissions-router.js" } ],
+        "docs":
+          { "summary": "An object representing a channel subscriber.",
+            "links":
+              [ "[XXXX( )](#XXXX)" ],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "The subscriber's user ID." },
+            { "name": "type",
+              "type": "string",
+              "doc": "The type of subscriber.\n\n One of:\n\n + `\"ADMIN\"`: Subscriber is the site owner.\n + `\"MEMBER\"`: Subscriber is a logged-in site member.\n + `\"VISITOR\"`: Subscriber in not logged in." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] } ],
   "extra":
     {  } }
