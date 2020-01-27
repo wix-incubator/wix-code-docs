@@ -2,12 +2,18 @@
   "memberOf": "wix-realtime-backend",
   "mixes": [],
   "labels":
-    [ "new" ],
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "permissions-router.js" },
   "docs":
-    { "summary": "XXXXXXXXXX",
+    { "summary": "A router for handling permissions checks.",
+      "description":
+        [ "Use the permissions router to define the permissions you want to grant to subscribers",
+          " on realtime channels or channel resources.",
+          "",
+          " You can set a default permissions handler, permissions handlers for specific channels,",
+          " and check the permissions for a specified channel and subscriber." ],
       "links": [],
       "examples": [],
       "extra":
@@ -15,44 +21,147 @@
   "properties": [],
   "operations":
     [ { "name": "add",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "channel",
               "type": "wix-realtime-backend.Channel",
-              "doc": "Channel to add a permissions handler for." },
+              "doc": "Channel or channel resource to add a permissions handler for." },
             { "name": "handler",
               "type": "wix-realtime-backend.PermissionsRouter.PermissionsHandler",
-              "doc": "The function or functions expression XXXXX." } ],
+              "doc": "The name of the\n function or the function expression to use when checking permissions for the specified channel." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 28,
+          [ { "lineno": 61,
               "filename": "permissions-router.js" } ],
         "docs":
-          { "summary": "XXX Sets a handler for default permissions for channels that don't have a specific handler.",
+          { "summary": "Sets a permissions handler for a specific channel.",
+            "description":
+              [ "The handler set by the `add()` function is used for permission checks by the permissions",
+                " router for the channel or channel resource specified in the `channel` property." ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Set a permissions handler for a specific channel",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "import {permissionsRouter} from 'wix-realtime-backend';",
+                      "",
+                      "// ...",
+                      "",
+                      "const adminAnnouncements = {\"name\": \"announcements\"}",
+                      "",
+                      "permissionsRouter.add( adminAnnouncements, (channel, subscriber) => {",
+                      "  // add permissions check logic and return",
+                      "  // permissions for announcements channel",
+                      "  if(subscriber.type === \"Admin\") {",
+                      "    return {\"read\": true, \"write\": true};",
+                      "  }",
+                      "  else {",
+                      "    return {\"read\": true, \"write\": false};",
+                      "  }",
+                      "} );" ],
+                  "extra":
+                    {  } },
+                { "title": "Grant permissions for a channel based on subscriber type using the permissions router",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "import {permissionsRouter} from 'wix-realtime-backend';",
+                      "",
+                      "permissionsRouter.default( (channel, subscriber) => {",
+                      "  return {\"read\": true, \"write\": false};",
+                      "} );",
+                      "",
+                      "const membersOnlyChannel = {\"name\": \"MembersOnly\"};",
+                      "",
+                      "permissionsRouter.add( membersOnlyChannel, (channel, subscriber) => {",
+                      "  if(subscriber.type === \"Member\") {",
+                      "    return {\"read\": true, \"write\": true};",
+                      "  }",
+                      "  else {",
+                      "    return {\"read\": false, \"write\": false};",
+                      "  }",
+                      "} );",
+                      "",
+                      "export function realtime_check_permission(channel, subscriber) {",
+                      "  return permissionsRouter.check(channel,subscriber);",
+                      "}" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
           {  } },
       { "name": "default",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
               "type": "wix-realtime-backend.PermissionsRouter.PermissionsHandler",
-              "doc": "The function or functions expression XXXXX." } ],
+              "doc": "The name of the\n function or the function expression to use when checking default permissions." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 18,
+          [ { "lineno": 39,
               "filename": "permissions-router.js" } ],
         "docs":
-          { "summary": "XXX Sets a handler for default permissions for channels that don't have a specific handler.",
+          { "summary": "Sets a permissions handler for default permissions.",
+            "description":
+              [ "The handler set by the `default()` function is used for permission checks by the permissions",
+                " router for all channels where an explicit handler has not been added.",
+                "",
+                " If no default handler is set, subscribers to channels without explicit permissions handlers will ",
+                " receive the following permissions:",
+                "",
+                " ```",
+                " {\"read\": true, \"write\": false}",
+                " ```" ],
             "links": [],
-            "examples": [],
+            "examples":
+              [ { "title": "Set a default permissions handler",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "import {permissionsRouter} from 'wix-realtime-backend';",
+                      "",
+                      "// ...",
+                      "",
+                      "permissionsRouter.default( (channel, subscriber) => {",
+                      "  // return default permissions",
+                      "  return {\"read\": true, \"write\": false};",
+                      "} );" ],
+                  "extra":
+                    {  } },
+                { "title": "Grant permissions for a channel based on subscriber type using the permissions router",
+                  "body":
+                    [ "// In realtime-permissions.js",
+                      "",
+                      "import {permissionsRouter} from 'wix-realtime-backend';",
+                      "",
+                      "permissionsRouter.default( (channel, subscriber) => {",
+                      "  return {\"read\": true, \"write\": false};",
+                      "} );",
+                      "",
+                      "const membersOnlyChannel = {\"name\": \"MembersOnly\"};",
+                      "",
+                      "permissionsRouter.add( membersOnlyChannel, (channel, subscriber) => {",
+                      "  if(subscriber.type === \"Member\") {",
+                      "    return {\"read\": true, \"write\": true};",
+                      "  }",
+                      "  else {",
+                      "    return {\"read\": false, \"write\": false};",
+                      "  }",
+                      "} );",
+                      "",
+                      "export function realtime_check_permission(channel, subscriber) {",
+                      "  return permissionsRouter.check(channel,subscriber);",
+                      "}" ],
+                  "extra":
+                    {  } } ],
             "extra":
               {  } },
         "extra":
@@ -75,7 +184,7 @@
                   [ "wix-realtime-backend.ChannelPermissions" ] },
             "doc": "Fulfilled - The permissions granted to the subscriber\n on the channel or channel resource." },
         "locations":
-          [ { "lineno": 7,
+          [ { "lineno": 28,
               "filename": "permissions-router.js" } ],
         "docs":
           { "description":
