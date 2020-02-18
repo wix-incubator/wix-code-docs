@@ -10,7 +10,10 @@
       "description":
         [ "Using the Realtime API you can create channels and channel resources where messages",
           " can be published. Site visitors who subscribe to a channel receive the messages",
-          " published to that channel.",
+          " published to that channel. When a message is received you can handle the message any",
+          " way you choose, such as displaying the contents of the message or changing the state",
+          " of page elements depending on the contents of the message. You can also manage the",
+          " permissions of who can read from specific channels.",
           "",
           " The `wix-realtime` module is used in conjunction with the ",
           " [`wix-realtime-backend`](wix-realtime-backend.html) module.",
@@ -22,10 +25,14 @@
           "",
           " + **Channel**: A specific channel on which messages are published. Each channel",
           "   has a unique name. Site visitors can subscribe to a channel to receive the ",
-          "   messages that are published on it.",
+          "   messages that are published on it. When site visitors subscribe to a channel, they do not ",
+          "   receive messages published to a resource on that same channel.",
           " + **Channel resource**: A subchannel on which messages are published. Subchannels",
           "   can share a name with a channel and other subchannels, but they have a unique",
-          "   resource ID. ",
+          "   resource ID. When site visitors subscribe to a channel resource, they do not ",
+          "   receive messages published to that same channel without a specified resource.",
+          "   Channel resources inherit their parent channel's permissions, unless specified",
+          "   otherwise.",
           " + **Message**: A message published on a channel or channel resource. A message can",
           "   be of any type, such as a string, number, or object. Channel subscribers receive",
           "   the messages published on the channel.",
@@ -55,7 +62,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 200,
+          [ { "lineno": 225,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when a connection or reconnection\n occurs.",
@@ -90,7 +97,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 220,
+          [ { "lineno": 245,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when a disconnection occurs.",
@@ -115,8 +122,7 @@
         "extra":
           {  } },
       { "name": "onError",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -125,7 +131,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 179,
+          [ { "lineno": 204,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when an error occurs.",
@@ -157,7 +163,8 @@
         "extra":
           {  } },
       { "name": "subscribe",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "channel",
@@ -173,7 +180,7 @@
                   [ "string" ] },
             "doc": "Fulfilled - An ID representing the subscription, used for unsubscribing.\nRejected - Error that caused the rejection, such as insufficient\n permissions." },
         "locations":
-          [ { "lineno": 76,
+          [ { "lineno": 90,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "Subscribes to a channel or channel resource.",
@@ -204,6 +211,7 @@
                       "// ...",
                       "",
                       "const channel = {\"name\": \"someChannel\"};",
+                      "let subscriptionId;",
                       "",
                       "wixRealtime.subscribe(channel, (message, channel) => {",
                       "  let payload = message.payload;",
@@ -241,7 +249,29 @@
                       "  subscriptionId = id;",
                       "});" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "Display a popup notification when a message is received",
+                  "body":
+                    [ "import wixRealtime from 'wix-realtime';",
+                      "",
+                      "// ...",
+                      "",
+                      "$w.onReady(function() {",
+                      "  const channel = {\"name\": \"updates\"};",
+                      "",
+                      "  wixRealtime.subscribe( channel, (message, channel) => {",
+                      "    $w(\"#updateMessage\").text = message.payload;",
+                      "    $w(\"#updateBox\").show();",
+                      "  });",
+                      "",
+                      "  $w(\"#hideUpdateButton\").onClick( () => {",
+                      "    $w(\"#updateBox\").hide();",
+                      "  });",
+                      "});",
+                      "",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates how to display a popup notification when a message is\n received on a channel that a visitor is subscribed to. The notification displays the\n contents of the message that was received.\n\n The example assumes the page contains a box that contains a text element and a button,\n which is set to be hidden when the page loads.\n\n When a message is received, the text element's text value is set to the contents of \n the message and the box is shown to display the message to the site visitor. When the\n button is clicked, the box is hidden again." } } ],
             "extra":
               {  } },
         "extra":
@@ -260,7 +290,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When unsubscribed from the channel or channel resource.\nRejected - Error that caused the rejection." },
         "locations":
-          [ { "lineno": 125,
+          [ { "lineno": 150,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "Unsubscribes from a channel or channel resource.",
@@ -378,7 +408,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 194,
+          [ { "lineno": 219,
               "filename": "realtime.js" } ],
         "docs":
           { "description":
@@ -397,7 +427,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 214,
+          [ { "lineno": 239,
               "filename": "realtime.js" } ],
         "docs":
           { "description":
@@ -419,7 +449,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 173,
+          [ { "lineno": 198,
               "filename": "realtime.js" } ],
         "docs":
           { "description":
@@ -443,7 +473,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 68,
+          [ { "lineno": 82,
               "filename": "realtime.js" } ],
         "docs":
           { "description":
@@ -458,10 +488,10 @@
   "messages":
     [ { "name": "Channel",
         "locations":
-          [ { "lineno": 39,
+          [ { "lineno": 46,
               "filename": "realtime.js" } ],
         "docs":
-          { "summary": "An object representing a channel.",
+          { "summary": "An object representing a channel or channel resource.\n Site visitors can subscribe to a channel or channel resource to receive the \n messages that are published on it. When site visitors subscribe to a channel, they do not \n receive messages published to a resource on that same channel. Similarly, \n when site visitors subscribe to a channel resource, they do not \n receive messages published to that same channel without a specified resource.\n Channel resources inherit their parent channel's permissions, unless specified\n otherwise.",
             "links":
               [ "[subscribe( )](#subscribe)" ],
             "examples":
@@ -472,6 +502,7 @@
                       "// ...",
                       "",
                       "const channel = {\"name\": \"someChannel\"};",
+                      "let subscriptionId;",
                       "",
                       "wixRealtime.subscribe(channel, (message, channel) => {",
                       "  let payload = message.payload;",
@@ -522,10 +553,11 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Error",
         "locations":
-          [ { "lineno": 157,
+          [ { "lineno": 182,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "An object representing an error.",
@@ -563,11 +595,10 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "Message",
         "locations":
-          [ { "lineno": 58,
+          [ { "lineno": 72,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "An object representing a published message.",
@@ -581,6 +612,7 @@
                       "// ...",
                       "",
                       "const channel = {\"name\": \"someChannel\"};",
+                      "let subscriptionId;",
                       "",
                       "wixRealtime.subscribe(channel, (message, channel) => {",
                       "  let payload = message.payload;",
@@ -631,10 +663,11 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Publisher",
         "locations":
-          [ { "lineno": 49,
+          [ { "lineno": 63,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "An object representing a publisher.",
@@ -648,6 +681,7 @@
                       "// ...",
                       "",
                       "const channel = {\"name\": \"someChannel\"};",
+                      "let subscriptionId;",
                       "",
                       "wixRealtime.subscribe(channel, (message, channel) => {",
                       "  let payload = message.payload;",
@@ -694,10 +728,11 @@
               "doc": "ID of the publisher." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "UnsubscribeOptions",
         "locations":
-          [ { "lineno": 111,
+          [ { "lineno": 136,
               "filename": "realtime.js" } ],
         "docs":
           { "summary": "An object containing options to be used when unsubscribing from a\n channel or channel resource.",
