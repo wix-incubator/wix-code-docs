@@ -1,7 +1,8 @@
 { "name": "PermissionsRouter",
   "memberOf": "wix-realtime-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "permissions-router.js" },
@@ -9,7 +10,9 @@
     { "summary": "A router for defining and checking permissions.",
       "description":
         [ "Use the permissions router to define the permissions you want to grant to subscribers",
-          " on channels or channel resources.",
+          " on channels or channel resources. You can set permissions on the channel and channel",
+          " resource level. If you do not define permissions for a particular channel resource, ",
+          " that resource inherits the permissions of its parent channel.",
           "",
           " Typically you use the permissions router in the **realtime-permissions.js** file in",
           " your site's backend to:",
@@ -25,7 +28,8 @@
   "properties": [],
   "operations":
     [ { "name": "add",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "channel",
@@ -37,13 +41,17 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 72,
+          [ { "lineno": 100,
               "filename": "permissions-router.js" } ],
         "docs":
           { "summary": "Sets a permissions handler for a specific channel or channel resource.",
             "description":
               [ "The handler set by the `add()` function is used for permission checks by the permissions",
-                " router for the channel or channel resource specified in the `channel` property." ],
+                " router for the channel or channel resource specified in the `channel` property.",
+                "",
+                " Adding a handler to a specific channel without a specified resource adds a handler for",
+                " all permissions checks on the channel and all permissions checks on any of the channel's",
+                " resources that do not have their own permissions handlers." ],
             "links": [],
             "examples":
               [ { "title": "Set a permissions handler for a specific channel",
@@ -149,7 +157,7 @@
                   [ "wix-realtime-backend.ChannelPermissions" ] },
             "doc": "Fulfilled - The permissions granted to the subscriber\n on the channel or channel resource." },
         "locations":
-          [ { "lineno": 88,
+          [ { "lineno": 120,
               "filename": "permissions-router.js" } ],
         "docs":
           { "summary": "Checks the permissions for a subscriber on a channel or channel resource.",
@@ -261,7 +269,8 @@
         "extra":
           {  } },
       { "name": "default",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -270,13 +279,32 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 50,
+          [ { "lineno": 59,
               "filename": "permissions-router.js" } ],
         "docs":
           { "summary": "Sets a permissions handler for default permissions.",
             "description":
               [ "The handler set by the `default()` function is used for permission checks by the permissions",
-                " router for all channels where an explicit handler has not been added.",
+                " router for all channels where an explicit handler has not been added. For channel resources,",
+                " if no explicit handler has been set, the resource will inherit the permissions of its parent",
+                " channel.",
+                "",
+                " For example, suppose you have the following channel, resources, and permissions:",
+                "",
+                " + channel: A, permissions: no handler specified",
+                " + channel: A, resource: 1, permissions: no handler specified",
+                " + channel: A, resource: 2, permissions: handler is specified",
+                "",
+                "",
+                " Permissions will be checked as follows:",
+                "",
+                " + A: use the handler set by `default()` function",
+                " + A, 1: use the handler set by `default()` function",
+                " + A, 2: use the handler set by `add()` function for this resource",
+                "",
+                "",
+                " Messages on _channel A_ and _channel A resource 1_ will use the handler set using the ",
+                " `default()` function. Messages on ",
                 "",
                 " If no default handler is set, subscribers to channels without explicit permissions handlers will ",
                 " receive the following permissions:",
@@ -382,7 +410,7 @@
                   [ "wix-realtime-backend.ChannelPermissions" ] },
             "doc": "Fulfilled - The permissions granted to the subscriber\n on the channel or channel resource." },
         "locations":
-          [ { "lineno": 39,
+          [ { "lineno": 48,
               "filename": "permissions-router.js" } ],
         "docs":
           { "description":
