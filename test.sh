@@ -6,7 +6,7 @@ local_docs_dir=$(pwd)
 # clone corvid-types into a temporary directory
 tmp_dir=$(mktemp -d -t wix-code-docs-test-XXXXXXXXXX)
 cd $tmp_dir
-git clone --branch "revert-to-start" --depth 1 git://github.com/wix-incubator/corvid-types.git .
+git clone --branch "revert1" --depth 1 git://github.com/wix-incubator/corvid-types.git .
 
 # run corvid-types tests based on the local wix-code-docs repo
 npm install
