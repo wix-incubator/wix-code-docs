@@ -9,6 +9,7 @@ cd $tmp_dir
 git clone --branch "revert1" --depth 1 git://github.com/wix-incubator/corvid-types.git .
 
 # run corvid-types tests based on the local wix-code-docs repo
+nvm use 10
 npm install
 LOCAL_DOCS_REPO_PATH=$local_docs_dir npm run build
 npm run test
