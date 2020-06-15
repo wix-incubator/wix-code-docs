@@ -14,22 +14,21 @@
     { "lineno": 16,
       "filename": "SignatureInput.js" },
   "docs":
-    { "summary": "`SignatureInput` lets site visitors enter signatures.",
+    { "summary": "`SignatureInput` lets site visitors enter and clear signatures.",
       "description":
-        [ "You can use the `SignatureInput` API to add signatures to forms made both with Wix Forms ",
-          " and forms created manually using standard user input fields and a submit button. ",
+        [ "You can use the `SignatureInput` API to work with signatures on forms created with Wix Forms ",
+          " and also custom forms (created manually using standard user input fields and a submit button). ",
           "",
           " Before working with this API, you must add a signature input element to your page. In the ",
-          " Wix Editor, add a **Signature Field** and a **Submit** button to a form on your ",
-          " page. The signature field comes with a signature pad and a built-in clear signature ",
+          " Wix Editor, add a **Signature** and a **Submit** button to a form on your ",
+          " page. The signature element comes with a signature pad and a built-in **Clear** ",
           " button. After the site visitor draws their signature on the pad and submits the form, ",
           " the `SignatureInput` element's [`value`](#value) is populated with a base64-encoded ",
           " Data URL representing a PNG image of the signature.",
           "",
           " With code, you can then: ",
           "",
-          " + Save the signature to a collection as an inline image in a field of type **Image**.",
-          " + Upload the signature to the Media Manager, and then save the signature's URL to a collection.",
+          " + Save the signature to a collection as an inline image in a field of type **Image**. (Alternatively, you can upload the signature to the Media Manager, and then save the signature's URL to a collection.)",
           " + Clear the signature from the signature pad with the [`clear()`](#clear) function.",
           " + Use the [`onChange()`](#onChange) event handler to detect if the signature value changed or was cleared." ],
       "links": [],
@@ -43,7 +42,7 @@
         "set": false,
         "type": "$w.Style",
         "locations":
-          [ { "lineno": 61,
+          [ { "lineno": 58,
               "filename": "SignatureInput.js" } ],
         "docs":
           { "summary": "Gets an object containing information about the signature input element's styles.",
@@ -71,12 +70,13 @@
           { "notes":
               [ "Not all styles can be used on all signature designs. To determine which styles\n work with a specific signature design, go to the **Signature Design** panel in\n the Editor, choose a design, and click **Customize Design**. The design\n options that you see in the **Signature Design** panel are the styles you can\n use in your code." ] } },
       { "name": "value",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": false,
         "type": "$w.Value",
         "locations":
-          [ { "lineno": 85,
+          [ { "lineno": 82,
               "filename": "SignatureInput.js" } ],
         "docs":
           { "summary": "Gets the value of the signature input.",
@@ -93,10 +93,15 @@
             "examples":
               [ { "title": "Gets the signature input",
                   "body":
-                    [ "let mySignature = $w(\"#mySignatureInput\").value;" ],
+                    [ "let mySignature = $w(\"#mySignatureInput\").value;",
+                      "",
+                      "/*  A sample mySignature is:",
+                      " *",
+                      " * data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACOCAYA...m8B/AaZVs55m1NzcAAAAAElFTkSuQmCC",
+                      " */" ],
                   "extra":
                     {  } },
-                { "title": "Gets the signature input and saves it in a collection",
+                { "title": "Gets the signature input and inserts it in a collection",
                   "body":
                     [ "import wixData from 'wix-data';",
                       "",
@@ -106,13 +111,14 @@
                       "\t\t",
                       "\t\tlet theSignature = $w('#mySignatureInput').value;",
                       "\t\t",
-                      "\t\tlet toSave = {",
+                      "\t\tlet toInsert = {",
                       "\t\t\t\"title\": \"Mia\",",
                       "\t\t\t\"lastName\": \"Casa\",",
+                      "\t\t\t\"email\": \"MiaCasa@SuCasa.com\",",
                       "\t\t\t\"signature\": theSignature",
                       "        };",
                       "        ",
-                      "\t\twixData.save(\"People\", toSave)",
+                      "\t\twixData.insert(\"People\", toInsert)",
                       "\t\t\t.then((results) => {",
                       "\t\t\t\tlet item = results;     //see item below",
                       "\t\t\t\tconsole.log(item);",
@@ -122,11 +128,11 @@
                       "\t\t\t});",
                       "",
                       "\t} else {",
-                      "\t\tconsole.log(\"The value of the signature input is empty.\");",
+                      "\t\tconsole.log(\"The signature is blank.\");",
                       "\t}",
                       "}",
                       "",
-                      "/*  item is:",
+                      "/*  item:",
                       " *",
                       " * {",
                       " *   _id: \"41c8ef87-3eec-47bd-a3bd-17a09de9ffee\"",
@@ -135,11 +141,12 @@
                       " *   _updatedDate: \"2019-11-10T09:27:14.605Z\" ",
                       " *   title: \"Mia\"",
                       " *   lastName: \"Casa\"",
+                      " *   email: \"MiaCasa@SuCasa.com\"",
                       " *   signature: \"data:image/png;base64,iVBORw0KGgoAAAANSUhEU...AAAASUVORK5CYII=\"",
                       " * }",
                       " */" ],
                   "extra":
-                    { "description": "This example demonstrates how to save a signature in a collection called `People`. This \n collection has a field for the signature which is of type string." } } ],
+                    { "description": "This example demonstrates how to insert a person and their signature in a collection called `People`. This \n collection has an image field for the signature." } } ],
             "extra":
               {  } },
         "extra":
@@ -153,15 +160,15 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 171,
+          [ { "lineno": 168,
               "filename": "SignatureInput.js" } ],
         "docs":
-          { "summary": "Clears the signature input.",
+          { "summary": "Clears the signature.",
             "description":
               [ "The [`value`](#value) of the signature input contains the signature that the site visitor has",
                 " signed. The `clear()` function erases the signature from the signature pad and clears the `value` property.",
                 "",
-                " Clearing the signature using the Wix Editor triggers an [`onChange()`](#onChange) event handler, unless the signature input field is already empty. Clearing the signature using the `clear()` function does not trigger the event." ],
+                " Clearing the signature using the Wix Editor triggers an [`onChange()`](#onChange) event handler, unless the signature input field is already empty. Clearing the signature using the `clear()` function does not trigger the `onChange` event handler." ],
             "links": [],
             "examples":
               [ { "title": "Clears the signature input",
@@ -169,12 +176,11 @@
                     [ "let myEmptySignature = $w(\"#mySignatureInput\").clear();" ],
                   "extra":
                     {  } },
-                { "title": "Clears input on a form, including the signature",
+                { "title": "Clears fields on a form, including the signature",
                   "body":
                     [ "$w('#clearFormButton').onClick(() => {",
-                      "  $w('TextInput').forEach(element => {",
-                      "    element.value = '';",
-                      "  });",
+                      "  $w('TextInput1').value = '';",
+                      "  $w('TextInput2').value = '';",
                       "  $w('#mySignatureInput').clear();",
                       "});" ],
                   "extra":
@@ -184,7 +190,8 @@
         "extra":
           {  } },
       { "name": "onChange",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -194,7 +201,7 @@
           { "type": "$w.SignatureInput",
             "doc": "The signature input element on which the event is now registered." },
         "locations":
-          [ { "lineno": 131,
+          [ { "lineno": 128,
               "filename": "SignatureInput.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when a signature input element's value\n is changed by a site visitor.",
@@ -202,7 +209,7 @@
               [ "A signature input element receives a `change` event when a site visitor changes its value.",
                 "",
                 " A `change` event is not triggered when:  ",
-                " + You, the site owner, change an element's value using the element's [`value`](#value) property.",
+                " + You, the site owner, change an element's value using the element's [`value`](#value) property or the [`clear()`](#clear) function.",
                 " + The signature input field is empty, and the site visitor clears the signature." ],
             "links": [],
             "examples":
@@ -219,8 +226,7 @@
           { "eventType": "onChange" } } ],
   "callbacks":
     [ { "name": "ChangeHandler",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "event",
@@ -229,7 +235,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 156,
+          [ { "lineno": 153,
               "filename": "SignatureInput.js" } ],
         "docs":
           { "summary": "Handles events fired when a signature changes.",
@@ -309,4 +315,4 @@
           [ "removed" ] } ],
   "extra":
     { "notes":
-        [ "**A Word About Inline Images**: \n \n + Saving a signature as an inline image in a collection is supported because signatures are relatively small in size. We do not recommend that you store other types of images inline in collections for performance reasons.\n + You can preview inline images if using the new Content Manager. Because Wix Forms does not use the new Content Manager, do not store inline images in a collection generated by Wix Forms." ] } }
+        [ "**About Inline Images in Collections**: Saving a signature as an inline image in a collection is supported because signatures are relatively small in size. We do not recommend that you store other types of images inline in collections for performance reasons. \n Also, you can preview inline images if using the new Wix Content Manager. Because the Wix Forms application does not yet use the new Content Manager, do not store inline images in a collection generated by Wix Forms." ] } }
