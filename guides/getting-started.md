@@ -82,14 +82,13 @@ $w.onReady(function () {
 });
 ```
 
-
 The <code>[$w](https://www.wix.com/code/reference/$w.html#$w)</code> function can select elements on a page by ID or by type, allowing us to run functions and define the properties of the elements. Use this syntax to select an element by ID, <code>$w("#myElementId")</code>, and this syntax to select by type, <code>$w("ElementType")</code>.
 
 Here we select the button and define an `onClick` [event handler](https://support.wix.com/en/article/wix-code-reacting-to-user-actions-using-events#about-events-event-handlers-and-wiring) to calculate the target amount.
 
 4.  Add code to define the functions:
 
-populateDropdowns( )
+**populateDropdowns( )**
 
 
 ```javascript
