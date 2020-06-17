@@ -1,34 +1,33 @@
+# Getting Started with Corvid by Wix
+
 Corvid by Wix is an innovative product that lets you build robust web applications with zero setup. Work in Wix's visual builder, add custom functionality and interactions using Corvid APIs, and enjoy serverless coding in both the front-end and backend. With Corvid, your web app can be up and running in a fraction of the time it would normally take you.
 
 To introduce you to Corvid, we created our own version of a "Hello, World!" example: a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/corvid/reference/wix-fetch.html) to connect to a third-party service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
 
 ![alt_text](./gettingStarted1.png)
 
-
 Follow the steps below to get familiar with the basic structure and syntax of Corvid.
 
+## Step 1: Create a New Wix Site
 
-### Step 1: Create a New Wix Site
-
-
-*   Sign into your Wix account or [sign up for a Wix account](https://users.wix.com/signin?overrideLocale=en&loginDialogContext=signup) if you don’t already have one.
-*   [Open a blank template](https://editor.wix.com/html/editor/web/renderer/new?siteId=cbf36d3a-49d0-41c2-9482-1bb58d5fdda3&metaSiteId=a573279f-ae6f-46d1-8556-7c93ae9b2c84&editorSessionId=799795e9-07c2-4e7e-8a17-33dab829f776) in the Editor.
+1.  Sign into your Wix account or [sign up for a Wix account](https://users.wix.com/signin?overrideLocale=en&loginDialogContext=signup) if you don’t already have one.
+2.   [Open a blank template](https://editor.wix.com/html/editor/web/renderer/new?siteId=cbf36d3a-49d0-41c2-9482-1bb58d5fdda3&metaSiteId=a573279f-ae6f-46d1-8556-7c93ae9b2c84&editorSessionId=799795e9-07c2-4e7e-8a17-33dab829f776) in the Editor.
 
 
-### Step 2: Enable Corvid
+## Step 2: Enable Corvid
 
 Enable Corvid in the Wix Editor to let you work with code in your site.
 
 ![alt_text](./gettingStarted2.png)
 
 
-### Step 3: Add Elements to the Page
+## Step 3: Add Elements to the Page
 
 Add page elements in the Wix Editor: 
 
 
-*   On the left side of the Editor, click Add.
-*   Add the page elements illustrated below to your site.
+1.   On the left side of the Editor, click Add.
+2.   Add the page elements illustrated below to your site.
     *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Editor. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
 
@@ -99,7 +98,7 @@ Add page elements in the Wix Editor:
 </table>
 
 
-### Step 4: Add Code
+## Step 4: Add Code
 
 > Notes
 > * All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](https://support.wix.com/en/article/corvid-by-wix-hello-world-example#example-code) to the end of the tutorial. 
@@ -107,8 +106,8 @@ Add page elements in the Wix Editor:
 
 To add the code:
 
-*   Double-click Home Page Code at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/wix-code-working-in-the-code-panel).
-*   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
+1.   Double-click Home Page Code at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/wix-code-working-in-the-code-panel).
+2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
 ```javascript
@@ -127,7 +126,7 @@ let currencyOptions = [
 ];
 ```
 
-*   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
+3.   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
 
 ```javascript
 $w.onReady(function () {
@@ -161,11 +160,9 @@ function populateDropdowns() {
 }
 ```
 
-
 Here we select all the dropdowns by type. By calling <code>[$w](https://www.wix.com/code/reference/$w.html)</code> with the element type "Dropdown", we select all dropdowns on the page.
 
-calculateCurrency( )
-
+**calculateCurrency( )**
 
 ```javascript
 // Calculate the target amount.
@@ -196,19 +193,18 @@ The wix-fetch API <code>[getJSON](https://www.wix.com/code/reference/wix-fetch.h
 
 We multiply the retrieved rate by the initial amount and assign it to the `targetAmount` text box.
 
-
-### Step 5: See It in Action
+## Step 5: See It in Action
 
 Now it's time to test your site:
 
-*   Click Preview at the top right of the Editor.
-*   Enter an amount in the source currency input.
-*   Click the calculate button and see the converted currency result in the target amount text box.
-*   [Publish](https://support.wix.com/en/article/publishing-your-site-6980885) your site to make it live and production ready. \
+1.   Click Preview at the top right of the Editor.
+2.  Enter an amount in the source currency input.
+3.  Click the calculate button and see the converted currency result in the target amount text box.
+4.  [Publish](https://support.wix.com/en/article/publishing-your-site-6980885) your site to make it live and production ready. 
 
 That's it! In just a few minutes, you created a web application in Corvid! No setup, no managing server infrastructure, just integrating Corvid APIs with the Wix visual builder.
 
-### Next Steps
+## Next Steps
 
 Now that you've had a taste of Corvid, check out what else you can do:
 
@@ -221,8 +217,7 @@ Now that you've had a taste of Corvid, check out what else you can do:
     *   Work with the data from [other Wix Apps](https://support.wix.com/en/article/working-with-wix-app-collections-6077060) like [Stores](https://support.wix.com/en/wix-code/wix-stores-with-wix-code), [Bookings](https://support.wix.com/en/wix-code/wix-bookings-with-wix-code), and [Events](https://support.wix.com/en/wix-code/wix-events-with-wix-code)
 *   Visit the [Corvid by Wix website](https://www.wix.com/corvid) to onboard and continue learning. Check out Corvid [documentation](https://support.wix.com/en/wix-code/wix-code-basics) and the [API Reference](https://www.wix.com/corvid/reference).
 
-
-### Example Code
+## Example Code
 
 Here is the complete code for this example, without comments:
 
