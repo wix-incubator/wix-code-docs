@@ -18,7 +18,7 @@ Follow the steps below to get familiar with the basic structure and syntax of Co
 
 Enable Corvid in the Wix Editor to let you work with code in your site.
 
-![alt_text](./gettingStarted2.png)
+![alt_text](../media/gettingStarted2.png)
 
 
 ## Step 3: Add Elements to the Page
@@ -31,7 +31,7 @@ Add page elements in the Wix Editor:
     *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Editor. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
 
-![alt_text](./gettingStarted3.png)
+![alt_text](../media/gettingStarted3.png)
 
 |Element|Location in Add Menu|Description|ID|
 |-------|--------------------|-----------|--|
