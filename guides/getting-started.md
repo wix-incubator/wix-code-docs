@@ -4,7 +4,7 @@ Corvid by Wix is an innovative product that lets you build robust web applicatio
 
 To introduce you to Corvid, we created our own version of a "Hello, World!" example: a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/corvid/reference/wix-fetch.html) to connect to a third-party service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
 
-![alt_text](./gettingStarted1.png)
+![alt_text](../media/gettingStarted1.png)
 
 Follow the steps below to get familiar with the basic structure and syntax of Corvid.
 
