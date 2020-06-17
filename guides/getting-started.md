@@ -101,10 +101,9 @@ Add page elements in the Wix Editor:
 
 ### Step 4: Add Code
 
-Notes
-
-*   All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](https://support.wix.com/en/article/corvid-by-wix-hello-world-example#example-code) to the end of the tutorial. 
-*   See our [API Reference](https://www.wix.com/corvid/reference/) to learn more about the Corvid-based code in this example.
+> Notes
+> * All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](https://support.wix.com/en/article/corvid-by-wix-hello-world-example#example-code) to the end of the tutorial. 
+> * See our [API Reference](https://www.wix.com/corvid/reference/) to learn more about the Corvid-based code in this example.
 
 To add the code:
 
@@ -112,7 +111,7 @@ To add the code:
 *   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
-```
+```javascript
 // The getJSON function in wix-fetch lets you retrieve a
 // JSON resource from the network using HTTPS.
 import {getJSON} from 'wix-fetch';
@@ -126,12 +125,11 @@ let currencyOptions = [
   { "value": "EUR",  "label": "Euros"},
   { "value": "JPY",  "label": "Japanese Yen"},
 ];
-
 ```
 
 *   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
 
-```
+```javascript
 $w.onReady(function () {
   // Set the currency options for the dropdowns.
   populateDropdowns();
@@ -153,7 +151,7 @@ Here we select the button and define an `onClick` [event handler](https://suppor
 populateDropdowns( )
 
 
-```
+```javascript
 // Populate the dropdowns.
 function populateDropdowns() {
 	//Set the dropdown options.
@@ -169,7 +167,7 @@ Here we select all the dropdowns by type. By calling <code>[$w](https://www.wix.
 calculateCurrency( )
 
 
-```
+```javascript
 // Calculate the target amount.
 
 function calculateCurrency() {
@@ -228,7 +226,7 @@ Now that you've had a taste of Corvid, check out what else you can do:
 
 Here is the complete code for this example, without comments:
 
-```
+```javascript
 import { getJSON } from 'wix-fetch';
 
 const url = "https://api.exchangeratesapi.io/latest";
