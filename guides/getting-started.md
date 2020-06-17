@@ -102,7 +102,6 @@ Add page elements in the Wix Editor:
 
 > Notes
 > * All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](https://support.wix.com/en/article/corvid-by-wix-hello-world-example#example-code) to the end of the tutorial. 
-> * See our [API Reference](https://www.wix.com/corvid/reference/) to learn more about the Corvid-based code in this example.
 
 To add the code:
 
