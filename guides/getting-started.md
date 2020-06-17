@@ -19,11 +19,7 @@ Follow the steps below to get familiar with the basic structure and syntax of Co
 
 Enable Corvid in the Wix Editor to let you work with code in your site.
 
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](./gettingStarted2.png)
 
 
 ### Step 3: Add Elements to the Page
@@ -35,10 +31,8 @@ Add page elements in the Wix Editor:
 *   Add the page elements illustrated below to your site.
     *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Editor. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
-
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](./gettingStarted3.png)
 
 
 <table>
