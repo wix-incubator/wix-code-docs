@@ -33,71 +33,14 @@ Add page elements in the Wix Editor:
 
 ![alt_text](./gettingStarted3.png)
 
-
-<table>
-  <tr>
-   <td>Element
-   </td>
-   <td>Location in Add Menu
-   </td>
-   <td>Description
-   </td>
-   <td>ID
-   </td>
-  </tr>
-  <tr>
-   <td>Dropdown
-   </td>
-   <td>User Input
-   </td>
-   <td>For selecting the source currency
-   </td>
-   <td>sourceCurrency
-   </td>
-  </tr>
-  <tr>
-   <td>Dropdown
-   </td>
-   <td>User Input
-   </td>
-   <td>For selecting the target currency
-   </td>
-   <td>targetCurrency
-   </td>
-  </tr>
-  <tr>
-   <td>Input
-   </td>
-   <td>User Input
-   </td>
-   <td>For entering the amount to convert
-   </td>
-   <td>sourceAmount
-   </td>
-  </tr>
-  <tr>
-   <td>Text Box
-   </td>
-   <td>User Input
-   </td>
-   <td>To display the converted amount
-   </td>
-   <td>targetAmount
-   </td>
-  </tr>
-  <tr>
-   <td>Button
-   </td>
-   <td>Button
-   </td>
-   <td>To trigger the currency conversion when clicked
-   </td>
-   <td>calculateButton
-   </td>
-  </tr>
-</table>
-
-
+|Element|Location in Add Menu|Description|ID|
+|-------|--------------------|-----------|--|
+|Dropdown|User Input|For selecting the source currency|sourceCurrency|
+|Dropdown|User Input|or selecting the target currency|targetCurrency|
+|Input|User Input|For entering the amount to convert|sourceAmount|
+|Text Box|User Input|To display the converted amount|targetAmount|
+|Button|Button|To trigger the currency conversion when clicked|calculateButton|
+  
 ## Step 4: Add Code
 
 > Notes
