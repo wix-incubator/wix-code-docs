@@ -1,6 +1,6 @@
 # Getting Started with Corvid by Wix
 
-Corvid by Wix is an innovative product that lets you build robust web applications with zero setup. Work in Wix's visual builder, add custom functionality and interactions using Corvid APIs, and enjoy serverless coding in both the front-end and backend. With Corvid, your web app can be up and running in a fraction of the time it would normally take you.
+Corvid by Wix is an innovative product that lets you build robust web applications with zero setup. Work in Wix's Editor, add custom functionality and interactions using Corvid APIs, and enjoy serverless coding in both the front-end and backend. With Corvid, your web app can be up and running in a fraction of the time it would normally take you.
 
 To introduce you to Corvid, we created our own version of a "Hello, World!" example: a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/corvid/reference/wix-fetch.html) to connect to a third-party service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
 
@@ -36,7 +36,7 @@ Add page elements in the Wix Editor:
 |Element|Location in Add Menu|Description|ID|
 |-------|--------------------|-----------|--|
 |Dropdown|User Input|For selecting the source currency|sourceCurrency|
-|Dropdown|User Input|or selecting the target currency|targetCurrency|
+|Dropdown|User Input|For selecting the target currency|targetCurrency|
 |Input|User Input|For entering the amount to convert|sourceAmount|
 |Text Box|User Input|To display the converted amount|targetAmount|
 |Button|Button|To trigger the currency conversion when clicked|calculateButton|
@@ -45,7 +45,7 @@ Add page elements in the Wix Editor:
 
 > Note:
 >
-> All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](https://support.wix.com/en/article/corvid-by-wix-hello-world-example#example-code) to the end of the tutorial. 
+> All the code for this example is added to a single page on the site. In this section we divided the code into short blocks followed by explanations. To see the complete code for this example without comments, [scroll down](#example-code) to the end of the tutorial. 
 
 To add the code:
 
@@ -53,21 +53,21 @@ To add the code:
 2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
-```javascript
-// The getJSON function in wix-fetch lets you retrieve a
-// JSON resource from the network using HTTPS.
-import {getJSON} from 'wix-fetch';
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ```javascript
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The getJSON function in wix-fetch lets you retrieve a
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // JSON resource from the network using HTTPS.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import {getJSON} from 'wix-fetch';
 
-// Set the URL of the 3rd-party service.
-const url = "https://api.exchangeratesapi.io/latest";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set the URL of the 3rd-party service.
+c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; onst url = "https://api.exchangeratesapi.io/latest";
 
-// Define the currency option values and text for the dropdowns.
-let currencyOptions = [
-  { "value": "USD",  "label": "US Dollars"},
-  { "value": "EUR",  "label": "Euros"},
-  { "value": "JPY",  "label": "Japanese Yen"},
-];
-```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Define the currency option values and text for the dropdowns.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let currencyOptions = [
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "USD",  "label": "US Dollars"},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "EUR",  "label": "Euros"},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "JPY",  "label": "Japanese Yen"},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ```
 
 3.   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
 
