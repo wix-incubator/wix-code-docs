@@ -1,4 +1,4 @@
-# API Overview
+# Introduction
 
 Corvid's APIs empower you to take full control of your site’s functionality. Use the APIs to interact with page elements, your site’s database content, Wix Apps, and external services. The APIs also give you access to information about your site, its users, and more.
 
