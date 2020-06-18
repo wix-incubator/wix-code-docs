@@ -53,21 +53,21 @@ To add the code:
 2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ```javascript
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The getJSON function in wix-fetch lets you retrieve a
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // JSON resource from the network using HTTPS.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import {getJSON} from 'wix-fetch';
+```javascript
+// The getJSON function in wix-fetch lets you retrieve a
+// JSON resource from the network using HTTPS.
+import {getJSON} from 'wix-fetch';
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set the URL of the 3rd-party service.
-c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; onst url = "https://api.exchangeratesapi.io/latest";
+// Set the URL of the 3rd-party service.
+const url = "https://api.exchangeratesapi.io/latest";
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Define the currency option values and text for the dropdowns.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let currencyOptions = [
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "USD",  "label": "US Dollars"},
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "EUR",  "label": "Euros"},
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   { "value": "JPY",  "label": "Japanese Yen"},
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ];
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ```
+// Define the currency option values and text for the dropdowns.
+let currencyOptions = [
+   { "value": "USD",  "label": "US Dollars"},
+   { "value": "EUR",  "label": "Euros"},
+   { "value": "JPY",  "label": "Japanese Yen"},
+];
+```
 
 3.   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
 
