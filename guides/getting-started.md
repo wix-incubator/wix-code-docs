@@ -131,7 +131,7 @@ function calculateCurrency() {
 
 We use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to define the full URL, which includes the source and target currencies.
 
-The wix-fetch API <code>[getJSON](wix-fetch#getJSON)</code> function retrieves the JSON resource using the full URL. <code>getJSON</code> returns a [promise](https://support.wix.com/en/article/wix-code-working-with-promises), which resolves to a JSON object.
+The wix-fetch API <code>[getJSON](wix-fetch/getjson)</code> function retrieves the JSON resource using the full URL. <code>getJSON</code> returns a [promise](https://support.wix.com/en/article/wix-code-working-with-promises), which resolves to a JSON object.
 
 We multiply the retrieved rate by the initial amount and assign it to the `targetAmount` text box.
 
