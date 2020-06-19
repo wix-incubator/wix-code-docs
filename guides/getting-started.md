@@ -139,10 +139,10 @@ We multiply the retrieved rate by the initial amount and assign it to the `targe
 
 Now it's time to test your site:
 
-1.   Click Preview at the top right of the Editor.
+1.  Click **Preview** at the top right of the Editor.
 2.  Enter an amount in the source currency input.
 3.  Click the calculate button and see the converted currency result in the target amount text box.
-4.  [Publish](https://support.wix.com/en/article/publishing-your-site-6980885) your site to make it live and production ready. 
+4.  [Publish](https://support.wix.com/en/article/publishing-your-site-6980885) your site to make it live and in production. 
 
 That's it! In just a few minutes, you created a web application in Corvid! No setup, no managing server infrastructure, just integrating Corvid APIs with the Wix visual builder.
 
@@ -153,11 +153,11 @@ Now that you've had a taste of Corvid, check out what else you can do:
 *   Easily call backend code from the frontend using [web modules](https://support.wix.com/en/article/wix-code-calling-server-side-code-from-the-front-end-with-web-modules). 
 *   Work with Wix's [visual builder](https://support.wix.com/en/article/getting-started-with-the-wix-editor).
 *   Add features and customize your site using [Corvid APIs](https://www.wix.com/corvid/reference/). Here are some examples of what you can do:
-    *   [Collect](https://support.wix.com/en/article/wix-code-tutorial-using-the-wix-pay-api-to-collect-payments-for-a-single-product) payments
-    *   [Create](https://support.wix.com/en/article/wix-code-tutorial-creating-a-show-more-link) a show-more link
-    *   [Use](https://www.wix.com/corvid/example/create-a-custom-chart) an HTML component to embed a chart on your page
-    *   Work with the data from [other Wix Apps](https://support.wix.com/en/article/working-with-wix-app-collections-6077060) like [Stores](https://support.wix.com/en/wix-code/wix-stores-with-wix-code), [Bookings](https://support.wix.com/en/wix-code/wix-bookings-with-wix-code), and [Events](https://support.wix.com/en/wix-code/wix-events-with-wix-code)
-*   Visit the [Corvid by Wix website](https://www.wix.com/corvid) to onboard and continue learning. Check out Corvid [documentation](https://support.wix.com/en/wix-code/wix-code-basics) and the [API Reference](https://www.wix.com/corvid/reference).
+    *   [Collect](https://support.wix.com/en/article/wix-code-tutorial-using-the-wix-pay-api-to-collect-payments-for-a-single-product) payments.
+    *   [Create](https://support.wix.com/en/article/wix-code-tutorial-creating-a-show-more-link) a show-more link.
+    *   [Use](https://www.wix.com/corvid/example/create-a-custom-chart) an HTML component to embed a chart on your page.
+    *   Work with the data from [other Wix Apps](https://support.wix.com/en/article/working-with-wix-app-collections-6077060) like [Stores](https://support.wix.com/en/wix-code/wix-stores-with-wix-code), [Bookings](https://support.wix.com/en/wix-code/wix-bookings-with-wix-code), and [Events](https://support.wix.com/en/wix-code/wix-events-with-wix-code).
+*   Visit the [Corvid by Wix website](https://www.wix.com/corvid) to onboard and continue learning. Check out Corvid's [documentation](https://support.wix.com/en/wix-code/wix-code-basics) and the [API Reference](https://www.wix.com/corvid/reference).
 
 ## Example Code
 
