@@ -63,9 +63,9 @@ const url = "https://api.exchangeratesapi.io/latest";
 
 // Define the currency option values and text for the dropdowns.
 let currencyOptions = [
-   { "value": "USD",  "label": "US Dollars"},
-   { "value": "EUR",  "label": "Euros"},
-   { "value": "JPY",  "label": "Japanese Yen"},
+  { "value": "USD",  "label": "US Dollars"},
+  { "value": "EUR",  "label": "Euros"},
+  { "value": "JPY",  "label": "Japanese Yen"},
 ];
 ```
 
@@ -95,10 +95,10 @@ Here we select the button and define an `onClick` [event handler](https://suppor
 ```javascript
 // Populate the dropdowns.
 function populateDropdowns() {
-	//Set the dropdown options.
-	$w("Dropdown").options = currencyOptions;
-	// Set the first dropdown option as the initial option.
-	$w("Dropdown").selectedIndex = 0;
+  //Set the dropdown options.
+  $w("Dropdown").options = currencyOptions;
+  // Set the first dropdown option as the initial option.
+  $w("Dropdown").selectedIndex = 0;
 }
 ```
 
@@ -110,24 +110,23 @@ Here we select all the dropdowns by type. By calling <code>[$w](https://www.wix.
 // Calculate the target amount.
 
 function calculateCurrency() {
-	// Initial amount 
-	let initialAmount = $w("#sourceAmount").value;
-	// Original currency
-	let sourceSymbol = $w("#sourceCurrency").value;
-	// Target currency
-	let targetSymbol = $w("#targetCurrency").value;
-	// Define the full url.
-	let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  // Initial amount 
+  let initialAmount = $w("#sourceAmount").value;
+  // Original currency
+  let sourceSymbol = $w("#sourceCurrency").value;
+  // Target currency
+  let targetSymbol = $w("#targetCurrency").value;
+  // Define the full url.
+  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
 
-	// Call the wix-fetch API function to retrieve the JSON resource.
-	getJSON(fullUrl)
-		.then(json => {
-			// Set the target amount as the initial amount multiplied by
-			// the conversion rate.
-			$w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
-		})
-}
-```
+  // Call the wix-fetch API function to retrieve the JSON resource.
+  getJSON(fullUrl)
+    .then(json => {
+      // Set the target amount as the initial amount multiplied by
+      // the conversion rate.
+      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+    })
+}```
 
 We use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to define the full URL, which includes the source and target currencies.
 
@@ -169,33 +168,32 @@ import { getJSON } from 'wix-fetch';
 const url = "https://api.exchangeratesapi.io/latest";
 
 let currencyOptions = [
-	{ "value": "USD", "label": "US Dollars" },
-	{ "value": "EUR", "label": "Euros" },
-	{ "value": "JPY", "label": "Japanese Yen" },
+  { "value": "USD", "label": "US Dollars" },
+  { "value": "EUR", "label": "Euros" },
+  { "value": "JPY", "label": "Japanese Yen" },
 ];
 
 $w.onReady(function () {
-	populateDropdowns();
+  populateDropdowns();
 
-	$w('#calculateButton').onClick((event) => {
-		calculateCurrency();
-	})
+  $w('#calculateButton').onClick((event) => {
+    calculateCurrency();
+  })
 });
 
 function populateDropdowns() {
-	$w('Dropdown').options = currencyOptions;
-	$w('Dropdown').selectedIndex = 0;
+  $w('Dropdown').options = currencyOptions;
+  $w('Dropdown').selectedIndex = 0;
 }
 
 function calculateCurrency() {
-	let initialAmount = $w("#sourceAmount").value;
-	let sourceSymbol = $w("#sourceCurrency").value;
-	let targetSymbol = $w("#targetCurrency").value;
-	let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  let initialAmount = $w("#sourceAmount").value;
+  let sourceSymbol = $w("#sourceCurrency").value;
+  let targetSymbol = $w("#targetCurrency").value;
+  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
 
-	getJSON(fullUrl)
-		.then(json => {
-			$w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
-		})
-}
-```
+  getJSON(fullUrl)
+    .then(json => {
+      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+    })
+}```
