@@ -126,7 +126,8 @@ function calculateCurrency() {
       // the conversion rate.
       $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
     })
-}```
+}
+```
 
 We use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to define the full URL, which includes the source and target currencies.
 
@@ -196,4 +197,5 @@ function calculateCurrency() {
     .then(json => {
       $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
     })
-}```
+}
+```
