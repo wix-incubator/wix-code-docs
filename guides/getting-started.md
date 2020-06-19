@@ -83,7 +83,7 @@ $w.onReady(function () {
 });
 ```
 
-The <code>[$w](https://www.wix.com/code/reference/$w.html#$w)</code> function can select elements on a page by ID or by type, allowing us to run functions and define the properties of the elements. Use this syntax to select an element by ID, <code>$w("#myElementId")</code>, and this syntax to select by type, <code>$w("ElementType")</code>.
+The <code>[$w]($w)</code> function can select elements on a page by ID or by type, allowing us to run functions and define the properties of the elements. Use this syntax to select an element by ID, <code>$w("#myElementId")</code>, and this syntax to select by type, <code>$w("ElementType")</code>.
 
 Here we select the button and define an `onClick` [event handler](https://support.wix.com/en/article/wix-code-reacting-to-user-actions-using-events#about-events-event-handlers-and-wiring) to calculate the target amount.
 
@@ -102,7 +102,7 @@ function populateDropdowns() {
 }
 ```
 
-Here we select all the dropdowns by type. By calling <code>[$w](https://www.wix.com/code/reference/$w.html)</code> with the element type "Dropdown", we select all dropdowns on the page.
+Here we select all the dropdowns by type. By calling <code>[$w]($w)</code> with the element type "Dropdown", we select all dropdowns on the page.
 
 **calculateCurrency( )**
 
@@ -131,7 +131,7 @@ function calculateCurrency() {
 
 We use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to define the full URL, which includes the source and target currencies.
 
-The wix-fetch API <code>[getJSON](https://www.wix.com/code/reference/wix-fetch.html#getJSON)</code> function retrieves the JSON resource using the full URL. <code>getJSON</code> returns a [promise](https://support.wix.com/en/article/wix-code-working-with-promises), which resolves to a JSON object.
+The wix-fetch API <code>[getJSON](wix-fetch#getJSON)</code> function retrieves the JSON resource using the full URL. <code>getJSON</code> returns a [promise](https://support.wix.com/en/article/wix-code-working-with-promises), which resolves to a JSON object.
 
 We multiply the retrieved rate by the initial amount and assign it to the `targetAmount` text box.
 
