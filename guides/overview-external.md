@@ -1,6 +1,6 @@
 # External Services
 
-Extend your site’s functionality by working with external services. Fetch resources, expose an API of your site’s functionality, work with external databases, 3rd party site monitoring, and store your private API keys for secure use in your code.
+Extend your site’s functionality by working with external services. Fetch resources, expose an API of your site’s functionality, integrate with external databases, work with 3rd party site monitoring, and store your private API keys for secure use in your code.
 
 *   **[wix-fetch](https://www.wix.com/corvid/reference/wix-fetch.html)**
 *   **[wix-http-functions](https://www.wix.com/corvid/reference/wix-http-functions.html)**
