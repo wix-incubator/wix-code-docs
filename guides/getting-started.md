@@ -6,7 +6,7 @@ To introduce you to Corvid, we created our own version of a "Hello, World!" exam
 
 ![alt_text](../media/gettingStarted1.png)
 
-Follow the steps below to get familiar with the basic structure and syntax of Corvid.
+Follow the steps below to get familiar with the basic structure and syntax of Corvid. You can also scroll to the bottom to see the [complete code](#example-code) for this exercise.
 
 ## Step 1: Create a New Wix Site
 
@@ -26,7 +26,7 @@ Enable Corvid in the Wix Editor to let you work with code in your site.
 Add page elements in the Wix Editor: 
 
 
-1.   On the left side of the Editor, click Add.
+1.   On the left side of the Editor, click **Add**.
 2.   Add the page elements illustrated below to your site.
     *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Editor. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
@@ -49,7 +49,7 @@ Add page elements in the Wix Editor:
 
 To add the code:
 
-1.   Double-click Home Page Code at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/wix-code-working-in-the-code-panel).
+1.   Double-click **Home Page Code** at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/wix-code-working-in-the-code-panel).
 2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
@@ -141,6 +141,7 @@ Now it's time to test your site:
 
 1.  Click **Preview** at the top right of the Editor.
 2.  Enter an amount in the source currency input.
+3.  Select a target currency from the dropdown.
 3.  Click the calculate button and see the converted currency result in the target amount text box.
 4.  [Publish](https://support.wix.com/en/article/publishing-your-site-6980885) your site to make it live and in production. 
 
@@ -151,7 +152,7 @@ That's it! In just a few minutes, you created a web application in Corvid! No se
 Now that you've had a taste of Corvid, check out what else you can do:
 
 *   Easily call backend code from the frontend using [web modules](https://support.wix.com/en/article/wix-code-calling-server-side-code-from-the-front-end-with-web-modules). 
-*   Work with Wix's [visual builder](https://support.wix.com/en/article/getting-started-with-the-wix-editor).
+*   Work with Wix's [Editor](https://support.wix.com/en/article/getting-started-with-the-wix-editor).
 *   Add features and customize your site using [Corvid APIs](https://www.wix.com/corvid/reference/). Here are some examples of what you can do:
     *   [Collect](https://support.wix.com/en/article/wix-code-tutorial-using-the-wix-pay-api-to-collect-payments-for-a-single-product) payments.
     *   [Create](https://support.wix.com/en/article/wix-code-tutorial-creating-a-show-more-link) a show-more link.
