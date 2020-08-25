@@ -445,22 +445,19 @@
         "extra":
           {  } },
       { "name": "getCurrentConsentPolicy",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
-          { "type":
-              { "name": "Promise",
-                "typeParams":
-                  [ "wix-users.PolicyDetails" ] },
-            "doc": "Fulfilled - The user's privacy policy.\nRejected - Error message." },
+          { "type": "wix-users.PolicyDetails" },
         "locations":
           [ { "lineno": 516,
               "filename": "users.js" } ],
         "docs":
           { "summary": "Gets the user's privacy (cookie consent) policy for GDPR purposes.",
             "description":
-              [ "The `getCurrentConsentPolicy()` function returns a Promise that resolves to the",
+              [ "The `getCurrentConsentPolicy()` function returns the",
                 "privacy policy details of the user.",
                 "",
                 "The GDPR [privacy policy](https://support.wix.com/en/article/preparing-your-wix-site-for-the-gdpr)",
@@ -608,22 +605,23 @@
         "extra":
           {  } },
       { "name": "onConsentPolicyChanged",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "handler",
-              "type": "wix-users.ConsentPolicyChangedHandler",
-              "doc": "The name of the function or the function expression to run when a user has changed the privacy policy." } ],
+          [ { "name": "event",
+              "type": "wix-users.ConsentPolicyChangedEvent",
+              "doc": "The event that occurred when the consent policy changed." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 609,
+          [ { "lineno": 617,
               "filename": "users.js" } ],
         "docs":
           { "summary": "Sets the function that runs when a user's privacy (cookie consent) policy was changed using [`setConsentPolicy()`](#setConsentPolicy).",
             "description":
-              [ "Use the `onConsentPolicyChanged()` function for code you want to run after a ",
-                " the user's current privacy policy was changed  using [`setConsentPolicy()`](#setConsentPolicy). ",
+              [ "Use the `onConsentPolicyChanged()` function for code you want to run after  ",
+                " the user's current privacy policy was changed using [`setConsentPolicy()`](#setConsentPolicy) or if was reset. ",
                 " Use this function if you intend to use state in your code. Otherwise, use [`getCurrentConsentPolicy()`](#getCurrentConsentPolicy).",
                 "",
                 " Usually, you want to call the `onConsentPolicyChanged()` function in the **Site** tab of the",
@@ -969,7 +967,7 @@
                   [ "wix-users.PolicyDetails" ] },
             "doc": "Fulfilled - The user's privacy policy.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 544,
+          [ { "lineno": 542,
               "filename": "users.js" } ],
         "docs":
           { "summary": "Removes the current policy from the user's browser and resets the user's \n privacy (cookie consent) policy to the default policy for the site.",
@@ -1007,20 +1005,21 @@
         "extra":
           {  } },
       { "name": "setConsentPolicy",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "policyDetails",
-              "type": "wix-users.PolicyDetails",
-              "doc": "The object representing the user's privacy policy." } ],
+          [ { "name": "policy",
+              "type": "wix-users.Policy",
+              "doc": "The object representing the cookies of the user's privacy policy." } ],
         "ret":
           { "type":
               { "name": "Promise",
                 "typeParams":
                   [ "wix-users.PolicyDetails" ] },
-            "doc": "Fulfilled - The user's privacy policy.\nRejected - Error message." },
+            "doc": "Fulfilled - All the details of the user's privacy policy, including if the the current policy is the default site policy and the policy's allowed cookies.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 570,
+          [ { "lineno": 568,
               "filename": "users.js" } ],
         "docs":
           { "summary": "Sets the current user's privacy (cookie consent) policy for GDPR purposes.",
@@ -1088,13 +1087,17 @@
           {  } } ],
   "callbacks":
     [ { "name": "ConsentPolicyChangedHandler",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
-        "params": [],
+        "params":
+          [ { "name": "event",
+              "type": "wix-users.ConsentPolicyChangedEvent",
+              "doc": "The event that occurred when the consent policy changed." } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 602,
+          [ { "lineno": 600,
               "filename": "users.js" } ],
         "docs":
           { "summary": "Function that runs when a user's privacy policy was changed using [`setConsentPolicy()`](#setConsentPolicy).",
@@ -1125,7 +1128,34 @@
         "extra":
           {  } } ],
   "messages":
-    [ { "name": "LoginOptions",
+    [ { "name": "ConsentPolicyChangedEvent",
+        "locations":
+          [ { "lineno": 608,
+              "filename": "users.js" } ],
+        "docs":
+          { "summary": "The event that occurred when the consent policy changed.",
+            "links":
+              [ "[onConsentPolicyChanged( )](#onConsentPolicyChanged)" ],
+            "examples":
+              [ { "title": "Run code when a a user's privacy policy changed",
+                  "body":
+                    [ "import { onConsentPolicyChanged, getCurrentConsentPolicy } from 'wix-users';",
+                      "",
+                      "// ...",
+                      "",
+                      "wixUsers.onConsentPolicyChanged( (user) => {",
+                      "  let policy = getCurrentConsentPolicy();",
+                      "} );" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "members": [],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "LoginOptions",
         "locations":
           [ { "lineno": 223,
               "filename": "users.js" } ],
@@ -1173,7 +1203,7 @@
         "labels": [] },
       { "name": "Policy",
         "locations":
-          [ { "lineno": 648,
+          [ { "lineno": 656,
               "filename": "users.js" } ],
         "docs":
           { "summary": "The current user's privacy (cookie consent) policy settings.",
@@ -1226,17 +1256,16 @@
               "doc": "Consent for a user's personal data to be transferred to a third party (like Google Analytics, Facebook Pixel, and FullStory). The default is `true`." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PolicyDetails",
         "locations":
-          [ { "lineno": 635,
+          [ { "lineno": 643,
               "filename": "users.js" } ],
         "docs":
-          { "summary": "The details of the current user's privacy (cookie consent) policy.",
+          { "summary": "The complete details of the current user's privacy (cookie consent) policy.",
             "description":
-              [ "An object containing details about the privacy policy of the user ",
-                " currently viewing the site." ],
+              [ "An object containing all the details about the privacy policy of the user ",
+                " currently viewing the site. This is returned in the Promise of the `setConsentPolicy()` function." ],
             "links": [],
             "examples": [],
             "extra":
@@ -1244,7 +1273,7 @@
         "members":
           [ { "name": "defaultPolicy",
               "type": "boolean",
-              "doc": "Whether the policy matches the default privacy policy set by the site owner. If true, either the user has not set a policy or has reset the policy to match the default." },
+              "doc": "Whether the policy is the default privacy policy set by the site owner. If true, either the user has not set a policy or the site owner has reset the policy." },
             { "name": "policy",
               "type": "wix-users.Policy",
               "doc": "The object representing the user's current privacy policy." },
