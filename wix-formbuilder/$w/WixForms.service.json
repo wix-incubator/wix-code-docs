@@ -19,7 +19,7 @@
           " ",
           " You do not need to import `$w` or `wix-crm` to work with `WixForms` APIs.",
           "",
-          " ### Working with the `WixForms` API",
+          " ### Working with the WixForms API",
           "",
           "",
           " To work with a `WixForms` `$w` element using the API: ",
@@ -27,13 +27,14 @@
           " 1. [Add and set up](https://support.wix.com/en/article/adding-and-setting-up-a-form-on-your-site) the ",
           "    Wix Form app on your site. ",
           "",
-          "    When you add the [`WixForms`](wix-crm.html#$w-wixforms) `$w` element, a [`Form`]($w.html#form) `$w` element ",
-          "    is also added. Think of the `Form` element as a container for the input elements and buttons in the Wix Form. ",
-          "    The `Form` element works in conjunction with the [`WixForms`](wix-crm.html#$w-wixforms) element, meaning, if ",
+          "    When you add the `$w` [`WixForms`](wix-crm.html#$w-wixforms) element, a `$w` [`Form`]($w.html#form) element ",
+          "    is also added, with its own properties and events. Think of the `Form` element as a container for the Wix ",
+          "    Form's input elements and buttons. These two elements work together, meaning, if ",
           "    you hide or collapse either the `WixForms` or the `Form` element, the other element is also hidden/collapsed. ",
-          "    All Wix Forms app's APIs apply to the `WixForms` element, not the `Form` element. ",
+          "    All Wix Forms app's APIs are used on the `WixForms` element, not the `Form` element. ",
           " ",
           " 2. Set up the collection for form data.",
+          "",
           "    Depending on the form you choose, a [Wix app starter collection](https://support.wix.com/en/article/corvid-working-with-wix-app-collections-and-code#what-are-wix-app-starter-collections) ",
           "    is added to your site. You can see it in the Site Structure sidebar under \"Database.\" You can use this collection \"as is,\"",
           "    or you can use the collection as a template, modifying its fields as you like.",
@@ -43,8 +44,9 @@
           " but the user input elements wrapped within the corresponding [`Form`]($w.html#form) element can. For example, you cannot check if a Wix Form has changed ",
           " using [`onChange`]($w.formelement.html#onChange), but you can check if one of the Wix Form's `Form` fields changed.",
           " ",
-          " > **Note:** Alternatively, you can use the Corvid API to create your own custom form without the Wix Forms app and connect ",
-          " the form's fields to a collection. You can create a custom form with standard input elements ",
+          " > **Note:** Alternatively, instead of using the Wix Forms APIs, you can use the Corvid API to ",
+          " create your own custom form without the Wix Forms app and connect ",
+          " the form's fields to a custom collection. You can create the custom form with standard input elements ",
           " and a button for submission. When customizing your own form, you have ",
           " options that might not yet be available from the Wix Forms app. For example, you can add more ",
           " varied input elements not yet supported with the app. ",
@@ -58,8 +60,8 @@
           "  ",
           " When a visitor clicks the Submit button:",
           " ",
-          " 1. [`onWixFormSubmit`](#onWixFormSubmitted) sets events that fire when a site visitor submits a Wix Form ",
-          "    yet before the Wix Form is actually sent to the server. This event handler runs on the front end. ",
+          " 1. The [`onWixFormSubmit`](#onWixFormSubmitted) event handler sets events that fire when a site visitor submits a Wix Form ",
+          "    yet before the Wix Form is actually sent to the server. This event handler runs on the client side. ",
           "",
           "    The event handler can include these operations:",
           "    ",
@@ -71,26 +73,27 @@
           "",
           "    * Aborting the submission of the Wix Form data to the server.",
           "",
-          "    If *all* validations pass for all `onWixFormSubmit` events",
+          "    If *all* validations pass for *all* `onWixFormSubmit` events,",
           "    the form is sent to the server. If even one event's processing fails, no processing for ",
           "    any of these events occur.",
           "",
-          " 1. After the `onWixFormSubmit` events are fired, either Wix Form submission to the server succeeds or fails: ",
+          " 1. After the `onWixFormSubmit` events are fired, the Wix Form is sent to the server. The submission",
+          "    either succeeds or fails: ",
           "",
-          "    * If the Wix Form submission is successful, [`onWixFormSubmitted`](#onWixFormSubmitted) is fired.",
+          "    * If the Wix Form submission succeeds, the [`onWixFormSubmitted`](#onWixFormSubmitted) event handler is triggered.",
           "      `onWixFormSubmitted` sets events that fire when a site visitor submits a ",
           "      Wix Form and the form is *successfully* sent to the server for asynchronous processing. ",
           "",
-          "      Use this event handler's callback function to handle front end operations, such as displaying a message ",
-          "      indicating the Wix Form was successfully submitted. The callback function starts even while the ",
+          "      Use this event handler's callback function to handle client side operations, such as displaying a message ",
+          "      indicating the successful submission. The callback function starts even while the ",
           "      server is still performing its own backend operations. ",
           "",
-          "    * If the Wix Form submission is *not* successful, [`onWixFormSubmittedError`](#onWixFormSubmittedError) is fired. ",
+          "    * If the Wix Form submission is fails, the [`onWixFormSubmittedError`](#onWixFormSubmittedError) event handler is triggered. ",
           "",
-          "      Use this event handler's callback function to define front end operations for failed submits,",
+          "      Use this event handler's callback function to define client side operations for failed submits,",
           "      such as displaying a message requesting the visitor try again later.",
           "",
-          " 1. [`onFormSubmit()`](wix-crm-backend/events/onFormSubmit) starts as soon as the Wix Form is received by the server",
+          " 1. The [`onFormSubmit()`](wix-crm-backend/events/onFormSubmit) event handler starts as soon as the Wix Form is received by the server. ",
           "    Asynchronous backend processing starts. For example, use this event handler's callback function to ",
           "    send an email indicating that the Wix Form was submitted and at what time it was submitted." ],
       "links": [],
@@ -100,7 +103,8 @@
   "properties": [],
   "operations":
     [ { "name": "onWixFormSubmit",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "eventHandler",
@@ -109,21 +113,28 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 97,
+          [ { "lineno": 100,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Adds an event handler that fires when a site visitor starts to submit a Wix Form yet before the form is actually submitted and sent to the server.",
             "description":
-              [ "When the site visitor submits a Wix Form, the `onWixFormSubmit()`",
-                " callback is triggered for the [`WixForms`](wix-crm.html#$w-wixforms) element before the Wix Form",
-                " is actually submitted and sent to the server. ",
+              [ "When the site visitor submits a Wix Form, the `onWixFormSubmit()` event handler's ",
+                " callback function is triggered for the [`WixForms`](wix-crm.html#$w-wixforms) element before the Wix Form",
+                " is actually submitted and sent to the server. This event handler: ",
                 "",
-                " This gives you the opportunity to manipulate the fields on the Wix Form before submitting the fields for server ",
-                " processing. For example, the form might have a first name and a last name field, but the server might need to process",
-                " full names only. You can manipulate the first and last name fields before sending the data to ",
+                " + Performs general validations (such as checking that all email",
+                "   fields contain valid email addresses). ",
                 "",
-                " You can also use `onWixFormSubmit()` to stop the submission process. Once an event fails the submission, ",
-                " all other form submission events stop and the no submission occurs.",
+                " + Performs any client-side, synchronous operations defined in the callback function.",
+                "   This gives you the opportunity to manipulate the fields on the Wix Form before submitting the fields for server ",
+                "   processing. For example, the form might have first and last name fields, but the server might be expecting",
+                "   full names only. You can combine the first and last name fields into one field before sending the data to the",
+                "   server.",
+                "",
+                " + You can also use the `onWixFormSubmit()` event handler to stop the submission process entirely. ",
+                "",
+                "",
+                " If one event fails the submission, all other form submission events stop and the no submission occurs.",
                 "",
                 "",
                 " The callback to run when the Wix Form is about to be submitted is either the name of the function",
@@ -138,7 +149,7 @@
                 " the server starts to process the relevant actions.",
                 "",
                 "",
-                " `onWixFormSubmit()` provides information and functionality available on the client side:",
+                " `onWixFormSubmit()` provides information and functionality available on the client side only:",
                 "",
                 " + The function has access to the field names and field values on the form but does not have access to submission details that ",
                 "   exist only on the server, such as the contact ID and the submission time.",
@@ -149,6 +160,7 @@
                 " For other Wix Forms events, see: ",
                 "",
                 " + The [`onWixFormSubmitted`](#onWixFormSubmitted) function, which sets events that fire when a site visitor submits a Wix Form and it is successfully received by the server. ",
+                " + The [`onWixFormSubmittedError`](#onWixFormSubmittedError) function, which sets events that fire when a site visitor submits a Wix Form and it is *not* received by the server. ",
                 " + The [`onFormSubmit()`](wix-crm-backend/events/onFormSubmit) function, which is called in the Backend section's code, to set events that fire on the backend when a site visitor submits a form." ],
             "links":
               [ "[WixFormSubmitEvent](#WixFormSubmitEvent)",
@@ -266,7 +278,8 @@
         "extra":
           { "eventType": "WixFormSubmitEvent" } },
       { "name": "onWixFormSubmitted",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "eventHandler",
@@ -275,7 +288,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 151,
+          [ { "lineno": 162,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Adds an event handler that fires when a site visitor submits a Wix Form and it is successfully received by the server.",
@@ -301,6 +314,7 @@
                 " For other Wix Forms events, see: ",
                 "",
                 " + The [`onWixFormSubmit`](#onWixFormSubmit) function, which sets events that fire when a site visitor submits a Wix Form yet before it is sent to the server. ",
+                " + The [`onWixFormSubmittedError`](#onWixFormSubmittedError) function, which sets events that fire when a site visitor submits a Wix Form and it is *not* received by the server. ",
                 " + The [`onFormSubmit()`](wix-crm-backend/events/onFormSubmit) function, which is called in the Backend section's code, to set events that fire on the backend when a site visitor submits a form." ],
             "links":
               [ "[WixFormSubmittedEvent](#WixFormSubmittedEvent)",
@@ -347,7 +361,8 @@
         "extra":
           { "eventType": "WixFormSubmittedEvent" } },
       { "name": "onWixFormSubmittedError",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "eventHandler",
@@ -356,7 +371,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 188,
+          [ { "lineno": 200,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Adds an event handler that fires when a site visitor is not able to successfully submit a Wix Form to the server.",
@@ -382,7 +397,16 @@
                 " * PERMISSION_DENIED. The site visitor does not have permissions to submit the Wix Form. For example, a reCAPTCHA challenge was not verified.",
                 " * RESOURCE_EXHAUSTED. The request to submit the Wix Form was denied by the server to prevent overload and improve overall performance.",
                 " * UNAVAILABLE. The service is not available.",
-                " * UNKNOWN_ERROR. An unknown error occurred." ],
+                " * UNKNOWN_ERROR. An unknown error occurred.",
+                "",
+                "",
+                "",
+                "",
+                " For other Wix Forms events, see: ",
+                "",
+                " + The [`onWixFormSubmit`](#onWixFormSubmit) function, which sets events that fire when a site visitor submits a Wix Form yet before it is sent to the server. ",
+                " + The [`onWixFormSubmitted`](#onWixFormSubmitted) function, which sets events that fire when a site visitor submits a Wix Form and it is successfully received by the server. ",
+                " + The [`onFormSubmit()`](wix-crm-backend/events/onFormSubmit) function, which is called in the Backend section's code, to set events that fire on the backend when a site visitor submits a form. *" ],
             "links":
               [ "[WixFormSubmittedErrorEvent](#WixFormSubmittedErrorEvent)",
                 "[onWixFormSubmitted](#onWixFormSubmitted)" ],
@@ -411,7 +435,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 229,
+          [ { "lineno": 246,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Handles events fired when the Wix Form is about to be submitted.",
@@ -431,7 +455,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 244,
+          [ { "lineno": 261,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Handles events fired when the Wix Form is not submitted due to error.",
@@ -451,7 +475,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 237,
+          [ { "lineno": 254,
               "filename": "form.js" } ],
         "docs":
           { "summary": "Handles events fired when the Wix Form is submitted.",
