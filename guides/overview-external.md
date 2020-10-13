@@ -4,6 +4,6 @@ Extend your site’s functionality by working with external services. Fetch reso
 
 *   **[wix-fetch](https://www.wix.com/corvid/reference/wix-fetch.html)**
 *   **[wix-http-functions](https://www.wix.com/corvid/reference/wix-http-functions.html)**
-*   **[external-database-collections](https://www.wix.com/corvid/new-reference/spis/external-database-collections)**
-*   **[Site-monitoring](https://www.wix.com/corvid/new-reference/spis/site-monitoring)**
-*   **[wix-secrets-backend](https://www.wix.com/corvid/new-reference/wix-secrets-backend)**
+*   **[external-database-collections](https://www.wix.com/corvid/reference/spis/external-database-collections)**
+*   **[Site-monitoring](https://www.wix.com/corvid/reference/spis/site-monitoring)**
+*   **[wix-secrets-backend](https://www.wix.com/corvid/reference/wix-secrets-backend)**
