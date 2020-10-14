@@ -14,7 +14,7 @@ Added a note that [`wixLocation.to`](https://www.wix.com/corvid/reference/wix-lo
 
 `$w.HtmlComponent`
 
-To embed a PDF in an HtmlComponent you must upgrade your site to a Premium Plan.
+To embed a PDF in an [HtmlComponent](https://www.wix.com/corvid/reference/$w/htmlcomponent/introduction) you must upgrade your site to a Premium Plan.
 
 ## 🗓️ October 11, 2020
 ### New API: Decrement inventory
