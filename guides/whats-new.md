@@ -2,10 +2,15 @@
 
 We're always at work adding and updating the Corvid APIs and we want you to have one place where you can see all the latest changes and check out our latest coolness. 
 
+## 🗓️ Oct 13, 2020
+### Update: Add information that wix-location > to does not work in Preview
+
+Added a note that [wixLocation.to](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
+
 ## 🗓️ Sept 15, 2020
 ### Bug: Change Slider > value from read only to read & write
 
-The value property for the Slider element was described as read only but it should have been read and write.
+The [value](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should have been read and write.
 
 ## 🗓️ Sept 10, 2020
 ### Update: Add information about getFileURL token expiring
