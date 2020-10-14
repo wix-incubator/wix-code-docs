@@ -9,6 +9,27 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 
 Added a note that [`wixLocation.to`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
 
+## 🗓️ October 13, 2020
+### Fix: htmlComponent can only embedd a PDF file with a Premium account
+
+`$w.HtmlComponent`
+
+To embed a PDF in an HtmlComponent you must upgrade your site to a Premium Plan.
+
+## 🗓️ October 11, 2020
+### New API: Decrement inventory
+
+`wix-stores-backend`
+
+Manually [decrement](https://www.wix.com/corvid/reference/wix-stores-backend/decrementinventory) a product variant's stock in inventory. This functionality is helpful for creating an inventory management page on your site.
+
+## 🗓️ September 16, 2020
+### Update: Added Stackdriver information to Site Monitoring introduction
+
+`site-monintoring`
+
+Added [information](https://www.wix.com/corvid/reference/spis/site-monitoring/introduction) about connecting Wix site events to Google's Stackdriver external monitoring tool.
+
 ## 🗓️ September 15, 2020
 ### Bug: Changed Slider > value from read only to read & write
 
