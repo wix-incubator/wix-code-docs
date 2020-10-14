@@ -10,9 +10,7 @@ We're always at work adding and updating the Corvid APIs and we want you to have
 ## 🗓️ Sept 15, 2020
 ### Bug: Change Slider > value from read only to read & write
 
-**`$.slider`**
-
-The [value](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should have been read and write.
+`$.slider` The [value](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should have been read and write.
 
 ## 🗓️ Sept 10, 2020
 ### Update: Add information about getFileURL token expiring
@@ -22,9 +20,9 @@ The [value](https://www.wix.com/corvid/reference/$w/slider/value) property for t
 Added information that the token returned by [getFileUrl()](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/getfileurl) expires after 600 minutes. Describe the alternative of creating a static URL without a token.
 
 ## 🗓️ Sept 10, 2020
-### Fix: The URL table for wixHttpFunctionRequest (wixHttpFunctionRequest)
+### Fix: The URL table for wixHttpFunctionRequest
 
-The table that described the URL structure of a [wixHttpFunctionRequest](https://www.wix.com/corvid/reference/wix-http-functions/wixhttpfunctionrequest) was difficult to parse. We've updated the content to make it easier to understand.
+The table that described the URL structure of a [wixHttpFunctionRequest](https://www.wix.com/corvid/reference/wix-http-functions/wixhttpfunctionrequest) was difficult to parse. We've updated the content to make it easier to understand. `wix-http-functions`
 
 ## 🗓️ Aug 20, 2020
 ### New API: Custom Fulfiller Email (wix-stores-backend)
