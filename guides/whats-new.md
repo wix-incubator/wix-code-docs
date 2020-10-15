@@ -3,14 +3,14 @@
 We're always adding and updating the Corvid APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
 ## 🗓️ October 13, 2020
-### Updated: Added information that wixLocation.to() does not work in preview
+### Updated: wixLocation.to() does not work in preview
 
 `wix-location`
 
 Added a note that [`wixLocation.to()`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
 
 ## 🗓️ October 13, 2020
-### Fixed: htmlComponent can only embed a PDF file with a Premium account
+### Updated: htmlComponent can only embed a PDF file with a Premium account
 
 `$w.HtmlComponent`
 
@@ -24,7 +24,7 @@ To embed a PDF in an [HtmlComponent](https://www.wix.com/corvid/reference/$w/htm
 Manually [decrement](https://www.wix.com/corvid/reference/wix-stores-backend/decrementinventory) a product variant's stock in inventory. This functionality is helpful for creating an inventory management page on your site.
 
 ## 🗓️ September 16, 2020
-### Update: Added Stackdriver information to Site Monitoring introduction
+### Updated: Added Stackdriver information to Site Monitoring introduction
 
 `site-monitoring`
 
@@ -45,18 +45,18 @@ The [`value`](https://www.wix.com/corvid/reference/$w/slider/value) property for
 Added more content to the table that displays details of the object returned by [`validity`](https://www.wix.com/corvid/reference/$w/validatablemixin/validity).
 
 ## 🗓️ September 14, 2020
-### Fixed: Added information that some getProductVariants parameter fields are optional
+### Fixed: Added information that some getProductVariants() parameter fields are optional
 
 `wix-stores`
 
-Added information that some of the parameter fields for [getProductVariants](https://www.wix.com/corvid/reference/wix-stores/getproductvariants) are optional.
+Added information that some of the parameter fields for [getProductVariants()](https://www.wix.com/corvid/reference/wix-stores/getproductvariants) are optional.
 
 ## 🗓️ September 14, 2020
-### Fixed: createProduct SKU is a string
+### Fixed: createProduct() SKU is a string
 
 `stores-backend`
 
-The `sku` property for [createProduct](https://www.wix.com/corvid/reference/wix-stores-backend/createproduct) was described as a number, but it is a string.
+The `sku` property for [createProduct()](https://www.wix.com/corvid/reference/wix-stores-backend/createproduct) was described as a number, but it is a string.
 
 ## 🗓️ September 10, 2020
 ### Updated: Added information about getFileURL token expiring
@@ -87,7 +87,7 @@ With the new [`onCartChanged()`](https://www.wix.com/corvid/reference/wix-stores
 To help your site conform to GDPR and CCPA standards, we now provide Corvid APIs for [checking](https://www.wix.com/corvid/reference/wix-users/getcurrentconsentpolicy) and [setting](https://www.wix.com/corvid/reference/wix-users/setconsentpolicy) visitors' current consent policies. These policies include which cookies the visitor allows and if the visitor allows data transfer to third parties. 
 
 ## 🗓️ August 30, 2020
-### Updated: Added examples to listMemberBadges
+### Updated: Added examples to listMemberBadges()
 
 `wix-users-backend`
 
@@ -95,7 +95,7 @@ Added more robust examples to [`listMemberBadges()`](https://www.wix.com/corvid/
 
 
 ## 🗓️ August 23, 2020
-### New API: Coupons limit per customer
+### New API: Coupon limit per customer
 
 `wix-marketing-backend`
 
@@ -141,7 +141,7 @@ With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-se
 
 `wix-media-backend`
 
-The [Upload](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/upload) button can now perform certains validations right after file selection.
+The [Upload](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/upload) button can now perform certain validations right after file selection.
 
 ## 🗓️ August 9, 2020
 ### Fixed: Mark createContact() parameters as optional
@@ -158,18 +158,18 @@ Changed the `contactInfo` parameters for [`createContact()`](https://www.wix.com
 Use the new [`getOrdersLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getorderslink) function to generate a PDF file containing information about one of more of your store's orders.
 
 ## 🗓️ August 3, 2020
-### Updated: New example for onItemReady
+### Updated: New example for onItemReady()
 
 `$w.repeater`
 
-Added a simple [`onItemReady`](https://www.wix.com/corvid/reference/$w/repeater/onitemready) example where `onItemReady` is triggered when repeater data is set.
+Added a simple [`onItemReady()`](https://www.wix.com/corvid/reference/$w/repeater/onitemready) example where `onItemReady()` is triggered when repeater data is set.
 
 ## 🗓️ August 3, 2020
-### Updated: New example for wixDataQuery.include
+### Updated: New example for WixDataQuery.include()
 
 `wix-data`
 
-Added new example in [`wixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
+Added new example in [`WixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
 
 ## 🗓️ August 3, 2020
 ### Fixed: Router examples should use https for imageSite links
