@@ -45,14 +45,14 @@ The [`value`](https://www.wix.com/corvid/reference/$w/slider/value) property for
 Added more content to the table that displays details of the object returned by [`validity`](https://www.wix.com/corvid/reference/$w/validatablemixin/validity).
 
 ## 🗓️ September 14, 2020
-### Fixed: Added information that some getProductVariants() parameter fields are optional
+### Updated: Added information that some getProductVariants() parameter fields are optional
 
 `wix-stores`
 
 Added information that some of the parameter fields for [getProductVariants()](https://www.wix.com/corvid/reference/wix-stores/getproductvariants) are optional.
 
 ## 🗓️ September 14, 2020
-### Fixed: createProduct() SKU is a string
+### Updated: createProduct() SKU is a string
 
 `stores-backend`
 
@@ -66,7 +66,7 @@ The `sku` property for [createProduct()](https://www.wix.com/corvid/reference/wi
 Added information that the token returned by [`getFileUrl()`](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/getfileurl) expires after 600 minutes. Described the alternative of creating a static URL without a token.
 
 ## 🗓️ September 10, 2020
-### Fixed: The URL table for wixHttpFunctionRequest
+### Updated: The URL table for wixHttpFunctionRequest
 
 `wix-http-functions`
 
@@ -144,7 +144,7 @@ With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-se
 The [Upload](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/upload) button can now perform certain validations right after file selection.
 
 ## 🗓️ August 9, 2020
-### Fixed: Mark createContact() parameters as optional
+### Updated: Mark createContact() parameters as optional
 
 `wix-crm`
 
@@ -172,7 +172,7 @@ Added a simple [`onItemReady()`](https://www.wix.com/corvid/reference/$w/repeate
 Added new example in [`WixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
 
 ## 🗓️ August 3, 2020
-### Fixed: Router examples should use https for imageSite links
+### Updated: Router examples should use https for imageSite links
 
 `wix-router`
 
