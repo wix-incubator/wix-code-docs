@@ -3,14 +3,14 @@
 We're always adding and updating the Corvid APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
 ## 🗓️ October 13, 2020
-### Updated: Added information that wix-location > to does not work in preview
+### Updated: Added information that wixLocation.to() does not work in preview
 
 `wix-location`
 
-Added a note that [`wixLocation.to`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
+Added a note that [`wixLocation.to()`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
 
 ## 🗓️ October 13, 2020
-### Fix: htmlComponent can only embedd a PDF file with a Premium account
+### Fixed: htmlComponent can only embedd a PDF file with a Premium account
 
 `$w.HtmlComponent`
 
@@ -97,7 +97,9 @@ Added more robust examples to [`listMemberBadges()`](https://www.wix.com/corvid/
 ## 🗓️ August 23, 2020
 ### New API: Coupons limit per customer
 
-?????
+`wix-marketing-backend`
+
+Use the new [limitPerCustomer](https://www.wix.com/corvid/reference/wix-marketing-backend/coupons-obj/createcoupon) property that allows for limiting coupon use per customer. Helpful if you'd like to create a coupon to be used only once, or any number of times per customer.
 
 ## 🗓️ August 20, 2020
 ### New API: Custom fulfiller email 
@@ -127,6 +129,27 @@ Added information about new array and object types to the [wix-data Introduction
 
 Use the new [`getPackingSlipLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getpackingsliplink) function to generate and print a PDF file of an order's packing slip. Especially useful in the ThankYouPage, after an order is completed.
 
+## 🗓️ August 2, 2020
+### Updated: 
+
+`wix-secrets-backend`
+
+With the new Secrets API you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
+
+## 🗓️ August 9, 2020
+### Updated: New validations for file upload
+
+`wix-media-backend`
+
+The [Upload](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/upload) button can now perform certains validations right after file selection.
+
+## 🗓️ August 9, 2020
+### Fixed: Mark createContact() parameters as optional
+
+`wix-crm`
+
+Changed the `contactInfo` parameters for [`createContact()`](https://www.wix.com/corvid/reference/wix-crm/createcontact) to be optional.
+
 ## 🗓️ August 6, 2020
 ### New API: Print orders
 
@@ -149,7 +172,7 @@ Added a simple [`onItemReady`](https://www.wix.com/corvid/reference/$w/repeater/
 Added new example in [`wixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
 
 ## 🗓️ August 3, 2020
-### Fix: Router examples should use https for imageSite links
+### Fixed: Router examples should use https for imageSite links
 
 `wix-router`
 
@@ -168,6 +191,20 @@ Use the [`createFulfillment()`](https://www.wix.com/corvid/reference/wix-stores-
 `wix-stores-backend`
 
 Use the [`createOrder()`](https://www.wix.com/corvid/reference/wix-stores-backend/createorder) function to have more control over various order properties, allowing for more custom order flows. 
+
+## 🗓️ July 28, 2020
+### New API: Form Builder
+
+`wix-crm` `wix-crm-backend`
+
+With the new Wix Forms APIs,  you can access Wix Form app functionality with code. You can customize how site visitors work with the Wix Form, while taking advantage of the Wix Forms app's ease of design, automatic creation of submission collections, payment receipt, automatic setup of email notifications, and more. You can perform actions both on the [client side](https://www.wix.com/corvid/reference/wix-crm/$w-wixforms) and in the [backend](https://www.wix.com/corvid/reference/wix-crm-backend/events/onformsubmit).
+
+## 🗓️ July 9, 2020
+### Updated: Badges
+
+`wix-users-backend`
+
+With the new [Badges APIs](https://www.wix.com/corvid/reference/wix-users-backend/badges)  you can manage your member badges with code. Create, update, and delete badges, assign and remove badges from members, and see which members are associated with each badge.
 
 ## 🗓️ July 9, 2020
 ### Updated: Add information about import and export triggering before and after query hooks 
