@@ -127,12 +127,47 @@ Added information about new array and object types to the [wix-data Introduction
 
 Use the new [`getPackingSlipLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getpackingsliplink) function to generate and print a PDF file of an order's packing slip. Especially useful in the ThankYouPage, after an order is completed.
 
+## 🗓️ August 6, 2020
+### New API: Print orders
+
+`wix-stores-backend`
+
+Use the new [`getOrdersLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getorderslink) function to generate a PDF file containing information about one of more of your store's orders.
+
+## 🗓️ August 3, 2020
+### Updated: New example for onItemReady
+
+`$w.repeater`
+
+Added a simple [`onItemReady`](https://www.wix.com/corvid/reference/$w/repeater/onitemready) example where `onItemReady` is triggered when repeater data is set.
+
 ## 🗓️ August 3, 2020
 ### Updated: New example for wixDataQuery.include
 
 `wix-data`
 
-Added new example in [`wixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include), to show how to use a reference field from another collection when populating a table with DataPath.
+Added new example in [`wixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
+
+## 🗓️ August 3, 2020
+### Fix: Router examples should use https for imageSite links
+
+`wix-router`
+
+The **A router with static data** example for the [`router()`](https://www.wix.com/corvid/reference/wix-router/router) function used http URLs in the example for imageSite. They were updated to use https.
+
+## 🗓️ July 30, 2020
+### New API: Fulfillment
+
+`wix-stores-backend`
+
+Use the [`createFulfillment()`](https://www.wix.com/corvid/reference/wix-stores-backend/createfulfillment) function to create, update, and delete order fulfillments (as well as set up events for each). 
+
+## 🗓️ July 30, 2020
+### New API: Create order
+
+`wix-stores-backend`
+
+Use the [`createOrder()`](https://www.wix.com/corvid/reference/wix-stores-backend/createorder) function to have more control over various order properties, allowing for more custom order flows. 
 
 ## 🗓️ July 9, 2020
 ### Updated: Add information about import and export triggering before and after query hooks 
