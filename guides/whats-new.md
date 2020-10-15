@@ -10,7 +10,7 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 Added a note that [`wixLocation.to()`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
 
 ## 🗓️ October 13, 2020
-### Fixed: htmlComponent can only embedd a PDF file with a Premium account
+### Fixed: htmlComponent can only embed a PDF file with a Premium account
 
 `$w.HtmlComponent`
 
@@ -26,16 +26,16 @@ Manually [decrement](https://www.wix.com/corvid/reference/wix-stores-backend/dec
 ## 🗓️ September 16, 2020
 ### Update: Added Stackdriver information to Site Monitoring introduction
 
-`site-monintoring`
+`site-monitoring`
 
 Added [information](https://www.wix.com/corvid/reference/spis/site-monitoring/introduction) about connecting Wix site events to Google's Stackdriver external monitoring tool.
 
 ## 🗓️ September 15, 2020
-### Bug: Changed Slider > value from read only to read & write
+### Bug: Changed slider.value from read only to read & write
 
 `$w.slider` 
 
-The [`value`](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should have been read and write.
+The [`value`](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should be read and write.
 
 ## 🗓️ September 15, 2020
 ### Updated: Added more information for returned object properties from Validity property
@@ -63,7 +63,7 @@ The `sku` property for [createProduct](https://www.wix.com/corvid/reference/wix-
 
 `wix-media-backend`
 
-Added information that the token returned by [`getFileUrl()`](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/getfileurl) expires after 600 minutes. Describe the alternative of creating a static URL without a token.
+Added information that the token returned by [`getFileUrl()`](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/getfileurl) expires after 600 minutes. Described the alternative of creating a static URL without a token.
 
 ## 🗓️ September 10, 2020
 ### Fixed: The URL table for wixHttpFunctionRequest
@@ -130,11 +130,11 @@ Added information about new array and object types to the [wix-data Introduction
 Use the new [`getPackingSlipLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getpackingsliplink) function to generate and print a PDF file of an order's packing slip. Especially useful in the ThankYouPage, after an order is completed.
 
 ## 🗓️ August 2, 2020
-### Updated: 
+### Updated: Secrets API
 
 `wix-secrets-backend`
 
-With the new Secrets API you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
+With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-secrets-backend) you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
 
 ## 🗓️ August 9, 2020
 ### Updated: New validations for file upload
