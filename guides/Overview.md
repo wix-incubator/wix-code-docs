@@ -7,4 +7,4 @@ To use the APIs, you’ll need a working knowledge of JavaScript, including ES20
 
 ## What's New
 
-Check our our [What's New](https://www.wix.com/corvid/reference/api-overview/what's-new) to see a list of all the latest changes, updates, and additions to our API Reference.
+Check out our [What's New](https://www.wix.com/corvid/reference/api-overview/what's-new) to see a list of all the latest changes, updates, and additions to our API Reference.
