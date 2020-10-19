@@ -2,6 +2,8 @@
 
 We're always adding and updating the Corvid APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
+We also keep a list of doc bugs that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
+
 ## 🗓️ October 13, 2020
 ### Updated: wixLocation.to() does not work in preview
 
