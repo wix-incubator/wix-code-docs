@@ -4,6 +4,13 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 
 We also keep a list of doc bugs that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
+## 🗓️ October 20, 2020
+### New API: onWixFormSubmit() event handler in the WixForms API
+
+`wix-crm`
+
+With the new onWixFormSubmit() event handler in the WixForms API, you can perform validations on your forms immediately after visitors submit the form yet before the server starts any processing.  
+
 ## 🗓️ October 13, 2020
 ### Updated: wixLocation.to() does not work in preview
 
@@ -33,7 +40,7 @@ Manually [decrement](https://www.wix.com/corvid/reference/wix-stores-backend/dec
 Added [information](https://www.wix.com/corvid/reference/spis/site-monitoring/introduction) about connecting Wix site events to Google's Stackdriver external monitoring tool.
 
 ## 🗓️ September 15, 2020
-### Bug: Changed slider.value from read only to read & write
+### Updated: Changed slider.value from read only to read & write
 
 `$w.slider` 
 
