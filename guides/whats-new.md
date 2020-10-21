@@ -9,7 +9,7 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 `wix-crm`
 
-With the new onWixFormSubmit() event handler in the WixForms API, you can perform validations on your forms immediately after visitors submit the form yet before the server starts any processing.  
+With the new [`onWixFormSubmit()`](https://www.wix.com/corvid/reference/wix-crm/$w-wixforms/onwixformsubmit) event handler in the WixForms API, you can perform validations on your forms immediately after visitors submit the form yet before the server starts any processing.  
 
 ## 🗓️ October 13, 2020
 ### Updated: wixLocation.to() does not work in preview
