@@ -35,10 +35,10 @@ Add page elements in the Wix Editor:
 
 |Element|Location in Add Menu|Description|ID|
 |-------|--------------------|-----------|--|
-|Dropdown|User Input|For selecting the source currency|sourceCurrency|
-|Dropdown|User Input|For selecting the target currency|targetCurrency|
-|Input|User Input|For entering the amount to convert|sourceAmount|
-|Text Box|User Input|To display the converted amount|targetAmount|
+|Dropdown|Input|For selecting the source currency|sourceCurrency|
+|Dropdown|Input|For selecting the target currency|targetCurrency|
+|Text Input|Input|For entering the amount to convert|sourceAmount|
+|Text Box|Input|To display the converted amount|targetAmount|
 |Button|Button|To trigger the currency conversion when clicked|calculateButton|
   
 ## Step 4: Add Code
@@ -111,7 +111,7 @@ Here we select all the dropdowns by type. By calling <code>[$w]($w)</code> with 
 
 function calculateCurrency() {
   // Initial amount 
-  let initialAmount = $w("#sourceAmount").value;
+  let initialAmount = Number($w("#sourceAmount").value);
   // Original currency
   let sourceSymbol = $w("#sourceCurrency").value;
   // Target currency
