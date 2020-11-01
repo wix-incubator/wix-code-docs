@@ -7,7 +7,9 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 ## 🗓️ November 1, 2020
 ### New API: removeProductFromCart
 
-With removeProductsFromCart() you can remove a line item/product from the cart. 
+`wix-stores`
+
+With [`removeProductFromCart()`](https://www.wix.com/corvid/reference/wix-stores/removeproductfromcart) you can remove a line item/product from the cart. 
 
 ## 🗓️ October 20, 2020
 ### New API: onWixFormSubmit() event handler in the WixForms API
