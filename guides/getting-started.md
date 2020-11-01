@@ -28,7 +28,7 @@ Add page elements in the Wix Editor:
 
 1.   On the left side of the Editor, click **Add**.
 2.   Add the page elements illustrated below to your site.
-    *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Editor. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
+    *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Code panel. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
 
 ![alt_text](../media/gettingStarted3.png)
