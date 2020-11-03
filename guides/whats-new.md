@@ -5,6 +5,13 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
 ## 🗓️ November 1, 2020
+### New API: Wix Forum Backend Event APIs
+
+`wix-forum-backend`
+
+With the new [Forum Backend Events](https://www.wix.com/corvid/reference/wix-forum-backend) you can react to activity on your forum. You can run custom code when forum categories, posts, and comments are created, updated, deleted, posted, pinned, voted on, liked, reported, and more. For example, you can send a custom email to a poster when their post is liked, display a message when a comment is marked as best, or set up an alert when a post or comment is reported. 
+
+## 🗓️ November 1, 2020
 ### New API: removeProductFromCart
 
 `wix-stores`
