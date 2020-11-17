@@ -22,7 +22,7 @@
           " 1. The site visitor chooses which file to upload by clicking the upload button and selecting the file in a native file chooser dialog. ",
           " 1. At that point the file is stored in the upload button's `value` property as a `File` object. ",
           " 1. The `onChange()` event is fired.",
-          " 1. Validations on the file are performed, following which the `valid`, `validity`, and `validationMessage` properties are updated. Because `onChange()` is fired before validations are performed, do not check any of the validation properties in the code of the `onChange()` event handler. For example, do not code an if statement that checks the `valid` property in the `onChange()` because the property at this point contains values prior to the `onChange()`.",
+          " 1. Validations on the file are performed, following which the `valid`, `validity`, and `validationMessage` properties are updated. Because `onChange()` is fired before validations are performed, do not check any of the validation properties in the code of the `onChange()` event handler. For example, do not code an `if` statement that checks the `valid` property in the `onChange()` because the property at this point contains values prior to the `onChange()`.",
           " 1. The site visitor triggers an event, such as a button click, on the other element. ",
           " 1. That element's event handler calls the `startUpload()` function to perform the actual upload. ",
           " 1. The upload either succeeds and returns an `UploadedFile` object, or fails and returns an `UploadError` object.",
@@ -64,10 +64,11 @@
           "",
           "",
           "",
-          "> **Note:** Because the `onChange()` event is fired before validation, note the following if you call the `startUpload()` function",
-          " inside the `onChange()` event handler: `startUpload()` returns promptly with an `UploadError` object if ",
-          " the`fileSizeExceedsLimit` `validity` property or the `fileSizeExceedsLimit` `validity` property is true. If the validation ",
-          " fails for one of these two reasons, the `startUpload()` does not attempt an upload." ],
+          "> **Note:** ",
+          "> The `onChange()` event is fired before validation. As a result, consider the following points if you intend",
+          "  to call the `startUpload()` function inside the `onChange()` event handler: ",
+          "> + `startUpload()` returns promptly with an `UploadError` object if the `fileSizeExceedsLimit valid` property or the `fileSizeExceedsLimit validity` property is true. ",
+          "> + If the validation fails for one of these two reasons, causing an error to be returned, the `startUpload()` does not attempt the upload." ],
       "links": [],
       "examples": [],
       "extra":
@@ -79,9 +80,9 @@
         "set": true,
         "type": "string",
         "locations":
-          [ { "lineno": 186,
+          [ { "lineno": 187,
               "filename": "UploadButton.es6" },
-            { "lineno": 205,
+            { "lineno": 206,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Sets or gets the label on the upload button.",
@@ -107,9 +108,9 @@
         "set": true,
         "type": "string",
         "locations":
-          [ { "lineno": 227,
+          [ { "lineno": 228,
               "filename": "UploadButton.es6" },
-            { "lineno": 254,
+            { "lineno": 255,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Sets or gets the type of the file that a site visitor can upload.",
@@ -145,7 +146,7 @@
         "set": false,
         "type": "$w.Style",
         "locations":
-          [ { "lineno": 398,
+          [ { "lineno": 399,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Gets an object containing information about the upload button's styles.",
@@ -184,7 +185,7 @@
         "set": false,
         "type": "boolean",
         "locations":
-          [ { "lineno": 423,
+          [ { "lineno": 424,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Indicates if a required file was selected, and if the file is valid for upload to the Media Manager.",
@@ -213,7 +214,7 @@
         "set": false,
         "type": "string",
         "locations":
-          [ { "lineno": 447,
+          [ { "lineno": 448,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Gets a message indicating why the file is invalid or could not be uploaded. Contains\n empty string if the file is valid and successfully uploaded.",
@@ -241,7 +242,7 @@
         "set": false,
         "type": "$w.UploadButton.ValidityState",
         "locations":
-          [ { "lineno": 467,
+          [ { "lineno": 468,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Gets a ValidityState object that contains\n detailed information about the validity states of the file to upload.",
@@ -273,7 +274,7 @@
             "typeParams":
               [ "$w.UploadButton.File" ] },
         "locations":
-          [ { "lineno": 280,
+          [ { "lineno": 281,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Returns a list of files that are pending upload.",
@@ -282,7 +283,7 @@
                 " upload after pressing the upload button.",
                 "",
                 " See how `value` is used in a",
-                " [typical file upload scenario](#typical-scenario)." ],
+                " [typical file upload scenario]($w/uploadbutton/introduction#$w_uploadbutton_introduction_typical-file-upload-scenario)." ],
             "links": [],
             "examples":
               [ { "title": "Get the files pending upload",
@@ -327,18 +328,26 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 372,
+          [ { "lineno": 373,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Clears the files that are pending upload.",
             "description":
               [ "The [`value`](#value) of the upload button contains a list of files that have been",
-                " selected to upload. The `reset()` function clears these files." ],
+                " selected to upload. The `reset()` function clears the files in `value`." ],
             "links": [],
             "examples":
               [ { "title": "Clears the files pending upload",
                   "body":
-                    [ "$w(\"#myUploadButton\").reset();" ],
+                    [ "let files = $w(\"#myUploadButton\").value;",
+                      "let fileName = files[0].name; // \"myPic.jpg\"",
+                      "let fileSize = files[0].size; // 45941",
+                      "",
+                      "if(fileSize > '40000') {",
+                      "    $w(\"#myUploadButton\").reset();",
+                      "    files = $w(\"#myUploadButton\").value;",
+                      "    $w(\"#text1\").text = \"Please choose a smaller file to upload.\";",
+                      "}" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -356,7 +365,7 @@
                   [ "$w.UploadButton.UploadedFile" ] },
             "doc": "Fulfilled - Resolves when the file upload is completed and returns an `UploadedFile` object.\nRejected - Rejects if the file upload fails and returns an `UploadError` object, which contains the error code and description." },
         "locations":
-          [ { "lineno": 319,
+          [ { "lineno": 320,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Uploads the files that the site visitor has chosen.",
@@ -365,7 +374,7 @@
                 " upload button's [value](#value) property.",
                 "",
                 " See how `startUpload()` is used in a",
-                " [typical file upload scenario](#typical-scenario).",
+                " [typical file upload scenario]($w/uploadbutton/introduction#$w_uploadbutton_introduction_typical-file-upload-scenario).",
                 "",
                 " The upload button does not accept files larger than certain sizes, depending on the file type. Maximum allowed file sizes are listed [here](https://support.wix.com/en/article/supported-media-file-types-and-file-sizes).",
                 "",
@@ -521,7 +530,7 @@
         "labels": [] },
       { "name": "ValidityState",
         "locations":
-          [ { "lineno": 442,
+          [ { "lineno": 443,
               "filename": "UploadButton.es6" } ],
         "docs":
           { "summary": "Contains detailed information about the validity states of a file to upload.",
