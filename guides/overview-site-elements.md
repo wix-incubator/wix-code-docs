@@ -1,6 +1,6 @@
 # Site Elements
 
-Select and control your page and site elements. With these APIs you can customize styling, create animation effects, add events for visitor interactions, and add more control to enhance your site’s functionality.
+Select and control your page and site elements. With these APIs you can customize styling, create animation effects, add events for visitor interactions, and add more control to enhance your site’s functionality, for example:
 
 *   **[Button](https://www.wix.com/corvid/reference/$w.Button.html)**
 *   **[Dropdown](https://www.wix.com/corvid/reference/$w.Dropdown.html)**
@@ -8,4 +8,6 @@ Select and control your page and site elements. With these APIs you can customiz
 *   **[Repeater](https://www.wix.com/corvid/reference/$w.Repeater.html)**
 *   **[Table](https://www.wix.com/corvid/reference/$w.Table.html)**
 *   **[wix-dataset](https://www.wix.com/corvid/reference/wix-dataset.Dataset.html)**
-*   **[wix-animations](https://www.wix.com/corvid/new-reference/wix-animations)**
+*   **[wix-animations](https://www.wix.com/corvid/reference/wix-animations)**
+
+See [Wix Editor Elements ($w)](https://www.wix.com/corvid/reference/$w) for the full list of elements you can customize.

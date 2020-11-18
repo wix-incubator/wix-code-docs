@@ -6,8 +6,8 @@ Get information about your site, including its pages, URL, and sitemap. With the
 *   **[wix-site](https://www.wix.com/corvid/reference/wix-site.html)**
 *   **[wix-location](https://www.wix.com/corvid/reference/wix-location.html)**
 *   **[wix-storage](https://www.wix.com/corvid/reference/wix-storage.html)**
-*   **[wix-seo](https://www.wix.com/corvid/new-reference/wix-seo)**
-*   **[wix-media-backend](https://www.wix.com/corvid/new-reference/wix-media-backend)**
-*   **[wix-router](https://www.wix.com/corvid/new-reference/wix-router)**
-*   **[wix-search](https://www.wix.com/corvid/new-reference/wix-search)**
-*   **[wix-realtime](https://www.wix.com/corvid/new-reference/wix-realtime)**
+*   **[wix-seo](https://www.wix.com/corvid/reference/wix-seo)**
+*   **[wix-media-backend](https://www.wix.com/corvid/reference/wix-media-backend)**
+*   **[wix-router](https://www.wix.com/corvid/reference/wix-router)**
+*   **[wix-search](https://www.wix.com/corvid/reference/wix-search)**
+*   **[wix-realtime](https://www.wix.com/corvid/reference/wix-realtime)**
