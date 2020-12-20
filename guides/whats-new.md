@@ -4,6 +4,64 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
+## 🗓️ December 7, 2020
+### New API: VideoBox
+
+`Wix Editor Elements ($w)`
+
+Corvid APIs are now available to control how videos play in [`VideoBox`](https://www.wix.com/corvid/reference/$w/videobox) elements on your site. Video boxes allow you to showcase your videos in beautifully-designed video containers. Unlike VideoPlayer elements, VideoBox elements do not have controls, text descriptions, titles and cannot be displayed in full screen mode. This gives video boxes a clean look.
+You can use the APIs to manage video boxes for: 
+* Videos uploaded to your site
+* Transparent videos uploaded to your site
+* Videos/Transparent videos from the  Wix Media library
+
+## 🗓️ December 7, 2020
+### Updated:textInput.maxLength remove max length
+
+`Wix Editor Elements ($w)`
+
+The instructions to remove the [`maximum length`](https://www.wix.com/corvid/reference/$w/textinput/maxlength) restriction incorrectly stated to set maxLength to 0. We clarified that you can format the text using the html property.
+
+## 🗓️ December 7, 2020
+### Updated:text styles
+
+We listed the supported styles and formats for [`text type elements`](https://www.wix.com/corvid/reference/$w/text/introduction) but did not explain how to use them. We clarified that you can format the text using the html property.
+
+## 🗓️ December 7, 2020
+### Updated:uploadButton.reset 
+
+`Wix Editor Elements ($w)`
+
+We clarified that the [`reset()`](https://www.wix.com/corvid/reference/$w/uploadbutton/reset) function clears the files in the value property.
+
+## 🗓️ December 7, 2020
+### Updated:radioButtonGroup options 
+
+`Wix Editor Elements ($w)`
+
+The description incorrectly stated that [`options`](https://www.wix.com/corvid/reference/$w/radiobuttongroup/options) is an object. We clarified that options is an array of option objects.
+
+## 🗓️ December 7, 2020
+### Updated: getCheckoutOptions slotID
+
+`wix-bookings`
+
+In the [`getCheckoutOptions`](https://www.wix.com/corvid/reference/wix-bookings/getcheckoutoptions) parameter table, slot_ID was formatted incorrectly. The correct format is slotID.
+
+## 🗓️ December 7, 2020
+### Updated: wixWindow.scrollTo coordinates
+
+`wix-window`
+
+In the [`scrollTo`](https://www.wix.com/corvid/reference/wix-window/scrollto) function we didn’t mention how to get the coordinates of a given location. We added how to get the coordinates of a location on the page using the Editor toolbar.
+
+## 🗓️ December 7, 2020
+### Updated: wixLocation URL structure
+
+`wix-location`
+
+The layout for describing the different parts of the [`URL`](https://www.wix.com/corvid/reference/wix-location/introduction) was a bit confusing. We changed the URL breakdown to match the same layout as the wixHttpFunctionRequest object in the wix-http-functions API for consistency.
+
 ## 🗓️ November 1, 2020
 ### New API: Wix Forum Backend Event APIs
 
