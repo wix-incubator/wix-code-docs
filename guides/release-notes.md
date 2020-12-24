@@ -25,6 +25,10 @@ We were a bit vague about how [`bulkUpdate`](https://www.wix.com/corvid/referenc
 
 ### New API: privacyStatus property for register function in wix-users and wix-users-backend
 
+`wix-users`
+
+`wix-users-backend`
+
 There is a new privacyStatus parameter for the [`register`](https://www.wix.com/corvid/reference/wix-users/register) function. Options are `PUBLIC` and `PRIVATE`.
 
 ### Updated: Clarified creation of routers.js file
@@ -39,6 +43,18 @@ We also reviewed the existing explanations and made some updates, including:
 - How we explain the URL needed for [WixRouterRequest](https://www.wix.com/corvid/reference/wix-router/wixrouterrequest/introduction). 
 - Adding and fixing links.
 - Fixing a typo in an example.
+
+### New API: wix-users-backend Roles
+
+`wix-users-backend`
+
+We added the [`assignRole()`](https://www.wix.com/corvid/reference/wix-users-backend/roles-obj/assignrole) and [`removeRole()`](https://www.wix.com/corvid/reference/wix-users-backend/roles-obj/removerole) functions to the new `Roles` API in `wix-users-backend`, allowing you to manage site member access to restricted pages.
+
+### New API: wix-stores addCustomItemsToCart()
+
+`wix-stores`
+
+With the new Wix Stores [addCustomItemsToCart()](https://www.wix.com/corvid/reference/wix-stores/addcustomitemstocart) API you can now add custom items that aren't "products" to the cart. For example, an insurance or agent's fee. 
 
 
 ## 🗓️ December 7, 2020
