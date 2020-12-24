@@ -7,4 +7,4 @@ To use the APIs, you’ll need a working knowledge of JavaScript, including ES20
 
 ## Release Notes
 
-Check out our [Release Notes](https://www.wix.com/corvid/reference/api-overview/release-notes.md) to see a list of all the latest changes, updates, and additions to our API Reference.
+Check out our [Release Notes](https://www.wix.com/corvid/reference/release-notes.md) to see a list of all the latest changes, updates, and additions to our API Reference.
