@@ -15,23 +15,23 @@ You can use the APIs to manage video boxes for:
 * Transparent videos uploaded to your site
 * Videos/Transparent videos from the  Wix Media library
 
-### Updated:textInput.maxLength remove max length
+### Updated: textInput.maxLength remove max length
 
 `Wix Editor Elements ($w)`
 
 The instructions to remove the [`maximum length`](https://www.wix.com/corvid/reference/$w/textinput/maxlength) restriction incorrectly stated to set maxLength to 0. We clarified that you can format the text using the html property.
 
-### Updated:text styles
+### Updated: text styles
 
 We listed the supported styles and formats for [`text type elements`](https://www.wix.com/corvid/reference/$w/text/introduction) but did not explain how to use them. We clarified that you can format the text using the html property.
 
-### Updated:uploadButton.reset 
+### Updated: uploadButton.reset 
 
 `Wix Editor Elements ($w)`
 
 We clarified that the [`reset()`](https://www.wix.com/corvid/reference/$w/uploadbutton/reset) function clears the files in the value property.
 
-### Updated:radioButtonGroup options 
+### Updated: radioButtonGroup options 
 
 `Wix Editor Elements ($w)`
 
