@@ -2,7 +2,16 @@
 
 We're always adding and updating the Corvid APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
+We love hearing your feedback! 
+Lots of our bugs come from users like you and you can help us improve the docs by reporting them to us. You can report bugs and other feedback through these links found at the bottom of our docs.
+![](../media/feedback.png)
+
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
+
+
+## 🗓️ December 24, 2020
+### 
+
 
 ## 🗓️ December 7, 2020
 ### New API: VideoBox
