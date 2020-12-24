@@ -4,13 +4,41 @@ We're always adding and updating the Corvid APIs, and we want you to have one pl
 
 We love hearing your feedback! 
 Lots of our bugs come from users like you and you can help us improve the docs by reporting them to us. You can report bugs and other feedback through these links found at the bottom of our docs.
+
 ![](../media/feedback.png)
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
 
 ## 🗓️ December 24, 2020
-### 
+### Updated: Editor elements ($w) progressBar.value is a get or set
+
+`Wix Editor Elements ($w)`
+
+We incorrectly stated that you could only “get” the `value` of the [`ProgressBar`](https://www.wix.com/corvid/reference/$w/progressbar/value) element. We clarified that you can both “get” and “set” the `value` property.
+
+### Updated: bulkUpdate clarification
+
+`wix-data`
+
+We were a bit vague about how [`bulkUpdate`](https://www.wix.com/corvid/reference/wix-data/bulkupdate) works. We now stress in the explanation that `bulkUpdate` replaces all properties of the existing, matching items. When specifying which properties you want to update, the values of any properties that are not specified are lost.
+
+### New API: privacyStatus property for register function in wix-users and wix-users-backend
+
+There is a new privacyStatus parameter for the [`register`](https://www.wix.com/corvid/reference/wix-users/register) function. Options are `PUBLIC` and `PRIVATE`.
+
+### Updated: Clarified creation of routers.js file
+
+`wix-router`
+
+The [introduction](https://www.wix.com/corvid/reference/wix-router/introduction) implied that the user needs to create the `routers.js` file. Actually, when you set up your router, the file is created for you. We clarified that you do not need to manually create the `routers.js` file.
+
+We also reviewed the existing explanations and made some updates, including: 
+
+- How to work with routers, based on changes made in the Editor. 
+- How we explain the URL needed for [WixRouterRequest](https://www.wix.com/corvid/reference/wix-router/wixrouterrequest/introduction). 
+- Adding and fixing links.
+- Fixing a typo in an example.
 
 
 ## 🗓️ December 7, 2020
