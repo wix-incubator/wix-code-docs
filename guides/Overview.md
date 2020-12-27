@@ -5,6 +5,6 @@ Corvid's APIs empower you to take full control of your site’s functionality. U
 To use the APIs, you’ll need a working knowledge of JavaScript, including ES2019 features. The APIs include lots of code examples to help you [get started](tutorials/getting-started).
 
 
-## What's New
+## Release Notes
 
-Check out our [What's New](https://www.wix.com/corvid/reference/api-overview/what's-new) to see a list of all the latest changes, updates, and additions to our API Reference.
+Check out our [Release Notes](https://www.wix.com/corvid/reference/release-notes.md) to see a list of all the latest changes, updates, and additions to our API Reference.

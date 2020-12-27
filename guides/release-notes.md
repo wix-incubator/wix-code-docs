@@ -1,8 +1,61 @@
-# What's New
+# Release Notes
 
 We're always adding and updating the Corvid APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
+We love hearing your feedback! 
+Lots of our bugs come from users like you and you can help us improve the docs by reporting them to us. You can report bugs and other feedback through these links found at the bottom of our docs.
+
+![](../media/feedback.png)
+
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
+
+
+## 🗓️ December 24, 2020
+### Updated: Editor elements ($w) progressBar.value is a get or set
+
+`Wix Editor Elements ($w)`
+
+We incorrectly stated that you could only “get” the `value` of the [`ProgressBar`](https://www.wix.com/corvid/reference/$w/progressbar/value) element. We clarified that you can both “get” and “set” the `value` property.
+
+### Updated: bulkUpdate clarification
+
+`wix-data`
+
+We were a bit vague about how [`bulkUpdate`](https://www.wix.com/corvid/reference/wix-data/bulkupdate) works. We now stress in the explanation that `bulkUpdate` replaces all properties of the existing, matching items. When specifying which properties you want to update, the values of any properties that are not specified are lost.
+
+### New API: privacyStatus property for register function in wix-users and wix-users-backend
+
+`wix-users`
+
+`wix-users-backend`
+
+There is a new privacyStatus parameter for the [`register`](https://www.wix.com/corvid/reference/wix-users/register) function. Options are `PUBLIC` and `PRIVATE`.
+
+### Updated: Clarified creation of routers.js file
+
+`wix-router`
+
+The [introduction](https://www.wix.com/corvid/reference/wix-router/introduction) implied that the user needs to create the `routers.js` file. Actually, when you set up your router, the file is created for you. We clarified that you do not need to manually create the `routers.js` file.
+
+We also reviewed the existing explanations and made some updates, including: 
+
+- How to work with routers, based on changes made in the Editor. 
+- How we explain the URL needed for [WixRouterRequest](https://www.wix.com/corvid/reference/wix-router/wixrouterrequest/introduction). 
+- Adding and fixing links.
+- Fixing a typo in an example.
+
+### New API: wix-users-backend Roles
+
+`wix-users-backend`
+
+We added the [`assignRole()`](https://www.wix.com/corvid/reference/wix-users-backend/roles-obj/assignrole) and [`removeRole()`](https://www.wix.com/corvid/reference/wix-users-backend/roles-obj/removerole) functions to the new `Roles` API in `wix-users-backend`, allowing you to manage site member access to restricted pages.
+
+### New API: wix-stores addCustomItemsToCart()
+
+`wix-stores`
+
+With the new Wix Stores [addCustomItemsToCart()](https://www.wix.com/corvid/reference/wix-stores/addcustomitemstocart) API you can now add custom items that aren't "products" to the cart. For example, an insurance or agent's fee. 
+
 
 ## 🗓️ December 7, 2020
 ### New API: VideoBox
@@ -15,47 +68,40 @@ You can use the APIs to manage video boxes for:
 * Transparent videos uploaded to your site
 * Videos/Transparent videos from the  Wix Media library
 
-## 🗓️ December 7, 2020
-### Updated:textInput.maxLength remove max length
+### Updated: textInput.maxLength remove max length
 
 `Wix Editor Elements ($w)`
 
 The instructions to remove the [`maximum length`](https://www.wix.com/corvid/reference/$w/textinput/maxlength) restriction incorrectly stated to set maxLength to 0. We clarified that you can format the text using the html property.
 
-## 🗓️ December 7, 2020
-### Updated:text styles
+### Updated: text styles
 
 We listed the supported styles and formats for [`text type elements`](https://www.wix.com/corvid/reference/$w/text/introduction) but did not explain how to use them. We clarified that you can format the text using the html property.
 
-## 🗓️ December 7, 2020
-### Updated:uploadButton.reset 
+### Updated: uploadButton.reset 
 
 `Wix Editor Elements ($w)`
 
 We clarified that the [`reset()`](https://www.wix.com/corvid/reference/$w/uploadbutton/reset) function clears the files in the value property.
 
-## 🗓️ December 7, 2020
-### Updated:radioButtonGroup options 
+### Updated: radioButtonGroup options 
 
 `Wix Editor Elements ($w)`
 
 The description incorrectly stated that [`options`](https://www.wix.com/corvid/reference/$w/radiobuttongroup/options) is an object. We clarified that options is an array of option objects.
 
-## 🗓️ December 7, 2020
 ### Updated: getCheckoutOptions slotID
 
 `wix-bookings`
 
 In the [`getCheckoutOptions`](https://www.wix.com/corvid/reference/wix-bookings/getcheckoutoptions) parameter table, slot_ID was formatted incorrectly. The correct format is slotID.
 
-## 🗓️ December 7, 2020
 ### Updated: wixWindow.scrollTo coordinates
 
 `wix-window`
 
 In the [`scrollTo`](https://www.wix.com/corvid/reference/wix-window/scrollto) function we didn’t mention how to get the coordinates of a given location. We added how to get the coordinates of a location on the page using the Editor toolbar.
 
-## 🗓️ December 7, 2020
 ### Updated: wixLocation URL structure
 
 `wix-location`
@@ -69,7 +115,6 @@ The layout for describing the different parts of the [`URL`](https://www.wix.com
 
 With the new [Forum Backend Events](https://www.wix.com/corvid/reference/wix-forum-backend) you can react to activity on your forum. You can run custom code when forum categories, posts, and comments are created, updated, deleted, posted, pinned, voted on, liked, reported, and more. For example, you can send a custom email to a poster when their post is liked, display a message when a comment is marked as best, or set up an alert when a post or comment is reported. 
 
-## 🗓️ November 1, 2020
 ### New API: removeProductFromCart
 
 `wix-stores`
@@ -90,7 +135,6 @@ With the new [`onWixFormSubmit()`](https://www.wix.com/corvid/reference/wix-crm/
 
 Added a note that [`wixLocation.to()`](https://www.wix.com/corvid/reference/wix-location/to) only works on a published site and not while previewing.
 
-## 🗓️ October 13, 2020
 ### Updated: htmlComponent can only embed a PDF file with a Premium account
 
 `$w.HtmlComponent`
@@ -118,7 +162,6 @@ Added [information](https://www.wix.com/corvid/reference/spis/site-monitoring/in
 
 The [`value`](https://www.wix.com/corvid/reference/$w/slider/value) property for the Slider element was described as read only but it should be read and write.
 
-## 🗓️ September 15, 2020
 ### Updated: Added more information for returned object properties from Validity property
 
 `ValidatableMixin`
@@ -132,7 +175,6 @@ Added more content to the table that displays details of the object returned by 
 
 Added information that some of the parameter fields for [getProductVariants()](https://www.wix.com/corvid/reference/wix-stores/getproductvariants) are optional.
 
-## 🗓️ September 14, 2020
 ### Updated: createProduct() SKU is a string
 
 `stores-backend`
@@ -146,7 +188,6 @@ The `sku` property for [createProduct()](https://www.wix.com/corvid/reference/wi
 
 Added information that the token returned by [`getFileUrl()`](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/getfileurl) expires after 600 minutes. Described the alternative of creating a static URL without a token.
 
-## 🗓️ September 10, 2020
 ### Updated: The URL table for wixHttpFunctionRequest
 
 `wix-http-functions`
@@ -160,7 +201,6 @@ The table that described the URL structure of a [wixHttpFunctionRequest](https:/
 
 With the new [`onCartChanged()`](https://www.wix.com/corvid/reference/wix-stores/oncartchanged) client-side event in wix-stores, you can access information about the site's shopping cart every time an item is added or removed. Useful for creating a promotional lightbox - if product X is added to the cart, offer product Y.
 
-## 🗓️ September 7, 2020
 ### New API: Consent policy (privacy laws)
 
 `wix-users`
@@ -173,7 +213,6 @@ To help your site conform to GDPR and CCPA standards, we now provide Corvid APIs
 `wix-users-backend`
 
 Added more robust examples to [`listMemberBadges()`](https://www.wix.com/corvid/reference/wix-users-backend/badges-obj/listmemberbadges) for how to handle the results.
-
 
 ## 🗓️ August 23, 2020
 ### New API: Coupon limit per customer
@@ -189,7 +228,6 @@ Use the new [limitPerCustomer](https://www.wix.com/corvid/reference/wix-marketin
 
 Use the new [`sendFulfillmentEmail()`](https://www.wix.com/corvid/reference/wix-stores-backend/sendfulfillmentemail) function to send an email containing fulfillment details (products to ship, shipping details, etc.) to a custom fulfiller (a fulfiller not integrated with Wix, like ShipBob or ShipStation). 
 
-## 🗓️ August 20, 2020
 ### New API: Order paid event 
 
 `wix-stores-backend`
@@ -210,13 +248,6 @@ Added information about new array and object types to the [wix-data Introduction
 
 Use the new [`getPackingSlipLink()`](https://www.wix.com/corvid/reference/wix-stores-backend/getpackingsliplink) function to generate and print a PDF file of an order's packing slip. Especially useful in the ThankYouPage, after an order is completed.
 
-## 🗓️ August 2, 2020
-### Updated: Secrets API
-
-`wix-secrets-backend`
-
-With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-secrets-backend) you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
-
 ## 🗓️ August 9, 2020
 ### Updated: New validations for file upload
 
@@ -224,7 +255,6 @@ With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-se
 
 The [Upload](https://www.wix.com/corvid/reference/wix-media-backend/mediamanager-obj/upload) button can now perform certain validations right after file selection.
 
-## 🗓️ August 9, 2020
 ### Updated: Mark createContact() parameters as optional
 
 `wix-crm`
@@ -245,19 +275,25 @@ Use the new [`getOrdersLink()`](https://www.wix.com/corvid/reference/wix-stores-
 
 Added a simple [`onItemReady()`](https://www.wix.com/corvid/reference/$w/repeater/onitemready) example where `onItemReady()` is triggered when repeater data is set.
 
-## 🗓️ August 3, 2020
 ### Updated: New example for WixDataQuery.include()
 
 `wix-data`
 
 Added new example in [`WixData.query.include()`](https://www.wix.com/corvid/reference/wix-data/wixdataquery/include) to show how to use a reference field from another collection when populating a table with DataPath.
 
-## 🗓️ August 3, 2020
 ### Updated: Router examples should use https for imageSite links
 
 `wix-router`
 
 The **A router with static data** example for the [`router()`](https://www.wix.com/corvid/reference/wix-router/router) function used http URLs in the example for imageSite. They were updated to use https.
+
+
+## 🗓️ August 2, 2020
+### Updated: Secrets API
+
+`wix-secrets-backend`
+
+With the new [Secrets API functions](https://www.wix.com/corvid/reference/wix-secrets-backend) you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
 
 ## 🗓️ July 30, 2020
 ### New API: Fulfillment
@@ -266,7 +302,6 @@ The **A router with static data** example for the [`router()`](https://www.wix.c
 
 Use the [`createFulfillment()`](https://www.wix.com/corvid/reference/wix-stores-backend/createfulfillment) function to create, update, and delete order fulfillments (as well as set up events for each). 
 
-## 🗓️ July 30, 2020
 ### New API: Create order
 
 `wix-stores-backend`
@@ -287,7 +322,6 @@ With the new Wix Forms APIs,  you can access Wix Form app functionality with cod
 
 With the new [Badges APIs](https://www.wix.com/corvid/reference/wix-users-backend/badges)  you can manage your member badges with code. Create, update, and delete badges, assign and remove badges from members, and see which members are associated with each badge.
 
-## 🗓️ July 9, 2020
 ### Updated: Add information about import and export triggering before and after query hooks 
 
 `wix-data`
