@@ -18,7 +18,7 @@ Follow the steps below to get familiar with the basic structure and syntax of Ve
 
 Enable Velo in the Wix Editor to let you work with code in your site.
 
-![alt_text](../media/gettingStarted2.png)
+![alt_text](../media/DMO.png)
 
 
 ## Step 3: Add Elements to the Page
