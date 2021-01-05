@@ -28,7 +28,7 @@ Add page elements in the Wix Editor:
 
 1.   On the left side of the Editor, click **Add**.
 2.   Add the page elements illustrated below to your site.
-    *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/wix-code-working-with-the-properties-panel) panel that appears on the right side of the Code panel. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
+    *   When you add each element, set its ID in the [Properties](https://support.wix.com/en/article/velo-working-with-the-properties-panel) panel that appears on the right side of the Code panel. Use the name shown below for each element, minus the hashtag. See the table below for a full list of the elements and where to find them in the Add menu.
 
 
 ![alt_text](../media/gettingStarted3.png)
@@ -49,8 +49,8 @@ Add page elements in the Wix Editor:
 
 To add the code:
 
-1.   Double-click **Home Page Code** at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/wix-code-working-in-the-code-panel).
-2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
+1.   Double-click **Home Page Code** at the bottom of the Editor to open the [code panel](https://support.wix.com/en/article/velo-working-in-the-code-panel).
+2.   Add the following code to the top of the [Page tab](https://support.wix.com/en/article/velo-working-in-the-code-panel#page-and-site-tabs-1) before the [onReady](https://support.wix.com/en/article/velo-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function:
 
 
 ```javascript
@@ -69,7 +69,7 @@ let currencyOptions = [
 ];
 ```
 
-3.   Add the code below to the [onReady](https://support.wix.com/en/article/wix-code-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
+3.   Add the code below to the [onReady](https://support.wix.com/en/article/velo-working-in-the-code-panel#making-sure-the-element-has-loaded-before-you-reference-it) function. Code inside the onReady function runs when the page loads.
 
 ```javascript
 $w.onReady(function () {
@@ -85,7 +85,7 @@ $w.onReady(function () {
 
 The <code>[$w]($w)</code> function can select elements on a page by ID or by type, allowing us to run functions and define the properties of the elements. Use this syntax to select an element by ID, <code>$w("#myElementId")</code>, and this syntax to select by type, <code>$w("ElementType")</code>.
 
-Here we select the button and define an `onClick` [event handler](https://support.wix.com/en/article/wix-code-reacting-to-user-actions-using-events#about-events-event-handlers-and-wiring) to calculate the target amount.
+Here we select the button and define an `onClick` [event handler](https://support.wix.com/en/article/velo-reacting-to-user-actions-using-events#about-events-event-handlers-and-wiring) to calculate the target amount.
 
 4.  Add code to define the functions:
 
