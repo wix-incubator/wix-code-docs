@@ -33,7 +33,8 @@
           " + List and query pricing plans.",
           " + Set which plans are public and which plans are hidden. ",
           " + Archive plans. ",
-          " + Set or clear the primary plan.",
+          " + Set or clear the primary plan. This determines if a plan is highlighted",
+          "   with a custom ribbon when viewing the plans on the site.",
           " + Get statistics about the plans.",
           " + Rearrange the order of how plans display.",
           "",
@@ -52,7 +53,7 @@
           " Plans are based on a pricing model, which is defined with the plan's `pricing` property. ",
           " A pricing model can be one of the following: ",
           "",
-          " + **A subscription**: A plan with recurring payments and cycles. Subscription plans ",
+          " + **A subscription**: A plan with recurring payment cycles. Subscription plans ",
           "   can have free trial days. ",
           "",
           "   *Example*: A subscription that lasts for a duration of 1 year (4 payment cycles) ",
@@ -85,6 +86,9 @@
           "",
           "   *Example*: A plan with a single payment of $35. The plan lasts for a ",
           "   duration of 1 month only and does not renew.",
+          "",
+          "   The duration (`count` and `unit`) is the plan duration (not a payment cycle",
+          "   duration.)",
           "",
           "   ```javascript",
           "   \"pricing\": {",
@@ -156,19 +160,19 @@
           "",
           "   + **Hidden pricing plans** are plans whose visibility has been set to `false`. These plans cannot be seen on the site by the site member or visitor. For example, consider hiding a plan if it has reached its maximum capacity and temporarily is not available for purchase. ",
           "",
-          "     Changing a plan’s visibility does not impact existing purchases. All purchases for hidden plans are still active and keep their benefits.",
+          "     Changing a plan’s visibility does not impact existing purchases. All purchases for hidden plans are still active and keep their perks.",
           "",
           "   + **Active pricing plans** include all non-archived plans (such as public plans and hidden plans).",
           "",
           "   + **Archived pricing plans** are plans that are no longer needed on the site, for example, discontinued plans. ",
           "",
-          "     When a plan is archived, it is no longer visible as a public plan that can be chosen by site members or visitors. Archived plans cannot be purchased. ",
+          "     When a plan is archived, it is no longer visible as a public plan that can be chosen by site visitors. The `visibility` property is automatically set to `false` when a plan is archived. Archived plans cannot be purchased. ",
           "",
           "     Site owners can see archived plans in the Dashboard under **Pricing Plans -> Archived Plans**. ",
           "",
           "     Archiving cannot be reversed (meaning, once archived, a plan cannot be set as active again for site members/visitors to purchase). ",
           " ",
-          "     Archiving does not impact existing purchased made for the plan. All purchases are still active and keep their benefits.",
+          "     Archiving does not impact existing purchased made for the plan. All purchases are still active and keep their perks.",
           "",
           "",
           " To use the Pricing Plans API, import `wixPricingPlansBackend` from the `wix-pricing-plans-backend` module.",
@@ -188,7 +192,8 @@
   "properties": [],
   "operations":
     [ { "name": "archivePlan",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -204,17 +209,18 @@
           [ { "lineno": 1,
               "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ArchivePlan_archivePlan.js" } ],
         "docs":
-          { "summary": "Archives a single plan.",
+          { "summary": "Archives a single pricing plan.",
             "description":
               [ "The `archivePlan()` function returns a promise that resolves to the newly-archived plan.",
                 "",
-                " When a plan is archived, it is no longer available for display or selection by ",
-                " site members or visitors. Archived plans cannot be purchased.",
-                "",
-                " An archived plan cannot be made active again.",
+                " When a plan is archived, the plan: ",
+                " + Is no longer available for display or selection by visitors. This is because ",
+                "   the plan's `visibility` property is automatically set to `false`. ",
+                " + Cannot be purchased.",
+                " + Cannot be \"un-archived\" (meaning, the plan cannot be made active again).",
                 "",
                 " Plan archiving does not impact existing purchases made for the plan. All purchases for the ",
-                " plan are still active and keep their benefits.",
+                " plan are still active and keep their payment options and terms.",
                 "",
                 " Site owners can see archived plans in the Dashboard under **Pricing Plans -> Archived Plans**.",
                 "",
@@ -268,8 +274,8 @@
                       " *    \"archived\": true,",
                       " *    \"primary\": false,",
                       " *    \"hasOrders\": false,",
-                      " *    \"createdDate\": \"2020-12-21T15:13:09.492Z\",",
-                      " *    \"updatedDate\": \"2020-12-30T15:02:14.867Z\",",
+                      " *    \"_createdDate\": \"2020-12-21T15:13:09.492Z\",",
+                      " *    \"_updatedDate\": \"2020-12-30T15:02:14.867Z\",",
                       " *    \"slug\": \"gold\",",
                       " *    \"allowFutureStartDate\": false,",
                       " *    \"buyerCanCancel\": true,",
@@ -283,7 +289,8 @@
         "extra":
           {  } },
       { "name": "arrangePlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "ids",
@@ -291,7 +298,7 @@
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "IDs of all non-archived plans in the order you want them to be arranged." } ],
+              "doc": "IDs of all non-archived plans in the order you want them arranged." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -302,15 +309,15 @@
           [ { "lineno": 1,
               "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ArrangePlans_arrangePlans.js" } ],
         "docs":
-          { "summary": "Changes the display order of the plans on the site page and the Dashboard.",
+          { "summary": "Changes the display order of the pricing plans on the site page and in the Dashboard.",
             "description":
               [ "The `arrangePlans()` function returns a Promise that resolves when the plans are rearranged",
-                " on the site page and the Dashboard. ",
+                " on the site page and in the Dashboard. ",
                 "",
                 " To rearrange the order of the plans, provide a list of IDs for all ",
                 " non-archived plans in the desired order, including hidden plans.",
                 "",
-                " > **Note:** Provide *all* non-archived plan IDs to avoid unpredictable results." ],
+                " > **Note:** Make sure to provide *all* non-archived plan IDs to avoid unpredictable results." ],
             "links": [],
             "examples":
               [ { "title": "Arrange plans",
@@ -328,8 +335,8 @@
                       "    \"ce0d25ef-7c3a...4eb288c73afe\"",
                       "  ];",
                       "  return wixPricingPlansBackend.arrangePlans(ids)",
-                      "    .then((result) => {",
-                      "      // Plans are rearranged on the site page and the Dashboard.",
+                      "    .then( () => {",
+                      "      console.log(\"Plans rearranged\");",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
@@ -344,7 +351,8 @@
         "extra":
           {  } },
       { "name": "clearPrimary",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -367,14 +375,17 @@
             "links":
               [ "[`makePlanPrimary()`](#makePlanPrimary)" ],
             "examples":
-              [ { "title": "Make no plans primary",
+              [ { "title": "Make no plans primary, clearing the highlight and the ribbon on the site",
                   "body":
                     [ "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
                       "",
                       "export function clearPrimary() {",
                       "    return wixPricingPlansBackend.clearPrimary()",
-                      "      .then((result) => {",
-                      "        // No pricing plans are set as primary.",
+                      "      .then( () => {",
+                      "        // No pricing plans are set as primary. This means",
+                      "        // no plans are highlighted with a custom ribbon ",
+                      "        // when displayed on the site.",
+                      "        console.log(\"No plans are highlighted on the site\");",
                       "      })",
                       "      .catch((error) => {",
                       "        console.error(error);",
@@ -500,8 +511,8 @@
                       " *   \"archived\": false,",
                       " *   \"primary\": false,",
                       " *   \"hasOrders\": false,",
-                      " *   \"createdDate\": \"2020-12-21T09:38:14.939Z\",",
-                      " *   \"updatedDate\": \"2020-12-21T09:38:14.939Z\",",
+                      " *   \"_createdDate\": \"2020-12-21T09:38:14.939Z\",",
+                      " *   \"_updatedDate\": \"2020-12-21T09:38:14.939Z\",",
                       " *   \"slug\": \"gold\",",
                       " *   \"maxPurchasesPerBuyer\": 1,",
                       " *   \"allowFutureStartDate\": true,",
@@ -516,7 +527,8 @@
         "extra":
           {  } },
       { "name": "getPlan",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -561,8 +573,8 @@
                       " * \"description\": \"For expert gamers\",",
                       " * \"perks\": {",
                       " *   \"values\": [",
-                      " *     \"Great bargain!\",",
-                      " *     \"Multi-user!\"",
+                      " *     \"Great value for your money\",",
+                      " *     \"Multi-user\"",
                       " *   ]",
                       " *  },",
                       " *  \"pricing\": {",
@@ -583,8 +595,8 @@
                       " *  \"archived\": false,",
                       " *  \"primary\": false,",
                       " *  \"hasOrders\": false,",
-                      " *  \"createdDate\": \"2020-12-24T11:23:48.308Z\",",
-                      " *  \"updatedDate\": \"2020-12-30T11:39:45.523Z\",",
+                      " *  \"_createdDate\": \"2020-12-24T11:23:48.308Z\",",
+                      " *  \"_updatedDate\": \"2020-12-30T11:39:45.523Z\",",
                       " *  \"slug\": \"gold\",",
                       " *  \"maxPurchasesPerBuyer\": 10,",
                       " *  \"allowFutureStartDate\": false,",
@@ -599,7 +611,8 @@
         "extra":
           {  } },
       { "name": "getPlansStats",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -637,7 +650,7 @@
                       "/* Statistics object relevant to the site's pricing plans:",
                       " *",
                       " *{",
-                      " *   \"total\": 68     // Count of all plans (public, hidden and archived)",
+                      " *   \"total\": 8     // Count of all plans (public, hidden and archived)",
                       " * }",
                       " * ",
                       " */" ],
@@ -648,13 +661,14 @@
         "extra":
           {  } },
       { "name": "listPlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "limit",
               "type": "number",
               "doc": "Number of pricing plans to list. Defaults to 100." },
-            { "name": "offset",
+            { "name": "skip",
               "type": "number",
               "doc": "Number of pricing plans to skip. Defaults to 0." },
             { "name": "planIds",
@@ -662,10 +676,10 @@
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "IDs of plans to list. A maximum of 50 IDs are listed, according to the [order](wix-pricing-plans-backend/arrangePlans) displayed in the Dashboard. If not specified, all plans are listed (up to a maximum of 50 plans). If non-existent IDs are specified, they are ignored and do not cause errors." },
+              "doc": "IDs of plans to list. You can pass a maximum of 50 IDs. \n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." },
             { "name": "archived",
               "type": "string",
-              "doc": "Archived filter. Defaults to ACTIVE (not archived) only.\nOne of:\n + `\"ACTIVE\"`\n + `\"ARCHIVED\"`\n + `\"ARCHIVED_AND_ACTIVE\"`" },
+              "doc": "Archived filter. Defaults to ACTIVE (not archived).\nOne of:\n + `\"ACTIVE\"`\n + `\"ARCHIVED\"`\n + `\"ARCHIVED_AND_ACTIVE\"`" },
             { "name": "public",
               "type": "string",
               "doc": "Visibility filter. Defaults to PUBLIC_AND_HIDDEN (meaning, both are listed).\nOne of:\n + `\"PUBLIC_AND_HIDDEN\"`\n + `\"PUBLIC\"`\n + `\"HIDDEN\"`" } ],
@@ -694,8 +708,8 @@
                       "",
                       "export function listPlans() {",
                       "",
-                      "  const limit = 20;",
-                      "  const offset = 0;",
+                      "  const limit = 3;",
+                      "  const skip = 0;",
                       "  const planIds = [",
                       "    \"3d6254cc-e05e...7ba1a356a8f6\", ",
                       "    \"69d58cf6-4070...295a12b79dde\",",
@@ -704,7 +718,7 @@
                       "  const archived = \"ACTIVE\";",
                       "  const public = \"PUBLIC\";",
                       "",
-                      "  return wixPricingPlansBackend.listPlans(limit, offset, planIds, archived, public)",
+                      "  return wixPricingPlansBackend.listPlans(limit, skip, planIds, archived, public)",
                       "    .then((plans) => {",
                       "      console.log(plans);    // Array of all the specified pricing plan objects that match the criteria",
                       "    })",
@@ -719,21 +733,22 @@
         "extra":
           {  } },
       { "name": "listPublicPlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "limit",
               "type": "number",
-              "doc": "Number of items to list. Defaults to 50. Maximum is 100. See [Pagination](https://dev.wix.com/api/rest/getting-started/pagination)." },
-            { "name": "offset",
+              "doc": "Number of items to list. Defaults to 50. Maximum is 100." },
+            { "name": "skip",
               "type": "number",
-              "doc": "Number of items to skip. Defaults to 0. See [Pagination](https://dev.wix.com/api/rest/getting-started/pagination)." },
+              "doc": "Number of items to skip. Defaults to 0." },
             { "name": "planIds",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "IDs of public plans to list. A maximum of 50 IDs can be given. \n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." } ],
+              "doc": "IDs of public plans to list. You can pass a maximum of 50 IDs.\n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -748,7 +763,9 @@
         "docs":
           { "summary": "Lists public pricing plans.",
             "description":
-              [ "The `listPublicPlans()` function returns a Promise that resolves to a list of up to 100 public pricing plans." ],
+              [ "The `listPublicPlans()` function returns a Promise that resolves to a list of up to 100 public pricing plans.",
+                "",
+                " Public plans are visible plans that site visitors can see on the site and purchase." ],
             "links":
               [ "[`listPlans()`](#listPlans)",
                 "[`queryPublicPlans()`](#queryPublicPlans)" ],
@@ -760,14 +777,14 @@
                       "export function listPublicPlans(l) {",
                       "",
                       "  const limit = 20;",
-                      "  const offset = 0;",
+                      "  const skip = 0;",
                       "  const planIds = [",
                       "    \"3d6254cc-e05e...7ba1a356a8f6\", ",
                       "    \"69d58cf6-4070...295a12b79dde\",",
                       "    \"e1e5069c-6116...19a3f3576e05\"",
                       "  ];",
                       "",
-                      "  return wixPricingPlansBackend.listPublicPlans(limit, offset, planIds)",
+                      "  return wixPricingPlansBackend.listPublicPlans(limit, skip, planIds)",
                       "    .then((publicPlans) => {",
                       "      console.log(publicPlans);  // Array of the specified public pricing plan objects ",
                       "    })",
@@ -782,7 +799,8 @@
         "extra":
           {  } },
       { "name": "makePlanPrimary",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -803,7 +821,9 @@
               [ "The `makePlanPrimary()` function returns a Promise that resolves to the ",
                 " pricing plan that is now the primary one. ",
                 "",
-                " If a plan was already marked as the primary plan, it no longer is.",
+                " Only a single plan can be marked as a primary plan at any given time. If ",
+                " there is an existing plan marked as primary, calling `makePlanPrimary()` ",
+                " causes the existing primary plan to lose its status.",
                 "",
                 " When viewing pricing plans on the site, the primary plan is highlighted ",
                 " with a customizable ribbon." ],
@@ -835,8 +855,8 @@
                       " *     \"description\": \"The ultimate gaming experience\",",
                       " *     \"perks\": {",
                       " *       \"values\": [",
-                      " *         \"There are no words to describe this extreme game!\",",
-                      " *         \"Easy yet challenging!\"",
+                      " *         \"There are no words to describe this extreme game\",",
+                      " *         \"Easy yet challenging\"",
                       " *       ]",
                       " *      },",
                       " *     \"pricing\": {",
@@ -856,8 +876,8 @@
                       " *      \"archived\": false,",
                       " *      \"primary\": true,",
                       " *      \"hasOrders\": false,",
-                      " *      \"createdDate\": \"2020-12-21T15:13:03.444Z\",",
-                      " *      \"updatedDate\": \"2020-12-31T11:51:16.859Z\",",
+                      " *      \"_createdDate\": \"2020-12-21T15:13:03.444Z\",",
+                      " *      \"_updatedDate\": \"2020-12-31T11:51:16.859Z\",",
                       " *      \"slug\": \"ultimate\",",
                       " *      \"allowFutureStartDate\": false,",
                       " *      \"buyerCanCancel\": true",
@@ -871,7 +891,8 @@
         "extra":
           {  } },
       { "name": "queryPublicPlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -900,7 +921,7 @@
                 " + eq(\"_id\", \"46ce4cd4-46ff...02fd4f0f3209)",
                 " + skip: 0",
                 " + limit: 50",
-                " + descending: by createdDate",
+                " + descending: by _createdDate",
                 "",
                 " The functions that are chained to queryPublicPlans() are applied in the order they are called. For example, ",
                 " if you sort on the `dateCreated` property in ascending order and then on the `id` property in ascending order, ",
@@ -916,12 +937,12 @@
                 "|`_id`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne), [`.contains()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/contains), [`.hasSome()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/hasSome), [`.in()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/in)|`.hasSome(\"_id\", [\"46ce4cd4-46ff...02fd4f0f3209\", \"94ce4cd4-46cc...03fd4f0f3306\"])`|",
                 "|`primary` |[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne)|`.eq(\"primary\",true)`| ",
                 "|`slug`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne)[`.startsWith()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/startsWith), [`.endsWith()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/endsWith), [`.contains()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/contains), [`.in()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/in)|`.eq(\"gold\")`|",
-                "|`dateCreated`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne), [`.gt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/gt), [`.ge()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ge), [`.lt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/lt), [`.le()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/le), [`.between()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/between)|`.lt(\"createdDate\", \"2020-04-27T10:00:00.000Z\")`|",
-                "|`dateUpdated`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne), [`.gt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/gt), [`.ge()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ge), [`.lt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/lt), [`.le()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/le), [`.between()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/between)|`.ge(\"updatedDate\", \"2020-04-27T10:00:00.000Z\")`|",
+                "|`dateCreated`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne), [`.gt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/gt), [`.ge()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ge), [`.lt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/lt), [`.le()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/le), [`.between()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/between)|`.lt(\"_createdDate\", \"2020-04-27T10:00:00.000Z\")`|",
+                "|`dateUpdated`|[`.eq()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/eq), [`.ne()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ne), [`.gt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/gt), [`.ge()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ge), [`.lt()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/lt), [`.le()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/le), [`.between()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/between)|`.ge(\"_updatedDate\", \"2020-04-27T10:00:00.000Z\")`|",
                 "||[`limit()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/limit)|`.limit(10)`|",
                 "||[`skip()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/skip)|`.skip(5)`| ",
-                "||[`ascending()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ascending)|`.ascending(\"createdDate\")`|",
-                "||[`descending()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/descending)|`.descending(\"updatedDate\")`|",
+                "||[`ascending()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/ascending)|`.ascending(\"_createdDate\")`|",
+                "||[`descending()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/descending)|`.descending(\"_updatedDate\")`|",
                 "||[`count()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/count)|`.count()`|",
                 "||[`find()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/find)|Execute the query: `queryPublicPlans.find()|",
                 "",
@@ -944,7 +965,7 @@
                       "  wixPricingPlansBackend.queryPublicPlans(excludeId, skip, limit, date)",
                       "   .ne('id', excludeId)",
                       "   .eq('primary', false)",
-                      "   .gt('createdDate', date)",
+                      "   .gt('_createdDate', date)",
                       "   .skip(skip)",
                       "   .limit(limit)",
                       "   .find()",
@@ -979,8 +1000,8 @@
                       " *     \"description\": \"For expert gamers\",",
                       " *     \"perks\": {",
                       " *       \"values\": [",
-                      " *         \"Great bargain!\",",
-                      " *         \"Multi-user!\"",
+                      " *         \"Great value for your money\",",
+                      " *         \"Multi-user\"",
                       " *       ]",
                       " *     },",
                       " *     \"pricing\": {",
@@ -991,8 +1012,8 @@
                       " *       }",
                       " *     },",
                       " *     \"primary\": false,",
-                      " *     \"createdDate\": \"2020-12-21T15:13:06.202Z\",",
-                      " *     \"updatedDate\": \"2020-12-30T15:13:06.202Z\",",
+                      " *     \"_createdDate\": \"2020-12-21T15:13:06.202Z\",",
+                      " *     \"_updatedDate\": \"2020-12-30T15:13:06.202Z\",",
                       " *     \"slug\": \"free-until-canc\",",
                       " *     \"maxPurchasesPerBuyer\": 1,",
                       " *     \"allowFutureStartDate\": false,",
@@ -1025,8 +1046,8 @@
                       " *       \"freeTrialDays\": 7",
                       " *     },",
                       " *     \"primary\": false,",
-                      " *     \"createdDate\": \"2020-12-21T15:13:07.018Z\",",
-                      " *     \"updatedDate\": \"2020-12-30T15:13:07.018Z\",",
+                      " *     \"_createdDate\": \"2020-12-21T15:13:07.018Z\",",
+                      " *     \"_updatedDate\": \"2020-12-30T15:13:07.018Z\",",
                       " *     \"slug\": \"ft1\",",
                       " *     \"allowFutureStartDate\": false,",
                       " *     \"buyerCanCancel\": true,",
@@ -1039,7 +1060,7 @@
                       " *     \"perks\": {",
                       " *       \"values\": [",
                       " *          \"Great avatar selection and background tunes\",",
-                      " *          \"All benefits of Bronze membership\"",
+                      " *          \"All perks of Bronze membership\"",
                       " *       ]",
                       " *     },",
                       " *     \"pricing\": {",
@@ -1053,8 +1074,8 @@
                       " *       }",
                       " *     },",
                       " *     \"primary\": false,",
-                      " *     \"createdDate\": \"2020-12-21T15:13:10.327Z\",",
-                      " *     \"updatedDate\": \"2020-12-30T15:13:10.327Z\",",
+                      " *     \"_createdDate\": \"2020-12-21T15:13:10.327Z\",",
+                      " *     \"_updatedDate\": \"2020-12-30T15:13:10.327Z\",",
                       " *     \"slug\": \"event\",",
                       " *     \"allowFutureStartDate\": false,",
                       " *     \"buyerCanCancel\": true,",
@@ -1068,7 +1089,7 @@
                       " *         \"primary\": false",
                       " *       },",
                       " *       {",
-                      " *         \"createdDate\": {",
+                      " *         \"_createdDate\": {",
                       " *           \"$gt\": \"Sun Nov 01 2020 02:00:00 GMT+0200 (Israel Standard Time)\"",
                       " *         }",
                       " *       }",
@@ -1077,13 +1098,13 @@
                       " *   \"invalidArguments\": [],",
                       " *   \"sort\": [],",
                       " *   \"paging\": {",
-                      " *     \"offset\": 1,",
+                      " *     \"skip\": 1,",
                       " *     \"limit\": 20",
                       " *   },",
-                      " *     \"pagingMethod\": \"OFFSET\"",
+                      " *     \"pagingMethod\": \"SKIP\"",
                       " *   },",
                       " *   \"_limit\": 20,",
-                      " *   \"_offset\": 1",
+                      " *   \"_skip\": 1",
                       " * }",
                       " *",
                       " */" ],
@@ -1094,7 +1115,8 @@
         "extra":
           {  } },
       { "name": "setPlanVisibility",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -1118,14 +1140,16 @@
               [ "The `setPlanVisibility()` function returns a Promise that resolves when the plan's ",
                 " visibility is set.",
                 "",
-                " By default, pricing plans are public, meaning they are visible. Plans can be hidden ",
+                " By default, pricing plans are public, meaning they are visible. [Plans can be hidden](https://support.wix.com/en/article/pricing-plans-removing-a-plan-from-your-site#hiding-plans) ",
                 " so that site members and visitors cannot see or choose them.",
                 "",
                 " As opposed to archiving, setting visibility can be reversed. This means that a public plan ",
-                " can be hidden, and a hidden plan can be made public (visible). (An archived plan always ",
-                " remains archived and cannot be made active again.)",
+                " can be hidden, and a hidden plan can be made public (visible). ",
                 "",
-                " Changing a plan’s visibility does not impact existing orders for the plan. All orders for hidden plans are still active and keep their benefits." ],
+                " >**Note:**An archived plan always remains archived and cannot be made active again. When archiving ",
+                " > a plan, its `visibility` property is automatically set to `false` so that it is hidden.",
+                "",
+                " Changing a plan’s visibility does not impact existing orders for the plan. All orders for hidden plans are still active and keep their perks." ],
             "links": [],
             "examples":
               [ { "title": "Hide a plan",
@@ -1134,9 +1158,8 @@
                       "    const planId = \"1ab23456-12a3......-a12b3c45def6\";",
                       "    const visibilityToggle = false;",
                       "    return wixPricingPlansBackend.setPlanVisibility(planId, visibilityToggle)",
-                      "      .then((result) => {",
-                      "        // Plan is hidden from site members and visitors",
-                      "        // Plan is visible from dashboard",
+                      "      .then( () => {",
+                      "        console.log(\"Plan hidden\");  // Plan is visible in the Dashboard",
                       "      })",
                       "      .catch((error) => {",
                       "        let visibilityError = error;",
@@ -1150,7 +1173,8 @@
         "extra":
           {  } },
       { "name": "updatePlan",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planInfo",
@@ -1242,8 +1266,8 @@
                       " *   \"archived\": false,",
                       " *   \"primary\": false,",
                       " *   \"hasOrders\": false,",
-                      " *   \"createdDate\": \"2020-12-21T09:38:14.939Z\",",
-                      " *   \"updatedDate\": \"2020-12-30T09:38:14.939Z\",",
+                      " *   \"_createdDate\": \"2020-12-21T09:38:14.939Z\",",
+                      " *   \"_updatedDate\": \"2020-12-30T09:38:14.939Z\",",
                       " *   \"slug\": \"goldplus\",",
                       " *   \"maxPurchasesPerBuyer\": 10,",
                       " *   \"allowFutureStartDate\": true,",
@@ -1285,7 +1309,7 @@
               "doc": "Plan price, payment schedule, and expiration." },
             { "name": "public",
               "type": "boolean",
-              "doc": "Whether the plan is public (visible to site visitors and members).",
+              "doc": "Whether the plan is public (visible to site visitors).",
               "optional": true },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
@@ -1297,7 +1321,7 @@
               "optional": true },
             { "name": "buyerCanCancel",
               "type": "boolean",
-              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error, as expected.",
+              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error.",
               "optional": true },
             { "name": "termsAndConditions",
               "type": "string",
@@ -1305,7 +1329,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Cursors_3337235656",
         "locations":
           [ { "lineno": 15,
@@ -1343,13 +1368,14 @@
               "doc": "Number of days, months, weeks, or years." },
             { "name": "unit",
               "type": "string",
-              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`" } ],
+              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`" } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "DurationOptions",
         "locations":
-          [ { "lineno": 15,
+          [ { "lineno": 14,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
@@ -1364,11 +1390,12 @@
               "optional": true },
             { "name": "unit",
               "type": "string",
-              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`",
+              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Duration_4570911334",
         "locations":
           [ { "lineno": 15,
@@ -1432,10 +1459,10 @@
           [ "removed" ] },
       { "name": "Money",
         "locations":
-          [ { "lineno": 124,
+          [ { "lineno": 122,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Amount for a single payment (or the whole subscription if it's not a recurring plan)",
+          { "summary": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan.",
             "links": [],
             "examples": [],
             "extra":
@@ -1449,13 +1476,14 @@
               "doc": "Currency code. Must be a valid [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code (for example, USD)." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "MoneyOptions",
         "locations":
-          [ { "lineno": 132,
+          [ { "lineno": 130,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Amount for a single payment (or the whole subscription if it's not a recurring plan)",
+          { "summary": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan.",
             "links": [],
             "examples": [],
             "extra":
@@ -1471,7 +1499,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Money_2842916134",
         "locations":
           [ { "lineno": 119,
@@ -1548,7 +1577,7 @@
           [ "removed" ] },
       { "name": "Plan",
         "locations":
-          [ { "lineno": 84,
+          [ { "lineno": 82,
               "filename": "shared.js" } ],
         "docs":
           { "links": [],
@@ -1573,25 +1602,19 @@
               "doc": "Plan price, payment schedule, and expiration." },
             { "name": "public",
               "type": "boolean",
-              "doc": "Whether the plan is public (visible to site visitors and members)." },
+              "doc": "Whether the plan is public (visible to site visitors)." },
             { "name": "archived",
               "type": "boolean",
               "doc": "Whether the plan is archived. Archived plans are not visible and can't be purchased anymore, but existing purchases remain in effect." },
             { "name": "primary",
               "type": "boolean",
-              "doc": "Whether the plan is marked as primary." },
+              "doc": "Whether the plan is marked as primary. If true, the plan is highlighted on the site with a custom ribbon." },
             { "name": "hasOrders",
               "type": "boolean",
               "doc": "Whether the plan has any orders (including pending and unpaid orders)." },
-            { "name": "createdDate",
-              "type": "Date",
-              "doc": "Date plan was created." },
-            { "name": "updatedDate",
-              "type": "Date",
-              "doc": "Date plan was last updated." },
             { "name": "slug",
               "type": "string",
-              "doc": "URL-friendly version of plan name. Unique across all plans in the same site." },
+              "doc": "URL-friendly version of the plan name. Unique across all plans in the same site." },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
               "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation." },
@@ -1600,13 +1623,20 @@
               "doc": "Whether the buyer can start the plan at a later date. Defaults to false." },
             { "name": "buyerCanCancel",
               "type": "boolean",
-              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error, as expected." },
+              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error." },
             { "name": "termsAndConditions",
               "type": "string",
-              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." } ],
+              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." },
+            { "name": "_createdDate",
+              "type": "Date",
+              "doc": "Date plan was created." },
+            { "name": "_updatedDate",
+              "type": "Date",
+              "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PlanInfo",
         "locations":
           [ { "lineno": 13,
@@ -1836,10 +1866,10 @@
         "labels": [] },
       { "name": "Pricing",
         "locations":
-          [ { "lineno": 29,
+          [ { "lineno": 27,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Plan pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
+          { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
             "links": [],
             "examples": [],
             "extra":
@@ -1859,7 +1889,7 @@
               "optional": true },
             { "name": "price",
               "type": "wix-pricing-plans-backend.Money",
-              "doc": "Amount for a single payment (or the whole subscription if it's not a recurring plan)" },
+              "doc": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan." },
             { "name": "freeTrialDays",
               "type": "number",
               "doc": "Free trial period for the plan in days. Available only for recurring plans, meaning plans whose pricing model is `subscription`." } ],
@@ -1874,10 +1904,10 @@
           [ "changed" ] },
       { "name": "PricingOptions",
         "locations":
-          [ { "lineno": 41,
+          [ { "lineno": 39,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Plan pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
+          { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
             "links": [],
             "examples": [],
             "extra":
@@ -1897,7 +1927,7 @@
               "optional": true },
             { "name": "price",
               "type": "wix-pricing-plans-backend.MoneyOptions",
-              "doc": "Amount for a single payment (or the whole subscription if it's not a recurring plan)",
+              "doc": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan.",
               "optional": true },
             { "name": "freeTrialDays",
               "type": "number",
@@ -2032,10 +2062,10 @@
           [ "removed" ] },
       { "name": "PublicPlan",
         "locations":
-          [ { "lineno": 105,
+          [ { "lineno": 103,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Public plan entity containing information about the pricing plan. Can be read by any site member or visitor.",
+          { "summary": "Public pricing plan entity containing information about the pricing plan. Can be read by any site member or visitor.",
             "links": [],
             "examples": [],
             "extra":
@@ -2058,16 +2088,10 @@
               "doc": "Plan price, payment schedule, and expiration." },
             { "name": "primary",
               "type": "boolean",
-              "doc": "Whether the plan is marked as primary." },
-            { "name": "createdDate",
-              "type": "Date",
-              "doc": "Date plan was created." },
-            { "name": "updatedDate",
-              "type": "Date",
-              "doc": "Date plan was last updated." },
+              "doc": "Whether the plan is marked as primary.  If true, the plan is highlighted on the site with a custom ribbon." },
             { "name": "slug",
               "type": "string",
-              "doc": "URL-friendly version of plan name. Unique across all plans in the same site." },
+              "doc": "URL-friendly version of the plan name. Unique across all plans in the same site." },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
               "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation." },
@@ -2076,13 +2100,20 @@
               "doc": "Whether the buyer can start the plan at a later date. Defaults to false." },
             { "name": "buyerCanCancel",
               "type": "boolean",
-              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false. If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error, as expected." },
+              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false. If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error." },
             { "name": "termsAndConditions",
               "type": "string",
-              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." } ],
+              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." },
+            { "name": "_createdDate",
+              "type": "Date",
+              "doc": "Date plan was created." },
+            { "name": "_updatedDate",
+              "type": "Date",
+              "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PublicPlan_1_27576959562",
         "locations":
           [ { "lineno": 1,
@@ -2180,10 +2211,10 @@
           [ "removed" ] },
       { "name": "Recurrence",
         "locations":
-          [ { "lineno": 54,
+          [ { "lineno": 52,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Plan has recurring payments.",
+          { "summary": "The pricing plan has recurring payments.",
             "links": [],
             "examples": [],
             "extra":
@@ -2197,13 +2228,14 @@
               "doc": "Number of cycles. Zero for unlimited plans and plans that are valid until canceled." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "RecurrenceOptions",
         "locations":
-          [ { "lineno": 62,
+          [ { "lineno": 60,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Plan has recurring payments.",
+          { "summary": "The pricing plan has recurring payments.",
             "links": [],
             "examples": [],
             "extra":
@@ -2219,7 +2251,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Recurrence_2562653323",
         "locations":
           [ { "lineno": 49,
@@ -2268,10 +2301,10 @@
             "removed" ] },
       { "name": "StringList",
         "locations":
-          [ { "lineno": 70,
+          [ { "lineno": 68,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "What is included with this plan (for example, 1 weekly entrance to a specific class).",
+          { "summary": "What is included with this pricing plan (for example, 1 weekly entrance to a specific class).",
             "links": [],
             "examples": [],
             "extra":
@@ -2285,13 +2318,14 @@
               "doc": "An array of strings listing what is included in this plan." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "StringListOptions",
         "locations":
-          [ { "lineno": 77,
+          [ { "lineno": 75,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "What is included with this plan (for example, 1 weekly entrance to a specific class).",
+          { "summary": "What is included with this pricing plan (for example, 1 weekly entrance to a specific class).",
             "links": [],
             "examples": [],
             "extra":
@@ -2306,7 +2340,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "StringList_2890398440",
         "locations":
           [ { "lineno": 64,
@@ -2381,7 +2416,7 @@
               "optional": true },
             { "name": "public",
               "type": "boolean",
-              "doc": "Whether the plan is public (visible to site visitors and members).",
+              "doc": "Whether the plan is public (visible to site visitors).",
               "optional": true },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
@@ -2393,7 +2428,7 @@
               "optional": true },
             { "name": "buyerCanCancel",
               "type": "boolean",
-              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error, as expected.",
+              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error.",
               "optional": true },
             { "name": "termsAndConditions",
               "type": "string",
@@ -2401,6 +2436,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels":
+          [ "changed" ] } ],
   "extra":
     {  } }
