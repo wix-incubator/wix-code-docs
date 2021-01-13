@@ -45,7 +45,27 @@
           " + Let site visitors [cancel](wix-paid-plans/cancelPlan) plan subscriptions (orders) that they have purchased. ",
           "",
           "",
+          " ### About Pricing Models",
           "",
+          " Pricing models contain the [pricing and duration options](https://support.wix.com/en/article/pricing-plans-about-pricing-plans#pricing-duration-options) for a plan. ",
+          "",
+          " Plans are based on one pricing model as defined in the plan's `pricing` property. A pricing model can be one of the following: ",
+          " + **A subscription**: A subscription with recurring payments and how often the plan recurs. Subscriptions can have free trial days. ",
+          " + **A plan that does not renew**: A single payment for a specific duration that does not renew. ",
+          " + **An unlimited plan**: A single payment (or free) for an unlimited amount of time (until cancelled).",
+          "   Example of a free pricing model that lasts for a duration of 6 months: ",
+          "   ```javascript",
+          "   \"pricing\": {",
+          "         \"singlePaymentForDuration\": {",
+          "           \"count\": 6,",
+          "           \"unit\": \"MONTH\"",
+          "        },",
+          "        \"price\": {",
+          "         \"value\": \"0\",",
+          "         \"currency\": \"ILS\"",
+          "        }",
+          "      }",
+          "   ```",
           "",
           " ### About Ordering Pricing Plans",
           "",
@@ -138,8 +158,8 @@
                       "export function archivePlan() {",
                       "    const planId = \"1ab23456-12a3...a12b3c45def6\";",
                       "    return wixPricingPlansBackend.archivePlan(planId)",
-                      "      .then((result) => {",
-                      "        let archivedPlanId = result.plan._id;",
+                      "      .then((plan) => {",
+                      "        let archivedPlanId = plan._id;",
                       "      })",
                       "      .catch((error) => {",
                       "        let archiveError = error;",
@@ -164,10 +184,10 @@
                       " *    \"pricing\": {",
                       " *      \"subscription\": {",
                       " *        \"cycleDuration\": {",
-                      " *          \"count\": 1,",
+                      " *          \"count\": 52,",
                       " *          \"unit\": \"WEEK\"",
                       " *        },",
-                      " *        \"cycleCount\": 2",
+                      " *        \"cycleCount\": 1",
                       " *      },",
                       " *      \"price\": {",
                       " *        \"value\": \"15\",",
@@ -193,8 +213,7 @@
         "extra":
           {  } },
       { "name": "arrangePlans",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "ids",
@@ -255,8 +274,7 @@
         "extra":
           {  } },
       { "name": "clearPrimary",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params": [],
         "ret":
@@ -322,7 +340,7 @@
             "description":
               [ "The `createPlan()` function returns a Promise that resolves to a newly-created pricing plan after it has successfully been created. ",
                 "",
-                " The passed `PlanInfo` object must contain at least pricing model: a recurring subscription, payment for a specific duration, or payment for",
+                " The passed `PlanInfo` object must contain a pricing model: a recurring subscription, payment for a specific duration, or payment for",
                 " an unlimited amount of time (until cancelled).",
                 "",
                 " Pricing plans created by this function are available to the site owner in the Pricing Plans section in the site's dashboard." ],
@@ -337,14 +355,14 @@
                       "import wixPricingPlansBackend from 'wix-pricing-plans-backend';",
                       "",
                       "export function createPlan(planInfo) {",
-                      "\treturn wixPricingPlansBackend.createPlan(planInfo);",
+                      "  return wixPricingPlansBackend.createPlan(planInfo);",
                       "}",
                       "",
                       "/*************",
                       " * Page code *",
                       " *************/",
                       "",
-                      "import wixPricingPlansBackend from 'backend/plans';",
+                      "import { createPlan } from 'backend/plans';",
                       "",
                       "// …",
                       "",
@@ -373,15 +391,15 @@
                       "  }",
                       "",
                       "createPlan(planInfo)",
-                      "\t.then(plan => {",
-                      "\t\t// plan created",
-                      "\t\tconst planId = plan._id;",
-                      "\t\tconst description = plan.description;",
-                      "\t})",
-                      "\t.catch((error) => {",
+                      "  .then((plan) => {",
+                      "    // plan created",
+                      "    const planId = plan._id;",
+                      "    const description = plan.description;",
+                      "  })",
+                      "  .catch((error) => {",
                       "    // plan not created ",
                       "    console.error(error);",
-                      "\t});",
+                      "  });",
                       "",
                       "",
                       "/* Full plan object:",
@@ -456,15 +474,15 @@
                       "  let id = \"3d6254cc-e05e...7ba1a356a8f6\";",
                       "",
                       "  return wixPricingPlansBackend.getPlan(id)",
-                      "    .then((response) => {",
-                      "      console.log(response);",
+                      "    .then((plan) => {",
+                      "      console.log(plan);",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
                       "}",
                       "",
-                      "/* Full event object:",
+                      "/* Full plan object:",
                       " * {",
                       " * \"_id\": \"3d6254cc-e05e...7ba1a356a8f6\",",
                       " * \"name\": \"Gold\",",
@@ -478,7 +496,7 @@
                       " *  \"pricing\": {",
                       " *   \"subscription\": {",
                       " *      \"cycleDuration\": {",
-                      " *        \"count\": 1,",
+                      " *        \"count\": 12,",
                       " *        \"unit\": \"MONTH\"",
                       " *      },",
                       " *      \"cycleCount\": 2",
@@ -494,7 +512,7 @@
                       " *  \"primary\": false,",
                       " *  \"hasOrders\": false,",
                       " *  \"createdDate\": \"2020-12-24T11:23:48.308Z\",",
-                      " *  \"updatedDate\": \"2020-12-24T11:39:45.523Z\",",
+                      " *  \"updatedDate\": \"2020-12-30T11:39:45.523Z\",",
                       " *  \"slug\": \"gold\",",
                       " *  \"maxPurchasesPerBuyer\": 10,",
                       " *  \"allowFutureStartDate\": false,",
@@ -509,7 +527,8 @@
         "extra":
           {  } },
       { "name": "getPlansStats",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -534,17 +553,17 @@
                   "body":
                     [ "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
                       "",
-                      "export function getPlansStats() {",
-                      "  return wixPricingPlansBackend.getPlansStats()",
-                      "    .then((response) => {",
-                      "      console.log(response);",
+                      "export function getPlanStats() {",
+                      "  return wixPricingPlansBackend.getPlanStats()",
+                      "    .then((statistics) => {",
+                      "      console.log(statistics);",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
                       "}",
                       "",
-                      "/* Statistic relevant to the site's pricing plans:",
+                      "/* Statistics object relevant to the site's pricing plans:",
                       " *",
                       " *{",
                       " *   \"total\": 68     // Count of all plans (public, hidden and archived)",
@@ -616,8 +635,8 @@
                       "  const public = \"PUBLIC\";",
                       "",
                       "  return wixPricingPlansBackend.listPlans(limit, offset, planIds, archived, public)",
-                      "    .then((result) => {",
-                      "      console.log(result);    // Array of all the specified pricing plan objects that match the criteria",
+                      "    .then((plans) => {",
+                      "      console.log(plans);    // Array of all the specified pricing plan objects that match the criteria",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
@@ -680,8 +699,8 @@
                       "  ];",
                       "",
                       "  return wixPricingPlansBackend.listPublicPlans(limit, offset, planIds)",
-                      "    .then((result) => {",
-                      "      console.log(result);  // Array of the specified public pricing plan objects ",
+                      "    .then((publicPlans) => {",
+                      "      console.log(publicPlans);  // Array of the specified public pricing plan objects ",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
@@ -731,8 +750,8 @@
                       "  let planId = \"ce0d25ef-7c3a...4eb288c73afe\";",
                       "",
                       "  return wixPricingPlansBackend.makePlanPrimary(planId)",
-                      "    .then((response) => {",
-                      "      console.log(response);",
+                      "    .then((plan) => {",
+                      "      console.log(plan);",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
@@ -756,7 +775,7 @@
                       " *        \"subscription\": {",
                       " *          \"cycleDuration\": {",
                       " *            \"count\": 1,",
-                      " *            \"unit\": \"MONTH\"",
+                      " *            \"unit\": \"YEAR\"",
                       " *          },",
                       " *          \"cycleCount\": 0",
                       " *        },",
@@ -862,7 +881,7 @@
                       "   .skip(skip)",
                       "   .limit(limit)",
                       "   .find()",
-                      "     .then( (result) => {",
+                      "     .then( (plans) => {",
                       "       // plans matching criteria are listed - see list below",
                       "     })",
                       "     .catch( (err) => {",
@@ -906,7 +925,7 @@
                       " *     },",
                       " *     \"primary\": false,",
                       " *     \"createdDate\": \"2020-12-21T15:13:06.202Z\",",
-                      " *     \"updatedDate\": \"2020-12-21T15:13:06.202Z\",",
+                      " *     \"updatedDate\": \"2020-12-30T15:13:06.202Z\",",
                       " *     \"slug\": \"free-until-canc\",",
                       " *     \"maxPurchasesPerBuyer\": 1,",
                       " *     \"allowFutureStartDate\": false,",
@@ -940,7 +959,7 @@
                       " *     },",
                       " *     \"primary\": false,",
                       " *     \"createdDate\": \"2020-12-21T15:13:07.018Z\",",
-                      " *     \"updatedDate\": \"2020-12-21T15:13:07.018Z\",",
+                      " *     \"updatedDate\": \"2020-12-30T15:13:07.018Z\",",
                       " *     \"slug\": \"ft1\",",
                       " *     \"allowFutureStartDate\": false,",
                       " *     \"buyerCanCancel\": true,",
@@ -968,7 +987,7 @@
                       " *     },",
                       " *     \"primary\": false,",
                       " *     \"createdDate\": \"2020-12-21T15:13:10.327Z\",",
-                      " *     \"updatedDate\": \"2020-12-21T15:13:10.327Z\",",
+                      " *     \"updatedDate\": \"2020-12-30T15:13:10.327Z\",",
                       " *     \"slug\": \"event\",",
                       " *     \"allowFutureStartDate\": false,",
                       " *     \"buyerCanCancel\": true,",
@@ -1008,8 +1027,7 @@
         "extra":
           {  } },
       { "name": "setPlanVisibility",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -1106,7 +1124,7 @@
                       " * Page code *",
                       " *************/",
                       "",
-                      "import wixPricingPlansBackend from 'backend/plans';",
+                      "import { updatePlan } from 'backend/plans';",
                       "",
                       "// …",
                       "",
@@ -1136,7 +1154,7 @@
                       "/* Full plan object:",
                       " *",
                       " * {",
-                      " *  \"_id\": \"e47a3fd2-3335...01854f54efb9\",",
+                      " *   \"_id\": \"e47a3fd2-3335...01854f54efb9\",",
                       " *   \"name\": \"Gold Plus\",",
                       " *   \"description\": \"Updated description for the original Gold plan\",",
                       " *   \"perks\": {",
@@ -1159,7 +1177,7 @@
                       " *   \"primary\": false,",
                       " *   \"hasOrders\": false,",
                       " *   \"createdDate\": \"2020-12-21T09:38:14.939Z\",",
-                      " *   \"updatedDate\": \"2020-12-21T09:38:14.939Z\",",
+                      " *   \"updatedDate\": \"2020-12-30T09:38:14.939Z\",",
                       " *   \"slug\": \"goldplus\",",
                       " *   \"maxPurchasesPerBuyer\": 10,",
                       " *   \"allowFutureStartDate\": true,",
@@ -1221,8 +1239,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "Cursors_3337235656",
         "locations":
           [ { "lineno": 15,
@@ -1249,7 +1266,7 @@
           [ { "lineno": 1,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Length of one payment cycle, e.g. 3 months to have quarterly payments.",
+          { "summary": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
             "links": [],
             "examples": [],
             "extra":
@@ -1257,19 +1274,20 @@
         "members":
           [ { "name": "count",
               "type": "number",
-              "doc": "Number of days, months, weeks or years." },
+              "doc": "Number of days, months, weeks, or years." },
             { "name": "unit",
               "type": "string",
-              "doc": "Days, months, weeks or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`" } ],
+              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`" } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "DurationOptions",
         "locations":
           [ { "lineno": 15,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Length of one payment cycle, e.g. 3 months to have quarterly payments.",
+          { "summary": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
             "links": [],
             "examples": [],
             "extra":
@@ -1277,15 +1295,16 @@
         "members":
           [ { "name": "count",
               "type": "number",
-              "doc": "Number of days, months, weeks or years.",
+              "doc": "Number of days, months, weeks, or years.",
               "optional": true },
             { "name": "unit",
               "type": "string",
-              "doc": "Days, months, weeks or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`",
+              "doc": "Days, months, weeks, or years.\nOne of:\n + `\"UNDEFINED\"`\n + `\"DAY\"`\n + `\"WEEK\"`\n + `\"MONTH\"`\n + `\"YEAR\"`",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Duration_4570911334",
         "locations":
           [ { "lineno": 15,
@@ -1360,10 +1379,10 @@
         "members":
           [ { "name": "value",
               "type": "string",
-              "doc": "Monetary amount. Decimal string with a period as a decimal separator (for example, 3.99). Optionally, a single (-), to indicate that the amount is negative." },
+              "doc": "Monetary amount. Decimal string with a period as a decimal separator (for example, 3.99). Optionally, a single minus sign (-) to indicate that the amount is negative." },
             { "name": "currency",
               "type": "string",
-              "doc": "Currency code. Must be valid ISO 4217 currency code (for example, USD)." } ],
+              "doc": "Currency code. Must be a valid [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code (for example, USD)." } ],
         "extra":
           {  },
         "labels":
@@ -1389,8 +1408,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "Money_2842916134",
         "locations":
           [ { "lineno": 119,
@@ -1525,8 +1543,7 @@
               "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PlanInfo",
         "locations":
           [ { "lineno": 13,
@@ -2000,8 +2017,7 @@
               "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PublicPlan_1_27576959562",
         "locations":
           [ { "lineno": 1,
@@ -2110,13 +2126,14 @@
         "members":
           [ { "name": "cycleDuration",
               "type": "wix-pricing-plans-backend.Duration",
-              "doc": "Length of one payment cycle, e.g. 3 months to have quarterly payments." },
+              "doc": "Length of one payment cycle, for example, 3 months to have quarterly payments." },
             { "name": "cycleCount",
               "type": "number",
-              "doc": "Number of cycles. Zero for unlimited / until canceled." } ],
+              "doc": "Number of cycles. Zero for unlimited plans and plans that are valid until canceled." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "RecurrenceOptions",
         "locations":
           [ { "lineno": 62,
@@ -2130,15 +2147,16 @@
         "members":
           [ { "name": "cycleDuration",
               "type": "wix-pricing-plans-backend.DurationOptions",
-              "doc": "Length of one payment cycle, e.g. 3 months to have quarterly payments.",
+              "doc": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
               "optional": true },
             { "name": "cycleCount",
               "type": "number",
-              "doc": "Number of cycles. Zero for unlimited / until canceled.",
+              "doc": "Number of cycles. Zero for unlimited plans and plans that are valid until canceled.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Recurrence_2562653323",
         "locations":
           [ { "lineno": 49,
@@ -2201,7 +2219,7 @@
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "List of strings" } ],
+              "doc": "An array of strings listing what is included in this plan." } ],
         "extra":
           {  },
         "labels":
@@ -2222,7 +2240,7 @@
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "List of strings",
+              "doc": "An array of strings listing what is included in this plan.",
               "optional": true } ],
         "extra":
           {  },
@@ -2322,7 +2340,6 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] } ],
+        "labels": [] } ],
   "extra":
     {  } }
