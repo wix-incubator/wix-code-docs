@@ -20,10 +20,10 @@
           "",
           " To use APIs to manage your plans, first set up your site to:",
           "",
-          " * Accept payments as described in [About Accepting Payments](https://support.wix.com/en/article/about-accepting-payments).",
+          " + Accept payments as described in [About Accepting Payments](https://support.wix.com/en/article/about-accepting-payments).",
           "",
-          " * Offer membership plans as described in [About Pricing Plans](https://support.wix.com/en/article/about-pricing-plans). When setting up your site to accept pricing plans, ",
-          " [define the plans you want to offer](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans).",
+          " + Offer membership plans as described in [About Pricing Plans](https://support.wix.com/en/article/about-pricing-plans). When setting up your site to accept pricing plans, ",
+          "   [define the plans you want to offer](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans).",
           "",
           "",
           " ### Set Up and Manage Pricing Plans",
@@ -88,7 +88,7 @@
           "   duration of 1 month only and does not renew.",
           "",
           "   The duration (`count` and `unit`) is the plan duration (not a payment cycle",
-          "   duration.)",
+          "   duration).",
           "",
           "   ```javascript",
           "   \"pricing\": {",
@@ -160,7 +160,7 @@
           "",
           "   + **Hidden pricing plans** are plans whose visibility has been set to `false`. These plans cannot be seen on the site by the site member or visitor. For example, consider hiding a plan if it has reached its maximum capacity and temporarily is not available for purchase. ",
           "",
-          "     Changing a plan’s visibility does not impact existing purchases. All purchases for hidden plans are still active and keep their perks.",
+          "     Changing a plan’s visibility does not impact existing purchases. All purchases for hidden plans are still active and keep their terms and payment options.",
           "",
           "   + **Active pricing plans** include all non-archived plans (such as public plans and hidden plans).",
           "",
@@ -606,7 +606,8 @@
         "extra":
           {  } },
       { "name": "getPlansStats",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -643,8 +644,9 @@
                       "",
                       "/* Statistics object relevant to the site's pricing plans:",
                       " *",
-                      " *{",
-                      " *   \"total\": 8     // Count of all plans (public, hidden and archived)",
+                      " * {",
+                      " *   // Count of all plans (public, hidden and archived)",
+                      " *   \"total\": 8     ",
                       " * }",
                       " * ",
                       " */" ],
@@ -655,27 +657,19 @@
         "extra":
           {  } },
       { "name": "listPlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "limit",
-              "type": "number",
-              "doc": "Number of pricing plans to list. Defaults to 100." },
-            { "name": "skip",
-              "type": "number",
-              "doc": "Number of pricing plans to skip. Defaults to 0." },
-            { "name": "planIds",
+          [ { "name": "planIds",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
               "doc": "IDs of plans to list. You can pass a maximum of 50 IDs. \n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." },
-            { "name": "archived",
-              "type": "string",
-              "doc": "Archived filter. Defaults to ACTIVE (not archived).\nOne of:\n + `\"ACTIVE\"`\n + `\"ARCHIVED\"`\n + `\"ARCHIVED_AND_ACTIVE\"`" },
-            { "name": "public",
-              "type": "string",
-              "doc": "Visibility filter. Defaults to PUBLIC_AND_HIDDEN (meaning, both are listed).\nOne of:\n + `\"PUBLIC_AND_HIDDEN\"`\n + `\"PUBLIC\"`\n + `\"HIDDEN\"`" } ],
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.ListPlanOptions",
+              "doc": "Options to use when getting the list of plans." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -685,7 +679,7 @@
                         [ "wix-pricing-plans-backend.Plan" ] } ] },
             "doc": "Fulfilled - List of plans that match the given criteria." },
         "locations":
-          [ { "lineno": 1,
+          [ { "lineno": 18,
               "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPlans_listPlans.js" } ],
         "docs":
           { "summary": "Lists pricing plans.",
@@ -700,25 +694,64 @@
                     [ "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
                       "",
                       "export function listPlans() {",
-                      "",
-                      "  const limit = 3;",
-                      "  const skip = 0;",
                       "  const planIds = [",
                       "    \"3d6254cc-e05e...7ba1a356a8f6\", ",
                       "    \"69d58cf6-4070...295a12b79dde\",",
                       "    \"e1e5069c-6116...19a3f3576e05\"",
                       "  ];",
-                      "  const archived = \"ACTIVE\";",
-                      "  const public = \"PUBLIC\";",
-                      "",
-                      "  return wixPricingPlansBackend.listPlans(limit, skip, planIds, archived, public)",
+                      "  const options = {",
+                      "    limit: 10,",
+                      "    skip: 3,",
+                      "    archived: 'ARCHIVED_AND_ACTIVE',",
+                      "    isPublic: 'PUBLIC_AND_HIDDEN'",
+                      "  }",
+                      "  return wixPricingPlansBackend.listPlans(planIds, options)",
                       "    .then((plans) => {",
-                      "      console.log(plans);    // Array of all the specified pricing plan objects that match the criteria",
+                      "      // Array of all the specified pricing plan objects that match the criteria",
+                      "      console.log(plans);",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
                       "}" ],
+                  "extra":
+                    {  } },
+                { "title": "List archived plans",
+                  "body":
+                    [ "/****************************",
+                      " * Backend code - plans.jsw *",
+                      " ****************************/",
+                      "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
+                      "",
+                      "export function listPlans(planIds, options) {",
+                      "  return wixPricingPlansBackend.listPlans(planIds, options);",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "import { listPlans } from 'backend/plans';",
+                      "",
+                      "// ..",
+                      "",
+                      "$w(\"#listPlansButton\").onClick((event) => {",
+                      "  const planIds = [];",
+                      "  const options = {",
+                      "    limit: 10,",
+                      "    skip: 1,",
+                      "    archived: 'ARCHIVED'",
+                      "  }",
+                      "  listPlans(planIds, options)",
+                      "    .then((plans) => {",
+                      "      let firstPlanName = plans[0].name;",
+                      "      console.log(\"First plan is: \" + firstPlanName + \" and the rest are: \");",
+                      "      // Array of all the specified pricing plan objects that match the criteria",
+                      "      console.log(plans); ",
+                      "    })",
+                      "    .catch((error) => {",
+                      "      console.log(error);",
+                      "    });",
+                      "});" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -726,21 +759,19 @@
         "extra":
           {  } },
       { "name": "listPublicPlans",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
-          [ { "name": "limit",
-              "type": "number",
-              "doc": "Number of items to list. Defaults to 50. Maximum is 100." },
-            { "name": "skip",
-              "type": "number",
-              "doc": "Number of items to skip. Defaults to 0." },
-            { "name": "planIds",
+          [ { "name": "planIds",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "IDs of public plans to list. You can pass a maximum of 50 IDs.\n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." } ],
+              "doc": "IDs of public plans to list. You can pass a maximum of 50 IDs.\n If not specified, all public plans are listed (up to 50), according to the [order](wix-pricing-plans-backend/arrangePlans) displayed \n in the Dashboard. If non-existent IDs are specified, they are ignored and do not cause errors." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.ListPublicPlanOptions",
+              "doc": "Options to use when getting the list of public plans." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -750,7 +781,7 @@
                         [ "wix-pricing-plans-backend.PublicPlan" ] } ] },
             "doc": "Fulfilled - List of public pricing plans." },
         "locations":
-          [ { "lineno": 1,
+          [ { "lineno": 8,
               "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPublicPlans_listPublicPlans.js" } ],
         "docs":
           { "summary": "Lists public pricing plans.",
@@ -767,18 +798,19 @@
                     [ "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
                       "",
                       "export function listPublicPlans(l) {",
-                      "",
-                      "  const limit = 20;",
-                      "  const skip = 0;",
                       "  const planIds = [",
                       "    \"3d6254cc-e05e...7ba1a356a8f6\", ",
                       "    \"69d58cf6-4070...295a12b79dde\",",
                       "    \"e1e5069c-6116...19a3f3576e05\"",
                       "  ];",
-                      "",
-                      "  return wixPricingPlansBackend.listPublicPlans(limit, skip, planIds)",
+                      "  const options = {",
+                      "    limit: 10,",
+                      "    skip: 1",
+                      "  }",
+                      "  return wixPricingPlansBackend.listPublicPlans(planIds, options)",
                       "    .then((publicPlans) => {",
-                      "      console.log(publicPlans);  // Array of the specified public pricing plan objects ",
+                      "      // Array of the specified public pricing plan objects",
+                      "      console.log(publicPlans);   ",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
@@ -967,7 +999,7 @@
                       "       // plans matching criteria are listed - see list below",
                       "     })",
                       "     .catch( (err) => {",
-                      "      // there was an error listing the plans",
+                      "       // there was an error listing the plans",
                       "     });",
                       "    ",
                       "}",
@@ -1109,7 +1141,8 @@
         "extra":
           {  } },
       { "name": "setPlanVisibility",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -1142,7 +1175,7 @@
                 " >**Note:**An archived plan always remains archived and cannot be made active again. When archiving ",
                 " > a plan, its `visibility` property is automatically set to `false` so that it is hidden.",
                 "",
-                " Changing a plan’s visibility does not impact existing orders for the plan. All orders for hidden plans are still active and keep their perks." ],
+                " Changing a plan’s visibility does not impact existing orders for the plan. All orders for hidden plans are still active and keep their terms and payment options." ],
             "links": [],
             "examples":
               [ { "title": "Hide a plan",
@@ -1294,7 +1327,7 @@
               "optional": true },
             { "name": "perks",
               "type": "wix-pricing-plans-backend.StringListOptions",
-              "doc": "What is included with this plan (for example, 1 weekly entrance to a specific class).",
+              "doc": "Text promoting the pricing plan (for example, \"Plenty of parking\" or \"Free gift on your birthday\").",
               "optional": true },
             { "name": "pricing",
               "type": "wix-pricing-plans-backend.PricingOptions",
@@ -1321,7 +1354,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Cursors_3337235656",
         "locations":
           [ { "lineno": 15,
@@ -1446,9 +1480,61 @@
           {  },
         "labels":
           [ "removed" ] },
+      { "name": "ListPlanOptions",
+        "locations":
+          [ { "lineno": 1,
+              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPlans_listPlans.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "limit",
+              "type": "number",
+              "doc": "Number of pricing plans to list. Defaults to 50.",
+              "optional": true },
+            { "name": "skip",
+              "type": "number",
+              "doc": "Number of pricing plans to skip. Defaults to 0.",
+              "optional": true },
+            { "name": "archived",
+              "type": "string",
+              "doc": "Archived filter. Defaults to ACTIVE (not archived) only.\nOne of:\n + `\"ACTIVE\"`\n + `\"ARCHIVED\"`\n + `\"ARCHIVED_AND_ACTIVE\"`",
+              "optional": true },
+            { "name": "public",
+              "type": "string",
+              "doc": "Visibility filter. Defaults to PUBLIC_AND_HIDDEN (meaning, both are listed).\nOne of:\n + `\"PUBLIC_AND_HIDDEN\"`\n + `\"PUBLIC\"`\n + `\"HIDDEN\"`",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "ListPublicPlanOptions",
+        "locations":
+          [ { "lineno": 1,
+              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPublicPlans_listPublicPlans.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "limit",
+              "type": "number",
+              "doc": "Number of public pricing plans to list. Defaults to 50.",
+              "optional": true },
+            { "name": "skip",
+              "type": "number",
+              "doc": "Number of public pricing plans to skip. Defaults to 0.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "Money",
         "locations":
-          [ { "lineno": 122,
+          [ { "lineno": 138,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan.",
@@ -1468,7 +1554,7 @@
         "labels": [] },
       { "name": "MoneyOptions",
         "locations":
-          [ { "lineno": 130,
+          [ { "lineno": 146,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan.",
@@ -1564,7 +1650,7 @@
           [ "removed" ] },
       { "name": "Plan",
         "locations":
-          [ { "lineno": 82,
+          [ { "lineno": 90,
               "filename": "shared.js" } ],
         "docs":
           { "links": [],
@@ -1604,7 +1690,8 @@
               "doc": "URL-friendly version of the plan name. Unique across all plans in the same site." },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
-              "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation." },
+              "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation.",
+              "optional": true },
             { "name": "allowFutureStartDate",
               "type": "boolean",
               "doc": "Whether the buyer can start the plan at a later date. Defaults to false." },
@@ -1613,7 +1700,8 @@
               "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error." },
             { "name": "termsAndConditions",
               "type": "string",
-              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." },
+              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout.",
+              "optional": true },
             { "name": "_createdDate",
               "type": "Date",
               "doc": "Date plan was created." },
@@ -1622,7 +1710,8 @@
               "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PlanInfo",
         "locations":
           [ { "lineno": 13,
@@ -1834,6 +1923,21 @@
           {  },
         "labels":
           [ "removed" ] },
+      { "name": "Plans",
+        "locations":
+          [ { "lineno": 83,
+              "filename": "shared.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "type": "void" } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "PlansStats",
         "locations":
           [ { "lineno": 1,
@@ -1855,7 +1959,7 @@
           [ { "lineno": 27,
               "filename": "shared.js" } ],
         "docs":
-          { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
+          { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`. Only one pricing model can be specified per plan.",
             "links": [],
             "examples": [],
             "extra":
@@ -1878,7 +1982,8 @@
               "doc": "Amount for a single payment. For subscriptions, the amount to pay for each single payment cycle. Otherwise, the single payment for the entire plan." },
             { "name": "freeTrialDays",
               "type": "number",
-              "doc": "Free trial period for the plan in days. Available only for recurring plans, meaning plans whose pricing model is `subscription`." } ],
+              "doc": "Free trial period for the plan in days. Available only for recurring plans, meaning plans whose pricing model is `subscription`.",
+              "optional": true } ],
         "extra":
           { "oneOfGroups":
               [ { "name": "pricingModel",
@@ -1886,7 +1991,8 @@
                     [ "singlePaymentForDuration",
                       "singlePaymentUnlimited",
                       "subscription" ] } ] },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PricingOptions",
         "locations":
           [ { "lineno": 39,
@@ -2046,7 +2152,7 @@
           [ "removed" ] },
       { "name": "PublicPlan",
         "locations":
-          [ { "lineno": 103,
+          [ { "lineno": 119,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "Public pricing plan entity containing information about the pricing plan. Can be read by any site member or visitor.",
@@ -2078,7 +2184,8 @@
               "doc": "URL-friendly version of the plan name. Unique across all plans in the same site." },
             { "name": "maxPurchasesPerBuyer",
               "type": "number",
-              "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation." },
+              "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation.",
+              "optional": true },
             { "name": "allowFutureStartDate",
               "type": "boolean",
               "doc": "Whether the buyer can start the plan at a later date. Defaults to false." },
@@ -2087,7 +2194,8 @@
               "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false. If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error." },
             { "name": "termsAndConditions",
               "type": "string",
-              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout." },
+              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout.",
+              "optional": true },
             { "name": "_createdDate",
               "type": "Date",
               "doc": "Date plan was created." },
@@ -2096,7 +2204,8 @@
               "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PublicPlan_1_27576959562",
         "locations":
           [ { "lineno": 1,
@@ -2169,6 +2278,21 @@
           {  },
         "labels":
           [ "removed" ] },
+      { "name": "PublicPlans",
+        "locations":
+          [ { "lineno": 112,
+              "filename": "shared.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "type": "void" } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "QueryPublicPlansResult_35895370520",
         "locations":
           [ { "lineno": 8,
@@ -2387,7 +2511,7 @@
               "optional": true },
             { "name": "perks",
               "type": "wix-pricing-plans-backend.StringListOptions",
-              "doc": "What is included with this plan (for example, 1 weekly entrance to a specific class).",
+              "doc": "Text promoting the pricing plan (for example, \"Plenty of parking\" or \"Free gift on your birthday\").",
               "optional": true },
             { "name": "pricing",
               "type": "wix-pricing-plans-backend.PricingOptions",
@@ -2415,6 +2539,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels":
+          [ "changed" ] } ],
   "extra":
     {  } }
