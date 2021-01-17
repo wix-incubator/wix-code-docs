@@ -397,11 +397,12 @@
         "extra":
           {  } },
       { "name": "createPlan",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planInfo",
-              "type": "wix-pricing-plans-backend.CreatePlanInfo",
+              "type": "wix-pricing-plans-backend.CreatePlanOptions",
               "doc": "The information for the plan being created." } ],
         "ret":
           { "type":
@@ -417,7 +418,7 @@
             "description":
               [ "The `createPlan()` function returns a Promise that resolves to a newly-created pricing plan after it has successfully been created. ",
                 "",
-                " The passed `PlanInfo` object must contain a [pricing model](wix-pricing-plans-backend/introduction). A pricing model is one of the following: ",
+                " The passed `PlanOptions` object must contain a [pricing model](wix-pricing-plans-backend/introduction). A pricing model is one of the following: ",
                 " + **A subscription**: A subscription with recurring payments and how often the plan recurs. Subscriptions can have free trial days.",
                 " + **A plan that does not renew**: A single payment for a specific duration that does not renew. ",
                 " + **An unlimited plan**: A single payment for an unlimited amount of time (until cancelled).",
@@ -606,8 +607,7 @@
         "extra":
           {  } },
       { "name": "getPlansStats",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params": [],
         "ret":
@@ -657,8 +657,7 @@
         "extra":
           {  } },
       { "name": "listPlans",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planIds",
@@ -759,8 +758,7 @@
         "extra":
           {  } },
       { "name": "listPublicPlans",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planIds",
@@ -968,8 +966,6 @@
                 "||[`count()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/count)|`.count()`|",
                 "||[`find()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/find)|Execute the query: `queryPublicPlans.find()|",
                 "",
-                "You can use only one filter function for each property. If a property is used in more than one filter, only the first filter will work.",
-                "",
                 ">**Notes:**",
                 "> + When using the `queryPublicPlans()` function immediately following a change to your plans, ",
                 "    the data retrieved may not contain your most recent changes. See [Wix-data and Eventual Consistency](reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) ",
@@ -981,39 +977,18 @@
             "examples":
               [ { "title": "Build and execute a query to find public plans created before a certain date.",
                   "body":
-                    [ "/*******************************",
-                      " * Backend code - plans.jsw *",
-                      " *******************************/",
-                      "",
-                      " import wixPricingPlansBackend from 'wix-pricing-plans-backend';",
-                      " ",
-                      " export function queryPublicPlans(excludeId, skip, limit, date) {",
-                      "  wixPricingPlansBackend.queryPublicPlans(excludeId, skip, limit, date)",
-                      "   .ne('id', excludeId)",
-                      "   .eq('primary', false)",
-                      "   .gt('_createdDate', date)",
-                      "   .skip(skip)",
-                      "   .limit(limit)",
-                      "   .find()",
-                      "     .then( (plans) => {",
-                      "       // plans matching criteria are listed - see list below",
-                      "     })",
-                      "     .catch( (err) => {",
-                      "       // there was an error listing the plans",
-                      "     });",
-                      "    ",
-                      "}",
-                      "",
-                      "/*************",
-                      " * Page code *",
-                      " *************/",
+                    [ "import wixPricingPlansBackend from \"wix-pricing-plans-backend\";",
                       "",
                       "export function queryPublicPlans() {",
-                      "  const skip = 1",
-                      "  const limit = 20",
-                      "  const excludeId = '5c410989-de0f...46dd9312d909' ",
-                      "  const date = new Date(2020, 10, 1)",
-                      "  plans.queryPublicPlans(excludeId, skip, limit, date);",
+                      "  return wixPricingPlansBackend.queryPublicPlans()",
+                      "    .eq(\"key\", \"value\")",
+                      "    .find()",
+                      "    .then((response) => {",
+                      "      console.log(response);",
+                      "    })",
+                      "    .catch((error) => {",
+                      "      console.error(error);",
+                      "    });",
                       "}",
                       "",
                       "// Query results and query builder",
@@ -1141,8 +1116,7 @@
         "extra":
           {  } },
       { "name": "setPlanVisibility",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "id",
@@ -1355,7 +1329,56 @@
         "extra":
           {  },
         "labels":
-          [ "changed" ] },
+          [ "changed",
+            "removed" ] },
+      { "name": "CreatePlanOptions",
+        "locations":
+          [ { "lineno": 13,
+              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_CreatePlan_createPlan.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "name",
+              "type": "string",
+              "doc": "Plan name." },
+            { "name": "description",
+              "type": "string",
+              "doc": "Plan description.",
+              "optional": true },
+            { "name": "perks",
+              "type": "wix-pricing-plans-backend.StringListOptions",
+              "doc": "Text promoting the pricing plan (for example, \"Plenty of parking\" or \"Free gift on your birthday\").",
+              "optional": true },
+            { "name": "pricing",
+              "type": "wix-pricing-plans-backend.PricingOptions",
+              "doc": "Plan price, payment schedule, and expiration." },
+            { "name": "public",
+              "type": "boolean",
+              "doc": "Whether the plan is public (visible to site visitors).",
+              "optional": true },
+            { "name": "maxPurchasesPerBuyer",
+              "type": "number",
+              "doc": "Number of times the same buyer can purchase the plan. An empty value or a value of zero means no limitation.",
+              "optional": true },
+            { "name": "allowFutureStartDate",
+              "type": "boolean",
+              "doc": "Whether the buyer can start the plan at a later date. Defaults to false.",
+              "optional": true },
+            { "name": "buyerCanCancel",
+              "type": "boolean",
+              "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false.  If false, calling the [cancelOrder()](wix-paid-plans/cancelOrder) function returns an error.",
+              "optional": true },
+            { "name": "termsAndConditions",
+              "type": "string",
+              "doc": "Any terms and conditions that apply to the plan. This information will be displayed during checkout.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "Cursors_3337235656",
         "locations":
           [ { "lineno": 15,
@@ -1508,8 +1531,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "new" ] },
+        "labels": [] },
       { "name": "ListPublicPlanOptions",
         "locations":
           [ { "lineno": 1,
@@ -1530,8 +1552,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "new" ] },
+        "labels": [] },
       { "name": "Money",
         "locations":
           [ { "lineno": 138,
@@ -1710,8 +1731,7 @@
               "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PlanInfo",
         "locations":
           [ { "lineno": 13,
@@ -1936,8 +1956,7 @@
           [ { "type": "void" } ],
         "extra":
           {  },
-        "labels":
-          [ "new" ] },
+        "labels": [] },
       { "name": "PlansStats",
         "locations":
           [ { "lineno": 1,
@@ -1991,8 +2010,7 @@
                     [ "singlePaymentForDuration",
                       "singlePaymentUnlimited",
                       "subscription" ] } ] },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PricingOptions",
         "locations":
           [ { "lineno": 39,
@@ -2204,8 +2222,7 @@
               "doc": "Date plan was last updated." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PublicPlan_1_27576959562",
         "locations":
           [ { "lineno": 1,
@@ -2291,8 +2308,7 @@
           [ { "type": "void" } ],
         "extra":
           {  },
-        "labels":
-          [ "new" ] },
+        "labels": [] },
       { "name": "QueryPublicPlansResult_35895370520",
         "locations":
           [ { "lineno": 8,
@@ -2539,7 +2555,6 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] } ],
+        "labels": [] } ],
   "extra":
     {  } }
