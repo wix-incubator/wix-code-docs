@@ -11,7 +11,7 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ## 🗓️ January 20, 2021
 
-### Updated: SSL note in `wixWindow.openModal()` 
+### Updated: SSL note in wixWindow.openModal() 
 
 `wix-window`
 
@@ -33,7 +33,7 @@ Added the `appID` property to the CouponEvent object. The ID of the app that cre
 
 ## 🗓️ January 14, 2021
 
-### Updated: `updateCustomerInfo` deletes any non-updated properties
+### Updated: updateCustomerInfo deletes any non-updated properties
 
 `wix-bookings-backend`
 
@@ -71,7 +71,7 @@ With the new Wix Stores [`incrementInventory()`](https://www.wix.com/velo/refere
 
 ## 🗓️ December 30, 2020
 
-### Updated: Added multiple locations to `ServiceAvailability` object
+### Updated: Added multiple locations to ServiceAvailability object
 
 `wix-bookings`
 
@@ -85,7 +85,7 @@ The `ServiceAvailability` object returned by [`getServiceAvailability`](https://
 
 The `valid` property of [`UploadButton`](https://www.wix.com/velo/reference/$w/uploadbutton) is set to `false` when a file fails to upload. Previously this was only set if `required == TRUE`.
 
-### Updated: `openLightbox` requires `onReady`
+### Updated: openLightbox requires onReady
 
 `wix-window`
 
@@ -97,7 +97,7 @@ Even though [`openLightbox`](https://www.wix.com/velo/reference/wix-window/openl
 
 The wix-data API is [eventually consistent](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency), meaning that sometimes updates to your database collection are not immediate. There may be a short delay until the system is up-to-date with your recent changes. During the delay, the data you get back may not reflect those changes.
 
-### API Updated: Added `seoData` field to the Product object
+### API Updated: Added seoData field to the Product object
 
 We added the `seoData` field to the Product object. This mirrors the SEO data added in the dashboard and allows for adding custom SEO tags when using [`createProduct()`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
 
