@@ -9,8 +9,100 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
+## 🗓️ January 20, 2021
+
+### Updated: SSL note in `wixWindow.openModal()` 
+
+`wix-window`
+
+It is not possible to turn SSL off with Velo. We removed a part of the note that was misleading.
+
+## 🗓️ January 19, 2021
+
+### New API: Coupons events
+
+`wix-marketing-backend`
+
+With the new [Coupon backend events](https://www.wix.com/velo/reference/wix-marketing-backend/events) you can write code that is triggered when a coupon is created, updated, deleted, or applied.
+
+### New API: Added appID to Coupons API
+
+`wix-marketing-backend`
+
+Added the `appID` property to the CouponEvent object. The ID of the app that created the coupon. Empty if created by the site owner.
+
+## 🗓️ January 14, 2021
+
+### Updated: `updateCustomerInfo` deletes any non-updated properties
+
+`wix-bookings-backend`
+
+Updated an example and added a note that [`updateCustomerInfo`](https://www.wix.com/velo/reference/wix-bookings-backend/bookings/updatecustomerinfo) updates the entire object and that any properties not included in the object passed will be deleted.
+
+### New API: Cancel & Refund events
+
+`wix-stores-backend`
+
+With the new [`onOrderRefunded()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onorderrefunded) & [`onOrderCanceled()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onorderrefunded) backend events you can now write code that is triggered when an order is refunded and/or canceled.
+
+## 🗓️ January 12, 2021
+
+### New API: Bookings backend
+
+`wix-bookings-backend`
+
+Backend APIs are now available to manage Bookings. The [`wix-bookings-backend`](https://www.wix.com/velo/reference/wix-bookings-backend) API provides bookings functionality allowing you to:
+
+- List and query booking information.
+- Confirm pending booking requests.
+- Decline pending booking requests.
+- Cancel a booking.
+- Set attendance for booked sessions.
+- Mark a booking as paid.
+- Update the customer's booking information.
+
+## 🗓️ December 31, 2020
+
+### New API: Increment inventory
+
+`wix-stores-backend`
+
+With the new Wix Stores [`incrementInventory()`](https://www.wix.com/velo/reference/wix-stores-backend/incrementinventory) API you can increment a product variant's stock in the store's inventory. Pass a variantId and either a productID or an inventoryId, as well as the integer to increment by.
+
+## 🗓️ December 30, 2020
+
+### Updated: Added multiple locations to `ServiceAvailability` object
+
+`wix-bookings`
+
+The `ServiceAvailability` object returned by [`getServiceAvailability`](https://www.wix.com/velo/reference/wix-bookings/getserviceavailability) now includes a location property. If the service is offered in multiple locations, a slot is returned for each location.
+
+## 🗓️ December 27, 2020
+
+### Updated: Upload button now indicates if a file fails to upload
+
+`Wix Editor Elements ($w)`
+
+The `valid` property of [`UploadButton`](https://www.wix.com/velo/reference/$w/uploadbutton) is set to `false` when a file fails to upload. Previously this was only set if `required == TRUE`.
+
+### Updated: `openLightbox` requires `onReady`
+
+`wix-window`
+
+Even though [`openLightbox`](https://www.wix.com/velo/reference/wix-window/openlightbox) is not part of `$w` it can only be called after the `onReady` event has fired.
+
+### Updated: Wix Data is eventually consistent
+
+`wix-data`
+
+The wix-data API is [eventually consistent](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency), meaning that sometimes updates to your database collection are not immediate. There may be a short delay until the system is up-to-date with your recent changes. During the delay, the data you get back may not reflect those changes.
+
+### API Updated: Added `seoData` field to the Product object
+
+We added the `seoData` field to the Product object. This mirrors the SEO data added in the dashboard and allows for adding custom SEO tags when using [`createProduct()`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
 
 ## 🗓️ December 24, 2020
+
 ### Updated: Editor elements ($w) progressBar.value is a get or set
 
 `Wix Editor Elements ($w)`
@@ -58,15 +150,17 @@ With the new Wix Stores [addCustomItemsToCart()](https://www.wix.com/velo/refere
 
 
 ## 🗓️ December 7, 2020
+
 ### New API: VideoBox
 
 `Wix Editor Elements ($w)`
 
 Velo's APIs are now available to control how videos play in [`VideoBox`](https://www.wix.com/velo/reference/$w/videobox) elements on your site. Video boxes allow you to showcase your videos in beautifully-designed video containers. Unlike VideoPlayer elements, VideoBox elements do not have controls, text descriptions, titles and cannot be displayed in full screen mode. This gives video boxes a clean look.
 You can use the APIs to manage video boxes for: 
-* Videos uploaded to your site
-* Transparent videos uploaded to your site
-* Videos/Transparent videos from the  Wix Media library
+
+- Videos uploaded to your site
+- Transparent videos uploaded to your site
+- Videos/Transparent videos from the  Wix Media library
 
 ### Updated: textInput.maxLength remove max length
 
@@ -109,6 +203,7 @@ In the [`scrollTo`](https://www.wix.com/velo/reference/wix-window/scrollto) func
 The layout for describing the different parts of the [`URL`](https://www.wix.com/velo/reference/wix-location/introduction) was a bit confusing. We changed the URL breakdown to match the same layout as the wixHttpFunctionRequest object in the wix-http-functions API for consistency.
 
 ## 🗓️ November 1, 2020
+
 ### New API: Wix Forum Backend Event APIs
 
 `wix-forum-backend`
@@ -122,6 +217,7 @@ With the new [Forum Backend Events](https://www.wix.com/velo/reference/wix-forum
 With [`removeProductFromCart()`](https://www.wix.com/velo/reference/wix-stores/removeproductfromcart) you can remove a line item/product from the cart. 
 
 ## 🗓️ October 20, 2020
+
 ### New API: onWixFormSubmit() event handler in the WixForms API
 
 `wix-crm`
@@ -129,6 +225,7 @@ With [`removeProductFromCart()`](https://www.wix.com/velo/reference/wix-stores/r
 With the new [`onWixFormSubmit()`](https://www.wix.com/velo/reference/wix-crm/$w-wixforms/onwixformsubmit) event handler in the WixForms API, you can perform validations on your forms immediately after visitors submit the form yet before the server starts any processing.  
 
 ## 🗓️ October 13, 2020
+
 ### Updated: wixLocation.to() does not work in preview
 
 `wix-location`
@@ -142,6 +239,7 @@ Added a note that [`wixLocation.to()`](https://www.wix.com/velo/reference/wix-lo
 To embed a PDF in an [HtmlComponent](https://www.wix.com/velo/reference/$w/htmlcomponent/introduction) you must upgrade your site to a Premium Plan.
 
 ## 🗓️ October 11, 2020
+
 ### New API: Decrement inventory
 
 `wix-stores-backend`
@@ -149,6 +247,7 @@ To embed a PDF in an [HtmlComponent](https://www.wix.com/velo/reference/$w/htmlc
 Manually [decrement](https://www.wix.com/velo/reference/wix-stores-backend/decrementinventory) a product variant's stock in inventory. This functionality is helpful for creating an inventory management page on your site.
 
 ## 🗓️ September 16, 2020
+
 ### Updated: Added Stackdriver information to Site Monitoring introduction
 
 `site-monitoring`
@@ -156,6 +255,7 @@ Manually [decrement](https://www.wix.com/velo/reference/wix-stores-backend/decre
 Added [information](https://www.wix.com/velo/reference/spis/site-monitoring/introduction) about connecting Wix site events to Google's Stackdriver external monitoring tool.
 
 ## 🗓️ September 15, 2020
+
 ### Updated: Changed slider.value from read only to read & write
 
 `$w.slider` 
@@ -169,6 +269,7 @@ The [`value`](https://www.wix.com/velo/reference/$w/slider/value) property for t
 Added more content to the table that displays details of the object returned by [`validity`](https://www.wix.com/velo/reference/$w/validatablemixin/validity).
 
 ## 🗓️ September 14, 2020
+
 ### Updated: Added information that some getProductVariants() parameter fields are optional
 
 `wix-stores`
@@ -182,6 +283,7 @@ Added information that some of the parameter fields for [getProductVariants()](h
 The `sku` property for [createProduct()](https://www.wix.com/velo/reference/wix-stores-backend/createproduct) was described as a number, but it is a string.
 
 ## 🗓️ September 10, 2020
+
 ### Updated: Added information about getFileURL token expiring
 
 `wix-media-backend`
@@ -195,6 +297,7 @@ Added information that the token returned by [`getFileUrl()`](https://www.wix.co
 The table that described the URL structure of a [wixHttpFunctionRequest](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest) was difficult to parse. We've updated the content to make it easier to understand. 
 
 ## 🗓️ September 7, 2020
+
 ### New API: On cart changed event
 
 `wix-stores`
@@ -205,9 +308,10 @@ With the new [`onCartChanged()`](https://www.wix.com/velo/reference/wix-stores/o
 
 `wix-users`
 
-To help your site conform to GDPR and CCPA standards, we now provide Velo APIs for [checking](https://www.wix.com/velo/reference/wix-users/getcurrentconsentpolicy) and [setting](https://www.wix.com/velo/reference/wix-users/setconsentpolicy) visitors' current consent policies. These policies include which cookies the visitor allows and if the visitor allows data transfer to third parties. 
+To help your site conform to GDPR and CCPA standards, we now provide Velo APIs for [checking](https://www.wix.com/velo/reference/wix-users/getcurrentconsentpolicy) and [setting](https://www.wix.com/velo/reference/wix-users/setconsentpolicy) visitors' current consent policies. These policies include which cookies the visitor allows and if the visitor allows data transfer to third parties.
 
 ## 🗓️ August 30, 2020
+
 ### Updated: Added examples to listMemberBadges()
 
 `wix-users-backend`
@@ -215,6 +319,7 @@ To help your site conform to GDPR and CCPA standards, we now provide Velo APIs f
 Added more robust examples to [`listMemberBadges()`](https://www.wix.com/velo/reference/wix-users-backend/badges-obj/listmemberbadges) for how to handle the results.
 
 ## 🗓️ August 23, 2020
+
 ### New API: Coupon limit per customer
 
 `wix-marketing-backend`
@@ -222,6 +327,7 @@ Added more robust examples to [`listMemberBadges()`](https://www.wix.com/velo/re
 Use the new [limitPerCustomer](https://www.wix.com/velo/reference/wix-marketing-backend/coupons-obj/createcoupon) property that allows for limiting coupon use per customer. Helpful if you'd like to create a coupon to be used only once, or any number of times per customer.
 
 ## 🗓️ August 20, 2020
+
 ### New API: Custom fulfiller email 
 
 `wix-stores-backend`
@@ -235,6 +341,7 @@ Use the new [`sendFulfillmentEmail()`](https://www.wix.com/velo/reference/wix-st
 Added a new [event](https://www.wix.com/velo/reference/wix-stores-backend/events/onorderpaid) that fires when an order is marked as paid.
 
 ## 🗓️ August 12, 2020
+
 ### Updated: New array and object data types
 
 `wix-data`
@@ -242,6 +349,7 @@ Added a new [event](https://www.wix.com/velo/reference/wix-stores-backend/events
 Added information about new array and object types to the [wix-data Introduction](https://www.wix.com/velo/reference/wix-data/introduction).
 
 ## 🗓️ August 11, 2020
+
 ### New API: Print packing slip
 
 `wix-stores-backend`
@@ -249,6 +357,7 @@ Added information about new array and object types to the [wix-data Introduction
 Use the new [`getPackingSlipLink()`](https://www.wix.com/velo/reference/wix-stores-backend/getpackingsliplink) function to generate and print a PDF file of an order's packing slip. Especially useful in the ThankYouPage, after an order is completed.
 
 ## 🗓️ August 9, 2020
+
 ### Updated: New validations for file upload
 
 `wix-media-backend`
@@ -262,6 +371,7 @@ The [Upload](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-o
 Changed the `contactInfo` parameters for [`createContact()`](https://www.wix.com/velo/reference/wix-crm/createcontact) to be optional.
 
 ## 🗓️ August 6, 2020
+
 ### New API: Print orders
 
 `wix-stores-backend`
@@ -269,6 +379,7 @@ Changed the `contactInfo` parameters for [`createContact()`](https://www.wix.com
 Use the new [`getOrdersLink()`](https://www.wix.com/velo/reference/wix-stores-backend/getorderslink) function to generate a PDF file containing information about one of more of your store's orders.
 
 ## 🗓️ August 3, 2020
+
 ### Updated: New example for onItemReady()
 
 `$w.repeater`
@@ -289,6 +400,7 @@ The **A router with static data** example for the [`router()`](https://www.wix.c
 
 
 ## 🗓️ August 2, 2020
+
 ### Updated: Secrets API
 
 `wix-secrets-backend`
@@ -296,11 +408,12 @@ The **A router with static data** example for the [`router()`](https://www.wix.c
 With the new [Secrets API functions](https://www.wix.com/velo/reference/wix-secrets-backend) you can manage your site secrets with code. Create, update, and delete secrets in the Secrets Manager programmatically without opening the UI. List all your site secrets to find the one you need.
 
 ## 🗓️ July 30, 2020
+
 ### New API: Fulfillment
 
 `wix-stores-backend`
 
-Use the [`createFulfillment()`](https://www.wix.com/velo/reference/wix-stores-backend/createfulfillment) function to create, update, and delete order fulfillments (as well as set up events for each). 
+Use the [`createFulfillment()`](https://www.wix.com/velo/reference/wix-stores-backend/createfulfillment) function to create, update, and delete order fulfillments (as well as set up events for each).
 
 ### New API: Create order
 
@@ -309,6 +422,7 @@ Use the [`createFulfillment()`](https://www.wix.com/velo/reference/wix-stores-ba
 Use the [`createOrder()`](https://www.wix.com/velo/reference/wix-stores-backend/createorder) function to have more control over various order properties, allowing for more custom order flows. 
 
 ## 🗓️ July 28, 2020
+
 ### New API: Form Builder
 
 `wix-crm` `wix-crm-backend`
@@ -316,6 +430,7 @@ Use the [`createOrder()`](https://www.wix.com/velo/reference/wix-stores-backend/
 With the new Wix Forms APIs,  you can access Wix Form app functionality with code. You can customize how site visitors work with the Wix Form, while taking advantage of the Wix Forms app's ease of design, automatic creation of submission collections, payment receipt, automatic setup of email notifications, and more. You can perform actions both on the [client side](https://www.wix.com/velo/reference/wix-crm/$w-wixforms) and in the [backend](https://www.wix.com/velo/reference/wix-crm-backend/events/onformsubmit).
 
 ## 🗓️ July 9, 2020
+
 ### Updated: Badges
 
 `wix-users-backend`
