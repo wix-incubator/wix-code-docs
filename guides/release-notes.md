@@ -53,6 +53,8 @@ We added a note that the [`beforeInsert`](https://www.wix.com/velo/reference/wix
 
 ### Updated: queryReferenced() only works with multiple-item reference fields
 
+`wix-data`
+
 We added a note that you can only use the [`queryReferenced()`](https://www.wix.com/velo/reference/wix-data/queryreferenced) function with multiple-item reference fields and not with single-item (regular) reference fields.
 
 ### Updated: Use the checked property with the Switch element
@@ -69,7 +71,9 @@ The `value` property does not work with the [`Switch`](https://www.wix.com/velo/
 
 ### Updated: SelectionTags options property changes
 
-Setting the [`options`](https://www.wix.com/velo/reference/w/selectiontags/options) property no longer clears the `value` and `selectedIndices` of the selection tags. This allows users to add and reorder choices without clearing the visitor's selection. Only values that no longer match the new options are cleared.
+`Wix Editor Elements ($w)`
+
+Setting the [`options`](https://www.wix.com/velo/reference/$w/selectiontags/options) property no longer clears the `value` and `selectedIndices` of the selection tags. This allows users to add and reorder choices without clearing the visitor's selection. Only values that no longer match the new options are cleared.
 
 Setting `value` no longer lets you set values that do not match any of the options.
 
