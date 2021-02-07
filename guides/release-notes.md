@@ -37,7 +37,7 @@ We changed `slot_id` to `slotId` in [`getCheckoutOptions()`](https://www.wix.com
 
 `wix-paid-plans`
 
-We clarified that [`cancelOrder`](https://www.wix.com/velo/reference/wix-paid-plans/cancelorder) throws an error when **Allow Plan Cancellation** is set to False in the Dashboard.
+We clarified that [`cancelOrder`](https://www.wix.com/velo/reference/wix-paid-plans/cancelorder) throws an error when **[Allow Plan Cancellation](https://support.wix.com/en/article/pricing-plans-allowing-clients-to-cancel-plans)** is set to False in the Dashboard.
 
 ### Updated: Recommend using getCurrentGeolocation with setTimeout
 
