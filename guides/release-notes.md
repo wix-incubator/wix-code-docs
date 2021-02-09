@@ -9,6 +9,80 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
+## 🗓️ February 3, 2021
+
+### New API Reference Feature: Release Notes change indicator
+
+A red dot now appears next to the **Release Notes** section in the left tree when it is updated. More enhancements on the way.
+
+### Updated: getSecret does not require Members Area
+
+`wix-secret-backend`
+
+We removed a note that said you need the Members Area on your site to work with the [`getSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/getsecret) API.
+
+### Updated: Slot Id parameter fixed
+
+`wix-bookings`
+
+We changed `slot_id` to `slotId` in [`getCheckoutOptions()`](https://www.wix.com/velo/reference/wix-bookings/getcheckoutoptions).
+
+### Updated: getCurrentMemberOrders returns a promise
+
+`wix-paid-plans`
+
+[`getCurrentMemberOrders()`](https://www.wix.com/velo/reference/wix-paid-plans/getcurrentmemberorders) returns a promise that resolves to an array. We previously stated that the function returns an array.
+
+### Updated: cancelOrder throws an error
+
+`wix-paid-plans`
+
+We clarified that [`cancelOrder`](https://www.wix.com/velo/reference/wix-paid-plans/cancelorder) throws an error when **[Allow Plan Cancellation](https://support.wix.com/en/article/pricing-plans-allowing-clients-to-cancel-plans)** is set to False in the Dashboard.
+
+### Updated: Recommend using getCurrentGeolocation with setTimeout
+
+`wix-window`
+
+In cases where the site visitor's browser is set to not detect locale, the promise does not resolve or reject. We added a note recommending using [`getCurrentGeoLocation()`](https://www.wix.com/velo/reference/wix-window/getcurrentgeolocation) with `setTimeout` to handle the unresolved Promise.
+
+### Updated: Hooks run when data is imported
+
+`wix-data`
+
+We added a note that the [`beforeInsert`](https://www.wix.com/velo/reference/wix-data/hooks/beforeinsert) and [`afterInsert`](https://www.wix.com/velo/reference/wix-data/hooks/afterinsert) hooks run when data is imported to either Live or Sandbox collections.
+
+### Updated: queryReferenced() only works with multiple-item reference fields
+
+`wix-data`
+
+We added a note that you can only use the [`queryReferenced()`](https://www.wix.com/velo/reference/wix-data/queryreferenced) function with multiple-item reference fields and not with single-item (regular) reference fields.
+
+### Updated: Use the checked property with the Switch element
+
+`Wix Editor Elements ($w)`
+
+The `value` property does not work with the [`Switch`](https://www.wix.com/velo/reference/w/switch) element. We added a note to use the `checked` property instead. We also added an example for using the `checked` property to set the `Switch` state.
+
+### Updated: RichTextBox does not support KeyboardEvent and onInput
+
+`Wix Editor Elements ($w)`
+
+`KeyboardEvent` doesn’t fire and `onInput` is not supported for [`RichTextBox`](https://www.wix.com/velo/reference/w/richtextbox) elements. We removed a reference to the `RichTextBox` element from the `KeyboardEvent` documentation and added a note to `onInput` that it is not supported for `RichTextBox` elements.
+
+### Updated: SelectionTags options property changes
+
+`Wix Editor Elements ($w)`
+
+Setting the [`options`](https://www.wix.com/velo/reference/$w/selectiontags/options) property no longer clears the `value` and `selectedIndices` of the selection tags. This allows users to add and reorder choices without clearing the visitor's selection. Only values that no longer match the new options are cleared.
+
+Setting `value` no longer lets you set values that do not match any of the options.
+
+### Updated: formattedPrice and formattedDiscountedPrice are read-only
+
+`wix-stores-backend`
+
+We removed a reference to `formattedPrice` and `formattedDiscountedPrice` fields for [`updateVariantData()`](https://www.wix.com/velo/reference/wix-stores-backend/updatevariantdata) since they are read-only and can't be set.
+
 ## 🗓️ January 20, 2021
 
 ### Updated: SSL note in wixWindow.openModal() 
