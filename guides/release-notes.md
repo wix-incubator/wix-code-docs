@@ -9,7 +9,7 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
-## **New!** 🗓️ March 7, 2021
+## New! 🗓️ March 7, 2021
 
 ### New API Reference Feature: Show Members open by default
 
@@ -19,7 +19,7 @@ The table that lists the properties in a returned object used to be closed by de
 
 We will now label the latest updates in the Release Notes with **New!** in the heading to make it easier to find the latest changes. 
 
-## **New!** 🗓️ March 4, 2021
+## New! 🗓️ March 4, 2021
 
 ### Updated: Remove mention of currentItem from the context of some data hooks
 
@@ -27,7 +27,7 @@ We will now label the latest updates in the Release Notes with **New!** in the h
 
 The `context.currentItem` parameter is only relevant for `beforeUpdate()` and `beforeRemove()` hooks. The property was removed from the documentation for all other hooks.
 
-## **New!** 🗓️ March 2, 2021
+## New! 🗓️ March 2, 2021
 
 ### New API: Bookings Events
 
@@ -50,7 +50,7 @@ The events  are fired for the following actions:
 * Clarified that only elements that mix in the `hiddenMixin` can be the target.
 * Clarified that the unit for opacity is from 0.0 - 1.0.
 
-## **New!** 🗓️ February 22, 2021
+## New! 🗓️ February 22, 2021
 
 ### New API: Price per unit data fields added to product object
 
@@ -58,7 +58,7 @@ The events  are fired for the following actions:
 
 Price Per Unit data fields were added to APIs returning product objects and product variant objects. These APIs mirror the Dashboard feature that allows you to display a product's base and total quantity/weight/area. Complies with requirements in the German market.
 
-## **New!** 🗓️ February 7, 2021
+## New! 🗓️ February 7, 2021
 
 ### New API: Pricing Plans: Plan management
 
