@@ -13,7 +13,7 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ### New API Reference Feature: Show Members open by default
 
-The table that lists the properties in a returned object used to be closed by default and would require the user to click **Show Members** to view them. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
+The table that lists the properties in a returned object used to be closed by default and would require you to click **Show Members** to view it. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
 
 ### New Release Notes information
 
@@ -41,7 +41,15 @@ The events  are fired for the following actions:
 * A booking is canceled.
 * A booking  schedule is updated.
 * Booking attendance information is updated.
-  
+
+### Update: Clarified opacity and hidden for timeline
+
+`wix-animations`
+
+* Updated the target parameter type to `Element` from `mixin`.  
+* Clarified that only elements that mix in the `hiddenMixin` can be the target.
+* Clarified that the unit for opacity is from 0.0 - 1.0.
+
 ## **New!** 🗓️ February 22, 2021
 
 ### New API: Price per unit data fields added to product object
@@ -56,7 +64,7 @@ Price Per Unit data fields were added to APIs returning product objects and prod
 
 `wix-pricing-plans-backend`
 
-With the new [pricing-plans-backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend) APIs, you can manage your APIs in ways that, before, you could only do from the Dashboard.
+With the new [pricing-plans-backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend) APIs, you can manage your APIs in ways that before, you could only do from the Dashboard.
 
 Now you can create, update, hide, and archive pricing plans. You can set and clear which pricing plan is the primary plan and rearrange the order in which plans are displayed on the site. And we now supply different ways for you to get information about existing plans, such as getting a single plan, getting statistics for a plan, listing public/all plans, and performing queries. 
 
