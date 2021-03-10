@@ -9,6 +9,65 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
+## New! 🗓️ March 7, 2021
+
+### New API Reference Feature: Show Members open by default
+
+The table that lists the properties in a returned object used to be closed by default and would require you to click **Show Members** to view it. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
+
+### New Release Notes information
+
+We will now label the latest updates in the Release Notes with **New!** in the heading to make it easier to find the latest changes. 
+
+## New! 🗓️ March 4, 2021
+
+### Updated: Remove mention of currentItem from the context of some data hooks
+
+`wix-data`
+
+The `context.currentItem` parameter is only relevant for `beforeUpdate()` and `beforeRemove()` hooks. The property was removed from the documentation for all other hooks.
+
+## New! 🗓️ March 2, 2021
+
+### New API: Bookings Events
+
+`wix-bookings-backend`
+
+[Backend events](https://www.wix.com/velo/reference/wix-bookings-backend/events) have been added to Wix Bookings.
+The events  are fired for the following actions:
+
+* A new booking request is created.
+* A booking request is confirmed or declined.
+* A booking is canceled.
+* A booking  schedule is updated.
+* Booking attendance information is updated.
+
+### Update: Clarified opacity and hidden for timeline
+
+`wix-animations`
+
+* Updated the target parameter type to `Element` from `mixin`.  
+* Clarified that only elements that mix in the `hiddenMixin` can be the target.
+* Clarified that the unit for opacity is from 0.0 - 1.0.
+
+## New! 🗓️ February 22, 2021
+
+### New API: Price per unit data fields added to product object
+
+`wix-stores-backend`
+
+Price Per Unit data fields were added to APIs returning product objects and product variant objects. These APIs mirror the Dashboard feature that allows you to display a product's base and total quantity/weight/area. Complies with requirements in the German market.
+
+## New! 🗓️ February 7, 2021
+
+### New API: Pricing Plans: Plan management
+
+`wix-pricing-plans-backend`
+
+With the new [pricing-plans-backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend) APIs, you can manage your APIs in ways that before, you could only do from the Dashboard.
+
+Now you can create, update, hide, and archive pricing plans. You can set and clear which pricing plan is the primary plan and rearrange the order in which plans are displayed on the site. And we now supply different ways for you to get information about existing plans, such as getting a single plan, getting statistics for a plan, listing public/all plans, and performing queries. 
+
 ## 🗓️ February 3, 2021
 
 ### New API Reference Feature: Release Notes change indicator
