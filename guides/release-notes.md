@@ -2,34 +2,30 @@
 
 We're always adding and updating the Velo APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
-We love hearing your feedback! 
+We love hearing your feedback!
 Lots of our bugs come from users like you and you can help us improve the docs by reporting them to us. You can report bugs and other feedback through these links found at the bottom of our docs.
 
 ![](../media/feedback.png)
 
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
-## New! 🗓️ March 7, 2021
+---
 
-### New API Reference Feature: Show Members open by default
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API Reference Feature: Show Members open by default (March 7, 2021)
 
 The table that lists the properties in a returned object used to be closed by default and would require you to click **Show Members** to view it. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
 
-### New Release Notes information
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New Release Notes information (March 7, 2021)
 
-We will now label the latest updates in the Release Notes with **New!** in the heading to make it easier to find the latest changes. 
+We will now label the latest updates in the Release Notes with <span style="background: rgb(234, 95, 14); color:white">Updated</span> in the heading to make it easier to find the latest changes. 
 
-## New! 🗓️ March 4, 2021
-
-### Updated: Remove mention of currentItem from the context of some data hooks
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> Remove mention of currentItem from the context of some data hooks (March 4, 2021)
 
 `wix-data`
 
 The `context.currentItem` parameter is only relevant for `beforeUpdate()` and `beforeRemove()` hooks. The property was removed from the documentation for all other hooks.
 
-## New! 🗓️ March 2, 2021
-
-### New API: Bookings Events
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API: Bookings Events (March 2, 2021)
 
 `wix-bookings-backend`
 
@@ -42,7 +38,7 @@ The events  are fired for the following actions:
 * A booking  schedule is updated.
 * Booking attendance information is updated.
 
-### Update: Clarified opacity and hidden for timeline
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> Clarified opacity and hidden for timeline (March 2, 2021)
 
 `wix-animations`
 
@@ -50,17 +46,13 @@ The events  are fired for the following actions:
 * Clarified that only elements that mix in the `hiddenMixin` can be the target.
 * Clarified that the unit for opacity is from 0.0 - 1.0.
 
-## New! 🗓️ February 22, 2021
-
-### New API: Price per unit data fields added to product object
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API: Price per unit data fields added to product object (February 22, 2021)
 
 `wix-stores-backend`
 
 Price Per Unit data fields were added to APIs returning product objects and product variant objects. These APIs mirror the Dashboard feature that allows you to display a product's base and total quantity/weight/area. Complies with requirements in the German market.
 
-## New! 🗓️ February 7, 2021
-
-### New API: Pricing Plans: Plan management
+## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API: Pricing Plans: Plan management (February 7, 2021)
 
 `wix-pricing-plans-backend`
 
@@ -68,67 +60,65 @@ With the new [pricing-plans-backend](https://www.wix.com/velo/reference/wix-pric
 
 Now you can create, update, hide, and archive pricing plans. You can set and clear which pricing plan is the primary plan and rearrange the order in which plans are displayed on the site. And we now supply different ways for you to get information about existing plans, such as getting a single plan, getting statistics for a plan, listing public/all plans, and performing queries. 
 
-## 🗓️ February 3, 2021
-
-### New API Reference Feature: Release Notes change indicator
+## New API Reference Feature: Release Notes change indicator (February 3, 2021)
 
 A red dot now appears next to the **Release Notes** section in the left tree when it is updated. More enhancements on the way.
 
-### Updated: getSecret does not require Members Area
+## Updated: getSecret does not require Members Area (February 3, 2021)
 
 `wix-secret-backend`
 
 We removed a note that said you need the Members Area on your site to work with the [`getSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/getsecret) API.
 
-### Updated: Slot Id parameter fixed
+## Updated: Slot Id parameter fixed (February 3, 2021)
 
 `wix-bookings`
 
 We changed `slot_id` to `slotId` in [`getCheckoutOptions()`](https://www.wix.com/velo/reference/wix-bookings/getcheckoutoptions).
 
-### Updated: getCurrentMemberOrders returns a promise
+## Updated: getCurrentMemberOrders returns a promise (February 3, 2021)
 
 `wix-paid-plans`
 
 [`getCurrentMemberOrders()`](https://www.wix.com/velo/reference/wix-paid-plans/getcurrentmemberorders) returns a promise that resolves to an array. We previously stated that the function returns an array.
 
-### Updated: cancelOrder throws an error
+## Updated: cancelOrder throws an error (February 3, 2021)
 
 `wix-paid-plans`
 
 We clarified that [`cancelOrder`](https://www.wix.com/velo/reference/wix-paid-plans/cancelorder) throws an error when **[Allow Plan Cancellation](https://support.wix.com/en/article/pricing-plans-allowing-clients-to-cancel-plans)** is set to False in the Dashboard.
 
-### Updated: Recommend using getCurrentGeolocation with setTimeout
+## Updated: Recommend using getCurrentGeolocation with setTimeout (February 3, 2021)
 
 `wix-window`
 
 In cases where the site visitor's browser is set to not detect locale, the promise does not resolve or reject. We added a note recommending using [`getCurrentGeoLocation()`](https://www.wix.com/velo/reference/wix-window/getcurrentgeolocation) with `setTimeout` to handle the unresolved Promise.
 
-### Updated: Hooks run when data is imported
+## Updated: Hooks run when data is imported (February 3, 2021)
 
 `wix-data`
 
 We added a note that the [`beforeInsert`](https://www.wix.com/velo/reference/wix-data/hooks/beforeinsert) and [`afterInsert`](https://www.wix.com/velo/reference/wix-data/hooks/afterinsert) hooks run when data is imported to either Live or Sandbox collections.
 
-### Updated: queryReferenced() only works with multiple-item reference fields
+## Updated: queryReferenced() only works with multiple-item reference fields (February 3, 2021)
 
 `wix-data`
 
 We added a note that you can only use the [`queryReferenced()`](https://www.wix.com/velo/reference/wix-data/queryreferenced) function with multiple-item reference fields and not with single-item (regular) reference fields.
 
-### Updated: Use the checked property with the Switch element
+## Updated: Use the checked property with the Switch element (February 3, 2021)
 
 `Wix Editor Elements ($w)`
 
 The `value` property does not work with the [`Switch`](https://www.wix.com/velo/reference/w/switch) element. We added a note to use the `checked` property instead. We also added an example for using the `checked` property to set the `Switch` state.
 
-### Updated: RichTextBox does not support KeyboardEvent and onInput
+## Updated: RichTextBox does not support KeyboardEvent and onInput (February 3, 2021)
 
 `Wix Editor Elements ($w)`
 
 `KeyboardEvent` doesn’t fire and `onInput` is not supported for [`RichTextBox`](https://www.wix.com/velo/reference/w/richtextbox) elements. We removed a reference to the `RichTextBox` element from the `KeyboardEvent` documentation and added a note to `onInput` that it is not supported for `RichTextBox` elements.
 
-### Updated: SelectionTags options property changes
+## Updated: SelectionTags options property changes (February 3, 2021)
 
 `Wix Editor Elements ($w)`
 
@@ -136,7 +126,7 @@ Setting the [`options`](https://www.wix.com/velo/reference/$w/selectiontags/opti
 
 Setting `value` no longer lets you set values that do not match any of the options.
 
-### Updated: formattedPrice and formattedDiscountedPrice are read-only
+## Updated: formattedPrice and formattedDiscountedPrice are read-only (February 3, 2021)
 
 `wix-stores-backend`
 
