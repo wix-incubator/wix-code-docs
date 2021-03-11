@@ -11,11 +11,11 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ---
 
-## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API Reference Feature: Show Members open by default (March 7, 2021)
+### <span style="background: rgb(234, 95, 14); color:white">Updated</span> New API Reference Feature: Show Members open by default (March 7, 2021)
 
 The table that lists the properties in a returned object used to be closed by default and would require you to click **Show Members** to view it. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct).
 
-## <span style="background: rgb(234, 95, 14); color:white">Updated</span> New Release Notes information (March 7, 2021)
+### <span style="background: rgb(234, 95, 14); color:white">Updated</span> New Release Notes information (March 7, 2021)
 
 We will now label the latest updates in the Release Notes with <span style="background: rgb(234, 95, 14); color:white">Updated</span> in the heading to make it easier to find the latest changes. 
 
