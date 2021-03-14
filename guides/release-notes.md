@@ -15,20 +15,28 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ##
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API Reference Feature: Show Members open by default
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API onAudioTranscoded
+
+`wix-media-backend`
+
+In addition to video files, audio files that are imported or uploaded to the Media Manager require transcoding, and are not immediately available until the transcoding has completed.
+
+Similar to the onVideoTranscoded() API, the new [onAudioTranscoded](https://www.wix.com/velo/reference/wix-media-backend/events/onaudiotranscoded) API event handler runs when an uploaded audio file has finished transcoding.
+
+### New API Reference Feature: Show Members open by default
 The table that lists the properties in a returned object used to be closed by default and would require you to click **Show Members** to view it. The expandable is now open by default. You can see an example in the **Returns** table for [`createProduct`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct). (March 7, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New Release Notes information 
+### New Release Notes information 
 
 We will now label the latest updates in the Release Notes with &nbsp; <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> &nbsp; in the heading to make it easier to find the latest changes. (March 7, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Remove mention of currentItem from the context of some data hooks
+### Remove mention of currentItem from the context of some data hooks
 
 `wix-data`
 
 The `context.currentItem` parameter is only relevant for `beforeUpdate()` and `beforeRemove()` hooks. The property was removed from the documentation for all other hooks. (March 4, 2021)
 
-###  <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Bookings Events
+### New API: Bookings Events
 
 `wix-bookings-backend`
 
@@ -43,7 +51,7 @@ The events  are fired for the following actions:
 
 (March 2, 2021)
 
-###  <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Clarified opacity and hidden for timeline
+### Clarified opacity and hidden for timeline
 
 `wix-animations`
 
@@ -53,13 +61,13 @@ The events  are fired for the following actions:
 
 (March 2, 2021)
 
-###  <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Price per unit data fields added to product object
+### New API: Price per unit data fields added to product object
 
 `wix-stores-backend`
 
 Price Per Unit data fields were added to APIs returning product objects and product variant objects. These APIs mirror the Dashboard feature that allows you to display a product's base and total quantity/weight/area. Complies with requirements in the German market. (February 22, 2021)
 
-###  <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="10" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Pricing Plans: Plan management
+### New API: Pricing Plans: Plan management
 
 `wix-pricing-plans-backend`
 
