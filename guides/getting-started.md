@@ -2,7 +2,7 @@
 
 Velo by Wix is an innovative product that lets you build robust web applications with zero setup. Work in Wix's Editor, add custom functionality and interactions using Velo APIs, and enjoy serverless coding in both the front-end and backend. With Velo, your web app can be up and running in a fraction of the time it would normally take you.
 
-To introduce you to Velo, we created our own version of a "Hello, World!" example: a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/velo/reference/wix-fetch.html) to connect to a third-party service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
+To introduce you to Velo, we created our own version of a "Hello, World!" example: a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/velo/reference/wix-fetch.html) to connect to a 3rd service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
 
 ![alt_text](../media/gettingStarted1.png)
 

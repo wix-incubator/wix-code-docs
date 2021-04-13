@@ -15,11 +15,39 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ##
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Added updatedItemsIds to WixDataBulkResult
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Update: 512 kb limit for http functions
+
+`wix-http-functions`
+
+Added note that [http function requests](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/body) have a request payload limit of 512 kb. (April 12, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Login as a popup option
+
+`wix-users`
+
+With the new [modal option](https://www.wix.com/velo/reference/wix-users/promptlogin) for the wix-users [`promptLogin()`](https://www.wix.com/velo/reference/wix-users/promptlogin) function, you can let visitors log in using a modal popup. (April 12, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Added note that setFilter() on a read-write dataset saves changes in the input field
+
+`wix-dataset`
+
+When using a read-write dataset in a repeater, calling [`setFilter()`](https://www.wix.com/velo/reference/wix-dataset/dataset/setfilter) will save any changes made to the current row in the repeater. (April 11, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New New Wix Stores Variants Collection in the Content Manager and Velo Databases
+
+`wix-stores`
+
+Alongside Orders, Products, and other Stores collections, Variants are now available for access and query using Velo and the Content Manager.
+
+Variants are combinations of product options, and until now they were only accessible per product. The new Variants collection includes all of a store's variants.
+
+Learn more about the new [Wix Stores Variants Collection](https://support.wix.com/en/article/velo-wix-stores-variants-collection-fields). (April 1, 2021)
+
+### Updated: Added updatedItemsIds to WixDataBulkResult
 
 We added the `updatedItemIds` property to the `WixDataBulkResult` object,  which is returned by the [`bulkInsert()`](https://www.wix.com/velo/reference/wix-data/bulkinsert), [`bulkSave()`](https://www.wix.com/velo/reference/wix-data/bulksave), and [`bulkUpdate()`](https://www.wix.com/velo/reference/wix-data/bulkupdate) functions. (March 15, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Added information when getItem() returns null
+### <Updated: Added information when getItem() returns null
 
 We added information that if an item doesn't exist, [`getItem()`](https://www.wix.com/velo/reference/wix-storage/storage/getitem) returns null. (March 15, 2021)
 
