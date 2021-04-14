@@ -43,7 +43,7 @@ With the new [modal option](https://www.wix.com/velo/reference/wix-users/promptl
 
 `wix-crm-backend`
 
-We release new [CRM Contacts APIs](https://www.wix.com/velo/reference/wix-crm-backend) allowing you to:
+We released new [CRM Contacts APIs](https://www.wix.com/velo/reference/wix-crm-backend) allowing you to:
 
 - Create, update, get, query, and delete contacts
 - Label/unlabel contacts
