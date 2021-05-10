@@ -15,6 +15,28 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ##
 
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Removed tip to use onInput with richTextBox
+
+onInput is not supported for richTextbox. We removed a [tip](https://www.wix.com/velo/reference/w/richtextbox/onkeypress) to use onInput to get the value of the latest keyboard event for a richTextbox. (May 5, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Effect options for show and hide are optional
+
+`Wix Editor Elements ($w)`
+
+We updated the [show and hide functions](https://www.wix.com/velo/reference/w/hiddenmixin) to indicate that the effectOptions are optional. (May 5, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: afterUpdate supports the currentItem property
+
+`wix-data`
+
+We added back information that the [`afterUpdate`](https://www.wix.com/velo/reference/wix-data/hooks/afterupdate) hook supports the currentItem property in the updateHookContext parameter. (May 5, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: isReferenced supports the wixDataOptions parameter
+
+`wix-data`
+
+We added information that [`isReferenced`](https://www.wix.com/velo/reference/wix-data/isreferenced) supports the wixDataOptions parameter, which enables suppressAuth and suppressHooks. (May 5, 2021)
+
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: queryReferenced options parameter is listed as optional
 
 `wix-data`
@@ -27,13 +49,13 @@ The options parameter of [`queryReferenced()`](https://www.wix.com/velo/referenc
 
 We added a new [`env`](https://www.wix.com/velo/reference/wix-router/wixrouterrequest/env) property to WixRouterRequest.
 
-When possible, the rendering process is split in two in order to improve performance. The first cycle in the process is initiated from backend rendering, and the second cycle is initiated from client-side rendering. You can use the env property to check whether the current rendering cycle is occurring on the backend or the client side. (May 5, 2021)
+When possible, the rendering process is split in two, to improve performance. The first cycle in the process is initiated from backend rendering, and the second cycle is initiated from client-side rendering. You can use the env property to check whether the current rendering cycle is occurring on the backend or the client side. (May 5, 2021)
 
 ###  <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Size property of File object for UploadButton is Number
 
 `Wix Editor Elements ($w)`
 
-We changed the type of the size property of the object that is returned by the `[value]`(https://www.wix.com/velo/reference/w/uploadbutton/value) property to number from string. (May 5, 2021)
+We changed the type of the size property of the object that is returned by the [`value`](https://www.wix.com/velo/reference/w/uploadbutton/value) property from string to number. (May 5, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Pricing Plans setPlanVisibility returns a complete pricing plan
 
