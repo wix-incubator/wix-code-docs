@@ -19,13 +19,13 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 `Wix Editor Elements ($w)`
 
-onInput is not supported for richTextBox. We removed a [tip](https://www.wix.com/velo/reference/w/richtextbox/onkeypress) to use onInput to get the value of the latest keyboard event for a richTextBox. (May 5, 2021)
+onInput is not supported for richTextBox. We removed a [tip](https://www.wix.com/velo/reference/$w/richtextbox/onkeypress) to use onInput to get the value of the latest keyboard event for a richTextBox. (May 5, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Effect options for show and hide are optional
 
 `Wix Editor Elements ($w)`
 
-We updated the [show and hide functions](https://www.wix.com/velo/reference/w/hiddenmixin) to indicate that the effectOptions are optional. (May 5, 2021)
+We updated the [show and hide functions](https://www.wix.com/velo/reference/$w/hiddenmixin) to indicate that the effectOptions are optional. (May 5, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: afterUpdate supports the currentItem property
 
