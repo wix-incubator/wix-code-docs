@@ -370,7 +370,9 @@ With the new [Coupon backend events](https://www.wix.com/velo/reference/wix-mark
 
 Added the `appID` property to the CouponEvent object. The ID of the app that created the coupon. Empty if created by the site owner. (January 19, 2021)
 
-### Updated: updateCustomerInfo deletes any non-updated properties
+### Updated: update
+
+erInfo deletes any non-updated properties
 
 `wix-bookings-backend`
 
@@ -472,12 +474,6 @@ We also reviewed the existing explanations and made some updates, including:
 `wix-users-backend`
 
 We added the [`assignRole()`](https://www.wix.com/velo/reference/wix-users-backend/roles-obj/assignrole) and [`removeRole()`](https://www.wix.com/velo/reference/wix-users-backend/roles-obj/removerole) functions to the new `Roles` API in `wix-users-backend`, allowing you to manage site member access to restricted pages. (December 24, 2020)
-
-### New API: wix-stores addCustomItemsToCart()
-
-`wix-stores`
-
-With the new Wix Stores [addCustomItemsToCart()](https://www.wix.com/velo/reference/wix-stores/addcustomitemstocart) API you can now add custom items that aren't "products" to the cart. For example, an insurance or agent's fee. (December 24, 2020)
 
 ### New API: VideoBox
 
