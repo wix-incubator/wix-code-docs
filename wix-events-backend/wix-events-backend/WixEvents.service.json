@@ -22,16 +22,16 @@
           " You must upgrade your site to a [Premium Plan](https://support.wix.com/en/article/upgrading-your-site-to-premium-3066683) in order to accept online payments for events. ",
           "",
           " The Wix Events API provides functionality allowing you to:",
-          " + [Get](wix-events-backend/wixevents/getevents) and [query](wix-events-backend/wixevents/queryevents) Wix event information.",
+          " + [Get](wix-events-backend/wixevents/getevent) and [query](wix-events-backend/wixevents/queryevents) Wix event information.",
           " + [Create](wix-events-wixbackend/events/createevent) and [update](wix-events-backend/events/updateevent) a Wix event.",
           " + [Copy](wix-events-backend/wixevents/copyevent) a Wix event.",
           " + [Cancel](wix-events-backend/wixevents/cancelevent) and [delete](wix-events-backend/wixevents/deleteevent) Wix events.",
           "",
           " ### Wix Events vs. Backend Events",
           "",
-          " > For clarity, this reference refers to:",
-          " > + [\"Backend events\"](https://www.wix.com/velo/reference/wix-events-backend/events) when discussing events that get fired and are handled by event handlers. ",
-          " > + [\"Wix events\"](https://www.wix.com/velo/reference/wix-events-backend/wixevents) when discussing actual events that people attend. ",
+          " For clarity, this reference refers to:",
+          " + [\"Backend events\"](https://www.wix.com/velo/reference/wix-events-backend/events) when discussing events that get fired and are handled by event handlers. ",
+          " + [\"Wix events\"](https://www.wix.com/velo/reference/wix-events-backend/wixevents) when discussing events that people attend. ",
           "",
           " ### Creating Wix Events",
           "",
@@ -39,66 +39,80 @@
           " [createEvent](wix-events-wixbackend/events/createevent) and the [copyEvent](wix-events-wixbackend/events/copyevent) functions to",
           " start building your catalog of events.",
           "",
-          " Wix events are robust with functionality. When creating or updating Wix events using this API, you can configure settings for:  ",
+          " To create a Wix event: ",
+          " 1. First, start creating the event by specifying certain initial properties. ",
+          " 1. Continue event creation by adding more details to the event.",
+          "",
+          " #### Start Creating the Event",
+          "",
+          " Similar to the process of creating an event using the Wix Dashboard, there are certain initial properties you must first specify before ",
+          " configuring other event settings. ",
+          "",
+          " + Event name",
+          "",
+          " + Whether the event is a Ticketed event or an RSVP event. ",
+          "",
+          "   This information is stored both in the `registration.initialType` ",
+          "   and the `registration.type` properties. ",
+          "     + RSVP events: `RSVP`",
+          "     + Ticketed events: `TICKETS`",
+          "",
+          "   The `registration.initialType` property value becomes read-only and never changes.",
+          "",
+          "   The `registration.type` property value might change after initial event creation, depending on any additional configuration applied ",
+          "   to the event. ",
+          " ",
+          " #### Continue Defining the Event",
+          "",
+          " After initial event creation, you can continue defining the event by configuring more of its settings. At this point, ",
+          " you can use this API to configure settings for:  ",
           " + Location",
           " + Scheduling",
-          " + Registration (including external registration)",
-          " + Ticketing (for ticketed events)",
-          " + RSVPs (for RSVP events) ",
+          " + Registration",
+          " + Tickets",
+          " + RSVPs ",
           " + Online conferencing ",
           " + Messaging customization",
-          " + (Some basic registration form customization is currently supported.)",
+          " + Basic registration form customization",
           "",
-          " #### About Wix Event Types",
-          "",
-          " When initially creating Wix events, the Wix Events API supports the following types and stores the type both in the `registration.initialType` ",
-          " and the `registration.type` properties. The `registration.initialType` property value becomes read-only and never changes.",
-          " + RSVP events: `RSVP`",
-          " + Ticketed events: `TICKETS`",
-          " ",
-          " After initial creation and while you continue to define your Wix events, the event types might evolve. `registration.type` reflects the actual, current type of the event. For example:",
-          "",
-          " + If you want event registration to be managed externally using some other site, its `registration.type` becomes \"`EXTERNAL`\". ",
-          " + If guests do not need to register for the event, `registration.type` becomes \"`NO_REGISTRATION`\". ",
-          "",
-          " ### Registration Considerations",
-          "",
-          " There are 3 ways to configure registration for a Wix event. The read-only `registration.type`",
-          " property indicates how registration is currently configured.",
-          "",
-          " + **No registration**: `NO_REGISTRATION`",
-          "",
-          "   No registration is required, all guests can attend.",
-          "",
-          "   Setting the `registrationDisabled` property to `true` updates `registration.type` to `NO_REGISTRATION`.",
-          "",
-          " + **Guest registration**: `TICKETS` or `RSVP`",
-          "",
-          "   Guests must register either by ordering tickets or by RSVPing to the event.",
-          "",
-          " + **External registration**: `EXTERNAL`",
-          "",
-          "   The guest list and registration are managed externally. Any existing guest list ",
-          "   originally managed by Wix Events exists but is no longer maintained by Wix Events. ",
-          "   Update the `externalRegistrationUrl` property to configure external registration ",
-          "   and to direct the guest to the given external URL for registration.",
+          " #### Defining Registration for the Event",
           "",
           " At any point you can pause or close registration with the `registrationDisabled` or ",
           " `registrationPaused` properties.",
           "",
+          " While you continue to define your Wix events, the `registration.type` property value might change. This is ",
+          " because the `registration.type` value reflects the actual, current type of the event. For example:",
           "",
-          " ### Scheduling Considerations",
+          " + All events start off with a `registration.type` value of `RSVP` or `TICKETS`, matching the `registration.initialType` property",
+          "   (which never changes). This means that guests must register either by ordering tickets or by RSVPing to the event.",
+          "",
+          " + If you want event registration to be managed externally using some other site, ",
+          "   update the `externalRegistrationUrl` property to `true`. The `registration.type` value is updated to `\"EXTERNAL\"`. ",
+          "   The guest list and registration are managed externally. Any existing guest list ",
+          "   originally managed by Wix Events continues to exist, but is no longer maintained by Wix Events. ",
+          "   Update the `externalRegistrationUrl` property to configure external registration ",
+          "   and to direct the guest to the given external URL for registration.",
+          "",
+          " + If you want to indicate that guests do not need to register for the event, use the [`updateEvent()`](#updateevent) function to change ",
+          "   the `registrationDisabled` property to ",
+          "  `true`. The `registration.type` value is updated to `\"NO_REGISTRATION\"`. No registration is required, all guests can attend.",
+          "",
+          "",
+          " ### Defining the Scheduling of the Event",
           "",
           " Most events have known start and end times. ",
           "",
           " However, it is possible you might not know the date and time in advance when initially setting up ",
           " the event. You can create events with times",
-          " \"to be determined\" (TBD) later. Whether an event is a TBD event is set using the `tbd` property in the `scheduling` object. ",
+          " \"to be determined\" (TBD) later by setting `schedulingInfo.tbd` to `true` in the `eventInfo` object when ",
+          " creating the event. ",
           "",
-          " Because the Wix event's start and end dates are not yet defined, a message, set in the `scheduling.tbdMessage` property, is displayed.",
+          " When the Wix event's start and end dates are not yet defined, a message is displayed at ",
+          " registration time/when an attendee registers. The message is defined in the `scheduling.tbdMessage` property.",
+          "",
           " `scheduling.startDate`, `scheduling.endDate`, and `scheduling.timeZoneId` are optional for TBD events.",
           "",
-          " For example, here is an object containing the minimum properties necessary for defining an RSVP-type event that is TBD: ",
+          " For example, here is an `eventInfo` object containing the minimum properties necessary for defining an RSVP-type event that is TBD: ",
           " ```",
           " {",
           "   \"title\": \"My TBD event\",",
@@ -117,20 +131,19 @@
           "",
           " ### Ticketing Considerations",
           "",
-          " Once a Wix event is created as a ticketed event, it cannot be reset as an RSVP event. ",
+          " Once a Wix event is created as a ticketed event, it cannot be updated to an RSVP event. ",
           "",
           " This API lets you set the following for ticket orders: ",
           " ",
           " + The currency for ticket orders.",
           " + How taxes are handled.",
           " + Whether a separate registration form is needed for each ticket, or if one form can be used for all guests on the order.",
-          "",
-          " You can set whether guests can see other guests attending the event.",
+          " + Whether guests can see other guests attending the event.",
           "",
           "",
           " ### RSVP Considerations ",
           "",
-          " Once a Wix event is created as an RSVP event, it cannot be reset as a ticketed event. ",
+          " Once a Wix event is created as an RSVP event, it cannot be updated to a ticketed event. ",
           "",
           " You can set whether guests can see other guests attending the event.",
           "",
@@ -168,7 +181,7 @@
           "",
           " Anyone with the \"Site owner/Admin\" role can see and manage a Wix Event's guest list. ",
           "",
-          " If a Wix event has a public guest list, attendees can see who else is also attending the event. Attendees do not see the entire guest list--only those that ",
+          " If a Wix event has a public guest list, attendees can see who else is also attending the event. Attendees do not see the entire guest list, only those that ",
           " indicated that they were attending.",
           "",
           "",
@@ -176,7 +189,7 @@
           "",
           " Wix Events lets you manage the data collected from guests during registration using forms. ",
           "",
-          " > **Note:** Using this API, you can currently do only some minimal registration form and message customization, but you can see current settings using `Form` properties.",
+          " > **Note:** Using this API, you can see current registration form and message settings using the form properties.",
           " ",
           "  A form is an ordered list of input groups (control blocks), which accept guest information into input fields.",
           "",
@@ -212,7 +225,7 @@
                   [ "wix-events-backend.WixEvents.WixEvent" ] },
             "doc": "Fulfilled - The canceled Wix event.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 28,
+          [ { "lineno": 29,
               "filename": "event-management.js" } ],
         "docs":
           { "summary": "Cancels a Wix event and closes its registration.",
@@ -220,7 +233,7 @@
               [ "The `cancelEvent()` function returns a Promise that resolves to the newly-canceled Wix event after the specified Wix event is successfully canceled. ",
                 "",
                 " This function does the following: ",
-                " + Changes the event status to `CANCELED`. You can also see this status change in the [Events collection](https://support.wix.com/en/article/velo-wix-events-events-collection-fields).",
+                " + Changes the event status to `\"CANCELED\"`. You can also see this status change in the [Events collection](https://support.wix.com/en/article/velo-wix-events-events-collection-fields).",
                 " + Sends cancellation emails and/or pushes notifications to registered guests, if Wix event [cancellation notifications are enabled](https://support.wix.com/en/article/wix-events-editing-default-emails).",
                 " + Changes the registration status to `CLOSED`.",
                 "",
@@ -230,7 +243,8 @@
                 "",
                 " When using the API, you do not need to cancel a Wix event before deleting it. When using the Wix Events app in the Editor, you must cancel the Wix event first. ",
                 "",
-                " Only those with \"Manage Events\" permissions can cancel their own Wix events and others' Wix events." ],
+                " Only those with \"Manage Events\" permissions can cancel their own Wix events and others' Wix events. Those ",
+                " without \"Manage Events\" permissions cannot cancel any events." ],
             "links":
               [ "[onEventCanceled( )](wix-events-backend/events/oneventcanceled)" ],
             "examples":
@@ -263,7 +277,8 @@
         "extra":
           {  } },
       { "name": "copyEvent",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "eventId",
@@ -287,8 +302,9 @@
                 "",
                 " When copying Wix events: ",
                 " + If your site has multilingual enabled, and your event has additional, translated elements (such as registration messages), the translated elements are also copied to the new event. ",
-                " + When an event with same title already exists, the title of the newly-copied event has a numeric suffix in parentheses appended to it. For example, copying an event titled \"My Event\" creates \"My Event (1)\".",
-                " + Very long event titles are cropped: \"Daily stand-up ev... (2)\".  The maximum number of characters allowed is 120, which includes the suffix identifying the copy of the event.",
+                " + When an event with same title already exists, the title of the newly-copied event has a numeric suffix in parentheses appended to it. For example: Copying an event titled \"My Event\" creates \"My Event (1)\".",
+                " + Very long event titles are cropped: For example: \"Daily stand-up ev... (2)\".  ",
+                "   The maximum number of characters allowed is 120, which includes the suffix identifying the copy of the event.",
                 "",
                 " The [`onEventCreated( )`](wix-events-backend/events/oneventcreated) event handler runs when a Wix event is copied.",
                 " The received `CreatedEvent` object contains information about the new Wix event that was copied.",
@@ -325,7 +341,8 @@
         "extra":
           {  } },
       { "name": "createEvent",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "eventInfo",
@@ -341,19 +358,21 @@
                   [ "wix-events-backend.WixEvents.WixEvent" ] },
             "doc": "Fulfilled - The created Wix event.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 55,
+          [ { "lineno": 57,
               "filename": "event-management.js" } ],
         "docs":
           { "summary": "Creates a Wix event.",
             "description":
               [ "The `createEvent()` function returns a Promise that resolves to the newly-created Wix event after it has successfully been created. ",
                 " ",
-                " When creating an event, you must define if the event is an RSVP event or a ticketed event. ",
+                " When creating an event, you must define if the event is an RSVP event or a ticketed event. This is stored in the `registration.initialType` property. ",
+                " After the initial save, you can further define event registration details. If you change the event's registration to be a external or unnecessary, ",
+                " this is reflected in the `registration.type` property. The `registration.initialType` property after initial creation is read-only.",
                 "",
-                " The new Wix event is created with a default [registration form](https://support.wix.com/en/article/wix-events-customizing-your-registration-form-page) in the site's default language and using the site's default regional settings.",
+                " The new Wix event is created with a default [registration form](https://support.wix.com/en/article/wix-events-customizing-your-registration-form-page) in the site's default language, using the site's default regional settings.",
                 "",
                 " The default registration form includes input fields for first name, last name, and email. Keep in mind that the registration form ",
-                " for a ticketed event has different fields than the form for a non-ticketed event.",
+                " for a ticketed event has different fields from the form for a non-ticketed event.",
                 " ",
                 " By default, the event is automatically configured to send daily summary reports of new registrations to the site's business email.",
                 "",
@@ -456,8 +475,7 @@
         "extra":
           {  } },
       { "name": "deleteEvent",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "eventId",
@@ -470,7 +488,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the event is deleted.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 82,
+          [ { "lineno": 86,
               "filename": "event-management.js" } ],
         "docs":
           { "summary": "Deletes a Wix event.",
@@ -521,7 +539,7 @@
                   [ "wix-events-backend.WixEvents.WixEvent" ] },
             "doc": "Fulfilled - The Wix event.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 103,
+          [ { "lineno": 107,
               "filename": "event-management.js" } ],
         "docs":
           { "summary": "Retrieves a Wix event by ID.",
@@ -566,7 +584,7 @@
         "params": [],
         "ret":
           { "type": "wix-events-backend.WixEvents.EventsQueryBuilder",
-            "doc": "Contains functionality for refining a Wix events query.\nThe `EventsQueryBuilder` functions enable you to run, sort, filter, and control\nwhich results a query returns.\n\nTypically, you build a query using any of the events query functions,\nrefine the query by chaining `EventsQueryBuilder` functions, and then execute the\nquery by chaining the [`find()`](#find) function.\n\nFor example, the following code returns the first 5 upcoming Wix events created by\na given event manager, including scheduled events and events that \nhave started. The events are listed in ascending\norder by the event's start date.\n\n```javascript\nimport { wixEvents } from 'wix-events-backend';\n\nwixEvents.queryEvents()\n  .eq(\"createdBy\", \"4c47c608-cfa8-4037-93ac-738f09560ed3\")\n  .hasSome(\"status\", [\"SCHEDULED\", \"STARTED\"])\n  .ascending(\"scheduling.startDate\")\n  .limit(5)\n  .find()\n  .then( (results) => {\n    console.log(results.items);\n  } );\n```" },
+            "doc": "Contains functionality for refining a Wix events query.\nThe `EventsQueryBuilder` functions enable you to run, sort, filter, and control\nwhich results a query returns.\n\nTypically, you build a query using any of the event query functions,\nrefine the query by chaining `EventsQueryBuilder` functions, and then execute the\nquery by chaining the [`find()`](#find) function.\n\nFor example, the following code returns the first 5 upcoming Wix events created by\na given event manager, including scheduled events and events that \nhave started. The events are listed in ascending\norder by the event's start date.\n\n```javascript\nimport { wixEvents } from 'wix-events-backend';\n\nwixEvents.queryEvents()\n  .eq(\"createdBy\", \"4c47c608-cfa8-4037-93ac-738f09560ed3\")\n  .hasSome(\"status\", [\"SCHEDULED\", \"STARTED\"])\n  .ascending(\"scheduling.startDate\")\n  .limit(5)\n  .find()\n  .then( (results) => {\n    console.log(results.items);\n  } );\n```" },
         "locations":
           [ { "lineno": 847,
               "filename": "event-query.js" } ],
@@ -580,9 +598,9 @@
                 " using the [`find()`](wix-events-backend/wixevents/eventsquerybuilder/find) function.",
                 "",
                 " You can refine the query by chaining `EventsQueryBuilder` functions onto the query. `EventsQueryBuilder` ",
-                " functions enable you to sort, filter, and control the results that `queryEvents()` returns.",
+                " functions enable you to sort, filter, and control the results that `queryEvents.find()` returns.",
                 "",
-                " The `query` runs with the following `EventsQueryBuilder` defaults that you can override:",
+                " The query runs with the following `EventsQueryBuilder` defaults that you can override:",
                 "",
                 " + [`limit`](wix-events-backend.WixEvents.eventsquerybuilder.html.#limit): `50`",
                 " + [`descending`](wix-events-backend.WixEvents.eventsquerybuilder.html.#descending): `_createdDate`",
@@ -614,8 +632,7 @@
                 " only the first filter will work.",
                 "",
                 ">**Notes:**",
-                "> + By default, `queryEvents()` retrieves only statuses of `\"SCHEDULED\"`. To retrieve all Wix event statuses use a `hasSome()` filter with all of the statuses.",
-                "> + A guest can only see their own Wix events if `suppressAuth` is set to `true` in the queryOptions for the [`find()`](wix-events-backend/wixevents/eventsquerybuilder/find) function.",
+                "> + A guest can only see their own Wix events unless `suppressAuth` is set to `true` in the queryOptions for the [`find()`](wix-events-backend/wixevents/eventsquerybuilder/find) function.",
                 "> + When using the `queryEvents()` function immediately following a change to your Wix events, the data retrieved may not contain your most recent changes. See [Wix-data and Eventual Consistency](reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information. To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function to delay querying for a number of seconds, following any changes to your Wix events data.",
                 "",
                 "",
@@ -677,7 +694,7 @@
                   [ "wix-events-backend.WixEvents.WixEvent" ] },
             "doc": "Fulfilled - The updated Wix event.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 119,
+          [ { "lineno": 123,
               "filename": "event-management.js" } ],
         "docs":
           { "summary": "Updates a Wix event.",
@@ -768,7 +785,7 @@
   "messages":
     [ { "name": "AdditionalLabel",
         "locations":
-          [ { "lineno": 424,
+          [ { "lineno": 422,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing additional labels for form fields.",
@@ -839,8 +856,7 @@
                   "members":
                     [ "addressLine1",
                       "streetAddress" ] } ] },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "AddressInfo",
         "locations":
           [ { "lineno": 24,
@@ -965,7 +981,7 @@
         "labels": [] },
       { "name": "CheckoutFormMessages",
         "locations":
-          [ { "lineno": 363,
+          [ { "lineno": 361,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing messages on the form for purchasing tickets.",
@@ -985,7 +1001,7 @@
         "labels": [] },
       { "name": "DeletedWixEvent",
         "locations":
-          [ { "lineno": 564,
+          [ { "lineno": 562,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing the ID of a Wix event that was deleted.",
@@ -1025,7 +1041,7 @@
         "labels": [] },
       { "name": "FormMessages",
         "locations":
-          [ { "lineno": 371,
+          [ { "lineno": 369,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a set of configured form messages.",
@@ -1083,7 +1099,7 @@
         "labels": [] },
       { "name": "InputField",
         "locations":
-          [ { "lineno": 380,
+          [ { "lineno": 378,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a field on a form. The field may or may not be included in an `InputGroup` block. Text-type fields can contain one or more values.",
@@ -1127,7 +1143,7 @@
         "labels": [] },
       { "name": "InputGroup",
         "locations":
-          [ { "lineno": 401,
+          [ { "lineno": 399,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a block of fields that tend to be grouped together on a form. The block of fields is also called an input group.",
@@ -1333,15 +1349,16 @@
             { "name": "rsvp",
               "type": "wix-events-backend.WixEvents.Rsvp",
               "doc": "Registration details for an RSVP event." },
-            { "name": "ticketing",
-              "type": "wix-events-backend.WixEvents.Ticketing",
+            { "name": "tickets",
+              "type": "wix-events-backend.WixEvents.Tickets",
               "doc": "Registration details for a ticketed event." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "RegistrationClosedMessages",
         "locations":
-          [ { "lineno": 432,
+          [ { "lineno": 430,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing messages to display when Wix event registration is closed.",
@@ -1384,7 +1401,7 @@
         "labels": [] },
       { "name": "RsvpFormMessages",
         "locations":
-          [ { "lineno": 440,
+          [ { "lineno": 438,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing RSVP form messages.",
@@ -1416,7 +1433,7 @@
         "labels": [] },
       { "name": "RsvpFormNegative",
         "locations":
-          [ { "lineno": 452,
+          [ { "lineno": 450,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a messages to display when the RSVP is `NO`.",
@@ -1439,7 +1456,7 @@
         "labels": [] },
       { "name": "RsvpFormPositive",
         "locations":
-          [ { "lineno": 461,
+          [ { "lineno": 459,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a messages to display when the RSVP is `YES`.",
@@ -1703,15 +1720,16 @@
           [ { "name": "rsvp",
               "type": "wix-events-backend.WixEvents.RsvpSummary",
               "doc": "Summary data for RSVP sales." },
-            { "name": "ticketing",
-              "type": "wix-events-backend.WixEvents.TicketingSummary",
+            { "name": "tickets",
+              "type": "wix-events-backend.WixEvents.TicketsSummary",
               "doc": "Summary data for revenue and tickets sold." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "TaxSettingInfo",
         "locations":
-          [ { "lineno": 327,
+          [ { "lineno": 326,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object for updating tax settings for the Wix event.",
@@ -1722,7 +1740,7 @@
         "members":
           [ { "name": "type",
               "type": "string",
-              "doc": "When the tax is applied. Defaults to `\"INCLUDED\"`.\nOne of:\n + `\"INCLUDED\"`. Tax is built-in to the price. \n + `\"ADDED\"`.  Deprecated. This property will continue to work, but it will not receive updates. To keep any existing code compatible with future changes, use `\"ADDED_AT_CHECKOUT\"`.\n + `\"ADDED_AT_CHECKOUT\"`. Tax is added when the guest checks out.",
+              "doc": "When the tax is applied. Defaults to `\"INCLUDED\"`.\nOne of:\n + `\"INCLUDED\"`. Tax is built-in to the price. \n + `\"ADDED_AT_CHECKOUT\"`. Tax is added when the guest checks out.",
               "optional": true },
             { "name": "name",
               "type": "string",
@@ -1734,7 +1752,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "TaxSettings",
         "locations":
           [ { "lineno": 314,
@@ -1748,7 +1767,7 @@
         "members":
           [ { "name": "type",
               "type": "string",
-              "doc": "When the tax is applied. Defaults to `\"INCLUDED\"`.\nOne of:\n + `\"INCLUDED\"`. Tax is built-in to the price. \n + `\"ADDED\"`. Deprecated. This property will continue to work, but it will not receive updates. To keep any existing code compatible with future changes, use `\"ADDED_AT_CHECKOUT\"`.  \n + `\"ADDED_AT_CHECKOUT\"`. Tax is added when the guest checks out." },
+              "doc": "When the tax is applied. Defaults to `\"INCLUDED\"`.\nOne of:\n + `\"INCLUDED\"`. Tax is built-in to the price. \n + `\"ADDED_AT_CHECKOUT\"`. Tax is added when the guest checks out." },
             { "name": "name",
               "type": "string",
               "doc": "Tax name." },
@@ -1757,7 +1776,8 @@
               "doc": "Tax rate, such as `21.55`." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Ticketing",
         "locations":
           [ { "lineno": 349,
@@ -1792,7 +1812,8 @@
               "doc": "Formatted price of the highest-priced ticket." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "removed" ] },
       { "name": "TicketingInfo",
         "locations":
           [ { "lineno": 340,
@@ -1814,7 +1835,8 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "removed" ] },
       { "name": "TicketingSummary",
         "locations":
           [ { "lineno": 112,
@@ -1845,10 +1867,102 @@
               "doc": "Total sales balance for confirmed transactions." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "removed" ] },
+      { "name": "Tickets",
+        "locations":
+          [ { "lineno": 347,
+              "filename": "shared.js" } ],
+        "docs":
+          { "summary": "An object representing tickets settings for the Wix event.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "currency",
+              "type": "string",
+              "doc": "Currency used for event ordering and transactions." },
+            { "name": "formAssignedPerTicket",
+              "type": "boolean",
+              "doc": "When ordering, whether each ticket in the order needs its own order form or if one form covers multiple tickets." },
+            { "name": "tax",
+              "type": "wix-events-backend.WixEvents.TaxSettings",
+              "doc": "Tax settings." },
+            { "name": "lowestTicketPrice",
+              "type": "wix-events-backend.WixEvents.Money",
+              "doc": "Price of the lowest-priced ticket." },
+            { "name": "highestTicketPrice",
+              "type": "wix-events-backend.WixEvents.Money",
+              "doc": "Price of the lowest-priced ticket." },
+            { "name": "lowestTicketPriceFormatted",
+              "type": "string",
+              "doc": "Formatted price of the lowest-priced ticket." },
+            { "name": "highestTicketPriceFormatted",
+              "type": "string",
+              "doc": "Formatted price of the highest-priced ticket." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "TicketsInfo",
+        "locations":
+          [ { "lineno": 338,
+              "filename": "shared.js" } ],
+        "docs":
+          { "summary": "An object for updating tickets settings for the Wix event.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "formAssignedPerTicket",
+              "type": "boolean",
+              "doc": "When ordering, whether each ticket in the order needs its own order form or if one form covers multiple tickets.",
+              "optional": true },
+            { "name": "tax",
+              "type": "wix-events-backend.WixEvents.TaxSettingInfo",
+              "doc": "Tax settings.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "TicketsSummary",
+        "locations":
+          [ { "lineno": 112,
+              "filename": "shared.js" } ],
+        "docs":
+          { "summary": "An object representing a summary of the Wix event's revenue and tickets sold.",
+            "description":
+              [ "(The summaries do not include data pertaining to archived orders.)" ],
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "totalTickets",
+              "type": "number",
+              "doc": "Total number of tickets sold." },
+            { "name": "revenue",
+              "type": "wix-events-backend.WixEvents.Money",
+              "doc": "Total revenue, including taxes and excluding fees. Payment provider fees are not deducted." },
+            { "name": "currencyLocked",
+              "type": "boolean",
+              "doc": "Whether currency cannot be changed. The currency is locked after the first order for the event has been created and is set to the currency of that first order." },
+            { "name": "totalOrders",
+              "type": "number",
+              "doc": "Total number of orders placed for the Wix event." },
+            { "name": "totalSales",
+              "type": "wix-events-backend.WixEvents.Money",
+              "doc": "Total sales balance for confirmed transactions." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "WixEvent",
         "locations":
-          [ { "lineno": 527,
+          [ { "lineno": 525,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object representing a Wix event.",
@@ -1925,7 +2039,7 @@
         "labels": [] },
       { "name": "WixEventInfo",
         "locations":
-          [ { "lineno": 571,
+          [ { "lineno": 569,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object for creating a Wix event.",
@@ -1973,7 +2087,7 @@
         "labels": [] },
       { "name": "WixEventInfoOptions",
         "locations":
-          [ { "lineno": 499,
+          [ { "lineno": 497,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object for updating registration options for a Wix event.",
@@ -1991,7 +2105,7 @@
         "labels": [] },
       { "name": "WixEventRegistrationInfo",
         "locations":
-          [ { "lineno": 472,
+          [ { "lineno": 470,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object for updating registration settings for the Wix event.",
@@ -2020,20 +2134,21 @@
               "type": "wix-events-backend.WixEvents.RsvpInfo",
               "doc": "Registration settings for the RSVP Wix event.",
               "optional": true },
-            { "name": "ticketing",
-              "type": "wix-events-backend.WixEvents.TicketingInfo",
-              "doc": "Registration settings for the ticketed Wix event.",
-              "optional": true },
             { "name": "type",
               "type": "string",
               "doc": "Event type. Only RSVP and TICKETS are allowed when creating an event (`initialType`), however after initial event\ncreation the `type` can be changed to other values.\nOne of:\n + `\"RSVP\"`. The Wix event is an RSVP event. It cannot be changed to a ticketed event.\n + `\"TICKETS\"`. The Wix event is a ticketed event. It cannot be changed to an RSVP event.\n + `\"EXTERNAL\"`. If you created a guest list before setting up external registration, the current guest list remains but is likely to be \n   incomplete. So when sending out messages to the Wix-managed guest list, not all \n   guests will receive them. Messages should be sent from the external registration system\n   to the complete guest list.\n   You can change the value back at any point if you no longer want the event to be managed externally.\n + `\"NO_REGISTRATION\"`. No registration is necessary for the event.",
+              "optional": true },
+            { "name": "tickets",
+              "type": "wix-events-backend.WixEvents.TicketsInfo",
+              "doc": "Registration settings for the ticketed Wix event.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "WixEventUpdateInfo",
         "locations":
-          [ { "lineno": 593,
+          [ { "lineno": 591,
               "filename": "shared.js" } ],
         "docs":
           { "summary": "An object for updating a Wix event.",
