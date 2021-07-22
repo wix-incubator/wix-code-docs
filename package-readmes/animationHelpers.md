@@ -232,10 +232,11 @@ import { zoom } from '@velo/wix-animation-helpers';
 5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textZoomTimeLine.play()` function in the event handler to play the animation on hover .   
 Add the `onMouseOut()` event handler to the text element. Call the `textZoomTimeLine.reverse()` function in the event handler to reverse the animation when you are no longer hovering over the text. 
 
-    ```js
-    text.onMouseIn(() => textZoomTimeLine.play());
-    text.onMouseOut(() => textZoomTimeLine.reverse());
-    ```
+
+```js
+text.onMouseIn(() => textZoomTimeLine.play());
+text.onMouseOut(() => textZoomTimeLine.reverse());
+```
 
 #### Float Elements 
 
@@ -281,14 +282,14 @@ import { float } from '@velo/wix-animation-helpers';
 5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textFloatTimeLine.play()` function in the event handler to play the animation on hover.  
 Add the `onMouseOut()` event handler to the text element. Call the `textFloatTimeLine.pause()` function in the event handler to pause the animation when you are no longer hovering over the text. 
 
-      ```js
+```js
      floatingText.onMouseIn(() => {
          textFloatTimeLine.play();
      });
      floatingText.onMouseOut(() => {
          textFloatTimeLine.pause();
      });
-    ```
+```
 
 
 ##### Float elements in a pattern  
@@ -390,7 +391,7 @@ Import the `stagger` function from the package to your page.
 3. Store the textbox in a variable called `selfWrittenText`. Since we want the letters to appear one after the other, we need to first clear its contents.  
  
     ```js 
-    const selfWrittenText = $w('#selfWrittenTex');
+    const selfWrittenText = $w('#selfWrittenText');
     selfWrittenText.text = ''; 
     ```
 
