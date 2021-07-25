@@ -2,425 +2,417 @@
 
 The Animation Helpers package provides you with the ability to easily add popular animations to your site elements. 
 
+To see an example site that demonstrates how to use this package, click [here](https://www.wix.com/velo/example/animation-helpers). 
 
 ### Setup 
 
 This package does not require any initial setup.
 
-### Package Content 
 
-The following public file is included in the package. 
+### Package Content
+
+The following public file is included in the package.
 
 
 #### animation-helpers.js 
 
-The code in this file contains all the functions for adding popular animations to your site. The functions in this file can be used in your page/public code by importing them with the following syntax:  
+The code in this file contains all the functions for adding popular animations to your site. The functions in this file can be used in your page/public code by importing them with the following syntax: 
 
-`import { <functionName> } from '@velo/wix-animation-helpers'`
+
+```js
+import { <functionName> } from '@velo/wix-animation-helpers'
+```
+
 
 Note that only exported functions that you can use in your site are listed here.
 
-* **autoSpin(props)**
-
-  Rotates an element in the specified direction for a specified duration. Note that the timeline is set to repeat infinitely, `timeline({ repeat: -1 })`.
-
-    ```
-  function autoSpin({ elements = [], options: { duration, direction } });
-    ```  
 
 
-* **initZoomIn(props)**
+*   **spin(props)**
 
-  Creates an animation that zooms in on an element at a specified scale and rotation for a specified duration. 
+    Infinitely spins an element or an array of elements with a specified [timeline](https://www.wix.com/velo/reference/wix-animations/timeline) action: pause/play/reverse. Optional parameters include direction, duration, easing, and pause. 
 
-    ```
-  function initZoomIn({ elements = {}, options: { scale, rotate, duration } });
+    Calling the function without specifying parameters infinitely spins the element(s) clockwise for 1 second with easeLinear easing (default). Note that the animation is set to play as the ‘pause’ parameter defaults to false.
+
+
+    ```js
+    function spin(elements, { duration = 1000, direction = 'cw', easing = 'easeLinear', pause = false } = {})
     ```
 
 
-* **runZoomIn(props)**
+*   **zoom(props)**
 
-  Runs the **Zoom In** animation on an element with a specified [timeline](https://www.wix.com/velo/reference/wix-animations/timeline-obj) action: play/reverse. 
+    Zooms in to an element or a list of elements with a specified [timeline](https://www.wix.com/velo/reference/wix-animations/timeline) action: pause/play/reverse. Optional parameters include scale, duration, easing, and pause. The extent of the zoom is determined by setting an element’s scale (zoom level) at the start and end of the animation using the 'from' and 'to' parameters. A scale of 1 represents the element’s full size, with no zoom effect. Values larger than 1 enlarges elements, while values between 0 and 1 shrink elements.
 
-    ```
-  function runZoomIn({ element, action });
-    ```
+    Calling the function without specifying parameters zooms in to the element at a scale of 2, doubling its size (default). Note that the animation is set to play as the ‘pause’ parameter defaults to false.
 
 
-* **initRepeaterAnimation(props)**
-
-  Creates an animation for repeater items that changes their specified scale and opacity for a specified duration. 
-
-    ```
-  function initRepeaterAnimation({ repeaters: [{ self, itemImage, itemBtn}], options: { imageScale, imageOpacity, duration } });
+    ```js
+    function zoom(elements, { duration = 1000, from = 1, to = 2, easing = 'easeInOutSine', pause = false } = {})
     ```
 
 
-* **runRepeaterAnimation(props)**
+*   **float(props)**
 
-  Runs the **Repeater Animation** on the specified items in the repeater with a specified timeline action: play/reverse.  
+    Floats an element or a list of elements with a specified [timeline](https://www.wix.com/velo/reference/wix-animations/timeline) action: pause/play/reverse. Optional parameters include direction, duration, distance, easing, and pause.
 
+    Calling the function without specifying parameters infinitely floats the element horizontally with a distance of 100px, duration of 1 second, and easeInOutSine easing (default). Note that the animation is set to play as the ‘pause’ parameter defaults to false. 
+
+
+    ```js
+    function float(elements, { duration = 1000, distance = 100, direction = 'horizontal', easing = 'easeInOutSine', pause = false } = {})
     ```
-  function runRepeaterAnimation({ itemImage, itemBtn, action });
+
+
+*   **stagger(props)**
+
+    Runs an animation function in constant intervals over elements in an array. Parameters include the list of elements to perform the animation on, the function, and the offset of the time intervals. If the function provided is not an animation function, pass a `dummyElement` as a fourth parameter. 
+
+
+    ```js
+    function stagger(list, fn, offset = 500, dummyElement)
     ```
 
 
-* **autoSlide(props)**
-
-  Slides an element in the specified direction for a specified duration. Note that the timeline is set to repeat infinitely. 
-
-    ```
-  function autoSlide({ elements = {}, options: { duration, direction }});
-    ```
 
 ##### Parameters 
 
-*   **`duration`:** Animation duration in milliseconds. Default is zero. 
-*   **`direction`:** Animation direction. Either left to right, `‘LTR’`, or right to left ,`‘RTL’`. Default is `‘LTR’`.  
-*   **`scale`:** Target scale of the animated element or elements, where 1 is the original size.
-*   **`rotate`:** The target degree to rotate to, where a complete rotation is 360 degrees.
-*   **`action`:** Animation timeline attribute. Either [`play`](https://www.wix.com/velo/reference/wix-animations/timeline-obj/play) to play the animation timeline forward or [`reverse`](https://www.wix.com/velo/reference/wix-animations/timeline-obj/reverse) to play the timeline in reverse.
-*   **`self`:** The repeater on which the animation runs. 
-*   **`itemImage`:** The repeater item’s image. 
-*   **`itemBtn`:** The repeater item’s button.
-*   **`imageScale`:** The scale of the repeater item’s image. 
-*   **`imageOpacity`:** The opacity of the repeater item’s image.
+*   **`duration`:** Animation duration in milliseconds. Defaults to 1000. 
+*   **`direction`:** Animation direction. For the `spin()` animation it’s either `cw` (clockwise), or `ccw` (counterclockwise). Defaults to `cw`. For the `float()` animation it’s either `horizontal`, or `vertical`. Defaults to `horizontal`.
+*   **`from`:** Zoom level of an element at the start of the animation where values larger than 1 enlarge elements, 1 will have no zoom effect, and values between 1 and 0 will shrink the elements. Defaults to 1.
+*   **`to`:** Zoom level of an element at the end of the animation where values larger than 1 enlarge elements, 1 will have no zoom effect, and values between 1 and 0 will shrink the elements. Defaults to 2.
+*   **`distance`:** The distance to which to float the element horizontally or vertically. Defaults to 100px.
+*   **`pause`:** Animation timeline action. Either `false` to play the animation timeline forward, or `true` to pause the animation. Defaults to `false`.
+*   **`offset`:** The time interval in milliseconds between each function run. Defaults to 500.
+*   **`fn`:** Function to run on each iteration.
+*   **`list`:** An array, or a list of elements to run the specified function (`fn`) on. 
+*   **`dummyElement`:** An element that includes the [HiddenMixin](https://www.wix.com/velo/reference/$w/hiddenmixin) (animation capabilities). For example, a text element.
 
 
-### How to Use the Package  
+Note that the elements you want to animate must include the [HiddenMixin](https://www.wix.com/velo/reference/$w/hiddenmixin) (have animation capabilities). 
+
+
+### How to Use the Package   
 
 This section demonstrates how you can work with the package, and the different options for using the package functions. There are 4 main use cases you can implement with this package:
 
+
+
 *   Spin elements
-*   Zoom in to elements on hover
-*   Animate repeater items on hover
-*   Create a marquee (auto slider)
+*   Zoom elements
+*   Float elements
+*   Stagger elements (perform overlapping animations, or one after another, similar to a domino effect on a list of elements). 
 
 
-#### Spin Elements 
+#### Spin Elements  
 
-The following describes how you can use this package to spin 1 element from right to left and 2 elements from left to right.
+The following describes how you can use this package to spin multiple elements at the same time, and spin elements on hover.
 
-  ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/2c8a96ba-9bb8-4a16-8ef7-36185c48c91b/386694be-a198-487b-b824-75b03782258a.png 'image_spin_elements')
 
-1. Add the following page elements to your site:
-    +   2 shape elements with the same size and color. 
-    +   1 shape element with the same color but smaller size. 
-  
-2. Import the `autoSpin()` function from the package to your page.
-  
-    ```
-    import { autoSpin } from '@velo/wix-animation-helpers';
-    ```
+##### Spin multiple elements at the same time 
 
-3. To spin your elements automatically when the page loads, run your code in the `$w.onReady()` function. 
 
-4. Build a properties object for the `autoSpin()` function to spin the 2 of the shape elements from left to right for 15 seconds. 
 
-    ```js
-    const autoSpinLTRProps = {
-      elements: [$w('#vectorImageLTR1'), $w('#vectorImageLTR2')],
-      options: {
-        duration: 15000,
-        direction: 'LTR'
-      }
-    };
-    ```
+1. Add multiple vector image elements to your site.
 
-5. Call the `autoSpin()` function with the property object you created.
+  ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/04/25/a0c723d0-05a2-4e18-99a9-0c792da2f60b/500fc48d-3a2b-4cf2-98d4-e657ee0178df.png "image_spin_multiple_images")
 
-    ```
-    autoSpin(autoSpinLTRProps);
-    ```
+2. Import the `spin` function from the package to your page. 
+ 
+  ```js
+  import { spin } from '@velo/wix-animation-helpers';` 
+  ```
 
-6. Build a property object for the `autoSpin()` function to spin the remaining shape element from right to left for 15 seconds. 
+3. Run your code in the `$w.onReady()` function.
+4. To spin multiple elements of the same type, use a [type selector](https://www.wix.com/velo/reference/$w/$w) and call the `spin()` function using this selector. We will call ours ‘VectorImage’. The spin function will spin all elements with the ‘VectorImage’ type selector clockwise for 1 second according to the default values. Note that when the function is called, the animation will play by default.  
 
     ```js
-    const autoSpinRTLProps = {
-      elements: [$w('#vectorImageRTL')],
-      options: {
-        duration: 15000,
-        direction: 'RTL'
-      }
-    }
+    spin('VectorImage');
     ```
 
-7. Call the `autoSpin()` function with the property object you created.
+##### Spin elements on hover  
+To demonstrate how to spin elements on hover, we’ll use a roulette wheel. Follow the steps to make the wheel spin on hover. 
 
+
+1. Add the following to your site: 
+    *   An image of a roulette wheel.
+    *   A box element representing the picker. 
+
+    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/04/25/f5d29bd3-1421-4b20-aa5a-3947dc7ae7a2/bcfbded1-9aa2-4a8d-b4a4-fbccde92d1f3.png "image_spin_roulette_wheel")
+
+
+2. Import the `spin` function from the package to your page. 
+
+
+    ```js
+    import { spin } from '@velo/wix-animation-helpers';
     ```
-    autoSpin(autoSpinRTLProps);
+
+
+3. Run your code in the `$w.onReady()` function.
+4. To spin the roulette wheel on hover, we first need to stop the animation function from playing by default. To do this, call the `spin()` function with the roulette image and change the default value of the `pause` parameter from `false` to `true`. We will also change the roulette to spin counterclockwise for a duration of 5 seconds.  
+
+    ```js
+    const roulette = $w('#roulette');
+    const rouletteSpin = spin(roulette, { duration: 5000, direction: 'ccw', pause: true });
     ```
 
-    Note that the `autoSpin()` function’s animation timeline is set to repeat infinitely. If you want to change the number of times the timeline repeats after it finishes playing all the animations in the timeline once, change the `repeat` property in the timeline: `timeline({ repeat: -1 })` in the `autoSpin(props)` function.
+5. Add the `onMouseIn()` event handler to the roulette image element. This function will run when you hover over the image element. Call the `rouletteSpin.play()` function in the event handler to play the animation on hover.   
+   Add the `onMouseOut()` event handler to the roulette image element. Call the `rouletteSpin.pause()` function in the event handler to pause the animation when you are no longer hovering over the image. 
+
+    ```js
+    roulette.onMouseIn(() => rouletteSpin.play());
+    roulette.onMouseOut(() => rouletteSpin.pause());
+    ```
+
+#### Zoom Elements 
+
+The following describes how you can use this package to zoom in to elements.
 
 
-#### Zoom In to Elements on Hover 
+##### Simple zoom 
 
-The following describes how you can use this package to zoom in to an image when hovering over it, and when hovering over a container box (card) that holds an image: 
 
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/5c0e1155-1145-4f23-8d98-4617fabb4335/dbb959c0-4ec0-48b7-9a9a-da5845cffe3f.png 'image_hover_elements')
 
+1. Add an image element to your site.
+2. Import the `zoom()` function from the package to your page. 
+
+  ```js 
+  import { zoom } from '@velo/wix-animation-helpers';
+  ```
+
+3. Run your code in the `$w.onReady()` function.
+4. Call the `zoom()` function to zoom in to the image element with the default parameters.  
+
+    ```js
+    zoom('Image');
+    ```
+
+
+##### Zoom multiple elements 
+
+
+
+1. Add multiple vector image elements to your site.
+2. Import the `zoom` function from the package to your page. 
+
+```js
+import { zoom } from '@velo/wix-animation-helpers';
+```
+
+3. Run your code in the `$w.onReady()` function.
+4. To zoom in to multiple elements of the same type, use a [type selector](https://www.wix.com/velo/reference/$w/$w) and call the `zoom()` function using this selector. We will call ours ‘VectorImage’. The zoom function will zoom in to all elements with the ‘VectorImage’ type selector. We will also set the animation to zoom in to the image elements from a scale of 1 to 2, and for a duration of 2 seconds.  
+
+
+    ```js
+    zoom('VectorImage', { duration: 2000, from: 1, to: 2 });
+    ```
+
+
+##### Zoom an element on hover 
+
+
+
+1. Add a text element to your site. 
+2. Import the `zoom` function from the package to your page. 
+
+    ```js
+    import { zoom } from '@velo/wix-animation-helpers';
+    ```
+
+
+3. Run your code in the `$w.onReady()` function.
+4. To zoom in to the text element on hover, we first need to stop the animation function from playing by default. To do this, call the `zoom()` function with the text element and change the default value of the `pause` parameter from `false` to `true`. We will also change the text element to zoom in for a duration of .5 seconds.  
+
+    ```js
+    const text = $w('#zoomText');
+    const textZoomTimeLine = zoom(text, { duration: 500, pause: true });
+    ```
+
+5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textZoomTimeLine.play()` function in the event handler to play the animation on hover .   
+Add the `onMouseOut()` event handler to the text element. Call the `textZoomTimeLine.reverse()` function in the event handler to reverse the animation when you are no longer hovering over the text. 
+
+
+```js
+text.onMouseIn(() => textZoomTimeLine.play());
+text.onMouseOut(() => textZoomTimeLine.reverse());
+```
+
+#### Float Elements 
+
+The following describes how you can use this package to create a float effect on your elements.
+
+
+##### Simple float 
+
+1. Add 2 image elements to your site.
+2. Import the `float` function from the package to your page. 
+ 
+```js
+import { float } from '@velo/wix-animation-helpers';
+```
+
+3. Run your code in the `$w.onReady()` function.
+4. To spin multiple elements of the same type, use a [type selector](https://www.wix.com/velo/reference/$w/$w) and call the `float()` function using this selector. We will call ours ‘VectorImage’. The float function will float all elements with the ‘VectorImage’ type selector horizontally for 1 second according to the default values. Note that when the function is called, the animation will play by default.  
+
+    ```js
+    float($w('VectorImage'));
+    ```
+
+
+##### Float an element on hover  
+
+1. Add a text element to your site. 
+2. Import the `float` function from the package to your page. 
+
+    ```js
+    import { float } from '@velo/wix-animation-helpers';
+    ```
+
+3. Run your code in the `$w.onReady()` function.
+4. To float the text element on hover, we first need to stop the animation function from playing by default. To do this, call the `float()` function with the text element and change the default value of the `pause` parameter from `false` to `true`. We will also change the text element to float for a duration of 3 seconds.  
+
+      ```js
+     const floatingText = $w('#floatingText');
+     const textFloatTimeLine = float(floatingText, { duration: 3000, direction: 'horizontal', pause: true });
+      ```
+
+
+
+5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textFloatTimeLine.play()` function in the event handler to play the animation on hover.  
+Add the `onMouseOut()` event handler to the text element. Call the `textFloatTimeLine.pause()` function in the event handler to pause the animation when you are no longer hovering over the text. 
+
+```js
+     floatingText.onMouseIn(() => {
+         textFloatTimeLine.play();
+     });
+     floatingText.onMouseOut(() => {
+         textFloatTimeLine.pause();
+     });
+```
+
+
+##### Float elements in a pattern  
+
+Elements can float horizontally, vertically, or both. To demonstrate this, we’ll add multiple 
+
+elements to our site and float them in a pattern. We’ll first float the elements vertically at the same distance and duration, and then horizontally at a random distance and duration.  
+
+
+1. Add multiple box elements to your site. 
+2. Import the `float` function from the package to your page. 
+
+    ```js
+    import { float } from '@velo/wix-animation-helpers';
+    ```
+
+3. Run your code in the `$w.onReady()` function.
+4. Call the `float()` function with the box elements and change the direction from the default (`horizontal`) to `vertical`, and with a distance of 40. Then for each box element, float them horizontally at specific ranges (a random number between two specified numbers) for both the duration and distance. This will float the box elements at a specific vertical distance, but at different horizontal durations and distances. 
+
+   ```js
+   const boxes = $w('Box');
+   // Float boxes vertically with a distance of 40.
+   float(boxes, { distance: 40, direction: 'vertical' })
+   // Float boxes horizontally at a random distance and duration. Note that we can have 2 timelines on the same elements because vertical and horizontal floats affect different values.
+   boxes.forEach(box => float(box, {
+       duration: range(1000, 1500),
+       distance: range(50, 150)
+   }));
+   ```
+
+#### Stagger Elements 
+
+The following describes how you can use this package to stagger elements. This Stagger animation will perform overlapping animations, or one after another (similar to a domino effect) on a list of elements.  
+ 
+##### Stagger elements with the zoom animation 
+
+The following demonstrates how you can use the stagger() function to perform the [zoom animation](#zoom-elements) on multiple elements in constant time intervals. Note that the zoom animation will run with its default parameters.  
 
 
 1. Add the following page elements to your site:
-    +   1 image element
-    +   1 container box element (card) holding an image
+*   1 container box
+*   Multiple vector images in the container box  
 
-2. Import the `initZoomIn` and `runZoomIn` functions from the package to your page. 
+2. Import the `stagger` and `zoom` functions from the package to your page.
 
-    ```
-    import { initZoomIn, runZoomIn } from '@velo/wix-animation-helpers';
+
+    ```js
+    import { stagger, zoom } from '@velo/wix-animation-helpers';
     ```
 
 3. Run your code in the `$w.onReady()` function as shown below. 
-4. Build a property object for the `initZoomIn()` function to zoom in to both the image element and image in the card in for 0.4 seconds. 
+4. Select the vector images in your container box using the [container.children](https://www.wix.com/velo/reference/$w/box/children) property, and then store the container box and its children in a variable called ‘box1’.
+5. Call the stagger function with ‘box1’ as the ‘list’ parameter, and the ‘zoom’ animation function as the ‘fn’ parameter.  
+ 
+     ```js
+     const box1 = $w('#box1').children;
+     stagger(box1, zoom);
+     ```
 
-    ```js
-    const zoomInProps = {
-      elements: [$w('#image'), $w('#cardImage')],
-      options: {
-        scale: 1.2,
-        rotate: 5,
-        duration: 400
-      }
-    };
-    ```
+##### Stagger elements with the spin animation 
 
-5. Call the `initZoomIn()` function with the property object you created.
-
-    ```
-    initZoomIn(zoomInProps);
-    ```
-
-
-6. Add the `onMouseIn()` event handler to the image element. This function will run when you hover over the image element. Call the `runZoomIn` function with the image element and the `play` parameter in the event handler to zoom in to the image element on hover.
-
-    ```js
-    // ZoomIn is controlled by element itself
-    $w('#image').onMouseIn(() => {
-      runZoomIn({ element: $w('#image'), action: 'play' });
-    });
-    ```
-
-7. Add the `onMouseOut()` event handler to the image element. Call the `runZoomIn` function with the image element and the `reverse` parameter in the event handler to return the image element to its normal state.
-
-    ```js
-    $w('#image').onMouseOut(() => {
-      runZoomIn({ element: $w('#image'), action: 'reverse' });
-    });
-    ```
-
-8. Add the `onMouseIn()` event handler to the card holding the image. This function will run when you hover on any area of the card. Call the `runZoomIn` function with the image in the card, and the `play` parameter in the event handler to zoom in to the image in the card on hover. 
-
-    ```js
-    // ZoomIn is controlled by the card
-    $w('#card').onMouseIn(() => {
-      runZoomIn({ element: $w('#cardImage'), action: 'play' });
-    });
-    ```
-
-9. Add the `onMouseOut()` event handler to the card holding the image. Call the `runZoomIn` function with the image in the card, and the `reverse` parameter in the event handler to return the image in the card to its normal state.
-
-    ```js
-    $w('#card').onMouseOut(() => {
-      runZoomIn({ element: $w('#cardImage'), action: 'reverse' });
-    });
-    ```
-
-#### Animate Repeater Items on Hover 
-
-The following describes how you can use this package to animate repeater items such as an image and button on hover:
-
-
-
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/6f816214-66b0-403d-a239-98e11f295a18/182c62a1-0016-46c5-a4fd-ed9d51d25175.png 'image_repeater_element_1_image_and_button')
-
-
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/fcc4da39-d42a-4abc-acb2-8dfdb7880898/d709405c-5e42-4714-b986-30cf4d4fc84c.png 'image_repeater_element_2_image_only')
-
-
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/9c2585c7-2b6a-4a31-b37c-4b24ee0adc53/776825b7-7a0d-4f4c-914a-089190e9915e.png 'image_repeater_element_2_button_only')
-
+The following demonstrates how you can use the stagger() function to perform the [spin animation](#spin-elements) on multiple elements in constant time intervals. In this case we will also change the duration and direction parameters of the spin animation function.  
 
 
 1. Add the following page elements to your site:
-    +  3 repeaters. Each repeater item contains an image and a button. 
+*   1 container box
+*   Multiple vector images in the container box  
 
-2. Import the `initRepeaterAnimation` and `runRepeaterAnimation` functions from the package to your page.
+2. Import the `stagger` and `spin` functions from the package to your page.
 
-    ```
-    import { initRepeaterAnimation, runRepeaterAnimation } from '@velo/wix-animation-helpers';
-    ```
+   ```js
+    import { stagger, spin } from '@velo/wix-animation-helpers';`
+   ```
 
 3. Run your code in the `$w.onReady()` function as shown below. 
+4. Select the vector images in your container box using the [container.children](https://www.wix.com/velo/reference/$w/box/children) property, and then store the container box and its children in a variable called ‘box2’.
+5. Call the stagger function with ‘box2’ as the ‘list’ parameter, and the ‘spin’ function with its specific duration and direction parameters as the ‘fn’ parameter. 
 
-4. For each repeater, build a property object to define the repeater and the items in the repeater you want to animate: 
-
-    +   Repeater 1: The `repeaterImageButton` property object defines the repeater and the image and button items you want to animate.  
-
-        ```js
-        const repeaterImageButton = {
-          self: $w('#repeaterImageButton'),
-          itemImage: $w('#itemImage'),
-          itemBtn: $w('#itemBtn'),
-        };
-        ```
-
-    +   Repeater 2: The `repeaterImageOnly` property object defines the repeater and the image item you want to animate.  
-
-        ```js
-        const repeaterImageOnly = {
-          self: $w('#repeaterImageOnly'),
-          itemImage: $w('#itemImageOnly')
-        };
-        ```
-
-    +  Repeater 3: The `repeaterBtnOnly` property object defines the repeater and the button item you want to animate.  
-
-        ```js
-        const repeaterBtnOnly = {
-          self: $w('#repeaterBtnOnly'),
-          itemBtn: $w('#itemBtnOnly')
-        };
-        ```
-
-5. Build a property object for the `initRepeaterAnimation()` function to enable animation of each of the 3 repeaters for 0.3 seconds.
-
-    ```js
-    const repeatersAnimationProps = {
-      repeaters: [repeaterImageButton, repeaterImageOnly, repeaterBtnOnly],
-      options: {
-        imageScale: 1.1,
-        imageOpacity: 0.7,
-        duration: 300
-      }
-    };
-    ```
-
-6. Call the `initRepeaterAnimation()` function with the property object you created.
-
-    ```
-    initRepeaterAnimation(repeatersAnimationProps);
-    ```
-
-
-7. For each item in the `repeaterImageButton` repeater, add the `onMouseIn()` event handler to the repeater’s container box. Then call the `runRepeaterAnimation` function with the items in the repeater you want to animate and the `play` parameter in the event handler to animate the repeater items on hover. 
-
-    ```js
-    $w('#repeaterImageButton').forEachItem(($item) => {
-      $item('#containerImageBtn').onMouseIn(() => {
-        runRepeaterAnimation({ itemImage: $item('#itemImage'), itemBtn: $item('#itemBtn'), action: 'play' })
-      });
-    ```
-
-8. Add the `onMouseOut()` event handler to the repeater’s container box. Call the `runRepeaterAnimation` function with the items in the repeater you want to animate and the `reverse` parameter in the event handler to return the repeater items to their normal state.
-
-    ```js
-      $item('#containerImageBtn').onMouseOut(() => {
-        runRepeaterAnimation({ itemImage: $item('#itemImage'), itemBtn: $item('#itemBtn'), action: 'reverse' })
-      });
-    });
-    ```
-
-9. Repeat steps 7 and 8 for the other 2 repeaters. 
-
-    ```js
-    $w('#repeaterImageOnly').forEachItem(($item) => {
-      $item('#containerImageOnly').onMouseIn(() => {
-        runRepeaterAnimation({ itemImage: $item('#itemImageOnly'), action: 'play' })
-      });
-
-      $item('#containerImageOnly').onMouseOut(() => {
-        runRepeaterAnimation({ itemImage: $item('#itemImageOnly'), action: 'reverse' })
-      });
-    });
-
-    $w('#repeaterBtnOnly').forEachItem(($item) => {
-      $item('#containerBtnOnly').onMouseIn(() => {
-        runRepeaterAnimation({ itemBtn: $item('#itemBtnOnly'), action: 'play' })
-      });
-
-      $item('#containerBtnOnly').onMouseOut(() => {
-        runRepeaterAnimation({ itemBtn: $item('#itemBtnOnly'), action: 'reverse' })
-      });
-    });
-    ```
-
-#### Create a Marquee (Auto Slider)
-
-The following describes how you can use this package to create one marquee with a single repeater, and one marquee with multiple repeaters. Both marquees will slide horizontally from right to left. 
-
-
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/436e15e6-c585-4826-b709-0a249131cd41/a1c6a519-31a2-4584-b55d-f16fba207084.png 'image_marquee_1_slide_single')
-
-
-
-![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/9cc3d3bb-a00f-4730-a1c2-1f58415df573/c9a76ebd-e24e-490a-8ec4-5d7b8b2366fb.png 'image_marquee_2_slide_multiple')
-
-
-
-1. Add a slideshow element to your site. 
     
-    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/129025b2-5fd4-4665-8f93-82463ab7107d/17520805-58ea-4b09-adb6-fc95c88d3d4a.png 'image_slideshow_element')
-
-
-2. Go to the [**Slideshow Settings**]( https://support.wix.com/en/article/wix-editor-elements-hanging-over-the-edge-of-your-slideshow) and turn on the button to ‘Hide Content Outside Frame’. 
-
-    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/73d3bd93-ea7e-4587-8574-15ef01e968c8/6c4ad3b7-e8ab-4e2d-a706-f1f715742d6f.png 'image_slideshow_settings')
-
-    **Note:** If you are using Editor X, you can use any container element that allows for an overflow in place of a slideshow. 
-
-3. Add a repeater with text in the slideshow.  
-
-    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/02/10/88c0588d-2db9-4c14-813a-fd4b4c41f5fe/bccfca7d-6cb6-41b6-ae76-db4f8fcec086.png 'image_repeater_in_slideshow')
-
-
-4. To create another marquee with multiple items, repeat steps 1-2. Then add 3 repeaters with text, and layer them on top of each other in the slideshow.
-
-    **Note:** This package adds a delay in between each sliding repeater, creating a space between each repeater as shown in the second image [here](#create-a-marquee). 
-
-5. Import the `autoSlide` function from the package to your page.
-
-    ```
-    import { autoSlide } from '@velo/wix-animation-helpers';
-    ```
-
-
-6. To start the marquees automatically when the page loads, run your code in the `$w.onReady()` function as shown below. 
-7. Declare variables for the repeaters in each slideshow. 
-
     ```js
-    const element1Slides = [$w('#repeater1')];
-    const element2Slides = [$w('#repeater2'), $w('#repeater3'), $w('#repeater4')];
+    const box2 = $w('#box2').children;
+    stagger(box2, comp => spin(comp, { duration: 2000, direction: 'cw' }));
     ```
 
-8. Build a property object for the `autoSlide()` function to slide the repeaters in both Slideshows 1 and 2 from right to left for 15 seconds. Note that if you want the repeaters to slide from left to right, change the direction to ‘LTR’.
+##### Stagger letters (stagger effect using a non-animation function) 
 
-    ```js
-    autoSlideRTLProps = {
-      elements: [element1Slides, element2Slides],
-      options: {
-        duration: 15000,
-        direction: 'RTL'
-      }
-    }
+The following demonstrates how you can use the stagger() function to create a stagger effect for letters, where the letters will appear one after the other on your page. We will use a regular, non-animation function to create this stagger effect on the letters in constant time intervals. Note that since we are not passing an animation function in the stagger() function parameter, we will need to create a `dummyElement` with animation capabilities, and use that as the parameter.  
+
+
+
+1. Add a textbox to your site. 
+Import the `stagger` function from the package to your page.
+
+  ```js
+  import { stagger } from '@velo/wix-animation-helpers';
+  ```
+
+2. Run your code in the `$w.onReady()` function as shown below. 
+3. Store the textbox in a variable called `selfWrittenText`. Since we want the letters to appear one after the other, we need to first clear its contents.  
+ 
+    ```js 
+    const selfWrittenText = $w('#selfWrittenText');
+    selfWrittenText.text = ''; 
     ```
 
-9. Call the `autoSlide()` function with the properties object you created.
 
+4. Call the stagger function with the following pros described below:  
+ 
+    ```js 
+    stagger('I WRITE MYSELF!'.split(''), letters => { selfWrittenText.text += letters }, 200, selfWrittenText);
     ```
-	autoSlide(autoSlideRTLProps);`
-    ```
 
-    Note that the `autoSlide()` function’s animation timeline is set to repeat infinitely. If you want to change the number of times the timeline repeats after it finishes playing all the animations in the timeline once, change the `repeat` property in the timeline: `timeline({ repeat: -1 })` in the `autoSlide(props)` function.
+*   **list:** Include the words you want to stagger and split them into single letters, creating a liist of chars. For example, `'I WRITE MYSELF!'.split(' ')` will create a list of chars, ["I", " ", "W", "R", "I", "T", "E", " ", "M", "Y", "S", "E", "L", "F", "!"].
+*   **fn:** Use the non-animation function to add a letter to the text element each time this function is called.
+*   **offset:** Change the time interval between each function to 200.
+*   **dummyELement:** Use the textbox, `selfWrittenText`.
 
-                                                                                                              
+ 
+                                                                                                                                                    
 
 ### Release Notes 
-
-**1.0** Initial version.
+**1.7**
 
 
 ### Tags 
-
-animation, marquee, spin, slide, zoomIn, repeaterAnimations, onHover
+animation, spin, float, zoom, stagger, hover
