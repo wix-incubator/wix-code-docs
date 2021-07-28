@@ -2,7 +2,7 @@
 
 The Zapier Integration package lets you trigger a Zap from your Wix site.
 
-
+// add my comments
 
 ### Setup
 Before using this package, set up the following:
@@ -10,7 +10,7 @@ Before using this package, set up the following:
 #### Zapier Platform
 
 
-1. Set up a Zapier account.
+
 2. Create a Zap that is triggered by a webhook.
 3. Choose the Zap’s trigger event from the dropdown menu. Select `Catch Raw Hook` to receive a raw JS object, or `Catch Hook` to let Zapier format the object.
 4. Retrieve the Zap’s URL address. For example: `https://hooks.zapier.com/hooks/catch/10257786/bbojhnh/`.
