@@ -15,18 +15,17 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ##
 
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Wix Events Backend
+
+`wix-events-backend`
+
+The new [Wix Events Backend API](https://www.wix.com/velo/reference/wix-events-backend/wixevents) provides functionality for creating, updating, deleting, canceling, and querying Wix events. For example, you can create RSVP and ticketed events whose locations and/or dates are "To Be Announced" (TBA), you can customize registration messages, and you can configure settings for online conferencing. (July 20, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Dataset new() Function Replaced by add() Function
 
 `wix-dataset`
 
-The Dataset and Dynamic Dataset [`new()`](https://www.wix.com/velo/reference/wix-dataset/dataset/new) function was replaced by the [`add()`](https://www.wix.com/velo/reference/wix-dataset/dataset/add) function. We replaced the function to avoid confusion with the JavaScript [new](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) operator. Functionality of the `add()` and `new()` functions is identical.  (July 21, 2021)
-
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Wix Events Backend
-
-`wix-events-backend`
-
-The new [Wix Events API](https://www.wix.com/velo/reference/wix-events-backend/wixevents) provides functionality for creating, updating, deleting, canceling, and querying Wix events. For example, you can create RSVP and ticketed events whose locations and/or dates are "To Be Announced" (TBA), you can customize registration messages, and you can configure settings for online conferencing. (July 20, 2021)
+The Dataset and Dynamic Dataset [`new()`](https://www.wix.com/velo/reference/wix-dataset/dataset/new) functions were replaced by the [`add()`](https://www.wix.com/velo/reference/wix-dataset/dataset/add) function. We replaced the function to avoid confusion with the JavaScript [new](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) operator. Functionality of the `add()` and `new()` functions is identical.  (July 20, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Media Manager List Files & Folders
 
@@ -44,7 +43,7 @@ You can both get and set the Custom Element [`seoMarkup`](https://www.wix.com/ve
 
 `wix-http-functions`
 
-`text/html` is not supported for the `content-type` [`header`](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionresponse/headers) in an HTTP function response. Use `application/json` instead. Premium sites support all content types. (July 6, 2021)
+`text/html` is not supported for the `content-type` header in an [HTTP function response](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionresponse/headers). Use `application/json` instead. Premium sites support all content types. (July 6, 2021)
 
 ### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: listPlans() and listPublicPlans() Return an Array of Objects
 
@@ -56,7 +55,7 @@ The [`listPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-backend
 
 `wix-location`
 
-The [`disableScrollToTop` option](https://www.wix.com/velo/reference/wix-location/to) lets you decide if the page scrolls to the top when navigating to another Wix page. When true, the page remains at the same Y-axis position as the previously viewed page. (July 5, 2021)
+The [`disableScrollToTop`](https://www.wix.com/velo/reference/wix-location/to) option lets you decide if the page scrolls to the top when navigating to another Wix page. When true, the page remains at the same Y-axis position as the previously viewed page. (July 5, 2021)
 
 ### Added Velo Package Readmes
 
