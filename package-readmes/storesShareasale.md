@@ -11,7 +11,7 @@ Before using the package, set up the following:
 #### ShareASale Platform 
 
 
-1. Create a ShareASale [Merchant Account](https://account.shareasale.com/merchant/signup.cfm), or login if you have an existing account.
+1. Create a ShareASale [Merchant Account](https://account.shareasale.com/merchant/signup.cfm), or log in if you have an existing account.
 2. In your dashboard on the left corner you should see your ShareASale Merchant ID number following “ID#”. 
 3. Go to **Tools > Merchant API** to get your ShareASale **Token** and **API Secret**.
 
@@ -76,11 +76,12 @@ The file contains the following function:
 
 *   **`sscid`:** Affiliate ID obtained from the retrieveStoredAffiliateId() function in the share-a-sale-public.js file.
 *   **`orderId`:** **Wix Store** order ID. Note that each order ID can only be used for a single report. Additional requests with the same order ID will be ignored.
-*   **`buyerId`:** Contact ID of the buyer. Can be obtained by calling the Velo `[appendOrCreateContact()` API](https://www.wix.com/velo/reference/wix-crm/contacts-obj/appendorcreatecontact). 
+*   **`buyerId`:** Contact ID of the buyer. Can be obtained by calling the Velo [`appendOrCreateContact()`](https://www.wix.com/velo/reference/wix-crm/contacts-obj/appendorcreatecontact) API. 
 *   **`reportOptions`:** An object containing optional parameters to report to ShareASale. The object can only contain the following keys. The API call will be rejected if other keys are provided.
-        *  **`currency`:** The 3-letter [ISO-4217](https://www.iban.com/currency-codes) currency code used by the customer. For example, EUR for Euros. Defaults to USD if the value is blank, or if the specified currency code is invalid.
-        *  **`commissionOverridePercentage`:** Number of the commission percentage you want in the report.
-        *  **`commissionOverrideAmount`:** Number of the commission amount you want in the report.
+
+       *  **`currency`:** The 3-letter [ISO-4217](https://www.iban.com/currency-codes) currency code used by the customer. For example, EUR for Euros. Defaults to USD if the value is blank, or if the specified currency code is invalid.
+       *  **`commissionOverridePercentage`:** Number of the commission percentage you want in the report.
+       *  **`commissionOverrideAmount`:** Number of the commission amount you want in the report.
 
     Returns:
 
@@ -93,7 +94,7 @@ This package contains the following public file:
 
 
 ##### share-a-sale-public.js 
-The code in this file contains functions needed to detect when a site visitor is using an affiliate ID, and to store and to retrieve an affiliate ID. 
+The code in this file contains functions needed to detect when a site visitor is using an affiliate ID, and to store and retrieve an affiliate ID. 
 
 To use the functions below in your code, import it with the following syntax:
 
@@ -117,10 +118,10 @@ The file contains the following functions:
     export function detectAndStoreAffiliateId()
     ```
 
-    **Note:** The site's [$w.onReady()](https://www.wix.com/velo/reference/$w/onready) function runs twice. To prevent the function from being called twice, add the following if statement before calling the function in the **masterPage.js** file. [Learn more.](https://www.wix.com/velo/reference/wix-window/rendering-obj/env)
+    **Note:** The site's [$w.onReady()](https://www.wix.com/velo/reference/$w/onready) function runs twice. To prevent the function from being called twice, add the following `if` statement before calling the function in the **masterPage.js** file. [Learn more.](https://www.wix.com/velo/reference/wix-window/rendering-obj/env)
  
     ```js
-    if (wixWindow.rendering.env === "browser") {
+    if (wixWindow.rendering.env === 'browser') {
       detectAndStoreAffiliateId();
     }
     ```
