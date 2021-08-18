@@ -3,7 +3,7 @@
   "labels":
     [ "changed" ],
   "location":
-    { "lineno": 1,
+    { "lineno": 193,
       "filename": "plans.js" },
   "docs":
     { "summary": "The wix-pricing-plans-backend module contains functionality for managing your\n site's pricing plans from backend code.",
@@ -39,11 +39,58 @@
           " + Rearrange the order of how plans display.",
           "",
           "",
+          " ### About Ordering Pricing Plans",
           "",
-          " When your plans are set up, you can use the [Paid Plans](wix-paid-plans/introduction/) APIs to:",
-          " + Let site visitors [purchase](wix-paid-plans/purchasePlan) a plan directly, as if they were using the Pricing Plans app in the Wix Editor.",
-          " + Let site visitors [purchase](wix-paid-plans/orderPlan) a plan using your own customized process.",
-          " + Let site visitors [cancel](wix-paid-plans/cancelPlan) plan subscriptions (orders) that they have purchased. ",
+          "   Plans can be purchased or ordered. ",
+          "   + A purchase created by the APIs is similar to purchasing a plan directly on a site. ",
+          "   + Ordering a plan with APIs gives you the opportunity to customize the purchase process, such as by adding your own lightboxes and forms. ",
+          "  ",
+          "   When creating or updating a plan, you can set if a plan can be purchased by a given site member only once or multiple times using the `maxPurchasesPerBuyer` property. ",
+          " ",
+          "   Updating the properties of a pricing plan does not affect any current purchases of the plan by site members. The purchases retain",
+          "   their existing terms and pricing.",
+          "",
+          " ### Purchasing Pricing Plans",
+          "",
+          " Members can purchase pricing plans in 2 ways:",
+          " + **Online**. Members order and pay for their plans",
+          "   on your site without manual intervention. ",
+          " + **Offline**. Members place their order by phone, fax, text, or email. You ",
+          "   manually record each stage of the transaction.",
+          "",
+          " You can use the Pricing Plans APIs to manage the purchase of both online and offline orders. ",
+          "",
+          " ![Ordering Flows](../../assets/images/ordering.png)",
+          "",
+          " #### A Typical Online Ordering Flow",
+          "",
+          " 1. Use the Pricing Plans [`createPlan()`](wix-pricing-plans-backend/createPlan) API to create the plans you want to offer on your site. ",
+          " 1. A site visitor chooses a plan for purchase. ",
+          " 1. Use the Checkout [`previewPrice()`](wix-pricing-plans-backend.checkout/previewPrice) function to show the site visitor a preview of how much the plan will cost, including or excluding taxes, as defined on your site. ",
+          " 1. If the site visitor confirms, ask the visitor to log in. ",
+          " 1. Use the Checkout [`previewOnlineOrder()`](wix-pricing-plans-backend.checkout/previewOnlineOrder) function to get final confirmation. ",
+          " 1. After receiving confirmation, call the [`createOnlineOrder()`](wix-pricing-plans-backend.checkout/createOnlineOrder) function to start a draft of the order. `createOnlineOrder()` returns a `wixPayOrderId`.",
+          " 1. Direct the order to Wix Pay's [`startPayment()`](wix-pay/startPayment) function, sending the `wixPayOrderId` as an input parameter.",
+          " 1. After payment is made, the functionality available with the Orders API is available for managing the orders.",
+          "",
+          " #### A Typical Offline Ordering Flow",
+          "",
+          " 1. Use the Pricing Plans [`createPlan()`](wix-pricing-plans-backend/listPublicPlans) function to create the plans you want to offer on your site. ",
+          " 1. A site visitor contacts you offline to make a purchase. ",
+          " 1. Use the Checkout [`previewPrice()`](wix-pricing-plans-backend.checkout/previewPrice) and the [`previewOnlineOrder()`](wix-pricing-plans-backend.checkout/previewOnlineOrder) functions to send the buyer the order details for confirmation. ",
+          " 1. Call the [`createOfflineOrder()`](wix-pricing-plans-backend.checkout/createOfflineOrder) function to start a draft of the order. ",
+          " 1. Receive payment.",
+          " 1. After payment is made, call the Orders [`markAsPaid()`](wix-pricing-plans-backend.checkout/markAsPaid) function. ",
+          " 1. The functionality available with the Orders API is available for managing the orders.",
+          "",
+          "",
+          "",
+          " > **Note:**",
+          " > Deprecated [Paid Plans](wix-paid-plans/introduction/) APIs are still available for the following, ",
+          " > but we encourage you to migrate to the [Pricing Plans](wix-pricing-plans/introduction/) APIs instead:",
+          " > + Let site visitors [purchase](wix-paid-plans/purchasePlan) a plan directly, as if they were using the Pricing Plans app in the Wix Editor.",
+          " > + Let site visitors [purchase](wix-paid-plans/orderPlan) a plan using your own customized process.",
+          " > + Let site visitors [cancel](wix-paid-plans/cancelPlan) plan subscriptions (orders) that they have purchased. ",
           "",
           "",
           " ### Roles and Permissions",
@@ -162,20 +209,6 @@
           "   ",
           "   \"buyerCanCancel\": true,",
           "   ```",
-          "",
-          "",
-          " ### About Ordering Pricing Plans",
-          "",
-          "   Plans can be purchased or ordered. ",
-          "   + A purchase created by the APIs is similar to purchasing a plan directly on a site. ",
-          "   + Ordering a plan with APIs gives you the opportunity to customize the purchase process, such as by adding your own lightboxes",
-          "   and forms. ",
-          "  ",
-          "   When creating or updating a plan, you can set if a plan can be purchased by a given site member only once or multiple times using the `maxPurchasesPerBuyer` property. ",
-          " ",
-          "   Updating the properties of a pricing plan does not affect any current purchases of the plan by site members. The purchases retain",
-          "   their existing terms and pricing.",
-          "",
           " ### Pricing Plan Types and Visibility",
           "   + **Public pricing plans** are visible plans that site members and visitors can see on the site and purchase. By default, pricing plans are public when created.",
           "",
@@ -196,6 +229,8 @@
           "     Archiving does not impact existing purchases made for the plan. All purchases are still active and keep their pricing and terms.",
           "",
           "",
+          " ### Importing Pricing Plans",
+          "",
           " To use the Pricing Plans API, import `wixPricingPlansBackend` from the `wix-pricing-plans-backend` module.",
           "",
           " > **Note**: The Pricing Plans API currently uses ordering and purchasing functionality provided by the [Paid Plans API](wix-paid-plans.html). ",
@@ -210,7 +245,41 @@
       "examples": [],
       "extra":
         {  } },
-  "properties": [],
+  "properties":
+    [ { "name": "checkout",
+        "labels":
+          [ "new" ],
+        "get": true,
+        "set": false,
+        "type": "wix-pricing-plans-backend.Checkout",
+        "locations":
+          [ { "lineno": 83,
+              "filename": "checkout.js" } ],
+        "docs":
+          { "summary": "The Pricing Plans Checkout API provides functionality for ordering and checking out pricing plan orders created in the Wix Pricing Plans app or using this Wix Pricing Plans API.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "orders",
+        "labels":
+          [ "new" ],
+        "get": true,
+        "set": false,
+        "type": "wix-pricing-plans-backend.Orders",
+        "locations":
+          [ { "lineno": 88,
+              "filename": "orders.js" } ],
+        "docs":
+          { "summary": "The Pricing Plan Orders API provides functionality for managing pricing plan orders created in the Wix Pricing Plans app or using this Wix Pricing Plans API.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
   "operations":
     [ { "name": "archivePlan",
         "labels": [],
@@ -227,7 +296,7 @@
             "doc": "Fulfilled - The archived plan.\nRejected - Error message." },
         "locations":
           [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ArchivePlan_archivePlan.js" } ],
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Archives a single pricing plan.",
             "description":
@@ -326,8 +395,8 @@
                   [ "void" ] },
             "doc": "" },
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ArrangePlans_arrangePlans.js" } ],
+          [ { "lineno": 30,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Changes the display order of the pricing plans on the site page and in the Dashboard.",
             "description":
@@ -381,8 +450,8 @@
                   [ "void" ] },
             "doc": "" },
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ClearPrimary_clearPrimary.js" } ],
+          [ { "lineno": 50,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Sets all pricing plans as not primary.",
             "description":
@@ -434,8 +503,8 @@
                   [ "wix-pricing-plans-backend.Plan" ] },
             "doc": "Fulfilled - The created plan.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 16,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_CreatePlan_createPlan.js" } ],
+          [ { "lineno": 82,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Creates a pricing plan.",
             "description":
@@ -559,8 +628,8 @@
                   [ "wix-pricing-plans-backend.Plan" ] },
             "doc": "Fulfilled - The retrieved plan's information." },
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_GetPlan_getPlan.js" } ],
+          [ { "lineno": 104,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Gets an existing pricing plan by ID.",
             "description":
@@ -639,8 +708,8 @@
                   [ "wix-pricing-plans-backend.PlansStats" ] },
             "doc": "Fulfilled - Overall statistics about the pricing plans." },
         "locations":
-          [ { "lineno": 7,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_GetPlansStats_getPlansStats.js" } ],
+          [ { "lineno": 125,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Gets statistics about the pricing plans.",
             "description":
@@ -682,7 +751,8 @@
           {  } },
       { "name": "listPlans",
         "labels":
-          [ "changed" ],
+          [ "changed",
+            "removed" ],
         "nameParams": [],
         "params":
           [ { "name": "planIds",
@@ -787,8 +857,7 @@
         "extra":
           {  } },
       { "name": "listPublicPlans",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planIds",
@@ -811,8 +880,8 @@
                         [ "wix-pricing-plans-backend.PublicPlans" ] } ] },
             "doc": "Fulfilled - List of public pricing plans." },
         "locations":
-          [ { "lineno": 8,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPublicPlans_listPublicPlans.js" } ],
+          [ { "lineno": 148,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Lists public pricing plans.",
             "description":
@@ -868,8 +937,8 @@
                   [ "wix-pricing-plans-backend.Plan" ] },
             "doc": "Fulfilled - The primary plan." },
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_MakePlanPrimary_makePlanPrimary.js" } ],
+          [ { "lineno": 169,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Marks a pricing plan as the primary pricing plan.",
             "description":
@@ -956,8 +1025,8 @@
                   [ "wix-pricing-plans-backend.PublicPlansQueryBuilder" ] },
             "doc": "Fulfilled - The query definition used to run the query using the [`find()`](wix-pricing-plans-backend/PublicPlansQueryBuilder/find) function." },
         "locations":
-          [ { "lineno": 34,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_QueryPublicPlans_queryPublicPlans.js" } ],
+          [ { "lineno": 917,
+              "filename": "plan-queries.js" } ],
         "docs":
           { "summary": "Creates a query to retrieve a list of public pricing plans.",
             "description":
@@ -1233,8 +1302,8 @@
                   [ "wix-pricing-plans-backend.Plan" ] },
             "doc": "Fulfilled - The plan's information.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_SetPlanVisibility_setPlanVisibility.js" } ],
+          [ { "lineno": 435,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Sets visibility for non-archived pricing plans. Public plans are plans that are set to visible.",
             "description":
@@ -1323,8 +1392,8 @@
                   [ "wix-pricing-plans-backend.Plan" ] },
             "doc": "Fulfilled - The updated plan.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 16,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_UpdatePlan_updatePlan.js" } ],
+          [ { "lineno": 479,
+              "filename": "plans.js" } ],
         "docs":
           { "summary": "Updates a pricing plan.",
             "description":
@@ -1421,8 +1490,8 @@
   "messages":
     [ { "name": "CreatePlanInfo",
         "locations":
-          [ { "lineno": 2,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_CreatePlan_createPlan.js" } ],
+          [ { "lineno": 68,
+              "filename": "plans.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1472,7 +1541,7 @@
       { "name": "Duration",
         "locations":
           [ { "lineno": 1,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
             "links": [],
@@ -1492,7 +1561,7 @@
       { "name": "DurationInfo",
         "locations":
           [ { "lineno": 14,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Length of one payment cycle, for example, 3 months to have quarterly payments.",
             "links": [],
@@ -1539,11 +1608,12 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "removed" ] },
       { "name": "ListPublicPlanOptions",
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_ListPublicPlans_listPublicPlans.js" } ],
+          [ { "lineno": 141,
+              "filename": "plans.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1564,7 +1634,7 @@
       { "name": "Money",
         "locations":
           [ { "lineno": 138,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Amount for a single payment. For subscriptions, this is the amount to pay for each single payment cycle and it is required. Otherwise, the single payment for the entire plan.",
             "links": [],
@@ -1584,7 +1654,7 @@
       { "name": "MoneyInfo",
         "locations":
           [ { "lineno": 146,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Amount for a single payment. For subscriptions, this is the amount to pay for each single payment cycle and it is required. Otherwise, the single payment for the entire plan.",
             "links": [],
@@ -1598,15 +1668,16 @@
               "optional": true },
             { "name": "currency",
               "type": "string",
-              "doc": "Currency code. Must be valid ISO 4217 currency code (for example, USD).",
+              "doc": "Currency code. Must be a valid [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code (for example, USD).",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Perk",
         "locations":
           [ { "lineno": 68,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "A text string promoting the pricing plan (for example, \"Plenty of parking\" or \"Free gift on your birthday\").",
             "links": [],
@@ -1623,7 +1694,7 @@
       { "name": "Perks",
         "locations":
           [ { "lineno": 75,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "List of text strings that promote the pricing plan (for example, \"Plenty of parking\" or \"Free gift on your birthday\").",
             "links": [],
@@ -1644,7 +1715,7 @@
       { "name": "Plan",
         "locations":
           [ { "lineno": 90,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1710,7 +1781,7 @@
       { "name": "Plans",
         "locations":
           [ { "lineno": 83,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1728,8 +1799,8 @@
         "labels": [] },
       { "name": "PlansStats",
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_GetPlansStats_getPlansStats.js" } ],
+          [ { "lineno": 119,
+              "filename": "plans.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1745,7 +1816,7 @@
       { "name": "Pricing",
         "locations":
           [ { "lineno": 27,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`. Only one pricing model can be specified per plan.",
             "links": [],
@@ -1755,7 +1826,7 @@
         "members":
           [ { "name": "subscription",
               "type": "wix-pricing-plans-backend.Recurrence",
-              "doc": "Pricing model indicating that the plan has recurring payments.",
+              "doc": "Pricing model indicating that the plan has recurring payments. This type of subscription is not a \"Wix subscription,\" which encompasses various types of subscriptions, such as Wix Stores subscriptions, Wix invoice subscriptions, and *all* pricing plan models.",
               "optional": true },
             { "name": "singlePaymentForDuration",
               "type": "wix-pricing-plans-backend.Duration",
@@ -1779,11 +1850,12 @@
                     [ "singlePaymentForDuration",
                       "singlePaymentUnlimited",
                       "subscription" ] } ] },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PricingInfo",
         "locations":
           [ { "lineno": 39,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Pricing plan's pricing details, such as the plan price, payment schedule, and expiration. The payment schedule and expiration are based on one of three [pricing models](wix-pricing-plans-backend/introduction): `subscription`, `singlePaymentForDuration`, or `singlePaymentUnlimited`.",
             "links": [],
@@ -1822,7 +1894,7 @@
       { "name": "PublicPlan",
         "locations":
           [ { "lineno": 119,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "Public pricing plan entity containing information about the pricing plan. Can be read by any site member or visitor.",
             "links": [],
@@ -1880,7 +1952,7 @@
       { "name": "PublicPlans",
         "locations":
           [ { "lineno": 112,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "links": [],
             "examples": [],
@@ -1899,7 +1971,7 @@
       { "name": "Recurrence",
         "locations":
           [ { "lineno": 52,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "The pricing plan has recurring payments.",
             "links": [],
@@ -1919,7 +1991,7 @@
       { "name": "RecurrenceInfo",
         "locations":
           [ { "lineno": 60,
-              "filename": "shared.js" } ],
+              "filename": "plans-shared.js" } ],
         "docs":
           { "summary": "The pricing plan has recurring payments.",
             "links": [],
@@ -1940,8 +2012,8 @@
         "labels": [] },
       { "name": "UpdatePlanInfo",
         "locations":
-          [ { "lineno": 1,
-              "filename": "com_wixpress_membership_v2_plans_PlansServiceV2_UpdatePlan_updatePlan.js" } ],
+          [ { "lineno": 464,
+              "filename": "plans.js" } ],
         "docs":
           { "links": [],
             "examples": [],
