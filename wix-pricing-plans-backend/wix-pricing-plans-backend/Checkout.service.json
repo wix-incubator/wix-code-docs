@@ -90,8 +90,7 @@
   "properties": [],
   "operations":
     [ { "name": "changeStartDate",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "orderId",
@@ -150,8 +149,7 @@
         "extra":
           {  } },
       { "name": "createOfflineOrder",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -225,8 +223,7 @@
         "extra":
           {  } },
       { "name": "createOnlineOrder",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -322,38 +319,78 @@
         "docs":
           { "summary": "Provides a preview of the offline order as if it was purchased.",
             "description":
-              [ "The `previewOfflineOrder()` function returns a Promise that resolves to a temporary preview of the offline order. ",
+              [ "The `previewOfflineOrder()` function returns a Promise that resolves to a temporary preview of the offline order.",
                 "",
-                " The preview uses the same logic as purchasing a plan, except that the preview is not saved. ",
+                " The preview uses the same logic as purchasing a plan, except that the preview is not saved. Because an order",
+                " is not actually created, the preview's `_id` and `subscriptionId` properties are displayed as a string of ",
+                " zero (\"0\") characters.",
                 " ",
-                " You can preview the order to check purchase limitations, but the limitations are not enforced for the preview. If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), taxes are applied to the preview.",
+                " You can preview the order to check purchase limitations, but the limitations are not enforced for the preview. ",
+                " If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), ",
+                " taxes are applied to the preview.",
                 "",
-                " This function is available only to the site owner, who specifies the ID and identity type of the buyer whose order should be previewed when calling the function.",
+                " This function is available only to the site owner, who specifies the buyer ID and identity type of the buyer whose order ",
+                " should be previewed.",
                 "",
                 " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can preview offline orders." ],
             "links":
               [ "[previewOnlineOrder( )](#previewOnlineOrder)",
                 "[previewPricing( )](#previewPricing)" ],
             "examples":
-              [ { "title": "basic usage",
+              [ { "title": "Preview an offline order as if it was purchased",
                   "body":
-                    [ "import { checkout } from \"wix-pricing-plans-backend.Orders\";",
+                    [ "import { checkout } from \"wix-pricing-plans-backend\";",
                       "",
                       "export function previewOfflineOrder() {",
-                      "  const planId = \"a string\";",
-                      "  const buyerId = \"a string\";",
-                      "  const buyerType = \"UNDEFINED\";",
+                      "  const planId = \"7251b9e9-3852-4e9f-958e-af630f039802\";",
+                      "  const buyerId = \"4c47c608-cfa8-4037-93ac-738f09560ed3\";",
+                      "  const buyerType = \"MEMBER\";",
                       "  const startDate = new Date();",
                       "",
-                      "  return checkout",
-                      "    .previewOfflineOrder(planId, buyerId, buyerType, startDate)",
-                      "    .then((response) => {",
-                      "      console.log(response);",
+                      "  return checkout.previewOfflineOrder(planId, buyerId, buyerType, startDate)",
+                      "    .then((preview) => {",
+                      "      console.log(preview);",
+                      "      const maxReached = preview.purchaseLimitExceeded;",
+                      "      const orderType = preview.order.type;",
+                      "      const orderPricing = preview.order.priceDetails;",
+                      "      return preview;",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
-                      "}" ],
+                      "}",
+                      "",
+                      "/* Promise resolves to: ",
+                      " * ",
+                      " * {",
+                      " *   \"order\": {",
+                      " *     \"_id\": \"00000000-0000-0000-0000-000000000000\",",
+                      " *     \"planId\": \"7251b9e9-3852-4e9f-958e-af630f039802\",",
+                      " *     \"subscriptionId\": \"00000000-0000-0000-0000-000000000000\",",
+                      " *     \"buyer\": {",
+                      " *       \"_id\": \"4c47c608-cfa8-4037-93ac-738f09560ed3\",",
+                      " *       \"identityType\": \"MEMBER\"",
+                      " *     },",
+                      " *     \"priceDetails\": {",
+                      " *       \"subtotal\": \"0\",",
+                      " *       \"total\": \"0\",",
+                      " *       \"planPrice\": \"0\",",
+                      " *       \"currency\": \"USD\",",
+                      " *       \"singlePaymentUnlimited\": true",
+                      " *     },",
+                      " *     \"type\": \"OFFLINE\",",
+                      " *     \"status\": \"ACTIVE\",",
+                      " *     \"lastPaymentStatus\": \"PAID\",",
+                      " *     \"startDate\": \"2021-08-26T15:03:04.675Z\",",
+                      " *     \"pausePeriods\": [],",
+                      " *     \"planName\": \"Family Cooking\",",
+                      " *     \"planDescription\": \"Weekly delivery of home cooking recipes and time-saving tips\",",
+                      " *     \"_createdDate\": \"2021-08-26T15:03:04.844Z\",",
+                      " *     \"_updatedDate\": \"2021-08-26T15:03:04.844Z\"",
+                      " *   },",
+                      " *   \"purchaseLimitExceeded\": true",
+                      " * }",
+                      " */" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -361,8 +398,7 @@
         "extra":
           {  } },
       { "name": "previewOnlineOrder",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -378,7 +414,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 229,
+          [ { "lineno": 234,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of the offline order as if it was purchased.",
@@ -420,8 +456,7 @@
         "extra":
           {  } },
       { "name": "previewPrice",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -434,7 +469,7 @@
                   [ "wix-pricing-plans-backend.Checkout.PricePreview" ] },
             "doc": "Fulfilled - A preview of the pricing for the order." },
         "locations":
-          [ { "lineno": 261,
+          [ { "lineno": 266,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of the order's pricing as if was purchased.",
@@ -518,7 +553,7 @@
         "labels": [] },
       { "name": "PricePreview",
         "locations":
-          [ { "lineno": 254,
+          [ { "lineno": 259,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
