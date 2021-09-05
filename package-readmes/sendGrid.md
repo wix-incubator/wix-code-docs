@@ -34,7 +34,7 @@ Configure the following in your config.json file:
 
 2. **`recipientEmails`:** The array of email addresses to send your notification emails to.
 
-3. **`events`** An object that contains the currently supported backend events for which you can trigger email notifications. For each event, set the respective boolean. To send a notification email when one of these backend events is fired, set that event’s boolean value to `true`. 
+3. **`events`:** An object that contains the currently supported backend events for which you can trigger email notifications. For each event, set the respective boolean. To send a notification email when one of these backend events is fired, set that event’s boolean value to `true`. 
 
 4. **`templates`:** An array of event template objects that define the contents (subject and body) of the email notifications that are sent when the respective event is fired. Customize the contents of your email notifications by editing the subject and body of each event template object as desired. 
 
