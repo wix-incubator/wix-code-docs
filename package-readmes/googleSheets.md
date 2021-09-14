@@ -35,8 +35,8 @@ Before using the package, set up the following:
 
 
 1. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret with the name `velo-spreadsheet-credentials`. Store the contents of the downloaded file in the secret.
-2. Go to the tab with your Google Spreadsheet open. Notice the URL. It contains your sheet ID: `https://docs.google.com/spreadsheets/d/{YOUR_SHEET_ID}/edit#gid=0`. For example, if your spreadsheet URL is: `https://docs.google.com/spreadsheets/d/1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0/edit#gid=0`, the value of your sheet ID is: `1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0`.
-3. Copy your sheet ID and store it as a new secret in the **Secrets Manager** with the name `sheetId`. 
+2. Go to the tab with your Google Spreadsheet open. Notice the URL. It contains your sheet ID: `https://docs.google.com/spreadsheets/d/{YOUR_SHEET_ID}/edit#gid=0`. <br/>For example, if your spreadsheet URL is: `https://docs.google.com/spreadsheets/d/1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0/edit#gid=0`, the value of your sheet ID is: `1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0`.
+<br/>3. Copy your sheet ID and store it as a new secret in the **Secrets Manager** with the name `sheetId`. 
 
 
 ### Package Content 
