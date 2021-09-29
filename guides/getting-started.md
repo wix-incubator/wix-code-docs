@@ -192,7 +192,7 @@ function calculateCurrency() {
   let initialAmount = Number($w("#sourceAmount").value);
   let sourceSymbol = $w("#sourceCurrency").value;
   let targetSymbol = $w("#targetCurrency").value;
-  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}&places=2`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}`;
 
   getJSON(fullUrl)
     .then(json => {
