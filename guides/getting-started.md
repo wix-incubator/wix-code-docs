@@ -59,7 +59,7 @@ To add the code:
 import {getJSON} from 'wix-fetch';
 
 // Set the URL of the 3rd-party service.
-const url = "https://api.exchangeratesapi.io/latest";
+const url = "https://api.exchangerate.host/convert";
 
 // Define the currency option values and text for the dropdowns.
 let currencyOptions = [
@@ -117,14 +117,14 @@ function calculateCurrency() {
   // Target currency
   let targetSymbol = $w("#targetCurrency").value;
   // Define the full url.
-  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}&places=2`;
 
   // Call the wix-fetch API function to retrieve the JSON resource.
   getJSON(fullUrl)
     .then(json => {
       // Set the target amount as the initial amount multiplied by
       // the conversion rate.
-      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+      $w("#targetAmount").value = initialAmount * json.info.rate;
     })
 }
 ```
@@ -167,7 +167,7 @@ Here is the complete code for this example, without comments:
 ```javascript
 import { getJSON } from 'wix-fetch';
 
-const url = "https://api.exchangeratesapi.io/latest";
+const url = "https://api.exchangerate.host/convert";
 
 let currencyOptions = [
   { "value": "USD", "label": "US Dollars" },
@@ -189,14 +189,14 @@ function populateDropdowns() {
 }
 
 function calculateCurrency() {
-  let initialAmount = $w("#sourceAmount").value;
+  let initialAmount = Number($w("#sourceAmount").value);
   let sourceSymbol = $w("#sourceCurrency").value;
   let targetSymbol = $w("#targetCurrency").value;
-  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}&places=2`;
 
   getJSON(fullUrl)
     .then(json => {
-      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+      $w("#targetAmount").value = initialAmount * json.info.rate;
     })
 }
 ```
