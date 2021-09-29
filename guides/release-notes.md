@@ -13,37 +13,37 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ---
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixHttpFunctionRequestBody is available as binary
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixHttpFunctionRequestBody is Available as Binary
 
 `wix-http-functions`
 
-The `WixHttpFunctionRequestBody.binary()`[https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/wixhttpfunctionrequestbody/buffer] function returns the body of the http request in binary as a Node.js Buffer object. (September 29, 2021)
+The [`WixHttpFunctionRequestBody.binary()`](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/wixhttpfunctionrequestbody/buffer) function returns the body of the http request in binary as a Node.js Buffer object. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixRealtime functions support both synchronous and asynchronous calls
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixRealtime Functions Support Both Synchronous and Asynchronous Calls
 
 `wix-realtime-backend`
 
-The `wixRealtimeBackend` functions `publish()` and `realtime_check_permission()` as well the `PermissionsRouter` functions `add()` and `check()` can be called either synchronously or asynchronously. (September 29, 2021)
+You can call the `wixRealtimeBackend` functions [`publish()`](https://www.wix.com/velo/reference/wix-realtime-backend/publish) and [`realtime_check_permission()`](https://www.wix.com/velo/reference/wix-realtime-backend/realtime_check_permission) as well the `PermissionsRouter` functions [`add()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/add) and [`check()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/check) either synchronously or asynchronously. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Coupon limitPerCustomer parameter is not supported by Wix Bookings
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Coupon limitPerCustomer Parameter Unsupported in Wix Bookings
 
 `wix-marketing-backend`
 
-Coupon use limits cannot be set when using coupons in Wix Bookings. (September 29, 2021)
+You can't set coupon use limits when using coupons in Wix Bookings. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: promptLogin() and promptForgotPassword() must be resolved with .then()
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: promptLogin() and promptForgotPassword() Must Be Resolved with .then()
 
 `wix-users`
 
-If you call the `promptLogin()` or `promptForgotPassword()` functions within the `onReady()` block you must use `.then()` and `.catch()` to resolve the returned promise. If you `await` or `return` the results, the page will not load. (September 29, 2021)
+If you call the [`promptLogin()`](https://www.wix.com/velo/reference/wix-users/promptlogin) or [`promptForgotPassword()`](https://www.wix.com/velo/reference/wix-users/promptforgotpassword) functions within the `onReady()` block you must use `.then()` and `.catch()` to resolve the returned promise. If you `await` or `return` the results, the page will not load. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: suppressAuth can be used with WixDataAggregate
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Using suppressAuth with WixDataAggregate
 
 `wix-data`
 
-You can turn off permission checks in `WixDataAggregate` by passing `suppressAuth: true` to the `run()` function. (September 29, 2021)
+You can turn off permission checks in [`WixDataAggregate`](https://www.wix.com/velo/reference/wix-data/wixdataaggregate) by passing `{suppressAuth: true}` to the [`run()`](https://www.wix.com/velo/reference/wix-data/wixdataaggregate/run) function. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: VideoBox src property is Read & Write
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: VideoBox src Property is Read & Write
 
 `$w.VideoBox`
 
