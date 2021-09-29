@@ -19,7 +19,7 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 The [`WixHttpFunctionRequestBody.buffer()`](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/wixhttpfunctionrequestbody/buffer) function returns the body of the http request in binary as a Node.js Buffer object. (September 29, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixRealtime Functions Support Both Synchronous and Asynchronous Calls
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Wix Realtime Functions Support Both Synchronous and Asynchronous Calls
 
 `wix-realtime-backend`
 
