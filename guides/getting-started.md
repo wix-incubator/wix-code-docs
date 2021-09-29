@@ -117,7 +117,7 @@ function calculateCurrency() {
   // Target currency
   let targetSymbol = $w("#targetCurrency").value;
   // Define the full url.
-  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}&places=2`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}`;
 
   // Call the wix-fetch API function to retrieve the JSON resource.
   getJSON(fullUrl)
