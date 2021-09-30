@@ -13,45 +13,79 @@ We also keep a list of **doc bugs** that are in our backlog, with information th
 
 ---
 
-##
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: WixHttpFunctionRequestBody is Available as Binary
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Wix Events Backend
+`wix-http-functions`
+
+The [`WixHttpFunctionRequestBody.buffer()`](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/wixhttpfunctionrequestbody/buffer) function returns the body of the http request in binary as a Node.js Buffer object. (September 14, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Wix Realtime Functions Support Both Synchronous and Asynchronous Calls
+
+`wix-realtime-backend`
+
+You can call the `WixRealtimeBackend` functions [`publish()`](https://www.wix.com/velo/reference/wix-realtime-backend/publish) and [`realtime_check_permission()`](https://www.wix.com/velo/reference/wix-realtime-backend/realtime_check_permission) as well the `PermissionsRouter` functions [`add()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/add) and [`check()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/check) either synchronously or asynchronously. (August 17, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Coupon Limits Unsupported in Wix Bookings
+
+`wix-marketing-backend`
+
+You can't set the `limitPerCustomer` parameter when using coupons in Wix Bookings. (August 11, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Working with promptLogin() and promptForgotPassword()
+
+`wix-users`
+
+Resolve promises returned when calling the [`promptLogin()`](https://www.wix.com/velo/reference/wix-users/promptlogin) and [`promptForgotPassword()`](https://www.wix.com/velo/reference/wix-users/promptforgotpassword) functions within the `onReady()` block using `.then()` and `.catch()`. If you `await` or `return` the results, the page will not load. (August 11, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: SuppressAuth for WixDataAggregate
+
+`wix-data`
+
+[`WixData.aggregate.run()`](https://www.wix.com/velo/reference/wix-data/wixdataaggregate/run) supports supressAuth functionality. (August 10, 2021)
+
+### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: VideoBox src Property is Read & Write
+
+`$w.VideoBox`
+
+You can both get and set the VideoBox [`src`](https://www.wix.com/velo/reference/$w/videobox/src) property. (August 10, 2021)
+
+### New API: Wix Events Backend
 
 `wix-events-backend`
 
 The new [Wix Events Backend API](https://www.wix.com/velo/reference/wix-events-backend/wixevents) provides functionality for creating, updating, deleting, canceling, and querying Wix events. For example, you can create RSVP and ticketed events whose locations and/or dates are "To Be Announced" (TBA), you can customize registration messages, and you can configure settings for online conferencing. (July 20, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Dataset new() Function Replaced by add() Function
+### Updated: Dataset new() Function Replaced by add() Function
 
 `wix-dataset`
 
 The Dataset and Dynamic Dataset [`new()`](https://www.wix.com/velo/reference/wix-dataset/dataset/new) functions were replaced by the [`add()`](https://www.wix.com/velo/reference/wix-dataset/dataset/add) function. We replaced the function to avoid confusion with the JavaScript [new](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) operator. Functionality of the `add()` and `new()` functions is identical.  (July 20, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> New API: Media Manager List Files & Folders
+### New API: Media Manager List Files & Folders
 
 `wix-media-backend`
 
 The [`listFiles()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/listfiles), [`listFolders()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/listfolders), and [`getFolderInfo()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/getfolderinfo) functions allow you to get information about specific files and folders in the Media Manager. (July 6, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: seoMarkup Property is Read & Write
+### Updated: seoMarkup Property is Read & Write
 
 `$w.CustomElement`
 
 You can both get and set the Custom Element [`seoMarkup`](https://www.wix.com/velo/reference/$w/customelement/seomarkup) property. (July 6, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Use application/json for HTTP Function Response content-type in Free Sites
+### Updated: Use application/json for HTTP Function Response content-type in Free Sites
 
 `wix-http-functions`
 
 `text/html` is not supported for the `content-type` header in an [HTTP function response](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionresponse/headers). Use `application/json` instead. Premium sites support all content types. (July 6, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: listPlans() and listPublicPlans() Return an Array of Objects
+### Updated: listPlans() and listPublicPlans() Return an Array of Objects
 
 `wix-pricing-plans-backend`
 
 The [`listPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/listplans) and [`listPublicPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/listpublicplans) functions return an array of objects. (July 6, 2021)
 
-### <svg viewBox="0 0 6 6" fill="currentColor" width="6" height="12" data-hook="changelog-pimple" class="_28uM4"><circle cx="3" cy="12" r="3" transform="translate(0 -9)" fill="#EA5F0E" fill-rule="evenodd"></circle></svg> Updated: Wix Location to() Has a New Option
+### Updated: Wix Location to() Has a New Option
 
 `wix-location`
 
