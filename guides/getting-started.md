@@ -111,7 +111,7 @@ Here we select all the dropdowns by type. By calling <code>[$w]($w)</code> with 
 
 function calculateCurrency() {
   // Initial amount 
-  let initialAmount = Number($w("#sourceAmount").value);
+  let initialAmount = $w("#sourceAmount").value;
   // Original currency
   let sourceSymbol = $w("#sourceCurrency").value;
   // Target currency
@@ -189,7 +189,7 @@ function populateDropdowns() {
 }
 
 function calculateCurrency() {
-  let initialAmount = Number($w("#sourceAmount").value);
+  let initialAmount = $w("#sourceAmount").value;
   let sourceSymbol = $w("#sourceCurrency").value;
   let targetSymbol = $w("#targetCurrency").value;
   let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}`;
