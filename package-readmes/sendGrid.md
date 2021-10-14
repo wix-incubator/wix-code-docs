@@ -1,8 +1,8 @@
 ## SendGrid Custom Notification Integration  
 
-The SendGrid Custom Notification Integration package allows you to send custom notification emails through SendGrid when specific backend events are fired. See the list of backend events that are currently supported by the package in the package’s config.json file. 
+The SendGrid Custom Notification Integration package allows you to send custom notification emails through SendGrid when specific backend events are triggered. See the list of backend events that are currently supported by the package in the package’s config.json file. 
 
-**Note:** It is possible to send custom notification emails when frontend events are fired, but it is not recommended for security purposes.
+**Note:** It is possible to send custom notification emails when frontend events are triggered, but it is not recommended for security purposes.
 
 
 ### Setup 
@@ -34,16 +34,16 @@ Configure the following in your config.json file:
 
 2. **`recipientEmails`:** The array of email addresses to send your notification emails to.
 
-3. **`events`:** An object that contains the currently supported backend events for which you can trigger email notifications. For each event, set the respective boolean. To send a notification email when one of these backend events is fired, set that event’s boolean value to `true`. 
+3. **`events`:** An object that contains the currently supported backend events for which you can trigger email notifications. For each event, set the respective boolean. To send a notification email when one of these backend events is triggered, set that event’s boolean value to `true`. 
 
-4. **`templates`:** An array of event template objects that define the contents (subject and body) of the email notifications that are sent when the respective event is fired. Customize the contents of your email notifications by editing the subject and body of each event template object as desired. 
+4. **`templates`:** An array of event template objects that define the contents (subject and body) of the email notifications that are sent when the respective event is triggered. Customize the contents of your email notifications by editing the subject and body of each event template object as desired. 
 
 **Note:** The contents of your email notifications can include html style tags, and variable placeholders from the event using ${ } syntax. For example, the body of this email notification includes html line breaks and headings, and a placeholder variable for the form name that was submitted.   
 
 ```js
 "wixCrm_onFormSubmit": {
   "subject": "[Custom Notifier] A form was submitted",
-  "body": "<h3>A new wixCrm_onFormSubmit event was fired on your Wix site!</h3><strong>Event Details:</strong><br>form name: ${formName} <br><br><font color='grey'>You can control notification settings for future events by going to your Wix website's editor -> Packages -> @velo/sendgrid-custom-notification-integration</font>"
+  "body": "<h3>A new wixCrm_onFormSubmit event was triggered on your Wix site!</h3><strong>Event Details:</strong><br>form name: ${formName} <br><br><font color='grey'>You can control notification settings for future events by going to your Wix website's editor -> Packages -> @velo/sendgrid-custom-notification-integration</font>"
 },
 ```
 
