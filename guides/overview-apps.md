@@ -12,3 +12,4 @@ Customize Wix Apps with Velo APIs - including Stores, Bookings, Events, and Pay 
 *   **[wix-bookings-backend](https://www.wix.com/velo/reference/wix-bookings-backend)**
 *   **[wix-paid-plans](https://www.wix.com/velo/reference/wix-paid-plans)**
 *   **[wix-paid-plans-backend](https://www.wix.com/velo/reference/wix-paid-plans-backend)**
+*   **[wix-pricing-plans-backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend)**
