@@ -80,7 +80,7 @@ The file contains the following function:
 		"city": "New York",
 		"county": "New York County",
 		"state": "New York",
-		"postcode": "10022", \
+		"postcode": "10022",
 		"country": "United States of America",
 		"country_code": "us"
 	}
