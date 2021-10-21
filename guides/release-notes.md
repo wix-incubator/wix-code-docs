@@ -10,11 +10,6 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
 
 ---
-### Updated: listSecretInfo() is No Longer Supported
-
-`wix-secrets-backend`
-
-The `listSecretInfo()` function presents serious security risks if misused. It is therefore no longer supported. (October 20, 2021)
 
 ### Updated: Maximum Size for Collection Items
 
