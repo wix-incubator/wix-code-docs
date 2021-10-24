@@ -7,15 +7,13 @@ Lots of our bugs come from users like you and you can help us improve the docs b
 
 ![](../media/feedback.png)
 
-We also keep a list of **doc bugs** that are in our backlog, with information that can be helpful to our users even before they are fixed. You can see them [here](https://view.monday.com/97005963-d254f39325f60e6d86ffb64c39192f84).
-
 ---
 
 ### Updated: Maximum Size for Collection Items
 
 `wix-data`
 
-The maximum size for collection items when running [`insert()`](https://www.wix.com/velo/reference/wix-data/insert) or [`update()`](https://www.wix.com/velo/reference/wix-data/update) is 500kb, not 200kb. (October 17, 2021)
+The maximum size for collection items when running [`insert()`](https://www.wix.com/velo/reference/wix-data/insert) or [`update()`](https://www.wix.com/velo/reference/wix-data/update) is 500 KB, not 200 KB. (October 17, 2021)
 
 
 ### Updated: getUser() May Return undefined for memberName
@@ -55,11 +53,11 @@ You can only use [`scrollTo()`](https://www.wix.com/velo/reference/$w/header/scr
 Channel names in [Wix Realtime](https://www.wix.com/velo/reference/wix-realtime-backend/introduction) cannot include spaces or special characters. (October 5, 2021)
 
 
-### Updated: Security Best Practice for createSecret() and updateSecret()
+### Updated: Security Best Practices for createSecret(), updateSecret(), and listSecretInfo()
 
 `wix-secrets-backend`
 
-Make sure not to leave information about secrets in your code when running [`createSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/createsecret) or [`updateSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/updatesecret)! (October 3, 2021)
+Make sure not to leave information about secrets in your code when running [`createSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/createsecret) or [`updateSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/updatesecret)! Do not expose functions that call [`listSecretInfo()`](https://www.wix.com/velo/reference/wix-secrets-backend/listsecretinfo) to frontend code without **Admin** permissions settings! See the reference for more details. (October 3, 2021)
 
 
 ### Updated: WixHttpFunctionRequestBody is Available as Binary
@@ -284,11 +282,11 @@ With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmup
 
 We added a note that [`insertReference()`](https://www.wix.com/velo/reference/wix-data/insertreference) only works with multi-reference fields. (April 13, 2021)
 
-### Update: 512 kb limit for http functions
+### Update: 512 KB limit for http functions
 
 `wix-http-functions`
 
-We added note that [http function requests](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/body) have a request payload limit of 512 kb. (April 12, 2021)
+We added note that [http function requests](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/body) have a request payload limit of 512 KB. (April 12, 2021)
 
 ### New API: Login as a popup option
 
