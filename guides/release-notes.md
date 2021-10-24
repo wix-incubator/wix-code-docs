@@ -57,7 +57,7 @@ Channel names in [Wix Realtime](https://www.wix.com/velo/reference/wix-realtime-
 
 `wix-secrets-backend`
 
-Make sure not to leave information about secrets in your code when running [`createSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/createsecret) or [`updateSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/updatesecret)! Do not expose functions that call [`listSecretInfo()`](https://www.wix.com/velo/reference/wix-secrets-backend/listsecretinfo) to frontend code without **Admin** permissions settings! See the reference for more details. (October 3, 2021)
+Make sure not to leave information about secrets in your code when running [`createSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/createsecret) or [`updateSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/updatesecret)! Do not expose functions that call [`listSecretInfo()`](https://www.wix.com/velo/reference/wix-secrets-backend/listsecretinfo) to frontend code without settings permission to **Admin**! See the reference for more details. (October 3, 2021)
 
 
 ### Updated: WixHttpFunctionRequestBody is Available as Binary
