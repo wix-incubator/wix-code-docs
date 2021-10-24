@@ -26,7 +26,7 @@ When a user is registered with an email address but no name the object returned 
 
 `wix-stores-backend`
 
-The `Product` object in [`wix-stores-backend`](https://www.wix.com/velo/reference/wix-stores-backend) now accepts a value for `brand`. Including a brand name can help improve a site's (and product's) visibility on search engines. (October 12, 2021)
+The `Product` object in [`wix-stores-backend`](https://www.wix.com/velo/reference/wix-stores-backend) now accepts a value for `brand`. Including a brand name can help improve a site's (and product's) visibility in search results. (October 12, 2021)
 
 ### Updated: Dataset Functions Save Draft Data
 `wix-dataset`
