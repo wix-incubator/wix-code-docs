@@ -10,13 +10,8 @@ Before using this package, set up the following:
 
 #### LionWheel Platform 
 1. [Login](http://members.lionwheel.com) to your LionWheel account.
-2. In the dashboard, click the **Customers** tab on the right:
-
-    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/03/04/9cc35294-907a-4afd-b4cd-d8372b936035/43863493-36cb-4f54-8afd-ed6216da0081.png "Image_Customers_dashboard_tab")
-
+2. In the dashboard, click the **Customers** tab on the right.
 3. In the Customers panel, click the **Edit** icon on the left to access your LionWheel API Key.
-
-    ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/03/04/696671b8-8bed-4882-8c46-451a428b1327/8c21e81e-450f-47cf-92f3-91b00858fc47.png "Image_Edit_dashboard_tab") 
 
 
 #### Wix Platform 
@@ -53,17 +48,17 @@ The code in this file contains an event that calls the `sendOrderToLionwheel()` 
 
 The functions in this file send the new order to LionWheel and create a fulfillment for the order when the order is paid. You don't call these functions directly, they run when the `onOrderPaid` event is triggered. The file includes the following functions: 
 
-* **sendOrderToLionwheel(data)** 
-
-    Uses the [`fetch()` API](https://www.wix.com/velo/reference/wix-fetch/fetch) to send the customer’s order details to LionWheel.
+*   **sendOrderToLionwheel(data)** 
+    
+    Uses the [`fetch()`](https://www.wix.com/velo/reference/wix-fetch/fetch) API to send the customer’s order details to LionWheel.
 
     ```js
     export async function sendOrderToLionwheel(data)
     ```
     
-* **createFulfillmentl(fulfillmentData, orderData)** 
+*   **createFulfillmentl(fulfillmentData, orderData)** 
     
-    Uses the [`createFulfillment()` API](https://www.wix.com/velo/reference/wix-stores-backend/createfulfillment) to create a fulfillment for the customer’s order with data from LionWheel.
+    Uses the [`createFulfillment()`](https://www.wix.com/velo/reference/wix-stores-backend/createfulfillment) API to create a fulfillment for the customer’s order with data from LionWheel.
 
     ```js
     export async function createFulfillment(fulfillmentData, orderData)
@@ -75,11 +70,9 @@ This package does not require you to add any code to your site. To use this pack
 
 Once a customer submits payment for an order, the following occurs:
 
-* You should see the order in your LionWheel Deliveries panel.
+*  You should see the order in your LionWheel Deliveries panel.
 
-   ![alt_text](https://d2x3xhvgiqkx42.cloudfront.net/12345678-1234-1234-1234-1234567890ab/b4ae9703-4364-4550-a797-1cc95ed8046e/2021/03/15/9b52c58e-d5c8-47bd-b9ca-c3abc49abdd0/04b5903f-2801-4e52-9b8a-6658b042c774.png "Image_Deliveries_panel")
-
-* A fulfillment is created with LionWheel as the shipping provider.
+*  A fulfillment is created with LionWheel as the shipping provider.
 
 ### Release Notes
 
@@ -89,3 +82,4 @@ Once a customer submits payment for an order, the following occurs:
 ### Tags
 
 lionWheel, delivery, order, distribution
+
