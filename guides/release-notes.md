@@ -9,83 +9,91 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ---
 
 
-### New API: `wix-members` and `wix-members-backend`
+### New API: wix-members and wix-members-backend
 
 `wix-members` , `wix-members-backend`
 
-The `wix-users` and `wix-users-backend` APIs have been deprecated. Most of their functionality has moved to the new [`wix-members`](https://www.wix.com/velo/reference/wix-members) and [`wix-members-backend`](https://www.wix.com/velo/reference/wix-members-backend) APIs. The `emailContact()` and `emailUser()` (now `emailMember()`) functions have moved to the respective `TriggeredEmails` APIs of [`wix-crm`](https://www.wix.com/velo/reference/wix-crm/triggeredemails-obj) and [`wix-crm-backend`](https://www.wix.com/velo/reference/wix-crm-backend/triggeredemails-obj). Functions that handle consent policy have moved to the [`ConsentPolicy`](https://www.wix.com/velo/reference/wix-window/consentpolicy) API in `wix-window`. Finally, the `Authentication` API in `wix-members-backend` has two new functions. [`changeLoginEmail()`](https://www.wix.com/velo/reference/wix-members-backend/authentication-obj/changeloginemail) changes a site member's login email address. [`sendSetPasswordEmail()`](https://www.wix.com/velo/reference/wix-members-backend/authentication-obj/sendsetpasswordemail) sends a site member an email with a link to set their password. (November 2, 2021)
+The `wix-users` and `wix-users-backend` APIs have been deprecated. Most of their functionality has moved to the new [`wix-members`](https://www.wix.com/velo/reference/wix-members) and [`wix-members-backend`](https://www.wix.com/velo/reference/wix-members-backend) APIs. The `emailContact()` and `emailUser()` (now `emailMember()`) functions have moved to the respective `TriggeredEmails` APIs of [`wix-crm`](https://www.wix.com/velo/reference/wix-crm/triggeredemails-obj) and [`wix-crm-backend`](https://www.wix.com/velo/reference/wix-crm-backend/triggeredemails-obj). Functions that handle consent policy have moved to the [`ConsentPolicy`](https://www.wix.com/velo/reference/wix-window/consentpolicy) API in `wix-window`. 
+Finally, `wix-members` and `wix-members-backend` have several new functions: 
+* [`changeLoginEmail()`](https://www.wix.com/velo/reference/wix-members-backend/authentication-obj/changeloginemail) changes a site member's login email address. 
+* [`sendSetPasswordEmail()`](https://www.wix.com/velo/reference/wix-members-backend/authentication-obj/sendsetpasswordemail) sends a site member an email with a link to set their password. 
+* [`makeProfilePrivate()`](https://www.wix.com/velo/reference/wix-members/currentmember-obj/makeprofileprivate) removes a logged-in member from the site community and sets their profile to private.
+* [`makeProfilePublic()`](https://www.wix.com/velo/reference/wix-members/currentmember-obj/makeprofilepublic) adds a logged-in member to the site community and sets their profile to public.
+* [`onLogout()`](https://www.wix.com/velo/reference/wix-members/authentication-obj/onlogout) sets the function that runs when a member logs out.
+
+(November 2, 2021)
 
 
-### New API: Optional `override` parameter for `onCustomValidation()`
+### New API: Optional override parameter for onCustomValidation()
 
 `Wix Editor Elements ($w)`
 
 The [`onCustomValidation()`](https://www.wix.com/velo/reference/$w/validatablemixin/oncustomvalidation) function now has an `override` parameter which allows you write a series of custom element validations and set which ones will run. (October 28, 2021)
 
-### Updated: Maximum Size for Collection Items
+### Updated: Maximum size for collection items
 
 `wix-data`
 
 The maximum size for collection items when running [`insert()`](https://www.wix.com/velo/reference/wix-data/insert) or [`update()`](https://www.wix.com/velo/reference/wix-data/update) is 500 KB, not 200 KB. (October 17, 2021)
 
 
-### Updated: getUser() May Return undefined for memberName
+### Updated: getUser() may return undefined for memberName
 
 `wix-users-backend`
 
 When a user is registered with an email address but no name the object returned by [`getUser()`](https://www.wix.com/velo/reference/wix-users-backend/getuser) has a value of `undefined` for `memberName`. (October 13, 2021)
 
-### New API: Product `brand` Field
+### New API: Product brand field
 
 `wix-stores-backend`
 
 The `Product` object in [`wix-stores-backend`](https://www.wix.com/velo/reference/wix-stores-backend) now accepts a value for `brand`. Including a brand name can help improve a site's (and product's) visibility in search results. (October 12, 2021)
 
-### Updated: Dataset Functions Save Draft Data
+### Updated: Dataset functions save draft data
 `wix-dataset`
 
 When using a read-write dataset, calling the following functions saves any changes made to linked input elements: [`setFilter()`](https://www.wix.com/velo/reference/wix-dataset/dataset/setfilter), [`setSort()`](https://www.wix.com/velo/reference/wix-dataset/dataset/setsort), [`nextPage()`](https://www.wix.com/velo/reference/wix-dataset/dataset/nextpage), [`previousPage()`](https://www.wix.com/velo/reference/wix-dataset/dataset/previouspage), [`loadPage()`](https://www.wix.com/velo/reference/wix-dataset/dataset/loadpage), [`setPageSize()`](https://www.wix.com/velo/reference/wix-dataset/dataset/setpagesize), [`setCurrentItemIndex()`](https://www.wix.com/velo/reference/wix-dataset/dataset/setcurrentitemindex), [`next()`](https://www.wix.com/velo/reference/wix-dataset/dataset/next), [`previous()`](https://www.wix.com/velo/reference/wix-dataset/dataset/previous), [`save()`](https://www.wix.com/velo/reference/wix-dataset/dataset/save) (October 6, 2021)
 
-### Updated: Premium Account Required to Use checkoutBooking()
+### Updated: Premium account required to use checkoutBooking()
 
 `wix-bookings`
 
-You need A premium account to [checkout bookings](https://www.wix.com/velo/reference/wix-bookings/checkoutbooking) of any type. (October 5, 2021)
+You need a premium account to [checkout bookings](https://www.wix.com/velo/reference/wix-bookings/checkoutbooking) of any type. (October 5, 2021)
 
-### Updated: Using scrollTo() With Header Elements
+### Updated: Using scrollTo() with header elements
 
 `Wix Editor Elements ($w)`
 
 You can only use [`scrollTo()`](https://www.wix.com/velo/reference/$w/header/scrollto) with Header Elements when the [Header Scroll Setting](https://support.wix.com/en/article/wix-editor-changing-the-header-scroll-settings) is set to **Scrolls with site**. To scroll to the header with other settings, use the `wix-window` [`scrollTo()`](https://www.wix.com/velo/reference/wix-window/scrollto) function. (October 5, 2021)
 
 
-### Updated: Realtime Channel Naming Requirements
+### Updated: Realtime channel naming requirements
 
 `wix-realtime-backend`
 
 Channel names in [Wix Realtime](https://www.wix.com/velo/reference/wix-realtime-backend/introduction) cannot include spaces or special characters. (October 5, 2021)
 
 
-### Updated: Security Best Practices for createSecret(), updateSecret(), and listSecretInfo()
+### Updated: Security best practices for createSecret(), updateSecret(), and listSecretInfo()
 
 `wix-secrets-backend`
 
 Make sure not to leave information about secrets in your code when running [`createSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/createsecret) or [`updateSecret()`](https://www.wix.com/velo/reference/wix-secrets-backend/updatesecret)! Do not expose functions that call [`listSecretInfo()`](https://www.wix.com/velo/reference/wix-secrets-backend/listsecretinfo) to frontend code without setting permissions to **Admin**! See the reference for more details. (October 3, 2021)
 
 
-### Updated: WixHttpFunctionRequestBody is Available as Binary
+### Updated: WixHttpFunctionRequestBody is available as binary
 
 `wix-http-functions`
 
 The [`WixHttpFunctionRequestBody.buffer()`](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionrequest-obj/wixhttpfunctionrequestbody/buffer) function returns the body of the http request in binary as a Node.js Buffer object. (September 14, 2021)
 
-### Updated: Wix Realtime Functions Support Both Synchronous and Asynchronous Calls
+### Updated: Wix Realtime functions support both synchronous and asynchronous calls
 
 `wix-realtime-backend`
 
 You can call the `WixRealtimeBackend` functions [`publish()`](https://www.wix.com/velo/reference/wix-realtime-backend/publish) and [`realtime_check_permission()`](https://www.wix.com/velo/reference/wix-realtime-backend/realtime_check_permission) as well the `PermissionsRouter` functions [`add()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/add) and [`check()`](https://www.wix.com/velo/reference/wix-realtime-backend/permissionsrouter-obj/check) either synchronously or asynchronously. (August 17, 2021)
 
-### Updated: Coupon Limits Unsupported in Wix Bookings
+### Updated: Coupon limits unsupported in Wix Bookings
 
 `wix-marketing-backend`
 
@@ -103,7 +111,7 @@ Resolve promises returned when calling the [`promptLogin()`](https://www.wix.com
 
 [`WixData.aggregate.run()`](https://www.wix.com/velo/reference/wix-data/wixdataaggregate/run) supports supressAuth functionality. (August 10, 2021)
 
-### Updated: VideoBox src Property is Read & Write
+### Updated: VideoBox src property is read & write
 
 `$w.VideoBox`
 
@@ -115,37 +123,37 @@ You can both get and set the VideoBox [`src`](https://www.wix.com/velo/reference
 
 The new [Wix Events Backend API](https://www.wix.com/velo/reference/wix-events-backend/wixevents) provides functionality for creating, updating, deleting, canceling, and querying Wix events. For example, you can create RSVP and ticketed events whose locations and/or dates are "To Be Announced" (TBA), you can customize registration messages, and you can configure settings for online conferencing. (July 20, 2021)
 
-### Updated: Dataset new() Function Replaced by add() Function
+### Updated: Dataset new() function replaced by add() function
 
 `wix-dataset`
 
 The Dataset and Dynamic Dataset [`new()`](https://www.wix.com/velo/reference/wix-dataset/dataset/new) functions were replaced by the [`add()`](https://www.wix.com/velo/reference/wix-dataset/dataset/add) function. We replaced the function to avoid confusion with the JavaScript [new](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) operator. Functionality of the `add()` and `new()` functions is identical.  (July 20, 2021)
 
-### New API: Media Manager List Files & Folders
+### New API: Media Manager list files & folders
 
 `wix-media-backend`
 
 The [`listFiles()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/listfiles), [`listFolders()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/listfolders), and [`getFolderInfo()`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/getfolderinfo) functions allow you to get information about specific files and folders in the Media Manager. (July 6, 2021)
 
-### Updated: seoMarkup Property is Read & Write
+### Updated: seoMarkup property is read & write
 
 `$w.CustomElement`
 
 You can both get and set the Custom Element [`seoMarkup`](https://www.wix.com/velo/reference/$w/customelement/seomarkup) property. (July 6, 2021)
 
-### Updated: Use application/json for HTTP Function Response content-type in Free Sites
+### Updated: Use application/json for HTTP function response content-type in free sites
 
 `wix-http-functions`
 
 `text/html` is not supported for the `content-type` header in an [HTTP function response](https://www.wix.com/velo/reference/wix-http-functions/wixhttpfunctionresponse/headers). Use `application/json` instead. Premium sites support all content types. (July 6, 2021)
 
-### Updated: listPlans() and listPublicPlans() Return an Array of Objects
+### Updated: listPlans() and listPublicPlans() return an array of objects
 
 `wix-pricing-plans-backend`
 
 The [`listPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/listplans) and [`listPublicPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/listpublicplans) functions return an array of objects. (July 6, 2021)
 
-### Updated: Wix Location to() Has a New Option
+### Updated: Wix Location to() has a new option
 
 `wix-location`
 
@@ -155,38 +163,38 @@ The [`disableScrollToTop`](https://www.wix.com/velo/reference/wix-location/to) o
 
 By popular requests we've added the [readme files](https://www.wix.com/velo/reference/velo-package-readmes/about-velo-packages) for [Velo Packages](https://support.wix.com/en/article/velo-about-packages) to the API Reference. This will allow you to keep the readme file open side by side with your code file.
 
-### Updated: Clarified Path and Prefix
+### Updated: Clarified path and prefix
 
 `wix-location`
 
 We updated the [path](https://www.wix.com/corvid/reference/wix-location/path) graphics to show the correct path and included a statement that prefix is for dynamic pages only. (June 14, 2021)
 
-### New API: Multi-File Upload
+### New API: Multi-File upload
 
 `Wix Editor Elements ($w)`
 
 You can now upload multiple image, video, and gallery (images and video) files at a time. This [function](https://www.wix.com/velo/reference/$w/uploadbutton/uploadfiles) replaces the now deprecated startUpload function. (June 14, 2021)
 
 
-### Updated: Stores: Add "ribbon" Field to Product Entity
+### Updated: Stores: Add "ribbon" field to product entity
 
 `wix-stores-backend`
 
 On the Product entity, the `ribbons` field, which took an array and was read-only, has been deprecated. The new field [`ribbon`](https://www.wix.com/velo/reference/wix-stores-backend/createproduct), which takes a string and is writable upon product creation, replaces it. (June 13, 2021)
 
-### Updated: Fixed Bookings hasNext Example
+### Updated: Fixed Bookings hasNext example
 
 `wix-bookings`
 
 We fixed the import statement in the examples. (June 10, 2021)
 
-### Update: onBeforeSave Returns a Promise
+### Update: onBeforeSave returns a promise
 
 `wix-data`
 
 We fixed the description of [`onBeforeSave`](https://www.wix.com/velo/reference/wix-dataset/dataset/onbeforesave) to say it returns a promise that resolves to a boolean not a boolean. (June 6, 2021)
 
-### New API: Manage Bookings Resources and Sessions
+### New API: Manage Bookings resources and sessions
 
 `wix-bookings-backend`
 
@@ -227,7 +235,7 @@ Learn more:
 
 (May 10, 2021)
 
-### New API: Stores Apply & Remove Coupon
+### New API: Stores apply & remove coupon
 
 `wix-stores`
 
