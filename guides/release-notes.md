@@ -2,8 +2,7 @@
 
 We're always adding and updating the Velo APIs, and we want you to have one place to find all of our latest changes and cool additions.
 
-We love hearing your feedback!
-Lots of our bugs come from users like you and you can help us improve the docs by reporting them to us. You can report bugs and other feedback through these links found at the bottom of our docs.
+We love hearing your feedback! You can help us improve the docs by reporting any issues that you notice. You can report bugs and other feedback through the following link found at the bottom of each section.
 
 ![](../media/feedback.png)
 
