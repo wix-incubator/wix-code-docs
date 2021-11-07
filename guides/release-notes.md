@@ -9,7 +9,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ---
 
 
-### New API: wix-members and wix-members-backend
+### New API: Wix Members and Wix Members Backend
 
 `wix-members` , `wix-members-backend`
 
@@ -169,7 +169,7 @@ By popular requests we've added the [readme files](https://www.wix.com/velo/refe
 
 We updated the [path](https://www.wix.com/corvid/reference/wix-location/path) graphics to show the correct path and included a statement that prefix is for dynamic pages only. (June 14, 2021)
 
-### New API: Multi-File upload
+### New API: Multi-file upload
 
 `Wix Editor Elements ($w)`
 
