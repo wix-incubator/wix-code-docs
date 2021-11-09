@@ -1,7 +1,6 @@
 ## Animation Helpers
 
-> **Example Site** 
-> 
+> **Example Site**  
 > To see a live example, click [here](https://www.wix.com/velo/example/animation-helpers).
 
 The Animation Helpers package provides you with the ability to easily add popular animations to your site elements. 
