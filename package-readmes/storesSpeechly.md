@@ -1,7 +1,6 @@
 ## Speechly Integration 
 
-> **Example Site** 
-> 
+> **Example Site**  
 > To see a live example, click [here](https://www.wix.com/velo/example/speechly-integration).
 
 The Speechly Integration package provides your site visitors with the ability to filter store products using speech recognition. 
