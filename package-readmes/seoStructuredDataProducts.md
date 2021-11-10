@@ -21,17 +21,17 @@ Google requires certain information about your site and products in order to pro
     * [Business Name](https://support.wix.com/en/article/adding-your-sites-business-information)
     * [Contact Email](https://support.wix.com/en/article/adding-your-sites-business-information)
     * [Site Currency](https://support.wix.com/en/article/setting-your-currency-for-accepting-payments)
-2. Make sure that the collection containing your products has fields with the following names and types and is read-only. If you don’t have a collection containing your products, [create one](https://support.wix.com/en/article/creating-a-content-collection).
+2. Make sure that the collection containing your products has fields with the following keys and types and is read-only. If you don’t have a collection containing your products, [create one](https://support.wix.com/en/article/creating-a-content-collection).
 
 
-| Name                                    | Field Type       |
+| Key                                     | Field Type       |
 |-----------------------------------------|------------------|
-| Title (usually automatically generated) | Text             |
-| Description                             | Text             |
-| SKU                                     | Text             |
-| Images                                  | Image gallery    |
-| Price                                   | Text             |
-| Price Valid Until                       | Text (YYY-MM-DD) |
+| title (usually automatically generated) | Text             |
+| description                             | Text             |
+| sku                                     | Text             |
+| images                                  | Media Gallery    |
+| price                                   | Text             |
+| priceValidUntil                         | Text (YYYY-MM-DD)|
 
 
 ##### Set Up Dynamic Product Pages
@@ -44,9 +44,8 @@ Google produces rich search results based on pages that display individual produ
    The page is set up to generate URLs based on a product’s **Title** by default.
 2. Add the following code to your dynamic page. Substitute `’#myDynamicDataset’` with the ID of the dataset on your page:
 ```js
-import wixSeo from 'wix-seo';
-
-    import { buildSchema } from '@velo/seo-structured-data-product';
+    import wixSeo from 'wix-seo';
+    import { buildSchema } from '@velo/seo-structured-data-product-backend';
     import wixLocation from 'wix-location';
 
     $w.onReady(async function () {
@@ -133,7 +132,7 @@ This file contains the following function:
     sku: "111111",
     brand: {
         @type: "Brand",
-        name: "Products R' Us"
+        name: "Products R Us"
         },
     author: {
         @type: "Person",
@@ -141,7 +140,7 @@ This file contains the following function:
         },
     offers: {
         @type: "Offer",
-        url: "https://adamfri.wixsite.com/structured-data-copy/products/test-product",
+        url: "https://somesite.wixsite.com/some-site-name/products/test-product",
         priceCurrency: "EUR",
         price: 100,
         priceValidUntil: "20-11-2021",
