@@ -1,7 +1,8 @@
 { "name": "Hooks",
   "memberOf": "wix-data",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 20,
       "filename": "hooks.js" },
@@ -297,15 +298,15 @@
                       " */" ],
                   "extra":
                     {  } },
-                { "title": "Change the retrieved item using an afterInsert hook",
+                { "title": "Combine several item fields together using an afterInsert hook",
                   "body":
                     [ "// In data.js",
                       "",
                       "export function myCollection_afterInsert(item, context) {",
                       "  let hookContext = context;  // see below",
                       "",
-                      "  // some changes to the received item",
-                      "  item.full_name = item.first_name + \" \" + item.last_name;",
+                      "  //aggregate the content from several fields into one",
+                      "  item.combinedSentence = `Customer: ${item.lastName}, ${item.firstName}: Purchases: ${item.purchases}, Item Returns: ${item.returns}`;",
                       "",
                       "  return item;",
                       "}",
@@ -586,16 +587,16 @@
                       " */" ],
                   "extra":
                     {  } },
-                { "title": "Change the returned item using an afterUpdate hook",
+                { "title": "Count item updates using an afterUpdate hook",
                   "body":
                     [ "// In data.js",
                       "",
                       "export function myCollection_afterUpdate(item, context) {",
                       "  let hookContext = context;  // see below",
-                      "",
-                      "  // some changes to the received item",
-                      "  item.full_name = item.first_name + \" \" + item.last_name;",
-                      "",
+                      "  ",
+                      "  //increment a counter field that tracks item updates",
+                      "  item.updatedCount++;",
+                      "  ",
                       "  return item;",
                       "}",
                       "",
@@ -807,7 +808,8 @@
         "extra":
           {  } },
       { "name": "beforeInsert",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "item",
@@ -906,6 +908,34 @@
                       " * }",
                       " */" ],
                   "extra":
+                    {  } },
+                { "title": "Validate an email address field using a beforeInsert hook",
+                  "body":
+                    [ "// In data.js",
+                      "",
+                      "export function myCollection_beforeInsert(item, context) {",
+                      "  let hookContext = context;  // see below",
+                      "",
+                      "  //validate the email field and reject in case of failure",
+                      "  const emailRegex = /^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/;",
+                      "",
+                      "  if (emailRegex.test(item.email)) {",
+                      "      return item;",
+                      "  } else {",
+                      "      return Promise.reject('Invalid email address.');",
+                      "  }",
+                      "}",
+                      "",
+                      "/*",
+                      " * hookContext:",
+                      " *",
+                      " * {",
+                      " *   \"collectionName\": \"myCollection\",",
+                      " *   \"userId\":         \"f45jf8d2-grkj-2opd-4ovk-9rfj4wo5tvj3\",",
+                      " *   \"userRole\":       \"siteOwner\"",
+                      " * }",
+                      " */" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
@@ -929,7 +959,7 @@
                 "wix-data.WixDataQuery" ],
             "doc": "The query to use instead of the original query specified by the caller.\n Returning a rejected promise will block the operation and will return a rejected promise to the operation caller as well as trigger the [`onFailure()`](#onFailure) hook." },
         "locations":
-          [ { "lineno": 368,
+          [ { "lineno": 369,
               "filename": "hooks.js" } ],
         "docs":
           { "summary": "A hook that is triggered before a `find()` operation.",
@@ -1031,7 +1061,7 @@
                 "string" ],
             "doc": "The ID to be used for the [`remove()`](wix-data.html#remove) instead of the original `itemId` specified by the caller.\n Returning a rejected promise will block the operation and will return a rejected promise to the caller as well as trigger the [`onFailure()`](#onFailure) hook." },
         "locations":
-          [ { "lineno": 409,
+          [ { "lineno": 410,
               "filename": "hooks.js" } ],
         "docs":
           { "summary": "A hook that is called before a `remove()` operation.",
@@ -1130,7 +1160,7 @@
                 "Object" ],
             "doc": "The item to be updated instead of the original item specified by the caller.\n Returning a rejected promise will block the operation and will return a rejected promise to the caller as well as trigger the [`onFailure()`](#onFailure) hook." },
         "locations":
-          [ { "lineno": 447,
+          [ { "lineno": 448,
               "filename": "hooks.js" } ],
         "docs":
           { "summary": "A hook that is triggered before an `update()` operation.",
@@ -1233,7 +1263,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - Returning a fulfilled promise will result in a fulfilled data operation with the provided result.\nRejected - Returning a rejected promise will result in returning a rejected promise to the caller of the data operation." },
         "locations":
-          [ { "lineno": 484,
+          [ { "lineno": 485,
               "filename": "hooks.js" } ],
         "docs":
           { "summary": "A hook that is triggered on any error or rejected Promise from any of the wix-data operations.",
