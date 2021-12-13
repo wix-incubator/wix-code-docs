@@ -441,17 +441,20 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 12,
+          [ { "lineno": 6,
               "filename": "onLogin.js" } ],
         "docs":
           { "summary": "Sets the function that runs when a member logs in.",
             "description":
-              [ "Use the `onLogin()` function for code you want to run after a member successfully",
-                " logs into your site.",
+              [ "The `onLogin()` event handler runs when a member logs into your site.",
                 "",
-                " Usually, you want to call the `onLogin()` function in the **Global (Site)** tab of the",
-                " code panel so that the `onLogin()` event handler runs no matter which",
-                " page on your site a member uses to log in.",
+                "`onLogin` receives a `currentMember` object for the logged-in member,",
+                "which contains the [`CurrentMember` methods](wix-members/currentmember)",
+                "you can use to retrieve the member's information.",
+                "",
+                "Usually, you want to call `onLogin()` in the **Global (Site)** tab of the",
+                "code panel so that the `onLogin()` event handler runs no matter which",
+                "page a member uses to log in.",
                 "",
                 "> **Notes:**",
                 ">",
@@ -471,20 +474,15 @@
             "examples":
               [ { "title": "Run code when a member logs in",
                   "body":
-                    [ "import { authentication } from 'wix-members';",
+                    [ "import {authentication} from 'wix-members';",
                       "",
                       "// ...",
                       "",
-                      "authentication.onLogin((memberInfo) => {",
-                      "  const memberId = memberInfo.id;",
-                      "  console.log('Member logged in');",
-                      "});",
-                      "",
-                      "/* Full event object:",
-                      " * {",
-                      " *   \"id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\"",
-                      " * }",
-                      " */" ],
+                      "authentication.onLogin(async (member) => {",
+                      "  const loggedInMember = await member.getMember();",
+                      "  const memberId = loggedInMember._id;",
+                      "  console.log(`Member ${memberId} logged in:`, loggedInMember);",
+                      "});" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -539,8 +537,7 @@
         "extra":
           {  } },
       { "name": "promptForgotPassword",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params": [],
         "ret":
@@ -724,11 +721,11 @@
                 "| Signup Setting                                                  | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |",
                 "| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |",
                 "| **Everyone who signs up** <br /> (automatic approval)           | <ul><li>Member `status` is `\"ACTIVE\"`.</li><li>The member is immediately logged into the site.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                           |",
-                "| **Only people who I approve manually** <br /> (manual approval) | <ul><li>Member `status` is `\"PENDING\"`.</li><li>The member must be approved. You can approve the member by passing the returned `approvalToken` to [`approveByToken()`](wix-members-backend/authentication-obj/approveByToken) or calling [`approveByEmail()`](wix-members-backend/authentication-obj/approveByEmail) from wix-members-backend.</li><li>`member` is not returned. If you need the `member` object, use [`register()`](wix-members-backend/authentication-obj/register) from wix-members-backend instead.</li></ul> |",
+                "| **Only people who I approve manually** <br /> (manual approval) | <ul><li>Member `status` is `\"PENDING\"`.</li><li>The member must be approved. You can approve the member by passing the returned `approvalToken` to [`approveByToken()`](wix-members-backend/authentication/approveByToken) or calling [`approveByEmail()`](wix-members-backend/authentication/approveByEmail) from wix-members-backend.</li><li>`member` is not returned. If you need the `member` object, use [`register()`](wix-members-backend/authentication/register) from wix-members-backend instead.</li></ul>             |",
                 "",
                 "When your site's member signup settings are set to automatic approval,",
                 "calling `register()` from wix-members (in page code) is as secure as calling",
-                "[`register()` from wix-members-backend](wix-members-backend/authentication-obj/register)",
+                "[`register()` from wix-members-backend](wix-members-backend/authentication/register)",
                 "in backend code.",
                 "However, when registration is set to manual approval,",
                 "calling `register()` from wix-members-backend",
@@ -745,7 +742,7 @@
                 ">   a notification is displayed",
                 ">   and a confirmation email is sent to the new member.",
                 ">   To register a member without displaying the notification, use",
-                ">   [`register()` from wix-members-backend](wix-members-backend/authentication-obj/register)",
+                ">   [`register()` from wix-members-backend](wix-members-backend/authentication/register)",
                 ">   (this does not suppress the confirmation email)." ],
             "links": [],
             "examples":
@@ -796,9 +793,9 @@
         "labels": [],
         "nameParams": [],
         "params":
-          [ { "name": "event",
-              "type": "wix-members.Authentication.LoginEvent",
-              "doc": "Details about the member who logged in." } ],
+          [ { "name": "currentMember",
+              "type": "wix-members.CurrentMember",
+              "doc": "Logged-in member." } ],
         "ret":
           { "type": "void" },
         "locations":
@@ -838,12 +835,14 @@
             "extra":
               {  } },
         "members":
-          [ { "name": "id",
-              "type": "string",
-              "doc": "Member ID." } ],
+          [ { "name": "member",
+              "type": "wix-members-backend.Members.Member",
+              "doc": "Logged-in member." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed",
+            "removed" ] },
       { "name": "LoginOptions",
         "locations":
           [ { "lineno": 1,
