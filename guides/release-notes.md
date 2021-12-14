@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-window`
 
-The [`formFactor`](https://www.wix.com/velo/reference/wix-window/formfactor) property only returns the type of a site visitor's device. This doesn't correspond to the site's EditorX breakpoint values. (December 14, 2021)
+The [`formFactor`](https://www.wix.com/velo/reference/wix-window/formfactor) property only returns the type of a site visitor's device. This doesn't correspond to the site's Editor X breakpoint values. (December 14, 2021)
 
 ### New API: Access the site from the frontend
 
