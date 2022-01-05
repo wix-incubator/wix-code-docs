@@ -1,5 +1,8 @@
 ## Google Sheets Integration 
 
+> **Example Site**  
+> To see a live example, click [here](https://www.wix.com/velo/example/google-sheets-integration).
+
 The Google Sheets Integration package provides you with the ability to easily monitor and manage data stored in a Google spreadsheet from a Wix site. You can perform the following actions with this package:
 
 
