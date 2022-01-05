@@ -7,7 +7,48 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![](../media/feedback.png)
 
 ---
+### Update: formFactor doesn't return Editor X breakpoint values
 
+`wix-window`
+
+The [`formFactor`](https://www.wix.com/velo/reference/wix-window/formfactor) property only returns the type of a site visitor's device. This doesn't correspond to the site's [Editor X breakpoint values](https://support.wix.com/en/article/editor-x-managing-breakpoints). (December 14, 2021)
+
+### New API: Access the site from the frontend
+
+`wix-site`
+
+You can access a site's name in frontend code using the new [`getSiteDisplayName()`](https://www.wix.com/velo/reference/wix-site/getsitedisplayname) function. (December 9, 2021)
+
+### New API: Direct navigation to the cart page
+
+`wix-stores`
+
+The [`navigate.toCart()`](https://www.wix.com/velo/reference/wix-stores/navigate/tocart) function directs a site visitor's browser directly to their cart page without needing to supply a URL path. (December 7, 2021)
+
+
+### New API: Wix Groups
+
+`wix-groups-backend`
+
+Use the new [Groups API](https://www.wix.com/velo/reference/wix-groups-backend) to create and manage groups on your site. Here are some things you can do:
+  * Create a group
+  * Join a group
+  * Add members to a group
+  * Assign an admin role to a group member
+
+(December 7, 2021)
+
+### New API: Open Quick View with code
+
+`wix-stores`
+
+Use the [`product.openQuickView()`](https://www.wix.com/velo/reference/wix-stores/product/openquickview) function to open a product's Quick View modal from directly within your code. (November 30, 2021)
+
+### Update: Wix Storage items accept numbers
+
+`wix-storage`
+
+The `value` parameter of the [`setItem()`](https://www.wix.com/velo/reference/wix-storage/storage/setitem) function accepts numbers as well as strings. (November 15, 2021)
 
 ### New API: Wix Members and Wix Members Backend
 
