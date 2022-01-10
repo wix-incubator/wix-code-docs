@@ -193,7 +193,8 @@
         "extra":
           {  } },
       { "name": "createOfflineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -203,7 +204,7 @@
               "type": "string",
               "doc": "Member ID for the buyer." },
             { "name": "options",
-              "type": "wix-pricing-plans-backend.Checkout.CreateOfflineOrderInfo",
+              "type": "wix-pricing-plans-backend.Checkout.CreateOfflineOrderOptions",
               "doc": "Additional options for creating the offline order.",
               "optional": true } ],
         "ret":
@@ -213,7 +214,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The order of the plan." },
         "locations":
-          [ { "lineno": 136,
+          [ { "lineno": 144,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Orders a plan for a buyer who bought the plan with an offline transaction.",
@@ -382,7 +383,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The order of the plan." },
         "locations":
-          [ { "lineno": 183,
+          [ { "lineno": 191,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Orders a plan for the currently logged-in member.",
@@ -623,13 +624,9 @@
             { "name": "buyerId",
               "type": "string",
               "doc": "Member ID for the buyer who might order the plan offline. The `buyerId` must be entered because the buyer might not be logged in." },
-            { "name": "startDate",
-              "type": "Date",
-              "doc": "Date from which the plan would be active if ordered. Defaults to the current date.",
-              "optional": true },
             { "name": "options",
-              "type": "wix-pricing-plans-backend.Options",
-              "doc": "Options to use when previewing an offline order.",
+              "type": "wix-pricing-plans-backend.Checkout.PreviewOfflineOrderInfo",
+              "doc": "Additional options for previewing the offline order.",
               "optional": true } ],
         "ret":
           { "type":
@@ -638,7 +635,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 257,
+          [ { "lineno": 265,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an offline order as if it was purchased.",
@@ -663,7 +660,7 @@
               [ "[previewOnlineOrder( )](#previewOnlineOrder)",
                 "[previewPricing( )](#previewPricing)" ],
             "examples":
-              [ { "title": "Preview an offline order as if it was purchased",
+              [ { "title": "Preview an offline order as if it was purchased, bypassing permission checks",
                   "body":
                     [ "import { checkout } from 'wix-pricing-plans-backend';",
                       "",
@@ -671,7 +668,11 @@
                       "  const planId = '7251b9e9-3852-4e9f-958e-af630f039802';",
                       "  const buyerId = '4c47c608-cfa8-4037-93ac-738f09560ed3';",
                       "  const startDate = new Date();",
-                      "  return checkout.previewOfflineOrder(planId, buyerId, startDate)",
+                      "  const previewOptions = {",
+                      "    startDate: startDate, ",
+                      "    supressAuth: true",
+                      "  }",
+                      "  return checkout.previewOfflineOrder(planId, buyerId, previewOptions)",
                       "    .then((preview) => {",
                       "      console.log(preview);",
                       "      const maxReached = preview.purchaseLimitExceeded;",
@@ -739,7 +740,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 290,
+          [ { "lineno": 297,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an online order as if it was purchased.",
@@ -839,7 +840,7 @@
                   [ "wix-pricing-plans-backend.Checkout.PricePreview" ] },
             "doc": "Fulfilled - A preview of the pricing for the order." },
         "locations":
-          [ { "lineno": 324,
+          [ { "lineno": 331,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an order's pricing as if was purchased.",
@@ -925,10 +926,37 @@
         "extra":
           {  },
         "labels":
-          [ "changed" ] },
+          [ "changed",
+            "removed" ] },
+      { "name": "CreateOfflineOrderOptions",
+        "locations":
+          [ { "lineno": 128,
+              "filename": "checkout.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "startDate",
+              "type": "Date",
+              "doc": "Date from which the plan is active. Defaults to the current date.",
+              "optional": true },
+            { "name": "paid",
+              "type": "boolean",
+              "doc": "Whether the order is paid. Defaults to `false`.",
+              "optional": true },
+            { "name": "suppressAuth",
+              "type": "boolean",
+              "doc": "When `true`, prevents permission checks from running for the operation. Defaults to `false`.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "OrderPreview",
         "locations":
-          [ { "lineno": 250,
+          [ { "lineno": 258,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -946,9 +974,31 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "PreviewOfflineOrderOptions",
+        "locations":
+          [ { "lineno": 137,
+              "filename": "checkout.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "startDate",
+              "type": "Date",
+              "doc": "Date from which the plan is active. Defaults to the current date.",
+              "optional": true },
+            { "name": "suppressAuth",
+              "type": "boolean",
+              "doc": "When `true`, prevents permission checks from running for the operation. Defaults to `false`.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
       { "name": "PricePreview",
         "locations":
-          [ { "lineno": 318,
+          [ { "lineno": 325,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
