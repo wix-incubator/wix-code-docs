@@ -1,5 +1,8 @@
 ## Salesforce Integration 
 
+> **Example Site**  
+> To see a live example, click [here](https://www.wix.com/velo/example/salesforce-integration).
+
 The Salesforce Integration package provides you with the ability to easily monitor and manage data records in your Salesforce account from a Wix site. You can perform the following actions with this package: 
 
 *   **Query:** Query data records in Salesforce.
