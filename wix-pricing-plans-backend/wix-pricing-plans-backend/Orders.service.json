@@ -53,9 +53,9 @@
           " > + Let site members [cancel](wix-paid-plans/cancelPlan) plan subscriptions (orders) that they have purchased. ",
           "",
           "",
+          "",
           " ### Plans and Subscriptions",
-          "",
-          "",
+          " ",
           " Actions related to basic pricing plan management are available from the [Pricing Plans](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembership%3FreferralInfo%3Dvelo-docs)",
           " page in the Dashboard. These actions correspond to the functions available in the [Pricing Plans APIs](wix-pricing-plans-backend/introduction).",
           "",
@@ -73,10 +73,11 @@
           "",
           " ### Roles and Permissions",
           "",
-          " You need \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) to perform ",
-          " certain plan order functions, such as [`pauseOrder()`](wix-pricing-plans-backend/orders/pauseorder), [`cancelOrder()`](wix-pricing-plans-backend/orders/cancelorder), and [`markAsPaid()`](wix-pricing-plans-backend/orders/markaspaid). ",
-          " Other functions do not require permissions but login is required. ",
-          "",
+          " Some functions require that only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Selec[…]ashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) can perform",
+          " pricing plan order functions. You can override the permissions by setting the function's `suppressAuth` ",
+          " option to `true`.",
+          " ",
+          " Other functions might require that the site visitor just be logged in. ",
           "",
           " ### Importing the APIs",
           "",
@@ -222,7 +223,8 @@
   "properties": [],
   "operations":
     [ { "name": "cancelOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "orderId",
@@ -230,7 +232,11 @@
               "doc": "ID of the order to cancel." },
             { "name": "effectiveAt",
               "type": "string",
-              "doc": "When the order will be canceled. One-time orders can only be canceled immediately.\nOne of:\n + `\"IMMEDIATELY\"`. The order is canceled immediately.\n + `\"NEXT_PAYMENT_DATE\"`. The order will be canceled at the next payment date." } ],
+              "doc": "When the order will be canceled. One-time orders can only be canceled immediately.\nOne of:\n + `\"IMMEDIATELY\"`. The order is canceled immediately.\n + `\"NEXT_PAYMENT_DATE\"`. The order will be canceled at the next payment date." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.Options",
+              "doc": "Options to use when canceling an order.",
+              "optional": true } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -238,7 +244,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is cancelled." },
         "locations":
-          [ { "lineno": 120,
+          [ { "lineno": 121,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Cancels an order.",
@@ -253,13 +259,15 @@
                 "",
                 " The [`onOrderCanceled()`](wix-pricing-plans-backend/events/onOrderCanceled) event handler runs when an order is canceled.",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can cancel orders." ],
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can cancel orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[requestCurrentMemberOrderCancellation( )](#requestCurrentMemberOrderCancellation)",
                 "[onOrderCanceled( )](wix-pricing-plans-backend/events/onOrderCanceled)",
                 "[onOrderUpdated( )](wix-pricing-plans-backend/events/onOrderUpdated)" ],
             "examples":
-              [ { "title": "Cancel a specific order at a later date",
+              [ { "title": "Cancel an order at a later date",
                   "body":
                     [ "import { orders } from 'wix-pricing-plans-backend';",
                       "",
@@ -267,6 +275,22 @@
                       "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
                       "  const effectiveAt = 'NEXT_PAYMENT_DATE';",
                       "  return orders.cancelOrder(id, effectiveAt);",
+                      "}",
+                      "",
+                      "// Returns a promise that resolves to void" ],
+                  "extra":
+                    {  } },
+                { "title": "Cancel an order immediately, bypassing permission checks",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "export async function cancelOrder() {",
+                      "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
+                      "  const effectiveAt = 'IMMEDIATELY';",
+                      "  const options = {",
+                      "    suppressAuth: true",
+                      "  };",
+                      "  return orders.cancelOrder(id, effectiveAt, options);",
                       "}",
                       "",
                       "// Returns a promise that resolves to void" ],
@@ -290,7 +314,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The requested pricing plan order." },
         "locations":
-          [ { "lineno": 374,
+          [ { "lineno": 398,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Gets an order for the currently-logged in member.",
@@ -374,15 +398,16 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The requested pricing plan order." },
         "locations":
-          [ { "lineno": 151,
+          [ { "lineno": 156,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Gets an existing pricing plan order by ID.",
             "description":
               [ "The `getOrder()` function returns a Promise that resolves to information about the specified order. ",
-                "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) ",
-                " > can get orders. To allow others without these permissions to get orders, set `suppressAuth` in the `options` parameter to `true`." ],
+                " ",
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can get orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links": [],
             "examples":
               [ { "title": "Get an order by ID",
@@ -511,7 +536,7 @@
                         [ "wix-pricing-plans-backend.Orders.Order" ] } ] },
             "doc": "Fulfilled - Pricing plan orders for the current member that match the specified filtering, sorting, and pagination options." },
         "locations":
-          [ { "lineno": 409,
+          [ { "lineno": 433,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Lists orders for the currently-logged in member.",
@@ -574,7 +599,7 @@
                         [ "wix-pricing-plans-backend.Orders.Order" ] } ] },
             "doc": "Fulfilled - Pricing plan orders that match the specified filtering, sorting, and pagination options." },
         "locations":
-          [ { "lineno": 214,
+          [ { "lineno": 220,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Lists pricing plan orders.",
@@ -585,7 +610,10 @@
                 " This function returns the orders on the site. To list orders for the current member only, see the ",
                 " frontend [`listCurrentMemberOrders`](wix-pricing-plans/listCurrentMemberOrders) function.",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can list orders. To allow others without these permissions to list orders, set `suppressAuth` in the `options` parameter to `true`." ],
+                "",
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can list orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[listCurrentMemberOrders( )](wix-pricing-plans/listCurrentMemberOrders)" ],
             "examples":
@@ -795,7 +823,11 @@
         "params":
           [ { "name": "orderId",
               "type": "string",
-              "doc": "ID of the order being marked as paid." } ],
+              "doc": "ID of the order being marked as paid." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.Options",
+              "doc": "Options to use when marking an order as paid.",
+              "optional": true } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -803,7 +835,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is marked as paid." },
         "locations":
-          [ { "lineno": 240,
+          [ { "lineno": 249,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Indicates that an offline pricing plan order has been paid.",
@@ -825,7 +857,9 @@
                 " ",
                 " The [`onOrderMarkedAsPaid()`](wix-pricing-plans-backend/events/onOrderMarkedAsPaid) and [`onOrderUpdated()`](wix-pricing-plans-backend/events/onOrderUpdated) event handlers run when an offline order is marked as paid.",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" permissions can mark orders as paid." ],
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can mark offline orders as paid. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[onOrderMarkedAsPaid( )](wix-pricing-plans-backend/events/onOrderMarkedAsPaid)",
                 "[onOrderUpdated()](wix-pricing-plans-backend/events/onOrderUpdated)" ],
@@ -841,6 +875,21 @@
                       "",
                       "// Returns a promise that resolves to void" ],
                   "extra":
+                    {  } },
+                { "title": "Mark an offline order as paid, bypassing permission checks",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "export async function markAsPaid() {",
+                      "  const id = '66e61fa1-3cfd-4329-aace-0d78570a711e';",
+                      "  const options = {",
+                      "    suppressAuth: true",
+                      "  };",
+                      "  return orders.markAsPaid(id, options);",
+                      "}",
+                      "",
+                      "// Returns a promise that resolves to void" ],
+                  "extra":
                     {  } } ],
             "extra":
               {  } },
@@ -852,7 +901,11 @@
         "params":
           [ { "name": "orderId",
               "type": "string",
-              "doc": "ID of the order being paused." } ],
+              "doc": "ID of the order being paused." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.Options",
+              "doc": "Options to use when pausing an order.",
+              "optional": true } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -860,7 +913,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is paused." },
         "locations":
-          [ { "lineno": 272,
+          [ { "lineno": 285,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Pauses a pricing plan's order and, for recurring orders, also pauses its payment schedule.",
@@ -883,7 +936,9 @@
                 "",
                 " Paused orders can be continued with the [`resumeOrder()`](#resumeOrder) function. ",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" permissions can pause orders." ],
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can pause orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[resumeOrder( )](#resumeOrder)",
                 "[onOrderPaused( )](wix-pricing-plans-backend/events/onOrderPaused)",
@@ -896,6 +951,21 @@
                       "export async function pauseOrder() {",
                       "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
                       "  return orders.pauseOrder(id);",
+                      "}",
+                      "",
+                      "// Returns a promise that resolves to void" ],
+                  "extra":
+                    {  } },
+                { "title": "Pause an order, bypassing permission checks",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "export async function pauseOrder() {",
+                      "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
+                      "  const options = {",
+                      "    suppressAuth: true",
+                      "  };",
+                      "  return orders.pauseOrder(id, options);",
                       "}",
                       "",
                       "// Returns a promise that resolves to void" ],
@@ -914,7 +984,11 @@
               "doc": "ID of the order whose end date must change." },
             { "name": "endDate",
               "type": "Date",
-              "doc": "New expiration date, which cannot be earlier than the value of the `earliestEndDate` property.  The `endDate` is in timestamp format, \n which is the UTC date-time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format. \n If a timezone offset is specified, the time is converted to UTC. For example, if you \n specify `new Date('2021-01-06T16:00:00.000-07:00')`, the stored value will be `\"2021-01-06T23:00:00.000Z\"`." } ],
+              "doc": "New expiration date, which cannot be earlier than the value of the `earliestEndDate` property.  The `endDate` is in timestamp format, \n which is the UTC date-time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format. \n If a timezone offset is specified, the time is converted to UTC. For example, if you \n specify `new Date('2021-01-06T16:00:00.000-07:00')`, the stored value will be `\"2021-01-06T23:00:00.000Z\"`." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.Options",
+              "doc": "Options to use when changing the end date of an order.",
+              "optional": true } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -922,7 +996,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order's end date has been postponed or made earlier." },
         "locations":
-          [ { "lineno": 306,
+          [ { "lineno": 323,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Extends or shortens the duration of a pricing plan order by moving its end date earlier or later.",
@@ -944,7 +1018,9 @@
                 " + The `endDate` for the order is adjusted to the new end date.",
                 " The [`onOrderEndDatePostponed()`](wix-pricing-plans-backend/events/onOrderEndDatePostponed) and [`onOrderUpdated()`](wix-pricing-plans-backend/events/onOrderUpdated) event handlers run when an order's end date is postponed or made earlier.",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can postpone orders." ],
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can change the end date of orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[onOrderEndDatePostponed( )](wix-pricing-plans-backend/events/onOrderEndDatePostponed)",
                 "[onOrderUpdated( )](wix-pricing-plans-backend/events/onOrderUpdated)" ],
@@ -955,8 +1031,24 @@
                       "",
                       "export async function postponeEndDate() {",
                       "  const id = '38f0acac-d4b9-44bf-b246-7af74e2a02ae';",
-                      "  const endDate = new Date(\"October 21, 2021 11:00:00\");",
+                      "  const endDate = new Date('October 21, 2021 11:00:00');",
                       "  return orders.postponeEndDate(id, endDate);",
+                      "}",
+                      "",
+                      "// Returns a promise that resolves to void" ],
+                  "extra":
+                    {  } },
+                { "title": "Bring the end of an order forward to an earlier date, bypassing permission checks",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "export async function postponeEndDate() {",
+                      "  const id = '38f0acac-d4b9-44bf-b246-7af74e2a02ae';",
+                      "  const earlierDate = new Date('October 21, 2020 10:15:00');",
+                      "  const options = {",
+                      "    suppressAuth: true",
+                      "  };",
+                      "  return orders.postponeEndDate(id, earlierDate, options);",
                       "}",
                       "",
                       "// Returns a promise that resolves to void" ],
@@ -983,7 +1075,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the cancellation process is started." },
         "locations":
-          [ { "lineno": 425,
+          [ { "lineno": 449,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Starts the process of cancelling the logged-in member's pricing plan order.",
@@ -1027,7 +1119,11 @@
         "params":
           [ { "name": "orderId",
               "type": "string",
-              "doc": "ID of the order being resumed." } ],
+              "doc": "ID of the order being resumed." },
+            { "name": "options",
+              "type": "wix-pricing-plans-backend.Options",
+              "doc": "Options to use when resuming an order.",
+              "optional": true } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -1035,7 +1131,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is resumed." },
         "locations":
-          [ { "lineno": 343,
+          [ { "lineno": 363,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Resumes a paused pricing plan order.",
@@ -1052,7 +1148,9 @@
                 "",
                 " The [`onOrderResumed()`](wix-pricing-plans-backend/events/onOrderResumed) and [`onOrderUpdated()`](wix-pricing-plans-backend/events/onOrderUpdated) event handlers run when an order is resumed.",
                 "",
-                " > **Note**: Only those with \"Manage Pricing Plans\" and \"Manage Subscriptions\" [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can resume orders." ],
+                " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
+                " > can resume orders. You can override the permissions by setting the function's `suppressAuth` ",
+                " > option to `true`." ],
             "links":
               [ "[pauseOrder( )](#pauseOrder)",
                 "[onOrderResumed( )](wix-pricing-plans-backend/events/onOrderResumed)",
@@ -1065,6 +1163,21 @@
                       "export async function resumeOrder() {",
                       "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
                       "  return orders.resumeOrder(id);",
+                      "}",
+                      "",
+                      "// Returns a promise that resolves to void" ],
+                  "extra":
+                    {  } },
+                { "title": "Resume a paused order, bypassing permission checks",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "export async function resumeOrder() {",
+                      "  const id = '348927fd-1c48-48a1-8176-4e40be1b951d';",
+                      "  const options = {",
+                      "    suppressAuth: true",
+                      "  };",
+                      "  return orders.resumeOrder(id, options);",
                       "}",
                       "",
                       "// Returns a promise that resolves to void" ],
@@ -1121,7 +1234,7 @@
         "labels": [] },
       { "name": "CurrentMemberFilterOptions",
         "locations":
-          [ { "lineno": 386,
+          [ { "lineno": 410,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Fields to filter by when listing orders for the current member.",
@@ -1160,7 +1273,7 @@
         "labels": [] },
       { "name": "FilterOptions",
         "locations":
-          [ { "lineno": 178,
+          [ { "lineno": 184,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Fields to filter by when listing orders.",
@@ -1304,7 +1417,7 @@
         "labels": [] },
       { "name": "PaginationOptions",
         "locations":
-          [ { "lineno": 201,
+          [ { "lineno": 207,
               "filename": "orders.js" } ],
         "docs":
           { "links": [],
