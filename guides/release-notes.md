@@ -55,6 +55,12 @@ We noted that when using [`forEachItem()`](https://www.wix.com/velo/reference/$w
 The reference now lists the [file types](https://www.wix.com/velo/reference/$w/uploadbutton/filetype) supported by the Upload Button element. (December 20, 2021)
 
 
+### New API: Generate download URLs with the Media Manager
+
+`wix-media-backend`
+
+The Media Manager API now includes 2 new backend functions, [downloadFiles](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/downloadfiles) and [downloadFolder](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/downloadfolder), that generate URLs for downloading Wix media. (December 20, 2021)
+
 ### Update: formFactor doesn't return Editor X breakpoint values
 
 `wix-window`
