@@ -1,7 +1,8 @@
 { "name": "Events",
   "memberOf": "wix-crm-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "events.js" },
@@ -47,7 +48,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 175,
+          [ { "lineno": 245,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a new workflow card is created.",
@@ -102,7 +103,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 205,
+          [ { "lineno": 275,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a workflow card is moved.",
@@ -157,7 +158,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 236,
+          [ { "lineno": 306,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a workflow card is moved.",
@@ -212,7 +213,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 125,
+          [ { "lineno": 159,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a new contact is created.",
@@ -277,7 +278,8 @@
         "extra":
           {  } },
       { "name": "onContactDeleted",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "event",
@@ -286,7 +288,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 159,
+          [ { "lineno": 197,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a contact is deleted.",
@@ -296,6 +298,10 @@
                 "is deleted.",
                 "The received `ContactDeletedEvent` object",
                 "contains event metadata.",
+                "",
+                "If a contact is deleted as part of a merge,",
+                "`metadata.originatedFrom` is sent as `\"merge\"`.",
+                "Otherwise, `originatedFrom` is omitted.",
                 "",
                 "> **Note:** Backend events don't work when previewing your site." ],
             "links": [],
@@ -325,8 +331,179 @@
               {  } },
         "extra":
           {  } },
+      { "name": "onContactMerged",
+        "labels":
+          [ "new" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "event",
+              "type": "wix-crm-backend.Events.ContactMergedEvent",
+              "doc": "Information about the source and target contacts,\nand metadata for the event." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 217,
+              "filename": "events.js" } ],
+        "docs":
+          { "summary": "An event that fires when one or more source contacts are merged into a target contact.",
+            "description":
+              [ "The `onContactDeleted()` event handler runs when a",
+                "[contact](https://support.wix.com/en/article/about-your-contact-list)",
+                "is deleted.",
+                "The received `ContactMergedEvent` object",
+                "contains event metadata.",
+                "",
+                "Merging contacts triggers these events:",
+                "",
+                "- `onContactMerged()` is triggered.",
+                "- [`onContactUpdated()`](#onContactUpdated) is triggered for the target contact. `metadata.originatedFrom` is sent as `\"merge\"`.",
+                "- [`onContactDeleted()`](#onContactDeleted) is triggered for each source contact. `metadata.originatedFrom` is sent as `\"merge\"`.",
+                "",
+                "If you handle the originating merge event,",
+                "you can ignore update and delete events where `metadata.originatedFrom` is set to `\"merge\"`.",
+                "When `onContactUpdated()` and `onContactDeleted()` are not triggered from a merge,",
+                "`originatedFrom` is omitted from their event object.",
+                "",
+                "> **Note:** Backend events don't work when previewing your site." ],
+            "links": [],
+            "examples":
+              [ { "title": "An event fired when contacts are merged",
+                  "body":
+                    [ "// Place this code in the events.js file",
+                      "// of your site's Backend section.",
+                      "// Add the file if it doesn't exist.",
+                      "export function wixCrm_onContactMerged(event) {",
+                      "  const eventId = event.metadata.id;",
+                      "  const sourceContactIds = event.data.sourceContactIds;",
+                      "  const firstSourceContactId = event.data.sourceContactIds[0];",
+                      "  const targetContactId = event.data.targetContact._id;",
+                      "",
+                      "  console.log('Target contact updated by merge', targetContactId);",
+                      "  console.log('Source contacts deleted by merge', sourceContactIds);",
+                      "}",
+                      "",
+                      "/*  Full event object:",
+                      " * {",
+                      " *   \"metadata\": {",
+                      " *     \"id\": \"c6f09a37-8c03-469e-bfa8-9a40939cac66\",",
+                      " *     \"entityId\": \"87227cf7-4ed5-47c3-8261-795d16b6dc9f\",",
+                      " *     \"eventTime\": \"2022-02-02T22:05:47.278693Z\",",
+                      " *     \"triggeredByAnonymizeRequest\": false",
+                      " *   },",
+                      " *   \"data\": {",
+                      " *     \"sourceContactIds\": [",
+                      " *       \"c8e08afd-deac-40f7-b4c1-b42409d35df7\"",
+                      " *     ],",
+                      " *     \"targetContactId\": \"87227cf7-4ed5-47c3-8261-795d16b6dc9f\",",
+                      " *     \"targetContact\": {",
+                      " *       \"_id\": \"49c5d809-6bc8-40b1-86e7-4bf3f6d17adb\",",
+                      " *       \"_createdDate\": \"2022-02-02T21:41:03.306Z\",",
+                      " *       \"_updatedDate\": \"2022-02-02T21:52:00.048Z\",",
+                      " *       \"revision\": 6,",
+                      " *       \"primaryInfo\": {",
+                      " *         \"email\": \"target.contact@example.com\",",
+                      " *         \"phone\": \"62183848\"",
+                      " *       },",
+                      " *       \"info\": {",
+                      " *         \"name\": {",
+                      " *           \"first\": \"Updated Target\"",
+                      " *         },",
+                      " *         \"extendedFields\": {",
+                      " *           \"contacts.displayByLastName\": \"Updated Target\",",
+                      " *           \"invoices.vatId\": \"\",",
+                      " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+                      " *           \"emailSubscriptions.subscriptionStatus\": \"NOT_SET\",",
+                      " *           \"emailSubscriptions.effectiveEmail\": \"source.contact@example.com\",",
+                      " *           \"contacts.displayByFirstName\": \"Updated Target\"",
+                      " *         },",
+                      " *         \"profilePicture\": \"https://img-wixmp-8be454c954980f083caba37c.wixmp.com/sites/7b940519-404c-4972-9f03-9a430b68d52c/49c5d809-6bc8-40b1-86e7-4bf3f6d17adb/ecb8b31b-845c-4bc6-b868-73df78a92313-avatar-v2.jpeg::fil:100_100\",",
+                      " *         \"phones\": [",
+                      " *           {",
+                      " *             \"tag\": \"HOME\",",
+                      " *             \"_id\": \"5a53acb4-fd19-411e-93f3-3bd7ca8f9df8\",",
+                      " *             \"formattedPhone\": \"+45 62183848\",",
+                      " *             \"countryCode\": \"DK\",",
+                      " *             \"e164Phone\": \"+4562183848\",",
+                      " *             \"primary\": true,",
+                      " *             \"phone\": \"62183848\"",
+                      " *           },",
+                      " *           {",
+                      " *             \"tag\": \"WORK\",",
+                      " *             \"_id\": \"b98e5caf-95d6-4fab-b80c-267431b82344\",",
+                      " *             \"formattedPhone\": \"+45 64498094\",",
+                      " *             \"countryCode\": \"DK\",",
+                      " *             \"e164Phone\": \"+4564498094\",",
+                      " *             \"primary\": false,",
+                      " *             \"phone\": \"64498094\"",
+                      " *           }",
+                      " *         ],",
+                      " *         \"labelKeys\": [",
+                      " *           \"contacts.contacted-me\"",
+                      " *         ],",
+                      " *         \"picture\": {",
+                      " *           \"image\": \"https://img-wixmp-8be454c954980f083caba37c.wixmp.com/sites/7b940519-404c-4972-9f03-9a430b68d52c/49c5d809-6bc8-40b1-86e7-4bf3f6d17adb/ecb8b31b-845c-4bc6-b868-73df78a92313-avatar-v2.jpeg::fil:100_100\"",
+                      " *         },",
+                      " *         \"emails\": [",
+                      " *           {",
+                      " *             \"tag\": \"HOME\",",
+                      " *             \"email\": \"target.contact@example.com\",",
+                      " *             \"primary\": true,",
+                      " *             \"_id\": \"81109065-7b9e-4b99-b146-b523eb5338ca\"",
+                      " *           },",
+                      " *           {",
+                      " *             \"tag\": \"WORK\",",
+                      " *             \"email\": \"source.contact@example.com\",",
+                      " *             \"primary\": false,",
+                      " *             \"_id\": \"cd9ea33c-4358-457f-bd99-4384cf5f83c2\"",
+                      " *           }",
+                      " *         ],",
+                      " *         \"addresses\": [",
+                      " *           {",
+                      " *             \"_id\": \"a3455bd0-76af-427c-9adc-8d384193f347\",",
+                      " *             \"tag\": \"HOME\",",
+                      " *             \"address\": {",
+                      " *               \"addressLine1\": \"4197 Existing Street Address\",",
+                      " *               \"city\": \"Klitmøller\",",
+                      " *               \"formatted\": \"4197 Existing Street Address\\nHovedstaden Klitmøller\\nDenmark\",",
+                      " *               \"country\": \"DK\",",
+                      " *               \"postalCode\": \"Hovedstaden\"",
+                      " *             }",
+                      " *           },",
+                      " *           {",
+                      " *             \"_id\": \"c3bb555c-a543-4e0a-86e3-341ced30666c\",",
+                      " *             \"tag\": \"WORK\",",
+                      " *             \"address\": {",
+                      " *               \"addressLine1\": \"9278 Source Street\",",
+                      " *               \"city\": \"København S\",",
+                      " *               \"formatted\": \"9278 Source Street\\n31562 København S\\nDenmark\",",
+                      " *               \"country\": \"DK\",",
+                      " *               \"postalCode\": \"31562\",",
+                      " *               \"subdivision\": \"DK-82\"",
+                      " *             }",
+                      " *           }",
+                      " *         ]",
+                      " *       },",
+                      " *       \"source\": {",
+                      " *         \"sourceType\": \"ADMIN\",",
+                      " *         \"appId\": \"manual\"",
+                      " *       },",
+                      " *       \"lastActivity\": {",
+                      " *         \"activityDate\": \"2022-02-02T21:51:59.952Z\",",
+                      " *         \"activityType\": \"CONTACT_MERGED\"",
+                      " *       }",
+                      " *     }",
+                      " *   }",
+                      " * }",
+                      " */" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
       { "name": "onContactUpdated",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "event",
@@ -335,7 +512,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 142,
+          [ { "lineno": 176,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that fires when a contact is updated.",
@@ -345,6 +522,10 @@
                 "is updated.",
                 "The received `ContactUpdatedEvent` object",
                 "contains information about the contact that was updated.",
+                "",
+                "If a contact is updated as part of a merge,",
+                "`metadata.originatedFrom` is sent as `\"merge\"`.",
+                "Otherwise, `originatedFrom` is omitted.",
                 "",
                 "> **Note:** Backend events don't work when previewing your site." ],
             "links": [],
@@ -549,7 +730,7 @@
   "messages":
     [ { "name": "CardCreatedEvent",
         "locations":
-          [ { "lineno": 192,
+          [ { "lineno": 262,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing a created card.",
@@ -607,7 +788,7 @@
         "labels": [] },
       { "name": "CardMovedEvent",
         "locations":
-          [ { "lineno": 221,
+          [ { "lineno": 291,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing a moved card.",
@@ -672,7 +853,7 @@
         "labels": [] },
       { "name": "CardRestoredEvent",
         "locations":
-          [ { "lineno": 253,
+          [ { "lineno": 323,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing a moved card.",
@@ -730,7 +911,7 @@
         "labels": [] },
       { "name": "ContactCreatedEvent",
         "locations":
-          [ { "lineno": 105,
+          [ { "lineno": 124,
               "filename": "events.js" } ],
         "docs":
           { "links": [],
@@ -749,7 +930,7 @@
         "labels": [] },
       { "name": "ContactDeletedEvent",
         "locations":
-          [ { "lineno": 119,
+          [ { "lineno": 138,
               "filename": "events.js" } ],
         "docs":
           { "links": [],
@@ -758,14 +939,41 @@
               {  } },
         "members":
           [ { "name": "metadata",
-              "type": "wix-crm-backend.Events.EventMetadata",
+              "type": "wix-crm-backend.Events.MergeEventMetadata",
               "doc": "Event metadata." } ],
         "extra":
           {  },
-        "labels": [] },
-      { "name": "ContactUpdatedEvent",
+        "labels":
+          [ "changed" ] },
+      { "name": "ContactMergedData",
         "locations":
-          [ { "lineno": 112,
+          [ { "lineno": 151,
+              "filename": "events.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "sourceContactIds",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "IDs of the source contacts." },
+            { "name": "targetContactId",
+              "type": "string",
+              "doc": "ID of the target contact." },
+            { "name": "targetContact",
+              "type": "wix-crm-backend.Contacts.Contact",
+              "doc": "Updated target contact." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "ContactMergedEvent",
+        "locations":
+          [ { "lineno": 144,
               "filename": "events.js" } ],
         "docs":
           { "links": [],
@@ -776,12 +984,33 @@
           [ { "name": "metadata",
               "type": "wix-crm-backend.Events.EventMetadata",
               "doc": "Event metadata." },
+            { "name": "data",
+              "type": "wix-crm-backend.Events.ContactMergedData",
+              "doc": "Information about the source and target contacts." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] },
+      { "name": "ContactUpdatedEvent",
+        "locations":
+          [ { "lineno": 131,
+              "filename": "events.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "metadata",
+              "type": "wix-crm-backend.Events.MergeEventMetadata",
+              "doc": "Event metadata." },
             { "name": "entity",
               "type": "wix-crm-backend.Contacts.Contact",
               "doc": "Updated contact." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "EventMetadata",
         "locations":
           [ { "lineno": 91,
@@ -1021,6 +1250,38 @@
               "doc": "The Wix Form's attachments." } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels": [] },
+      { "name": "UpdateAndDeleteMetadata",
+        "locations":
+          [ { "lineno": 105,
+              "filename": "events.js" } ],
+        "docs":
+          { "summary": "Event metadata.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Event ID." },
+            { "name": "entityId",
+              "type": "string",
+              "doc": "Contact ID associated with the event." },
+            { "name": "eventTime",
+              "type": "string",
+              "doc": "Event timestamp." },
+            { "name": "originatedFrom",
+              "type": "string",
+              "doc": "If present and set to `\"merge\"`,\nindicates the event was triggered by a merge.\n\nSee [`onContactMerged()`](#onContactMerged) for information on handling\nmerge events.",
+              "optional": true },
+            { "name": "triggeredByAnonymizeRequest",
+              "type": "boolean",
+              "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, [GDPR](https://support.wix.com/en/article/gdpr-frequently-asked-questions)).\nFor advanced users.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "new" ] } ],
   "extra":
     {  } }
