@@ -13,10 +13,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 You can now handle events when one or more source contacts are
 [merged](wix-crm-backend/events/oncontactmerged) into a target contact.
-An new `originatedFrom` property has also been introduced to the existing
+
+A new `originatedFrom` property has also been introduced to the existing
 [`onContactUpdated()`](wix-crm-backend/events/oncontactupdated) and
-[`onContactDeleted()`](wix-crm-backend/events/oncontactdeleted) events,
-allowing you to ignore update and delete events that are triggered by a merge.
+[`onContactDeleted()`](wix-crm-backend/events/oncontactdeleted) events.
+When an update or delete event is triggered by a merge,
+`metadata.originatedFrom` is sent as `"merge"`,
+allowing you to ignore redundant events.
+(February 3, 2020)
 
 ### New API: Delete files and folder from Media Manager
 
