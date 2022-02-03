@@ -13,7 +13,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 You can now use the Media Manager API to move [files](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefilestotrash) and [folders](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefolderstotrash) to the Media Manager's trash bin. (January 12, 2022)
 
-### New API: Pricing Plan Orders
+<!-- ### New API: Pricing Plan Orders
 
 `wix-pricing-plans`, `wix-pricing-plans-backend`
 
@@ -27,7 +27,7 @@ The newly supported activities include:
 * [Postponing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/postponeenddate), [pausing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/pauseorder), and [resuming](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/resumeorder) orders
 * [Marking offline orders as paid](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/markaspaid)
 
-Please note the decprecation and migration instructions we added to the [Paid Plans](https://www.wix.com/velo/reference/wix-paid-plans) documentataion. (Jaunary 12, 2022)
+Please note the deprecation and migration instructions we added to the [Paid Plans](https://www.wix.com/velo/reference/wix-paid-plans) documentation. (January 12, 2022) -->
 
 
 ### New API: Date Picker API improvements
