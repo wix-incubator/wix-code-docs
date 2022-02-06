@@ -4,9 +4,24 @@ We're always adding and updating the Velo APIs, and we want you to have one plac
 
 We love hearing your feedback! You can help us improve the docs by reporting any issues that you notice. You can report bugs and other feedback through the following link found at the bottom of each section.
 
-![](../media/feedback.png)
+![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Event: Contact Merged
+
+`wix-crm-backend`
+
+You can now handle events when one or more source contacts are
+[merged](wix-crm-backend/events/oncontactmerged) into a target contact.
+
+A new `originatedFrom` property has also been introduced to the existing
+[`onContactUpdated()`](wix-crm-backend/events/oncontactupdated) and
+[`onContactDeleted()`](wix-crm-backend/events/oncontactdeleted) events.
+When an update or delete event is triggered by a merge,
+`metadata.originatedFrom` is sent as `"merge"`,
+allowing you to ignore redundant events.
+(February 3, 2020)
+
 ### New API: Delete files and folder from Media Manager
 
 `wix-media-backend`
