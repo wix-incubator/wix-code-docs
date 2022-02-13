@@ -47,7 +47,7 @@ This file contains a function that validates the authenticity of requests receiv
 
 To use the function below in your code, import it with the following syntax:
 
-`import { validateAuth } from ‘@velo/wix-http-functions-hmac-authentication-backend’;`
+`import { validateAuth } from '@velo/wix-http-functions-hmac-authentication-backend';`
 
 
 * **validateAuth()**
@@ -74,9 +74,9 @@ To use the function below in your code, import it with the following syntax:
 
     ```js
     import { ok, badRequest } from 'wix-http-functions';
-    import { validateAuth } from '@velo/wix-http-functions-hmac-authentication-backend’;
+    import { validateAuth } from '@velo/wix-http-functions-hmac-authentication-backend';
 
-    export function post_hostEndpoint(request) {
+    export async function post_hostEndpoint(request) {
         try {
             await validateAuth(request, { secretName: 'my-secret-name' });
             /* Add logic for authenticated requests. For example: */
@@ -93,7 +93,7 @@ To use the function below in your code, import it with the following syntax:
             response.body = "Incoming request is invalid";
             return badRequest(response);
         }
-    };
+    }
     ```
     
 ### Consumer Sites
@@ -132,7 +132,7 @@ This file contains a function that sends requests to the host site's secured end
 
 To use the function below in your code, import it with the following syntax:
 
-`import { invoke } from ‘@velo/wix-http-functions-hmac-authentication-backend’`
+`import { invoke } from '@velo/wix-http-functions-hmac-authentication-backend'`
 
 
 
@@ -179,9 +179,9 @@ To use the function below in your code, import it with the following syntax:
     Below is a an example implementation of `invoke()`: 
 
     ```js
-    import { invoke } from '@velo/wix-http-functions-hmac-authentication-backend’;
+    import { invoke } from '@velo/wix-http-functions-hmac-authentication-backend';
 
-    export function callHostEndpoint() {
+    export async function callHostEndpoint() {
         try {
             const endpointUrl = 'https://www.wix-host-site.com/_functions/hostEndpoint';
             /* Add logic for creating the request. For example: */
@@ -191,12 +191,12 @@ To use the function below in your code, import it with the following syntax:
             const fetchOptions = {
                 "method": "post"
             };
-            const result = await invoke(apiUrl, fetchOptions, hmacOptions); 
+            const result = await invoke(endpointUrl, fetchOptions, hmacOptions); 
             return await result.json();
         } catch (err) {
             console.error(err);
         }
-    };
+    }
     ```
 
 
