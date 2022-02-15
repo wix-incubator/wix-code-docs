@@ -77,15 +77,17 @@ To use the function below in your code, import it with the following syntax:
     import { validateAuth } from '@velo/wix-http-functions-hmac-authentication-backend';
 
     export async function post_hostEndpoint(request) {
+       const response = {
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "body": ""
+            }
+      
         try {
             await validateAuth(request, { secretName: 'my-secret-name' });
             /* Add logic for authenticated requests. For example: */
-            const response = {
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "body": "Incoming request is valid"
-            }
+            response.body = "Incoming request is valid";
             return ok(response);
         } catch (err) {
             /* Add logic for unauthenticated requests. For example: */
