@@ -154,7 +154,7 @@ Now that you've had a taste of Velo, check out what else you can do:
 *   Easily call backend code from the frontend using [web modules](https://support.wix.com/en/article/Velo-web-modules-calling-server-side-code-from-the-front-end). 
 *   Work with Wix's [Editor](https://support.wix.com/en/article/getting-started-with-the-wix-editor).
 *   Add features and customize your site using [Velo APIs](https://www.wix.com/velo/reference/). Here are some examples of what you can do:
-    *   [Collect](https://support.wix.com/en/article/velo-tutorial-using-the-wix-pay-api-to-collect-payments-for-a-single-product) payments.
+    *   [Collect](https://support.wix.com/en/article/velo-tutorial-using-the-velo-pay-api-to-collect-payments-for-a-single-product) payments.
     *   [Create](https://support.wix.com/en/article/velo-tutorial-expand-text-with-a-read-more-link) a Read More link.
     *   [Use](https://www.wix.com/velo/example/create-a-custom-chart) an HTML component to embed a chart on your page.
     *   Work with the data from [other Wix Apps](https://support.wix.com/en/article/working-with-wix-app-collections-6077060) like [Stores](https://support.wix.com/en/velo-by-wix/wix-stores-with-velo), [Bookings](https://support.wix.com/en/velo-by-wix/wix-bookings-with-velo), and [Events](https://support.wix.com/en/velo-by-wix/wix-events-with-velo).
