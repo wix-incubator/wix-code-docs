@@ -20,7 +20,7 @@ A new `originatedFrom` property has also been introduced to the existing
 When an update or delete event is triggered by a merge,
 `metadata.originatedFrom` is sent as `"merge"`,
 allowing you to ignore redundant events.
-(February 3, 2020)
+(February 3, 2022)
 
 ### New API: Delete files and folder from Media Manager
 
