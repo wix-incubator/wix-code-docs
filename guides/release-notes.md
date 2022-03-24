@@ -9,7 +9,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ---
 ### New Feature: Show/Hide number spinner on textInput elements
 
-`$Wix Editor Elements ($w)`
+`Wix Editor Elements ($w)`
 
 You can now show and hide the number spinner on a textInput element when the element is for numeric input.  
 
