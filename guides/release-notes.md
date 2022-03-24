@@ -7,6 +7,17 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Feature: Show/Hide number spinner on textInput elements
+
+`$w`
+
+You can now show and hide the number spinner on a textInput element when the element is for numeric input.
+A new [numberSpinnerHidden]9(https://www.wix.com/velo/reference/$w/textinput/numberspinnerhidden) property has been added.
+2 new function have been added:
++ [hideNumberSpinner()](https://www.wix.com/velo/reference/$w/textinput/hidenumberspinner)
++ [showNumberSpinner](https://www.wix.com/velo/reference/$w/textinput/shownumberspinner)
+(March 23, 2022)
+
 ### New Event: Contact Merged
 
 `wix-crm-backend`
