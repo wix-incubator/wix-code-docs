@@ -7,6 +7,12 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Button Icon
+
+`Wix Editor Elements ($w)`
+
+You can now [set/get](https://www.wix.com/velo/reference/$w/button/icon), [expand](https://www.wix.com/velo/reference/$w/button/expandicon), and [collapse](https://www.wix.com/velo/reference/$w/button/collapseicon) a button's icon in your code. The [`iconCollapsed`](https://www.wix.com/velo/reference/$w/button/iconcollapsed) property allows you to check if an icon is currently collapsed. (March 29, 2022)
+
 ### New Feature: Show/Hide number spinner on textInput elements
 
 `Wix Editor Elements ($w)`
