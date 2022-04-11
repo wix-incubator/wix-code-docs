@@ -159,7 +159,7 @@ The following setup instructions and package content are relevant for consumer s
 ##### Before using the package, set up the following:
 
 1. Ask the Wix store’s owner for the secret key they generated when setting up the package. This is the value of the secret they stored in the Wix Secrets Manager, not its name. **Warning:** Be careful to receive your secret key securely! Exposing it is a serious security risk.
-2. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret called `store-secret`. Store the secret key from step 2 above in this secret.
+2. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret called `store-secret`. Store the secret key from step 1 above in this secret.
 
 
 ### Package Content 
