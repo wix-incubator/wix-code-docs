@@ -30,6 +30,7 @@ import proGallery from 'wix-pro-gallery-backend';
 ```
 
 ## Limitations
++ Item can be from type Image, Video or Text.
 + The [onGalleryCreated()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/events/ongallerycreated) and [onGalleryUpdated()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/events/ongalleryupdated) events don't return the media items included in the gallery. To retrieve these items or their IDs you need to listen to the [onGalleryItemCreated()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/events/ongalleryitemcreated) and [onGalleryItemUpdated()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/events/ongalleryitemupdated) events in addition.
 
 
