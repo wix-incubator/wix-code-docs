@@ -1,6 +1,8 @@
+# About Pro Gallery Backend API
+
 With Wix Pro Gallery Backend API, you can manage your Pro Galleries.
 
-Before working with the ProGallery API, you'll need to add at least on Gallery - for more information see [here](https://support.wix.com/en/article/wix-pro-gallery-about-the-wix-pro-gallery).
+Before working with the ProGallery API, you'll need to add at least one Gallery - for more information see [here](https://support.wix.com/en/article/wix-pro-gallery-about-the-wix-pro-gallery).
 
 The Pro Gallery API allow you to:
 
