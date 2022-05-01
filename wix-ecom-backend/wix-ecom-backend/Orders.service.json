@@ -355,6 +355,36 @@
           "doc": "Activity author's email."
         },
         {
+          "name": "customActivity",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CustomActivity"
+            }
+          ],
+          "doc": "Custom activity details (optional). `activity.type` must be `CUSTOM_ACTIVITY`."
+        },
+        {
+          "name": "merchantComment",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.MerchantComment"
+            }
+          ],
+          "doc": "Merchant comment details (optional). `activity.type` must be `MERCHANT_COMMENT`."
+        },
+        {
+          "name": "orderRefunded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderRefunded"
+            }
+          ],
+          "doc": "Additional info about order refunded activity (optional). `activity.type` must be `ORDER_REFUNDED`."
+        },
+        {
           "name": "type",
           "optional": true,
           "type": [
@@ -363,17 +393,22 @@
             }
           ],
           "doc": "Activity type.\nOne of:\nCUSTOM_ACTIVITY,\nDOWNLOAD_LINK_SENT,\nEMAIL_EDITED,\nFULFILLER_EMAIL_SENT,\nINVOICE_ADDED,\nINVOICE_REMOVED,\nINVOICE_SENT,\nMERCHANT_COMMENT,\nNEW_EXCHANGE_ORDER_CREATED,\nORDER_CANCELED,\nORDER_CREATED_FROM_EXCHANGE,\nORDER_FULFILLED,\nORDER_NOT_FULFILLED,\nORDER_PAID,\nORDER_PLACED,\nORDER_REFUNDED,\nPICKUP_READY_EMAIL_SENT,\nSHIPPING_ADDRESS_EDITED,\nSHIPPING_CONFIRMATION_EMAIL_SENT,\nTRACKING_LINK_ADDED,\nTRACKING_NUMBER_ADDED,\nTRACKING_NUMBER_EDITED"
-        },
-        {
-          "name": "oneOfActivityContentOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.ActivityContentOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfActivityContentOneOf",
+            "members": [
+              "customActivity",
+              "merchantComment",
+              "newExchangeOrderCreated",
+              "orderCreatedFromExchange",
+              "orderRefunded"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -418,8 +453,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "AddActivityRequest",
@@ -851,6 +885,26 @@
       "name": "AppliedDiscount",
       "members": [
         {
+          "name": "coupon",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Coupon"
+            }
+          ],
+          "doc": "Applied coupon info."
+        },
+        {
+          "name": "discountRule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.DiscountRule"
+            }
+          ],
+          "doc": "Automatic Discount"
+        },
+        {
           "name": "discountType",
           "optional": true,
           "type": [
@@ -878,15 +932,28 @@
           "doc": "IDs of line items discount applies to."
         },
         {
-          "name": "oneOfAppliedDiscountDiscountSourceOneOf",
+          "name": "merchantDiscount",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.AppliedDiscountDiscountSourceOneOf"
+              "referenceType": "wix-ecom-backend.Orders.MerchantDiscount"
             }
           ],
-          "doc": ""
+          "doc": "Merchant discount."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAppliedDiscountDiscountSourceOneOf",
+            "members": [
+              "coupon",
+              "discountRule",
+              "merchantDiscount"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -931,8 +998,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "ArchiveOrderRequest",
@@ -1766,15 +1832,37 @@
           "doc": "Buyer email address."
         },
         {
-          "name": "oneOfBuyerInfoIdOneOf",
+          "name": "memberId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.BuyerInfoIdOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID (if site visitor is a site member)."
+        },
+        {
+          "name": "visitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Visitor ID (if site visitor is not a member)."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfBuyerInfoIdOneOf",
+            "members": [
+              "memberId",
+              "visitorId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           "Buyer Info"
@@ -1809,8 +1897,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "BuyerInfoUpdate",
@@ -2349,15 +2436,59 @@
       "name": "CreatedBy",
       "members": [
         {
-          "name": "oneOfCreatedByStringOneOf",
+          "name": "appId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.CreatedByStringOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "App ID - when the order was created by an external application."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID - when the order was created by a **logged in** site visitor."
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "User ID - when the order was created by a Wix user on behalf of a buyer.\nFor example, via POS (point of service)."
+        },
+        {
+          "name": "visitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Visitor ID - when the order was created by a site visitor that was **not** logged in."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCreatedByStringOneOf",
+            "members": [
+              "appId",
+              "memberId",
+              "userId",
+              "visitorId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2412,8 +2543,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CursorPaging",
@@ -2800,15 +2930,37 @@
           "doc": "Instructions for carrier. For example, `\"Please knock on the door. If unanswered, please call contact number. Thanks.\"`."
         },
         {
-          "name": "oneOfDeliveryLogisticsAddressOneOf",
+          "name": "pickupDetails",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.DeliveryLogisticsAddressOneOf"
+              "referenceType": "wix-ecom-backend.Orders.PickupDetails"
             }
           ],
-          "doc": ""
+          "doc": "Pickup details."
+        },
+        {
+          "name": "shippingDestination",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.AddressWithContact"
+            }
+          ],
+          "doc": "Shipping address and contact details."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDeliveryLogisticsAddressOneOf",
+            "members": [
+              "pickupDetails",
+              "shippingDestination"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2843,12 +2995,21 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DescriptionLine",
       "members": [
+        {
+          "name": "colorInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Color"
+            }
+          ],
+          "doc": "Description line color value."
+        },
         {
           "name": "name",
           "optional": true,
@@ -2860,24 +3021,34 @@
           "doc": "Description line name."
         },
         {
-          "name": "oneOfDescriptionLineValueOneOf",
+          "name": "plainText",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.DescriptionLineValueOneOf"
+              "referenceType": "wix-ecom-backend.Orders.PlainTextValue"
             }
           ],
-          "doc": ""
-        },
-        {
-          "name": "oneOfDescriptionLineDescriptionLineValueOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.DescriptionLineDescriptionLineValueOneOf"
-            }
-          ],
-          "doc": ""
+          "doc": "Description line plain text value."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDescriptionLineValueOneOf",
+            "members": [
+              "colorInfo",
+              "plainText"
+            ]
+          },
+          {
+            "name": "oneOfDescriptionLineDescriptionLineValueOneOf",
+            "members": [
+              "color",
+              "plainTextValue"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2891,8 +3062,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DescriptionLineName",
@@ -2952,8 +3122,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DiffmatokyPayload",
@@ -3158,6 +3327,46 @@
           "doc": "random GUID so clients can tell if event was already handled"
         },
         {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "dataExtensionsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.DataExtensionsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
           "name": "entityFqdn",
           "optional": true,
           "type": [
@@ -3218,15 +3427,30 @@
           "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
         },
         {
-          "name": "oneOfDomainEventBodyOneOf",
+          "name": "updatedEvent",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.DomainEventBodyOneOf"
+              "referenceType": "wix-ecom-backend.Orders.EntityUpdatedEvent"
             }
           ],
           "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "dataExtensionsUpdatedEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -3291,8 +3515,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DownloadLinkSent",
@@ -3678,15 +3901,224 @@
           "doc": "Internal activity author's email."
         },
         {
-          "name": "oneOfInternalActivityContentOneOf",
+          "name": "downloadLinkSent",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.InternalActivityContentOneOf"
+              "referenceType": "wix-ecom-backend.Orders.DownloadLinkSent"
             }
           ],
-          "doc": ""
+          "doc": "Download link was sent (relevant for orders with digital line items)."
+        },
+        {
+          "name": "emailEdited",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.EmailEdited"
+            }
+          ],
+          "doc": "Order email was updated."
+        },
+        {
+          "name": "fulfillerEmailSent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.FulfillerEmailSent"
+            }
+          ],
+          "doc": "Email sent to fulfiller."
+        },
+        {
+          "name": "invoiceAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.InvoiceAdded"
+            }
+          ],
+          "doc": "Invoice was added to order."
+        },
+        {
+          "name": "invoiceSent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.InvoiceSent"
+            }
+          ],
+          "doc": "Invoice sent to customer via email."
+        },
+        {
+          "name": "newExchangeOrderCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.NewExchangeOrderCreated"
+            }
+          ],
+          "doc": "New exchange order created."
+        },
+        {
+          "name": "orderCanceled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderCanceled"
+            }
+          ],
+          "doc": "Order canceled."
+        },
+        {
+          "name": "orderCreatedFromExchange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderCreatedFromExchange"
+            }
+          ],
+          "doc": "Order created as a result of items exchange."
+        },
+        {
+          "name": "orderFulfilled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderFulfilled"
+            }
+          ],
+          "doc": "Order shipping status set as fulfilled."
+        },
+        {
+          "name": "orderNotFulfilled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderNotFulfilled"
+            }
+          ],
+          "doc": "Order shipping status set as not fulfilled."
+        },
+        {
+          "name": "orderPaid",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderPaid"
+            }
+          ],
+          "doc": "Order paid. Either by the store owner (for offline orders), or when an online transaction was confirmed."
+        },
+        {
+          "name": "orderPlaced",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderPlaced"
+            }
+          ],
+          "doc": "Order placed."
+        },
+        {
+          "name": "orderRefunded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderRefunded"
+            }
+          ],
+          "doc": "Order refunded."
+        },
+        {
+          "name": "pickupReadyEmailSent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.PickupReadyEmailSent"
+            }
+          ],
+          "doc": "Email notification for pickup sent."
+        },
+        {
+          "name": "shippingAddressEdited",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ShippingAddressEdited"
+            }
+          ],
+          "doc": "Shipping address was updated."
+        },
+        {
+          "name": "shippingConfirmationEmailSent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ShippingConfirmationEmailSent"
+            }
+          ],
+          "doc": "An email confirmation of order shipment was sent."
+        },
+        {
+          "name": "trackingLinkAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TrackingLinkAdded"
+            }
+          ],
+          "doc": "Shipping tracking link added to order."
+        },
+        {
+          "name": "trackingNumberAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TrackingNumberAdded"
+            }
+          ],
+          "doc": "Shipping tracking number added to order."
+        },
+        {
+          "name": "trackingNumberEdited",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TrackingNumberEdited"
+            }
+          ],
+          "doc": "Shipping tracking number was edited."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfInternalActivityContentOneOf",
+            "members": [
+              "downloadLinkSent",
+              "emailEdited",
+              "fulfillerEmailSent",
+              "invoiceAdded",
+              "invoiceSent",
+              "newExchangeOrderCreated",
+              "orderCanceled",
+              "orderCreatedFromExchange",
+              "orderFulfilled",
+              "orderNotFulfilled",
+              "orderPaid",
+              "orderPlaced",
+              "orderRefunded",
+              "pickupReadyEmailSent",
+              "shippingAddressEdited",
+              "shippingConfirmationEmailSent",
+              "trackingLinkAdded",
+              "trackingNumberAdded",
+              "trackingNumberEdited"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -3891,8 +4323,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "InvoiceAdded",
@@ -4006,15 +4437,37 @@
       "name": "ItemType",
       "members": [
         {
-          "name": "oneOfItemTypeItemTypeDataOneOf",
+          "name": "custom",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.ItemTypeItemTypeDataOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Custom item type."
+        },
+        {
+          "name": "preset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Preset item type.\nOne of:\nDIGITAL,\nGIFT_CARD,\nPHYSICAL,\nSERVICE,\nUNRECOGNISED"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfItemTypeItemTypeDataOneOf",
+            "members": [
+              "custom",
+              "preset"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -4049,8 +4502,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "LineItemExchangeData",
@@ -4309,15 +4761,37 @@
           "doc": "Discount amount."
         },
         {
-          "name": "oneOfMerchantDiscountMerchantDiscountReasonOneOf",
+          "name": "description",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.MerchantDiscountMerchantDiscountReasonOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Discount description as free text (optional)."
+        },
+        {
+          "name": "discountReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pre-defined discount reason (optional).\n* `\"ITEMS_EXCHANGE\"` - exchange balance acquired as a result of items exchange.\nOne of:\nEXCHANGED_ITEMS,\nUNSPECIFIED"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfMerchantDiscountMerchantDiscountReasonOneOf",
+            "members": [
+              "description",
+              "discountReason"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -4352,8 +4826,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "NewExchangeOrderCreated",
@@ -5521,6 +5994,16 @@
       "name": "PlatformQuery",
       "members": [
         {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Cannot be used together with `paging`. `cursorPaging.cursor` can not be used together with `filter` or `sort`."
+        },
+        {
           "name": "filter",
           "optional": true,
           "type": [
@@ -5541,6 +6024,16 @@
           "doc": "Filter object."
         },
         {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.PlatformPaging"
+            }
+          ],
+          "doc": "Pointer to page of results using offset. Cannot be used together with `cursorPaging`."
+        },
+        {
           "name": "sort",
           "optional": true,
           "type": [
@@ -5556,17 +6049,19 @@
             }
           ],
           "doc": "Sorting options. For example, `[{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]`."
-        },
-        {
-          "name": "oneOfPlatformQueryPagingMethodOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.PlatformQueryPagingMethodOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPlatformQueryPagingMethodOneOf",
+            "members": [
+              "cursorPaging",
+              "paging"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -5601,8 +6096,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "PreparePaymentCollectionRequest",
@@ -5807,15 +6301,37 @@
       "name": "PublicActivity",
       "members": [
         {
-          "name": "oneOfPublicActivityContentOneOf",
+          "name": "customActivity",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.PublicActivityContentOneOf"
+              "referenceType": "wix-ecom-backend.Orders.CustomActivity"
             }
           ],
-          "doc": ""
+          "doc": "Custom activity details."
+        },
+        {
+          "name": "merchantComment",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.MerchantComment"
+            }
+          ],
+          "doc": "Merchant commment."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPublicActivityContentOneOf",
+            "members": [
+              "customActivity",
+              "merchantComment"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -5850,8 +6366,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "QueryOrderRequest",
@@ -6325,15 +6840,48 @@
       "name": "TaskAction",
       "members": [
         {
-          "name": "oneOfTaskActionActionOneOf",
+          "name": "cancel",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.TaskActionActionOneOf"
+              "referenceType": "wix-ecom-backend.Orders.Cancel"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "complete",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Complete"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "reschedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Reschedule"
             }
           ],
           "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfTaskActionActionOneOf",
+            "members": [
+              "cancel",
+              "complete",
+              "reschedule"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -6378,8 +6926,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "TaskKey",
