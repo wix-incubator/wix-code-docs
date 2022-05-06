@@ -1229,7 +1229,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Activity type.\nOne of:\nCUSTOM_ACTIVITY,\nDOWNLOAD_LINK_SENT,\nEMAIL_EDITED,\nFULFILLER_EMAIL_SENT,\nINVOICE_ADDED,\nINVOICE_REMOVED,\nINVOICE_SENT,\nMERCHANT_COMMENT,\nNEW_EXCHANGE_ORDER_CREATED,\nORDER_CANCELED,\nORDER_CREATED_FROM_EXCHANGE,\nORDER_FULFILLED,\nORDER_NOT_FULFILLED,\nORDER_PAID,\nORDER_PLACED,\nORDER_REFUNDED,\nPICKUP_READY_EMAIL_SENT,\nSHIPPING_ADDRESS_EDITED,\nSHIPPING_CONFIRMATION_EMAIL_SENT,\nTRACKING_LINK_ADDED,\nTRACKING_NUMBER_ADDED,\nTRACKING_NUMBER_EDITED"
+          "doc": "Activity type.\nOne of:\nCUSTOM_ACTIVITY,\nDOWNLOAD_LINK_SENT,\nEMAIL_EDITED,\nFULFILLER_EMAIL_SENT,\nINVOICE_ADDED,\nINVOICE_REMOVED,\nINVOICE_SENT,\nMERCHANT_COMMENT,\nNEW_EXCHANGE_ORDER_CREATED,\nORDER_CANCELED,\nORDER_CREATED_FROM_EXCHANGE,\nORDER_FULFILLED,\nORDER_NOT_FULFILLED,\nORDER_PAID,\nORDER_PARTIALLY_PAID,\nORDER_PLACED,\nORDER_REFUNDED,\nPICKUP_READY_EMAIL_SENT,\nSHIPPING_ADDRESS_EDITED,\nSHIPPING_CONFIRMATION_EMAIL_SENT,\nTRACKING_LINK_ADDED,\nTRACKING_NUMBER_ADDED,\nTRACKING_NUMBER_EDITED"
         }
       ],
       "extra": {
@@ -4779,6 +4779,17 @@
           "doc": "Order paid. Either by the store owner (for offline orders), or when an online transaction was confirmed."
         },
         {
+          "name": "orderPartiallyPaid",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderPartiallyPaid",
+              "displayName": "OrderPartiallyPaid"
+            }
+          ],
+          "doc": "Order partially paid. During the checkout for orders with deposit items."
+        },
+        {
           "name": "orderPlaced",
           "optional": true,
           "type": [
@@ -4883,6 +4894,7 @@
               "orderFulfilled",
               "orderNotFulfilled",
               "orderPaid",
+              "orderPartiallyPaid",
               "orderPlaced",
               "orderRefunded",
               "pickupReadyEmailSent",
@@ -5024,6 +5036,17 @@
             }
           ],
           "doc": "Order paid. Either by the store owner (for offline orders), or when an online transaction was confirmed."
+        },
+        {
+          "name": "orderPartiallyPaid",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderPartiallyPaid",
+              "displayName": "OrderPartiallyPaid"
+            }
+          ],
+          "doc": "Order partially paid. During the checkout for orders with deposit items."
         },
         {
           "name": "orderPlaced",
@@ -5915,7 +5938,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED"
+          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\n+ `PARTIALLY_PAID` -  At least one payment was received and approved, covering less than total price amount.\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_PAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED"
         },
         {
           "name": "priceSummary",
@@ -6455,6 +6478,15 @@
       }
     },
     {
+      "name": "ecomV1OrderOrderPartiallyPaid",
+      "members": [],
+      "docs": {
+        "description": [
+          "Order marked as partially paid when an online transaction was confirmed with partial minimal required amount of total sum"
+        ]
+      }
+    },
+    {
       "name": "ecomV1OrderOrderPaymentStatusUpdated",
       "members": [
         {
@@ -6606,7 +6638,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The previous status (before the update)\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED"
+          "doc": "The previous status (before the update)\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_PAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED"
         }
       ],
       "docs": {
@@ -8014,7 +8046,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Activity item type\nOne of:\nDOWNLOAD_LINK_SENT,\nEMAIL_EDITED,\nFULFILLER_EMAIL_SENT,\nINVOICE_WAS_REMOVED,\nINVOICE_WAS_SENT,\nINVOICE_WAS_SET,\nMERCHANT_COMMENT,\nORDER_FULFILLED,\nORDER_NOT_FULFILLED,\nORDER_PAID,\nORDER_PLACED,\nPICKUP_READY_EMAIL_SENT,\nSHIPPING_ADDRESS_EDITED,\nSHIPPING_CONFIRMATION_EMAIL_SENT,\nTRACKING_LINK_WAS_SET,\nTRACKING_NUMBER_ADDED,\nTRACKING_NUMBER_EDITED,\nUNSPECIFIED_ORDER_HISTORY_ITEM_TYPE"
+          "doc": "Activity item type\nOne of:\nDOWNLOAD_LINK_SENT,\nEMAIL_EDITED,\nFULFILLER_EMAIL_SENT,\nINVOICE_WAS_REMOVED,\nINVOICE_WAS_SENT,\nINVOICE_WAS_SET,\nMERCHANT_COMMENT,\nORDER_FULFILLED,\nORDER_NOT_FULFILLED,\nORDER_PAID,\nORDER_PARTIALLY_PAID,\nORDER_PLACED,\nPICKUP_READY_EMAIL_SENT,\nSHIPPING_ADDRESS_EDITED,\nSHIPPING_CONFIRMATION_EMAIL_SENT,\nTRACKING_LINK_WAS_SET,\nTRACKING_NUMBER_ADDED,\nTRACKING_NUMBER_EDITED,\nUNSPECIFIED_ORDER_HISTORY_ITEM_TYPE"
         }
       ],
       "docs": {
@@ -10964,7 +10996,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Current status of the payment.\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED_PAYMENT_STATUS"
+          "doc": "Current status of the payment.\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_PAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED_PAYMENT_STATUS"
         },
         {
           "name": "read",
