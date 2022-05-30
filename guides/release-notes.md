@@ -7,6 +7,12 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+### New API: Refine search fields
+`wix-search`
+
+You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
+
 ### New API: Retrieve package configuration data
 
 `wix-configs-backend`
@@ -17,9 +23,7 @@ When building a [Velo package](https://support.wix.com/en/article/creating-a-vel
 
 `Wix Editor Elements ($w)`
 
-You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes.
-
-(April 10, 2022)
+You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes. (April 10, 2022)
 ### New API: sendSetPasswordEmail() from the frontend
 
 `wix-members`
