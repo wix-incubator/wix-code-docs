@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ### New API: Refine search fields
 `wix-search`
 
-You can now use the [`searchFields`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
+You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
 
 ### New API: Retrieve package configuration data
 
