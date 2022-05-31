@@ -1,7 +1,6 @@
 { "name": "wix-data",
   "mixes": [],
-  "labels":
-    [ "changed" ],
+  "labels": [],
   "location":
     { "lineno": 31,
       "filename": "data-api.js" },
@@ -70,7 +69,12 @@
           "",
           "To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function in JavaScript to delay retrieving data following any changes to your database collection. ",
           "Note that in rare cases with high volume traffic interacting with your database collection, data may take longer to update. In such cases, ",
-          "you can write a function to re-run your data retrieval function a number of times to ensure that your data is current." ],
+          "you can write a function to re-run your data retrieval function a number of times to ensure that your data is current. ",
+          "",
+          "### Data Quotas",
+          "",
+          "Wix places quotas on requests made by your site using the wix-data API. These quotas affect the number of requests your site can make per minute and",
+          "the amount of time your requests can run for. To find more about these quotas and how to work with them, see [About Data Quotas](https://support.wix.com/en/article/velo-about-data-quotas)." ],
       "links": [],
       "examples": [],
       "extra":
@@ -88,7 +92,7 @@
           { "type": "wix-data.WixDataAggregate",
             "doc": "An aggregate object." },
         "locations":
-          [ { "lineno": 892,
+          [ { "lineno": 910,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates an aggregation.",
@@ -189,7 +193,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk insert.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 724,
+          [ { "lineno": 737,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Adds a number of items to a collection.",
@@ -215,7 +219,7 @@
                 " The `bulkInsert()` function adds the following properties and values to the item",
                 " when it adds it to the collection:",
                 "",
-                " + `_id`: A unique identifier for the item with collection, if the item does not include one. You can optionally provide your own ID. Once an ID is assigned to an item it cannot be changed.",
+                " + `_id`: A unique identifier for an item in a collection, if the item doesn't have one or has one that is `undefined`. You can optionally provide your own ID. Once an ID is assigned to an item it cannot be changed.",
                 " + `_createdDate`: The date the item was added to the collection.",
                 " + `_updatedDate`:  The date the item was modified. When the item is first added, the `createdDate` and `updatedDate` are the same.",
                 "",
@@ -226,7 +230,8 @@
                 " are all added to the collection as defined.",
                 "",
                 "The maximum size of an item that you can add to a collection is 500kb.",
-                " > **Notes:** ",
+                "> **Notes:** ",
+                "> - If an item's `_id` property value is set to `null` or an empty string, an error is thrown.",
                 "> - Bulk operations are limited to 1000 items per function call.",
                 "> - The `bulkInsert()` function is not supported for Single Item Collections." ],
             "links": [],
@@ -455,7 +460,7 @@
                   [ "wix-data.WixDataBulkRemoveResult" ] },
             "doc": "Fulfilled - The results of the bulk remove.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 365,
+          [ { "lineno": 373,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes a number of items from a collection.",
@@ -475,7 +480,7 @@
                 " checking for permissions or without its registered hooks.",
                 "",
                 " > **Notes:** ",
-                " > - The `bulkRemove()` function also clears multiple-item reference fields for items in collections referenced by the specified items. For example, suppose you have a Movies collection with an Actors field that contains multiple references to items in a People collection. Removing items in the Movies collection also clears the data in the corresponding multiple-item reference fields in the People collection.",
+                " > - The `bulkRemove()` function also clears multiple-item reference fields for items in collections referenced by the specified items. For example, suppose you have a **Movies** collection with an **Actors** field that contains multiple references to items in a **People** collection. Removing items in the **Movies** collection also clears the data in the corresponding multiple-item reference fields in the **People** collection.",
                 " >",
                 " > - Bulk operations are limited to 1000 items per function call." ],
             "links": [],
@@ -569,7 +574,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk save.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 781,
+          [ { "lineno": 795,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts or updates a number of items in a collection.",
@@ -578,20 +583,20 @@
                 " have been added or updated in the specified collection. The Promise is rejected if the",
                 " current user does not have the necessary permissions for the collection.",
                 "",
-                " The `bulkSave` function inserts or updates the specified items, depending on",
+                " The `bulkSave()` function inserts or updates the specified items, depending on",
                 " whether they already exist in the collection. It compares the `_id` property",
                 " value of the specified items with the `_id` property values of the items in",
                 " the specified collection.",
                 "",
                 " + If an item in the collection has the specified `_id` value,",
-                "   `bulkSave` uses [update](#update) to update the item in the",
+                "   `bulkSave()` uses [`update()`](#update) to update the item in the",
                 "   collection, triggering the [`beforeUpdate()`](wix-data.Hooks.html#beforeUpdate)",
                 "   and [`afterUpdate()`](wix-data.Hooks.html#afterUpdate) hooks for that item if they have",
                 "   been defined.",
-                " + If no items in the collection have that `_id` value, or if the",
-                "   specified item does not have an `_id` property, `bulkSave` uses",
-                "   [insert](#insert) to add the specified item into the",
-                "   collection, triggering the [`beforeInsert()`](wix-data.Hooks.html#beforeInsert)",
+                " + If none of the items in the collection contain that `_id` value, the",
+                "   specified item does not have an `_id` property, or if the specified item's `_id` property is `undefined`,",
+                "   `bulkSave()` uses [`insert()`](#insert) to add the specified item into the",
+                "   collection. This triggers the [`beforeInsert()`](wix-data.Hooks.html#beforeInsert)",
                 "   and [`afterInsert()`](wix-data.Hooks.html#afterInsert) hooks for that item if they have",
                 "   been defined.",
                 "",
@@ -602,7 +607,11 @@
                 " When saving items to a collection that has a reference field, set",
                 " the values of the reference fields to the referenced item's `_id` value or",
                 " the entire referenced item object.",
-                " > **Notes:** ",
+                " ",
+                " The maximum size of an item that you can save to a collection is 500kb.",
+                "",
+                "> **Notes:** ",
+                "> - If an item's `_id` property value is set to `null` or an empty string, an error is thrown.",
                 "> - Bulk operations are limited to 1000 items per function call.",
                 "> - The `bulkSave()` function is not supported for Single Item Collections." ],
             "links": [],
@@ -831,7 +840,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk save.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 834,
+          [ { "lineno": 852,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Updates a number of items in a collection.",
@@ -1032,12 +1041,12 @@
           { "type": "wix-data.WixDataFilter",
             "doc": "A filter object." },
         "locations":
-          [ { "lineno": 257,
+          [ { "lineno": 265,
               "filename": "data-api.js" } ],
         "docs":
-          { "summary": "Creates a filter to be used with datasets.",
+          { "summary": "Creates a filter to be used with datasets and aggregations.",
             "description":
-              [ "The `filter()` function builds a filter to be applied to a dataset and returns a [`WixDataFilter`](wix-data.WixDataFilter.html) object.",
+              [ "The `filter()` function builds a filter to be applied to a dataset or an aggregation, and returns a [`WixDataFilter`](wix-data.WixDataFilter.html) object.",
                 "The returned object contains the filter definition and is used with the [`setFilter()`](wix-dataset.Dataset.html#setFilter) function.",
                 "",
                 "When working with [Wix app collections](https://support.wix.com/en/article/velo-working-with-wix-app-collections-and-code), check [which fields](https://support.wix.com/en/search?term=velo%20collection%20fields) can be used in a filter." ],
@@ -1080,7 +1089,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The retrieved item or null if not found.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 101,
+          [ { "lineno": 107,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Retrieves an item from a collection.",
@@ -1188,7 +1197,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The item that was added.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 136,
+          [ { "lineno": 142,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Adds an item to a collection.",
@@ -1213,9 +1222,9 @@
                 " The `insert()` function adds the following properties and values to the item",
                 " when it adds it to the collection:",
                 "",
-                " + `_id`: A unique identifier for the item with collection, if the item does not include one. You can optionally provide your own ID. Once an ID is assigned to an item it cannot be changed.",
+                " + `_id`: A unique identifier for an item in a collection, if the item doesn't have one or has one that is `undefined`. You can optionally provide your own ID. Once an ID is assigned to an item it cannot be changed.",
                 " + `_createdDate`: The date the item was added to the collection.",
-                " + `_updatedDate`:  The date the item was modified. When the item is first added, the `createdDate` and `updatedDate` are the same.",
+                " + `_updatedDate`:  The date the item was modified. When the item is first added, the `_createdDate` and `_updatedDate` are the same.",
                 "",
                 "",
                 " Any valid JavaScript object can be added as a property value. The `insert()`",
@@ -1225,7 +1234,9 @@
                 "",
                 "The maximum size of an item that you can add to a collection is 500kb.",
                 "",
-                ">**Note:** When creating a Single Item Collection, an item with the system field `_id` is pre-inserted into the collection. Single Item Collections may contain only one item. ",
+                "> **Notes:** ",
+                "> - If an item's `_id` property value is set to `null` or an empty string, an error is thrown.",
+                "> - When creating a Single Item Collection, an item with the system field `_id` is pre-inserted into the collection. Single Item Collections may contain only one item. ",
                 "If there is a pre-existing item in a Single Item Collection, the `insert()` function will not run. To update or change an item in a Single Item Collection see the [`update()`](#update) and [`save()`](#save) functions." ],
             "links": [],
             "examples":
@@ -1455,7 +1466,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been inserted.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 578,
+          [ { "lineno": 591,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts a reference in the specified property.",
@@ -1539,7 +1550,7 @@
                   [ "boolean" ] },
             "doc": "Fulfilled - Whether the referring item contains a reference to the referenced item or not.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 680,
+          [ { "lineno": 693,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Checks if a reference to the referenced item exists in the specified\n  property of the referring item.",
@@ -1585,7 +1596,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A query object." },
         "locations":
-          [ { "lineno": 192,
+          [ { "lineno": 200,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates a query for retrieving items from a database collection.",
@@ -1838,7 +1849,7 @@
                   [ "wix-data.WixDataQueryReferencedResult" ] },
             "doc": "Fulfilled - The referenced items.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 528,
+          [ { "lineno": 541,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Gets the full items referenced in the specified property.",
@@ -1964,7 +1975,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The removed item.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 285,
+          [ { "lineno": 293,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes an item from a collection.",
@@ -1981,9 +1992,9 @@
                 " checking for permissions or without its registered hooks.",
                 "",
                 "> **Note:** `remove()` also clears multiple-item reference fields for items in collections referenced by the specified item.",
-                "For example, suppose you have a Movies collection with an Actors field that contains multiple references",
-                "to items in a People collection. Removing an item in the Movies collection also clears the data in the corresponding",
-                "multiple-item reference fields in the People collection." ],
+                "For example, suppose you have a **Movies** collection with an **Actors** field that contains multiple references",
+                "to items in a **People** collection. Removing an item in the **Movies** collection also clears the data in the corresponding",
+                "multiple-item reference fields in the **People** collection." ],
             "links": [],
             "examples":
               [ { "title": "Remove an item from a collection",
@@ -2092,7 +2103,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been removed.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 647,
+          [ { "lineno": 660,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes a reference from the specified property.",
@@ -2180,7 +2191,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been inserted.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 613,
+          [ { "lineno": 626,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Replaces current references with references in the specified property.",
@@ -2252,7 +2263,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The item that was either inserted or updated, depending on whether it previously existed in the collection.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 402,
+          [ { "lineno": 410,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts or updates an item in a collection.",
@@ -2262,17 +2273,17 @@
                 " the specified collection. The Promise is rejected if the",
                 " current user does not have the necessary permissions for the collection.",
                 "",
-                " The `save` function inserts or updates the specified item, depending on",
+                " The `save()` function inserts or updates the specified item, depending on",
                 " whether it already exists in the collection. It compares the `_id` property",
                 " value of the specified item with the `_id` property values of the items in",
                 " the specified collection. If an item in the collection has that `_id` value,",
-                " `save` uses [update](#update) to update the item in the",
+                " `save()` uses [`update()`](#update) to update the item in the",
                 " collection, triggering the [`beforeUpdate()`](wix-data.Hooks.html#beforeUpdate)",
                 " and [`afterUpdate()`](wix-data.Hooks.html#afterUpdate) hooks if they have",
-                " been defined. If no items in the collection have that `_id` value, or if the",
-                " specified item does not have an `_id` property, `save` uses",
-                " [insert](#insert) to add the specified item into the",
-                " collection, triggering the [`beforeInsert()`](wix-data.Hooks.html#beforeInsert)",
+                " been defined. If none of the items in the collection contain that `_id` value, the",
+                " specified item does not have an `_id` property, or if the specified item's `id` property ",
+                " is `undefined`, `save()` uses [`insert()`](#insert) to add the specified item to the",
+                " collection. This triggers the [`beforeInsert()`](wix-data.Hooks.html#beforeInsert)",
                 " and [`afterInsert()`](wix-data.Hooks.html#afterInsert) hooks if they have",
                 " been defined.",
                 "",
@@ -2281,7 +2292,11 @@
                 "",
                 " When saving an item to a collection that has a reference field, set",
                 " the value of the reference field to the referenced item's `_id` value or",
-                " the entire referenced item object." ],
+                " the entire referenced item object.",
+                "",
+                " The maximum size of an item that you can save to a collection is 500kb.",
+                "",
+                " > **Note:** If an item's `_id` property value is set to `null` or an empty string, an error is thrown." ],
             "links": [],
             "examples":
               [ { "title": "Save an item in a collection",
@@ -2481,7 +2496,7 @@
           { "type": "wix-data.WixDataSort",
             "doc": "A sort object." },
         "locations":
-          [ { "lineno": 271,
+          [ { "lineno": 279,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates a sort to be used with the dataset `setSort()` function.",
@@ -2526,7 +2541,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the items have been removed.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 321,
+          [ { "lineno": 329,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes all items from a collection.",
@@ -2543,9 +2558,9 @@
                 " Calling the `truncate()` function does not trigger any hooks.",
                 "",
                 " > **Note:** `truncate()` also clears multiple-item reference fields in collections referenced by the specified collection.",
-                " For example, suppose you have a Movies collection with an Actors field that contains multiple references",
-                " to items in a People collection. Truncating the Movies collection also clears the data in the corresponding",
-                " multiple-item reference field in the People collection." ],
+                " For example, suppose you have a **Movies** collection with an **Actors** field that contains multiple references",
+                " to items in a **People** collection. Truncating the **Movies** collection also clears the data in the corresponding",
+                " multiple-item reference field in the **People** collection." ],
             "links": [],
             "examples":
               [ { "title": "Site owner removes all items from a collection",
@@ -2607,7 +2622,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The object that was updated.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 450,
+          [ { "lineno": 463,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Updates an item in a collection.",
@@ -2623,8 +2638,8 @@
                 "",
                 " The `update()` function compares the `_id` property of the specified",
                 " item with the `_id` property values of the items in the specified",
-                " collection. If an item in the collection has that `_id` value, `update`",
-                " replaced the item's property values with the ones in the specified item.",
+                " collection. If an item in the collection has that `_id` value, `update()`",
+                " replaces the item's property values with the ones in the specified item.",
                 " If the existing item had properties with values and those properties were not",
                 " included in the specified item, the values in those properties are lost. The",
                 " item's `_updatedDate` property is also updated to the current date.",
@@ -2887,7 +2902,7 @@
   "messages":
     [ { "name": "WixDataBulkRemoveResult",
         "locations":
-          [ { "lineno": 355,
+          [ { "lineno": 363,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object returned by the `bulkRemove()` function.",
@@ -2919,7 +2934,7 @@
         "labels": [] },
       { "name": "WixDataBulkResult",
         "locations":
-          [ { "lineno": 712,
+          [ { "lineno": 725,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object returned by Wix Data bulk operations.",
@@ -3026,7 +3041,7 @@
         "labels": [] },
       { "name": "WixDataQueryReferencedOptions",
         "locations":
-          [ { "lineno": 511,
+          [ { "lineno": 524,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object for controlling the order of returned referenced items.",
@@ -3086,8 +3101,7 @@
               "doc": "Prevents [permission](https://support.wix.com/en/article/about-collection-permissions) checks from running for the operation. Defaults to `false`. Can only be used in backend code." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "WixStoresProductQuery",
         "locations":
           [ { "lineno": 24,
@@ -3111,7 +3125,9 @@
           {  },
         "labels": [] } ],
   "extra":
-    {  },
+    { "scopes":
+        [ "backend",
+          "frontend" ] },
   "menuSections": "APIs",
   "relatedContent":
     [ { "icon": "article",
