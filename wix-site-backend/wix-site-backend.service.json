@@ -1,6 +1,7 @@
 { "name": "wix-site-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "general-info.js" },
@@ -18,13 +19,12 @@
         {  } },
   "properties":
     [ { "name": "generalInfo",
-        "labels":
-          [ "new" ],
+        "labels": [],
         "get": true,
         "set": false,
         "type": "wix-site-backend.GeneralInfo",
         "locations":
-          [ { "lineno": 26,
+          [ { "lineno": 27,
               "filename": "general-info.js" } ],
         "docs":
           { "summary": "The generalInfo API contains functionality for getting\n [the information about your business](https://support.wix.com/en/article/adding-your-sites-business-info) that\n has been entered in the **General Info** section of your site's [**Dashboard**](https://support.wix.com/en/article/wix-dashboard-overview).",
@@ -42,7 +42,8 @@
           {  } } ],
   "operations":
     [ { "name": "invalidateCache",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params": [],
         "ret":
@@ -66,65 +67,27 @@
                 " a 3rd-party service, you might experience the following issues on a cached site: ",
                 "",
                 " +  Updated data is not displayed.",
+                " +  Updated data flickers.",
                 " +  Updated data is not exposed to bots, hurting SEO.",
                 "",
                 "",
                 " You can prevent such issues by invalidating your site's cache following a data update." ],
             "links": [],
             "examples":
-              [ { "title": "Invalidate a site's cache",
+              [ { "title": "Invalidate the site’s cache when called by a 3rd party",
                   "body":
-                    [ "import wixSiteBackend from 'wix-site-backend';",
-                      "",
-                      "export function invalidateCache() {",
-                      "\treturn wixSiteBackend.invalidateCache();",
-                      "}" ],
-                  "extra":
-                    {  } },
-                { "title": "Get data from a 3rd party service and invalidate the site's cache",
-                  "body":
-                    [ "/***************************************",
-                      " * Backend code - myModule.jsw *",
-                      " ***************************************/",
+                    [ "/* Place this code in the http-functions.js file",
+                      " * in the Backend section of your code files.",
+                      " * Add the file if it doesn't exist. ",
+                      " */ ",
                       "",
                       "import wixSiteBackend from 'wix-site-backend';",
-                      "import { getJSON } from 'wix-fetch';",
+                      "import {ok, serverError} from 'wix-http-functions';",
                       "",
-                      "export function invalidateCache() {",
-                      "  return wixSiteBackend.invalidateCache();",
-                      "}",
-                      "",
-                      "export function fetchData() {",
-                      "  return getJSON(\"https://someapi.com/api/someendpoint\");",
-                      "}",
-                      "",
-                      "let json = fetchData();",
-                      "",
-                      "// This function is triggered by a 3rd-party service ",
-                      "// when data changes (for example, via webhook)",
-                      "export function updateData() {",
-                      "  json = fetchData();",
-                      "  invalidateCache();",
-                      "}",
-                      "",
-                      "export function getData() {",
-                      "  return json;",
-                      "}",
-                      "",
-                      "/********************",
-                      "* client-side code *",
-                      "********************/",
-                      "",
-                      "import { getData } from 'backend/myModule';",
-                      "",
-                      "$w.onReady(function () {",
-                      "  return getData()",
-                      "    .then((json) => {",
-                      "      $w('#myTextElement').text = json.someData[0].description;",
-                      "    })",
-                      "    .catch((error) => {",
-                      "      console.log(error);",
-                      "    });",
+                      "export function get_clearSiteCache(request) {",
+                      "\treturn wixSiteBackend.invalidateCache()",
+                      "        .then(() => ok())",
+                      "        .catch(() => serverError());",
                       "}" ],
                   "extra":
                     {  } } ],
@@ -135,4 +98,5 @@
   "callbacks": [],
   "messages": [],
   "extra":
-    {  } }
+    { "scopes":
+        [ "backend" ] } }
