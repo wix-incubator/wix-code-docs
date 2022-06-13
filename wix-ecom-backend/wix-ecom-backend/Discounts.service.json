@@ -162,7 +162,7 @@
               "referenceType": "wix-ecom-backend.Discounts.MultiCurrencyPrice"
             }
           ],
-          "doc": "Discount value"
+          "doc": "Total discount amount from all line items the discount applied to."
         },
         {
           "name": "discountRuleType",
@@ -418,36 +418,6 @@
       }
     },
     {
-      "name": "DataExtensionsUpdatedEvent",
-      "members": [
-        {
-          "name": "namespaces",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Map from namespace to the updated data as a JSON in string format\nIf _has_more_data is set to true in the update data, it means you need to call the server again to get it"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "DeleteDiscountRuleRequest",
       "members": [
         {
@@ -486,24 +456,47 @@
               "nativeType": "string"
             }
           ],
-          "doc": "One of:\nFIXED_AMOUNT,\nFIXED_PRICE,\nPERCENTAGE,\nUNDEFINED"
+          "doc": "Type of the discount\nOne of:\nFIXED_AMOUNT,\nFIXED_PRICE,\nPERCENTAGE,\nUNDEFINED"
         },
         {
-          "name": "scopes",
+          "name": "fixedAmount",
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Discounts.Scope"
-                  }
-                ]
-              }
+              "nativeType": "string"
             }
           ],
-          "doc": "All associated scopes for `SPECIFIC_ITEMS` target type"
+          "doc": "Fixed amount discount"
+        },
+        {
+          "name": "fixedPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fixed price"
+        },
+        {
+          "name": "percentage",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Percentage discount"
+        },
+        {
+          "name": "specificItemsInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.SpecificItemsInfo"
+            }
+          ],
+          "doc": "Data related to `SPECIFIC_ITEMS` target type"
         },
         {
           "name": "targetType",
@@ -514,17 +507,20 @@
             }
           ],
           "doc": "Type of the target this discount is applied on\nOne of:\nSPECIFIC_ITEMS,\nUNDEFINED"
-        },
-        {
-          "name": "oneOfDiscountDiscountOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Discounts.DiscountDiscountOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDiscountDiscountOneOf",
+            "members": [
+              "fixedAmount",
+              "fixedPrice",
+              "percentage"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -569,8 +565,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DiscountRule",
@@ -649,6 +644,17 @@
           "doc": "Discount rule name"
         },
         {
+          "name": "offer",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "calculated string which describe the discount rule   //WHAT CAN BE THE MAXIMAL VAL?"
+        },
+        {
           "name": "revision",
           "optional": true,
           "type": [
@@ -718,7 +724,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated discount rule name according to buyer language"
+          "doc": "Translated discount rule name according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -731,6 +737,36 @@
       "name": "DiscountTrigger",
       "members": [
         {
+          "name": "and",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.And"
+            }
+          ],
+          "doc": "Chain multiple triggers with AND operator"
+        },
+        {
+          "name": "itemQuantityRange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.ItemQuantityRange"
+            }
+          ],
+          "doc": "Item quantity trigger"
+        },
+        {
+          "name": "subtotalRange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.SubtotalRange"
+            }
+          ],
+          "doc": "Subtotal trigger"
+        },
+        {
           "name": "triggerType",
           "readOnly": true,
           "optional": true,
@@ -740,17 +776,20 @@
             }
           ],
           "doc": "One of:\nAND,\nITEM_QUANTITY,\nMIN_SUBTOTAL,\nUNDEFINED"
-        },
-        {
-          "name": "oneOfDiscountTriggerTriggerOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Discounts.DiscountTriggerTriggerOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDiscountTriggerTriggerOneOf",
+            "members": [
+              "and",
+              "itemQuantityRange",
+              "subtotalRange"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           "DiscountTrigger - description of a set of conditions, that if met, will trigger the associated rule actions"
@@ -795,8 +834,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Discounts",
@@ -816,7 +854,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Discounts"
         }
       ],
       "docs": {
@@ -837,6 +875,36 @@
             }
           ],
           "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
         },
         {
           "name": "entityFqdn",
@@ -869,6 +937,16 @@
           "doc": "The time of the event. Useful if there was a delay in dipatching"
         },
         {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
           "name": "originatedFrom",
           "optional": true,
           "type": [
@@ -899,15 +977,30 @@
           "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
         },
         {
-          "name": "oneOfDomainEventBodyOneOf",
+          "name": "updatedEvent",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Discounts.DomainEventBodyOneOf"
+              "referenceType": "wix-ecom-backend.Discounts.EntityUpdatedEvent"
             }
           ],
           "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -938,21 +1031,21 @@
           "doc": ""
         },
         {
-          "name": "dataExtensionsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Discounts.DataExtensionsUpdatedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "deletedEvent",
           "optional": true,
           "type": [
             {
               "referenceType": "wix-ecom-backend.Discounts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.ExtendedFieldsUpdatedEvent"
             }
           ],
           "doc": ""
@@ -972,8 +1065,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Empty",
@@ -1025,6 +1117,26 @@
             }
           ],
           "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -1387,6 +1499,16 @@
       "name": "PlatformQuery",
       "members": [
         {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Cannot be used together with `paging`. `cursorPaging.cursor` can not be used together with `filter` or `sort`."
+        },
+        {
           "name": "filter",
           "optional": true,
           "type": [
@@ -1407,6 +1529,16 @@
           "doc": "Filter object."
         },
         {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.PlatformPaging"
+            }
+          ],
+          "doc": "Pointer to page of results using offset. Cannot be used together with `cursorPaging`."
+        },
+        {
           "name": "sort",
           "optional": true,
           "type": [
@@ -1422,17 +1554,19 @@
             }
           ],
           "doc": "Sorting options. For example, `[{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]`."
-        },
-        {
-          "name": "oneOfPlatformQueryPagingMethodOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Discounts.PlatformQueryPagingMethodOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPlatformQueryPagingMethodOneOf",
+            "members": [
+              "cursorPaging",
+              "paging"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -1467,8 +1601,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "QueryDiscountRulesRequest",
@@ -1540,6 +1673,26 @@
           "doc": "ID of the scope"
         },
         {
+          "name": "catalogItemFilter",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.CatalogItemFilter"
+            }
+          ],
+          "doc": "An entity filter for scope of type CATALOG_ITEM"
+        },
+        {
+          "name": "customFilter",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Discounts.CustomFilter"
+            }
+          ],
+          "doc": "A custom filter for scope of type CUSTOM_FILTER"
+        },
+        {
           "name": "type",
           "readOnly": true,
           "optional": true,
@@ -1549,17 +1702,19 @@
             }
           ],
           "doc": "The type of the scope\nOne of:\nALL_ITEMS,\nCATALOG_ITEM,\nCUSTOM_FILTER,\nUNDEFINED_SCOPE"
-        },
-        {
-          "name": "oneOfScopeScopeItemsOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Discounts.ScopeScopeItemsOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfScopeScopeItemsOneOf",
+            "members": [
+              "catalogItemFilter",
+              "customFilter"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           "This object represents a scope of catalog items. Examples:\n1. All catalog items of a specific app - type = CATALOG_ITEM, CatalogItemFilter with `catalog_app_id`\n2. Specific catalog item - type = CATALOG_ITEM, CatalogItemFilter with `catalog_app_id` + `catalog_item_ids`\n3. External catalog filter - type = CUSTOM_FILTER, CustomFilter with 'app_id' + 'params'\n4. All items - type = ALL_ITEMS, without ScopeItems"
@@ -1594,8 +1749,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Sorting",
@@ -1619,6 +1773,33 @@
             }
           ],
           "doc": "Sort order.\nOne of:\nASC,\nDESC"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SpecificItemsInfo",
+      "members": [
+        {
+          "name": "scopes",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Discounts.Scope"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "All associated scopes for `SPECIFIC_ITEMS` target type"
         }
       ],
       "docs": {
@@ -1749,6 +1930,17 @@
             }
           ],
           "doc": "Discount rule name"
+        },
+        {
+          "name": "offer",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "calculated string which describe the discount rule   //WHAT CAN BE THE MAXIMAL VAL?"
         },
         {
           "name": "revision",

@@ -41,6 +41,16 @@
       "name": "Address",
       "members": [
         {
+          "name": "addressLine1",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Address line 1 (free text)"
+        },
+        {
           "name": "addressLine2",
           "optional": true,
           "type": [
@@ -111,6 +121,16 @@
           "doc": "Phone number"
         },
         {
+          "name": "street",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Street"
+            }
+          ],
+          "doc": "Address line 1 (street)"
+        },
+        {
           "name": "subdivision",
           "optional": true,
           "type": [
@@ -139,17 +159,19 @@
             }
           ],
           "doc": "ZIP/postal code"
-        },
-        {
-          "name": "oneOfAddressAddressLine1OptionsOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.AddressAddressLine1OptionsOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAddressAddressLine1OptionsOneOf",
+            "members": [
+              "addressLine1",
+              "street"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -184,8 +206,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "AddressWithContact",
@@ -413,6 +434,26 @@
       "name": "AppliedDiscount",
       "members": [
         {
+          "name": "coupon",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Coupon"
+            }
+          ],
+          "doc": "Coupon details."
+        },
+        {
+          "name": "discountRule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.DiscountRule"
+            }
+          ],
+          "doc": "Discount rule"
+        },
+        {
           "name": "discountType",
           "optional": true,
           "type": [
@@ -440,15 +481,28 @@
           "doc": "IDs of line items the discount applies to."
         },
         {
-          "name": "oneOfAppliedDiscountDiscountSourceOneOf",
+          "name": "merchantDiscount",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.AppliedDiscountDiscountSourceOneOf"
+              "referenceType": "wix-ecom-backend.Checkout.MerchantDiscount"
             }
           ],
-          "doc": ""
+          "doc": "Merchant discount."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAppliedDiscountDiscountSourceOneOf",
+            "members": [
+              "coupon",
+              "discountRule",
+              "merchantDiscount"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -493,8 +547,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "AutoTaxFallbackCalculationDetails",
@@ -633,15 +686,48 @@
           "doc": "Buyer email address."
         },
         {
-          "name": "oneOfBuyerInfoIdOneOf",
+          "name": "memberId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.BuyerInfoIdOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID (if site visitor is a site member)."
+        },
+        {
+          "name": "openAccess",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If true checkout doesn't have owner yet and anyone can access it, first one to access it will be new owner.\nIf false, the value in `checkout.createdBy` is the owner."
+        },
+        {
+          "name": "visitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Visitor ID (if site visitor is **not** a member)."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfBuyerInfoIdOneOf",
+            "members": [
+              "memberId",
+              "openAccess",
+              "visitorId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -686,12 +772,21 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CalculationErrors",
       "members": [
+        {
+          "name": "carrierErrors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CarrierErrors"
+            }
+          ],
+          "doc": "Carrier errors."
+        },
         {
           "name": "couponCalculationError",
           "optional": true,
@@ -711,6 +806,16 @@
             }
           ],
           "doc": "Discount Rule calculation error."
+        },
+        {
+          "name": "generalShippingCalculationError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Details"
+            }
+          ],
+          "doc": "General shipping calculation error."
         },
         {
           "name": "giftCardCalculationError",
@@ -758,17 +863,19 @@
             }
           ],
           "doc": "Tax calculation error."
-        },
-        {
-          "name": "oneOfCalculationErrorsShippingCalculationErrorOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.CalculationErrorsShippingCalculationErrorOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCalculationErrorsShippingCalculationErrorOneOf",
+            "members": [
+              "carrierErrors",
+              "generalShippingCalculationError"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -803,8 +910,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CarrierError",
@@ -1495,6 +1601,7 @@
         },
         {
           "name": "checkoutInfo",
+          "optional": true,
           "type": [
             {
               "referenceType": "wix-ecom-backend.Checkout.Checkout"
@@ -1541,6 +1648,7 @@
         },
         {
           "name": "lineItems",
+          "optional": true,
           "type": [
             {
               "complexType": {
@@ -1594,6 +1702,7 @@
         },
         {
           "name": "checkoutInfo",
+          "optional": true,
           "type": [
             {
               "referenceType": "wix-ecom-backend.Checkout.Checkout"
@@ -1640,6 +1749,7 @@
         },
         {
           "name": "lineItems",
+          "optional": true,
           "type": [
             {
               "complexType": {
@@ -1791,6 +1901,16 @@
       "name": "CreateOrderAndChargeResponse",
       "members": [
         {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of newly created order."
+        },
+        {
           "name": "paymentGatewayOrderId",
           "optional": true,
           "type": [
@@ -1811,15 +1931,27 @@
           "doc": "Payment response token."
         },
         {
-          "name": "oneOfCreateOrderAndChargeResponseIdOneOf",
+          "name": "subscriptionId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.CreateOrderAndChargeResponseIdOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "ID of newly created subscription."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCreateOrderAndChargeResponseIdOneOf",
+            "members": [
+              "orderId",
+              "subscriptionId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -1854,8 +1986,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CreateOrderOptions",
@@ -1930,6 +2061,16 @@
       "name": "CreateOrderResponse",
       "members": [
         {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of newly created order (ecom order ID)"
+        },
+        {
           "name": "paymentGatewayOrderId",
           "optional": true,
           "type": [
@@ -1940,15 +2081,27 @@
           "doc": "The payment gateway is cashier.\npayment_gateway_order_id will be returned given that money needs to be charged.\nIn some cases, money should not be charged:\nIf the total price is 0 - For example, could be a free item or a an item with 100% discount\nIf the total price is not 0, but the payment is covered by alternative payment methods such as gift card"
         },
         {
-          "name": "oneOfCreateOrderResponseIdOneOf",
+          "name": "subscriptionId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponseIdOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "ID of newly created subscription."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCreateOrderResponseIdOneOf",
+            "members": [
+              "orderId",
+              "subscriptionId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -1983,22 +2136,65 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CreatedBy",
       "members": [
         {
-          "name": "oneOfCreatedByIdOneOf",
+          "name": "appId",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.CreatedByIdOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "App ID - when the order was created by an external application or Wix service."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID - when the order was created by a **logged in** site visitor."
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "User ID - when the order was created by a Wix user on behalf of a buyer.\nFor example, via POS (point of service)."
+        },
+        {
+          "name": "visitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Visitor ID - when the order was created by a site visitor that was **not** logged in."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCreatedByIdOneOf",
+            "members": [
+              "appId",
+              "memberId",
+              "userId",
+              "visitorId"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2053,8 +2249,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "CustomField",
@@ -2204,36 +2399,6 @@
       }
     },
     {
-      "name": "DataExtensionsUpdatedEvent",
-      "members": [
-        {
-          "name": "namespaces",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Map from namespace to the updated data as a JSON in string format\nIf _has_more_data is set to true in the update data, it means you need to call the server again to get it"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "DeliveryLogistics",
       "members": [
         {
@@ -2307,6 +2472,16 @@
       "name": "DescriptionLine",
       "members": [
         {
+          "name": "colorInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Color"
+            }
+          ],
+          "doc": "Description line color value."
+        },
+        {
           "name": "name",
           "optional": true,
           "type": [
@@ -2317,24 +2492,34 @@
           "doc": "Description line name."
         },
         {
-          "name": "oneOfDescriptionLineValueOneOf",
+          "name": "plainText",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.DescriptionLineValueOneOf"
+              "referenceType": "wix-ecom-backend.Checkout.PlainTextValue"
             }
           ],
-          "doc": ""
-        },
-        {
-          "name": "oneOfDescriptionLineDescriptionLineValueOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.DescriptionLineDescriptionLineValueOneOf"
-            }
-          ],
-          "doc": ""
+          "doc": "Description line plain text value."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDescriptionLineValueOneOf",
+            "members": [
+              "colorInfo",
+              "plainText"
+            ]
+          },
+          {
+            "name": "oneOfDescriptionLineDescriptionLineValueOneOf",
+            "members": [
+              "color",
+              "plainTextValue"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2348,8 +2533,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "DescriptionLineName",
@@ -2409,12 +2593,21 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Details",
       "members": [
+        {
+          "name": "applicationError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.ApplicationError"
+            }
+          ],
+          "doc": ""
+        },
         {
           "name": "tracing",
           "optional": true,
@@ -2436,15 +2629,27 @@
           "doc": "deprecated in API's - to enable migration from rendering arbitrary tracing to rest response"
         },
         {
-          "name": "oneOfDetailsKindOneOf",
+          "name": "validationError",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.DetailsKindOneOf"
+              "referenceType": "wix-ecom-backend.Checkout.ValidationError"
             }
           ],
           "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDetailsKindOneOf",
+            "members": [
+              "applicationError",
+              "validationError"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2479,8 +2684,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Discount",
@@ -2573,7 +2777,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated discount rule name according to buyer language"
+          "doc": "Translated discount rule name according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -2594,6 +2798,36 @@
             }
           ],
           "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
         },
         {
           "name": "entityFqdn",
@@ -2626,6 +2860,16 @@
           "doc": "The time of the event. Useful if there was a delay in dipatching"
         },
         {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
           "name": "originatedFrom",
           "optional": true,
           "type": [
@@ -2656,15 +2900,30 @@
           "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
         },
         {
-          "name": "oneOfDomainEventBodyOneOf",
+          "name": "updatedEvent",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.DomainEventBodyOneOf"
+              "referenceType": "wix-ecom-backend.Checkout.EntityUpdatedEvent"
             }
           ],
           "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -2695,21 +2954,21 @@
           "doc": ""
         },
         {
-          "name": "dataExtensionsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.DataExtensionsUpdatedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "deletedEvent",
           "optional": true,
           "type": [
             {
               "referenceType": "wix-ecom-backend.Checkout.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.ExtendedFieldsUpdatedEvent"
             }
           ],
           "doc": ""
@@ -2729,8 +2988,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "Empty",
@@ -2782,6 +3040,26 @@
             }
           ],
           "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -3239,15 +3517,37 @@
       "name": "ItemType",
       "members": [
         {
-          "name": "oneOfItemTypeItemTypeDataOneOf",
+          "name": "custom",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.ItemTypeItemTypeDataOneOf"
+              "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Custom item type."
+        },
+        {
+          "name": "preset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Preset item type.\nOne of:\nDIGITAL,\nGIFT_CARD,\nPHYSICAL,\nSERVICE,\nUNRECOGNISED"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfItemTypeItemTypeDataOneOf",
+            "members": [
+              "custom",
+              "preset"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -3282,8 +3582,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "LineItem",
@@ -3423,7 +3722,18 @@
               "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
             }
           ],
-          "doc": "Item price **after** catalog-defined discount."
+          "doc": "Item price **after** catalog-defined discount and line item discounts."
+        },
+        {
+          "name": "priceBeforeDiscounts",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Item price **before** line item discounts and **after** catalog-defined discount. Defaults to `price` when not provided."
         },
         {
           "name": "priceDescription",
@@ -4076,7 +4386,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order payment status\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED_PAYMENT_STATUS"
+          "doc": "Order payment status\nOne of:\nFULLY_REFUNDED,\nNOT_PAID,\nPAID,\nPARTIALLY_PAID,\nPARTIALLY_REFUNDED,\nPENDING,\nUNSPECIFIED_PAYMENT_STATUS"
         },
         {
           "name": "read",
@@ -5774,6 +6084,26 @@
       "name": "TaxCalculationDetails",
       "members": [
         {
+          "name": "autoTaxFallbackDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.AutoTaxFallbackCalculationDetails"
+            }
+          ],
+          "doc": "details of the fallback rate calculation"
+        },
+        {
+          "name": "manualRateReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "reason for the manual calculation being used\nOne of:\nGLOBAL_SETTING_TO_MANUAL,\nREGION_SETTING_TO_MANUAL"
+        },
+        {
           "name": "rateType",
           "optional": true,
           "type": [
@@ -5782,17 +6112,19 @@
             }
           ],
           "doc": "rate calculation type\nOne of:\nAUTO_RATE,\nFALLBACK_RATE,\nMANUAL_RATE,\nNO_TAX_COLLECTED"
-        },
-        {
-          "name": "oneOfTaxCalculationDetailsCalculationDetailsOneOf",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.TaxCalculationDetailsCalculationDetailsOneOf"
-            }
-          ],
-          "doc": ""
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfTaxCalculationDetailsCalculationDetailsOneOf",
+            "members": [
+              "autoTaxFallbackDetails",
+              "manualRateReason"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -5827,8 +6159,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "TaxRateBreakdown",
@@ -6806,15 +7137,37 @@
           "doc": "Delivery option delivery time"
         },
         {
-          "name": "oneOfV1ShippingInfoDetailsOneOf",
+          "name": "pickupDetails",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Checkout.V1ShippingInfoDetailsOneOf"
+              "referenceType": "wix-ecom-backend.Checkout.V1PickupDetails"
             }
           ],
-          "doc": ""
+          "doc": "Pickup details (when this object describes pickup)"
+        },
+        {
+          "name": "shipmentDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.ShipmentDetails"
+            }
+          ],
+          "doc": "Shipment details (when this object describes shipment)"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfV1ShippingInfoDetailsOneOf",
+            "members": [
+              "pickupDetails",
+              "shipmentDetails"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -6849,8 +7202,7 @@
         "description": [
           ""
         ]
-      },
-      "oneOf": true
+      }
     },
     {
       "name": "V1SubscriptionOptionInfo",
