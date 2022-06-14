@@ -8,6 +8,17 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Check whether a member is logged in
+
+`wix-members`
+
+You can now check whether the current site visitor is a logged-in member
+by calling the new wix-members
+[`loggedIn()`](wix-members/authentication/loggedin) function.
+This allows you to quickly confirm a member is logged in
+before calling another function that requires a logged-in member.
+(June 14, 2022)
+
 ### New API: Refine search fields
 
 `wix-search`
