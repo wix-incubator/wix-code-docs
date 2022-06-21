@@ -17,7 +17,7 @@ by calling the new wix-members
 [`loggedIn()`](wix-members/authentication/loggedin) function.
 This allows you to quickly confirm a member is logged in
 before calling another function that requires a logged-in member.
-(June 14, 2022)
+(June 21, 2022)
 
 ### New API: Refine search fields
 
