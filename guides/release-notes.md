@@ -8,7 +8,19 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Check whether a member is logged in
+
+`wix-members`
+
+You can now check whether the current site visitor is a logged-in member
+by calling the new wix-members
+[`loggedIn()`](wix-members/authentication/loggedin) function.
+This allows you to quickly confirm a member is logged in
+before calling another function that requires a logged-in member.
+(June 21, 2022)
+
 ### New API: Refine search fields
+
 `wix-search`
 
 You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
@@ -24,6 +36,7 @@ When building a [Velo package](https://support.wix.com/en/article/creating-a-vel
 `Wix Editor Elements ($w)`
 
 You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes. (April 10, 2022)
+
 ### New API: sendSetPasswordEmail() from the frontend
 
 `wix-members`
