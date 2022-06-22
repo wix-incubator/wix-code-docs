@@ -8,6 +8,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Lottie
+
+`Wix Editor Elements ($w)`
+
+With the new [Lottie API]($w/lottie), you can now [add a Lottie element to your site](https://support.wix.com/en/article/wix-editor-importing-lottie-animations-to-your-site) and customize it. You can [`play`]($w/lottie/play), [`pause`]($w/lottie/pause), and [`stop`]($w/lottie/stop) your animation. You can also set the [`speed`]($w/lottie/speed) of your Lottie animation and whether it plays in a loop.
+(June 22, 2022)
+
 ### New API: Check whether a member is logged in
 
 `wix-members`
