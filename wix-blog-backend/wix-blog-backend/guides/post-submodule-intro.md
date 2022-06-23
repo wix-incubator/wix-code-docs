@@ -1,3 +1,6 @@
+---
+title: Introduction
+---
 # Introduction 
 
 The Post API provides funtionality for querying blog posts.
