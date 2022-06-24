@@ -4,10 +4,182 @@ We're always adding and updating the Velo APIs, and we want you to have one plac
 
 We love hearing your feedback! You can help us improve the docs by reporting any issues that you notice. You can report bugs and other feedback through the following link found at the bottom of each section.
 
-![](../media/feedback.png)
+![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
 
+### New API: Lottie
+
+`Wix Editor Elements ($w)`
+
+With the new [Lottie API]($w/lottie), you can now [add a Lottie element to your site](https://support.wix.com/en/article/wix-editor-importing-lottie-animations-to-your-site) and customize it. You can [`play()`]($w/lottie/play), [`pause()`]($w/lottie/pause), and [`stop()`]($w/lottie/stop) your animation. You can also set the [`speed`]($w/lottie/speed) of your Lottie animation and whether it plays in a [`loop`]($w/lottie/loop).
+(June 22, 2022)
+
+### New API: Check whether a member is logged in
+
+`wix-members`
+
+You can now check whether the current site visitor is a logged-in member
+by calling the new wix-members
+[`loggedIn()`](wix-members/authentication/loggedin) function.
+This allows you to quickly confirm a member is logged in
+before calling another function that requires a logged-in member.
+(June 21, 2022)
+
+### New API: Refine search fields
+
+`wix-search`
+
+You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
+
+### New API: Retrieve package configuration data
+
+`wix-configs-backend`
+
+When building a [Velo package](https://support.wix.com/en/article/creating-a-velo-package-3964385) in Wix Blocks, you can use the [`getPackageConfig()`](https://www.wix.com/velo/reference/wix-configs-backend/getpackageconfig) function in your backend code to retrieve data from the package's `config.json` file. (April 14, 2022)
+
+### New API: Date Picker onViewChange() 
+
+`Wix Editor Elements ($w)`
+
+You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes. (April 10, 2022)
+
+### New API: sendSetPasswordEmail() from the frontend
+
+`wix-members`
+
+You can now use the [`sendSetPasswordEmail()`](https://www.wix.com/velo/reference/wix-members/authentication/sendsetpasswordemail) function from the frontend code to send a site member an email with a link to set, or reset, their password. (April 1, 2022)
+
+### New API: Button Icon
+
+`Wix Editor Elements ($w)`
+
+You can now [set/get](https://www.wix.com/velo/reference/$w/button/icon), [expand](https://www.wix.com/velo/reference/$w/button/expandicon), and [collapse](https://www.wix.com/velo/reference/$w/button/collapseicon) a button's icon in your code. The [`iconCollapsed`](https://www.wix.com/velo/reference/$w/button/iconcollapsed) property allows you to check if an icon is currently collapsed. (March 29, 2022)
+
+### New Feature: Show/Hide number spinner on textInput elements
+
+`Wix Editor Elements ($w)`
+
+You can now show and hide the number spinner on a textInput element when the element is for numeric input.  
+
+A new [numberSpinnerHidden](https://www.wix.com/velo/reference/$w/textinput/numberspinnerhidden) property has been added.  
+2 new functions have been added:
++ [hideNumberSpinner()](https://www.wix.com/velo/reference/$w/textinput/hidenumberspinner)
++ [showNumberSpinner()](https://www.wix.com/velo/reference/$w/textinput/shownumberspinner)  
+
+(March 23, 2022)
+
+### New Event: Contact Merged
+
+`wix-crm-backend`
+
+You can now handle events when one or more source contacts are
+[merged](wix-crm-backend/events/oncontactmerged) into a target contact.
+
+A new `originatedFrom` property has also been introduced to the existing
+[`onContactUpdated()`](wix-crm-backend/events/oncontactupdated) and
+[`onContactDeleted()`](wix-crm-backend/events/oncontactdeleted) events.
+When an update or delete event is triggered by a merge,
+`metadata.originatedFrom` is sent as `"merge"`,
+allowing you to ignore redundant events.
+(February 3, 2022)
+
+### New API: Delete files and folder from Media Manager
+
+`wix-media-backend`
+
+You can now use the Media Manager API to move [files](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefilestotrash) and [folders](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefolderstotrash) to the Media Manager's trash bin. (January 12, 2022)
+
+<!-- ### New API: Pricing Plan Orders
+
+`wix-pricing-plans`, `wix-pricing-plans-backend`
+
+We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](https://www.wix.com/velo/reference/wix-pricing-plans) and the [backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend), and more [backend events](https://www.wix.com/velo/reference/wix-pricing-plans-backend/events).
+
+The newly supported activities include:
+* Creating and updating both [online](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder) and [offline](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createofflineorder) orders
+* [Purchasing orders](https://www.wix.com/velo/reference/wix-pricing-plans/checkout/startonlinepurchase)
+* [Canceling orders](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/cancelorder)
+* [Getting](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/getorder) and [listing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/listorders) orders
+* [Postponing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/postponeenddate), [pausing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/pauseorder), and [resuming](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/resumeorder) orders
+* [Marking offline orders as paid](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/markaspaid)
+
+Please note the deprecation and migration instructions we added to the [Paid Plans](https://www.wix.com/velo/reference/wix-paid-plans) documentation. (January 12, 2022) -->
+
+
+### New API: Date Picker API improvements
+
+`Wix Editor Elements ($w)`
+
+You can now use the Date Picker API to set date ranges. Use the [enabledDateRanges](https://www.wix.com/velo/reference/$w/datepicker/enableddateranges) property to set which dates a user can select. Use the [disabledDateRanges](https://www.wix.com/velo/reference/$w/datepicker/disableddateranges) property to set which dates users can't select. (January 12, 2022)
+
+### New API: Set enabledTimes for Time Picker
+
+`Wix Editor Elements ($w)`
+
+You can now set the enabled times for a time slot using the [enabledTimes](wix.com/velo/reference/$w/timepicker/enabledtimes) property of the Time Picker API. (December 29, 2021)
+
+### Update: Using forEachItem() with repeater data from a dataset
+
+`Wix Editor Elements ($w)`
+
+We noted that when using [`forEachItem()`](https://www.wix.com/velo/reference/$w/repeater/foreachitem) with repeater data populated by a dataset, you should call it within the dataset's `onReady()` function. (December 28, 2021)
+
+### Update: Upload Button file types
+
+`Wix Editor Elements ($w)`
+
+The reference now lists the [file types](https://www.wix.com/velo/reference/$w/uploadbutton/filetype) supported by the Upload Button element. (December 20, 2021)
+
+
+### New API: Generate download URLs with the Media Manager
+
+`wix-media-backend`
+
+The Media Manager API now includes 2 new backend functions, [downloadFiles](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/downloadfiles) and [downloadFolder](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/downloadfolder), that generate URLs for downloading Wix media. (December 20, 2021)
+
+### Update: formFactor doesn't return Editor X breakpoint values
+
+`wix-window`
+
+The [`formFactor`](https://www.wix.com/velo/reference/wix-window/formfactor) property only returns the type of a site visitor's device. This doesn't correspond to the site's [Editor X breakpoint values](https://support.wix.com/en/article/editor-x-managing-breakpoints). (December 14, 2021)
+
+### New API: Access the site from the frontend
+
+`wix-site`
+
+You can access a site's name in frontend code using the new [`getSiteDisplayName()`](https://www.wix.com/velo/reference/wix-site/getsitedisplayname) function. (December 9, 2021)
+
+### New API: Direct navigation to the cart page
+
+`wix-stores`
+
+The [`navigate.toCart()`](https://www.wix.com/velo/reference/wix-stores/navigate/tocart) function directs a site visitor's browser directly to their cart page without needing to supply a URL path. (December 7, 2021)
+
+
+### New API: Wix Groups
+
+`wix-groups-backend`
+
+Use the new [Groups API](https://www.wix.com/velo/reference/wix-groups-backend) to create and manage groups on your site. Here are some things you can do:
+  * Create a group
+  * Join a group
+  * Add members to a group
+  * Assign an admin role to a group member
+
+(December 7, 2021)
+
+### New API: Open Quick View with code
+
+`wix-stores`
+
+Use the [`product.openQuickView()`](https://www.wix.com/velo/reference/wix-stores/product/openquickview) function to open a product's Quick View modal from directly within your code. (November 30, 2021)
+
+### Update: Wix Storage items accept numbers
+
+`wix-storage`
+
+The `value` parameter of the [`setItem()`](https://www.wix.com/velo/reference/wix-storage/storage/setitem) function accepts numbers as well as strings. (November 15, 2021)
 
 ### New API: Wix Members and Wix Members Backend
 

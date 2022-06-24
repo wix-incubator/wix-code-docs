@@ -1,10 +1,9 @@
 { "name": "Authentication",
   "memberOf": "wix-members",
   "mixes": [],
-  "labels":
-    [ "changed" ],
+  "labels": [],
   "location":
-    { "lineno": 42,
+    { "lineno": 89,
       "filename": "index.js" },
   "docs":
     { "summary": "The Authentication API contains functionality for authenticating members from frontend code.",
@@ -262,10 +261,10 @@
                       "",
                       "// ...",
                       "",
-                      "const email = $w('#email');",
-                      "const password = $w('#password');",
-                      "const firstName = $w('#firstName');",
-                      "const lastName = $w('#lastName');",
+                      "const email = $w('#email').value;",
+                      "const password = $w('#password').value;",
+                      "const firstName = $w('#firstName').value;",
+                      "const lastName = $w('#lastName').value;",
                       "",
                       "doRegistration(email, password, firstName, lastName)",
                       "  .then(() => {",
@@ -301,6 +300,87 @@
               {  } },
         "extra":
           {  } },
+      { "name": "loggedIn",
+        "labels": [],
+        "nameParams": [],
+        "params": [],
+        "ret":
+          { "type": "boolean",
+            "doc": "`true` if a member is logged in. Otherwise, `false`." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "loggedIn.js" } ],
+        "docs":
+          { "summary": "Indicates whether the site visitor is a logged-in member.",
+            "description":
+              [ "The `loggedIn()` function returns a boolean value",
+                "indicating whether the current visitor is logged in as a site member.",
+                "",
+                "If a member is logged in, `loggedIn()` returns `true`.",
+                "Otherwise, `loggedIn()` returns `false`." ],
+            "links": [],
+            "examples":
+              [ { "title": "Check whether a member is logged in",
+                  "body":
+                    [ "import { authentication } from 'wix-members';",
+                      "",
+                      "// ...",
+                      "",
+                      "const isLoggedIn = authentication.loggedIn();",
+                      "",
+                      "if (isLoggedIn) {",
+                      "  console.log('Member is logged in');",
+                      "} else {",
+                      "  console.log('Member is not logged in');",
+                      "}" ],
+                  "extra":
+                    {  } },
+                { "title": "Check for a logged-in member before getting member details",
+                  "body":
+                    [ "import { authentication, currentMember } from 'wix-members';",
+                      "",
+                      "$w.onReady(async () => {",
+                      "  const isLoggedIn = authentication.loggedIn();",
+                      "",
+                      "  if (isLoggedIn) {",
+                      "    const loggedInMember = await currentMember.getMember()",
+                      "    console.log('Member is logged in:', loggedInMember);",
+                      "    const memberId = loggedInMember._id;",
+                      "    const contactId = loggedInMember.contactId;",
+                      "  } else {",
+                      "    // Handle when member isn't logged in",
+                      "  }",
+                      "});" ],
+                  "extra":
+                    {  } },
+                { "title": "Show a logout button if a member is logged in",
+                  "body":
+                    [ "/*****************************",
+                      " * Page code - masterpage.js *",
+                      " ****************************/",
+                      "",
+                      "import { authentication } from 'wix-members';",
+                      "",
+                      "$w.onReady(function () {",
+                      "  const loggedIn = authentication.loggedIn();",
+                      "",
+                      "  if (loggedIn) {",
+                      "    console.log('Logged in, showing the logout button');",
+                      "    $w('#logout').show();",
+                      "  }",
+                      "",
+                      "  authentication.onLogin(() => {",
+                      "    console.log('Logged in, showing the logout button');",
+                      "    $w('#logout').show();",
+                      "  });",
+                      "});",
+                      "" ],
+                  "extra":
+                    { "description": "This code example runs on `masterpage.js` and relies on a logout button,\nwhich is hidden when the page loads.\n\nWhen the page loads, if `loggedIn()` returns `true`,\nthe logout button is displayed.\nAdditionally, if a member logs in after the page loads,\nthe button is displayed in response to the login event." } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
       { "name": "login",
         "labels": [],
         "nameParams": [],
@@ -321,10 +401,13 @@
           [ { "lineno": 1,
               "filename": "login.js" } ],
         "docs":
-          { "summary": "Logs a member in with an email and password.",
+          { "summary": "Logs a registered member in with an email and password.",
             "description":
               [ "The `login()` function returns a Promise that resolves when the member with",
                 " the specified email address and password is logged in.",
+                "",
+                " The `login()` function only works with existing members. To register a new member use ",
+                " the [`register()` function](#register).",
                 "",
                 "> **Notes:**",
                 ">",
@@ -431,8 +514,7 @@
         "extra":
           {  } },
       { "name": "onLogin",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -685,7 +767,7 @@
               "type": "string",
               "doc": "Password to assign to the new member.\nMust be 4 to 100 ASCII characters." },
             { "name": "options",
-              "type": "wix-members-backend.Authentication.RegistrationOptions",
+              "type": "wix-members.Authentication.RegistrationOptions",
               "doc": "Registration options.",
               "optional": true } ],
         "ret":
@@ -695,7 +777,7 @@
                   [ "wix-members.Authentication.RegistrationResult" ] },
             "doc": "Fulfilled - When the member is registered.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 21,
+          [ { "lineno": 63,
               "filename": "register.js" } ],
         "docs":
           { "summary": "Registers a new site member.",
@@ -703,19 +785,16 @@
               [ "The `register()` function returns a Promise that resolves to a `RegistrationResult`",
                 " object when the member is registered or pending registration.",
                 "",
-                "> **Note:**",
-                "> This function replaces the deprecated",
-                "> `wix-users.register()`.",
-                "> The deprecated function will continue to work, but it will not receive updates.",
-                "> To keep any existing code compatible with future changes, see the",
-                "> [migration instructions](wix-users/register#migration-instructions).",
+                "> **Notes:**",
+                "> - The member data in the resolved promise will only include custom fields from your site's contacts if [they are added to your site Members in your site's dashboard](https://support.wix.com/en/article/customizing-your-member-profile-fields).",
+                "> - This function replaces the deprecated `wix-users.register()`. The deprecated function will continue to work, but it will not receive updates. To keep any existing code compatible with future changes, see the [migration instructions](wix-users/register#migration-instructions).",
                 "",
                 "The specified `password` must be between 4 and 100 ASCII characters.",
                 "",
                 "#### Automatic vs. Manual Approval",
                 "",
                 "The `register()` function behaves differently depending on your site's",
-                "[member signup settings](https://support.wix.com/en/article/editing-your-member-signup-settings-for-the-default-form).",
+                "[member signup settings](https://support.wix.com/en/article/velo-enabling-custom-site-registration).",
                 "Details are outlined in the following table:",
                 "",
                 "| Signup Setting                                                  | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |",
@@ -752,15 +831,16 @@
                       "",
                       "// ...",
                       "",
-                      "// Sample options value:",
-                      "// {",
-                      "//   contactInfo: {",
-                      "//     firstName: 'Juan',",
-                      "//     lastName: 'Doe',",
-                      "//     picture: 'https://static.parastorage.com/unpkg-semver/communities-blog-statics/assets/wix-logo.png',",
-                      "//   },",
-                      "//   privacyStatus: \"PRIVATE\"",
-                      "// }",
+                      "/* Sample options value:",
+                      " * {",
+                      " *   contactInfo: {",
+                      " *     firstName: 'Juan',",
+                      " *     lastName: 'Doe',",
+                      " *     picture: 'https://static.parastorage.com/unpkg-semver/communities-blog-statics/assets/wix-logo.png',",
+                      " *   },",
+                      " *   privacyStatus: \"PRIVATE\"",
+                      " * }",
+                      " */",
                       "",
                       "authentication.register(email, password, options)",
                       "  .then((registrationResult) => {",
@@ -782,6 +862,68 @@
                       "  .catch((error) => {",
                       "    console.error(error);",
                       "  });" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "sendSetPasswordEmail",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "email",
+              "type": "string",
+              "doc": "Login email of the member whose password will be set." },
+            { "name": "options",
+              "type": "wix-members.Authentication.SetPasswordEmailOptions",
+              "doc": "Email display options.",
+              "optional": true } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "boolean" ] },
+            "doc": "Fulfilled - If the email is sent.\nRejected - Error message." },
+        "locations":
+          [ { "lineno": 13,
+              "filename": "sendSetPasswordEmail.js" } ],
+        "docs":
+          { "summary": "Sends a site member an email with a link to set their password.",
+            "description":
+              [ "The `sendSetPasswordEmail()` function returns a Promise that resolves",
+                "when the set password link is emailed to the member.",
+                "",
+                "The set password link is valid for 3 hours,",
+                "and it can be used only once.",
+                "If the link expires, no changes are made to the password." ],
+            "links": [],
+            "examples":
+              [ { "title": "Email a member with a link to set their password",
+                  "body":
+                    [ "import { authentication } from 'wix-members';",
+                      "",
+                      "/* Sample options value:",
+                      "* {",
+                      "*   hideIgnoreMessage: true",
+                      "* }",
+                      "*/",
+                      "",
+                      "authentication.sendSetPasswordEmail(email, options)",
+                      "  .then((status) => {",
+                      "",
+                      "    console.log(status);",
+                      "    if (status === true) {",
+                      "",
+                      "        console.log('Email sent!');",
+                      "    }",
+                      "    return status;    ",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "  });",
+                      "",
+                      "/* Promise resolves to a boolean */" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -825,7 +967,65 @@
         "extra":
           {  } } ],
   "messages":
-    [ { "name": "LoginEvent",
+    [ { "name": "ContactInfo",
+        "locations":
+          [ { "lineno": 17,
+              "filename": "register.js" } ],
+        "docs":
+          { "summary": "An object that contains information about a site contact.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "firstName",
+              "type": "string",
+              "doc": "Contact's first name.",
+              "optional": true },
+            { "name": "lastName",
+              "type": "string",
+              "doc": "Contact's last name.",
+              "optional": true },
+            { "name": "picture",
+              "type": "string",
+              "doc": "Contact's image source URL.",
+              "optional": true },
+            { "name": "emails",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "List of contact's email addresses.\n When creating a contact, if no phone number is\n provided, at least 1 email address must be provided.",
+              "optional": true },
+            { "name": "phones",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "List of contact's phone numbers.\n When creating a contact, if no email is\n provided, at least 1 phone number must be provided.",
+              "optional": true },
+            { "name": "labels",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "List of contact's labels. [Labels](https://support.wix.com/en/article/creating-contact-labels)\n are used to organize contacts. When setting the `labels` property, you can\n only list labels that already exist in your site's [Contact List](https://support.wix.com/en/article/accessing-your-contact-list).",
+              "optional": true },
+            { "name": "language",
+              "type": "string",
+              "doc": "Contact's language.",
+              "optional": true },
+            { "name": "customFields",
+              "type":
+                [ "string",
+                  "number",
+                  "Date" ],
+              "doc": "Any\n number of custom fields. [Custom fields](https://support.wix.com/en/article/adding-custom-fields-to-contacts)\n are used to store additional information about your site's contacts. When\n setting a custom field, use key:value pairs where the key matches the names\n defined in your site's [Contacts List](https://support.wix.com/en/article/accessing-your-contact-list).\n You can only set values for custom fields that already exist in the Contacts\n application.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "LoginEvent",
         "locations":
           [ { "lineno": 6,
               "filename": "onLogin.js" } ],
@@ -885,9 +1085,32 @@
         "extra":
           {  },
         "labels": [] },
-      { "name": "RegistrationResult",
+      { "name": "RegistrationOptions",
         "locations":
           [ { "lineno": 1,
+              "filename": "register.js" } ],
+        "docs":
+          { "summary": "An object that contains information about a site registration.",
+            "links":
+              [ "[register](#register)" ],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "contactInfo",
+              "type": "wix-members.Authentication.ContactInfo",
+              "doc": "Contact information.",
+              "optional": true },
+            { "name": "privacyStatus",
+              "type": "string",
+              "doc": "Sets the [privacy status](https://support.wix.com/en/article/member-privacy-settings-for-groups) of a new member upon registration.\nOne of:\n\n - `\"PUBLIC\"`: Sets the new member status to public. A member whose status is public is a member of the site's community.\n - `\"PRIVATE\"`: Sets the new member status to private. A member whose status is private is not a member of the site's community.\n\nDefaults to `\"PRIVATE\"`.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "RegistrationResult",
+        "locations":
+          [ { "lineno": 43,
               "filename": "register.js" } ],
         "docs":
           { "links": [],
@@ -903,8 +1126,25 @@
               "doc": "Token for approving the member\nwith the [`approveByToken()`](wix-members-backend/authentication/approveByToken)\nfunction. `approvalToken` is safe to pass via email or from page code to\nbackend code.\n\nReturned when `status` is `\"PENDING\"`.",
               "optional": true },
             { "name": "member",
-              "type": "wix-members-backend.Members.Member",
+              "type": "wix-members.CurrentMember.Member",
               "doc": "The registered member.\n\nReturned when `status` is `\"ACTIVE\"`.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "SetPasswordEmailOptions",
+        "locations":
+          [ { "lineno": 1,
+              "filename": "sendSetPasswordEmail.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "hideIgnoreMessage",
+              "type": "boolean",
+              "doc": "Whether to hide the \"ignore this email\" message.\n\nIf `false`, the email tells the member\nthey can safely ignore\nif they did not request the password change.\n\nDefaults to `false`.",
               "optional": true } ],
         "extra":
           {  },
