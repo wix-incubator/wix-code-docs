@@ -24,4 +24,3 @@ For example, an event handler that handles the created of a post looks like:
 ```javascript
 export function wixBlog_onPostCreated(event) {}
 ```
-*/
