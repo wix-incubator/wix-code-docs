@@ -35,7 +35,7 @@ The following setup instructions and package content are relevant for the store 
         put_updateProduct as _put_updateProduct,
         get_products as _get_products
     } 
-    from '@velo/wix-stores-data-requests-backend;';
+    from '@velo/wix-stores-data-requests-backend';
     
 
     export async function get_storeInfo(request) {
@@ -158,21 +158,13 @@ The following setup instructions and package content are relevant for consumer s
 
 ##### Before using the package, set up the following:
 
-1. In your **config.json** backend file, set the `storeUrl` property to a string with the Wix store’s URL. For example, `https://some-account.wixsite.com/store`.
-2. Ask the Wix store’s owner for the secret key they generated when setting up the package. This is the value of the secret they stored in the Wix Secrets Manager, not its name. **Warning:** Be careful to receive your secret key securely! Exposing it is a serious security risk.
-3. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret called `store-secret`. Store the secret key from step 2 above in this secret.
+1. Ask the Wix store’s owner for the secret key they generated when setting up the package. This is the value of the secret they stored in the Wix Secrets Manager, not its name. **Warning:** Be careful to receive your secret key securely! Exposing it is a serious security risk.
+2. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret called `store-secret`. Store the secret key from step 1 above in this secret.
 
 
 ### Package Content 
 
 The following backend files are included in the package for use on consumer sites. Note that only exported functions that you can use in your site are listed here. 
-
-
-#### config.json 
-
-The code in this file contains configurations needed to use this package. Follow the instructions in step 1 of the [Setup](#setup) section to edit the file with your configurations. 
-
-
 #### store-client-methods.js 
 
 This file contains functions that consumer sites can use to send HTTP requests to the store site’s endpoints. Supported requests include getting store data and updating a specific product’s data. 
@@ -181,7 +173,7 @@ To use the functions below in your code, import them with the following syntax:
 
 
 ```js
-import { <function name> } from '@velo/wix-stores-data-requests-backend;
+import { <function name> } from '@velo/wix-stores-data-requests-backend';
 ```
 
 * **getStoreData()**

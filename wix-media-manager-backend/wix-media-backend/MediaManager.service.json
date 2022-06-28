@@ -4,7 +4,7 @@
   "labels":
     [ "changed" ],
   "location":
-    { "lineno": 13,
+    { "lineno": 15,
       "filename": "index.js" },
   "docs":
     { "summary": "The `mediaManager` module contains functionality for working with\n the media that is stored in your site's [Media Manager](https://support.wix.com/en/article/about-the-media-manager-568956).",
@@ -187,13 +187,123 @@
               {  } },
         "extra":
           {  } },
+      { "name": "getDownloadUrl",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "fileUrl",
+              "type": "string",
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`." },
+            { "name": "expirationTime",
+              "type": "number",
+              "doc": "The time (in minutes) it takes for the download URL to expire.\nDefaults to `600`. Limit is `525600` (1 year).",
+              "optional": true },
+            { "name": "downloadedFileName",
+              "type": "string",
+              "doc": "The downloaded file's name. Defaults to the file's name displayed in the Media Manager.",
+              "optional": true },
+            { "name": "expiredTokenRedirectUrl",
+              "type": "string",
+              "doc": "The redirect URL for when the download URL with a token has expired. Defaults to a 403 Forbidden response page.",
+              "optional": true } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "string" ] },
+            "doc": "Fulfilled - The file's download URL with a token." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "get-download-url.js" } ],
+        "docs":
+          { "summary": "Gets a temporary download URL with a token for a specified file in the Media Manager.",
+            "description":
+              [ "The `getDownloadUrl()` function returns a Promise that resolves to ",
+                " a download URL for a specified file in the Media Manager. ",
+                "",
+                " Pass the file's URL in the `fileUrl` parameter, as returned ",
+                " in the `fileUrl` property of the `getFileInfo()`, `importFile()`, `upload()`, and `listFiles()` functions.",
+                " When the download URL is clicked, the specified file downloads to your device. ",
+                "",
+                " You can use the `getDownloadUrl()` function to allow external clients to download a file from the Media Manager to their device.",
+                "",
+                ">**Notes:** ",
+                "> + The download URL with the token is valid for a single file download only. `getDownloadUrl()` must be called for each file that you want to download.",
+                "> + This function's parameters are positional, and must be specified in the sequence shown in the syntax below. When specifying a parameter, use `null` as a placeholder for any unspecified parameters. For example, to specify `downloadedFileName` only, call `getDownloadUrl(fileUrl, null, downloadedFileName, null)`." ],
+            "links": [],
+            "examples":
+              [ { "title": "Get a temporary download URL",
+                  "body":
+                    [ "import { mediaManager } from 'wix-media-backend';",
+                      "",
+                      "// Sample fileUrl value: 'wix:image://v1/0abec0_51b1141c839c4d349035941cb9427ebe~mv2.jpg/child-on-bike.jpg#originWidth=768&originHeight=1024'",
+                      "",
+                      "export async function myGetDownloadUrlFunction(fileUrl) {",
+                      "  const myFileDownloadUrl = await mediaManager.getDownloadUrl(fileUrl);  ",
+                      "  return myFileDownloadUrl;",
+                      "}",
+                      "",
+                      "",
+                      "/* Promise resolves to:",
+                      " * \"https://download-files.wix.com/_api/download/file?downloadToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpc3MiO...\"",
+                      " */",
+                      "" ],
+                  "extra":
+                    { "description": "When clicked, the URL downloads a file from the Media Manager to your device." } },
+                { "title": "Get a temporary download URL with an expiration date and redirect URL",
+                  "body":
+                    [ "import { mediaManager } from 'wix-media-backend';",
+                      "",
+                      "/* Sample fileUrl value: 'wix:image://v1/0abec0_51b1141c839c4d349035941cb9427ebe~mv2.jpg/child-on-bike.jpg#originWidth=768&originHeight=1024'",
+                      " * Sample expirationTime value: 10",
+                      " * Sample expiredTokenRedirectUrl value: 'https://www.my-redirect-url.com'",
+                      " */ ",
+                      "",
+                      "export async function myGetDownloadUrlFunction(fileUrl, expirationTime, downloadedFileName, expiredTokenRedirectUrl) {",
+                      "  const myFileDownloadUrl = await mediaManager.getDownloadUrl(fileUrl, expirationTime, null, expiredTokenRedirectUrl);  ",
+                      "  return myFileDownloadUrl;",
+                      "}",
+                      "",
+                      "",
+                      "/* Promise resolves to:",
+                      " * \"https://download-files.wix.com/_api/download/file?downloadToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpc3MiO...\"",
+                      " */",
+                      "" ],
+                  "extra":
+                    { "description": "When clicked, the URL downloads a file from the Media Manager to your device." } },
+                { "title": "Get a temporary download URL with an expiration date and redirect URL",
+                  "body":
+                    [ "import { mediaManager } from 'wix-media-backend';",
+                      "",
+                      "/* Sample fileUrl value: 'wix:image://v1/0abec0_51b1141c839c4d349035941cb9427ebe~mv2.jpg/child-on-bike.jpg#originWidth=768&originHeight=1024'",
+                      " * Sample expirationTime value: 10",
+                      " * Sample downloadedFileName value: 'my-audio-clip-1'",
+                      " * Sample expiredTokenRedirectUrl value: 'https://www.my-redirect-url.com'",
+                      " */ ",
+                      "",
+                      "export async function myGetDownloadUrlFunction(fileUrl, expirationTime, downloadedFileName, expiredTokenRedirectUrl) {",
+                      "  const myFileDownloadUrl = await mediaManager.getDownloadUrl(fileUrl, expirationTime, downloadedFileName, expiredTokenRedirectUrl);  ",
+                      "  return myFileDownloadUrl;",
+                      "}",
+                      "",
+                      "",
+                      "/* Promise resolves to:",
+                      " * \"https://download-files.wix.com/_api/download/file?downloadToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpc3MiO...\"",
+                      " */",
+                      "" ],
+                  "extra":
+                    { "description": "When clicked, the URL downloads a file from the Media Manager to your device with the specified name." } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
       { "name": "getFileInfo",
         "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "fileUrl",
               "type": "string",
-              "doc": "The file's Wix media URL. For example, `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." } ],
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -252,7 +362,7 @@
         "params":
           [ { "name": "fileUrl",
               "type": "string",
-              "doc": "The file's Wix media URL. For example, `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." } ],
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -263,9 +373,15 @@
           [ { "lineno": 1,
               "filename": "get-file-url.js" } ],
         "docs":
-          { "summary": "Gets a temporary download URL with a token from the Media Manager for a specified file.",
+          { "summary": "**Deprecated.**\nThis function will continue to work, but a newer version is available. Use the [`getDownloadUrl`](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/getdownloadurl) function instead.",
             "description":
-              [ "The `getFileUrl()` function returns a Promise that resolves to ",
+              [ "</br>",
+                "",
+                ">**Note:** The new [`getDownloadUrl`](#getDownloadUrl) function contains additional parameters. ",
+                "",
+                " Gets a temporary download URL with a token from the Media Manager for a specified file.",
+                "",
+                " The `getFileUrl()` function returns a Promise that resolves to ",
                 " a download URL for the specified file.",
                 "",
                 " Pass a Media Manager file URL in the `fileUrl` parameter,",
@@ -283,9 +399,10 @@
                       "",
                       "/* Returns a promise that resolves to:",
                       " * https://download-files.wix.com/_api/download/file?downloadToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpc3MiO...",
-                      " */" ],
+                      " */",
+                      "" ],
                   "extra":
-                    {  } } ],
+                    { "description": "<span style=\"color: #FF5252\">This example uses a deprecated function.</span>" } } ],
             "extra":
               {  } },
         "extra":
@@ -500,7 +617,7 @@
         "params":
           [ { "name": "fileUrl",
               "type": "string",
-              "doc": "The file's Wix media URL. For example, `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." },
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`.\n\n**Note:** This replaces the old `fileName` parameter. `fileName` will continue to work, but we recommend that you use the updated `fileUrl` parameter instead." },
             { "name": "format",
               "type": "string",
               "doc": "The format of the URL to get. Either `\"hls\"` or `\"dash\"`." } ],
@@ -619,8 +736,7 @@
         "extra":
           {  } },
       { "name": "listFiles",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "filters",
@@ -654,8 +770,8 @@
                 "",
                 " To get a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the `listFiles()` function returns the list of files in the root folder of the Media Manager. ",
                 "",
-                " **Note:** This function's parameters are positional, and must be specified in the sequence shown in the syntax below. When specifying a parameter, use 'null' as a placeholder for any unspecified parameters. ",
-                " For example, to specify `sorting`, call `listFiles(null, sorting, null)`." ],
+                " >**Note:** This function's parameters are positional, and must be specified in the sequence shown in the syntax below. When specifying a parameter, use `null` as a placeholder for any unspecified parameters. For example, to specify `parentFolderId` only, call `listFiles(filters, null, null)`.",
+                " For example, to specify `sorting` only, call `listFiles(null, sorting, null)`." ],
             "links": [],
             "examples":
               [ { "title": "List files in a specified folder",
@@ -903,8 +1019,8 @@
                 "",
                 " To get a list of folders within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the `listFolders()` function returns the list of folders in the root folder of the Media Manager.",
                 " ",
-                " **Note:** This function's parameters are positional, and must be specified in the sequence shown in the syntax below. When specifying a parameter, use 'null' as a placeholder for any unspecified parameters. ",
-                " For example, to specify `sorting`, call `listFolders(null, sorting, null)`." ],
+                " >**Note:** This function's parameters are positional, and must be specified in the sequence shown in the syntax below. When specifying a parameter, use `null` as a placeholder for any unspecified parameters. For example, to specify `parentFolderId` only, call `listFolders(filters, null, null)`.",
+                " For example, to specify `sorting` only, call `listFolders(null, sorting, null)`." ],
             "links": [],
             "examples":
               [ { "title": "List folders in a specified folder",
@@ -1571,7 +1687,7 @@
               "doc": "**Deprecated**. Use the `fileUrl` property instead. \n\nThe `fileName` property is the internal name (unique identifier) which is generated when a file is uploaded by the Media Manager, returned from the [`importFile()`](#importFile), or [`upload()`](#upload) functions. The name is the string located in the file's URL. Click [here](https://www.wix.com/velo/forum/tips-tutorials-examples/creating-a-url-for-a-media-file-or-the-truth-about-getfileurl) to learn more. Use this name when calling the [`getFileInfo()`](#getFileInfo), [`getFileUrl()`](#getFileUrl),\nand [`getVideoPlaybackUrl()`](#getVideoPlaybackUrl) functions." },
             { "name": "fileUrl",
               "type": "string",
-              "doc": "The file's Wix media URL. For example, `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`." },
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`." },
             { "name": "hash",
               "type": "string",
               "doc": "File hash." },
@@ -1664,7 +1780,7 @@
               "doc": "**Deprecated**. Use the `fileUrl` property instead. \n\nThe `fileName` property is the internal name (unique identifier) which is generated when a file is uploaded by the Media Manager, returned from the [`importFile()`](#importFile), or [`upload()`](#upload) functions. The name is the string located in the file's URL. Click [here](https://www.wix.com/velo/forum/tips-tutorials-examples/creating-a-url-for-a-media-file-or-the-truth-about-getfileurl) to learn more. Use this name when calling the [`getFileInfo()`](#getFileInfo), [`getFileUrl()`](#getFileUrl),\nand [`getVideoPlaybackUrl()`](#getVideoPlaybackUrl) functions." },
             { "name": "fileUrl",
               "type": "string",
-              "doc": "The file's Wix media URL. For example, `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`." },
+              "doc": "The file's Wix media URL in the following format: `'wix:image://v1/<uri>/<filename>#originWidth=<width>&originHeight=<height>[&watermark=<watermark_manifest_string>]'`." },
             { "name": "hash",
               "type": "string",
               "doc": "File hash." },
@@ -2188,11 +2304,12 @@
               "optional": true },
             { "name": "field",
               "type": "string",
-              "doc": "Field to sort by: `\"originalFileName\"` or `\"_updatedDate\"`. Deafults to `\"_updatedDate\"`.",
+              "doc": "Field to sort by: `\"originalFileName\"` or `\"_updatedDate\"`. Defaults to `\"_updatedDate\"`.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "UploadOptions",
         "locations":
           [ { "lineno": 1,
