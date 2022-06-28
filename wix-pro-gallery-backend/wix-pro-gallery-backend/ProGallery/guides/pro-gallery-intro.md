@@ -4,6 +4,5 @@ title: Introduction
 
 # Introduction
 
-
-test blah this suckkkkks
+The Pro Gallery API provides functionality for managing your pro gallery. 
 
