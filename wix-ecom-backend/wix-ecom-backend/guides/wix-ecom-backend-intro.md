@@ -1,6 +1,6 @@
----
+___
 title: Introduction
----
+___
 
 To use the Wix eCommmerce API, import `wixEcomBackend` from the `wix-ecom-backend` module:
 
