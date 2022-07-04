@@ -3,8 +3,8 @@
   "mixes": [],
   "labels": [],
   "location":
-    { "lineno": 4,
-      "filename": "ValidatableMixin.es6" },
+    { "lineno": 1,
+      "filename": "ValidatableMixin.js" },
   "docs":
     { "summary": "Provides functionality for elements that can be validated.",
       "description":
@@ -60,8 +60,8 @@
         "set": false,
         "type": "boolean",
         "locations":
-          [ { "lineno": 55,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 52,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Indicates if an input element's value is valid.",
             "description":
@@ -91,8 +91,8 @@
         "set": false,
         "type": "string",
         "locations":
-          [ { "lineno": 81,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 73,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Gets a message indicating why the element is invalid, or an\n empty string if the message is valid.",
             "description":
@@ -117,8 +117,8 @@
         "set": false,
         "type": "$w.ValidatableMixin.ValidityState",
         "locations":
-          [ { "lineno": 139,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 130,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Gets a ValidityState object that contains\n detailed information about the validity states of the element.",
             "links":
@@ -139,7 +139,9 @@
                       "let rangeOverflow = validityObj.rangeOverflow;      // false",
                       "let fileNotUploaded = validityObj.fileNotUploaded;  // false",
                       "let stepMismatch = validityObj.stepMismatch;        // false",
-                      "let badInput = validityObj.badInput;                // false" ],
+                      "let badInput = validityObj.badInput;                // false",
+                      "let invalidTime = validityObj.invalidTime;          // false",
+                      "let invalidDate = validityObj.invalidDate;          // false" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -153,12 +155,16 @@
         "params":
           [ { "name": "validator",
               "type": "$w.Validator",
-              "doc": "The name of the function or\n the function expression to run when the element's custom validation is checked." } ],
+              "doc": "The name of the function or\n the function expression to run when the element's custom validation is checked." },
+            { "name": "override",
+              "type": "boolean",
+              "doc": "When `true`, overrides any existing custom validations set for the element so that only the current custom validation applies. \n\nWhen `false`, the current custom validation is added to the previously applied validations and all of them run. The order of execution follows the order the validations were set. \nIf one of the validations rejects, the rest of the validations won't run. \n\nDefaults to `true`, so that omitting the `override` property causes the current custom validation to override any other validations. \nIf multiple validations are set to override explicitly or by default, only the last applied validation will run.\n\nFor example, if you add 4 custom validations to an element and set the `override` parameter to `false`, `true`, `false`, `false` respectively, the first validation won't run\nand the remaining validations will run. This is because the second validation overrides the first.",
+              "optional": true } ],
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 165,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 152,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Adds an event handler that runs when the element's validation is checked.",
             "description":
@@ -172,7 +178,9 @@
                 " changes either by user interaction or programmatically.",
                 "",
                 " Note that validations other than **required**, including custom validations,",
-                " are not run on input elements when they don't have a value." ],
+                " are not run on input elements when they don't have a value.",
+                "",
+                " You can use the `override` parameter to override previously applied custom validations." ],
             "links": [],
             "examples":
               [ { "title": "Set an element to invalid if its value is \"evil\"",
@@ -183,7 +191,55 @@
                       "  }",
                       "} );" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "Set a new custom validation that overrides a previous validation",
+                  "body":
+                    [ "// This validation won't run",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"evil\") {",
+                      "    reject(\"Evil is invalid\");",
+                      "  }",
+                      "}, false);",
+                      "",
+                      "// This validation will run",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"bad\") {",
+                      "    reject(\"Bad is invalid\");",
+                      "  }",
+                      "}, true);" ],
+                  "extra":
+                    {  } },
+                { "title": "Set multiple custom validations",
+                  "body":
+                    [ "// This validation won't run",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"ain't\") {",
+                      "    reject(\"Ain't is invalid\");",
+                      "  }",
+                      "}, false);",
+                      "",
+                      "// This validation won't run",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"i'd've\") {",
+                      "    reject(\"I'd've is invalid\");",
+                      "  }",
+                      "}, true);",
+                      "",
+                      "// This validation runs first",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"there're\") {",
+                      "    reject(\"There're is invalid\");",
+                      "  }",
+                      "});",
+                      "",
+                      "// This validation runs second",
+                      "$w(\"#myElement\").onCustomValidation( (value, reject) => {",
+                      "  if(value === \"could've\") {",
+                      "    reject(\"Could've is invalid\");",
+                      "  }",
+                      "}, false);" ],
+                  "extra":
+                    { "description": "In this example, only the 3rd and 4th custom validations run. This is because the **override** property for the 3rd validation is set to **true** by default and overrides the previous 2 validations." } } ],
             "extra":
               {  } },
         "extra":
@@ -195,8 +251,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 215,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 201,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Resets the element's visual validity indication.",
             "description":
@@ -230,8 +286,8 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 196,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 189,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Updates the element's visual validity indication based on its current validity state.",
             "description":
@@ -253,8 +309,8 @@
   "messages":
     [ { "name": "ValidityState",
         "locations":
-          [ { "lineno": 104,
-              "filename": "ValidatableMixin.es6" } ],
+          [ { "lineno": 90,
+              "filename": "ValidatableMixin.js" } ],
         "docs":
           { "summary": "Contains detailed information about the validity states of an element.",
             "links":
@@ -275,7 +331,9 @@
                       "let rangeOverflow = validityObj.rangeOverflow;      // false",
                       "let fileNotUploaded = validityObj.fileNotUploaded;  // false",
                       "let stepMismatch = validityObj.stepMismatch;        // false",
-                      "let badInput = validityObj.badInput;                // false" ],
+                      "let badInput = validityObj.badInput;                // false",
+                      "let invalidTime = validityObj.invalidTime;          // false",
+                      "let invalidDate = validityObj.invalidDate;          // false" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -304,10 +362,10 @@
               "doc": "`true` if the length of the\n element's value is smaller than its `minlength` property." },
             { "name": "rangeUnderflow",
               "type": "boolean",
-              "doc": "`true` if the element's\n value is less than the its [`min`]($w.TextInput.html#min) property." },
+              "doc": "`true` if the element's\n value is less than its [`min`]($w.TextInput.html#min) property." },
             { "name": "rangeOverflow",
               "type": "boolean",
-              "doc": "`true` if the element's\n value is more than the its [`max`]($w.TextInput.html#max) property." },
+              "doc": "`true` if the element's\n value is more than its [`max`]($w.TextInput.html#max) property." },
             { "name": "fileNotUploaded",
               "type": "boolean",
               "doc": "`true` if the element is\n an upload button that is required and a file has been selected but not\n uploaded." },
@@ -316,7 +374,13 @@
               "doc": "`true` if a text input \n element's numeric value is defined as a whole number but a decimal \n number is entered." },
             { "name": "badInput",
               "type": "boolean",
-              "doc": "`true` if the element's value\n cannot be converted to a value." } ],
+              "doc": "`true` if the element's value\n cannot be converted to a value." },
+            { "name": "invalidTime",
+              "type": "boolean",
+              "doc": "`true` if the element's time value\n is not a valid time." },
+            { "name": "invalidDate",
+              "type": "boolean",
+              "doc": "`true` if the element's date value\n is not a valid date." } ],
         "extra":
           {  },
         "labels": [] } ],

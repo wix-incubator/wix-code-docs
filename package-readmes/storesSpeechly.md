@@ -1,5 +1,8 @@
 ## Speechly Integration 
 
+> **Example Site**  
+> To see a live example, click [here](https://www.wix.com/velo/example/speechly-integration).
+
 The Speechly Integration package provides your site visitors with the ability to filter store products using speech recognition. 
 
 You can add filters to a Wix Stores product page, such as a dropdown menu with categories or a slider to indicate maximum price. When a site visitor holds down the push-to-talk button, Speechly starts listening for voice input, and returns the input detected. A site visitor can filter store products by saying any term in the UI filters, for example, 'Find me a product under €10,' 'Yellow,' or 'Fendi'. If the returned voice input matches a term in the UI filters, the product page displays the filtered products set by the site visitor’s speech input. Note that currently you can’t use voice input to filter by size. 
