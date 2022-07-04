@@ -1,6 +1,7 @@
-___
+---
 title: Introduction
-___
+---
+# Introduction
 
 When a visitor first interacts with your site's cart — such as when they add a product or service — the current cart is created. Once that happens, it can be managed through the Current Cart API.
 
