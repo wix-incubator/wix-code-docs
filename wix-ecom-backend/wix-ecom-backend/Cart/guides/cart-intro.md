@@ -3,10 +3,16 @@ title: Introduction
 ---
 # Introduction
 
-The cart is the first phase of a purchase, followed by checkout, then order. Carts can be created, managed, and used [to create a checkout](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcheckout?branch=autodocs-wix-ecom-backend) with the Cart API.
+To use the Wix eCommerce Cart API, import `{ cart }` from the `wix-ecom-backend` module:
 
-A cart holds information about items for purchase, prices, discounts, site details, and more.
+```javascript
+import { cart } from 'wix-ecom-backend';
+```
 
-Estimate the cart's totals (including shipping costs) using the [estimateCurrentCartTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/estimatecurrentcarttotals?branch=autodocs-wix-ecom-backend) function.
+The Cart API provides functionality for creating and managing carts, as well as for [creating a checkout](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcheckout?branch=autodocs-wix-ecom-backend). The cart is the first phase of an eCommerce purchase flow, followed by checkout, then order. A cart holds information about items for purchase, prices, discounts, site details, and more.
 
-To assist in moving from the old [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the new, please refer to the [cart conversion table](LINK).
+A cart can be created either by using the [createCart()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcart?branch=autodocs-wix-ecom-backend) function, or by [adding an item to the cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart/addtocart?branch=autodocs-wix-ecom-backend).
+
+Estimate the cart's totals (including shipping costs) using the [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals?branch=autodocs-wix-ecom-backend) function.
+
+To assist in moving from the soon-to-be deprecated [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce Cart API, refer to the [Cart Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/cart/cart-object-conversion?branch=autodocs-wix-ecom-backend).
