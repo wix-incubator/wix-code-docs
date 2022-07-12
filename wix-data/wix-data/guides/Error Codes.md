@@ -1,4 +1,4 @@
-# Error Codes Presentation - Samples
+# Error Codes Presentation - Examples
 
 ## Option 1: Tables
 
@@ -16,6 +16,8 @@ There are two ways we can mark up the tables:
     * Nicely organized and presented
 * Cons:
     * NOT FUN to work with. Especially code blocks.
+
+Example:
 
 | Code    |Message                                                             | More Information |
 |---------|--------------------------------------------------------------------|-------------|
@@ -35,6 +37,7 @@ There are two ways we can mark up the tables:
   * As you can [see](https://www.wix.com/velo/reference/wix-data/error-codes?branch=error-codes-test), the viewer does not play nicely with it (even though it works fine in GitHub).
   * Reading the raw text is not so easy and tedious to edit.
 
+Example:
 <table>
 <thead>
 <tr>
@@ -104,7 +107,7 @@ The argument passed to the WixDataAggregate [`filter()`](https://www.wix.com/vel
 * Pros:
     * Easy to write/update
 * Cons:
-    * Not well presented.
+    * The presentation is not great
 
 Example:
 
