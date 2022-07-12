@@ -116,7 +116,8 @@ Example:
    The item must be a valid JavaScript object.
 
    For example:
-   ```
+   
+   ```JS
    const item = {
     "title": "Mr.",
     "first_name": "John",
