@@ -1,4 +1,4 @@
-# Error Codes - Sample
+# Error Codes Presentation - Samples
 
 ## Option 1: Tables
 
