@@ -19,7 +19,7 @@ There are two ways we can mark up the tables:
 
 Example:
 
-| Code    |Message                                                             | More Information |
+| <div style="width:400px">Code</div>    |<div style="width:250px">Message</div> | <div style="width:200px">More Information</div> |
 |---------|--------------------------------------------------------------------|-------------|
 | WDE0001 | Collection name must be a string.| The provided collection name isn't a valid string value.|
 | WDE0002 | Item ID must be a string.|             |
