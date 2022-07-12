@@ -1,6 +1,6 @@
 # Error Codes - Sample
 
-## Option 1 Tables
+## Option 1: Tables
 
 #### Who uses it?
 * [Twitter](https://developer.twitter.com/ja/docs/basics/response-codes) - Best example
@@ -32,6 +32,7 @@ There are two ways we can mark up the tables:
   * Allows you to use the flexibility of both HTML and MD
   * Even better presentation than basic MD tables.
 * Cons:
+  * As you can [see](https://www.wix.com/velo/reference/wix-data/error-codes?branch=error-codes-test), the viewer does not play nicely with it (even though it works fine in GitHub).
   * Reading the raw text is not so easy and tedious to edit.
 
 <table>
@@ -94,7 +95,7 @@ The argument passed to the WixDataAggregate [`filter()`](https://www.wix.com/vel
 </tbody>
 </table>
 
-## Option 2 - Bulleted list
+## Option 2: Bulleted list
 
 #### Who uses it?
 * [Stripe](https://stripe.com/docs/error-codes)
