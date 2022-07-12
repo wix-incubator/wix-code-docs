@@ -19,7 +19,7 @@ There are two ways we can mark up the tables:
 
 Example:
 
-| <div style="width:400px">Code</div>    |<div style="width:250px">Message</div> | <div style="width:200px">More Information</div> |
+| <div style="width:200px">Code</div>    |Message | More Information |
 |---------|--------------------------------------------------------------------|-------------|
 | WDE0001 | Collection name must be a string.| The provided collection name isn't a valid string value.|
 | WDE0002 | Item ID must be a string.|             |
@@ -44,7 +44,6 @@ Example:
 <th>Code</th>
 <th>Message</th>
 <th>More Information</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
@@ -52,12 +51,10 @@ Example:
 <td>WDE0001</td>
 <td>Collection name must be a string.</td>
 <td>The provided collection name isn't a valid string value.</td>
-<td></td>
 </tr>
 <tr>
 <td>WDE0002</td>
 <td>Item ID must be a string.</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -77,13 +74,11 @@ const item = {
 ```
   
 </td>
-<td></td>
 </tr>
 <tr>
 <td>WDE0006</td>
 <td>Failed to bulk save items into {your collection name}.Cannot insert more than 1000 items in one request.</td>
 <td>Avoid this error by splitting up your request into batches of fewer than 1000 items.</td>
-<td></td>
 </tr>
 <tr>
 <td>WDE0011</td>
@@ -93,7 +88,6 @@ const item = {
 The argument passed to the WixDataAggregate [`filter()`](https://www.wix.com/velo/reference/wix-data/wixdataaggregate/filter) function must be a valid [WixDataFilter](https://www.wix.com/velo/reference/wix-data/wixdatafilter) object.
   
 </td>
-<td></td>
 </tr>
 </tbody>
 </table>
