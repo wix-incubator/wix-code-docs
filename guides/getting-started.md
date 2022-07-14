@@ -59,7 +59,7 @@ To add the code:
 import {getJSON} from 'wix-fetch';
 
 // Set the URL of the 3rd-party service.
-const url = "https://api.exchangeratesapi.io/latest";
+const url = "https://api.exchangerate.host/convert";
 
 // Define the currency option values and text for the dropdowns.
 let currencyOptions = [
@@ -111,20 +111,20 @@ Here we select all the dropdowns by type. By calling <code>[$w]($w)</code> with 
 
 function calculateCurrency() {
   // Initial amount 
-  let initialAmount = Number($w("#sourceAmount").value);
+  let initialAmount = $w("#sourceAmount").value;
   // Original currency
   let sourceSymbol = $w("#sourceCurrency").value;
   // Target currency
   let targetSymbol = $w("#targetCurrency").value;
   // Define the full url.
-  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}`;
 
   // Call the wix-fetch API function to retrieve the JSON resource.
   getJSON(fullUrl)
     .then(json => {
       // Set the target amount as the initial amount multiplied by
       // the conversion rate.
-      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+      $w("#targetAmount").value = initialAmount * json.info.rate;
     })
 }
 ```
@@ -154,7 +154,7 @@ Now that you've had a taste of Velo, check out what else you can do:
 *   Easily call backend code from the frontend using [web modules](https://support.wix.com/en/article/Velo-web-modules-calling-server-side-code-from-the-front-end). 
 *   Work with Wix's [Editor](https://support.wix.com/en/article/getting-started-with-the-wix-editor).
 *   Add features and customize your site using [Velo APIs](https://www.wix.com/velo/reference/). Here are some examples of what you can do:
-    *   [Collect](https://support.wix.com/en/article/velo-tutorial-using-the-wix-pay-api-to-collect-payments-for-a-single-product) payments.
+    *   [Collect](https://support.wix.com/en/article/velo-tutorial-using-the-velo-pay-api-to-collect-payments-for-a-single-product) payments.
     *   [Create](https://support.wix.com/en/article/velo-tutorial-expand-text-with-a-read-more-link) a Read More link.
     *   [Use](https://www.wix.com/velo/example/create-a-custom-chart) an HTML component to embed a chart on your page.
     *   Work with the data from [other Wix Apps](https://support.wix.com/en/article/working-with-wix-app-collections-6077060) like [Stores](https://support.wix.com/en/velo-by-wix/wix-stores-with-velo), [Bookings](https://support.wix.com/en/velo-by-wix/wix-bookings-with-velo), and [Events](https://support.wix.com/en/velo-by-wix/wix-events-with-velo).
@@ -167,7 +167,7 @@ Here is the complete code for this example, without comments:
 ```javascript
 import { getJSON } from 'wix-fetch';
 
-const url = "https://api.exchangeratesapi.io/latest";
+const url = "https://api.exchangerate.host/convert";
 
 let currencyOptions = [
   { "value": "USD", "label": "US Dollars" },
@@ -192,11 +192,11 @@ function calculateCurrency() {
   let initialAmount = $w("#sourceAmount").value;
   let sourceSymbol = $w("#sourceCurrency").value;
   let targetSymbol = $w("#targetCurrency").value;
-  let fullUrl = `${url}?base=${sourceSymbol}&symbols=${targetSymbol}`;
+  let fullUrl = `${url}?from=${sourceSymbol}&to=${targetSymbol}`;
 
   getJSON(fullUrl)
     .then(json => {
-      $w("#targetAmount").value = initialAmount * json.rates[targetSymbol];
+      $w("#targetAmount").value = initialAmount * json.info.rate;
     })
 }
 ```

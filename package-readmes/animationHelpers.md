@@ -1,5 +1,8 @@
 ## Animation Helpers
 
+> **Example Site**  
+> To see a live example, click [here](https://www.wix.com/velo/example/animation-helpers).
+
 The Animation Helpers package provides you with the ability to easily add popular animations to your site elements. 
 
 To see an example site that demonstrates how to use this package, click [here](https://www.wix.com/velo/example/animation-helpers). 
@@ -120,7 +123,7 @@ The following describes how you can use this package to spin multiple elements a
 2. Import the `spin` function from the package to your page. 
  
   ```js
-  import { spin } from '@velo/wix-animation-helpers';` 
+  import { spin } from '@velo/wix-animation-helpers';
   ```
 
 3. Run your code in the `$w.onReady()` function.
@@ -232,7 +235,6 @@ import { zoom } from '@velo/wix-animation-helpers';
 5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textZoomTimeLine.play()` function in the event handler to play the animation on hover .   
 Add the `onMouseOut()` event handler to the text element. Call the `textZoomTimeLine.reverse()` function in the event handler to reverse the animation when you are no longer hovering over the text. 
 
-
 ```js
 text.onMouseIn(() => textZoomTimeLine.play());
 text.onMouseOut(() => textZoomTimeLine.reverse());
@@ -282,13 +284,13 @@ import { float } from '@velo/wix-animation-helpers';
 5. Add the `onMouseIn()` event handler to the text element. This function will run when you hover over the text element. Call the `textFloatTimeLine.play()` function in the event handler to play the animation on hover.  
 Add the `onMouseOut()` event handler to the text element. Call the `textFloatTimeLine.pause()` function in the event handler to pause the animation when you are no longer hovering over the text. 
 
-```js
-     floatingText.onMouseIn(() => {
-         textFloatTimeLine.play();
-     });
-     floatingText.onMouseOut(() => {
-         textFloatTimeLine.pause();
-     });
+  ```js
+ floatingText.onMouseIn(() => {
+     textFloatTimeLine.play();
+ });
+ floatingText.onMouseOut(() => {
+     textFloatTimeLine.pause();
+ });
 ```
 
 
@@ -361,7 +363,7 @@ The following demonstrates how you can use the stagger() function to perform the
 2. Import the `stagger` and `spin` functions from the package to your page.
 
    ```js
-    import { stagger, spin } from '@velo/wix-animation-helpers';`
+    import { stagger, spin } from '@velo/wix-animation-helpers';
    ```
 
 3. Run your code in the `$w.onReady()` function as shown below. 

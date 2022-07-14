@@ -1,5 +1,8 @@
 ## Google Sheets Integration 
 
+> **Example Site**  
+> To see a live example, click [here](https://www.wix.com/velo/example/google-sheets-integration).
+
 The Google Sheets Integration package provides you with the ability to easily monitor and manage data stored in a Google spreadsheet from a Wix site. You can perform the following actions with this package:
 
 
@@ -35,8 +38,8 @@ Before using the package, set up the following:
 
 
 1. Open the [Wix Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager) and create a new secret with the name `velo-spreadsheet-credentials`. Store the contents of the downloaded file in the secret.
-2. Go to the tab with your Google Spreadsheet open. Notice the URL. It contains your sheet ID: `https://docs.google.com/spreadsheets/d/{YOUR_SHEET_ID}/edit#gid=0`.
-3. Copy your Sheet ID and store it as a new secret in the **Secrets Manager** with the name `sheetId`. 
+2. Go to the tab with your Google Spreadsheet open. Notice the URL. It contains your sheet ID: `https://docs.google.com/spreadsheets/d/{YOUR_SHEET_ID}/edit#gid=0`. <br/>For example, if your spreadsheet URL is: `https://docs.google.com/spreadsheets/d/1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0/edit#gid=0`, the value of your sheet ID is: `1Ui3ha9jLRW4mTYBUimt9ooTRyS301SAKpMv_2zYx0n0`.
+3. Copy your sheet ID and store it as a new secret in the **Secrets Manager** with the name `sheetId`. 
 
 
 ### Package Content 
@@ -149,7 +152,7 @@ The following describes how you can use this package to get the data from the fi
     }
 
     function validateRange(range) {
-        const regex = /([a-zA-Z0-9:]+)/g;
+        const regex = /([a-zA-Z0-9:!]+)/g;
         const match = range.match(regex);
         if (!match || match.length !== 1 || match[0] !== range) {
             throw new Error(`Input range is invalid (got: ${range})`);
@@ -324,7 +327,7 @@ The following describes how you can use this package to update the data in the f
     }
 
     function validateRange(range) {
-        const regex = /([a-zA-Z0-9:]+)/g;
+        const regex = /([a-zA-Z0-9:!]+)/g;
         const match = range.match(regex);
         if (!match || match.length !== 1 || match[0] !== range) {
             throw new Error(`Input range is invalid (got: ${range})`);
@@ -411,7 +414,7 @@ The following describes how you can use this package to clear a range of data fr
     }
 
     function validateRange(range) {
-        const regex = /([a-zA-Z0-9:]+)/g;
+        const regex = /([a-zA-Z0-9:!]+)/g;
         const match = range.match(regex);
         if (!match || match.length !== 1 || match[0] !== range) {
             throw new Error(`Input range is invalid (got: ${range})`);
