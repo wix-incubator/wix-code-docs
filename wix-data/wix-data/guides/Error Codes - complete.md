@@ -2,7 +2,7 @@
 
 When you use the Wix Data API, you may encounter console errors. This list includes the error codes and messages returned by the API, and more information to help you resolve issues. If an error persists, [contact support](https://www.wix.com/contact) for help.
 
-|<div style="min-width:100px">Code</div>| <div style="min-width:40%">Message</div>| More Information|
+|<div style="min-width:100px">Code</div>| <div style="min-width:300px">Message</div>| More Information|
 |---------------------------------------|---------|-----------------|
 |WDE0001| Collection name must be a string.| The provided collection name isn't a valid string value.
 |WDE0002| Item ID must be a string.| The provided item's `_id` isn't a valid string value.
