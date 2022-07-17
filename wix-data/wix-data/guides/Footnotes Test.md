@@ -10,6 +10,22 @@ When you use the Wix Data API, you may encounter console errors. This list inclu
 |WDE0004|`Failed to save {your item name} into {your collection name}. Items must be JavaScript objects.`|The item must be a valid JavaScript object.
 |WDE0005|`Failed to bulk save items into {your collection name}. Items must be an array of JavaScript objects and item IDs must be strings if present.`|See the note for an example [^1] 
 
+```js
+const items = [
+  {
+    "title":        "Mr.",
+    "first_name":   "John",
+    "last_name":    "Doe"
+  },
+  {
+    "_id": "ffdkj9c2-df8g-f9ke-lk98-4kjhfr89keedb",
+    "title":        "Ms.",
+    "first_name":   "Jane",
+    "last_name":    "Doe"
+  }
+]
+```
+
 
 
 
@@ -29,3 +45,6 @@ When you use the Wix Data API, you may encounter console errors. This list inclu
       }
     ]
     ```
+    
+    
+  
