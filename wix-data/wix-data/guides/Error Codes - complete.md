@@ -8,7 +8,7 @@ When you use the Wix Data API, you may encounter console errors. This list inclu
 |WDE0002| Item ID must be a string.| The provided item's `_id` isn't a valid string value.
 |WDE0003| Field name must be a string.| The provided field name isn't a valid string value.
 |WDE0004| Failed to save {your item name} into {your collection name}. Items must be JavaScript objects.| The item must be a valid JavaScript object.
-|WDE0005| Failed to bulk save items into {your collection name}. Items must be an array of JavaScript objects and item IDs must be strings if present.| A vlid ID key:value pair looks like this `'_id': 'ffdkj9c2-df8g-f9ke-lk98-4kjhfr89keedb'`
+|WDE0005| Failed to bulk save items into {your collection name}. Items must be an array of JavaScript objects and item IDs must be strings if present.| A valid ID key:value pair looks like this:<br>`'_id': 'ffdkj9c2-df8g-f9ke-lk98-4kjhfr89keedb'`
 |WDE0006| Failed to bulk save items into {your collection name}.Cannot insert more than 1000 items in one request.| Avoid this error by splitting up your request into batches of fewer than 1000 items.
 |WDE0007|Invalid update. Updated object must have an _id property that is a string.||
 |WDE0008|wixData.{the function you called} expects between {minimum} and {maximum} arguments, but was called with {the number of arguments you provided}.| Check your code to make sure that the you have passed enough arguments to the function, and that the arugment values are separated with commas.|
