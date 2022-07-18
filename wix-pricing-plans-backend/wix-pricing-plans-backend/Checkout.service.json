@@ -192,8 +192,7 @@
         "extra":
           {  } },
       { "name": "createOfflineOrder",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -439,7 +438,8 @@
         "extra":
           {  } },
       { "name": "createOnlineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -447,7 +447,7 @@
               "doc": "ID of the plan being ordered." },
             { "name": "startDate",
               "type": "Date",
-              "doc": "Date from which the plan is active. Defaults to the current date.",
+              "doc": "Start date and time for the ordered plan. \n\nDefault: Current date and time",
               "optional": true } ],
         "ret":
           { "type":
@@ -459,7 +459,7 @@
           [ { "lineno": 197,
               "filename": "checkout.js" } ],
         "docs":
-          { "summary": "Orders a plan for the currently logged-in member.",
+          { "summary": "Creates an order online for currently logged-in member.",
             "description":
               [ "The `createOnlineOrder()` function returns a Promise that resolves to an `Order` object when the ",
                 " order has been created. The order is for the currently logged-in member. The buyer must be logged in for you to be able to create an order.",
@@ -483,7 +483,7 @@
                 " Once an online order is paid for, the `status` of the order is no longer `\"DRAFT\"` and at this point, its `startDate` cannot be changed.",
                 "",
                 " Creating an online order causes: ",
-                " + The order status to be set to `\"PENDING\"` if the start date is in the future or `\"ACTIVE\"` otherwise.",
+                " + The order status to be set to `\"PENDING\"` if the start date is in the future. Otherwise, the `status` is set to `\"ACTIVE\"`.",
                 "",
                 " The [`onOrderCreated()`](wix-pricing-plans-backend/events/onOrderCreated) event handler runs when an online order is created." ],
             "links":
@@ -714,7 +714,8 @@
         "extra":
           {  } },
       { "name": "previewOfflineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -734,20 +735,24 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 271,
+          [ { "lineno": 276,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an offline order as if it was purchased.",
             "description":
               [ "The `previewOfflineOrder()` function returns a Promise that resolves to a temporary preview of the offline order.",
                 "",
-                " The preview uses the same logic as purchasing a plan, except that the preview is not saved. Because an order",
+                " The preview uses the same logic as purchasing a plan, but the preview is not saved. Because an order",
                 " is not actually created, the preview's `_id` and `subscriptionId` properties are displayed as a string of ",
-                " multiple zero characters (like \"000000\").",
+                " multiple zero characters (`000000-0000`).",
                 " ",
-                " You can preview the order to check purchase limitations. ",
                 " If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), ",
                 " taxes are applied to the preview. If not, the `tax` previews as `null`.",
+                "",
+                " You can preview the order to check purchase limitations, but the limitations are not enforced for the preview. ",
+                " If a pricing plan has a limit on the amount of purchases per buyer, that limit is not considered for ",
+                " generating the preview. But, if that limit has been reached and this order would then exceed the amount ",
+                " of purchases permitted for this buyer, then `purchaseLimitExceeded` will return as `true`.",
                 "",
                 " This function is not available to the buyer. You specify the member ID for the buyer whose order ",
                 " should be previewed.",
@@ -841,7 +846,8 @@
         "extra":
           {  } },
       { "name": "previewOnlineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -858,7 +864,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 303,
+          [ { "lineno": 312,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an online order as if it was purchased.",
@@ -869,9 +875,14 @@
                 "",
                 " The preview uses the same logic as purchasing a plan, except that the preview is not saved. Because an order",
                 " is not actually created, the preview's `_id` and `subscriptionId` properties are displayed as a string of ",
-                " multiple zero characters (like \"000000\").",
+                " multiple zero characters (`000000-0000`).",
+                "",
+                " If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), taxes are applied to the preview.  If not, the `tax` previews as`null`.",
                 " ",
-                " You can preview the order to check purchase limitations, but the limitations are not enforced for the preview. If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), taxes are applied to the preview.  If not, the `tax` previews as`null`.",
+                " You can preview the order to check purchase limitations, but the limitations are not enforced for the preview. ",
+                " If a pricing plan has a limit on the amount of purchases per buyer, that limit is not considered for ",
+                " generating the preview. But, if that limit has been reached and this order would then exceed the amount ",
+                " of purchases permitted for this buyer, then `purchaseLimitExceeded` will return as `true`.",
                 "",
                 " This function is available to the site owner and the buyer. Because the buyer is logged in, ",
                 " you do not need to specify the `buyerId` when previewing an online order." ],
@@ -987,7 +998,7 @@
                   [ "wix-pricing-plans-backend.Checkout.PricePreview" ] },
             "doc": "Fulfilled - A preview of the pricing for the order." },
         "locations":
-          [ { "lineno": 337,
+          [ { "lineno": 351,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an order's pricing as if was purchased.",
@@ -1114,11 +1125,10 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "OrderPreview",
         "locations":
-          [ { "lineno": 264,
+          [ { "lineno": 266,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1128,14 +1138,15 @@
         "members":
           [ { "name": "order",
               "type": "wix-pricing-plans-backend.Orders.Order",
-              "doc": "The preview, as if the plan had been ordered. Omitted if the purchase limit for the plan has been exceeded for the buyer.",
+              "doc": "The preview, as if the plan had been ordered.",
               "optional": true },
             { "name": "purchaseLimitExceeded",
               "type": "boolean",
-              "doc": "Whether the purchase limit for the plan has already been reached by the buyer. `false` for plans that do not have purchase limits." } ],
+              "doc": "Whether this previewed order would exceed the permitted amount of purchases \navailable for this plan for this buyer. \n\nAlways `false` for plans that do not have purchase limits." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PreviewOfflineOrderOptions",
         "locations":
           [ { "lineno": 142,
@@ -1159,7 +1170,7 @@
         "labels": [] },
       { "name": "PricePreview",
         "locations":
-          [ { "lineno": 331,
+          [ { "lineno": 345,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
