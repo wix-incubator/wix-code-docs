@@ -1425,19 +1425,20 @@
         "members":
           [ { "name": "memberId",
               "type": "string",
-              "doc": "Member ID for the buyer." },
+              "doc": "Member ID for the buyer. See [`wix-members-backend`](wix-members-backend/introduction) to learn more about a site's members." },
             { "name": "contactId",
               "type": "string",
-              "doc": "Contact ID for the buyer." } ],
+              "doc": "Contact ID for the buyer. See [Contacts in `wix-crm-backend`](wix-crm-backend/contacts/introduction) to learn more about a site's contacts." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Cancellation",
         "locations":
           [ { "lineno": 42,
               "filename": "orders-shared.js" } ],
         "docs":
-          { "summary": "Details about the cancellation of an order. Omitted if the order `status` isn't `\"CANCELED\"`.",
+          { "summary": "Details about the cancellation of an order. Only present if the order `status` is `\"CANCELED\"`.",
             "links": [],
             "examples": [],
             "extra":
@@ -1445,19 +1446,20 @@
         "members":
           [ { "name": "requestedDate",
               "type": "Date",
-              "doc": "Date when cancellation was requested." },
+              "doc": "Date and time when the cancellation was requested." },
             { "name": "cause",
               "type": "string",
-              "doc": "The reason for the cancellation owner. \nOne of:\n + `\"OWNER_ACTION\"`. The site owner cancelled the order. \n + `\"MEMBER_ACTION\"`. The buyer initiated the cancellation.\n + `\"PAYMENT_FAILURE\"`. A payment transaction failed.\n + `\"PAYMENT_SETUP_FAILURE\"`. The buyer's payment details weren't set up correctly." },
+              "doc": "The reason for the cancellation. \nOne of:\n + `\"OWNER_ACTION\"`. The site owner canceled the order. \n + `\"MEMBER_ACTION\"`. The buyer initiated the cancellation.\n + `\"PAYMENT_FAILURE\"`. A payment transaction failed.\n + `\"PAYMENT_SETUP_FAILURE\"`. The buyer's payment details weren't set up correctly." },
             { "name": "effectiveAt",
               "type": "string",
-              "doc": "Indicates when the cancellation takes effect. This is set when cancelling the order.\nOne of:\n + `\"IMMEDIATELY\"`. The cancellation occurs immediately and the buyer can't use the plan at this point.\n + `\"NEXT_PAYMENT_DATE\"`. The cancellation occurs at the next payment date. The buyer can continue to use the plan until that date." } ],
+              "doc": "When the cancellation takes effect. This is set when cancelling the order.\nOne of:\n + `\"IMMEDIATELY\"`. The cancellation occurs immediately and the buyer can no longer use the plan at this point.\n + `\"NEXT_PAYMENT_DATE\"`. The cancellation occurs at the next payment date and time. The buyer can continue to use the plan until that date and time." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Coupon",
         "locations":
-          [ { "lineno": 186,
+          [ { "lineno": 204,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Coupon applied to the order.",
@@ -1491,7 +1493,7 @@
         "members":
           [ { "name": "index",
               "type": "number",
-              "doc": "Index of the current payment cycle in the order.\n\n`0` when order is in a free trial period. In all other cases, the index starts with `1`." },
+              "doc": "Index of the current payment cycle in the order.\n\n`0` when the order is in a free trial period. In all other cases, the index starts with `1`." },
             { "name": "startedDate",
               "type": "Date",
               "doc": "Start date and time for the current payment cycle." },
@@ -1500,7 +1502,8 @@
               "doc": "End date and time for the current payment cycle." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "CurrentMemberFilterOptions",
         "locations":
           [ { "lineno": 410,
@@ -1604,80 +1607,81 @@
               "doc": "ID of the plan that was purchased with this order." },
             { "name": "subscriptionId",
               "type": "string",
-              "doc": "ID of the related Wix subscription. Every pricing plan order corresponds to a Wix subscription, including orders for single payment plans. You can see all orders from your site's [Subscriptions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsubscriptions%3FreferralInfo%3Dvelo-docs) page in the Dashboard." },
+              "doc": "ID of the related Wix subscription. \n\nEvery pricing plan order corresponds to a Wix subscription, including orders for single payment plans. You can see all orders from your site's [Subscriptions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsubscriptions%3FreferralInfo%3Dvelo-docs) page in the Dashboard." },
             { "name": "wixPayOrderId",
               "type": "string",
-              "doc": "ID of the associated Wix Pay order, created by the [`createOnlineOrder()`](wix-pricing-plans-backend/checkout/createonlineorder) function. Send this value as a parameter to the Wix Pay [`startPayment()`](wix-pay/startPayment) function to enable your buyer to pay for the order. `wixPayOrderId` is omitted if the order is free.",
+              "doc": "ID of the associated Wix Pay order. \n\nCreated by the [`createOnlineOrder()`](wix-pricing-plans-backend/checkout/createonlineorder) or [`createfflineOrder()`](wix-pricing-plans-backend/checkout/createofflineorder) function. For online orders, send this value as a parameter to the Wix Pay [`startPayment()`](wix-pay/startPayment) function to enable your buyer to pay for the order. `wixPayOrderId` is omitted if the order is free.",
               "optional": true },
             { "name": "buyer",
               "type": "wix-pricing-plans-backend.Orders.Buyer",
-              "doc": "Buyer details." },
+              "doc": "The buyer's IDs. Includes `memberId` and `contactId`.\n\nCurrently, Pricing Plan purchases are limited to members only. `contactId` is returned, but a buyer will not be able to purchase a plan without a `memberId`." },
             { "name": "priceDetails",
               "type": "wix-pricing-plans-backend.Orders.PriceDetails",
-              "doc": "Order pricing details for one payment cycle, payment schedule, and expiration." },
+              "doc": "**Deprecated.** Use `pricing` instead." },
             { "name": "pricing",
               "type": "wix-pricing-plans-backend.Orders.Pricing",
-              "doc": "Order pricing model, price, and payment schedule.",
+              "doc": "Order pricing model, price, and payment schedule.\n\n[Learn more about pricing models.](wix-pricing-plans-backend/introduction#about-pricing-models)",
               "optional": true },
             { "name": "type",
               "type": "string",
               "doc": "How the order was processed. \nOne of:\n + `\"ONLINE\"`. The buyer purchased the plan using the site.\n + `\"OFFLINE\"`. The buyer made a manual, offline purchase without using the site." },
             { "name": "status",
               "type": "string",
-              "doc": "Status of the order.\nOne of:\n + `\"DRAFT\"`. The order has been initiated but payment hasn't been processed yet. The plan isn't yet available for use.\n + `\"PENDING\"`. Payment is being processed. The plan isn't yet available for use.\n + `\"ACTIVE\"`. The order has been processed and paid for. The plan is available for use.\n + `\"PAUSED\"`. Use of the plan has been [paused](wix-pricing-plans-backend/orders/pauseorder), for example, if the buyer is away. The plan can be [resumed](wix-pricing-plans-backend/orders/resumeorder).\n + `\"ENDED\"`. The order has completed its duration and is no longer available for use.\n + `\"CANCELED\"`. The order has been [canceled](wix-pricing-plans-backend/orders/cancelorder)." },
+              "doc": "Status of the order.\nOne of:\n + `\"DRAFT\"`. The order has been initiated but payment hasn't been processed yet. The plan isn't yet available for use.\n + `\"PENDING\"`. The order has been processed and its start date is set in the future. The plan isn't yet available for use.\n + `\"ACTIVE\"`. The order has been processed. The plan is available for use.\n + `\"PAUSED\"`. The order, and use of the plan, is [paused](wix-pricing-plans-backend/orders/pauseorder). For example, if the buyer is away. The order, and use of the plan, can be [resumed](wix-pricing-plans-backend/orders/resumeorder).\n + `\"ENDED\"`. The order has completed its duration and is no longer available for use.\n + `\"CANCELED\"`. The order has been [canceled](wix-pricing-plans-backend/orders/cancelorder)." },
             { "name": "autoRenewCanceled",
               "type": "boolean",
-              "doc": "If true, next payment won't be charged at the next scheduled payment date. The order `status` will become `\"CANCELED\"` at the expiration date. Omitted for single payment orders.",
+              "doc": "Whether the order will be canceled at the next payment date.\n\nIf `true`, the order `status` will be `CANCELED` and the next payment won't be charged. Omitted for single payment orders.",
               "optional": true },
             { "name": "cancellation",
               "type": "wix-pricing-plans-backend.Orders.Cancellation",
-              "doc": "Details about the cancellation of an order. Omitted if the order `status` isn't `\"CANCELED\"`.",
+              "doc": "Details about the cancellation of an order. Only present if the `status` is `\"CANCELED\"`.",
               "optional": true },
             { "name": "lastPaymentStatus",
               "type": "string",
-              "doc": "Status of the last payment for the order. The site owner updates this manually for offline orders.\nOne of:\n + `\"PAID\"`. The last payment was paid.\n + `\"REFUNDED\"`. The last payment was refunded.\n + `\"FAILED\"`. The last payment transaction didn't complete.\n + `\"UNPAID\"`. The last payment wasn't paid.\n + `\"PENDING\"`. Awaiting payment. \n + `\"NOT_APPLICABLE\"`. No payment was necessary, such as for free plans or free trials." },
+              "doc": "Status of the last payment for the order. This is updated automatically for online orders. The site owner updates this manually for offline orders.\nOne of:\n + `\"PAID\"`. The last payment was paid.\n + `\"REFUNDED\"`. The last payment was refunded.\n + `\"FAILED\"`. The last payment transaction didn't complete.\n + `\"UNPAID\"`. The last payment wasn't paid.\n + `\"PENDING\"`. Awaiting payment. \n + `\"NOT_APPLICABLE\"`. No payment was necessary. For example, for free plans or free trials." },
             { "name": "startDate",
               "type": "Date",
-              "doc": "Date the plan for this order will become active." },
+              "doc": "Start date and time for the ordered plan." },
             { "name": "endDate",
               "type": "Date",
-              "doc": "Date the plan for this order will expire. Omitted if the order is active until canceled.",
+              "doc": "Current date and time the ordered plan will expire. \n\n`endDate` may be updated over the course of an order. If the order is [paused](wix-pricing-plans-backend/orders/pauseorder), it will have a later `endDate` once it [resumes](wix-pricing-plans-backend/orders/resumeorder). `endDate` may also be [postponed](wix-pricing-plans-backend/orders/postponeenddate).\n\nOmitted if the order is valid until canceled and still `\"ACTIVE\"`.",
               "optional": true },
             { "name": "pausePeriods",
               "type":
                 { "name": "Array",
                   "typeParams":
                     [ "wix-pricing-plans-backend.Orders.PausePeriod" ] },
-              "doc": "List of periods during which this order is paused, if there are any." },
+              "doc": "List of periods during which this order is paused." },
             { "name": "freeTrialDays",
               "type": "string",
               "doc": "Free trial period, in days. Only available for recurring plans.",
               "optional": true },
             { "name": "earliestEndDate",
               "type": "Date",
-              "doc": "Earliest possible date that the plan for this order can end. This is calculated by adding all pause periods to the original end date. This date is used as a boundary for extending or shortening the duration of a plan. You can't set a plan to expire before this date. Omitted if the order is active until canceled.",
+              "doc": "Earliest end date and time that the plan for this order can expire. \n\nThis is calculated by adding all pause periods to the original end date. Omitted if the order is active until canceled. Reserved for future use.",
               "optional": true },
             { "name": "currentCycle",
               "type": "wix-pricing-plans-backend.Orders.CurrentCycle",
               "doc": "Current payment cycle for the order.\n\n`currentCycle` will be omitted if the order's status is `CANCELLED` or `ENDED`, or if the `startDate` hasn't passed yet." },
             { "name": "planName",
               "type": "string",
-              "doc": "Name of the plan at the time of the order." },
+              "doc": "Name of the plan at the time of purchase." },
             { "name": "planDescription",
               "type": "string",
-              "doc": "Description of the plan at the time of the order." },
+              "doc": "Description of the plan at the time of purchase." },
             { "name": "planPrice",
               "type": "string",
               "doc": "Plan price as it was at the moment of order creation." },
             { "name": "_createdDate",
               "type": "Date",
-              "doc": "Date order was created. This is the date before initiating a payment or any other actions." },
+              "doc": "Date and time the order was created." },
             { "name": "_updatedDate",
               "type": "Date",
-              "doc": "Date order was last updated, such as the date an order was paused, resumed, or canceled." } ],
+              "doc": "Date and time the order was last updated. For example, the date and time an order was paused, resumed, or canceled." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "OrderCopy",
         "locations":
           [ { "lineno": 72,
@@ -1814,7 +1818,7 @@
         "labels": [] },
       { "name": "PausePeriod",
         "locations":
-          [ { "lineno": 119,
+          [ { "lineno": 135,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Period during which the order of a plan is suspended.",
@@ -1825,19 +1829,20 @@
         "members":
           [ { "name": "status",
               "type": "string",
-              "doc": "Whether the pause period (suspension) is currently in effect. \nOne of:\n + `\"ACTIVE\"`. The plan for the order is suspended. The pause period is in progress.\n + `\"ENDED\"`. The plan for the order no longer suspended. The pause period has ended." },
+              "doc": "Status of the pause period. \nOne of:\n + `\"ACTIVE\"`. Status while the order is [paused](wix-pricing-plans-backend/orders/pauseorder).\n + `\"ENDED\"`. Status while the order is [resumed](wix-pricing-plans-backend/orders/resumeorder)." },
             { "name": "pauseDate",
               "type": "Date",
-              "doc": "Date defining the start of the pause period." },
+              "doc": "Start date and time of the pause period." },
             { "name": "resumeDate",
               "type": "Date",
-              "doc": "When an order for a plan is resumed, the date the order of the plan resumed." } ],
+              "doc": "End date and time of the pause period.\n\nOmitted while the pause period remains `\"ACTIVE\"`." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Price",
         "locations":
-          [ { "lineno": 165,
+          [ { "lineno": 183,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Order price details.",
@@ -1870,7 +1875,7 @@
         "labels": [] },
       { "name": "PriceDetails",
         "locations":
-          [ { "lineno": 131,
+          [ { "lineno": 149,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Price details for the order.",
@@ -1921,7 +1926,7 @@
         "labels": [] },
       { "name": "PriceDuration",
         "locations":
-          [ { "lineno": 176,
+          [ { "lineno": 194,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Cycle duration to apply `price` for.",
@@ -1941,7 +1946,7 @@
         "labels": [] },
       { "name": "Prices",
         "locations":
-          [ { "lineno": 157,
+          [ { "lineno": 175,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Pricing details for all pricing models.",
@@ -1961,7 +1966,7 @@
         "labels": [] },
       { "name": "Pricing",
         "locations":
-          [ { "lineno": 147,
+          [ { "lineno": 165,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Order pricing model, price, and payment schedule.",
@@ -1992,11 +1997,10 @@
                     [ "singlePaymentForDuration",
                       "singlePaymentUnlimited",
                       "subscription" ] } ] },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "SortingOptions",
         "locations":
-          [ { "lineno": 204,
+          [ { "lineno": 222,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Sorting details.",
@@ -2018,7 +2022,7 @@
         "labels": [] },
       { "name": "Tax",
         "locations":
-          [ { "lineno": 194,
+          [ { "lineno": 212,
               "filename": "orders-shared.js" } ],
         "docs":
           { "summary": "Tax applied to the order. If empty, no tax was applied.",
