@@ -1,7 +1,7 @@
 { "name": "wix-http-functions",
   "mixes": [],
   "labels":
-    [ "new" ],
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "http-functions.js" },
@@ -16,6 +16,8 @@
           " If you use this API to set a cookie on a site visitor's browser you may no longer",
           " be in compliance with applicable data privacy regulations.",
           "",
+          " ## Adding HTTP Functions to Your Site",
+          " ",
           " To add an HTTP function, add a file named **http-functions.js** to the **Backend**",
           " section of your site. The code for your HTTP functions is added to that",
           " file.",
@@ -111,14 +113,71 @@
           "",
           " ```",
           " https://{user_name}.wixsite.com/{site_name}/_functions-dev/<functionName>",
-          " ```",
-          "",
-          " To learn more about HTTP functions, see [Exposing a Site API with HTTP Functions](https://support.wix.com/en/article/velo-exposing-a-site-api-with-http-functions).",
-          "",
+          " ``` ",
           " > **Note:** You must publish your site at least once before using both the testing and",
           " production endpoints. After that, you save your site for changes you make to",
           " testing endpoints to take effect and you publish your site for changes you",
-          " make to the production endpoints to take effect." ],
+          " make to the production endpoints to take effect.",
+          "",
+          "## Keeping Your Site Secure",
+          "",
+          "HTTP functions expose your site's data and functionality to anyone making requests to your endpoints. You can keep your site secure",
+          "by authenticating requests. For example, the following code uses the [Secrets API](https://www.wix.com/velo/reference/wix-secrets-backend/introduction)",
+          "to match a secret key provided in the `auth` property of a request's headers with a secret key stored in the site's Secrets Manager.",
+          "",
+          "```javascript",
+          "import {ok, badRequest} from 'wix-http-functions';",
+          "import {getSecret} from 'wix-secrets-backend';",
+          "",
+          "// This function compares the authorization key provided in the request",
+          "// headers with the secret key stored in the Secrets Manager",
+          "async function isPermitted(headers){",
+          "  try{",
+          "    const authHeader = headers.auth;",
+          "    const sharedAuthKey = await getSecret(\"secretEmail\");",
+          "    if (authHeader === sharedAuthKey) {",
+          "      return true;",
+          "    }",
+          "    return false;",
+          "  } ",
+          "  catch(err){",
+          "    console.error(err);",
+          "    return false",
+          "  }",
+          "}  ",
+          "",
+          "export async function get_functionName(request) {",
+          "  const headers = request.headers;",
+          "  if (!await isPermitted(headers)) {",
+          "    let options = {",
+          "      body: {",
+          "        \"error\": \"Not authorized\",",
+          "      },",
+          "      headers: {",
+          "        \"Content-Type\": \"application/json\"",
+          "      }",
+          "    };",
+          "    return badRequest(options);",
+          "  }",
+          "",
+          "  //code to run in case request is authorized",
+          "  const result = someLogic();",
+          "  const response = {",
+          "    \"headers\": {",
+          "      \"Content-Type\": \"application/json\"",
+          "    }",
+          "  };",
+          "  response.body = {",
+          "    \"Results\" : result",
+          "  };",
+          "  return ok(response);",
+          "} ",
+          "```",
+          "Valid requests to this endpoint must now include `\"auth\" : \"My-Secret-Key\"` in their `headers` section.",
+          "",
+          "For a higher level of security, consider using the [HMAC Authentication](https://www.wix.com/velo/reference/velo-package-readmes/wix-http-functions:-hmac-authentication) Velo package.",
+          "",
+          "To learn more about HTTP functions, see [Exposing a Site API with HTTP Functions](https://support.wix.com/en/article/velo-exposing-a-site-api-with-http-functions)." ],
       "links": [],
       "examples": [],
       "extra":
@@ -300,7 +359,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 270,
+          [ { "lineno": 329,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with the HTTP DELETE method.",
@@ -476,7 +535,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 120,
+          [ { "lineno": 179,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with the HTTP GET method.",
@@ -727,7 +786,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 319,
+          [ { "lineno": 378,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with the HTTP OPTIONS method.",
@@ -838,7 +897,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 170,
+          [ { "lineno": 229,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with the HTTP POST method.",
@@ -956,7 +1015,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 219,
+          [ { "lineno": 278,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with the HTTP PUT method.",
@@ -1193,7 +1252,7 @@
         "ret":
           { "type": "wix-http-functions.WixHttpFunctionResponse" },
         "locations":
-          [ { "lineno": 373,
+          [ { "lineno": 432,
               "filename": "http-functions.js" } ],
         "docs":
           { "summary": "A function that responds to requests made with any HTTP method.",
