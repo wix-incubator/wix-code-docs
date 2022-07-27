@@ -4,9 +4,11 @@ title: Stores to eCommerce Cart Conversion Table
 
 # Stores to eCommerce Cart Conversion Table
 
-To help with migration from the soon-to-be deprecated [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce [Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart?branch=autodocs-wix-ecom-backend) and [Current Cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart?branch=autodocs-wix-ecom-backend) APIs, refer to the table below for changes in name and/or location.
+To help with migration from the [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce [Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart?branch=autodocs-wix-ecom-backend) and [Current Cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart?branch=autodocs-wix-ecom-backend) APIs, refer to the table below for changes in name and/or location.
 
-Certain information that used to be held in the Cart is now kept in the Checkout and/or Order. These properties are indicated in the table below, with more information available in the [Stores Cart to eCommerce Checkout Conversion Table - LINK NEEDED](LINK).
+Certain information that used to be held in the Cart is now kept in the Checkout and/or Order. These properties are indicated in the table below, with more information available in the [Stores Cart to eCommerce Checkout Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/checkout-object-conversion?branch=autodocs-wix-ecom-backend).
+
+The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/order/address-object-conversion-table?branch=autodocs-wix-ecom-backend).
 
 Fields that remain with the same name, in the same location, and with no changes in behavior are marked with an asterisk (*).
 
@@ -22,7 +24,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `convertedCurrency.code`                           | `conversionCurrency`                          |
 | `convertedCurrency.symbol`                         | No need for currency symbol. For every converted price returned, we also provide the formatted converted price.                                             |
 | `billingAddress`                                   | Billing address is now kept in the [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend) and [Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder?branch=autodocs-wix-ecom-backend).   |
-| `appliedCoupon.couponId`                           | `appliedDiscounts[i].coupon.id`.                                             |
+| `appliedCoupon.couponId`                           | `appliedDiscounts[i].coupon._id`.                                             |
 | `appliedCoupon.name`                               | `appliedDiscounts[i].coupon.name`.                                               |
 | `appliedCoupon.code`                               | `appliedDiscounts[i].coupon.code`.                                               |
 | `appliedCoupon.discountValue`                      | `appliedDiscounts[i].coupon.amount.amount`.                                 |
@@ -37,8 +39,8 @@ Fields that remain with the same name, in the same location, and with no changes
 | `buyerInfo.phone`     | Buyer phone is now kept in [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend).                                               |
 | `buyerInfo.firstName` | Buyer first name is now kept in [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend).                                               |
 | `buyerInfo.lastName`  | Buyer last name is now kept in [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend).                                               |
-| `lineItems[i].id`                                | `lineItems[i].id` - Note: this `id` is of type GUID. In the Stores Cart API, the `lineItem.id` was of type Int32.                                              |
-| `lineItems[i].productId`                         | `lineItems[i].catalogReference.catalogItemId` - Learn more about the [link waiting for catalog SPI functionality](LINK). |
+| `lineItems[i].id`                                | `lineItems[i]._id` - Note: this `_id` is of type GUID. In the Stores Cart API, the `lineItem.id` is of type Int32.                                              |
+| `lineItems[i].productId`                         | `lineItems[i].catalogReference.catalogItemId` |
 | `lineItems[i].name`                              | `lineItems[i].productName.translated`                          |
 | `lineItems[i].quantity`                          | `lineItems[i].quantity`                          |
 | `lineItems[i].weight`                            | `lineItems[i].physicalProperties.weight`                  |
@@ -52,7 +54,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `lineItems[i].mediaItem.url`                     | `lineItems[i].media.url`                                               |
 | `lineItems[i].mediaItem.width`                   | `lineItems[i].media.width`                                               |
 | `lineItems[i].mediaItem.height`                  | `lineItems[i].media.height`                                               |
-| `lineItems[i].options`                           | `lineItems[i].descriptionLines` - For more details see [link waiting for catalog SPI functionality](LINK).
+| `lineItems[i].options`                           | `lineItems[i].descriptionLines`
 | `lineItems[i].priceData.price`                   | `lineItems[i].price.amount`                                               |
 | `lineItems[i].priceData.totalPrice`              | `lineItems[i].price.amount` X `lineItems[i].quantity`                                 |
 | `lineItems[i].convertedPriceData.price`          | `lineItems[i].price.convertedAmount`                                               |

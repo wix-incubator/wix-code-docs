@@ -15,4 +15,4 @@ A cart can be created either by using the [createCart()](https://www.wix.com/vel
 
 Estimate the cart's totals (including shipping costs) using the [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals?branch=autodocs-wix-ecom-backend) function.
 
-To assist in moving from the soon-to-be deprecated [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce Cart API, refer to the [Cart Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/cart/cart-object-conversion?branch=autodocs-wix-ecom-backend).
+To assist in moving from the [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce Cart API, refer to the [Cart Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/cart/cart-object-conversion?branch=autodocs-wix-ecom-backend).
