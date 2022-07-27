@@ -7,7 +7,10 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Article: Wix Data Error Codes
+`wix-data`
 
+The [Wix Data Error Codes](wix-data/error-codes) article lists all the error codes you might encounter while using the Wix Data API. The article explains what causes the errors and what you can do to resolve them. (July 27, 2022)
 ### New API: Lottie
 
 `Wix Editor Elements ($w)`
