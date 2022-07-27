@@ -898,7 +898,7 @@
               "referenceType": "wix-blog-backend.Post.QueryPostCountStatsOptions"
             }
           ],
-          "doc": "",
+          "doc": "Options specifying time frame, sort, and filter.",
           "required": false
         }
       ],
@@ -919,19 +919,120 @@
         "doc": "Get Blog Post Count Stats response\n"
       },
       "docs": {
-        "summary": "Retrieves the number of posts per month published within a specified time span, from first day of a month - ignoring days value in period start field.\n> Note: If `periodStart` value is set to `2018-11-10` and `months` value is set to `1`, the day value is ignored and statistic are returned for one month from `2018-11-01` until `2018-11-30`, and not between `2018-11-10` and `2018-12-10`.",
-        "description": [],
+        "summary": "Retrieves the number of published posts per month within a specified time frame.",
+        "description": [
+          "The `queryPostCountStats()` function returns a Promise that resolves to a the number of posts per month within the specified time frame.\n\nYou can set the time frame using the `rangeStart` and `months` properties. The time frame will start at the 1st of the month set in `rangeStart`. It will cover the amount of months set in `months` and will end on the last day of the last month of the time frame.\nFor example, if you set `startRange` to `'2022-03-13'` and set `months` to `'4'`, the time frame will be from `2022-03-01` until `2022-06-30`.\n\n>**Note:** If there exists a month without any published posts, that month is skipped in the response."
+        ],
         "examples": [
           {
-            "title": "queryPostCountStats example",
+            "title": "Get post count per month ",
             "body": [
+              "import { post } from 'wix-blog-backend';",
               "",
-              "    function queryPostCountStats() {",
+              "export async function MyQueryPostCountStatsFunction() {",
+              "  try {",
+              "    const result = await post.queryPostCountStats();",
+              "    const stats = result.category.stats;",
+              "    const firstMonthPostCount = result.category.stats[0].postCount;",
               "",
-              "  }",
+              "    console.log('Success! Retrieved Result:',result);",
+              "    return getCategoryResult;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  };",
+              "}",
               "",
-              "  "
-            ]
+              "/* ",
+              " * {",
+              " *   \"stats\": [",
+              " *     {",
+              " *       \"periodStart\": \"2020-08-01T00:00:00.000Z\",",
+              " *       \"postCount\": 1",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2021-03-01T00:00:00.000Z\",",
+              " *       \"postCount\": 2",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2022-03-01T00:00:00.000Z\",",
+              " *       \"postCount\": 9",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2022-04-01T00:00:00.000Z\",",
+              " *       \"postCount\": 6",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2022-05-01T00:00:00.000Z\",",
+              " *       \"postCount\": 1",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2022-06-01T00:00:00.000Z\",",
+              " *       \"postCount\": 2",
+              " *     },",
+              " *     {",
+              " *       \"periodStart\": \"2022-07-01T00:00:00.000Z\",",
+              " *       \"postCount\": 5",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This example uses `queryPostCountStats()` to retrieve the `postCount` of published posts per month. "
+            }
+          },
+          {
+            "title": "Get post count per month within a given time period ",
+            "body": [
+              "import { post } from 'wix-blog-backend';",
+              "",
+              "/* Sample options value:",
+              " * {",
+              " *   rangeStart: new Date('2022-03-10'),",
+              " *   months: 4",
+              " * } ",
+              " */",
+              "",
+              "export async function MyQueryPostCountStatsFunction(options) {",
+              "  try {",
+              "    const result = await post.queryPostCountStats(options);",
+              "    const stats = result.category.stats;",
+              "    const firstMonthPostCount = result.category.stats[0].postCount;",
+              "",
+              "    console.log('Success! Retrieved Result:',result);",
+              "    return getCategoryResult;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  };",
+              "}",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *  \"stats\": [",
+              " *    {",
+              " *      \"periodStart\": \"2022-03-01T00:00:00.000Z\",",
+              " *      \"postCount\": 9",
+              " *    },",
+              " *    {",
+              " *      \"periodStart\": \"2022-04-01T00:00:00.000Z\",",
+              " *      \"postCount\": 6",
+              " *    },",
+              " *    {",
+              " *      \"periodStart\": \"2022-05-01T00:00:00.000Z\",",
+              " *      \"postCount\": 1",
+              " *    },",
+              " *    {",
+              " *      \"periodStart\": \"2022-06-01T00:00:00.000Z\",",
+              " *      \"postCount\": 2",
+              " *    }",
+              " *  ]",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This example uses `queryPostCountStats()` to retrieve the `postCount` of published posts per month within a given time frame."
+            }
           }
         ]
       },
@@ -8763,7 +8864,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Language filter"
+          "doc": "Language filter."
         },
         {
           "name": "months",
@@ -8813,7 +8914,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Timezone of the client"
+          "doc": "Time zone of the client."
         }
       ],
       "docs": {
@@ -8833,7 +8934,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Language filter"
+          "doc": "Language filter."
         },
         {
           "name": "months",
@@ -8883,7 +8984,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Timezone of the client"
+          "doc": "Time zone of the client."
         }
       ],
       "docs": {
@@ -8910,7 +9011,7 @@
               }
             }
           ],
-          "doc": "Chronologically ordered list of posts."
+          "doc": "List of posts in specified order."
         }
       ],
       "docs": {
