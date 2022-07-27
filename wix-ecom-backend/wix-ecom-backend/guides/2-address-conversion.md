@@ -9,7 +9,7 @@ to an adjacent `contactDetails` object (for example, in `order.shippingInfo`).
 
 To help with conversion and migration, refer to the table below to check which fields have changed and how.
 
-> Note: in the eCommerce API, the buyer's email is only held in the `buyerInfo` field in the order object.
+> **Note:** In the eCommerce APIs, the buyer's email is only held in the `buyerInfo` field in the order object.
 
 | Previous Address Object                         | New Field Location                                           | Change            |
 | ------------------------------------------------|--------------------------------------------------------------|-------------------|
