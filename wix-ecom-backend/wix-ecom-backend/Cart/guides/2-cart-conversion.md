@@ -8,7 +8,7 @@ To help with migration from the [Stores Cart API](https://www.wix.com/velo/refer
 
 Certain information that used to be held in the Cart is now kept in the Checkout and/or Order. These properties are indicated in the table below, with more information available in the [Stores Cart to eCommerce Checkout Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/checkout-object-conversion?branch=autodocs-wix-ecom-backend).
 
-The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/order/address-object-conversion-table?branch=autodocs-wix-ecom-backend).
+The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend).
 
 Fields that remain with the same name, in the same location, and with no changes in behavior are marked with an asterisk (*).
 
