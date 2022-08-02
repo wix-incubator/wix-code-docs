@@ -22,4 +22,4 @@ like this:
 export function wixEcom_onCartCreated(event) { }
 ```
 
-> Note that backend events don't work when previewing your site.
+> **Note:** ackend events don't work when previewing your site.
