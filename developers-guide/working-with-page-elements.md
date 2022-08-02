@@ -26,7 +26,7 @@ Velo is built to take full advantage of Wix's powerful design platform. That mea
 
 So, with a few exceptions, you generally don't use code to alter the design of your site. Consequently, you don't need to deal with the DOM, HTML, or CSS when working in Velo. We take care of all that for you.
 
-> Note: Exceptions to the rule
+> **Note: Exceptions to the rule**
 > + Some elements allow you to use HTML and CSS. These include the text element, HtmlComponent, and CustomElement.
 > + A number of elements expose some style properties that you can manipulate using code.
 > + You can hide, show, expand, collapse, and animate elements with code. 
@@ -176,13 +176,13 @@ This code defines an `onReady` event handler. Inside the event handler, the code
 
 The `onReady` event handler will run during the page loading process when the elements on the page are ready to be used, but before they are displayed to the site visitor. So the correct message will be set before the page is displayed. When the `onReady` event handler is finished running, the page will be displayed and site visitors will see the proper message.
 
-> Note: Waiting for data before loading a page
+> **Note: Waiting for data before loading a page**
 > You can also use the `onReady( )` function to block the page from loading until some process has finished. This approach is most often used when retrieving data from an internal or external source to populate elements on the page. Since retrieving data takes some time, you might want to wait until that process finishes before displaying the page or rendering it for search engine bots. To wait, you return a Promise from the `onReady` event handler. The page will wait (a reasonable amount of time) until the Promise has resolved before displaying.
-
+>
 > For example, suppose you have a `getSomeData( )` function that returns a Promise that resolves to some data. When the Promise resolves, you populate that data into a page element.
-
+>
 > If you don't wait for the Promise to resolve, the element's placeholder content may show for a moment because the page may finish loading while the data is still being retrieved. Also, you may want to wait so that search engine bots that crawl your page see the page after the data is populated.
-
+>
 > To force that page to wait until the data is retrieved, return a Promise from the Promise that `getSomeData( )` returns. If the Promise resolves in a reasonable amount of time, the page will wait for that resolution before displaying itself.
-
+>
 > Be sure to weigh the costs before using this approach since it delays the loading of your page. If you do choose to delay a page from loading until certain data is retrieved, be sure to follow the [best practices for improving performance when using data](https://support.wix.com/en/article/velo-best-practices-for-improving-performance-in-wix-sites-with-data).
