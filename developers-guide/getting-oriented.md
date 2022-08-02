@@ -40,6 +40,8 @@ The **Properties & Events Panel** contains the following information about the s
 -   **Default Values** (when applicable): Several values that determine the state of the element when the page loads. For example, whether the element is hidden.
 -   **Event Handlers**: Wiring to functions that handle events that occur to the element.
 
+## Velo Sidebar
+
 The **Velo Sidebar** is where you navigate to all the code files and database collections in your site. You can also use the sidebar to access production tools.
 
 ![Velo Sidebar](./images/velo-sidebar.png)
