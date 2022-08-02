@@ -2,7 +2,7 @@
 
 Let's begin by getting familiar with the Velo development environment. The environment contains the tools you need to develop a Velo app.
 
-<iframe src="//www.youtube.com/embed/rzReCvkI4gg?wmode=opaque&amp;enablejsapi=1&amp;" allowfullscreen=""></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rzReCvkI4gg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Enabling Velo
 
