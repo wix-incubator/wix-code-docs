@@ -26,6 +26,11 @@ Velo is built to take full advantage of Wix's powerful design platform. That mea
 
 So, with a few exceptions, you generally don't use code to alter the design of your site. Consequently, you don't need to deal with the DOM, HTML, or CSS when working in Velo. We take care of all that for you.
 
+> Note: Exceptions to the rule
+> + Some elements allow you to use HTML and CSS. These include the text element, HtmlComponent, and CustomElement.
+> + A number of elements expose some style properties that you can manipulate using code.
+> + You can hide, show, expand, collapse, and animate elements with code. 
+
 When it comes to your site's functionality, the story is flipped. Although there is some functionality you can add using the regular site editor, you mostly add custom functionality to your site by writing code.
 
 ## The $w Mindset
@@ -40,18 +45,18 @@ Instead of accessing elements directly from the DOM, in Velo you use the $w API 
 
 You start by selecting an element, or multiple elements, using the `$w()` selector function and a selector string. The selector function returns the element you've specified using the selector string. Then you use the returned element's properties and functions to change its state or perform actions on it.
 
-```
-1
-2
-3
-4
-5
-6
-7
-8
+```javascript
+// Select an element
+const myTextElement = $w('#myTextElementID');
+
+// Assign a value to one of the element's properties
+myTextElement.text = 'New Text';
+
+// Call one of the element's functions
+myTextElement.show();
 ```
 
-> Notesetti
+> Note
 >
 > You can see all the editor elements, their properties, and their functions in the [API Reference](https://www.wix.com/velo/reference).
 
@@ -61,18 +66,18 @@ Suppose you have a page with a text label and a button. When you click the butto
 
 Using HTML and vanilla JavaScript, you might create the elements on the page like this:
 
-```
-1
-2
-3
+```html
+<h1 id="message">Hello World</h1>
+
+<button onclick="changeMessage()">Change Text</button>
 ```
 
 And then add the functionality to the page like this:
 
-```
-1
-2
-3
+```javascript
+function changeMessage() {
+    document.getElementById("message").innerHTML = "Hello from vanilla JavaScript!";
+}
 ```
 
 In Velo, the page setup would be done by dragging and dropping the elements on the page and styling them however you want. You wouldn't need to write any code yet.
@@ -85,12 +90,12 @@ Lastly, you would add code to define the functionality of the elements on the pa
 
 The code to do that would look something like this:
 
-```
-1
-2
-3
-4
-5
+```javascript
+$w.onReady(function () {            
+    $w('#button').onClick(() => {
+        $w('#message').text = 'Hello from Velo!';
+    });
+});
 ```
 
 For now, let's just look at the code on line 3 above.
@@ -103,24 +108,24 @@ At this point you might be wondering why we added a hashtag (`#`) to the element
 
 We did this because there are two ways to select elements using the `$w()` function. You can select elements by ID or by type of element. When selecting by ID, you use a hashtag, and when selecting by type, you don't.
 
-```
-1
-2
+```javascript
+// Select the element with the ID message
+let messageText = $w('#message');
 ```
 
-```
-1
-2
+```javascript
+// Select all image elements on the page
+let imageElements = $w('Image');
 ```
 
 You can also select multiple elements at the same time using a comma-separated string, mixing and matching between IDs and types if you like.
 
-```
-1
-2
-3
-4
-5
+```javascript
+// Select elements with the IDs message1 and message2 and all the images
+let selectedElements = $w('#message1, #message2, Image');
+
+// Hide all of the selected elements
+selectedElements.hide();
 ```
 
 ## IDs
@@ -141,11 +146,11 @@ The `$w.onReady()` function takes in an event handler as a parameter. That handl
 
 So, any code that deals with page elements, basically anything that uses the $w API, can't be called before the `onReady` event handler runs. That's because the page elements are not ready yet.
 
-```
-1
-2
-3
-4
+```javascript
+$w.onReady(() => {
+    // Code in here runs when the page elements are ready 
+    // but the page is not yet displayed to the visitor
+});
 ```
 
 For example, let's say you want to display a message when a page loads. You also want the message to change depending on whether the current site visitor is logged into your site or not. Since the message is dynamic, you have to populate it using code.
@@ -154,21 +159,30 @@ As you already know, you need to use the `$w()` function to select the element w
 
 Your code might look something like this:
 
-```
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
+```javascript
+import wixUsers from 'wix-users';
+
+$w.onReady(() => {
+    if(wixUsers.currentUser.loggedIn) {
+        $w('#message').text = "Welcome back!";
+    }
+    else {
+        $w('#message').text = "Become a member";
+    }
+});
 ```
 
 This code defines an `onReady` event handler. Inside the event handler, the code checks to see if the current user is logged in. Then it selects the `message` element and sets its `text` property to an appropriate message.
 
 The `onReady` event handler will run during the page loading process when the elements on the page are ready to be used, but before they are displayed to the site visitor. So the correct message will be set before the page is displayed. When the `onReady` event handler is finished running, the page will be displayed and site visitors will see the proper message.
 
-Waiting for data before loading a page
+> Note: Waiting for data before loading a page
+> You can also use the `onReady( )` function to block the page from loading until some process has finished. This approach is most often used when retrieving data from an internal or external source to populate elements on the page. Since retrieving data takes some time, you might want to wait until that process finishes before displaying the page or rendering it for search engine bots. To wait, you return a Promise from the `onReady` event handler. The page will wait (a reasonable amount of time) until the Promise has resolved before displaying.
+
+> For example, suppose you have a `getSomeData( )` function that returns a Promise that resolves to some data. When the Promise resolves, you populate that data into a page element.
+
+> If you don't wait for the Promise to resolve, the element's placeholder content may show for a moment because the page may finish loading while the data is still being retrieved. Also, you may want to wait so that search engine bots that crawl your page see the page after the data is populated.
+
+> To force that page to wait until the data is retrieved, return a Promise from the Promise that `getSomeData( )` returns. If the Promise resolves in a reasonable amount of time, the page will wait for that resolution before displaying itself.
+
+> Be sure to weigh the costs before using this approach since it delays the loading of your page. If you do choose to delay a page from loading until certain data is retrieved, be sure to follow the [best practices for improving performance when using data](https://support.wix.com/en/article/velo-best-practices-for-improving-performance-in-wix-sites-with-data).
