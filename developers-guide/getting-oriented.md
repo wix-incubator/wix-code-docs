@@ -8,11 +8,11 @@ Let's begin by getting familiar with the Velo development environment. The envir
 
 Before beginning with Velo, you need to turn Dev Mode on. To do so, go to **Dev Mode** in the Editor's top bar and click **Turn on Dev Mode** in the popup box.
 
-![Turn on Dev Mode](./images/turn-on-dev-mode.gif)
+![Turn on Dev Mode](../media/turn-on-dev-mode.gif)
 
 Once you enable Velo, you see some additional panels appear in the Editor. Let's take a look at what these panels are and what you do with them.
 
-![Velo Editor Panels](./images/velo-editor-panels.png)
+![Velo Editor Panels](../media/velo-editor-panels.png)
 
 ## Code Panel
 
@@ -20,11 +20,11 @@ The **Code Panel** appears at the bottom of the page. This is where you do most 
 
 The **Code Panel** is a fully-functional code editor that's packed with features, such as autocomplete and error checking, to help you write Velo code as quickly and efficiently as possible.
 
-![Code Panel](./images/code-panel.png)
+![Code Panel](../media/code-panel.png)
 
 In the **Code Panel**, you can have multiple code files open in tabs. The left-most tab is always the page code for the current page showing in the Editor. As you change pages in the Editor, the code in this tab will change accordingly. You cannot close this tab. 
 
-![Changing pages in the Code Panel](./images/changing-pages-code-panel.gif)
+![Changing pages in the Code Panel](../media/changing-pages-code-panel.gif)
 
 You can open additional tabs that can contain site code, public code, and backend code.
 
@@ -32,7 +32,7 @@ You can open additional tabs that can contain site code, public code, and backen
 
 The **Properties & Events Panel** is docked to the right side of the **Code Panel** when shown. It contains information about the page element currently selected on the page.
 
-![Properties & Events Panel](./images/properties-and-events-panel.gif)
+![Properties & Events Panel](../media/properties-and-events-panel.gif)
 
 The **Properties & Events Panel** contains the following information about the selected element:
 
@@ -44,7 +44,7 @@ The **Properties & Events Panel** contains the following information about the s
 
 The **Velo Sidebar** is where you navigate to all the code files and database collections in your site. You can also use the sidebar to access production tools.
 
-![Velo Sidebar](./images/velo-sidebar.png)
+![Velo Sidebar](../media/velo-sidebar.png)
 
 The **Velo Sidebar** contains the following tabs, described in detail below:
 
@@ -59,7 +59,7 @@ The **Velo Sidebar** contains the following tabs, described in detail below:
 
 The **Page Code** tab lists all of your site's pages as well as your site's global code. You can use the **Page Code** tab to navigate to your site's pages in the Editor and open their corresponding code files.
 
-![Velo Sidebar - Page Code tab](./images/velo-sidebar-page-code.png)
+![Velo Sidebar - Page Code tab](../media/velo-sidebar-page-code.png)
 
 The **Page Code** tab includes all of the following that are relevant to your site:
 
@@ -74,7 +74,7 @@ The **Page Code** tab includes all of the following that are relevant to your si
 
 The **Code Files** tab contains all of your site's non-page code files.
 
-![Velo Sidebar - Code Files tab](./images/velo-sidebar-code-files.png)
+![Velo Sidebar - Code Files tab](../media/velo-sidebar-code-files.png)
 
 The **Code Files** tab includes all of the following that are relevant to your site:
 
@@ -96,13 +96,13 @@ The **Code Files** tab includes all of the following that are relevant to your s
 
 The **Search Your Code** tab contains a search mechanism that allows you to perform a global search on all of your code files. Package code is not searched.
 
-![Velo Sidebar - Search Your Code tab](./images/velo-sidebar-search.png)
+![Velo Sidebar - Search Your Code tab](../media/velo-sidebar-search.png)
 
 ### Databases
 
 The **Databases** tab contains all of your site's database collections.
 
-![Velo Sidebar - Databases tab](./images/velo-sidebar-databases.png)
+![Velo Sidebar - Databases tab](../media/velo-sidebar-databases.png)
 
 It includes all of the following that are relevant to your site:
 
@@ -113,7 +113,7 @@ It includes all of the following that are relevant to your site:
 
 The **Velo Tools** tab allows you to access several production tools that help you increase the security, debug, and roll out your site.
 
-![Velo Sidebar - Velo Tools tab](./images/velo-sidebar-tools.png)
+![Velo Sidebar - Velo Tools tab](../media/velo-sidebar-tools.png)
 
 The following production tools are available:
 
@@ -125,7 +125,7 @@ The following production tools are available:
 
 The Velo Help tab allows you to access a number of Velo resources to learn more or get some help.
 
-![Velo Sidebar - Velo Help tab](./images/velo-sidebar-help.png)
+![Velo Sidebar - Velo Help tab](../media/velo-sidebar-help.png)
 
 The following resources are available:
 
@@ -140,7 +140,7 @@ When Velo is enabled, the section of the Editor where you design your page doesn
 
 Under the **Developer Tools** section, there are two additional tools when Velo is enabled:
 
-![Tools - Developer Tools](./images/tools-developer-tools.png)
+![Tools - Developer Tools](../media/tools-developer-tools.png)
 
 -   The **Properties & Events Panel**, which we discussed above. 
 -   A **Hidden Elements** setting, which determines whether elements that are set to be hidden are shown while editing.
@@ -154,11 +154,11 @@ Under the **Developer Tools** section, there are two additional tools when Velo 
 
 When you preview your site with Velo enabled, the **Developer Console** shows at the bottom of the screen. The console displays information that is useful for debugging your code, such as errors, logs, and other messages.
 
-![Developer Console](./images/developer-console.png)
+![Developer Console](../media/developer-console.png)
 
 You can set exactly which types of messages are displayed in the **Developer Console**.
 
-![Developer Console views](./images/developer-console-views.png)
+![Developer Console views](../media/developer-console-views.png)
 
 The following types of messages can be toggled on or off:
 
