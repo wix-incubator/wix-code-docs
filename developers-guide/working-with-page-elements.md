@@ -176,6 +176,11 @@ This code defines an `onReady` event handler. Inside the event handler, the code
 
 The `onReady` event handler will run during the page loading process when the elements on the page are ready to be used, but before they are displayed to the site visitor. So the correct message will be set before the page is displayed. When the `onReady` event handler is finished running, the page will be displayed and site visitors will see the proper message.
 
+<details>
+<summary>This is a test of the emergency broadcast system</summary>
+Here is the text that you don't see
+</details>
+
 > **Note: Waiting for data before loading a page**
 > You can also use the `onReady( )` function to block the page from loading until some process has finished. This approach is most often used when retrieving data from an internal or external source to populate elements on the page. Since retrieving data takes some time, you might want to wait until that process finishes before displaying the page or rendering it for search engine bots. To wait, you return a Promise from the `onReady` event handler. The page will wait (a reasonable amount of time) until the Promise has resolved before displaying.
 >
