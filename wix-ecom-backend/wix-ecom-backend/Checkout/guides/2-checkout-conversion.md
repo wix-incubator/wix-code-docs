@@ -8,16 +8,18 @@ Some fields in the the [Stores Cart API](https://www.wix.com/velo/reference/wix-
 
 The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend).
 
+Fields that remain with the same name, in the same location, and with no changes in behavior are marked with an asterisk (*).
+
 | Stores Cart Object                              | eCommerce Checkout Object                                 |
 | ------------------------------------------------|-----------------------------------------------------------|
 | `id`                                            | -                                                         |
 | `status`                                        | -                                                         |
-| `weightUnit`                                    | `weightUnit`                                              |
-| `buyerNote`                                     | `buyerNote`                                               |
+| `weightUnit` *                                  | `weightUnit`                                              |
+| `buyerNote`  *                                   | `buyerNote`                                               |
 | `currency.code`                                 | `currency`                                                |
-| `currency.symbol`                               | -                                                         |
+| `currency.symbol`                               | For every price returned, we also provide the formatted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
 | `convertedCurrency.code`                        | `conversionCurrency`                                      |
-| `convertedCurrency.symbol`                      | -                                                         |
+| `convertedCurrency.symbol`                      | For every converted price returned, we also provide the formatted converted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
 | `billingAddress.address`| `billingInfo.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend) for more details.
 | `billingAddress.contactDetails.firstName`       | `billingInfo.contactDetails.firstName`              |
 | `billingAddress.contactDetails.lastName`        | `billingInfo.contactDetails.lastName`               |
@@ -60,14 +62,14 @@ The address object used in the eCommerce APIs is slightly different to the one u
 | `buyerInfo.id` when `buyerInfo.identityType` value is `CONTACT` | `buyerInfo.contactId`                                               |
 | `buyerInfo.id` when `buyerInfo.identityType` value is `VISITOR` | `buyerInfo.visitorId`                                               |
 | `buyerInfo.id` when `buyerInfo.identityType` value is `MEMBER` | `buyerInfo.memberId`                                               |
-| `buyerInfo.email`                                  | `buyerInfo.email`                                               |
+| `buyerInfo.email`    *                              | `buyerInfo.email`                                               |
 | `buyerInfo.phone`                                  | `billingInfo.contactDetails.phone`                                        |
 | `buyerInfo.firstName`                              | `billingInfo.contactDetails.firstName`                                    |
 | `buyerInfo.lastName`                               | `billingInfo.contactDetails.lastName`                                     |
 | `lineItems[i].id`                                  | `lineItems[i]._id` - Note: this `_id` is of type GUID. In the Stores Cart API, the `id` is of type Int32.                                               |
 | `lineItems[i].productId`                           | `lineItems[i].catalogReference.catalogItemId`
 | `lineItems[i].name`                                | `lineItems[i].productName.original`                          |
-| `lineItems[i].quantity`                            | `lineItems[i].quantity`                          |
+| `lineItems[i].quantity`    *                        | `lineItems[i].quantity`                          |
 | `lineItems[i].weight`                              | `lineItems[i].physicalProperties.weight`                  |
 | `lineItems[i].sku`                                 | `lineItems[i].physicalProperties.sku`                                               |
 | `lineItems[i].lineItemType: "PHYSICAL"`            | `lineItems[i].itemType.preset: "PHYSICAL"`                                |
@@ -75,7 +77,7 @@ The address object used in the eCommerce APIs is slightly different to the one u
 | `lineItems[i].lineItemType: "CUSTOM_AMOUNT_ITEM`   | `lineItems[i].catalogReference`           |
 | `lineItems[i].notes`                               | -                                               |
 | `lineItems[i].customTextFields`                    | `lineItems[i].descriptionLines`                                             |
-| `lineItems[i].mediaItem.mediaType`                 | All line item media in the eCommerce Cart, Checkout, and Order APIs are images.
+| `lineItems[i].mediaItem.mediaType`                 | All line item media in the eCommerce Cart, Checkout, and Order APIs are type image.
 | `lineItems[i].mediaItem.url`                       | `lineItems[i].media.url`                                               |
 | `lineItems[i].mediaItem.width`                     | `lineItems[i].media.width`                                               |
 | `lineItems[i].mediaItem.height`                    | `lineItems[i].media.height`                                               |
