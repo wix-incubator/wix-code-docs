@@ -10,7 +10,7 @@ You can use the Pro Gallery Backend API to do the following:
 + Create a pro gallery from scratch, or clone an existing pro gallery.
 + Get, update, and delete an existing pro gallery.
 + Create, get, update, and delete a pro gallery item. 
-+ List pro galleries and list items in a specific pro gallery. 
++ List pro galleries and list media items in a specific pro gallery. 
 
 ## When a gallery is deleted
 ## List functions up to 10 galleries but info is still there
