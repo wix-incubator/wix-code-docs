@@ -23,7 +23,11 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "options.gallery.items.image.imageInfo",
+        "options.gallery.items.text.html",
+        "options.gallery.items.video.videoInfo"
+      ],
       "ret": {
         "type": [
           {
@@ -42,7 +46,7 @@
       "docs": {
         "summary": "Creates a gallery.",
         "description": [
-          "The `createGallery()` function returns a Promise that resolves to a newly-created gallery after it has successfully been created.\n\nYou can create your own gallery, or clone an existing gallery using the `cloneFromGalleryId` parameter. When a gallery is cloned, the newly-created gallery includes the same properties as the existing gallery except for the gallery and item IDs, sort order, and created and updated dates.\n\n>**Note:** The newly-created gallery is only available on your backend, and doesn't appear on your live site. To display your gallery on your live site, see the 3rd code example. To learn more, see [Managing your Site's Pro Gallery Using the ProGallery Backend API](https://support.wix.com/en/article/velo-tutorial-using-the-paid-plans-api-for-pricing-plan-ordering-and-payment)."
+          "The `createGallery()` function returns a Promise that resolves to a newly-created gallery after it has successfully been created.\n\nYou can create your own gallery, or clone an existing gallery using the `cloneFromGalleryId` parameter. When a gallery is cloned, the newly-created gallery includes the same properties as the existing gallery except for the gallery and item IDs, sort order, and created and updated dates.\n\n>**Note:** The newly-created gallery is only available on your backend, and doesn't appear on your live site. To display your backend gallery on your live site, import the `createGallery()` function to your page code, and write code to convert the backend gallery object to the frontend gallery object. To see an example of this, look at the 3rd code example. To learn more, see [Managing your Site's Pro Gallery Using the ProGallery Backend API](https://support.wix.com/en/article/velo-tutorial-using-the-paid-plans-api-for-pricing-plan-ordering-and-payment)."
         ],
         "examples": [
           {
@@ -325,10 +329,77 @@
         "doc": "Created media item.\n"
       },
       "docs": {
+        "summary": "Creates a media item in a specified gallery.",
         "description": [
           "The `createGalleryItem()` function returns a Promise that resolves to a newly-created gallery item after it has successfully been created."
         ],
-        "summary": "Creates a media item in a specified gallery."
+        "examples": [
+          {
+            "title": "Create a gallery item ",
+            "body": [
+              "import {proGallery} from 'wix-pro-gallery-backend';",
+              "",
+              "export function myCreateGalleryItemFunction() {",
+              "  const galleryId = \"af5c3670-9b0f-4d86-b3b9-19fe62006c39\";",
+              "  const item = {",
+              "    \"title\": \"testing default sort\",",
+              "    \"description\": \"new image item\",",
+              "    \"type\": \"IMAGE\",",
+              "    \"image\": {",
+              "      \"type\": \"WIX_MEDIA\",",
+              "      \"imageInfo\": \"wix:image://v1/9e6ea4_650d8cd45f7545c4b39178feb0ee8c70~mv2.jpg/300.jpg#originWidth=200&originHeight=300\"",
+              "    }\t",
+              "  };",
+              "  return await proGallery.createGalleryItem(galleryId, item);",
+              "    .then((galleryItem) => {",
+              "      console.log(galleryItem);",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"item\": {",
+              " *     \"_createdDate\": \"Mon Feb 08 2021 13:44:37\",",
+              " *     \"_id\":\"10874ccf-5867-4225-9550-3885079bad66\",",
+              " *     \"_updatedDate\": Tue Mar 30 2021 15:23:22,",
+              " *     \"description\": \"This is the first item in my gallery.\",",
+              " *     \"image\": {",
+              " *       \"imageInfo\": \"wix:image://v1/38939f9568z222d6avc6285c9ac1e9129.jpg/38939f9568z222d6avc6285c9ac1e9129.jpg#originWidth=200&originHeight=199\"",
+              " *     }",
+              " *     \"sortOrder\": 1657439075188",
+              " *     \"title\": \"My New Item\"",
+              " *     \"type\": \"IMAGE\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "createGalleryItem example @description:",
+            "body": [
+              "import {proGallery} from 'wix-pro-gallery-backend';",
+              "",
+              "function createGalleryItem() {",
+              "    const videoItem = {",
+              "        \"sortOrder\": 1644317968.985,",
+              "        \"title\": \"Some Title\",",
+              "        \"description\": \"Some Description\",",
+              "        \"link\": {",
+              "            \"url\": \"www.wix.com\"",
+              "        },",
+              "        \"video\": {",
+              "            \"type\": \"WIX_MEDIA\",",
+              "            \"videoInfo\": \"wix:video://v1/468ec5_8dfd12e8576c4845adc2e3734e46b865/468ec5_8dfd12e8576c4845adc2e3734e46b865#posterUri=468ec5_8dfd12e8576c4845adc2e3734e46b865f000.jpg&posterWidth=1280&posterHeight=720\",",
+              "        }",
+              "    }",
+              "",
+              "    return proGallery.createGalleryItem(\"f7cca0a0-5bb5-44c2-a0f8-6496430b3154\", videoItem);",
+              "}"
+            ]
+          }
+        ]
       },
       "isVeloEvent": false
     },
@@ -667,10 +738,46 @@
         "doc": "Returned media item.\n"
       },
       "docs": {
+        "summary": "Gets an existing gallery item by ID.",
         "description": [
           "The `getGalleryItem()` function returns a Promise that resolves to a media item in a specified gallery whose ID matches the given ID."
         ],
-        "summary": "Gets an existing gallery item by ID."
+        "examples": [
+          {
+            "title": "Get a gallery item by ID ",
+            "body": [
+              "import {proGallery} from 'wix-pro-gallery-backend';",
+              "",
+              "export function myGetGalleryItemFunction() {",
+              "  const galleryId = \"af5c3670-9b0f-4d86-b3b9-19fe62006c39\";",
+              "  const itemId = \"813def66-0f0b-40b7-a9df-c731345a926f\";",
+              "",
+              "  return await proGallery.getGalleryItem({galleryId, itemId})",
+              "    .then((galleryItem) => {",
+              "      console.log(galleryItem);",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"item\": {",
+              " *     \"_createdDate\": \"Mon Feb 20 2021 15:22:15\",",
+              " *     \"_id\": \"813def66-0f0b-40b7-a9df-c731345a926f\",",
+              " *     \"description\": \"This is the first item in my gallery.\",",
+              " *     \"image\": {",
+              " *       \"imageInfo\": \"wix:image://v1/38939f9568z222d6avc6285c9ac1e9129.jpg/38939f9568z222d6avc6285c9ac1e9129.jpg#originWidth=200&originHeight=199\"",
+              " *     }",
+              " *     \"sortOrder\": 1657439075188",
+              " *     \"title\": \"My Gallery Item\"",
+              " *     \"type\": \"IMAGE\"",
+              " * }",
+              " */"
+            ]
+          }
+        ]
       },
       "isVeloEvent": false
     },
@@ -806,7 +913,7 @@
           "name": "gallery",
           "type": [
             {
-              "referenceType": "wix-pro-gallery-backend.ProGallery.UpdateGalleryGallery"
+              "referenceType": "wix-pro-gallery-backend.ProGallery.UpdateGallery"
             }
           ],
           "doc": "The information for the gallery being updated.",
@@ -917,7 +1024,7 @@
           "name": "item",
           "type": [
             {
-              "referenceType": "wix-pro-gallery-backend.ProGallery.UpdateGalleryItemItem"
+              "referenceType": "wix-pro-gallery-backend.ProGallery.UpdateGalleryItem"
             }
           ],
           "doc": "The information for the gallery item being updated.",
@@ -946,10 +1053,47 @@
         "doc": "Updated media item.\n"
       },
       "docs": {
+        "summary": "Updates a media item in a specified gallery.",
         "description": [
           "The `updateGalleryItem()` function returns a Promise that resolves to an updated gallery item."
         ],
-        "summary": "Updates a media item in a specified gallery."
+        "examples": [
+          {
+            "title": "Update a gallery item ",
+            "body": [
+              "import {proGallery} from 'wix-pro-gallery-backend';",
+              "",
+              "export function myUpdateGalleryItemFunction() {",
+              "  const galleryId = \"af5c3670-9b0f-4d86-b3b9-19fe62006c39\";",
+              "  const itemId = \"813def66-0f0b-40b7-a9df-c731345a926f\";",
+              "  const title = \"My Updated Item Title\"",
+              "",
+              "  return await proGallery.updateGalleryItem({galleryId, itemId}, {title})",
+              "    .then((updatedGalleryItem) => {",
+              "      console.log(updatedGalleryItem);",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"item\": {",
+              " *     \"_createdDate\": \"Mon Feb 20 2021 15:22:15\",",
+              " *     \"_id\": \"813def66-0f0b-40b7-a9df-c731345a926f\",",
+              " *     \"description\": \"This is the first item in my gallery.\",",
+              " *     \"image\": {",
+              " *       \"imageInfo\": \"wix:image://v1/38939f9568z222d6avc6285c9ac1e9129.jpg/38939f9568z222d6avc6285c9ac1e9129.jpg#originWidth=200&originHeight=199\"",
+              " *     }",
+              " *     \"sortOrder\": 1657439075188",
+              " *     \"title\": \"My Updated Item Title\"",
+              " *     \"type\": \"IMAGE\"",
+              " * }",
+              " */"
+            ]
+          }
+        ]
       },
       "isVeloEvent": false
     }
@@ -1046,7 +1190,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The AppDefId"
         },
         {
           "name": "instanceId",
@@ -1056,7 +1200,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The instance Id"
         }
       ],
       "docs": {
@@ -1328,17 +1472,7 @@
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "any"
-                  }
-                ]
-              }
+              "nativeType": "Object"
             }
           ],
           "doc": "documents matching this filter wil be deleted. only filterable documents defined in document_type can be used for filtering"
@@ -2184,7 +2318,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Gallery sort order.\nDetermines which position a gallery is displayed on the site. Defaults to the beginning of the gallery list."
+          "doc": "Gallery sort order.\nDetermines which position a gallery is displayed on the site.\nDefault: Beginning of the gallery list"
         },
         {
           "name": "totalItems",
@@ -2413,7 +2547,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of media items to return. Defaults to 50, minimum 1, maximum 200."
+          "doc": "Maximum number of media items to return.\nMin: `1`\nMax: `200`\nDefault: `50`"
         },
         {
           "name": "itemOffset",
@@ -2452,7 +2586,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of media items to return. Defaults to 50, minimum 1, maximum 200."
+          "doc": "Maximum number of media items to return.\nMin: `1`\nMax: `200`\nDefault: `50`"
         },
         {
           "name": "itemOffset",
@@ -2551,7 +2685,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The site's last transactionId"
         },
         {
           "name": "metaSiteId",
@@ -2561,7 +2695,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "MSID"
         },
         {
           "name": "pages",
@@ -2578,7 +2712,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "A list of the site's pages"
         },
         {
           "name": "publishDate",
@@ -2588,7 +2722,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Site's publish date"
         },
         {
           "name": "revision",
@@ -2655,17 +2789,7 @@
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "any"
-                  }
-                ]
-              }
+              "nativeType": "Object"
             }
           ],
           "doc": "Set of key-value pairs describing the media in [Exchangeable Image File format](https://en.wikipedia.org/wiki/Exif)."
@@ -2698,7 +2822,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Image compression level. Minimum 30, maximum 100."
+          "doc": "Image compression level.\nMin: `30`\nMax: `100`"
         },
         {
           "name": "unsharpMasking",
@@ -2725,17 +2849,7 @@
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "any"
-                  }
-                ]
-              }
+              "nativeType": "Object"
             }
           ],
           "doc": "document with mandatory fields (id, title, description) and with fields specific to the type of the document"
@@ -2805,7 +2919,7 @@
               "referenceType": "wix-pro-gallery-backend.ProGallery.App"
             }
           ],
-          "doc": ""
+          "doc": "Invalidate by App"
         },
         {
           "name": "localDc",
@@ -2815,7 +2929,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": ""
+          "doc": "Is local DS"
         },
         {
           "name": "metaSiteId",
@@ -2825,7 +2939,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Invalidate by msId"
         },
         {
           "name": "reason",
@@ -2866,7 +2980,7 @@
               "referenceType": "wix-pro-gallery-backend.ProGallery.App"
             }
           ],
-          "doc": ""
+          "doc": "Invalidate by App"
         },
         {
           "name": "metaSiteId",
@@ -2876,7 +2990,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Invalidate by msId"
         }
       ],
       "docs": {
@@ -2959,7 +3073,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Item sort order.\nDetermines which position an item is displayed in the gallery. Defaults to the end of the item list."
+          "doc": "Item sort order.\nDetermines which position a media item is displayed in the gallery.\nDefault: End of the gallery items list"
         },
         {
           "name": "tags",
@@ -3404,7 +3518,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of media items to return. Defaults to 50, minimum 1, maximum 200."
+          "doc": "Maximum number of media items to return.\nMin: `1`\nMax: `200`\nDefault: `50`"
         },
         {
           "name": "itemOffset",
@@ -3443,7 +3557,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of media items to return. Defaults to 50, minimum 1, maximum 200."
+          "doc": "Maximum number of media items to return.\nMin: `1`\nMax: `200`\nDefault: `50`"
         },
         {
           "name": "itemOffset",
@@ -3500,7 +3614,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Page's Id"
         }
       ],
       "docs": {
@@ -3880,7 +3994,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "List of tags assigned to the media item."
         }
       ],
       "docs": {
@@ -3897,17 +4011,7 @@
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "any"
-                  }
-                ]
-              }
+              "nativeType": "Object"
             }
           ],
           "doc": "Set of key-value pairs describing the [CSS style](https://en.wikipedia.org/wiki/CSS) of the text.\n__Note:__ The object structure is customizable. See the [List Gallery Items](https://dev.wix.com/api/rest/site-content/pro-gallery/list-gallery-items) code example for supported values."
@@ -3960,7 +4064,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Unsharp masking amount. Controls the sharpening strength. Minimum 0, maximum 5."
+          "doc": "Unsharp masking amount. Controls the sharpening strength.\nMin: `0`\nMax: `5`"
         },
         {
           "name": "radius",
@@ -3980,7 +4084,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Unsharp masking threshold. Controls how different neighboring pixels must be for shapening to apply. Minimum 0, maximum 1."
+          "doc": "Unsharp masking threshold. Controls how different neighboring pixels must be for shapening to apply.\nMin: `0`\nMax: `1`"
         }
       ],
       "docs": {
@@ -4007,17 +4111,7 @@
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "any"
-                  }
-                ]
-              }
+              "nativeType": "Object"
             }
           ],
           "doc": "documents matching this filter will be updated"
@@ -4033,23 +4127,6 @@
       "name": "UpdateDocumentsEvent",
       "members": [
         {
-          "name": "addDocuments",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-pro-gallery-backend.ProGallery.IndexDocument"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "one or more search documents"
-        },
-        {
           "name": "appDefId",
           "optional": true,
           "type": [
@@ -4058,16 +4135,6 @@
             }
           ],
           "doc": "application which owns documents"
-        },
-        {
-          "name": "correlationId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "id to pass to processing notification"
         },
         {
           "name": "deleteByFilter",
@@ -4118,23 +4185,6 @@
             }
           ],
           "doc": "site documents belong to"
-        },
-        {
-          "name": "removeDocumentIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "one or more ids of indexed documents to be removed. Removal will happen before addition (if both provided)"
         },
         {
           "name": "update",
@@ -4275,7 +4325,7 @@
       }
     },
     {
-      "name": "UpdateGalleryGallery",
+      "name": "UpdateGallery",
       "members": [
         {
           "name": "_createdDate",
@@ -4334,7 +4384,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Gallery sort order.\nDetermines which position a gallery is displayed on the site. Defaults to the beginning of the gallery list."
+          "doc": "Gallery sort order.\nDetermines which position a gallery is displayed on the site.\nDefault: Beginning of the gallery list"
         },
         {
           "name": "totalItems",
@@ -4355,37 +4405,7 @@
       }
     },
     {
-      "name": "UpdateGalleryItemIdentifiers",
-      "members": [
-        {
-          "name": "galleryId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the gallery containing the item to update."
-        },
-        {
-          "name": "itemId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the item to update."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "UpdateGalleryItemItem",
+      "name": "UpdateGalleryItem",
       "members": [
         {
           "name": "_createdDate",
@@ -4458,7 +4478,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Item sort order.\nDetermines which position an item is displayed in the gallery. Defaults to the end of the item list."
+          "doc": "Item sort order.\nDetermines which position a media item is displayed in the gallery.\nDefault: End of the gallery items list"
         },
         {
           "name": "tags",
@@ -4510,6 +4530,36 @@
             }
           ],
           "doc": "Information about the video."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateGalleryItemIdentifiers",
+      "members": [
+        {
+          "name": "galleryId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the gallery containing the item to update."
+        },
+        {
+          "name": "itemId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the item to update."
         }
       ],
       "docs": {
@@ -4644,7 +4694,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Suppoerted values:\n- `UNDEFINED`\n- `VIMEO`\n- `WIX_MEDIA`\n- `YOUTUBE`"
+          "doc": "Suppoerted values:\n- `'UNDEFINED'`\n- `'VIMEO'`\n- `'WIX_MEDIA'`\n- `'YOUTUBE'`"
         },
         {
           "name": "videoInfo",
