@@ -18,6 +18,7 @@ The main difference between the two APIs is that while **Wix eCommerce manages t
 | Inventory                                | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | Wix Stores - no change
 | Collections                              | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | Wix Stores - no change
 
+> **Note:** Further functionality will be coming soon.
 
 ## Import Statement
 
@@ -26,5 +27,3 @@ To use the wix-ecom-backend API, import `wixEcomBackend` from the `wix-ecom-back
 ```javascript
 import wixEcomBackend from 'wix-ecom-backend';
 ```
-
-> **Note:** Further functionality will be coming soon.
