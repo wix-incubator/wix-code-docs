@@ -4,9 +4,9 @@ title: Stores Cart to eCommerce Checkout Conversion Table
 
 # Stores Cart to eCommerce Checkout Conversion Table
 
-Some fields in the the [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) cart object are now held in the [eCommerce Checkout API](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend) checkout object. To learn more, refer to the table below for changes in name and/or location.
+Some fields in the the [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) cart object are now held in the [eCommerce Checkout API](https://www.wix.com/velo/reference/wix-ecom-backend/checkout) checkout object. To learn more, refer to the table below for changes in name and/or location.
 
-The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend).
+The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table).
 
 Fields that remain with the same name, in the same location, and with no changes in behavior are marked with an asterisk (*).
 
@@ -20,7 +20,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `currency.symbol`                               | For every price returned, we also provide the formatted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
 | `convertedCurrency.code`                        | `conversionCurrency`                                      |
 | `convertedCurrency.symbol`                      | For every converted price returned, we also provide the formatted converted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
-| `billingAddress.address`| `billingInfo.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend) for more details.
+| `billingAddress.address`| `billingInfo.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table) for more details.
 | `billingAddress.contactDetails.firstName`       | `billingInfo.contactDetails.firstName`              |
 | `billingAddress.contactDetails.lastName`        | `billingInfo.contactDetails.lastName`               |
 | `billingAddress.contactDetails.phone`           | `billingInfo.contactDetails.phone`              |
@@ -51,13 +51,13 @@ Fields that remain with the same name, in the same location, and with no changes
 | `shippingInfo.shippingRuleDetails.optionId`              | `ֿֿֿֿֿֿֿֿshippingInfo.selectedCarrierServiceOption.title`                                              |
 | `shippingInfo.shippingRuleDetails.deliveryOption`        | `ֿֿֿֿֿֿֿֿshippingInfo.selectedCarrierServiceOption.title`                                                |
 | `shippingInfo.shippingRuleDetails.estimatedDeliveryTime` | `ֿֿֿֿֿֿֿֿshippingInfo.logistics.deliveryTime`                                              |
-| `shippingInfo.pickupDetails.pickupAddress`               | `shippingInfo.selectedCarrierServiceOption.logistics.pickupDetails.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend) for more details.  |
+| `shippingInfo.pickupDetails.pickupAddress`               | `shippingInfo.selectedCarrierServiceOption.logistics.pickupDetails.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table) for more details.  |
 | `shippingInfo.pickupDetails.buyerDetails.firstName`      | `shippingInfo.shippingDestination.contactDetails.firstName`                                     |
 | `shippingInfo.pickupDetails.buyerDetails.lastName`       | `shippingInfo.shippingDestination.contactDetails.lastName`                                     |
 | `shippingInfo.pickupDetails.buyerDetails.email`          | `buyerInfo.email`                                     |
 | `shippingInfo.pickupDetails.buyerDetails.phone`          | `shippingInfo.shippingDestination.contactDetails.phone`                                     |
 | `shippingInfo.pickupDetails.pickupInstructions`    | `shippingInfo.logistics.instructions`                                     |
-| `shippingInfo.shippingAddress.address`             | `shippingInfo.shippingDestination.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table?branch=autodocs-wix-ecom-backend) for more details.  |
+| `shippingInfo.shippingAddress.address`             | `shippingInfo.shippingDestination.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table) for more details.  |
 | `shippingInfo.shippingAddress.contactDetails`      | `shippingInfo.shippingDestination.contactDetails` |          |
 | `buyerInfo.id` when `buyerInfo.identityType` value is `CONTACT` | `buyerInfo.contactId`                                               |
 | `buyerInfo.id` when `buyerInfo.identityType` value is `VISITOR` | `buyerInfo.visitorId`                                               |

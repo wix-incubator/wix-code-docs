@@ -11,9 +11,9 @@ The main difference between the two APIs is that while **Wix eCommerce manages t
 
 | Element                                  | Previous Location                                | Current Location            |
 | -----------------------------------------|--------------------------------------------------|-----------------------------|
-| Cart                                     | [Wix Stores](https://www.wix.com/velo/reference/wix-stores)                                  | [Wix eCommerce Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart?branch=autodocs-wix-ecom-backend)
-| Checkout                                 | No Stores functionality                          | [Wix eCommerce Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout?branch=autodocs-wix-ecom-backend)
-| Order                                    | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | [Wix eCommerce Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders?branch=autodocs-wix-ecom-backend)
+| Cart                                     | [Wix Stores](https://www.wix.com/velo/reference/wix-stores)                                  | [Wix eCommerce Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart)
+| Checkout                                 | No Stores functionality                          | [Wix eCommerce Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout)
+| Order                                    | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | [Wix eCommerce Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders)
 | Catalog                                  | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | Wix Stores - no change
 | Inventory                                | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | Wix Stores - no change
 | Collections                              | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend)                                       | Wix Stores - no change
