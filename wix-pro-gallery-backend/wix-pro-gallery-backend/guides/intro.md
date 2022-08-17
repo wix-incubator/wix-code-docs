@@ -32,5 +32,5 @@ When creating a new gallery, you can choose to create a new gallery from an exis
 
 
 >**Note:** 
-+ To work with the Pro Gallery Backend API, publish your site. 
+To work with the Pro Gallery Backend API, publish your site. 
 
