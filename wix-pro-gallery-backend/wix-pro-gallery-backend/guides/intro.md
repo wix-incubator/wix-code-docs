@@ -8,6 +8,7 @@ Use the Pro Gallery backend API to create and manage pro galleries in your site'
 
 
 You can use the Pro Gallery backend API to do the following:
+
 + Create a pro gallery from scratch or clone an existing pro gallery in your site's backend.
 + Get, update, and delete an existing pro gallery.
 + Create, get, update, and delete a pro gallery item. 

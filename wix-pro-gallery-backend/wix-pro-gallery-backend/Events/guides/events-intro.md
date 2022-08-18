@@ -10,6 +10,7 @@ Wix Pro Gallery backend events are triggered when certain events occur with pro 
 >**Note:** Backend events aren't triggered when previewing your site. 
 
 ## Working with Pro Gallery Event Handlers
+
 To add a pro gallery event handler, add an **events.js** file to the **Backend** section of your site if one does not already exits. All event handler functions for your site are defined in this file.
 
 Event handler functions are defined using the following pattern:
