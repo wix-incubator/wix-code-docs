@@ -5,7 +5,7 @@ title: Introduction
 # Introduction
 
 
-Wix Pro Gallery backend events are triggered when certain events occur with pro galleries in your site's backend. You can write event handlers that react to these events. Event handler functions receive data that correspond to the backend event that has occurred. Use event handlers to create custom responses to pro gallery events.
+Wix Pro Gallery backend events are triggered when certain events occur with pro galleries in your site's backend. You can write event handlers that react to these events. Event handler functions receive data that correspond to the backend event that has occurred. Use event handlers to create custom responses to pro gallery events. Note that changes made to a pro gallery component trigger backend events when your site is published. To learn more, see [How the API Works](#introduction_how-the-api-works). 
 
 >**Note:** Backend events aren't triggered when previewing your site. 
 
