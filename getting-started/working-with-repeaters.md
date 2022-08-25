@@ -404,7 +404,7 @@ You've been paying close attention, so you already know the story can't end ther
 > **Note**
 >
 > You cannot modify a repeater's data array in-place. To add, change, or remove objects from an existing repeater's data array:
-
+>
 > 1.  Store the value of the data property in a variable.
 > 2.  Make changes to the objects of the data array.
 > 3.  Reset the data property with the modified array.
@@ -543,7 +543,7 @@ Here, to start the event handler function, we create a scoped selector by passin
 Now when a visitor hovers over a repeater item container, the event handler will fire, and a selector function will be created with the scope of the specific repeater item that was hovered over. Since the element to be animated is selected using that scoped selector function, it will select the specific instance of the element that is in the repeater item being hovered over.
 
 > **Learn more**
-
+>
 > Want to read more about global and scoped selectors? See Understanding the Scope of Selector Functions in the Help Center.
 
 You've learned enough about repeaters to start working with them. But, believe it or not, there's still a lot more to know. Want to take a deeper dive? See [Wix Repeaters with Velo](https://support.wix.com/en/velo-by-wix/wix-repeaters-with-velo) in the Help Center and the [Repeater](https://www.wix.com/velo/reference/$w/repeater/introduction) element in the API Reference.
