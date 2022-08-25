@@ -1,142 +1,123 @@
-# Give&Get Example - Populating Elements During Page Loading
+# Give&Get Example - Backend Web Modules
 
-Let's take a look at an example of populating elements during the page loading process from our [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)).
+Let's take a look at some examples of using a backend web module from our [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)). 
 
-On our site, the **All Giveaways** page is used to display a searchable and filterable list of the available giveaways. The page has the following elements that are used to perform searching and filtering:
+We use backend web modules to:
 
--   Text input (**#searchTermInput**) - for entering a search term
--   Dropdown (**#categoryDropdown**) - for choosing a category
+-   Create a (fictitious) delivery by calling an external delivery API (**deliveries.jsw**). Writing this code on the backend lets us securely retrieve the API key from the **Secrets Manager** and avoids any possible [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues we might have encountered when using the Fetch API.
+-   Perform data operations on our site's database collections (**giveawaysModule.jsw**). Writing this code on the backend allows us to centralize all our database interactions in one place, override collection permissions when necessary, and modify the data retrieved from the database before sending it to the frontend.
 
-There are several ways site visitors can reach this page. The list of giveaways that are displayed reflect the way the user reached the page.
+Let's examine one of the functions from our backend web modules. The `getMyGiveaways()` function is used to get the giveaways that the current logged-in member has added to the site. The retrieved giveaways are used on the **My Giveaways** page to show members a list of all the giveaways they added.
 
-The visitor can reach the page in any of the following ways:
-
--   By clicking the **All Giveaways** item in the site menu.
-    
-    In this case the **All Giveaways** page should show an unfiltered list of giveaways.
-    
-    The URL will look something like:  
-    **.../giveandget/all-giveaways**.
-    
-
-![All Giveaways](../media/give_and_get_all_giveaways.gif)
-
--   By searching using the search box on the **Home** page.
-    
-    In this case the All Giveaways page should show a list of giveaways that match the search term. We pass the search term information from the Home page to All Giveaways by using query parameters in the URL.
-    
-    The URL will look something like:  
-    **.../giveandget/all-giveaways?searchTerm=Shirt**
-    
-
-![All Giveaways Search Term](../media/give_and_get_all_giveaways_searchterm.gif)
-
--   By clicking on a category in the list of categories on the **Home** page.
-    
-    In this case the **All Giveaways** page should show a list of giveaways that match the selected category. We pass the category information from the **Home** page to **All Giveaways** by using query parameters in the URL.
-    
-    The URL will look something like:  
-    **.../giveandget/all-giveaways?category=Electronics**.
-    
-
-![All Giveaways Category](../media/give_and_get_all_giveaways_category.gif)
-
--   By entering a URL into the browser address bar.
-    
-    In this case the **All Giveaways** page should show a list of giveaways that match the search term and category query parameters in the URL if they exist.
-    
-    The URL will look something like:  
-    **.../giveandget/all-giveaways?searchTerm=TV&category=Electronics**
-    
-
-![All Giveaways Search Term and Category](../media/give_and_get_all_giveaways_searchterm_and_category.gif)
-
-In all of the situations listed above, when the page loads, the input elements on the **All Giveaways** page need to reflect the way the visitor reached the page. 
-
-For example, if the visitor clicked the "Electronics" category on the **Home** page, the category dropdown should show "Electronics" when the page loads. Or if a visitor searched for "Shirt" on the Home page, the search term input should be populated with the word "Shirt" when the page loads.
-
-We've defined the following function, named `renderSearch()`, to populate the elements as discussed above. The `renderSearch()` function is called from the `onReady` event handler, so it runs when the elements on the page are ready, but before the page is displayed to visitors.
+Since the **My Giveaways** page doesn't display all of the information that we store for each giveaway, we can boost performance by only sending it the information it needs. For example, the list of giveaways doesn't display the giveaway descriptions, which can be quite large. So we save some transmission time by not sending the descriptions to the page.
 
 ```javascript
-async function renderSearch(categories) {
-    const { searchTerm, categoryTitle } = wixLocation.query;
+// In backend/giveawayModule.jsw
 
-    $w('#searchTermInput').value = searchTerm;
+import wixData from 'wix-data';
+import wixUsersBackend from 'wix-users-backend';
 
-    const defaultOption = { label: 'All Categories', value: 'all' };
-    const categoryOptions = [defaultOption].concat(mapItemsToOptions(categories));
-    $w('#categoryDropdown').options = categoryOptions;
+// ...
 
-    const selectedCategory = categories.find(category => category.title === categoryTitle);
-    const selectedCategoryID = selectedCategory ? selectedCategory._id : defaultOption.value;
+export async function getMyGiveaways() {
+    const { items: giveaways } = await wixData.query('Giveaways')
+        .eq('giver', wixUsersBackend.currentUser.id)
+        .include('category')
+        .find();
 
-    $w('#categoryDropdown').value = selectedCategoryID;
+    const myGiveaways = giveaways.map(giveaway => {
+        const { _id, title, status, image, category, itemCondition } = giveaway
+
+        return {
+            _id,
+            title,
+            status,
+            image,
+            itemCondition,
+            categoryTitle: category.title,
+            link: giveaway['link-giveaways-title'],
+            updateLink: giveaway['link-giveaways-1-title']
+        }
+    });
+
+    return myGiveaways;
 }
 ```
 
-The function receives a list of categories that was retrieved from the **Categories** database collection.
+In the web module **giveawaysModule.jsw**, we start by importing the functionality we need to work with database collections and our site's users.
 
 ```javascript
-async function renderSearch(categories) {}
+import wixData from 'wix-data';
+import wixUsersBackend from 'wix-users-backend';
 ```
 
-Then, it retrieves information about how the visitor got to the page. This information is passed to the page using query parameters in the URL.
-
-We'll use these values to populate the search term input and the category dropdown.
-
-Don't worry about the details of how we get the information from the query parameters. We'll discuss the usage of query parameters in a [later lesson](./location-api.md).
+Then, inside the `getMyGiveaways()` function we perform a query to find the current user's giveaways from the **Giveaways** collection. We [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the query results so that we have the items returned by the query in a variable named `giveaways`.
 
 ```javascript
-const { searchTerm, categoryTitle } = wixLocation.query;
+const { items: giveaways } = await wixData.query('Giveaways')
+    .eq('giver', wixUsersBackend.currentUser.id)
+    .include('category')
+    .find();
 ```
 
-Next, we populate the search term input with the search term retrieved from the query parameters. We use the `$w()` selector function to select the input and then set its `value` property.
+Next we use the JavaScript `map()` function to create a pared-down version of the giveaway list that only contains the fields that are used on the **My Giveaways** page.
+
+While we're at it, we also repackage some of the values with new keys to make the giveaway objects easy to use on the frontend.
 
 ```javascript
-$w('#searchTermInput').value = searchTerm;
+const myGiveaways = giveaways.map(giveaway => {
+    const { _id, title, status, image, category, itemCondition } = giveaway
+
+    return {
+        _id,
+        title,
+        status,
+        image,
+        itemCondition,
+        categoryTitle: category.title,
+        link: giveaway['link-giveaways-title'],
+        updateLink: giveaway['link-giveaways-1-title']
+    }
+});
 ```
 
-The next section of code populates the options that appear in the category dropdown.
-
-The options of a dropdown element are structured as an array of objects. Each object contains a label that is displayed to visitors and a value that is used behind the scenes. 
-
-In our case, the labels are the category titles and the values are the IDs of the categories as found in the **Categories** database collection. 
-
-We also want to add an option that will allow visitors to see giveaways from all of the categories at once.
-
-So, we start by creating the default option.
+All there's left to do now is return the new list of giveaways.
 
 ```javascript
-const defaultOption = { label: 'All Categories', value: 'all' };
+return myGiveaways;
 ```
 
-Then, we add it to the list of categories retrieved from the **Categories** database collection. Since the category items we receive from the collection do not have `label` and `value` properties, we use the `mapItemsToOptions()` function to transform them into the format the dropdown requires.
+So that's the definition of the `getMyGiveaways()` function on the backend. Now, let's see how it's called on the **My Giveaways** page.
 
 ```javascript
-const categoryOptions = [defaultOption].concat(mapItemsToOptions(categories));
+import { getMyGiveaways, removeGiveaway } from 'backend/giveawaysModule';
+
+// ...
+
+$w.onReady(function () {
+    bindGiveawaysRepeater();
+    renderGiveawaysRepeater();
+});
+
+// ...
+
+async function renderGiveawaysRepeater() {
+    const giveaways = await getMyGiveaways();
+    $w('#giveawaysRepeater').data = giveaways;
+}
 ```
 
-Now that we have all our options in the right format, we can set them as the dropdown options.
-
-Again, we use the `$w()` selector function. This time, we use it to select the dropdown and set its `options` property.
+First, we import the `getMyGiveaways()` function from the backend web module.
 
 ```javascript
-$w('#categoryDropdown').options = categoryOptions;
+import { getMyGiveaways, removeGiveaway } from 'backend/giveawaysModule';
 ```
 
-The last step is to make sure the correct option is selected in the dropdown. 
-
-To do so, we look through the categories retrieved from the **Categories** database collection. We try to find a category item whose title matches the category title retrieved from the query parameters.
-
-If we find a match, we set its ID as the selected ID. If we don't find a match, we use the default option's ID as the selected ID.
+Then, in the `renderGiveawaysRepeater()` function, which is called from the `onReady` event handler, we call the function and wait for the returned Promise to resolve. When it resolves we set the page's repeater to the returned giveaways list.
 
 ```javascript
-const selectedCategory = categories.find(category => category.title === categoryTitle);
-const selectedCategoryID = selectedCategory ? selectedCategory._id : defaultOption.value;
-```
-
-Finally, we use the `$w()` selector function to select the dropdown and set its value property to the `selectedCategoryID`. This will set the option that currently shows in the dropdown to the one whose ID matches the `selectedCategoryID`.
-
-```javascript
-$w('#categoryDropdown').value = selectedCategoryID;
+async function renderGiveawaysRepeater() {
+    const giveaways = await getMyGiveaways();
+    $w('#giveawaysRepeater').data = giveaways;
+}
 ```
