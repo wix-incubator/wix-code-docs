@@ -1,7 +1,5 @@
 # Give&Get Example - Packages
 
-[Learning Center](https://learn-code.wix.com/en/)
-
 On our site, we've installed: 
 
 -   The [**jsonwebtoken**](https://www.npmjs.com/package/jsonwebtoken) npm package to encrypt and decrypt giveaway IDs that we send to the (fictitious) delivery service.
