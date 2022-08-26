@@ -8,6 +8,23 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Pricing Plan Orders
+
+`wix-pricing-plans`, `wix-pricing-plans-backend`
+
+We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](https://www.wix.com/velo/reference/wix-pricing-plans) and the [backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend), and more [backend events](https://www.wix.com/velo/reference/wix-pricing-plans-backend/events).
+
+The newly supported activities include:
+* Creating and updating both [online](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder) and [offline](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createofflineorder) orders
+* [Purchasing orders](https://www.wix.com/velo/reference/wix-pricing-plans/checkout/startonlinepurchase)
+* [Canceling orders](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/cancelorder)
+* [Getting](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/getorder) and [listing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/listorders) orders
+* [Postponing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/postponeenddate), [pausing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/pauseorder), and [resuming](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/resumeorder) orders
+* [Marking offline orders as paid](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/markaspaid)
+
+Please note the deprecation and migration instructions we added to the [Paid Plans](https://www.wix.com/velo/reference/wix-paid-plans) documentation.
+(January 12, 2022)
+
 ### New API: Lottie
 
 `Wix Editor Elements ($w)`
@@ -89,23 +106,6 @@ allowing you to ignore redundant events.
 `wix-media-backend`
 
 You can now use the Media Manager API to move [files](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefilestotrash) and [folders](https://www.wix.com/velo/reference/wix-media-backend/mediamanager-obj/movefolderstotrash) to the Media Manager's trash bin. (January 12, 2022)
-
-<!-- ### New API: Pricing Plan Orders
-
-`wix-pricing-plans`, `wix-pricing-plans-backend`
-
-We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](https://www.wix.com/velo/reference/wix-pricing-plans) and the [backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend), and more [backend events](https://www.wix.com/velo/reference/wix-pricing-plans-backend/events).
-
-The newly supported activities include:
-* Creating and updating both [online](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder) and [offline](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createofflineorder) orders
-* [Purchasing orders](https://www.wix.com/velo/reference/wix-pricing-plans/checkout/startonlinepurchase)
-* [Canceling orders](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/cancelorder)
-* [Getting](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/getorder) and [listing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/listorders) orders
-* [Postponing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/postponeenddate), [pausing](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/pauseorder), and [resuming](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/resumeorder) orders
-* [Marking offline orders as paid](https://www.wix.com/velo/reference/wix-pricing-plans-backend/orders/markaspaid)
-
-Please note the deprecation and migration instructions we added to the [Paid Plans](https://www.wix.com/velo/reference/wix-paid-plans) documentation. (January 12, 2022) -->
-
 
 ### New API: Date Picker API improvements
 
