@@ -1,4 +1,4 @@
-# Currency Converter using the Fetch API
+# Currency Converter Using the Fetch API
 
 In this tutorial, we create a simple currency converter site that uses the [wix-fetch API](https://www.wix.com/velo/reference/wix-fetch.html) to connect to a 3rd-party service. Site visitors choose source and target currencies from dropdowns and enter an amount to convert. The results are displayed in a text box.
 
