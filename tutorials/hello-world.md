@@ -2,7 +2,7 @@
 
 Let's take a quick look at how to get started writing your first Velo code. We'll do that by creating a traditional Hello World app - Velo style.
 
-<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-1" width="100%" height="300" scrolling="no">
+<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-1" width="100%" height="300" scrolling="no" style="border:none;">
 </iframe>
 
 > **Preview** the page to see the code in action.
@@ -45,7 +45,7 @@ Let's take this code and stick it in the `onReady` event handler that appears in
 
 The finished code, should look like this:
 
-<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-2" width="100%" height="300" scrolling="no">
+<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-2" width="100%" height="300" scrolling="no" style="border:none;">
 </iframe>
 
 > **Preview** the page to see the code in action.
@@ -83,7 +83,7 @@ $w('#button').onClick ( () => {
 
 So, the finished code looks like this:
 
-<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-1" width="100%" height="300" scrolling="no">
+<iframe src="https://www.wix.com/corvid-pro/code-snippets/snippets/hello-velo-1" width="100%" height="300" scrolling="no" style="border:none;">
 </iframe>
 
 > **Preview** the page to see the code in action.
