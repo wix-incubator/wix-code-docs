@@ -14,7 +14,7 @@ Each of these elements has their own properties and functions that you can use t
 
 Working with most page elements is pretty straightforward. You can look up an element's functionality in the [API Reference](https://www.wix.com/velo/reference/$w) and get a pretty good idea of how to work with it right away.
 
-There are some elements that require a little more understanding, before you can take full advantage of what they have to offer. One such example is the repeater element. [Later in this guide](https://learn-code.wix.com/en/article/working-with-repeaters), we'll discuss repeaters and how you can use them effectively.
+There are some elements that require a little more understanding, before you can take full advantage of what they have to offer. One such example is the repeater element. [Later](./working-with-repeaters.md), we'll discuss repeaters and how you can use them effectively.
 
 In the meantime, let's focus on the basics that you need to know when working with any element using Velo.
 

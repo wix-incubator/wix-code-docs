@@ -133,7 +133,7 @@ When the delete button is clicked, a lightbox with a confirmation message opens.
 
 > **Learn more**
 >
-> Want to read more about lightboxes and see what happens in the lightbox code? See the lesson on the [Window API](https://learn-code.wix.com/en/article/window-api).
+> Want to read more about lightboxes and see what happens in the lightbox code? See the lesson on the [Window API](./window-api.md).
 
 ```javascript
 const shouldDeleteGiveaway = await wixWindow.openLightbox('Delete Confirmation', title);
@@ -210,7 +210,7 @@ The function starts by getting the current user's location. The location is retr
 
 > **Learn more**
 > 
-> Want to read more about getting a visitor's location? See the lesson on the [Window API](https://learn-code.wix.com/en/article/window-api).
+> Want to read more about getting a visitor's location? See the lesson on the [Window API](./window-api.md).
 
 ```javascript
 const currentUserLocation = await getUserLocation();
@@ -234,7 +234,7 @@ Next, we check to see if we have the current user's location and the item locati
 
 If the visitor's location was retrieved and we have the giveaway's location, we calculate the distance using the imported `getDistance()` function, populate the calculated distance into the distance text element, and expand the text element.
 
-Now let's take a look at how the items in the repeater change to reflect the current search term and category selection. Although the approach here uses code, it differs from what we saw in the previous section. It does not directly set the repeater's data using the Repeater API. Instead, here the Dataset API is used.
+Now let's take a look at how the items in the repeater change to reflect the current search term and category selection. Although the approach here uses code, it differs from what we saw previously. It does not directly set the repeater's data using the Repeater API. Instead, here the Dataset API is used.
 
 The code for changing the items shown in the dataset is found in the `filterGiveaways()` function. The function gets called when the page loads and every time the **Search** button is clicked.
 

@@ -1,6 +1,6 @@
 # Packages
 
-Packages are another way to integrate with 3rd party services, in addition to using the [Fetch API](https://learn-code.wix.com/en/article/integration-with-third-party-services) discussed in the previous lesson. You can also use packages for any number of other reasons. If there's a package out there that's already implemented some functionality that you need, there's no point in reinventing the wheel.
+Packages are another way to integrate with 3rd party services, in addition to using the [Fetch API](./third-party-services.md) discussed in the previous lesson. You can also use packages for any number of other reasons. If there's a package out there that's already implemented some functionality that you need, there's no point in reinventing the wheel.
 
 There are two types of package that you can use in your code:
 

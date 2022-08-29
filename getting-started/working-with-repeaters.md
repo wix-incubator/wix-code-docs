@@ -28,7 +28,7 @@ In other words, a repeater is made up of multiple containers. Each of those cont
 
 There are several way to populate a repeater with data:
 
--   Static Data: Repeaters are a great layout tool. You can manually enter static data into a repeater in the Editor to display data organized in a consistent way. Working with repeaters in this manner is pretty straightforward. We won't discuss this approach in this guide.
+-   Static Data: Repeaters are a great layout tool. You can manually enter static data into a repeater in the Editor to display data organized in a consistent way. Working with repeaters in this manner is pretty straightforward. We won't discuss this approach here.
 
 -   Data Connections: You can use a dataset to connect data from a database collection to a repeater without using any code. A repeater changes its size and contents dynamically based on the settings of the dataset you connect it to. You can read more about this approach in the [Content Manager Learning Center](https://learn.wix.com/en/article/displaying-site-content-144739#displaying-multiple-items-together). 
 

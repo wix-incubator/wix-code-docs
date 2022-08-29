@@ -56,7 +56,7 @@ Now we check the flag. If this is not the first time the visitor is visiting the
 
 > **Learn more**
 >
-> To read more about lightboxes, see the lesson on the [Window API](https://learn-code.wix.com/en/article/window-api).
+> To read more about lightboxes, see the lesson on the [Window API](./window-api.md).
 
 Then we set the flag for future page views. Now that the flag is set, the next time this code runs, the flag will be found and nothing will happen.
 

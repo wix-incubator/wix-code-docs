@@ -65,7 +65,7 @@ The **Page Code** tab includes all of the following that are relevant to your si
 
 -   **Main Pages**: Regular pages and their corresponding code files. 
 -   **Dynamic Pages**: Dynamic pages and their corresponding code files.
--   **Router Pages**: Router pages and their corresponding code files. The code for a router's routing logic is contained in the **Backend** section of the **Code Files** tab. We will not discuss routers in this guide.
+-   **Router Pages**: Router pages and their corresponding code files. The code for a router's routing logic is contained in the **Backend** section of the **Code Files** tab. We will not discuss routers here.
 -   **Members Area**: [Members area pages](https://support.wix.com/en/article/adding-and-managing-your-member-pages) and their corresponding code files for your site's member area, if you've added one. These pages may also include pages added by Wix Apps that use the members area, such as the Stores and Blog apps.
 -   **Lightboxes**: Lightboxes and their corresponding code files.
 -   **Global**: Code that runs on all of your site's pages. The code is written in the **masterPage.js** file. It can include general global code and code that works with [page elements set to show on all of your site's pages](https://support.wix.com/en/article/wix-editor-showing-an-element-on-all-pages).
@@ -81,16 +81,16 @@ The **Code Files** tab includes all of the following that are relevant to your s
 -   **Public files**: Public code that can be accessed by your frontend and backend code.
 -   **Backend files**: Backend code, including:
     -   Regular backend JavaScript files.
-    -   Backend JavaScript [web modules](https://learn-code.wix.com/en/article/writing-backend-code), whose code can be called from the frontend. Web module files end with the **.jsw** extension.
+    -   Backend JavaScript [web modules](./writing-backend-code.md), whose code can be called from the frontend. Web module files end with the **.jsw** extension.
     -   JavaScript files with special meaning in Velo, such as:
-        -   **data.js**: Contains data hooks. We will not discuss [data hooks](https://support.wix.com/en/article/velo-about-data-hooks) in this guide.
-        -   **http-functions.js**: Contains functions your site [exposes as an API](https://learn-code.wix.com/en/article/expose-an-api).
-        -   **routers.js**: Contains routing logic for any site routers. We will not discuss [routers](https://support.wix.com/en/article/velo-about-routers) in this guide.
+        -   **data.js**: Contains data hooks. We will not discuss [data hooks](https://support.wix.com/en/article/velo-about-data-hooks) here.
+        -   **http-functions.js**: Contains functions your site [exposes as an API](./expose-an-api.md).
+        -   **routers.js**: Contains routing logic for any site routers. We will not discuss [routers](https://support.wix.com/en/article/velo-about-routers) here.
     -   Configuration files, such as:
-    -    **jobs.config**: Contains configuration information for the [job scheduler](https://learn-code.wix.com/en/article/schedule-jobs).
+    -    **jobs.config**: Contains configuration information for the [job scheduler](./schedule-jobs.md).
 -   **Packages:**
-    -   **npm**:The [npm packages](https://learn-code.wix.com/en/article/packages) installed on your site
-    -   **Velo**: The [Velo packages](https://learn-code.wix.com/en/article/packages) installed on your site
+    -   **npm**:The [npm packages](./packages.md) installed on your site
+    -   **Velo**: The [Velo packages](./pa) installed on your site
 
 ### Search Your Code
 

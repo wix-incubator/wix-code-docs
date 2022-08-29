@@ -4,7 +4,7 @@ Want to integrate your site with a 3rd party service? No problem. Velo has a Fet
 
 > **Tip**
 >
-> You can also use npm and Velo packages to integrate with 3rd party services. Learn more about integrating with third party services using packages in the [Packages](https://learn-code.wix.com/en/article/packages) lesson.
+> You can also use npm and Velo packages to integrate with 3rd party services. Learn more about integrating with third party services using packages in the [Packages](./packages.md) lesson.
 
 ## Fetch
 

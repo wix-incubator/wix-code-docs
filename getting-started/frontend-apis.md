@@ -9,7 +9,7 @@ Some of the things you can do with frontend APIs are:
 -   Customize a page's SEO.
 -   And much more.
 
-In the following sections we'll cover a few of the most common frontend APIs that you can use in your page code.
+Here, we'll cover a few of the most common frontend APIs that you can use in your page code.
 
 ## Importing APIs
 
@@ -43,8 +43,8 @@ In addition to the APIs we'll cover, there are a number of other APIs that you c
 
 -   wix-animations - For animating the elements on a page. 
 -   wix-crm - For working with contacts.
--   wix-data - For working with a site's database collections. We'll see some basic uses of this API later in this guide.
--   wix-fetch - For getting data from 3rd party services. We'll see a use of this API from backend code later in this guide.
+-   wix-data - For working with a site's database collections. We'll see some basic uses of this API later.
+-   wix-fetch - For getting data from 3rd party services. We'll see a use of this API from backend code later.
 -   wix-realtime - Used in conjunction with the wix-realtime-backend API to send and receive messages in real time.
 -   wix-search - For adding search functionality to your site. We'll use datasets and the wix-data instead of wix-search to add search functionality to our Give & Get site.
 -   wix-seo - For working with SEO.

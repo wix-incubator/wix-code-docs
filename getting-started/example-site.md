@@ -1,6 +1,6 @@
 # Example Site
 
-Throughout this guide we will use two types of examples to demonstrate the concepts that you're learning. 
+We use two types of examples to demonstrate the concepts that you're learning. 
 
 -   While explaining the concept, we include a stand-alone example that illustrates the concept in a clear, concise fashion. 
 -   After the concept has been fully explained, we present examples from a fully functioning site so you can see how the concept is used in context.
@@ -20,7 +20,7 @@ We used Velo in conjunction with the [Content Manager](https://learn.wix.com/en/
 -   Member generated content: Members can upload giveaways and can see and edit all the giveaways they've uploaded.
 -   Integration with a 3rd-party service: Integration with a (fictitious) delivery service to delivery giveaways from the giver to the taker.
 
-As we discuss the Velo topics covered in this guide, we'll point out how they are used to build the functionality of the site.
+As we discuss Velo topics, we'll point out how they are used to build the functionality of the site.
 
 ## Components
 
