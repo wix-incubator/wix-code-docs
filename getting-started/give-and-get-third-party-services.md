@@ -1,6 +1,6 @@
-# Give&Get Example - Integrating With Third Party Services
+# Give & Get Example - Integrating With Third Party Services
 
-Let's take a look at an example of how we integrate with third party services from our [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)). 
+Let's take a look at an example of how we integrate with third party services from our [Give & Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)). 
 
 We integrate with a (fictitious) delivery service to schedule deliveries for giveaways that visitors have requested.
 
@@ -18,7 +18,7 @@ The delivery service API works as follows:
 
 > **Note**
 > 
-> To retrieve an API key to use the (fictitious) delivery service, go to our [Blink Shipper](https://www.wix.com/velo-dev/fake-api) site. If you're working on your own version of the Give&Get site, add the key to the **Secrets Manager** using the name **deliveryKey**.
+> To retrieve an API key to use the (fictitious) delivery service, go to our [Blink Shipper](https://www.wix.com/velo-dev/fake-api) site. If you're working on your own version of the Give & Get site, add the key to the **Secrets Manager** using the name **deliveryKey**.
 
 Let's take a look at the code that creates a delivery for a requested giveaway. The code is in the **deliveries.jsw** backend web module.
 

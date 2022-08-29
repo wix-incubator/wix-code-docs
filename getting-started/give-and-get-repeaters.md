@@ -1,4 +1,4 @@
-# Give&Get Example - Repeaters
+# Give & Get Example - Repeaters
 
 There are four repeaters on our site. Let's examine some of them to demonstrate the three approaches to populating repeaters with data from a database collection and for adding functionality to repeaters.
 

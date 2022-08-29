@@ -1,4 +1,4 @@
-# Give&Get Example - Packages
+# Give & Get Example - Packages
 
 On our site, we've installed: 
 

@@ -1,6 +1,6 @@
-# Give&Get Example - Exposing an API
+# Give & Get Example - Exposing an API
 
-Let's take a look at an example of an API that we expose from the [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)).
+Let's take a look at an example of an API that we expose from the [Give & Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)).
 
 We expose an endpoint that our (fictitious) delivery service uses to update our site when a giveaway has been delivered. The delivery service makes an API call to our site letting us know that a giveaway was delivered. When we receive such an API call, we update the status of the giveaway in the **Giveaways** collection to **Delivered**.
 

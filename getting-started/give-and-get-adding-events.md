@@ -1,6 +1,6 @@
-# Give&Get Example - Adding Events to Elements
+# Give & Get Example - Adding Events to Elements
 
-Let's take a look at an example of adding event handlers to an element from our [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)).
+Let's take a look at an example of adding event handlers to an element from our [Give & Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)).
 
 In our site, the **Home** page contains a search box that site visitors use to search for giveaways. The page has the following elements that are used to perform a search:
 

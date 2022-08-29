@@ -13,12 +13,12 @@ There are lots of reasons you might want to use a backend web module. Some of th
 >
 > Besides web modules, you can also write code in the backend that is not accessible from the frontend.
 >
-> Some of these will be discussed later in this guide, such as:
+> Some of these will be discussed later, such as:
 >
-> -   Code that will run as a [scheduled job](https://learn-code.wix.com/en/article/schedule-jobs).
-> -   Code that you [expose as an API](https://learn-code.wix.com/en/article/expose-an-api) for other services to consume.
+> -   Code that will run as a [scheduled job](./schedule-jobs.md).
+> -   Code that you [expose as an API](./expose-an-api.md) for other services to consume.
 >
-> Other uses of backend code that are not discussed in this guide include:
+> Other uses of backend code that are not discussed here include:
 >
 > -   Creating a [router](https://support.wix.com/en/article/velo-about-routers) to take complete control when handling incoming requests to your site.
 > -   Adding [data hooks](https://support.wix.com/en/article/velo-about-data-hooks) to intercept interactions with your site's database collections immediately before or after they happen.
@@ -77,7 +77,7 @@ Notice how the `getTeamNames()` function is called using a `then()` to handle th
 
 ## Testing Functions in Web Modules
 
-You can easily test your web module functions right from the code panel. Click the green arrow to the left of the function header to open the testing environment. Read more about testing backend functions in the [Testing and Debugging](https://learn-code.wix.com/en/article/testing-and-debugging) lesson.
+You can easily test your web module functions right from the code panel. Click the green arrow to the left of the function header to open the testing environment. Read more about testing backend functions in the [Testing and Debugging](./testing-and-debugging.md) lesson.
 
 ## Security & Permissions
 

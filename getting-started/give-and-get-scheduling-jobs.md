@@ -1,6 +1,6 @@
-# Give&Get Example - Scheduling Jobs
+# Give & Get Example - Scheduling Jobs
 
-Let's take a look at an example of a scheduled job from our [Give&Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)). 
+Let's take a look at an example of a scheduled job from our [Give & Get site](https://www.wix.com/velo-dev/giveandget) ([template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true)). 
 
 On our site, we use a scheduled job to remove giveaways that were either added or last updated over two months ago. 
 
