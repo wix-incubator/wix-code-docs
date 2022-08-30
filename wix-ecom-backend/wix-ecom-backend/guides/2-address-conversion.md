@@ -19,7 +19,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `address.email`                                 | `buyerInfo.email`                                            | Moved to `buyerInfo` object
 | `address.zipCode`                               | `address.postalCode`                                         | Field name
 | `address.country` *                             | `address.country`                                            |
-| `address.addressLine1`                          | `address.addressLine`                                        | Field name
+| `address.addressLine1` *                        | `address.addressLine1`                                       |
 | `address.addressLine2` *                        | `address.addressLine2`                                       |
 | `address.street`                                | `address.streetAddress`                                      | Field name
 | `address.subdivision` *                         | `address.subdivision`                                        |
