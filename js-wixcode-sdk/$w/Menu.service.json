@@ -3,12 +3,13 @@
   "mixes":
     [ "$w.Element",
       "$w.HiddenCollapsedMixin" ],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "Menu.js" },
   "docs":
-    { "summary": "Menus are used for navigating between site pages..",
+    { "summary": "Menus are used for navigating between site pages.",
       "description":
         [ "Menus help site visitors navigate from page to page on a site. For example: ",
           "",
@@ -18,10 +19,10 @@
           " where the item opens, and if an item displays as selected. This includes using Velo ",
           " to modify site menus in real time during the visitor's stay on the site.",
           "",
-          " The following table lists menu element types and if you can customize them with code.",
+          " The following table lists available menu element types and if you can customize them with code.",
           "",
           "",
-          " | Menu Type   | Current Velo support   | Submenu support |",
+          " | Menu Type   | Velo support   | Submenu support |",
           " | :-------- | :------: | :------- |",
           " | Horizontal menus     | Yes   | Up to 2 additional levels |",
           " | Stylable horizontal menus     | Yes   | Up to 2 additional levels |",
@@ -38,7 +39,8 @@
         {  } },
   "properties":
     [ { "name": "menuItems",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "get": true,
         "set": true,
         "type":
@@ -47,9 +49,9 @@
               [ "$w.Menu.MenuItem" ] },
         "defaultValue": "An array of menu items defined using the Editor.",
         "locations":
-          [ { "lineno": 88,
+          [ { "lineno": 87,
               "filename": "Menu.js" },
-            { "lineno": 126,
+            { "lineno": 123,
               "filename": "Menu.js" } ],
         "docs":
           { "summary": "Sets or gets menu items.",
@@ -62,8 +64,6 @@
                 "",
                 " Getting the `menuItems` property returns a `menuItems` array of menu items that have been set using code. If no",
                 " items have been set using code, the array defaults to the items defined using the Editor.",
-                "",
-                " Properties that don't have a value are omitted from the returned array.",
                 "",
                 " You can't modify the `menuItems` array in-place. To add, change, or remove",
                 " individual menu items:",
@@ -123,11 +123,11 @@
                 { "title": "Set items for a horizontal menu",
                   "body":
                     [ "$w('#myHorizontalMenu').menuItems = [",
-                      "  {label: 'Home', 'link': '/', 'selected': true},",
-                      "  {label: 'For Rent', 'link': '/rentals'},",
-                      "  {label: 'For Sale', 'link': '/purchases'},",
-                      "  {label: 'Mortgage calculator', 'link': 'https://www.mortgagecalculator.org/', 'target': '_blank'},",
-                      "  {label: 'About Us', 'link': '/about'}",
+                      "  {label: 'Home', link: '/', selected: true},",
+                      "  {label: 'For Rent', link: '/rentals'},",
+                      "  {label: 'For Sale', link: '/purchases'},",
+                      "  {label: 'Mortgage calculator', link: 'https://www.mortgagecalculator.org/', target: '_blank'},",
+                      "  {label: 'About Us', link: '/about'}",
                       "];" ],
                   "extra":
                     {  } },
@@ -138,14 +138,14 @@
                       " ************************************/ ",
                       "",
                       " $w('#myVerticalMenu').menuItems = [",
-                      "  {label: 'Home', 'link': '/', 'selected': true},",
-                      "  {label: 'For Rent', 'link': '/rentals', menuItems: [",
-                      "    {'label': 'Long Term', 'link': '/rentals/long'},",
-                      "    {'label': 'Short Term', 'link': '/rentals/short'}",
+                      "  {label: 'Home', link: '/', selected: true},",
+                      "  {label: 'For Rent', link: '/rentals', menuItems: [",
+                      "    {label: 'Long Term', link: '/rentals/long'},",
+                      "    {label: 'Short Term', link: '/rentals/short'}",
                       "  ]},",
-                      "  {label: 'For Sale', 'link': '/purchases'},",
-                      "  {label: 'Mortgage calculator', 'link': 'https://www.mortgagecalculator.org/', 'target': '_blank'},",
-                      "  {label: 'About Us', 'link': '/about'}",
+                      "  {label: 'For Sale', link: '/purchases'},",
+                      "  {label: 'Mortgage calculator', link: 'https://www.mortgagecalculator.org/', target: '_blank'},",
+                      "  {label: 'About Us', link: '/about'}",
                       "];" ],
                   "extra":
                     {  } },
@@ -154,36 +154,40 @@
                     [ "import { currentMember } from 'wix-members';",
                       "",
                       "$w.onReady(function () {",
-                      " ",
-                      "  currentMember.getRoles()",
-                      "    .then( (roles) => {",
-                      "      const foundRole = roles.some(el => el.title === 'Realtor');",
-                      "      if (foundRole) {",
-                      "        $w(\"#horizontalMenu1\").menuItems = [",
-                      "         {label: 'Home', link: '/', selected: false},",
-                      "         {label: 'For Rent', link: '/rentals'},",
-                      "         {label: 'For Sale', link: '/purchases'},",
-                      "         {label: 'Realtors Only!', link: '/realtors'}  // added option based on role",
-                      "      ]",
-                      "    } else {",
-                      "        $w(\"#horizontalMenu1\").menuItems = [",
-                      "          {label: 'Home', link: '/', selected: false},",
-                      "          {label: 'For Rent', link: '/rentals'},",
-                      "          {label: 'For Sale', link: '/purchases'}",
-                      "        ]",
-                      "    }",
+                      "  $w('#horizontalMenu').menuItems = [",
+                      "    {label: 'Home', link: '/', selected: false},",
+                      "    {label: 'For Rent', link: '/rentals'},",
+                      "    {label: 'For Sale', link: '/purchases'}",
+                      "  ]",
+                      "  currentMember.getMember()",
+                      "    .then((member) => {",
+                      "      currentMember.getRoles()",
+                      "      .then( (roles) => {",
+                      "        const foundRole = roles.some(role => role.title === 'Realtor');",
+                      "        if (foundRole) {",
+                      "          let items = $w('#horizontalMenu').menuItems;",
+                      "          items.push({",
+                      "            label: 'Realtors Only',",
+                      "            link: '/realtors'",
+                      "          });",
+                      "          $w('#horizontalMenu').menuItems = items;",
+                      "        }",
+                      "    })",
+                      "    .catch((error) => {",
+                      "      console.error(error);",
+                      "    })",
                       "  })",
                       "  .catch((error) => {",
                       "    console.error(error);",
-                      "  });",
+                      "  })",
                       "})" ],
                   "extra":
                     { "description": "This example assumes that roles have been defined for the site and checks the visitor's role. If the visitor is a realtor, the visitor\n sees an additional menu item for a hidden \"For Realtors Only\" page." } },
                 { "title": "Add a new menu item to an existing menu",
                   "body":
-                    [ "let items = $w('#myMenu').menuItems;",
-                      "items.push({'label': 'My New Label', 'link': '/mynewlink'});",
-                      "$w('#myMenu').menuitems = items;" ],
+                    [ "let menuItems = $w('#myMenu').menuItems;",
+                      "menuItems.push({label: 'My New Label', link: '/mynewlink'});",
+                      "$w('#myMenu').menuItems = menuItems;" ],
                   "extra":
                     { "description": "This example retrieves the menu items, adds a new\n item, and then overwrites the old items." } } ],
             "extra":
@@ -192,7 +196,8 @@
           {  } } ],
   "operations":
     [ { "name": "onItemClick",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -202,15 +207,15 @@
           { "type": "$w.Menu.MenuItem",
             "doc": "The menu item on which the event is now registered." },
         "locations":
-          [ { "lineno": 50,
+          [ { "lineno": 49,
               "filename": "menuItemMouseEvents.js" } ],
         "docs":
-          { "summary": "Sets the function that runs when the mouse pointer is clicked\n on a menu item in a menu element.",
+          { "summary": "Sets the function that runs when a user clicks\n a menu item in a menu element.",
             "links": [],
             "examples":
               [ { "title": "Get information about the menu item that the mouse clicked",
                   "body":
-                    [ "$w(\"#myMenuItem\").onItemMouseClick( (event) => {",
+                    [ "$w('#myMenu').onItemMouseClick( (event) => {",
                       "  let label = event.item.label;  // \"Home\"",
                       "  let value = event.item.value;  // \"https://myairlines.com/\"",
                       "} );" ],
@@ -221,7 +226,8 @@
         "extra":
           { "eventType": "ItemMouseClick" } },
       { "name": "onItemDblClick",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -231,15 +237,15 @@
           { "type": "$w.Menu.MenuItem",
             "doc": "The menu item on which the event is now registered." },
         "locations":
-          [ { "lineno": 63,
+          [ { "lineno": 62,
               "filename": "menuItemMouseEvents.js" } ],
         "docs":
-          { "summary": "Sets the function that runs when the mouse pointer double clicked\n on a menu item in a menu element.",
+          { "summary": "Sets the function that runs when a user double clicks\n a menu item in a menu element.",
             "links": [],
             "examples":
               [ { "title": "Get information about the menu item that the mouse double clicked",
                   "body":
-                    [ "$w(\"#myMenuItem\").onItemMouseDblClick( (event) => {",
+                    [ "$w('#myMenu').onItemMouseDblClick( (event) => {",
                       "  let label = event.item.label;  // \"Book a Flight\"",
                       "  let value = event.item.value;  // \"https://myairlines.com/reservations\"",
                       "} );" ],
@@ -250,7 +256,8 @@
         "extra":
           { "eventType": "ItemMouseDblClick" } },
       { "name": "onItemMouseIn",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -263,12 +270,12 @@
           [ { "lineno": 18,
               "filename": "menuItemMouseEvents.js" } ],
         "docs":
-          { "summary": "Sets the function that runs when a user's mouse hovers over a menu item in a menu element.",
+          { "summary": "Sets the function that runs when a user hovers over a menu item in a menu element.",
             "links": [],
             "examples":
               [ { "title": "Get information about the menu item that the mouse hovered over",
                   "body":
-                    [ "$w(\"#myMenuItem\").onItemMouseIn( (event) => {",
+                    [ "$w('#myMenu').onItemMouseIn( (event) => {",
                       "  let label = event.item.label;  // \"Mileage Program\"",
                       "  let value = event.item.value;  // \"https://myairlines.com/frequentflier\"",
                       "} );" ],
@@ -276,13 +283,13 @@
                     {  } },
                 { "title": "Show/hide text if hovering over a menu item",
                   "body":
-                    [ "$w(\"#myMenu\").onItemMouseIn(event => {",
+                    [ "$w('#myMenu').onItemMouseIn(event => {",
                       "  if (event.item.link === 'https://www.mortgagecalculator.org/') {",
                       "    $w('#displayMessageText').show();   // \"You are about to leave the Wix site\"",
                       "  }",
                       "});",
                       "",
-                      "$w(\"#myMenu\").onItemMouseOut(event => {",
+                      "$w('#myMenu').onItemMouseOut(event => {",
                       "  if (event.item.link === 'https://www.mortgagecalculator.org/') {",
                       "    $w('#displayMessageText').hide();",
                       "  }",
@@ -294,7 +301,8 @@
         "extra":
           { "eventType": "ItemMouseIn" } },
       { "name": "onItemMouseOut",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "handler",
@@ -307,12 +315,12 @@
           [ { "lineno": 34,
               "filename": "menuItemMouseEvents.js" } ],
         "docs":
-          { "summary": "Sets the function that runs when the mouse pointer is moved\n off of a menu item in a menu element.",
+          { "summary": "Sets the function that runs when a user no longer hovers over a menu item in a menu element.",
             "links": [],
             "examples":
               [ { "title": "Get information about the menu item that the mouse no longer hovers over",
                   "body":
-                    [ "$w(\"#myMenuItem\").onItemMouseOut( (event) => {",
+                    [ "$w('#myMenu').onItemMouseOut( (event) => {",
                       "  let label = event.item.label;  // \"Mileage Program\"",
                       "  let value = event.item.value;  // \"https://myairlines.com/frequentflier\"",
                       "} );" ],
@@ -320,13 +328,13 @@
                     {  } },
                 { "title": "Show/hide text if hovering over a menu item",
                   "body":
-                    [ "$w(\"#myMenu\").onItemMouseIn(event => {",
+                    [ "$w('#myMenu').onItemMouseIn(event => {",
                       "  if (event.item.link === 'https://www.mortgagecalculator.org/') {",
                       "    $w('#displayMessageText').show();   // \"You are about to leave the Wix site\"",
                       "  }",
                       "});",
                       "",
-                      "$w(\"#myMenu\").onItemMouseOut(event => {",
+                      "$w('#myMenu').onItemMouseOut(event => {",
                       "  if (event.item.link === 'https://www.mortgagecalculator.org/') {",
                       "    $w('#displayMessageText').hide();",
                       "  }",
@@ -352,7 +360,7 @@
         "members":
           [ { "name": "label",
               "type": "string",
-              "doc": "The label of the menu item. This is text that the site visitor sees in the menu and can click to navigate. \n  \n  If not specified, the `label` gets its value from the `link` property, if the link is to a site page. If the link is to an external site,  an error displays and the menu defaults to the menu items as defined in the Editor.\n  \n  Specifying an empty sting is not supported. In this case, an error displays and the menu defaults to the menu items as defined in the Editor.\n\n  Minimum: 1 character\n\n  Maximum: 40 characters\n\n  Default: Inferred from the `link` property.",
+              "doc": "The label of the menu item. This is text that the site visitor sees in the menu and can click to navigate. \n  \n If not specified, and the page that the link property references is: \n + An external page or an empty string: The menu defaults to the menu items based on site pages only, as defined in the Editor. Your browser's developer tools display an error.\n + A page nested under a folder: The specific menu item label defaults to the name of the corresponding page as defined in the Editor.\n + A regular, non-nested, site page: The `label` for the menu item gets its value from the name of the page that the `link` property references.\n \n Minimum: 1 character\n\n Maximum: 40 characters",
               "optional": true },
             { "name": "selected",
               "type": "boolean",
@@ -360,7 +368,7 @@
               "optional": true },
             { "name": "link",
               "type": "string",
-              "doc": "Optional link for the menu item. This is the link the site visitor navigates to when they click on a menu item. \n + For site pages, format as a URL relative to your site's home page, such as `/about` or `rentals/shortterm`.\n + For external pages, format as an absolute URL, such as `https://www.mortgagecalculator.org/`.\n \n If `link` isn't specified, the corresponding label isn't clickable. \n \n Specifying an empty sting is not supported. In this case, an error displays and the menu defaults to the menu items as defined in the Editor.\n\n Minimum: 1 character\n\n Maximum: 40 characters",
+              "doc": "Optional link for the menu item. This is the link the site visitor navigates to when they click on a menu item. \n + For site pages, format as a URL relative to your site's home page, such as `/about` or `/rentals/shortterm`.\n + For external pages, format as an absolute URL, such as `https://www.mortgagecalculator.org/`.\n \n If `link` isn't specified, the corresponding label isn't clickable. \n \n Specifying an empty sting is not supported. In this case, an error displays and the menu defaults to the menu items as defined in the Editor.\n\n Minimum: 1 character\n\n Maximum: 40 characters",
               "optional": true },
             { "name": "target",
               "type": "string",
@@ -375,6 +383,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels":
+          [ "changed" ] } ],
   "extra":
     { "queryable": true } }
