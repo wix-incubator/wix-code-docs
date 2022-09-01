@@ -12,7 +12,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 `wix-pricing-plans`, `wix-pricing-plans-backend`
 
 We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](wix-pricing-plans/) and the [backend](wix-pricing-plans-backend/), and more [backend events](wix-pricing-plans-backend/events).
-The newly supported activities include:* Creating and updating both [online](wix-pricing-plans-backend/checkout/createonlineorder) and [offline](wix-pricing-plans-backend/checkout/createofflineorder) orders* [Purchasing orders](wix-pricing-plans/checkout/startonlinepurchase)* [Canceling orders](wix-pricing-plans-backend/orders/cancelorder)* [Getting](wix-pricing-plans-backend/orders/getorder) and [listing](wix-pricing-plans-backend/orders/listorders) orders* [Postponing](wix-pricing-plans-backend/orders/postponeenddate), [pausing](wix-pricing-plans-backend/orders/pauseorder), and [resuming](wix-pricing-plans-backend/orders/resumeorder) orders* [Marking offline orders as paid](wix-pricing-plans-backend/orders/markaspaid)
+
+The newly supported activities include:
+* Creating and updating both [online](wix-pricing-plans-backend/checkout/createonlineorder) and [offline](wix-pricing-plans-backend/checkout/createofflineorder) orders
+* [Purchasing orders](wix-pricing-plans/checkout/startonlinepurchase)
+* [Canceling orders](wix-pricing-plans-backend/orders/cancelorder)
+* [Getting](wix-pricing-plans-backend/orders/getorder) and [listing](wix-pricing-plans-backend/orders/listorders) orders
+* [Postponing](wix-pricing-plans-backend/orders/postponeenddate), [pausing](wix-pricing-plans-backend/orders/pauseorder), and [resuming](wix-pricing-plans-backend/orders/resumeorder) orders
+* [Marking offline orders as paid](wix-pricing-plans-backend/orders/markaspaid)
+
 Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
 
 ### New Article: Wix Data Error Codes
