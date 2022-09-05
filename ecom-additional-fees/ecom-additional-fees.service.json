@@ -1,0 +1,819 @@
+{ "name": "ecom-additional-fees",
+  "mixes": [],
+  "labels":
+    [ "new" ],
+  "location":
+    { "lineno": 1,
+      "filename": "additional-fees-index.js" },
+  "docs":
+    { "summary": "The eCommerce Additional Fees SPI.",
+      "description":
+        [ ">**Note:** This API is currently in beta and is expecting upcoming changes.",
+          "",
+          "The Additional Fees SPI is a service provider interface that allows site owners and collaborators to add additional fees ",
+          "to the eCommerce Platform's cart and checkout. These additional fees are calculated and seen in all eCom platform pages, ",
+          "including cart, checkout, orders, and payments.",
+          "",
+          "Wix eCommerce calls the SPI endpoint [`calculateAdditionalFees`](https://www.wix.com/velo/reference/ecom-additional-fees/calculateadditionalfees) ",
+          "to retrieve the relevant data for a site collaborator to add additional fees. ",
+          "Collaborators can then implement their own logic to calculate addition fees, and return the calculated fees ",
+          "data in the structure provided by Wix eCommerce. ",
+          "",
+          "Note that `currency` in the [`calculateAdditionalFees`](https://www.wix.com/velo/reference/ecom-additional-fees/calculateadditionalfees) response must match ",
+          "your site's currency. You can find the currency of your site using the [`getPaymentCurrency`]",
+          "(https://www.wix.com/velo/reference/wix-site-backend/generalinfo-obj/getpaymentcurrency) API. ",
+          "",
+          "Learn more about [Additional Fees SPI custom integration](https://support.wix.com/en/article/velo-tutorial-ecommerce-custom-additional-fees-extension-beta)." ],
+      "links": [],
+      "examples": [],
+      "extra":
+        {  } },
+  "properties": [],
+  "operations":
+    [ { "name": "calculateAdditionalFees",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "options",
+              "type": "ecom-additional-fees.Options",
+              "doc": "Options for line items, shipping options and discounts." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "ecom-additional-fees.CalculateAdditionalFeesResponse" ] },
+            "doc": "Fulfilled - Additional fees and currency info." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "summary": "Calculates additional fees to include in the cart and checkout.",
+            "description":
+              [ "The `calculateAdditionalFees` function calculates additional fees to appear in the cart and checkout pages of a store's site. ",
+                "The function is automatically called by Wix eCommerce when the cart totals are calculated, or when an action is performed in ",
+                "the cart and/or checkout. For example, when an item is added to the cart, or when a shipping location is specified." ],
+            "links": [],
+            "examples":
+              [ { "title": "Calculate Additional Fees for a product",
+                  "body":
+                    [ "import wixSiteBackend from 'wix-site-backend';",
+                      "",
+                      "export const calculateAdditionalFees = async (options) => {",
+                      "  let additionalFees = [];",
+                      "  const feePrice = calculateWrappingFee(options.lineItems);",
+                      "  const currency = await wixSiteBackend.generalInfo.getPaymentCurrency();",
+                      "",
+                      "  if (feePrice) {",
+                      "    additionalFees.push({",
+                      "      code: 'fragile-packaging',",
+                      "      name: 'Fragile Packaging',",
+                      "      price: String(feePrice),",
+                      "      taxDetails: {",
+                      "        taxable: true",
+                      "      }",
+                      "    });",
+                      "  }",
+                      "",
+                      "  return {",
+                      "    currency,",
+                      "    additionalFees",
+                      "  };",
+                      "};",
+                      "",
+                      "// Check if an item is fragile.",
+                      "function isFragile(item) {",
+                      "  const productName = item.productName.toLowerCase();",
+                      "  return productName.includes('glass') || productName.includes('ceramic');",
+                      "}",
+                      "",
+                      "// Charge per fragile item.",
+                      "// Give away free packaging when ordering at least 5 items.",
+                      "function calculateWrappingFee(lineItems) {",
+                      "  const minItemsForFreeWrapping = 5;",
+                      "  let numFragileItems = 0;",
+                      "  lineItems.forEach((item) => {",
+                      "      isFragile(item) ? numFragileItems += item.quantity : 0",
+                      "  });",
+                      "  const shouldChargeFee = numFragileItems < minItemsForFreeWrapping;",
+                      "  const price = shouldChargeFee ? numFragileItems : 0;",
+                      "  return price;",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example calculates the additional fees for packaging fragile items from a store. If more than 5 fragile items are added to the cart,\nthe fragile packaging is free." } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
+  "callbacks": [],
+  "messages":
+    [ { "name": "AdditionalFee",
+        "locations":
+          [ { "lineno": 39,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "code",
+              "type": "string",
+              "doc": "Unique code or ID for the additional fee.\n\nMax: 100 characters" },
+            { "name": "name",
+              "type": "string",
+              "doc": "Name of additional fee. \n\nMax: 50 characters" },
+            { "name": "price",
+              "type": "string",
+              "doc": "Additional fee's price." },
+            { "name": "taxDetails",
+              "type": "ecom-additional-fees.TaxDetails",
+              "doc": "Tax details based on tax settings in the dashboard." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Address",
+        "locations":
+          [ { "lineno": 171,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "addressLine1",
+              "type": "string",
+              "doc": "Main address line, usually street and number, as free text.",
+              "optional": true },
+            { "name": "streetAddress",
+              "type": "ecom-additional-fees.AddressInfo",
+              "doc": "Street address object, with number and name in separate fields.",
+              "optional": true },
+            { "name": "addressLine2",
+              "type": "string",
+              "doc": "Free text providing more detailed address information, such as apartment, suite, or floor." },
+            { "name": "city",
+              "type": "string",
+              "doc": "City name." },
+            { "name": "subdivision",
+              "type": "string",
+              "doc": "Code for a subdivision (such as state, prefecture, or province) in an [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format." },
+            { "name": "country",
+              "type": "string",
+              "doc": "2-letter country code in an [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format." },
+            { "name": "postalCode",
+              "type": "string",
+              "doc": "Postal or zip code." } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "street",
+                  "members":
+                    [ "addressLine1",
+                      "streetAddress" ] } ] },
+        "labels": [] },
+      { "name": "AddressInfo",
+        "locations":
+          [ { "lineno": 184,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "number",
+              "type": "string",
+              "doc": "Street number." },
+            { "name": "name",
+              "type": "string",
+              "doc": "Street name." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "AppliedDiscount",
+        "locations":
+          [ { "lineno": 273,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "discountType",
+              "type": "string",
+              "doc": "Discount type. \n\nSupported values:\n - `\"GLOBAL\"`: Discount on the entire cart.\n - `\"SPECIFIC_ITEMS\"`: Discount on specific item.\n - `\"SHIPPING\"`: Discount on shipping." },
+            { "name": "lineItemIds",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "Line item IDs the discount applies to." },
+            { "name": "coupon",
+              "type": "ecom-additional-fees.Coupon",
+              "doc": "Coupon details.",
+              "optional": true },
+            { "name": "merchantDiscount",
+              "type": "ecom-additional-fees.MerchantDiscount",
+              "doc": "Merchant discount.",
+              "optional": true },
+            { "name": "discountRule",
+              "type": "ecom-additional-fees.DiscountRule",
+              "doc": "Discount rule.",
+              "optional": true } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "DiscountSource",
+                  "members":
+                    [ "coupon",
+                      "merchantDiscount",
+                      "discountRule" ] } ] },
+        "labels": [] },
+      { "name": "CalculateAdditionalFeesResponse",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "additionalFees",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-additional-fees.AdditionalFee" ] },
+              "doc": "List of additional fees." },
+            { "name": "currency",
+              "type": "string",
+              "doc": "Currency of the additional fees as a three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format.\n\nThe `additionalFees` response won't be returned if `currency` doesn't match your site's currency." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "CarrierServiceOption",
+        "locations":
+          [ { "lineno": 239,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "carrierId",
+              "type": "string",
+              "doc": "Carrier ID." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "CatalogReference",
+        "locations":
+          [ { "lineno": 83,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "catalogItemId",
+              "type": "string",
+              "doc": "ID of the item within the [custom catalog](https://www.wix.com/velo/reference/ecom-catalog/getcatalogitems)." },
+            { "name": "appId",
+              "type": "string",
+              "doc": "ID of the catalog app." },
+            { "name": "options",
+              "type": "Object",
+              "doc": "Additional data passed by the catalog." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Coupon",
+        "locations":
+          [ { "lineno": 289,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Coupon ID." },
+            { "name": "code",
+              "type": "string",
+              "doc": "Coupon code." },
+            { "name": "amount",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Coupon value." },
+            { "name": "name",
+              "type": "string",
+              "doc": "Coupon name." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "DeliveryLogistics",
+        "locations":
+          [ { "lineno": 147,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "deliveryTime",
+              "type": "string",
+              "doc": "Expected delivery time in free text. For example, `'3-5 business days'`. \n\nMax: 500 characters" },
+            { "name": "instructions",
+              "type": "string",
+              "doc": "Instructions for carrier. For example, `'Please deliver package during opening hours'`. \n\nMax: 1000 characters" },
+            { "name": "pickupDetails",
+              "type": "ecom-additional-fees.PickupDetails",
+              "doc": "Pickup details." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "DiscountRule",
+        "locations":
+          [ { "lineno": 304,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Discount Rule ID." },
+            { "name": "name",
+              "type": "ecom-additional-fees.DiscountRuleName",
+              "doc": "Discount rule name." },
+            { "name": "amount",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Discount value." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "DiscountRuleName",
+        "locations":
+          [ { "lineno": 312,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "original",
+              "type": "string",
+              "doc": "Original discount rule name in the site/buyer's language." },
+            { "name": "translated",
+              "type": "string",
+              "doc": "Discount rule name translated to a buyer's language. If not specified, defaults to the `original` value." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ItemTaxFullDetails",
+        "locations":
+          [ { "lineno": 209,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "taxableAmount",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Taxable amount." },
+            { "name": "taxGroupId",
+              "type": "string",
+              "doc": "Tax group ID." },
+            { "name": "taxRate",
+              "type": "string",
+              "doc": "Tax rate as a decimal value between 0 and 1." },
+            { "name": "totalTax",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Calculated tax based on `taxableAmount` and `taxRate`." },
+            { "name": "rateBreakdown",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-additional-fees.TaxRateBreakdown" ] },
+              "doc": "Tax breakdown." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "LineItem",
+        "locations":
+          [ { "lineno": 58,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "The ID of the line item." },
+            { "name": "quantity",
+              "type": "number",
+              "doc": "The quantity of the line item." },
+            { "name": "catalogReference",
+              "type": "ecom-additional-fees.CatalogReference",
+              "doc": "Catalog and items reference info." },
+            { "name": "productName",
+              "type": "string",
+              "doc": "Display name." },
+            { "name": "price",
+              "type": "string",
+              "doc": "Price of the item." },
+            { "name": "physicalProperties",
+              "type": "ecom-additional-fees.PhysicalProperties",
+              "doc": "Properties of a physical item in cart and/or checkout." },
+            { "name": "paymentOption",
+              "type": "string",
+              "doc": "Type of selected payment option for the current item. Defaults to `\"FULL_PAYMENT_ONLINE\"`. \n\nSupported values:\n+ `\"FULL_PAYMENT_ONLINE\"` - Entire payment for the item happens as part of the checkout.\n+ `\"FULL_PAYMENT_OFFLINE\"` - Entire payment for the item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `\"MEMBERSHIP\"` - Payment for the item is done by charging a membership. When the option is used, `lineItem.price.amount` is `0`.\n+ `\"DEPOSIT_ONLINE\"` - Partial payment to be paid upfront during the checkout. Amount to be paid is defined by `depositAmount` field.",
+              "optional": true },
+            { "name": "serviceProperties",
+              "type": "ecom-additional-fees.ServiceProperties",
+              "doc": "Service properties.  When relevant, contains information such as service date and number of participants. Used, among other things, when checking for valid memberships." },
+            { "name": "rootCatalogItemId",
+              "type": "string",
+              "doc": "In cases where `catalogReference.catalogItemId` is not the actual catalog item ID, this field returns the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ In most cases, this field is the same as `catalogReference.catalogItemId`.\n+ Used in membership validation." },
+            { "name": "depositAmount",
+              "type": "string",
+              "doc": "Partial payment to be paid upfront during the checkout.\nEligible for items where `paymentOption` is `\"DEPOSIT_ONLINE\"` only. If omitted, the item's price is not split and is expected to be paid in a single installment." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "MerchantDiscount",
+        "locations":
+          [ { "lineno": 298,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "amount",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Discount value." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "MultiCurrencyPrice",
+        "locations":
+          [ { "lineno": 200,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "amount",
+              "type": "string",
+              "doc": "Amount." },
+            { "name": "convertedAmount",
+              "type": "string",
+              "doc": "Converted amount." },
+            { "name": "formattedAmount",
+              "type": "string",
+              "doc": "Formatted amount with currency symbol." },
+            { "name": "formattedConvertedAmount",
+              "type": "string",
+              "doc": "Converted amount formatted with currency symbol." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Options",
+        "locations":
+          [ { "lineno": 21,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "lineItems",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-additional-fees.LineItem" ] },
+              "doc": "Line items.\n\nMax: 100 line items" },
+            { "name": "shippingInfo",
+              "type": "ecom-additional-fees.ShippingInfo",
+              "doc": "Shipping information." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "OtherCharge",
+        "locations":
+          [ { "lineno": 262,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "type",
+              "type": "string",
+              "doc": "Type of additional charge.\n \nSupported values:\n - `'HANDLING_FEE'`\n - `'INSURANCE'`" },
+            { "name": "price",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Price of added charge." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PhysicalProperties",
+        "locations":
+          [ { "lineno": 91,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "weight",
+              "type": "number",
+              "doc": "Item weight." },
+            { "name": "sku",
+              "type": "string",
+              "doc": "Stock keeping unit. Learn more about [SKUs](https://www.wix.com/encyclopedia/definition/stock-keeping-unit-sku)." },
+            { "name": "shippable",
+              "type": "boolean",
+              "doc": "Whether the item is shippable." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PickupDetails",
+        "locations":
+          [ { "lineno": 159,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "address",
+              "type": "ecom-additional-fees.Address",
+              "doc": "Pickup address." },
+            { "name": "businessLocation",
+              "type": "boolean",
+              "doc": "Whether the pickup address is a business address. May affect tax calculation." },
+            { "name": "pickupMethod",
+              "type": "string",
+              "doc": "Pickup method.\n\nSupported values:\n - `\"STORE_PICKUP\"`\n - `\"PICKUP_POINT\"`" } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "SelectedCarrierSeriveOptionPrices",
+        "locations":
+          [ { "lineno": 191,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "totalPriceAfterTax",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Total shipping price after discount and tax." },
+            { "name": "taxDetails",
+              "type": "ecom-additional-fees.ItemTaxFullDetails",
+              "doc": "Tax details." },
+            { "name": "totalDiscount",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Shipping discount before tax." },
+            { "name": "price",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Shipping price before discount and tax." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "SelectedCarrierServiceOption",
+        "locations":
+          [ { "lineno": 133,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "code",
+              "type": "string",
+              "doc": "Unique identifier of a selected option. For example, `'usps_std_overnight'`." },
+            { "name": "title",
+              "type": "string",
+              "doc": "Title of the selected carrier service option. For example, `'USPS Standard Overnight Delivery'`, `'Standard'`,\nor `'First-Class Package International'`.\n\nMax: 250 characters" },
+            { "name": "logistics",
+              "type": "ecom-additional-fees.DeliveryLogistics",
+              "doc": "Delivery logistics." },
+            { "name": "requestedShippingOption",
+              "type": "boolean",
+              "doc": "Whether the requested shipping option exists in `carrierServiceOptions`. If `false`, the first \nitem in `carrierServiceOptions` is used." },
+            { "name": "carrierId",
+              "type": "string",
+              "doc": "Selected carrier's ID." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "SelectedCarrierServiceOptionsOtherCharge",
+        "locations":
+          [ { "lineno": 227,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "type",
+              "type": "string",
+              "doc": "Type of additional charge.\n \nSupported values:\n - `'HANDLING_FEE'`\n - `'INSURANCE'`" },
+            { "name": "details",
+              "type": "string",
+              "doc": "Charge details. For example, 'Full Coverage Insurance up to 80% value of shipment'." },
+            { "name": "price",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Price of added charge." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ServiceProperties",
+        "locations":
+          [ { "lineno": 111,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "scheduledDate",
+              "type": "string",
+              "doc": "Date and time the service is to be provided. For example, the time of the a class." },
+            { "name": "numberOfParticipants",
+              "type": "number",
+              "doc": "Number of people participating in the service.\nFor example, the number of people attending a yoga class or the number of people per hotel room." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingInfo",
+        "locations":
+          [ { "lineno": 119,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "selectedCarrierServiceOption",
+              "type": "ecom-additional-fees.SelectedCarrierServiceOption",
+              "doc": "Selected shipping option." },
+            { "name": "carrierServiceOptions",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-additional-fees.CarrierServiceOption" ] },
+              "doc": "List of all shipping options." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingOption",
+        "locations":
+          [ { "lineno": 245,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "code",
+              "type": "string",
+              "doc": "Unique code of provided shipping option. For example, `'usps_std_overnight'`." },
+            { "name": "title",
+              "type": "string",
+              "doc": "Title of the selected carrier service option. For example, `'USPS Standard Overnight Delivery'`, `'Standard'`,\nor `'First-Class Package International'`." },
+            { "name": "logistics",
+              "type": "ecom-additional-fees.DeliveryLogistics",
+              "doc": "Delivery logistics." },
+            { "name": "cost",
+              "type": "ecom-additional-fees.ShippingPrice",
+              "doc": "Shipping price info." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingPrice",
+        "locations":
+          [ { "lineno": 255,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "price",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Shipping price." },
+            { "name": "otherCharges",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-additional-fees.OtherCharge" ] },
+              "doc": "Other costs. For example, insurance or handling and packaging fees." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingRegion",
+        "locations":
+          [ { "lineno": 126,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Reserved for internal use." },
+            { "name": "name",
+              "type": "string",
+              "doc": "Shipping region name." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "SubscriptionSettings",
+        "locations":
+          [ { "lineno": 99,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "frequency",
+              "type": "string",
+              "doc": "The frequency of recurring paymenent based on every day, week, month, or year.\n\nSupported values:\n - `\"DAY\"`\n - `\"WEEK\"`\n - `\"MONTH\"`\n - `\"YEAR\"`" } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "TaxDetails",
+        "locations":
+          [ { "lineno": 52,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "taxable",
+              "type": "boolean",
+              "doc": "Whether the additional fee is taxable." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "TaxRateBreakdown",
+        "locations":
+          [ { "lineno": 219,
+              "filename": "additional-fees.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "name",
+              "type": "string",
+              "doc": "Type of tax calculated." },
+            { "name": "rate",
+              "type": "string",
+              "doc": "Tax rate." },
+            { "name": "tax",
+              "type": "ecom-additional-fees.MultiCurrencyPrice",
+              "doc": "Tax amount." } ],
+        "extra":
+          {  },
+        "labels": [] } ],
+  "extra":
+    {  } }
