@@ -8,21 +8,22 @@
   "docs":
     { "summary": "The eCommerce Additional Fees SPI.",
       "description":
-        [ ">**Note:** This SPI is currently in beta and is subject to change. Some SPI's are currently not available to all users. ",
+        [ ">**Note:** This SPI is currently in beta and is subject to change. Some SPIs are currently not available to all users. ",
           "",
           "The Additional Fees SPI is a service provider interface that allows site owners and collaborators to add additional fees ",
-          "to the eCommerce Platform's cart and checkout. These additional fees are calculated and seen in all eCom platform pages, ",
+          "to the eCommerce Platform's cart and checkout. These additional fees are calculated and seen in all eCommerce platform pages, ",
           "including cart, checkout, orders, and payments.",
           "",
-          "Wix eCommerce calls the SPI endpoint [`calculateAdditionalFees`](https://www.wix.com/velo/reference/ecom-additional-fees/calculateadditionalfees) ",
+          "Wix eCommerce calls the SPI endpoint [`calculateAdditionalFees()`](https://www.wix.com/velo/reference/ecom-additional-fees/calculateadditionalfees) ",
           "to retrieve the relevant data for a site collaborator to add additional fees. ",
-          "Collaborators can then implement their own logic to calculate addition fees, and return the calculated fees ",
+          "Collaborators can then implement their own logic to calculate additional fees, and return the calculated fee ",
           "data in the structure provided by Wix eCommerce. ",
           "",
           "Note that `currency` in the [`calculateAdditionalFees`](https://www.wix.com/velo/reference/ecom-additional-fees/calculateadditionalfees) response must match ",
-          "your site's currency. You can find the currency of your site using the [`getPaymentCurrency`](https://www.wix.com/velo/reference/wix-site-backend/generalinfo-obj/getpaymentcurrency) API. ",
+          "your site's currency. You can find the currency of your site using the [`getPaymentCurrency()`](https://www.wix.com/velo/reference/wix-site-backend/generalinfo-obj/getpaymentcurrency)",
+          "function. ",
           "",
-          "Learn more about [Additional Fees SPI custom integration](https://support.wix.com/en/article/velo-tutorial-ecommerce-custom-additional-fees-extension-beta)." ],
+          "Learn more about the [Additional Fees SPI custom extension](https://support.wix.com/en/article/velo-tutorial-ecommerce-custom-additional-fees-extension-beta)." ],
       "links": [],
       "examples": [],
       "extra":
@@ -30,7 +31,8 @@
   "properties": [],
   "operations":
     [ { "name": "calculateAdditionalFees",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "options",
@@ -53,7 +55,7 @@
                 "the cart and/or checkout. For example, when an item is added to the cart, or when a shipping location is specified." ],
             "links": [],
             "examples":
-              [ { "title": "Calculate Additional Fees for a product",
+              [ { "title": "Calculate additional fees for an order",
                   "body":
                     [ "import wixSiteBackend from 'wix-site-backend';",
                       "",
@@ -90,7 +92,11 @@
                       "function calculateWrappingFee(lineItems) {",
                       "  const minItemsForFreeWrapping = 5;",
                       "  let numFragileItems = 0;",
-                      "  lineItems.filter(isFragile).reduce((numFragileItems, curr) => numFragileItems + curr.quantity, 0);",
+                      "  lineItems.forEach((item) => {",
+                      "    if (isFragile(item)){",
+                      "      numFragileItems += item.quantity;",
+                      "    }",
+                      "  });",
                       "  const shouldChargeFee = numFragileItems < minItemsForFreeWrapping;",
                       "  const price = shouldChargeFee ? numFragileItems : 0;",
                       "  return price;",
@@ -122,7 +128,7 @@
               "doc": "Name of additional fee. \n\nMax: 50 characters" },
             { "name": "price",
               "type": "string",
-              "doc": "Additional fee's price." },
+              "doc": "Additional fee's price.\n\nNumber of decimal places should correspond to the site's currency according to the three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format." },
             { "name": "taxDetails",
               "type": "ecom-additional-fees.TaxDetails",
               "doc": "Tax details." } ],
@@ -132,7 +138,7 @@
           [ "changed" ] },
       { "name": "Address",
         "locations":
-          [ { "lineno": 173,
+          [ { "lineno": 177,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -172,7 +178,7 @@
         "labels": [] },
       { "name": "AddressInfo",
         "locations":
-          [ { "lineno": 186,
+          [ { "lineno": 190,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -191,7 +197,7 @@
         "labels": [] },
       { "name": "AppliedDiscount",
         "locations":
-          [ { "lineno": 275,
+          [ { "lineno": 279,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -249,11 +255,10 @@
               "doc": "Currency of the additional fees as a three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format.\n\nThe `additionalFees` response will be ignored if `currency` doesn't match your site's currency." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "CarrierServiceOption",
         "locations":
-          [ { "lineno": 241,
+          [ { "lineno": 245,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -275,7 +280,7 @@
         "labels": [] },
       { "name": "CatalogReference",
         "locations":
-          [ { "lineno": 85,
+          [ { "lineno": 89,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -288,16 +293,17 @@
               "doc": "ID of the item within the [custom catalog](https://www.wix.com/velo/reference/ecom-catalog/getcatalogitems)." },
             { "name": "appId",
               "type": "string",
-              "doc": "ID of the catalog app." },
+              "doc": "ID of the Wix Catalog app." },
             { "name": "options",
               "type": "Object",
-              "doc": "Additional data passed by the catalog." } ],
+              "doc": "Additional data passed by the Wix Catalog app." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Coupon",
         "locations":
-          [ { "lineno": 291,
+          [ { "lineno": 295,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -322,7 +328,7 @@
         "labels": [] },
       { "name": "DeliveryLogistics",
         "locations":
-          [ { "lineno": 149,
+          [ { "lineno": 153,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -344,7 +350,7 @@
         "labels": [] },
       { "name": "DiscountRule",
         "locations":
-          [ { "lineno": 306,
+          [ { "lineno": 310,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -366,7 +372,7 @@
         "labels": [] },
       { "name": "DiscountRuleName",
         "locations":
-          [ { "lineno": 314,
+          [ { "lineno": 318,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -385,7 +391,7 @@
         "labels": [] },
       { "name": "ItemTaxFullDetails",
         "locations":
-          [ { "lineno": 211,
+          [ { "lineno": 215,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -416,7 +422,7 @@
         "labels": [] },
       { "name": "LineItem",
         "locations":
-          [ { "lineno": 60,
+          [ { "lineno": 62,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -429,7 +435,7 @@
               "doc": "The ID of the line item." },
             { "name": "quantity",
               "type": "number",
-              "doc": "The quantity of the line item." },
+              "doc": "The quantity of the item." },
             { "name": "catalogReference",
               "type": "ecom-additional-fees.CatalogReference",
               "doc": "Catalog and items reference info." },
@@ -444,23 +450,24 @@
               "doc": "Properties of a physical item in cart and/or checkout." },
             { "name": "paymentOption",
               "type": "string",
-              "doc": "Type of selected payment option for the current item. Defaults to `\"FULL_PAYMENT_ONLINE\"`. \n\nSupported values:\n+ `\"FULL_PAYMENT_ONLINE\"` - Entire payment for the item happens as part of the checkout.\n+ `\"FULL_PAYMENT_OFFLINE\"` - Entire payment for the item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `\"MEMBERSHIP\"` - Payment for the item is done by charging a membership. When the option is used, `lineItem.price.amount` is `0`.\n+ `\"DEPOSIT_ONLINE\"` - Partial payment to be paid upfront during the checkout. Amount to be paid is defined by `depositAmount` field.",
+              "doc": "Type of selected payment option for the current item. \n \nSupported values:\n+ `\"FULL_PAYMENT_ONLINE\"` - Entire payment for the item happens as part of the checkout.\n+ `\"FULL_PAYMENT_OFFLINE\"` - Entire payment for the item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `\"MEMBERSHIP\"` - Payment for the item is done by charging a membership. When the option is used, `lineItem.price.amount` is `0`.\n+ `\"DEPOSIT_ONLINE\"` - Partial payment to be paid upfront during the checkout. Amount to be paid is defined by `depositAmount` property.\n\nDefault:`\"FULL_PAYMENT_ONLINE\"`.",
               "optional": true },
             { "name": "serviceProperties",
               "type": "ecom-additional-fees.ServiceProperties",
-              "doc": "Service properties.  When relevant, contains information such as service date and number of participants. Used, among other things, when checking for valid memberships." },
+              "doc": "Service properties.  When relevant, contains information such as service date and number of participants. Used, for example, when checking for valid memberships." },
             { "name": "rootCatalogItemId",
               "type": "string",
-              "doc": "In cases where `catalogReference.catalogItemId` is not the actual catalog item ID, this field returns the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ In most cases, this field is the same as `catalogReference.catalogItemId`.\n+ Used in membership validation." },
+              "doc": "In cases where `catalogReference.catalogItemId` is not the actual catalog item ID, this property returns the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID.\n+ In most cases, this property is the same as `catalogReference.catalogItemId`.\n+ Used when validating membership." },
             { "name": "depositAmount",
               "type": "string",
               "doc": "Partial payment to be paid upfront during the checkout.\nEligible for items where `paymentOption` is `\"DEPOSIT_ONLINE\"` only. If omitted, the item's price is not split and is expected to be paid in a single installment." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "MerchantDiscount",
         "locations":
-          [ { "lineno": 300,
+          [ { "lineno": 304,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -476,7 +483,7 @@
         "labels": [] },
       { "name": "MultiCurrencyPrice",
         "locations":
-          [ { "lineno": 202,
+          [ { "lineno": 206,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -523,7 +530,7 @@
         "labels": [] },
       { "name": "OtherCharge",
         "locations":
-          [ { "lineno": 264,
+          [ { "lineno": 268,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -542,7 +549,7 @@
         "labels": [] },
       { "name": "PhysicalProperties",
         "locations":
-          [ { "lineno": 93,
+          [ { "lineno": 97,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -564,7 +571,7 @@
         "labels": [] },
       { "name": "PickupDetails",
         "locations":
-          [ { "lineno": 161,
+          [ { "lineno": 165,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -586,7 +593,7 @@
         "labels": [] },
       { "name": "SelectedCarrierSeriveOptionPrices",
         "locations":
-          [ { "lineno": 193,
+          [ { "lineno": 197,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -611,7 +618,7 @@
         "labels": [] },
       { "name": "SelectedCarrierServiceOption",
         "locations":
-          [ { "lineno": 135,
+          [ { "lineno": 139,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -639,7 +646,7 @@
         "labels": [] },
       { "name": "SelectedCarrierServiceOptionsOtherCharge",
         "locations":
-          [ { "lineno": 229,
+          [ { "lineno": 233,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -652,16 +659,17 @@
               "doc": "Type of additional charge.\n \nSupported values:\n - `'HANDLING_FEE'`\n - `'INSURANCE'`" },
             { "name": "details",
               "type": "string",
-              "doc": "Charge details. For example, 'Full Coverage Insurance up to 80% value of shipment'." },
+              "doc": "Charge details. For example, 'Full coverage insurance up to 80% value of shipment'." },
             { "name": "price",
               "type": "ecom-additional-fees.MultiCurrencyPrice",
               "doc": "Price of added charge." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "ServiceProperties",
         "locations":
-          [ { "lineno": 113,
+          [ { "lineno": 117,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -680,7 +688,7 @@
         "labels": [] },
       { "name": "ShippingInfo",
         "locations":
-          [ { "lineno": 121,
+          [ { "lineno": 125,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -702,7 +710,7 @@
         "labels": [] },
       { "name": "ShippingOption",
         "locations":
-          [ { "lineno": 248,
+          [ { "lineno": 252,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -724,7 +732,7 @@
         "labels": [] },
       { "name": "ShippingPrice",
         "locations":
-          [ { "lineno": 257,
+          [ { "lineno": 261,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -746,7 +754,7 @@
         "labels": [] },
       { "name": "ShippingRegion",
         "locations":
-          [ { "lineno": 128,
+          [ { "lineno": 132,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -765,7 +773,7 @@
         "labels": [] },
       { "name": "SubscriptionSettings",
         "locations":
-          [ { "lineno": 101,
+          [ { "lineno": 105,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -775,13 +783,14 @@
         "members":
           [ { "name": "frequency",
               "type": "string",
-              "doc": "The frequency of recurring paymenent based on every day, week, month, or year.\n\nSupported values:\n - `\"DAY\"`\n - `\"WEEK\"`\n - `\"MONTH\"`\n - `\"YEAR\"`" } ],
+              "doc": "The frequency of recurring payments based on every day, week, month, or year.\n\nSupported values:\n - `\"DAY\"`\n - `\"WEEK\"`\n - `\"MONTH\"`\n - `\"YEAR\"`" } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "TaxDetails",
         "locations":
-          [ { "lineno": 52,
+          [ { "lineno": 54,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
@@ -794,11 +803,10 @@
               "doc": "Whether the additional fee is taxable. \n\nThe tax amount will be calculated based on the tax settings in the dashboard." } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "TaxRateBreakdown",
         "locations":
-          [ { "lineno": 221,
+          [ { "lineno": 225,
               "filename": "additional-fees.js" } ],
         "docs":
           { "links": [],
