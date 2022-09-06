@@ -7,8 +7,47 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Pricing Plan Orders
+
+`wix-pricing-plans`, `wix-pricing-plans-backend`
+
+We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](wix-pricing-plans/) and the [backend](wix-pricing-plans-backend/), and more [backend events](wix-pricing-plans-backend/events).
+
+The newly supported activities include:
+* Creating and updating both [online](wix-pricing-plans-backend/checkout/createonlineorder) and [offline](wix-pricing-plans-backend/checkout/createofflineorder) orders
+* [Purchasing orders](wix-pricing-plans/checkout/startonlinepurchase)
+* [Canceling orders](wix-pricing-plans-backend/orders/cancelorder)
+* [Getting](wix-pricing-plans-backend/orders/getorder) and [listing](wix-pricing-plans-backend/orders/listorders) orders
+* [Postponing](wix-pricing-plans-backend/orders/postponeenddate), [pausing](wix-pricing-plans-backend/orders/pauseorder), and [resuming](wix-pricing-plans-backend/orders/resumeorder) orders
+* [Marking offline orders as paid](wix-pricing-plans-backend/orders/markaspaid)
+
+Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
+
+### New Article: Wix Data Error Codes
+
+`wix-data`
+
+The [Wix Data Error Codes](wix-data/error-codes) article lists all the error codes you might encounter while using the Wix Data API. The article explains what causes the errors and what you can do to resolve them. (July 27, 2022)
+### New API: Lottie
+
+`Wix Editor Elements ($w)`
+
+With the new [Lottie API]($w/lottie), you can now [add a Lottie element to your site](https://support.wix.com/en/article/wix-editor-importing-lottie-animations-to-your-site) and customize it. You can [`play()`]($w/lottie/play), [`pause()`]($w/lottie/pause), and [`stop()`]($w/lottie/stop) your animation. You can also set the [`speed`]($w/lottie/speed) of your Lottie animation and whether it plays in a [`loop`]($w/lottie/loop).
+(June 22, 2022)
+
+### New API: Check whether a member is logged in
+
+`wix-members`
+
+You can now check whether the current site visitor is a logged-in member
+by calling the new wix-members
+[`loggedIn()`](wix-members/authentication/loggedin) function.
+This allows you to quickly confirm a member is logged in
+before calling another function that requires a logged-in member.
+(June 21, 2022)
 
 ### New API: Refine search fields
+
 `wix-search`
 
 You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
@@ -24,6 +63,7 @@ When building a [Velo package](https://support.wix.com/en/article/creating-a-vel
 `Wix Editor Elements ($w)`
 
 You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes. (April 10, 2022)
+
 ### New API: sendSetPasswordEmail() from the frontend
 
 `wix-members`
