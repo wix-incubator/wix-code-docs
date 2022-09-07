@@ -8,6 +8,37 @@
 
 
 
+To use the Products collection in code, refer to it as `"Stores/Products"`.
+
+```javascript
+// Query all products
+wixData.query("Stores/Products")
+  .find()
+  .then((results) => {
+    // handle the results
+  });
+
+// Query all products, including variants and hidden products (optional)
+wixData.query("Stores/Products")
+  .find({
+    appOptions: {
+      // Include product variants in the query. Default is `false`.
+      includeVariants: true,
+      // Include hidden products in the query. Default is `false`.
+      includeHiddenProducts: true
+    }
+  })
+  .then((results) => {
+    // handle the results
+  });
+```
+
+This document describes the permissions and fields in your Products collection. 
+
+
+
+
+
 > **Important:**
 > -   You can query up to 100 items from the Products collection. Trying to query more than 100 items by raising the wix-data [limit](https://www.wix.com/corvid/reference/wix-data.WixDataQuery.html#limit) will result in an error.
 > -   You can use up to 5 filters in one query. This limit can be extended by using the 'and' operator to combine queries.
