@@ -10,7 +10,7 @@
 
 To use the Collections collection in code, refer to it as `"Stores/Collections"`.
 
-```
+```javascript
 wixData.query("Stores/Collections")
   .find()
   .then( (results) => {
