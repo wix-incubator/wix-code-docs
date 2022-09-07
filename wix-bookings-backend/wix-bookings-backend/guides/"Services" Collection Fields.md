@@ -129,7 +129,8 @@ The field name is listed as the heading of each section, with the field key list
 
 **Description**: The price summary, as follows:
 -   For paid bookings, displays "Amount + Currency".
--   For free bookings, displays "Free" or any custom text specified.  
+-   For free bookings, displays "Free" or any custom text specified.
+ 
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
