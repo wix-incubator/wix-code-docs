@@ -543,10 +543,10 @@ Format of the JSON object
 
 #### Brand (brand) 
 
-**Description**: 
-**Type**: Text 
+**Description**: Product brand
+**Type**: Text
 **Can connect to data**: Yes
 **Can use in dynamic page URL**: No
 **Can be sorted**: No
-**Can be filtered**: Yes 
+**Can be filtered**: Yes
 **Read-only**: Yes
