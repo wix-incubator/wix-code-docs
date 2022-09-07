@@ -76,9 +76,7 @@ The field name is listed as the heading of each section, with the field key list
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No
-
 **Can be sorted**: Yes
-
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
@@ -116,12 +114,10 @@ The field name is listed as the heading of each section, with the field key list
 
 **Description**: Lists all the media items available for this product in an array of JSON objects.  
 **Type**: Media Gallery
-
 **Can connect to data**: No  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: No  
 **Can be filtered**: No
-
 **Read-only**: Yes
 
 ```javascript
@@ -151,9 +147,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes 
-
 **Can be filtered**: Yes
-
 **Read-only**: Yes
 
 #### Ribbon (ribbon) 
@@ -485,21 +479,13 @@ Format of the JSON object
 #### Discount (discount) 
 
 **Description**: Discount deducted from the product's original price.
-
 **Type**: JSON
-
 **Can connect to data**: No
-
 **Can use in dynamic page URL**: No
-
 **Can be sorted**: No
-
 **Can be filtered**: No
-
 **Read-only**: No
-
 **Note:** "type" is one of the following:
-
 -   "NONE": Pass this value to remove a discount.
 -   "AMOUNT": Discount amount. In the example below, the discount is 5 ($ / € / £ / ¥ / etc.), depending on the [product's currency](https://support.wix.com/en/article/corvid-wix-stores-products-collection-fields#currency-currency).
 -   "PERCENT": Discount is a percentage.
@@ -514,17 +500,11 @@ Format of the JSON object
 #### SEO Data (seoData) 
 
 **Description**: Lists any custom SEO data for the product as an array of SEO tag JSON objects. [Learn more.](https://support.wix.com/en/search?term=seo)
-
 **Type**: JSON
-
 **Can connect to data**: No
-
 **Can use in dynamic page URL**: No
-
 **Can be sorted**: No
-
 **Can be filtered**: No
-
 **Read-only**: No
 
 ```javascript
@@ -564,23 +544,9 @@ Format of the JSON object
 #### Brand (brand) 
 
 **Description**: 
-
 **Type**: Text 
-
 **Can connect to data**: Yes
-
 **Can use in dynamic page URL**: No
-
 **Can be sorted**: No
-
 **Can be filtered**: Yes 
-
 **Read-only**: Yes
-
-Did this help?
-
-Yes x-icon No
-
-Thanks for your feedback!
-
-Thanks, we'll pass on your feedback to improve our services.
