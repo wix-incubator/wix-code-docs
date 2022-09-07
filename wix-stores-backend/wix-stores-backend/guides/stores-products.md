@@ -499,13 +499,13 @@ Format of the JSON object
 
 #### SEO Data (seoData) 
 
-**Description**: Lists any custom SEO data for the product as an array of SEO tag JSON objects. [Learn more.](https://support.wix.com/en/search?term=seo)
-**Type**: JSON
-**Can connect to data**: No
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-only**: No
+**Description**: Lists any custom SEO data for the product as an array of SEO tag JSON objects. [Learn more.](https://support.wix.com/en/search?term=seo)  
+**Type**: JSON  
+**Can connect to data**: No  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: No  
 
 ```javascript
 {
@@ -543,10 +543,10 @@ Format of the JSON object
 
 #### Brand (brand) 
 
-**Description**: Product brand
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: Yes
-**Read-only**: Yes
+**Description**: Product brand  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: Yes  
+**Read-only**: Yes  
