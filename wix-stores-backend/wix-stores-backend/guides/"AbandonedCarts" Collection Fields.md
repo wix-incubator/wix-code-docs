@@ -25,7 +25,7 @@ This document describes the permissions and fields in your AbandonedCarts collec
 
 
 > **Important:**
-> -   You can query up to 100 items from the AbandonedCarts collection. Trying to query more than 100 items by raising the wix-data [limit](https://www.wix.com/corvid/reference/wix-data.WixDataQuery.html#limit) will result in an error.
+> You can query up to 100 items from the AbandonedCarts collection. Trying to query more than 100 items by raising the wix-data [limit](https://www.wix.com/corvid/reference/wix-data.WixDataQuery.html#limit) will result in an error.
 
 
 
