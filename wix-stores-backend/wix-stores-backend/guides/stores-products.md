@@ -45,7 +45,7 @@ This document describes the permissions and fields in your Products collection.�
 
 
 
-### Permissions
+### Permissions 
 
 The Products collection has the following [permissions](https://support.wix.com/en/article/about-collection-permissions):
 
@@ -56,11 +56,11 @@ The Products collection has the following [permissions](https://support.wix.com/
 
 You cannot change the Products collection's permissions. 
 
-### Fields
+### Fields 
 
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
-#### ID (\_id)
+#### ID (\_id) 
 
 **Description**: The product ID (GUID) that was created by the server. This is a system field and is hidden by default.  
 **Type**: Text  
@@ -70,7 +70,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
-#### Name (name)
+#### Name (name) 
 
 **Description**: The name of the product.  
 **Type**: Text  
@@ -82,7 +82,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
-#### Updated Date (\_updatedDate)
+#### Updated Date (\_updatedDate) 
 
 **Description**: Date and time the product was last changed.  
 **Type**: Date  
@@ -92,7 +92,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: eq, ne, lt, lte, gt, gte  
 **Read-only**: Yes
 
-#### Description (description)
+#### Description (description) 
 
 **Description**: The product description in rich text.  
 **Type**: Rich text  
@@ -102,7 +102,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
-#### Main Media (mainMedia)
+#### Main Media (mainMedia) 
 
 **Description**: Displays the main media item (image or video) for this product as it appears in the Store Manager.  
 **Type**: Image  
@@ -112,7 +112,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Media Items (mediaItems)
+#### Media Items (mediaItems) 
 
 **Description**: Lists all the media items available for this product in an array of JSON objects.  
 **Type**: Media Gallery
@@ -144,7 +144,7 @@ The field name is listed as the heading of each section, with the field key list
 ]
 ```
 
-#### SKU (sku)
+#### SKU (sku) 
 
 **Description**: The product's stock-keeping unit number.  
 **Type**: Text  
@@ -156,7 +156,7 @@ The field name is listed as the heading of each section, with the field key list
 
 **Read-only**: Yes
 
-#### Ribbon (ribbon)
+#### Ribbon (ribbon) 
 
 **Description**: The product's ribbon. Used to highlight relevant information about a product. For example, `"New Arrival"` or `"5 items left"`.
 
@@ -168,7 +168,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: No
 
-#### Currency (currency)
+#### Currency (currency) 
 
 **Description**: The product's currency. Because stores only have one currency, this value is the same for all products.  
 **Type**: Text  
@@ -178,7 +178,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Price (price)
+#### Price (price) 
 
 **Description**: The product's price.  
 **Type**: Number  
@@ -188,7 +188,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: eq, ne, hasSome, lt, lte, gt, gte  
 **Read-only**: Yes
 
-#### Discounted Price (discountedPrice)
+#### Discounted Price (discountedPrice) 
 
 **Description**: The discounted price, if any. If no discount is configured, the full price is displayed.  
 **Type**: Number  
@@ -198,7 +198,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Formatted Price (formattedPrice)
+#### Formatted Price (formattedPrice) 
 
 **Description**: The price formatted with the currency (e.g., $20).  
 **Type**: Text  
@@ -208,7 +208,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Formatted Discounted Price (formattedDiscountedPrice)
+#### Formatted Discounted Price (formattedDiscountedPrice) 
 
 **Description**: The discounted price formatted with the currency (e.g., $15).  
 **Type**: Text  
@@ -218,7 +218,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Price Per Unit (pricePerUnit)
+#### Price Per Unit (pricePerUnit) 
 
 **Description**: The product's base price per unit, automatically calculated based on provided pricePerUnitData (e.g., 0.3).  
 **Type**: Number  
@@ -228,7 +228,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Formatted Price Per Unit (formattedPricePerUnit)
+#### Formatted Price Per Unit (formattedPricePerUnit) 
 
 **Description**: The product's base price per unit, formatted with the currency (e.g., $0.30)  
 **Type**: Text  
@@ -238,7 +238,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Price Per Unit Data (pricePerUnitData)
+#### Price Per Unit Data (pricePerUnitData) 
 
 **Description**: Price per unit quantities and measurement units.  
 **Type**: JSON  
@@ -257,7 +257,7 @@ The field name is listed as the heading of each section, with the field key list
 }
 ```
 
-#### Track Inventory (trackInventory)
+#### Track Inventory (trackInventory) 
 
 **Description**: Indicates whether inventory is tracked for this product.  
 **Type**: Boolean  
@@ -267,7 +267,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### In Stock (inStock)
+#### In Stock (inStock) 
 
 **Description**: Indicates whether the product is in stock.  
 **Type**: Boolean  
@@ -277,7 +277,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Quantity In Stock (quantityInStock)
+#### Quantity In Stock (quantityInStock) 
 
 **Description**: The number of items currently in stock. Only relevant for products whose "TrackInventory" field is "True".  
 **Type**: Number  
@@ -287,7 +287,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Additional Info Sections (additionalInfoSections)
+#### Additional Info Sections (additionalInfoSections) 
 
 **Description**: Displays the Additional Info sections you have in your store in an array of JSON objects.  
 **Type**: JSON  
@@ -307,7 +307,7 @@ The field name is listed as the heading of each section, with the field key list
 ]
 ```
 
-#### Product Options (productOptions)
+#### Product Options (productOptions) 
 
 **Description**: Displays the defined product options and choices as a complex JSON object. Also supports easy querying and filtering.  
 **Type**: JSON  
@@ -391,7 +391,7 @@ Format of the JSON object
 }
 ```
 
-#### Product Page Url (productPageUrl)
+#### Product Page Url (productPageUrl) 
 
 **Description**: Displays the URL for the product's page on your site.  
 **Type**: URL  
@@ -401,7 +401,7 @@ Format of the JSON object
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Manage Variants (manageVariants)
+#### Manage Variants (manageVariants) 
 
 **Description**: Indicates whether product variants are managed for this store.  
 **Type**: Boolean  
@@ -411,7 +411,7 @@ Format of the JSON object
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Custom Text Fields (customTextFields)
+#### Custom Text Fields (customTextFields) 
 
 **Description**: Displays any custom fields you may have set up in an array of JSON objects.  
 **Type**: JSON  
@@ -432,7 +432,7 @@ Format of the JSON object
 ]
 ```
 
-#### Product Type (productType)
+#### Product Type (productType) 
 
 **Description**:The type of product (physical or digital).  
 **Type**: Text  
@@ -442,7 +442,7 @@ Format of the JSON object
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
-#### Slug (slug)
+#### Slug (slug) 
 
 **Description**: The product's slug, which is its URL-friendly name that is unique across the store.  
 **Type**: Text  
@@ -452,7 +452,7 @@ Format of the JSON object
 **Can be filtered**: eq, ne, hasSome, contains, startsWith  
 **Read-only**: Yes
 
-#### Weight (weight)
+#### Weight (weight) 
 
 **Description**: The product's weight.  
 **Type**: Number  
@@ -462,7 +462,7 @@ Format of the JSON object
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Collections (collections)
+#### Collections (collections) 
 
 **Description**: The collections the product belongs to.  
 **Type**: Reference (Multiple Items)  
@@ -472,7 +472,7 @@ Format of the JSON object
 **Can be filtered**: hasSome  
 **Read-only**: Yes
 
-#### Inventory Item (inventoryItemId)
+#### Inventory Item (inventoryItemId) 
 
 **Description**: The item's ID in the Stores/InventoryItems collection that corresponds to the product.  
 **Type**: Text  
@@ -482,7 +482,7 @@ Format of the JSON object
 **Can be filtered**: No  
 **Read-only**: Yes
 
-#### Discount (discount)
+#### Discount (discount) 
 
 **Description**: Discount deducted from the product's original price.
 
@@ -511,7 +511,7 @@ Format of the JSON object
 }
 ```
 
-#### SEO Data (seoData)
+#### SEO Data (seoData) 
 
 **Description**: Lists any custom SEO data for the product as an array of SEO tag JSON objects. [Learn more.](https://support.wix.com/en/search?term=seo)
 
@@ -561,7 +561,7 @@ Format of the JSON object
 }
 ```
 
-#### Brand (brand)
+#### Brand (brand) 
 
 **Description**: 
 
