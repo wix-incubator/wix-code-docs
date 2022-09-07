@@ -543,7 +543,7 @@ Format of the JSON object
 
 #### Brand (brand) 
 
-**Description**: Product brand  
+**Description**: Product brand.  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
