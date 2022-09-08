@@ -1,6 +1,6 @@
 
 
-# "Collections" Collection Fields
+# "Badges" Collection Fields
 
 
 
