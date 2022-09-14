@@ -1,4 +1,4 @@
-# A Sample Article
+# A Sample Article - hacked!
 
 This is a sample article written using the Single-Sourcing Tool (V2).
 
