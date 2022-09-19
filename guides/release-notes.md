@@ -10,6 +10,8 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### Updated: Members custom field structure
 
+`wix-members`, `wix-members-backend`
+
 The [wix-members](wix-members/introduction) and
 [wix-members-backend](wix-members-backend/introduction) documentation
 has been updated to reflect that the member `contactDetails.customField` object
