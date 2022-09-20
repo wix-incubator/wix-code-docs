@@ -8,6 +8,27 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Wix Events
+
+`Wix Editor Elements ($w)`
+
+The [Wix Events]($w/wixevents) element allows you to display your site's events. The element can be set to display a specific set of events or all the events in an event category. Use the [`categoryId`]($w/wixevents/categoryid) property to dynamically change which event category to display. (September 20, 2022)
+
+
+### New API: Apply a coupon to a pricing plan order
+
+`wix-pricing-plans-backend`
+
+The new [`applyCoupon()`](wix-pricing-plans-backend/checkout/applycoupon) function applies a coupon code to a draft order before it is purchased.
+(September 20, 2022)
+
+### New API: Tabs
+
+`Wix Editor Elements ($w)`
+
+The new Tabs Component allows users to display different content within one page without changing the URL and without the need to use code. With the [Tabs API]($w/tabs), you can reorder tabs or navigate between them using code. You can also define event handlers that run when tabs are navigated between or tab menu items are clicked.
+(September 20, 2022)
+
 ### Updated: Members custom field structure
 
 `wix-members`, `wix-members-backend`
@@ -26,7 +47,7 @@ We also wrote additional guidance on working with custom fields.
 
 `wix-pricing-plans`, `wix-pricing-plans-backend`
 
-We added new APIs for order management of pricing plans. The additions include order management functions both on the [frontend](wix-pricing-plans/) and the [backend](wix-pricing-plans-backend/), and more [backend events](wix-pricing-plans-backend/events).
+There are new APIs for managing pricing plan orders. The additions include order management functions both on the [frontend](wix-pricing-plans/) and the [backend](wix-pricing-plans-backend/), and more [backend events](wix-pricing-plans-backend/events).
 
 The newly supported activities include:
 * Creating and updating both [online](wix-pricing-plans-backend/checkout/createonlineorder) and [offline](wix-pricing-plans-backend/checkout/createofflineorder) orders
