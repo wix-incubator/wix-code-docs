@@ -8,6 +8,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Wix Events
+
+`Wix Editor Elements ($w)`
+
+The Wix Events element allows you to display your site's events. The element can be set to display a specific set of events or all the events in an event category. Use the [`categoryId`]($w/wixevents/categoryid) property to dynamically change which event category to display. (September 20, 2022)
+
+
 ### New API: Apply a coupon to a pricing plan order
 
 `wix-pricing-plans-backend`
