@@ -8,6 +8,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Tabs
+
+`Wix Editor Elements ($w)`
+
+The new Tabs Component allows users to display different content within one page without changing the URL and without the need to use code. With the [Tabs API]($w/tabs), you can reorder tabs or navigate between them using code. You can also define event handlers that run when tabs are navigated between or tab menu items are clicked.
+(September 20, 2022)
+
 ### Updated: Members custom field structure
 
 `wix-members`, `wix-members-backend`
