@@ -178,6 +178,7 @@ The following table lists the available options for Namespace and Group:
 | bookings | service |
 | events | event |
 |  | ticket |
+| pricingPlans | plan |
 
 You can define the scope for a coupon as an entire namespace, a group within a namespace, or an item within a group. See the examples below.
 
