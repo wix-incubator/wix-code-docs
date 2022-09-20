@@ -38,6 +38,13 @@ The newly supported activities include:
 
 Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
 
+### New API: Tabs
+
+`Wix Editor Elements ($w)`
+
+The new Tabs Component allows users to display different content within one page without changing the URL and without the need to use code. With the [Tabs API]($w/tabs), you can reorder tabs or navigate between them using code. You can also define event handlers that run when tabs are navigated between or tab menu items are clicked.
+(August 8, 2022)
+
 ### New Article: Wix Data Error Codes
 
 `wix-data`
