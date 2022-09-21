@@ -4,11 +4,10 @@ title: Introduction
 
 # Introduction
 
-The Post API provides functionality for querying blog posts.
 
+The Post API allows a site visitor to get and query blog posts.
 A post is a published article written for a blog by a site owner or a site member. It
-is also referred to as a publication. The Post API allows a site visitor to
-query and list the posts of a blog.
+is also referred to as a publication. 
 
 To use the Post API, import `post` from the `wix-blog-backend` module:
 
