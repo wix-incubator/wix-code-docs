@@ -12,10 +12,10 @@ A [Category Menu](https://support.wix.com/en/article/wix-blog-adding-and-customi
 
 Use the Categories API to search for the different topics your blog covers.  
 There can be up to 100 categories per language on a blog, and up to 10 categories per post. 
-Categories will appear in the Category Menu in the order they were created. 
+Categories appear in the Category Menu in the order they were created. 
 
-To use the Categories API, import `categories` from the `wix-blog-backend` module:
+To use the Categories API, import `{ categories }` from the `wix-blog-backend` module:
 
 ```javascript
-import {categories} from 'wix-blog-backend';
+import { categories } from 'wix-blog-backend';
 ```
