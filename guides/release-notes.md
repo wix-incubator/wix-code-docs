@@ -59,6 +59,13 @@ The newly supported activities include:
 
 Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
 
+### New API: Section
+
+`Wix Editor Elements ($w)`
+
+The new [Section API]($w/section) allows you to divide your page into meaningful segments.
+(July 31, 2022)
+
 ### New Article: Wix Data Error Codes
 
 `wix-data`
