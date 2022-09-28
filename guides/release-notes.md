@@ -8,6 +8,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Section
+
+`Wix Editor Elements ($w)`
+
+The new [Section API]($w/section) allows you to divide your page into meaningful segments.
+(September 28, 2022)
+
 ### New API: Wix Events
 
 `Wix Editor Elements ($w)`
@@ -58,13 +65,6 @@ The newly supported activities include:
 * [Marking offline orders as paid](wix-pricing-plans-backend/orders/markaspaid)
 
 Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
-
-### New API: Section
-
-`Wix Editor Elements ($w)`
-
-The new [Section API]($w/section) allows you to divide your page into meaningful segments.
-(July 31, 2022)
 
 ### New Article: Wix Data Error Codes
 
