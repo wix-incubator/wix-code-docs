@@ -63,14 +63,14 @@
           "",
           " ### Wix-Data and Eventual Consistency",
           "",
-          "The wix-data API is eventually consistent, meaning that sometimes updates to your database collection are not immediate. ",
-          "There may be a short delay until the system is up-to-date with your recent changes. During the delay, the data you get back ",
+          "The wix-data API is eventually consistent. This means that updates to your database collection are made to the primary database instance which is always up-to-date, ",
+          "but when reading from your collection, your request is sent to the geographically closest mirror site containing a copy of the database. When you update your database collection, ",
+          "there may be a short delay (typically a few seconds) until all mirror sites are up-to-date with your recent changes. During the delay, the data you get back  ",
           "may not reflect those changes. For example, initially `wixData.get('Collection', 'x');` may resolve to ",
           "`null` following a `wixData.insert('Collection', { _id: 'x' });`. ",
-          "",
-          "To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function in JavaScript to delay retrieving data following any changes to your database collection. ",
-          "Note that in rare cases with high volume traffic interacting with your database collection, data may take longer to update. In such cases, ",
-          "you can write a function to re-run your data retrieval function a number of times to ensure that your data is current. ",
+          " ",
+          "If you need a data retrieval function to get the most up-to-date data immediately after an update, you can set the `consistentRead` property in the `options` parameter to `true`. ",
+          "This will slow down the operation but will ensure that the data is retrieved from the up-to-date primary database instance.",
           "",
           "### Data Quotas",
           "",
@@ -1178,8 +1178,7 @@
         "extra":
           {  } },
       { "name": "insert",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "collectionId",
@@ -1957,8 +1956,7 @@
         "extra":
           {  } },
       { "name": "remove",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "collectionId",
@@ -3045,11 +3043,12 @@
               "optional": true },
             { "name": "consistentRead",
               "type": "boolean",
-              "doc": "When `true`, reads data from primary database. Defaults to `false`.",
+              "doc": "When `true`, reads data from the primary database instance. This decreases performance but ensures data retrieved is up-to-date even immediately after an update. Defaults to `false`.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "WixDataQueryReferencedOptions",
         "locations":
           [ { "lineno": 526,
@@ -3114,11 +3113,12 @@
               "optional": true },
             { "name": "consistentRead",
               "type": "boolean",
-              "doc": "When `true`, reads data from primary database. Defaults to `false`.",
+              "doc": "When `true`, reads data from the primary database instance. This decreases performance but ensures data retrieved is up-to-date even immediately after an update. Defaults to `false`.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "WixStoresProductQuery",
         "locations":
           [ { "lineno": 26,
