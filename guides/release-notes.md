@@ -8,6 +8,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Section
+
+`Wix Editor Elements ($w)`
+
+The new [Section API]($w/section) allows you to divide your page into meaningful segments.
+(September 28, 2022)
+
 ### New API: Wix Events
 
 `Wix Editor Elements ($w)`
