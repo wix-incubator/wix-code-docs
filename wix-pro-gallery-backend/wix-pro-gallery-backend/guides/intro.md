@@ -25,13 +25,15 @@ Changes made to a pro gallery in your site's backend are not necessarily reflect
 
 To sync a pro gallery in your site's backend with a pro gallery component on your live site, import the [`createGallery()`](#creategallery) function to your page code and write code to convert the backend gallery object to the frontend gallery object. Once converted, the newly created backend gallery is synced with the gallery component, and is visible on your live site. You can then manage the gallery component from your site's backend. Changes made to the gallery in your site's backend are now reflected on your live site. To learn more, see [Displaying a Pro Gallery on Your Site Using the Pro Gallery Backend API](https://support.wix.com/en/article/velo-tutorial-displaying-a-pro-gallery-on-your-site-using-the-pro-gallery-backend-api).
 
->**Note:** You currently can't convert backend `text` items to the frontend, as there are no `text` items in the [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) object. If you want to display a backend gallery with `text` items on your live site, connect the gallery to a gallery component first before adding the `text` items. 
+>**Note:** 
+> You currently can't convert `text` items in your backend gallery to the frontend, as there are no `text` items in the frontend [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) object. If you want to display a backend gallery with `text` items on your live site, connect the gallery to a gallery component first, and then add the `text` items using the UI. 
 
 
 ### Cloning a Pro Gallery
 When creating a new gallery, you can choose to create a new gallery from an exisiting gallery by passing the `cloneFromGalleryId` parameter in the `createGallery()` function. When a gallery is cloned, the newly-created gallery includes the same properties as the existing gallery except for the gallery and item IDs, sort order, and created and updated dates.
 
 
->**Note:** 
-To work with the Pro Gallery Backend API, publish your site. 
+>**Notes:** 
+> + To work with the Pro Gallery Backend API, publish your site. 
+> + Only [site admins](https://support.wix.com/en/article/roles-permissions-overview) can create, delete, and update a gallery or gallery items. You can override the permissions with the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
