@@ -140,11 +140,7 @@ WDE0091: Database quota exceeded. Delete some data and try again.
 
 -   Each Wix site can have a maximum of 1000 collections.
 -   The maximum size for a single collection item is 512 KB. If you try to add an item larger than this to a collection, the following error message appears in your site log:  
-
-`
-WDE0009: Document is too large.
-`
-
+    `WDE0009: Document is too large.`
 -   There are also some [limits](https://support.wix.com/en/article/field-type-support-and-limitations-in-the-content-manager) that are specific to certain field types.
 
 ### What can I do? 
