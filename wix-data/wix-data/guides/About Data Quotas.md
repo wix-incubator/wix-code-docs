@@ -16,9 +16,9 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute; Write: 1500 / minute | Yes |
+| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute Write: 1500 / minute | Yes |
 | [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 90 seconds / minute; Write: 45 seconds / minute | Yes |
+| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 250 seconds / minute Write: 100 seconds / minute | Yes |
 | [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
@@ -100,9 +100,9 @@ You can take the following steps to try and reduce the processing time of indivi
 
 ## Overall Processing Time 
 
-Data operations triggered by requests from your site can only take up a certain amount of overall processing time each minute. The quota is 90 seconds for read operations and 45 for write operations. This quota applies to the same functions as the one for [requests per minute](https://docs.google.com/document/d/1CX4Q9QQbBba5Gd6hXIQXdoF9nMmGe_bpXKxPqMFNKP0/edit#heading=h.9rak1u4ndwm0).
+Data operations triggered by requests from your site can only take up a certain amount of overall processing time each minute. The quota is 250 seconds for read operations and 100 for write operations. This quota applies to the same functions as the one for [requests per minute](https://docs.google.com/document/d/1CX4Q9QQbBba5Gd6hXIQXdoF9nMmGe_bpXKxPqMFNKP0/edit#heading=h.9rak1u4ndwm0).
 
-For example, consider a site that requests 18 concurrent read operations, each of which takes 5 seconds to execute. In this case, the site reaches the processing time quota for that minute (18 \* 5 = 90) and subsequent operations fail.
+For example, consider a site that requests 50 concurrent read operations, each of which takes 5 seconds to execute. In this case, the site reaches the processing time quota for that minute (50 \* 5 = 250) and subsequent operations fail.
 
 For each request that exceeds the quota, the following error appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
