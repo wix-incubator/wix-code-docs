@@ -7,6 +7,8 @@
 
 This is a sample article written using the Single-Sourcing Tool (V2).
 
+[test link](#special-tags)
+
 
 ## Headings
 
