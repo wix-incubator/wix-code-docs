@@ -16,9 +16,9 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute <br> Write: 1500 / minute | Yes |
+| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute; Write: 1500 / minute | Yes |
 | [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 250 seconds / minute <br> Write: 100 seconds / minute | Yes |
+| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 90 seconds / minute; Write: 45 seconds / minute | Yes |
 | [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
@@ -52,19 +52,19 @@ The following API functions count as 1 request towards the write quota:
 
 > **Note**
 > Each use of [include](/wix-data/wixdataquery/include) in a query counts towards the request quota. For example, the following query counts as 3 read requests:
-
-```javascript
-  wixData.query(‘Movies’)
-    .include(‘director’)
-    .include(‘studio’)
-    .find()
-```
+>
+>  ```javascript
+>  wixData.query(‘Movies’)
+>    .include(‘director’)
+>    .include(‘studio’)
+>    .find()
+>  ```
 
 For each request that exceeds the quota, the request fails and the following error appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
-`
+```
 WDE0014: Requests per minute quota exceeded.
-`
+```
 
 ### What can I do? 
 
@@ -81,9 +81,9 @@ You can take the following steps to try and reduce the number of data requests i
 
 Each data request you make from your site can run for up to 5 seconds. After this, the request times out and the following error message appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
-`
+```
 WDE0028: Operation time limit exceeded.
-`
+```
 
 ### What can I do? 
 
@@ -100,15 +100,15 @@ You can take the following steps to try and reduce the processing time of indivi
 
 ## Overall Processing Time 
 
-Data operations triggered by requests from your site can only take up a certain amount of overall processing time each minute. The quota is 250 seconds for read operations and 100 for write operations. This quota applies to the same functions as the one for [requests per minute](https://docs.google.com/document/d/1CX4Q9QQbBba5Gd6hXIQXdoF9nMmGe_bpXKxPqMFNKP0/edit#heading=h.9rak1u4ndwm0).
+Data operations triggered by requests from your site can only take up a certain amount of overall processing time each minute. The quota is 90 seconds for read operations and 45 for write operations. This quota applies to the same functions as the one for [requests per minute](https://docs.google.com/document/d/1CX4Q9QQbBba5Gd6hXIQXdoF9nMmGe_bpXKxPqMFNKP0/edit#heading=h.9rak1u4ndwm0).
 
-For example, consider a site that requests 50 concurrent read operations, each of which takes 5 seconds to execute. In this case, the site reaches the processing time quota for that minute (50 \* 5 = 250) and subsequent operations fail.
+For example, consider a site that requests 18 concurrent read operations, each of which takes 5 seconds to execute. In this case, the site reaches the processing time quota for that minute (18 \* 5 = 90) and subsequent operations fail.
 
 For each request that exceeds the quota, the following error appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
-`
+```
 WDE0122: Processing time quota exceeded.
-`
+```
 
 ### What can I do? 
 
@@ -129,9 +129,9 @@ The overall amount of collection storage for each Wix site is 10 GB. This quota 
 
 If you try to add data to a collection once you have reached the 10 GB quota, the data is not added and the following error message appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
-`
+```
 WDE0091: Database quota exceeded. Delete some data and try again.
-`
+```
 
 > **Note**
 > If your site exceeds the quota and you delete data to free up space, it may take up to 24 hours before you can add new data to your collections.
@@ -140,7 +140,11 @@ WDE0091: Database quota exceeded. Delete some data and try again.
 
 -   Each Wix site can have a maximum of 1000 collections.
 -   The maximum size for a single collection item is 512 KB. If you try to add an item larger than this to a collection, the following error message appears in your site log:  
-    `WDE0009: Document is too large.`
+
+```
+WDE0009: Document is too large.
+```
+
 -   There are also some [limits](https://support.wix.com/en/article/field-type-support-and-limitations-in-the-content-manager) that are specific to certain field types.
 
 ### What can I do? 
