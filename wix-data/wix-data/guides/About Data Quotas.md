@@ -16,10 +16,10 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute; Write: 1500 / minute | Yes |
-| [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 90 seconds / minute; Write: 45 seconds / minute | Yes |
-| [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
+| [Requests Per Minute](#requests-per-minute) | Read: 3000 / minute; Write: 1500 / minute | Yes |
+| [Individual Request Timeout](#individual-request-timeout) | 5 seconds | No |
+| [Overall Processing Time](#overall-processing-time) | Read: 90 seconds / minute; Write: 45 seconds / minute | Yes |
+| [Collection Storage](#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
 
