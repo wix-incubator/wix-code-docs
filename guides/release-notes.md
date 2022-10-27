@@ -7,6 +7,23 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New APIs: Menu and MenuContainer
+
+`Wix Editor Elements ($w)`
+
+The new [Menu API]($w/menu) and [MenuContainer API]($w/menucontainer) allow you to customize your menu items by changing their labels, links, where the item opens, and if an item displays as selected. This includes using Velo to modify site menus in real time during the visitor's stay on your site.
+
+Use the [Menu API]($w/menu) for the menu on your regular site and use the [MenuContainer API]($w/menucontainer) for your mobile menu.
+
+(October 19, 2022)
+
+### Update: Wix Data consistentRead property
+
+`wix-data`
+
+The new `consistentRead` property in the `options` parameter allows data retrieval functions to read from the primary database instance. This decreases performance but ensures data retrieved is up to date even immediately after the database is updated. See [Wix Data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.
+
+(October 2, 2022)
 
 ### New API: Section
 
