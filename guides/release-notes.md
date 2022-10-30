@@ -7,6 +7,124 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New APIs: Menu and MenuContainer
+
+`Wix Editor Elements ($w)`
+
+The new [Menu API]($w/menu) and [MenuContainer API]($w/menucontainer) allow you to customize your menu items by changing their labels, links, where the item opens, and if an item displays as selected. This includes using Velo to modify site menus in real time during the visitor's stay on your site.
+
+Use the [Menu API]($w/menu) for the menu on your regular site and use the [MenuContainer API]($w/menucontainer) for your mobile menu.
+
+(October 19, 2022)
+
+### Update: Wix Data consistentRead property
+
+`wix-data`
+
+The new `consistentRead` property in the `options` parameter allows data retrieval functions to read from the primary database instance. This decreases performance but ensures data retrieved is up to date even immediately after the database is updated. See [Wix Data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.
+
+(October 2, 2022)
+
+### New API: Section
+
+`Wix Editor Elements ($w)`
+
+The new [Section API]($w/section) allows you to divide your page into meaningful segments.
+(September 28, 2022)
+
+### New API: Wix Events
+
+`Wix Editor Elements ($w)`
+
+The [Wix Events]($w/wixevents) element allows you to display your site's events. The element can be set to display a specific set of events or all the events in an event category. Use the [`categoryId`]($w/wixevents/categoryid) property to dynamically change which event category to display. (September 20, 2022)
+
+
+### New API: Apply a coupon to a pricing plan order
+
+`wix-pricing-plans-backend`
+
+The new [`applyCoupon()`](wix-pricing-plans-backend/checkout/applycoupon) function applies a coupon code to a draft order before it is purchased.
+(September 20, 2022)
+
+### New API: Tabs
+
+`Wix Editor Elements ($w)`
+
+The new Tabs Component allows users to display different content within one page without changing the URL and without the need to use code. With the [Tabs API]($w/tabs), you can reorder tabs or navigate between them using code. You can also define event handlers that run when tabs are navigated between or tab menu items are clicked.
+(September 20, 2022)
+
+### Updated: Members custom field structure
+
+`wix-members`, `wix-members-backend`
+
+The [wix-members](wix-members/introduction) and
+[wix-members-backend](wix-members-backend/introduction) documentation
+has been updated to reflect that the member `contactDetails.customField` object
+contains key:object pairs,
+not key:value pairs as was previously written.
+
+We also wrote additional guidance on working with custom fields.
+
+(September 19, 2022)
+
+### New API: Pricing Plan Orders
+
+`wix-pricing-plans`, `wix-pricing-plans-backend`
+
+There are new APIs for managing pricing plan orders. The additions include order management functions both on the [frontend](wix-pricing-plans/) and the [backend](wix-pricing-plans-backend/), and more [backend events](wix-pricing-plans-backend/events).
+
+The newly supported activities include:
+* Creating and updating both [online](wix-pricing-plans-backend/checkout/createonlineorder) and [offline](wix-pricing-plans-backend/checkout/createofflineorder) orders
+* [Purchasing orders](wix-pricing-plans/checkout/startonlinepurchase)
+* [Canceling orders](wix-pricing-plans-backend/orders/cancelorder)
+* [Getting](wix-pricing-plans-backend/orders/getorder) and [listing](wix-pricing-plans-backend/orders/listorders) orders
+* [Postponing](wix-pricing-plans-backend/orders/postponeenddate), [pausing](wix-pricing-plans-backend/orders/pauseorder), and [resuming](wix-pricing-plans-backend/orders/resumeorder) orders
+* [Marking offline orders as paid](wix-pricing-plans-backend/orders/markaspaid)
+
+Please note the deprecation and migration instructions we added to the [Paid Plans](wix-paid-plans/) documentation. (August 28, 2022)
+
+### New Article: Wix Data Error Codes
+
+`wix-data`
+
+The [Wix Data Error Codes](wix-data/error-codes) article lists all the error codes you might encounter while using the Wix Data API. The article explains what causes the errors and what you can do to resolve them. (July 27, 2022)
+
+### New API: Lottie
+
+`Wix Editor Elements ($w)`
+
+With the new [Lottie API]($w/lottie), you can now [add a Lottie element to your site](https://support.wix.com/en/article/wix-editor-importing-lottie-animations-to-your-site) and customize it. You can [`play()`]($w/lottie/play), [`pause()`]($w/lottie/pause), and [`stop()`]($w/lottie/stop) your animation. You can also set the [`speed`]($w/lottie/speed) of your Lottie animation and whether it plays in a [`loop`]($w/lottie/loop).
+(June 22, 2022)
+
+### New API: Check whether a member is logged in
+
+`wix-members`
+
+You can now check whether the current site visitor is a logged-in member
+by calling the new wix-members
+[`loggedIn()`](wix-members/authentication/loggedin) function.
+This allows you to quickly confirm a member is logged in
+before calling another function that requires a logged-in member.
+(June 21, 2022)
+
+### New API: Refine search fields
+
+`wix-search`
+
+You can now use the [`searchFields()`](https://www.wix.com/velo/reference/wix-search/wixsearchbuilder/searchfields) function to refine a `WixSearchBuilder` to search only in specified collection fields. (May 30, 2022)
+
+### New API: Retrieve package configuration data
+
+`wix-configs-backend`
+
+When building a [Velo package](https://support.wix.com/en/article/creating-a-velo-package-3964385) in Wix Blocks, you can use the [`getPackageConfig()`](https://www.wix.com/velo/reference/wix-configs-backend/getpackageconfig) function in your backend code to retrieve data from the package's `config.json` file. (April 14, 2022)
+
+### New API: Date Picker onViewChange() 
+
+`Wix Editor Elements ($w)`
+
+You can now use the [`onViewChange()`](https://www.wix.com/velo/reference/$w/datepicker/onviewchange) function to add an event handler that triggers when the date picker's view changes. (April 10, 2022)
+
 ### New API: sendSetPasswordEmail() from the frontend
 
 `wix-members`

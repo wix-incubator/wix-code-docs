@@ -43,7 +43,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the media are added to the product.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 614,
+          [ { "lineno": 748,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Adds media items by ID to a product.",
@@ -115,7 +115,7 @@
                 { "name": "Array",
                   "typeParams":
                     [ "wix-stores-backend.MediaChoice" ] },
-              "doc": "Media items already uploaded to the Wix site, and the choices to which to upload the media." } ],
+              "doc": "Product media items, and the choices to add the media to.\n> **Note:** Media must already be [added to the product](https://support.wix.com/en/article/wix-stores-adding-images-gifs-and-videos-to-products)." } ],
         "ret":
           { "type":
               { "name": "Promise",
@@ -123,7 +123,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the media items are added to the product options.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 633,
+          [ { "lineno": 767,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Adds media items by ID to product options.",
@@ -191,7 +191,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the products are added to the product collection.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 530,
+          [ { "lineno": 664,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Adds products by ID to a product collection.",
@@ -237,6 +237,571 @@
                       "  });" ],
                   "extra":
                     {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "bulkAdjustProductProperty",
+        "labels":
+          [ "changed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "ids",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "IDs of the products to adjust." },
+            { "name": "adjust",
+              "type": "wix-stores-backend.BulkAdjustProperties",
+              "doc": "Numeric property to adjust." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "wix-stores-backend.BulkUpdateResponse" ] },
+            "doc": "Fulfilled - Bulk action results and metadata.\nRejected - Error message." },
+        "locations":
+          [ { "lineno": 528,
+              "filename": "products.js" } ],
+        "docs":
+          { "summary": "Adjusts a numeric property for up to 100 products at a time.",
+            "description":
+              [ "The `bulkAdjustProductProperty()` function returns a Promise that resolves when the",
+                "property of the products have been adjusted.",
+                "",
+                "A property can be increased or decreased either by percentage or amount.",
+                "The properties that can be bulk-adjusted are detailed in the `adjust` object in the parameters section below.",
+                "",
+                "> **Note:** Do not pass important information from client-side code.",
+                "Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information.",
+                "To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-best-practices#code-visibility)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Adjust the weight of multiple products by amount",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkAdjustProductPropertyFunction(ids, adjust) {",
+                      "  try {",
+                      "    const productAdjustmentResults = await wixStoresBackend.bulkAdjustProductProperty(ids, adjust);",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkAdjustProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      "  \"0614129c-8777-9f3b-4dfe-b80a54df10d5\"",
+                      "]",
+                      "",
+                      "// Increase the weight by 10",
+                      "const adjust = {",
+                      "  \"weight\": {",
+                      "    \"amount\": 10",
+                      "  }",
+                      "}",
+                      "",
+                      "myBulkAdjustProductPropertyFunction(ids, adjust)",
+                      "  .then((productAdjustmentResults) => {",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\": [",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      " *         \"originalIndex\": 0,",
+                      " *         \"success\": true",
+                      " *       }",
+                      " *     },",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"0614129c-8777-9f3b-4dfe-b80a54df10d5\",",
+                      " *         \"originalIndex\": 1,",
+                      " *         \"success\": true",
+                      " *       }",
+                      " *     }",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\": {",
+                      " *     \"totalSuccesses\": 2,",
+                      " *     \"totalFailures\": 0,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */" ],
+                  "extra":
+                    {  } },
+                { "title": "Adjust the cost of multiple products by percentage",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkAdjustProductPropertyFunction(ids, adjust) {",
+                      "  try {",
+                      "    const productAdjustmentResults = await wixStoresBackend.bulkAdjustProductProperty(ids, adjust);",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkAdjustProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      "  \"0614129c-8777-9f3b-4dfe-b80a54df10d5\"",
+                      "]",
+                      "",
+                      "// Increase the price by 20 percent",
+                      "const adjust = {",
+                      "  \"cost\": {",
+                      "    \"percentage\": {",
+                      "      \"roundToInt\": true,",
+                      "      \"rate\": 20",
+                      "    }",
+                      "  }",
+                      "}",
+                      "",
+                      "myBulkAdjustProductPropertyFunction(ids, adjust)",
+                      "  .then((productAdjustmentResults) => {",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\": [",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      " *         \"originalIndex\": 0,",
+                      " *         \"success\": true",
+                      " *       }",
+                      " *     },",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"0614129c-8777-9f3b-4dfe-b80a54df10d5\",",
+                      " *         \"originalIndex\": 1,",
+                      " *         \"success\": true",
+                      " *       }",
+                      " *     }",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\": {",
+                      " *     \"totalSuccesses\": 2,",
+                      " *     \"totalFailures\": 0,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */" ],
+                  "extra":
+                    {  } },
+                { "title": "Attempt to adjust the price of multiple products by amount",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkAdjustProductPropertyFunction(ids, adjust) {",
+                      "  try {",
+                      "    const productAdjustmentResults = await wixStoresBackend.bulkAdjustProductProperty(ids, adjust);",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkAdjustProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      "  \"0614129c-8777-9f3b-4dfe-b80a54df10d5\"",
+                      "]",
+                      "",
+                      "// Decrease the price by 30",
+                      "const adjust = {",
+                      "  \"price\": {",
+                      "    \"amount\": -30",
+                      "  }",
+                      "}",
+                      "",
+                      "myBulkAdjustProductPropertyFunction(ids, adjust)",
+                      "  .then((productAdjustmentResults) => {",
+                      "    console.log('Bulk action results:', productAdjustmentResults);",
+                      "    return productAdjustmentResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\": [",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"91f7ac8b-2baa-289c-aa50-6d64764f35d3\",",
+                      " *         \"originalIndex\": 0,",
+                      " *         \"success\": false,",
+                      " *         \"error\": {",
+                      " *           \"code\": \"PRODUCT_ADJUSTMENT_PRICE_OUT_OF_RANGE\",",
+                      " *           \"description\": \"Product/variant price must be between 0 and 999999999.99 after adjustment\"",
+                      " *         }",
+                      " *       }",
+                      " *     },",
+                      " *     {",
+                      " *       \"itemMetadata\": {",
+                      " *         \"_id\": \"0614129c-8777-9f3b-4dfe-b80a54df10d5\",",
+                      " *         \"originalIndex\": 1,",
+                      " *         \"success\": false,",
+                      " *         \"error\": {",
+                      " *           \"code\": \"PRODUCT_ADJUSTMENT_PRICE_OUT_OF_RANGE\",",
+                      " *           \"description\": \"Product/variant price must be between 0 and 999999999.99 after adjustment\"",
+                      " *         }",
+                      " *       }",
+                      " *     }",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\": {",
+                      " *     \"totalSuccesses\": 0,",
+                      " *     \"totalFailures\": 2,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */",
+                      "" ],
+                  "extra":
+                    { "description": "In this example, an error is returned as the resulting product price is below 0." } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "bulkUpdateProductProperty",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "ids",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "IDs of the products to update." },
+            { "name": "set",
+              "type": "wix-stores-backend.BulkUpdateProperties",
+              "doc": "Property to update." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "wix-stores-backend.BulkUpdateResponse" ] },
+            "doc": "Fulfilled - Bulk action results and metadata.\nRejected - Error message." },
+        "locations":
+          [ { "lineno": 579,
+              "filename": "products.js" } ],
+        "docs":
+          { "summary": "Updates a property for up to 100 products at a time.",
+            "description":
+              [ "The `bulkUpdateProductProperty()` function returns a Promise that resolves when the",
+                "property of the products have been updated.",
+                "",
+                "The properties that can be bulk-updated are detailed in the `set` object in the parameters section below.",
+                "",
+                "> **Note:** Do not pass important information from client-side code.",
+                "Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information.",
+                "To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-best-practices#code-visibility)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Update the price of multiple products",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkUpdateProductPropertyFunction(ids, set) {",
+                      "  try {",
+                      "    const productUpdateResults = await wixStoresBackend.bulkUpdateProductProperty(ids, set);",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkUpdateProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      "  \"c36bbdbe-fbf8-4a43-810e-a0abdffe70ae\",",
+                      "  \"2966543c-2b2f-4ca1-862c-6a04736c1063\",",
+                      "  \"c9adb138-96f8-4f08-8626-9fef2445c490\",",
+                      "  \"4ed1aa2c-c441-4e3f-8e57-a18886bf52bb\"",
+                      "]",
+                      "",
+                      "// Set the price to 10.25",
+                      "const set = {",
+                      "  \"price\": 10.25",
+                      "}",
+                      "",
+                      "myBulkUpdateProductPropertyFunction(ids, set)",
+                      "  .then((productUpdateResults) => {",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\":   [",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      " *       \"originalIndex\": 0,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"c36bbdbe-fbf8-4a43-810e-a0abdffe70ae\",",
+                      " *       \"originalIndex\": 1,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"2966543c-2b2f-4ca1-862c-6a04736c1063\",",
+                      " *       \"originalIndex\": 2,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"c9adb138-96f8-4f08-8626-9fef2445c490\",",
+                      " *       \"originalIndex\": 3,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"4ed1aa2c-c441-4e3f-8e57-a18886bf52bb\",",
+                      " *       \"originalIndex\": 4,",
+                      " *       \"success\": true",
+                      " *     }}",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\":   {",
+                      " *     \"totalSuccesses\": 5,",
+                      " *     \"totalFailures\": 0,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */" ],
+                  "extra":
+                    {  } },
+                { "title": "Update the ribbon property of multiple products",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkUpdateProductPropertyFunction(ids, set) {",
+                      "  try {",
+                      "    const productUpdateResults = await wixStoresBackend.bulkUpdateProductProperty(ids, set);",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkUpdateProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      "  \"c36bbdbe-fbf8-4a43-810e-a0abdffe70ae\",",
+                      "  \"2966543c-2b2f-4ca1-862c-6a04736c1063\"",
+                      "]",
+                      "",
+                      "// Set the ribbon to \"On Sale\"",
+                      "const set = {",
+                      "  \"ribbon\": \"On Sale\"",
+                      "}",
+                      "",
+                      "myBulkUpdateProductPropertyFunction(ids, set)",
+                      "  .then((productUpdateResults) => {",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\":   [",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      " *       \"originalIndex\": 0,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"c36bbdbe-fbf8-4a43-810e-a0abdffe70ae\",",
+                      " *       \"originalIndex\": 1,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"2966543c-2b2f-4ca1-862c-6a04736c1063\",",
+                      " *       \"originalIndex\": 2,",
+                      " *       \"success\": true",
+                      " *     }}",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\":   {",
+                      " *     \"totalSuccesses\": 3,",
+                      " *     \"totalFailures\": 0,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */" ],
+                  "extra":
+                    {  } },
+                { "title": "Attempt to update the weight of multiple products",
+                  "body":
+                    [ "/**************************************",
+                      " * Backend code - my-backend-file.jsw *",
+                      " **************************************/",
+                      "",
+                      "import wixStoresBackend from 'wix-stores-backend';",
+                      "",
+                      "export async function myBulkUpdateProductPropertyFunction(ids, set) {",
+                      "  try {",
+                      "    const productUpdateResults = await wixStoresBackend.bulkUpdateProductProperty(ids, set);",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  } catch (error) {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  }",
+                      "}",
+                      "",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
+                      "import { myBulkUpdateProductPropertyFunction } from 'backend/my-backend-file';",
+                      "",
+                      "// Sample product IDs:",
+                      "const ids = [",
+                      "  \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      "  \"4deb9c8d-7aba-45e1-9d83-bf99b479b5bb\"",
+                      "]",
+                      "",
+                      "// Set the weight to 2.64",
+                      "const set = {",
+                      "  \"weight\": \"2.64\"",
+                      "}",
+                      "",
+                      "myBulkUpdateProductPropertyFunction(ids, set)",
+                      "  .then((productUpdateResults) => {",
+                      "    console.log('Bulk action results:', productUpdateResults);",
+                      "    return productUpdateResults;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " *",
+                      " * {",
+                      " *   \"results\":   [",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"bb6ddd51-7295-4fc8-8a4f-2521485c738d\",",
+                      " *       \"originalIndex\": 0,",
+                      " *       \"success\": true",
+                      " *     }},",
+                      " *     {\"itemMetadata\":     {",
+                      " *       \"id\": \"4deb9c8d-7aba-45e1-9d83-bf99b479b5bb\",",
+                      " *       \"originalIndex\": 1,",
+                      " *       \"success\": false,",
+                      " *       \"error\":       {",
+                      " *         \"code\": \"PRODUCT_NOT_FOUND\",",
+                      " *         \"description\": \"Product is not found\"",
+                      " *       }",
+                      " *     }}",
+                      " *   ],",
+                      " *   \"bulkActionMetadata\":   {",
+                      " *     \"totalSuccesses\": 1,",
+                      " *     \"totalFailures\": 1,",
+                      " *     \"undetailedFailures\": 0",
+                      " *   }",
+                      " * }",
+                      " *",
+                      " */",
+                      "" ],
+                  "extra":
+                    { "description": "In this example, the second product ID is not found, so an error is returned for that update action." } } ],
             "extra":
               {  } },
         "extra":
@@ -476,7 +1041,9 @@
             "description":
               [ "The `createOrder()` function returns a Promise that resolves to an `Order` object when the order has been created.",
                 "",
-                "> **Note:** Do not pass important information from client-side code. Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information. To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-considerations#code-visibility)." ],
+                "> **Note:** Do not pass important information from client-side code.",
+                "Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information.",
+                "To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-best-practices#code-visibility)." ],
             "links":
               [ "[getOrder()]($w.ThankYouPage.html#getOrder)" ],
             "examples":
@@ -934,7 +1501,7 @@
                   [ "wix-stores-backend.Product" ] },
             "doc": "Fulfilled - The created product.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 462,
+          [ { "lineno": 469,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Creates a new product.",
@@ -945,7 +1512,9 @@
                 " Creating a product is the first step in the process of enabling visitors to buy your products. After you create a product, you can",
                 " add choices and variants to the product.",
                 "",
-                "> **Note:** Do not pass important information from client-side code. Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information. To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-considerations#code-visibility)." ],
+                "> **Note:** Do not pass important information from client-side code.",
+                "Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information.",
+                "To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-best-practices#code-visibility)." ],
             "links":
               [ "[getProduct()]($w.ProductPage.html#getProduct)" ],
             "examples":
@@ -1624,7 +2193,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the product is deleted.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 484,
+          [ { "lineno": 493,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Deletes an existing product.",
@@ -1666,7 +2235,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the options are deleted.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 517,
+          [ { "lineno": 651,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Deletes all options for an existing product.",
@@ -1912,7 +2481,7 @@
                   [ "wix-stores-backend.LinkToPdf" ] },
             "doc": "Fulfilled - URL to a PDF file.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 18,
+          [ { "lineno": 20,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Generates a link to a PDF file containing information about one or more specified orders, up to 1000 orders.",
@@ -2049,7 +2618,7 @@
                   [ "wix-stores-backend.LinkToPdf" ] },
             "doc": "Fulfilled - URL to a PDF file.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 32,
+          [ { "lineno": 34,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Generates a link to a PDF file containing an order's packing slip.",
@@ -2187,7 +2756,7 @@
                   [ "wix-stores-backend.ProductOptionsAvailability" ] },
             "doc": "Fulfilled - The availability information of the product." },
         "locations":
-          [ { "lineno": 307,
+          [ { "lineno": 314,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Gets the availability of a product based on the specified option choices.",
@@ -2408,7 +2977,7 @@
                         [ "wix-stores-backend.VariantItem" ] } ] },
             "doc": "Fulfilled - The variants with the specified choices." },
         "locations":
-          [ { "lineno": 447,
+          [ { "lineno": 454,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Gets a product's available variants based on the specified product ID and either option choices or variant IDs.",
@@ -2680,7 +3249,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the media items are removed from the product.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 649,
+          [ { "lineno": 784,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Removes media items by ID from a product.",
@@ -2759,7 +3328,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the media items are removed from the product options.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 672,
+          [ { "lineno": 807,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Removes media items by ID from a product's options.",
@@ -2832,7 +3401,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the products are removed from the collection.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 549,
+          [ { "lineno": 683,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Removes products by ID from a collection.",
@@ -2898,7 +3467,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the variant data are reset.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 597,
+          [ { "lineno": 731,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Resets the data (such as the price and the weight) of all variants for a given product to their default values.",
@@ -3724,7 +4293,7 @@
                   [ "wix-stores-backend.Product" ] },
             "doc": "Fulfilled - The updated product.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 497,
+          [ { "lineno": 506,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Updates an existing product by ID.",
@@ -3735,7 +4304,9 @@
                 " Only the properties passed in the `Product` object will",
                 " be updated. All other properties will remain the same.",
                 "",
-                "> **Note:** Do not pass important information from client-side code. Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information. To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-considerations#code-visibility)." ],
+                "> **Note:** Do not pass important information from client-side code.",
+                "Doing so opens a vulnerability that a malicious user can exploit to change information, such as a buyer’s personal details (address, email, etc.) or product price information.",
+                "To learn more about how to keep your code secure, see [Security Considerations When Working with Wix Code](https://support.wix.com/en/article/velo-security-best-practices#code-visibility)." ],
             "links": [],
             "examples":
               [ { "title": "Update a product",
@@ -3781,7 +4352,7 @@
                   [ "wix-stores-backend.VariantItem" ] },
             "doc": "Fulfilled - The updated variant.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 570,
+          [ { "lineno": 704,
               "filename": "products.js" } ],
         "docs":
           { "summary": "Updates the data (such as the price and the weight) of an existing product variant in the store.",
@@ -3929,7 +4500,7 @@
         "labels": [] },
       { "name": "Activities",
         "locations":
-          [ { "lineno": 207,
+          [ { "lineno": 209,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An array of objects representing a log of updates related to the order.",
@@ -4296,7 +4867,7 @@
         "labels": [] },
       { "name": "Address",
         "locations":
-          [ { "lineno": 244,
+          [ { "lineno": 246,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing address information.",
@@ -4612,9 +5183,34 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "AdjustBy",
+        "locations":
+          [ { "lineno": 564,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "percentage",
+              "type": "wix-stores-backend.PercentageAdjustment",
+              "doc": "Adjust by percentage.",
+              "optional": true },
+            { "name": "amount",
+              "type": "number",
+              "doc": "Adjust by amount.",
+              "optional": true } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "amountOrPercentage",
+                  "members":
+                    [ "percentage",
+                      "amount" ] } ] },
+        "labels": [] },
       { "name": "AppliedCoupon",
         "locations":
-          [ { "lineno": 536,
+          [ { "lineno": 538,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a coupon applied to the order.",
@@ -4914,7 +5510,7 @@
         "labels": [] },
       { "name": "BillingInfo",
         "locations":
-          [ { "lineno": 319,
+          [ { "lineno": 321,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's billing info.",
@@ -5251,9 +5847,162 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "BulkActionMetadata",
+        "locations":
+          [ { "lineno": 644,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "totalSuccesses",
+              "type": "number",
+              "doc": "Number of items that were successfully processed." },
+            { "name": "totalFailures",
+              "type": "number",
+              "doc": "Number of items that couldn't be processed." },
+            { "name": "undetailedFailures",
+              "type": "number",
+              "doc": "Number of failures without details because detailed failure threshold was exceeded." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "BulkAdjustProperties",
+        "locations":
+          [ { "lineno": 553,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "price",
+              "type": "wix-stores-backend.AdjustBy",
+              "doc": "Adjust product price.\nIf [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, variants prices are calculated according to the adjusted price.\nIf the variant price is negative after the adjustment, the update fails.",
+              "optional": true },
+            { "name": "cost",
+              "type": "wix-stores-backend.AdjustBy",
+              "doc": "Adjust the product's cost of goods.\nIf [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, cost of goods is adjusted per variant.",
+              "optional": true },
+            { "name": "weight",
+              "type": "wix-stores-backend.AdjustBy",
+              "doc": "Adjust product weight. If [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, weight is adjusted per variant.",
+              "optional": true } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "adjust",
+                  "members":
+                    [ "price",
+                      "cost",
+                      "weight" ] } ] },
+        "labels": [] },
+      { "name": "BulkAdjustResponse",
+        "locations":
+          [ { "lineno": 576,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "results",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "wix-stores-backend.BulkResults" ] },
+              "doc": "Bulk action results." },
+            { "name": "bulkActionMetadata",
+              "type": "wix-stores-backend.BulkActionMetadata",
+              "doc": "Bulk action metadata." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "removed" ] },
+      { "name": "BulkResults",
+        "locations":
+          [ { "lineno": 623,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "itemMetadata",
+              "type": "wix-stores-backend.ItemMetadata",
+              "doc": "Item metadata." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "BulkUpdateProperties",
+        "locations":
+          [ { "lineno": 603,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "price",
+              "type": "number",
+              "doc": "Set product price.\nIf [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, variants prices are calculated according to the set product price.\nIf the variant price is negative after setting the new price, the update fails.",
+              "optional": true },
+            { "name": "cost",
+              "type": "number",
+              "doc": "Set the product's cost of goods.\nIf [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, cost of goods is set per variant.",
+              "optional": true },
+            { "name": "weight",
+              "type": "number",
+              "doc": "Set product weight.\nIf [variant management](https://support.wix.com/en/article/wix-stores-adding-and-customizing-product-options#setting-different-prices-for-variants) is enabled, weight is set per variant.",
+              "optional": true },
+            { "name": "ribbon",
+              "type": "string",
+              "doc": "Set product ribbon. Pass an empty string to remove the existing ribbon.",
+              "optional": true },
+            { "name": "brand",
+              "type": "string",
+              "doc": "Set product brand. Pass an empty string to remove the existing brand.",
+              "optional": true } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "set",
+                  "members":
+                    [ "price",
+                      "cost",
+                      "weight",
+                      "ribbon",
+                      "brand" ] } ] },
+        "labels": [] },
+      { "name": "BulkUpdateResponse",
+        "locations":
+          [ { "lineno": 617,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "results",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "wix-stores-backend.BulkResults" ] },
+              "doc": "Bulk action results." },
+            { "name": "bulkActionMetadata",
+              "type": "wix-stores-backend.BulkActionMetadata",
+              "doc": "Bulk action metadata." } ],
+        "extra":
+          {  },
+        "labels": [] },
       { "name": "BuyerInfo",
         "locations":
-          [ { "lineno": 187,
+          [ { "lineno": 189,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing information about the buyer.",
@@ -7000,7 +7749,7 @@
         "labels": [] },
       { "name": "ChannelInfo",
         "locations":
-          [ { "lineno": 266,
+          [ { "lineno": 268,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing information about the sales channel that submitted this order.",
@@ -7302,7 +8051,7 @@
         "labels": [] },
       { "name": "Choice",
         "locations":
-          [ { "lineno": 430,
+          [ { "lineno": 437,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the choice for a product variant.",
@@ -7319,7 +8068,7 @@
         "labels": [] },
       { "name": "Choices",
         "locations":
-          [ { "lineno": 439,
+          [ { "lineno": 446,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the choice for a product variant.",
@@ -7339,7 +8088,7 @@
         "labels": [] },
       { "name": "CreateOrderBillingInfo",
         "locations":
-          [ { "lineno": 303,
+          [ { "lineno": 305,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing billing information for creating an order.",
@@ -7669,7 +8418,7 @@
         "labels": [] },
       { "name": "CreateOrderBuyerInfo",
         "locations":
-          [ { "lineno": 173,
+          [ { "lineno": 175,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing buyer information for creating an order.",
@@ -7966,7 +8715,7 @@
         "labels": [] },
       { "name": "CreateOrderLineItem",
         "locations":
-          [ { "lineno": 471,
+          [ { "lineno": 473,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a line item for creating an order.",
@@ -8328,7 +9077,7 @@
         "labels": [] },
       { "name": "CreateOrderLineItemPriceData",
         "locations":
-          [ { "lineno": 366,
+          [ { "lineno": 368,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an line item's price information for creating an order.",
@@ -8626,7 +9375,7 @@
         "labels": [] },
       { "name": "CreateOrderMediaItem",
         "locations":
-          [ { "lineno": 420,
+          [ { "lineno": 422,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a line item's primary media item for creating an order.",
@@ -8925,7 +9674,7 @@
         "labels": [] },
       { "name": "CreateOrderTotals",
         "locations":
-          [ { "lineno": 516,
+          [ { "lineno": 518,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's totals for creating an order.",
@@ -9460,7 +10209,7 @@
         "labels": [] },
       { "name": "CustomField",
         "locations":
-          [ { "lineno": 527,
+          [ { "lineno": 529,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a custom field added by the customer during the checkout process.",
@@ -9760,7 +10509,7 @@
         "labels": [] },
       { "name": "CustomTextField",
         "locations":
-          [ { "lineno": 428,
+          [ { "lineno": 430,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a custom text field.",
@@ -10082,7 +10831,7 @@
         "labels": [] },
       { "name": "Discount",
         "locations":
-          [ { "lineno": 545,
+          [ { "lineno": 547,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a discount applied to the order.",
@@ -10376,7 +11125,7 @@
         "labels": [] },
       { "name": "EnteredBy",
         "locations":
-          [ { "lineno": 286,
+          [ { "lineno": 288,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing information about the identity of the order initiator.\nOccasionally, the person that completes the order isn't the buyer. For example, this occurs when an order is created using a point of sale terminal.",
@@ -11795,9 +12544,56 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "ItemMetadata",
+        "locations":
+          [ { "lineno": 628,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Item ID. Item Id. Omitted in certain cases, such as when failing to create an item." },
+            { "name": "originalIndex",
+              "type": "number",
+              "doc": "Index of the item within the update array." },
+            { "name": "success",
+              "type": "boolean",
+              "doc": "Whether the requested action succeeded for this item.\nWhen `false`, the `error` property is populated." },
+            { "name": "error",
+              "type": "wix-stores-backend.ItemMetadataError",
+              "doc": "Details about the error in case of failure, as a key:value pair." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ItemMetadataError",
+        "locations":
+          [ { "lineno": 637,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "code",
+              "type": "string",
+              "doc": "Error code." },
+            { "name": "description",
+              "type": "string",
+              "doc": "Error description." },
+            { "name": "data",
+              "type": "object",
+              "doc": "Error data." } ],
+        "extra":
+          {  },
+        "labels": [] },
       { "name": "LineItemPriceData",
         "locations":
-          [ { "lineno": 357,
+          [ { "lineno": 359,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an line item's price information.",
@@ -12097,7 +12893,7 @@
         "labels": [] },
       { "name": "LinkToPdf",
         "locations":
-          [ { "lineno": 46,
+          [ { "lineno": 48,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object with the link to a PDF file.",
@@ -12184,7 +12980,7 @@
         "labels": [] },
       { "name": "Media",
         "locations":
-          [ { "lineno": 420,
+          [ { "lineno": 427,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the media item for a product.",
@@ -12244,7 +13040,7 @@
         "labels": [] },
       { "name": "MediaChoice",
         "locations":
-          [ { "lineno": 411,
+          [ { "lineno": 418,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the media item for a product's choices.",
@@ -12276,7 +13072,7 @@
         "labels": [] },
       { "name": "MediaItem",
         "locations":
-          [ { "lineno": 122,
+          [ { "lineno": 123,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a media item.",
@@ -12549,7 +13345,7 @@
         "labels": [] },
       { "name": "Option",
         "locations":
-          [ { "lineno": 402,
+          [ { "lineno": 404,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a line item option.",
@@ -12846,7 +13642,7 @@
         "labels": [] },
       { "name": "Order",
         "locations":
-          [ { "lineno": 98,
+          [ { "lineno": 100,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order.",
@@ -13233,7 +14029,7 @@
         "labels": [] },
       { "name": "OrderInfo",
         "locations":
-          [ { "lineno": 147,
+          [ { "lineno": 149,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing information for creating an order.",
@@ -13577,7 +14373,7 @@
         "labels": [] },
       { "name": "OrderLineItem",
         "locations":
-          [ { "lineno": 436,
+          [ { "lineno": 438,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a line item in an order.",
@@ -13948,7 +14744,7 @@
         "labels": [] },
       { "name": "OrderMediaItem",
         "locations":
-          [ { "lineno": 411,
+          [ { "lineno": 413,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing a line item's primary media item.",
@@ -14249,7 +15045,7 @@
         "labels": [] },
       { "name": "OrderShippingInfo",
         "locations":
-          [ { "lineno": 337,
+          [ { "lineno": 339,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's shipping information.",
@@ -14798,7 +15594,7 @@
         "labels": [] },
       { "name": "PagingOptions",
         "locations":
-          [ { "lineno": 361,
+          [ { "lineno": 368,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing paging options.",
@@ -14817,9 +15613,28 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "PercentageAdjustment",
+        "locations":
+          [ { "lineno": 571,
+              "filename": "products.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "roundToInt",
+              "type": "string",
+              "doc": "When `true`, result is rounded to the nearest whole number (integer).\nWhen `false`, result is rounded to 2 places after the decimal point." },
+            { "name": "rate",
+              "type": "number",
+              "doc": "Percentage value, as a whole number (integer) between `-100` and `1000`.\nFor example, pass `100` to increase value by 100% (multiply original value by 2)." } ],
+        "extra":
+          {  },
+        "labels": [] },
       { "name": "PickupDetails",
         "locations":
-          [ { "lineno": 390,
+          [ { "lineno": 392,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's pickup details.",
@@ -15134,7 +15949,7 @@
         "labels": [] },
       { "name": "Product",
         "locations":
-          [ { "lineno": 18,
+          [ { "lineno": 19,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a product in a store.",
@@ -15476,7 +16291,7 @@
         "labels": [] },
       { "name": "ProductAdditionalInfoSection",
         "locations":
-          [ { "lineno": 135,
+          [ { "lineno": 136,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing an additional info section for a store product.",
@@ -15497,7 +16312,7 @@
         "labels": [] },
       { "name": "ProductChoices",
         "locations":
-          [ { "lineno": 341,
+          [ { "lineno": 348,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a product variant's option choices.",
@@ -15514,7 +16329,7 @@
         "labels": [] },
       { "name": "ProductCustomTextFields",
         "locations":
-          [ { "lineno": 114,
+          [ { "lineno": 115,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a custom text field for a store product.",
@@ -15535,7 +16350,7 @@
         "labels": [] },
       { "name": "ProductDiscount",
         "locations":
-          [ { "lineno": 197,
+          [ { "lineno": 204,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a product discount.",
@@ -15555,7 +16370,7 @@
         "labels": [] },
       { "name": "ProductInfo",
         "locations":
-          [ { "lineno": 151,
+          [ { "lineno": 152,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing information for creating or updating a product in a store.",
@@ -15614,19 +16429,18 @@
               "optional": true },
             { "name": "ribbon",
               "type": "string",
-              "doc": "Product ribbon. Used to highlight relevant information about a product. For example, `\"Sale\"`, `\"New Arrival\"`, `\"Sold Out\"`. Limited to 30 characters.",
+              "doc": "Product ribbon. Used to highlight relevant information about a product.\nFor example, `\"Sale\"`, `\"New Arrival\"`, `\"Sold Out\"`. Limited to 30 characters.",
               "optional": true },
             { "name": "brand",
               "type": "string",
-              "doc": "Product brand. Including a brand name can help improve your site’s [visibility on search engines](https://support.wix.com/en/article/adding-brand-names-to-boost-product-page-seo-in-wix-stores). Limited to 50 characters.",
+              "doc": "Product brand.\nIncluding a brand name can help improve your site’s [visibility on search engines](https://support.wix.com/en/article/adding-brand-names-to-boost-product-page-seo-in-wix-stores).\nLimited to 50 characters.",
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "ProductOption",
         "locations":
-          [ { "lineno": 245,
+          [ { "lineno": 252,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing an option for a store product.",
@@ -15653,7 +16467,7 @@
         "labels": [] },
       { "name": "ProductOptionInfo",
         "locations":
-          [ { "lineno": 255,
+          [ { "lineno": 262,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing an option for a store product.",
@@ -15677,7 +16491,7 @@
         "labels": [] },
       { "name": "ProductOptions",
         "locations":
-          [ { "lineno": 222,
+          [ { "lineno": 229,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing all the available options for a store product, such as \"Size\" or \"Color.\"",
@@ -15694,7 +16508,7 @@
         "labels": [] },
       { "name": "ProductOptionsAvailability",
         "locations":
-          [ { "lineno": 279,
+          [ { "lineno": 286,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object returned by the `getProductOptionsAvailability()` function representing the availability of a product.",
@@ -15805,7 +16619,7 @@
         "labels": [] },
       { "name": "ProductOptionsAvailabilitySelectedVariant",
         "locations":
-          [ { "lineno": 291,
+          [ { "lineno": 298,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the product variant selected using the `getProductOptionsAvailability()` function.",
@@ -15941,7 +16755,7 @@
         "labels": [] },
       { "name": "ProductOptionsChoice",
         "locations":
-          [ { "lineno": 270,
+          [ { "lineno": 277,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing an options choice for a store product, such as choice \"Small\" for the option \"Size.\"",
@@ -15967,7 +16781,7 @@
         "labels": [] },
       { "name": "ProductOptionsChoiceInfo",
         "locations":
-          [ { "lineno": 264,
+          [ { "lineno": 271,
               "filename": "products.js" } ],
         "docs":
           { "links": [],
@@ -15986,7 +16800,7 @@
         "labels": [] },
       { "name": "ProductOptionsInfo",
         "locations":
-          [ { "lineno": 237,
+          [ { "lineno": 244,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing all the available options for a store product.",
@@ -16003,7 +16817,7 @@
         "labels": [] },
       { "name": "ProductRibbon",
         "locations":
-          [ { "lineno": 144,
+          [ { "lineno": 145,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a ribbon for a store product.",
@@ -16021,7 +16835,7 @@
         "labels": [] },
       { "name": "ProductVariantOptions",
         "locations":
-          [ { "lineno": 352,
+          [ { "lineno": 359,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the selection of specific variants of a product. Use only one of\n `choices` or `variantIds`.",
@@ -16047,7 +16861,7 @@
         "labels": [] },
       { "name": "Refund",
         "locations":
-          [ { "lineno": 53,
+          [ { "lineno": 55,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing order refund information.",
@@ -16151,7 +16965,7 @@
         "labels": [] },
       { "name": "SeoData",
         "locations":
-          [ { "lineno": 87,
+          [ { "lineno": 88,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing custom SEO data for the product.",
@@ -16171,7 +16985,7 @@
         "labels": [] },
       { "name": "SeoTag",
         "locations":
-          [ { "lineno": 93,
+          [ { "lineno": 94,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing the product's custom SEO tags.",
@@ -16237,7 +17051,7 @@
             "removed" ] },
       { "name": "ShipmentDetails",
         "locations":
-          [ { "lineno": 374,
+          [ { "lineno": 376,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's shipping details.",
@@ -16568,7 +17382,7 @@
         "labels": [] },
       { "name": "ShipmentPriceData",
         "locations":
-          [ { "lineno": 349,
+          [ { "lineno": 351,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing shipment price information.",
@@ -16865,7 +17679,7 @@
         "labels": [] },
       { "name": "StreetAddress",
         "locations":
-          [ { "lineno": 236,
+          [ { "lineno": 238,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing information about the street name and street number of an address.",
@@ -17162,7 +17976,7 @@
         "labels": [] },
       { "name": "SubscriptionInfo",
         "locations":
-          [ { "lineno": 67,
+          [ { "lineno": 69,
               "filename": "orders.js" } ],
         "docs":
           { "links": [],
@@ -17187,7 +18001,7 @@
         "labels": [] },
       { "name": "SubscriptionOptionInfo",
         "locations":
-          [ { "lineno": 90,
+          [ { "lineno": 92,
               "filename": "orders.js" } ],
         "docs":
           { "links": [],
@@ -17209,7 +18023,7 @@
         "labels": [] },
       { "name": "SubscriptionSettings",
         "locations":
-          [ { "lineno": 75,
+          [ { "lineno": 77,
               "filename": "orders.js" } ],
         "docs":
           { "links": [],
@@ -17231,7 +18045,7 @@
         "labels": [] },
       { "name": "Totals",
         "locations":
-          [ { "lineno": 503,
+          [ { "lineno": 505,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing an order's totals.",
@@ -17751,7 +18565,7 @@
         "labels": [] },
       { "name": "UpdateProductInfo",
         "locations":
-          [ { "lineno": 174,
+          [ { "lineno": 178,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing information for creating or updating a product in a store.",
@@ -17812,18 +18626,18 @@
               "optional": true },
             { "name": "ribbon",
               "type": "string",
-              "doc": "Product ribbon. Used to highlight relevant information about a product. For example, `\"Sale\"`, `\"New Arrival\"`, `\"Sold Out\"`. Limited to 30 characters.",
+              "doc": "Product ribbon. Used to highlight relevant information about a product.\nFor example, `\"Sale\"`, `\"New Arrival\"`, `\"Sold Out\"`. Limited to 30 characters.",
               "optional": true },
             { "name": "brand",
               "type": "string",
-              "doc": "Product brand. Including a brand name can help improve your site’s [visibility on search engines](https://support.wix.com/en/article/adding-brand-names-to-boost-product-page-seo-in-wix-stores). Limited to 50 characters.",
+              "doc": "Product brand.\nIncluding a brand name can help improve your site’s [visibility on search engines](https://support.wix.com/en/article/adding-brand-names-to-boost-product-page-seo-in-wix-stores).\nLimited to 50 characters.",
               "optional": true } ],
         "extra":
           {  },
         "labels": [] },
       { "name": "VariantData",
         "locations":
-          [ { "lineno": 378,
+          [ { "lineno": 385,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object containing variant information.",
@@ -17946,7 +18760,7 @@
         "labels": [] },
       { "name": "VariantInfo",
         "locations":
-          [ { "lineno": 393,
+          [ { "lineno": 400,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object containing variant information for update.",
@@ -18066,7 +18880,7 @@
         "labels": [] },
       { "name": "VariantItem",
         "locations":
-          [ { "lineno": 369,
+          [ { "lineno": 376,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a product variant item.",
@@ -18090,7 +18904,7 @@
         "labels": [] },
       { "name": "Variants",
         "locations":
-          [ { "lineno": 692,
+          [ { "lineno": 827,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing product variants.",
@@ -18201,7 +19015,7 @@
         "labels": [] },
       { "name": "VatId",
         "locations":
-          [ { "lineno": 258,
+          [ { "lineno": 260,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "An object representing value added tax (VAT) information.",
@@ -18496,9 +19310,51 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "VideoItem",
+        "locations":
+          [ { "lineno": 246,
+              "filename": "events.js" } ],
+        "docs":
+          { "summary": "An object used by the Gallery properties `items` and `currentItem` to represent a single gallery video.",
+            "links":
+              [ "[items](#items)",
+                "[currentItem](#currentItem)" ],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "type",
+              "type": "string",
+              "doc": "Item type. Value is `\"video\"`." },
+            { "name": "src",
+              "type": "string",
+              "doc": "Video source URL." },
+            { "name": "slug",
+              "type": "string",
+              "doc": "Item slug.",
+              "optional": true },
+            { "name": "title",
+              "type": "string",
+              "doc": "Video title.",
+              "optional": true },
+            { "name": "description",
+              "type": "string",
+              "doc": "Video description. Descriptions over 100 characters are truncated.",
+              "optional": true },
+            { "name": "link",
+              "type": "string",
+              "doc": "URL of the video's clickable link. See [here]($w.LinkableMixin.html#link) for more information about links.",
+              "optional": true },
+            { "name": "thumbnail",
+              "type": "string",
+              "doc": "Video thumbnail URL.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
       { "name": "pricePerUnitData",
         "locations":
-          [ { "lineno": 62,
+          [ { "lineno": 63,
               "filename": "products.js" } ],
         "docs":
           { "summary": "An object representing a product's price per unit data.",
@@ -18523,7 +19379,8 @@
           {  },
         "labels": [] } ],
   "extra":
-    {  },
+    { "scopes":
+        [ "backend" ] },
   "menuSections": "APIs",
   "FAQs":
     [ { "title": "When should I write code in the backend instead of the client side?",
