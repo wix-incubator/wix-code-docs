@@ -24,7 +24,6 @@ Conversely, when you use the Pro Gallery backend API to create a pro gallery on 
 <blockquote class="important">
 
 __Important:__
-
 You currently can't convert `text` items in your backend gallery to the frontend, as there are no `text` items in the frontend [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) object. If you want to display a backend gallery with `text` items on your live site, connect the gallery to a gallery component first, and then add the `text` items using the UI. 
 
 </blockquote>
