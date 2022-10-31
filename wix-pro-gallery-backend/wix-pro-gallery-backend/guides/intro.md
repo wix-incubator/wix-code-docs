@@ -4,30 +4,30 @@ title: Introduction
 
 # Introduction
 
-Use the Pro Gallery backend API to create and manage pro galleries in your site's backend. To enable pro gallery backend API functionality for your site, [add a Pro Gallery to your site](https://support.wix.com/en/article/wix-pro-gallery-adding-and-setting-up-your-gallery). 
+Use the Pro Gallery backend API to create and manage pro galleries on your site's backend. To enable pro gallery backend API functionality for your site, [add a Pro Gallery to your site](https://support.wix.com/en/article/wix-pro-gallery-adding-and-setting-up-your-gallery). 
 
 
 You can use the Pro Gallery backend API to do the following:
 
-+ Create a pro gallery from scratch or clone an existing pro gallery in your site's backend.
-+ Get, update, and delete an existing pro gallery.
-+ Create, get, update, and delete a pro gallery item. 
-+ List pro galleries and list media items in a specific pro gallery. 
++ Create a pro gallery from scratch or clone an existing pro gallery on your site's backend.
++ Get, update, and delete an existing pro gallery on your site's backend.
++ Create, get, update, and delete a pro gallery item on your site's backend. 
++ List pro galleries and list media items in a specific pro gallery on your site's backend. 
 
 
 ### How the API Works
 
-**Pro galleries on your live site are synced with your site's backend.**
-Changes made to your pro gallery component are reflected in your site's backend. For example, when you add a pro gallery component to your site using the UI, the gallery is automatically added to your site's backend once your site is published. The same applies for updating, adding, or deleting an item from a pro gallery component. You can see the gallery in your site's backend in the [listGalleries()](listgalleries) function returns. From there you can get the gallery's ID, and use it to manage the gallery component from your site's backend. Changes made to the gallery in your site's backend are reflected on your live site. For example, when you update the gallery and its items in your site's backend, the changes are reflected on your live site. The same applies for adding or deleting an item from the gallery in your site's backend. 
+When you add a pro gallery element to your site and click publish, a corresponding pro gallery is automatically created on your site's backend. These 2 galleries are synced. Any changes to the pro gallery element displayed on your published site affect the corresponding pro gallery on your site's backend, and any changes to the pro gallery on your site's backend affect the corresponding pro gallery element displayed on your published site. 
 
-**Pro galleries in your site's backend are NOT necessarily synced with your live site.**
-Changes made to a pro gallery in your site's backend are not necessarily reflected on your live site. For example, when you create a pro gallery on your site's backend, the pro gallery component doesn't automatically appear on your live site. This is because you can use this API just to store multiple galleries on your site's backend. You may want to do this, for example, if you have a page with a pro gallery component where you want to display different galleries for each site member. You can use this API to store the galleries in the backend instead of overloading the frontend. Then, for each site member you can export the relevant gallery from the backend, import it to your page code, and sync it with a particular gallery component on your site. 
+Conversely, when you use the Pro Gallery backend API to create a pro gallery on your site's backend, a corresponding pro gallery element isn't automatically displayed on your published site. If you want to create a pro gallery on your site's backend and display it on your live site, first use the [`createGallery()`](https://www.wix.com/velo/reference/wix-pro-gallery-backend/progallery/creategallery) API to create a pro gallery on your site's backend, and then follow the instructions in this article [Displaying a Pro Gallery on Your Site Using the Pro Gallery Backend API](https://support.wix.com/en/article/velo-tutorial-displaying-a-pro-gallery-on-your-site-using-the-pro-gallery-backend-api). You may want to display a pro gallery from your site's backend on your live site, for example, if you have a page with a pro gallery element where you want to display different galleries for each site member. You can use this API to store the pro galleries in the backend instead of overloading the frontend. Then, for each site member you can export the relevant gallery from the backend. To use the exported backend gallery on your frontend, you need to first write code to convert the backend gallery items to the frontend gallery items format (currently the backend gallery API and [$w() Gallery API](https://www.wix.com/velo/reference/$w/gallery/currentitem) have different formats). Then import the converted items to your page code, and set the items to a particular gallery in your site's UI. See the article above for step by step instructions.
 
-To sync a pro gallery in your site's backend with a pro gallery component on your live site, import the [`createGallery()`](#creategallery) function to your page code and write code to convert the backend gallery object to the frontend gallery object. Once converted, the newly created backend gallery is synced with the gallery component, and is visible on your live site. You can then manage the gallery component from your site's backend. Changes made to the gallery in your site's backend are now reflected on your live site. To learn more, see [Displaying a Pro Gallery on Your Site Using the Pro Gallery Backend API](https://support.wix.com/en/article/velo-tutorial-displaying-a-pro-gallery-on-your-site-using-the-pro-gallery-backend-api).
+<blockquote class="important">
 
->**Note:** 
-> You currently can't convert `text` items in your backend gallery to the frontend, as there are no `text` items in the frontend [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) object. If you want to display a backend gallery with `text` items on your live site, connect the gallery to a gallery component first, and then add the `text` items using the UI. 
+__Important:__
 
+You currently can't convert `text` items in your backend gallery to the frontend, as there are no `text` items in the frontend [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) object. If you want to display a backend gallery with `text` items on your live site, connect the gallery to a gallery component first, and then add the `text` items using the UI. 
+
+</blockquote>
 
 ### Cloning a Pro Gallery
 When creating a new gallery, you can choose to create a new gallery from an exisiting gallery by passing the `cloneFromGalleryId` parameter in the `createGallery()` function. When a gallery is cloned, the newly-created gallery includes the same properties as the existing gallery except for the gallery and item IDs, sort order, and created and updated dates.
