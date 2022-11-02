@@ -1,0 +1,522 @@
+{ "name": "ecom-shipping-rates",
+  "mixes": [],
+  "labels":
+    [ "new" ],
+  "location":
+    { "lineno": 1,
+      "filename": "shipping-rates-spi-index.js" },
+  "docs":
+    { "summary": "The eCommerce Shipping Rates SPI.",
+      "description":
+        [ "> **Note:** This SPI is currently in beta and is subject to change. Some SPIs are currently not available to all users.",
+          "",
+          "The Shipping Rates SPI provides functionality for connecting your site to shipping rates providers not currently supported by Wix. You can also implement custom shipping rates and options using code. These rates are displayed on your store's Cart and Checkout pages.",
+          "",
+          "Wix eCommerce calls the SPI endpoint [`getShippingRates()`](https://www.wix.com/velo/reference/spis/ecom-shipping-rates/getshippingrates) to retrieve the relevant shipping rates.",
+          "",
+          "Learn more about the [Shipping Rates custom extension](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta)." ],
+      "links": [],
+      "examples": [],
+      "extra":
+        {  } },
+  "properties": [],
+  "operations":
+    [ { "name": "getShippingRates",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "options",
+              "type": "ecom-shipping-rates.Options",
+              "doc": "Shipping origin, shipping destination, and general configurations." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "ecom-shipping-rates.ShippingRates" ] },
+            "doc": "Fulfilled - Available shipping rates." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "summary": "Retrieves shipping rates provided by a custom shipping rates extension.",
+            "description":
+              [ "This function is automatically called by Wix eCommerce to retrieve the shipping rates provided by your extension.",
+                " This happens when actions are performed on the cart/checkout entities/pages. For example, when an item is added to the cart.",
+                "",
+                "> **Note:** The `options` parameter is passed to `getShippingRates()` when the function is called. However, you may add to the data provided in `options` if, for example, you want to integrate with a shipping provider that requires more information." ],
+            "links": [],
+            "examples":
+              [ { "title": "Example of a `shippingRates` return value",
+                  "body":
+                    [ "export const getShippingRates = (options) => {",
+                      "",
+                      "  return {",
+                      "    \"shippingRates\": [{",
+                      "      \"code\": \"usps-international\",",
+                      "      \"title\": \"USPS - International\",",
+                      "      \"logistics\": {",
+                      "        \"deliveryTime\": \"2-5 days\"",
+                      "      },",
+                      "      \"cost\": {",
+                      "        \"price\": \"15\",",
+                      "        \"currency\": \"USD\",",
+                      "        \"additionalCharges\": [{",
+                      "          \"price\": \"10\",",
+                      "          \"type\": \"HANDLING_FEE\",",
+                      "          \"details\": \"Handling fee of $5 applied for fragile items.\"",
+                      "        }]",
+                      "      }",
+                      "    }]",
+                      "  };",
+                      "};" ],
+                  "extra":
+                    {  } },
+                { "title": "Return shipping rates based on quantity of items in a cart",
+                  "body":
+                    [ "export const getShippingRates = (options) => {",
+                      "  return getShippingRatesByQuantity(options)",
+                      "}",
+                      "",
+                      "// Tally the quantity of all items",
+                      "function calculateTotalCartQuantity(lineItems) {",
+                      "  return lineItems.reduce((acc, lineItem) => acc += lineItem.quantity, 0);",
+                      "}",
+                      "",
+                      "// Return shipping rates based on the calculated items' quantity",
+                      "function getShippingRatesByQuantity(options) {",
+                      "  const cartQuantity = calculateTotalCartQuantity(options.lineItems);",
+                      "",
+                      "  if (cartQuantity >= 3) {",
+                      "    return {",
+                      "      shippingRates: [{",
+                      "        code: 'quantity_more_3',",
+                      "        title: 'Quantity > 3',",
+                      "        logistics: {",
+                      "          deliveryTime: '3-5 Days'",
+                      "        },",
+                      "        cost: {",
+                      "          price: '10.00',",
+                      "          // Currency value is taken from provided options object",
+                      "          currency: \"USD\"",
+                      "        }",
+                      "      }]",
+                      "    };",
+                      "  };",
+                      "",
+                      "  // If cartQuantity is less than 3, the following shipping rate is returned",
+                      "  return {",
+                      "    shippingRates: [{",
+                      "      code: 'quantity_more_1',",
+                      "      title: '1 Item',",
+                      "      logistics: {",
+                      "        deliveryTime: '3-5 Days'",
+                      "      },",
+                      "      cost: {",
+                      "        price: '20.00',",
+                      "        currency: \"USD\"",
+                      "      }",
+                      "    }]",
+                      "  };",
+                      "};" ],
+                  "extra":
+                    {  } },
+                { "title": "Example of [`spi-integration-config.js`](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#my-extension-name-configjs) file",
+                  "body":
+                    [ "export function getConfig() {",
+                      "  return {",
+                      "    \"name\": \"East-Coast Shipping Provider\",",
+                      "    \"description\": \"Providing shipping options for the US east-coast\"",
+                      "  };",
+                      "};" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
+  "callbacks": [],
+  "messages":
+    [ { "name": "AdditionalCharges",
+        "locations":
+          [ { "lineno": 130,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "type",
+              "type": "string",
+              "doc": "Additional charge type.\nSupported values:\n - `\"HANDLING_FEE\"`" },
+            { "name": "details",
+              "type": "string",
+              "doc": "Details of the additional charge. For example, `'Handling fee of $5 applied for gift wrapping.'`" },
+            { "name": "price",
+              "type": "string",
+              "doc": "Cost of additional charge." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "AddressDetails",
+        "locations":
+          [ { "lineno": 56,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "addressLine1",
+              "type": "string",
+              "doc": "Main address line, usually street and number, as free text." },
+            { "name": "addressLine2",
+              "type": "string",
+              "doc": "Free text providing more detailed address information, such as apartment, suite, or floor.",
+              "optional": true },
+            { "name": "streetAddress",
+              "type": "ecom-shipping-rates.StreetAddressInfo",
+              "doc": "Street address object, with street number and name in separate properties.",
+              "optional": true },
+            { "name": "city",
+              "type": "string",
+              "doc": "City name." },
+            { "name": "subdivision",
+              "type": "string",
+              "doc": "Code for a subdivision, such as state, prefecture, or province, in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format.",
+              "optional": true },
+            { "name": "country",
+              "type": "string",
+              "doc": "2-letter country code in [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format." },
+            { "name": "postalCode",
+              "type": "string",
+              "doc": "Postal or zip code." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "BuyerContactDetails",
+        "locations":
+          [ { "lineno": 83,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "firstName",
+              "type": "string",
+              "doc": "Buyer's first name." },
+            { "name": "lastName",
+              "type": "string",
+              "doc": "Buyer's last name." },
+            { "name": "phone",
+              "type": "string",
+              "doc": "Buyer's phone number." },
+            { "name": "company",
+              "type": "string",
+              "doc": "Company name.",
+              "optional": true },
+            { "name": "vatId",
+              "type": "ecom-shipping-rates.VatId",
+              "doc": "Tax information (for Brazil only). If `vatId.id` is provided, `vatId.type` must also be set.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "CatalogReference",
+        "locations":
+          [ { "lineno": 42,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "catalogItemId",
+              "type": "string",
+              "doc": "ID of the item in its Wix or 3rd-party catalog. For example, `productId` for Wix Stores or `eventId` for Wix Events." },
+            { "name": "appId",
+              "type": "string",
+              "doc": "ID of the catalog app. For example, the Wix Stores `appId`, or the 3rd-party `appId`." },
+            { "name": "options",
+              "type": "Object",
+              "doc": "Additional info in key:value pair form. For example, `{\"options\":{\"Size\": \"M\", \"Color\": \"Red\"}}` or `{\"variantId\": \"<VARIANT_ID>\"}`." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Cost",
+        "locations":
+          [ { "lineno": 123,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "price",
+              "type": "string",
+              "doc": "The shipping rate's price. Must align with the [currency's decimal separator](https://en.wikipedia.org/wiki/ISO_4217#Active_codes)." },
+            { "name": "currency",
+              "type": "string",
+              "doc": "Currency of the shipping rate price as a 3-letter [ISO-4217 currency code](https://en.wikipedia.org/wiki/ISO_4217). Must align with the `currency` passed to the function." },
+            { "name": "additionalCharges",
+              "type": "ecom-shipping-rates.AdditionalCharges",
+              "doc": "Additional costs such as a handling fee for packaging fragile items." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "LineItem",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "name",
+              "type": "string",
+              "doc": "Item name." },
+            { "name": "quantity",
+              "type": "number",
+              "doc": "The number of items ordered." },
+            { "name": "catalogReference",
+              "type": "ecom-shipping-rates.CatalogReference",
+              "doc": "Reference to the item's origin catalog." },
+            { "name": "physicalProperties",
+              "type": "ecom-shipping-rates.PhysicalProperties",
+              "doc": "Physical properties of the item." },
+            { "name": "price",
+              "type": "string",
+              "doc": "Price of a single item after discounts." },
+            { "name": "priceBeforeDiscount",
+              "type": "string",
+              "doc": "Price of a single item before discounts." },
+            { "name": "totalPrice",
+              "type": "string",
+              "doc": "Total line item price after discounts. This is equal to `price` multiplied by `quantity`." },
+            { "name": "totalPriceBeforeDiscount",
+              "type": "string",
+              "doc": "Total line item price before discounts." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Logistics",
+        "locations":
+          [ { "lineno": 116,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "deliveryTime",
+              "type": "string",
+              "doc": "Expected delivery time as free text. For example, `'3-5 business days'`." },
+            { "name": "instructions",
+              "type": "string",
+              "doc": "Shipping instructions. For example, for pickup: \"Please arrive during opening hours\"." },
+            { "name": "pickupDetails",
+              "type": "ecom-shipping-rates.PickupDetails",
+              "doc": "Additional details for a pickup." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Options",
+        "locations":
+          [ { "lineno": 20,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "lineItems",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-shipping-rates.LineItem" ] },
+              "doc": "The line items to be shipped." },
+            { "name": "shippingDestination",
+              "type": "ecom-shipping-rates.AddressDetails",
+              "doc": "Address to ship to." },
+            { "name": "shippingOrigin",
+              "type": "ecom-shipping-rates.AddressDetails",
+              "doc": "Address to ship from." },
+            { "name": "buyerContactDetails",
+              "type": "ecom-shipping-rates.BuyerContactDetails",
+              "doc": "Buyer's contact details." },
+            { "name": "weightUnit",
+              "type": "string",
+              "doc": "Weight measurement unit used for all items in the shipment. Supported values: `\"KG\"` (kilograms) or `\"LB\"` (pounds)." },
+            { "name": "taxIncludedInPrices",
+              "type": "boolean",
+              "doc": "Whether tax is included in the items' prices." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PhysicalProperties",
+        "locations":
+          [ { "lineno": 49,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "weight",
+              "type": "number",
+              "doc": "Item weight. Measurement unit (KG or LB) is taken from `weightUnit` property." },
+            { "name": "sku",
+              "type": "string",
+              "doc": "Stock keeping unit. Learn more about [SKUs](https://www.wix.com/encyclopedia/definition/stock-keeping-unit-sku)." },
+            { "name": "shippable",
+              "type": "boolean",
+              "doc": "Whether this item is shippable." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PickupAddressDetails",
+        "locations":
+          [ { "lineno": 67,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "addressLine1",
+              "type": "string",
+              "doc": "Main address line, usually street and number, as free text." },
+            { "name": "addressLine2",
+              "type": "string",
+              "doc": "Free text providing more detailed address information, such as apartment, suite, or floor.",
+              "optional": true },
+            { "name": "city",
+              "type": "string",
+              "doc": "City name." },
+            { "name": "subdivision",
+              "type": "string",
+              "doc": "Code for a subdivision, such as state, prefecture, or province, in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format.",
+              "optional": true },
+            { "name": "country",
+              "type": "string",
+              "doc": "2-letter country code in an [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format." },
+            { "name": "postalCode",
+              "type": "string",
+              "doc": "Postal or zip code." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PickupDetails",
+        "locations":
+          [ { "lineno": 139,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "address",
+              "type": "ecom-shipping-rates.PickupAddressDetails",
+              "doc": "Pickup address." },
+            { "name": "pickupMethod",
+              "type": "string",
+              "doc": "Pickup method.\nSupported values:\n - `\"STORE_PICKUP\"`\n - `\"PICKUP_POINT\"`" } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingRate",
+        "locations":
+          [ { "lineno": 108,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "code",
+              "type": "string",
+              "doc": "Unique code that acts as an ID for a shipping rate. For example, `\"usps_std_overnight\"`." },
+            { "name": "title",
+              "type": "string",
+              "doc": "Shipping rate title. For example, `'USPS Standard Overnight Delivery'`, `'Standard'`, or `'First-Class Package International'`." },
+            { "name": "logistics",
+              "type": "ecom-shipping-rates.Logistics",
+              "doc": "Shipping logistics." },
+            { "name": "cost",
+              "type": "ecom-shipping-rates.Cost",
+              "doc": "Shipping cost." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ShippingRates",
+        "locations":
+          [ { "lineno": 103,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "shippingRates",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "ecom-shipping-rates.ShippingRate" ] },
+              "doc": "Available shipping rates. These define the shipping rate options that are displayed to site visitors on the Cart and Checkout pages." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "StreetAddressInfo",
+        "locations":
+          [ { "lineno": 77,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "number",
+              "type": "string",
+              "doc": "Street number." },
+            { "name": "name",
+              "type": "string",
+              "doc": "Street name." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "VatId",
+        "locations":
+          [ { "lineno": 92,
+              "filename": "shipping-rates-spi.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "id",
+              "type": "string",
+              "doc": "Buyer's tax ID." },
+            { "name": "type",
+              "type": "string",
+              "doc": "VAT type.\nSupported values:\n - `\"CPF\"`\n - `\"CNPJ\"`" } ],
+        "extra":
+          {  },
+        "labels": [] } ],
+  "extra":
+    {  } }
