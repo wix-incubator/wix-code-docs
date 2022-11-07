@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Update: Apply a coupon to specific billing cycles
+
+`wix-marketing-backend`
+
+The new `discountCycleCount` parameter allows you to apply the discount of a coupon, created with the [`createCoupon()`](wix-marketing-backend/coupons-obj/createcoupon) function, to a specified amount of billing cycles.
+
+(November 7, 2022)  
+
 ### New APIs: Menu and MenuContainer
 
 `Wix Editor Elements ($w)`
