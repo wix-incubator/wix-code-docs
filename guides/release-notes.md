@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-marketing-backend`
 
-The new `discountCycleCount` parameter allows you to create a coupon with the [`createCoupon()`](wix-marketing-backend/coupons-obj/createcoupon) function that can apply the discount to a specified amount of billing cycles.  
+The new `discountCycleCount` parameter allows you to apply the discount of a coupon, created with the [`createCoupon()`](wix-marketing-backend/coupons-obj/createcoupon) function, to a specified amount of billing cycles.
 
 (November 7, 2022)  
 
