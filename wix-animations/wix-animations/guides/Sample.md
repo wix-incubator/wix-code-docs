@@ -21,7 +21,11 @@ This is some text. You know, the words we write about things. It supports `code 
 ## Links
 
 This [link](https://www.google.com) opens in a new tab in Answers.  
+<<<<<<< HEAD:articles/testFile2.md
+This [link](https://www.google.com) opens in the same tab.
+=======
 This [link](https://www.google.com) opens in the same tab.  
+>>>>>>> master:articles/Sample.md
 This is a [link to the Velo API Reference](/wix-events-backend/events/oneventcreated). It appears as a full URL in Answers, and as a relative link in the ref.
 
 ## Lists:
