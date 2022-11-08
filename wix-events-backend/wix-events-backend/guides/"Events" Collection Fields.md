@@ -147,7 +147,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Start date formatted (scheduleStartDateFormatted) 
 
-**Description**:   
+**Description**: The event's start date, formatted to your local settings, are displayed. If the event schedule is TBD, this field is blank.  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
@@ -157,7 +157,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Start time formatted (scheduleStartTimeFormatted) 
 
-**Description**:  
+**Description**: The event's start time, formatted to your local settings, are displayed. If the event schedule is TBD, this field is blank.  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
