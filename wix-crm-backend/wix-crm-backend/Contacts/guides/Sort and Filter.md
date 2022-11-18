@@ -6,7 +6,7 @@ in the Contacts API, the Labels API, and the Extended Fields API.
 ## Query contacts: Supported filters, sorting, and search
 
 This section covers the available options when calling
-[`queryContacts()`](querycontacts).
+[`queryContacts()`](wix-crm-backend/contacts/querycontacts).
 
 ### Contact properties: Supported filters, sorting, and search
 
@@ -93,7 +93,7 @@ and free-text searching for custom fields.
 ## Query labels: Supported filters and sorting
 
 This section covers the available options when calling
-[`queryLabels()`](querylabels).
+[`queryLabels()`](wix-crm-backend/contacts/querylabels).
 
 The table below shows field support for filters and sorting
 for the label object.
@@ -111,7 +111,7 @@ For a full description of the `Label` object, see
 ## Query extended fields: Supported filters and sorting
 
 This section covers the available options when calling
-[`queryExtendedFields()`](queryextendedfields).
+[`queryExtendedFields()`](wix-crm-backend/contacts/queryextendedfields).
 
 The table below shows field support for filters and sorting
 for the extended field object.
