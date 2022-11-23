@@ -18,15 +18,3 @@ There are 2 types of extended fields:
 When you create, update, or retrieve contacts,
 you'll find extended field data in the contact object under `info.extendedFields`.
 Most system fields are read-only, while all custom fields can be written to.
-
-You can also manage your site's extended field definitions with these functions:
-
-- To define new custom fields:
-  [`findOrCreateExtendedField()`](wix-crm-backend/contacts/findorcreateextendedfield)
-- To rename a custom field:
-  [`renameExtendedField()`](wix-crm-backend/contacts/renameextendedfield)
-- To delete a custom field:
-  [`deleteExtendedField()`](wix-crm-backend/contacts/deleteextendedfield)
-- To retrieve system field definitions:
-  [`getExtendedField()`](wix-crm-backend/contacts/getextendedfield),
-  [`queryExtendedFields()`](wix-crm-backend/contacts/queryextendedfields).
