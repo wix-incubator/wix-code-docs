@@ -3,7 +3,7 @@
 Basic contact information is stored in the contact's default properties.
 This includes information such as
 contact name, company, phone numbers, addresses, and  email addresses.
-Additional properties are stored in _extended fields_.
+Additional properties are stored in extended fields.
 
 There are 2 types of extended fields:
 
