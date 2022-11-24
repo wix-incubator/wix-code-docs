@@ -59,10 +59,10 @@ points and insert additional logic.
 
 The hooks you can use are listed here in the order they are triggered:
 
-+ [`beforeRouter`](wix-router/beforeRouter) - Before the data binding router logic.
-+ [`customizeQuery`](wix-router/customizeQuery) - As the data binding router prepares a data query.
-+ [`afterRouter`](wix-router/afterRouter) - After the data binding router completes its logic, but before the page is displayed.
-+ [`afterSitemap`](wix-router/afterSitemap) - After the data binding sitemap function completes preparing the list of urls.
++ [`beforeRouter`](/wix-router/beforeRouter) - Before the data binding router logic.
++ [`customizeQuery`](/wix-router/customizeQuery) - As the data binding router prepares a data query.
++ [`afterRouter`](/wix-router/afterRouter) - After the data binding router completes its logic, but before the page is displayed.
++ [`afterSitemap`](/wix-router/afterSitemap) - After the data binding sitemap function completes preparing the list of urls.
 
 ### Prefixes
 When using the `wix-router` API you often need to know the prefix of your code router
