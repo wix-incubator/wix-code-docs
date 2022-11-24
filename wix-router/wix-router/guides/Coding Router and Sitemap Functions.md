@@ -1,6 +1,6 @@
 # Coding Router and Sitemap Functions
   
-The functions are named with the following convention:
+The functions in the **routers.js** file are named with the following convention:
 
 ``` javascript
 export function <router prefix>_<function name>()
