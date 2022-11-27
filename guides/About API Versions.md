@@ -11,7 +11,7 @@ As we update and expand the Velo APIs, new versions are released. Here's what yo
 
 The meanings of module names can change between versions. Use this guide to understand the different module names:
 
-| Module name | Version 1| Version 2 <br/>These modules include `.v2` at the end of their names.|
+| Module name | Version 1| Version 2 <br/>These modules include `.v2` at the ends of their names.|
 | ----------- | --------- | --------- |
 | `wix-{module}`| A module that only works with frontend code. <br/> Exceptions: `wix-data`, `wix-fetch`, `wix-router` | A [universal module](#universal-modules). |
 | `wix-{module}-backend`| A module that only works with backend code. | A module that only works with backend code. |
