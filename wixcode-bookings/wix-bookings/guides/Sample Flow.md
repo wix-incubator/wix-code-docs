@@ -5,7 +5,7 @@ The following list outlines a sample flow in a typical booking lifecycle:
 1. Get a list of services from one of:
    + A dataset connected to the **Bookings/Services** collection.
    + A [query](wix-data.html#query) on the **Bookings/Services** collection.
-
+   
 1. A service is selected.
 1. Get available slots by calling the [`getServiceAvailability()`](wix-bookings/getServiceAvailability) function
    using the selected service's **Service ID** (`_id`) value. (Optionally,
