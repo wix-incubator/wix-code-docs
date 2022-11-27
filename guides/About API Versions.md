@@ -3,7 +3,7 @@
 As we update and expand the Velo APIs, new versions are released. Here's what you need to know about versions:
 
 * **Versioning by module**  
-  New versions are released at the module level, not for the entire Velo API. This means that, for example, that while the latest version of `wix-crm` might be V2, the latest version of `wix-bookings` might be V1.
+  New versions are released at the module level, not for the entire Velo API. For example, while the latest version of `wix-crm` might be V2, the latest version of `wix-bookings` might be V1.
 * **Continuing support**  
   We continue to support older versions of the API. This means that you can continue to use older versions of modules even as new versions are released. However, we recommend that you upgrade to the latest version of a module as soon as possible.
 
