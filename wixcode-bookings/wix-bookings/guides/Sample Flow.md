@@ -5,8 +5,9 @@ The following list outlines a sample flow in a typical booking lifecycle:
 1. Get a list of services from one of:
    + A dataset connected to the **Bookings/Services** collection.
    + A [query](wix-data.html#query) on the **Bookings/Services** collection.
+
 1. A service is selected.
-1. **TBD** Get available slots by calling the [`getServiceAvailability()`](wix-bookings/getServiceAvailability) function
+1. Get available slots by calling the [`getServiceAvailability()`](wix-bookings/getServiceAvailability) function
    using the selected service's **Service ID** (`_id`) value. (Optionally,
    you can pass a `AvailabilityOptions`
    object to change the limits on the slots that are returned.)
@@ -17,14 +18,14 @@ The following list outlines a sample flow in a typical booking lifecycle:
    The list of form fields is found in the **form** property of the items
    in the **Bookings/Services** collection.
 1. Get the available payment options for the currently logged-in user and
-   **TBD** the selected service with the
+   the selected service with the
    [`getCheckoutOptions()`](wix-bookings/getCheckoutOptions) function.
 1. A payment option is selected (offline, online, a pricing plan package, or a
    pricing plan membership).
-1. **TBD** Call the [`checkoutBooking()`](wix-bookings/checkoutBooking 
+1. Call the [`checkoutBooking()`](wix-bookings/checkoutBooking) 
    function. Pass the
    selected slot object, the values for the form fields, and the payment type
-   if necessary. Note, the specified payment type must match the service's
+   if necessary. Note that the specified payment type must match the service's
    configuration in your site's **Dashboard**. You cannot book a paid service
    as if it were free.
   
