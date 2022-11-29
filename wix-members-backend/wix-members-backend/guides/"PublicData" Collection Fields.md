@@ -121,3 +121,23 @@ Custom fields from your Contacts collection can be added in your site's dashboar
 **Can be sorted**: No  
 **Can be filtered**: eq  
 **Read-only**: Yes
+
+#### About (Plain Text) (aboutPlain) 
+
+**Description**: Displays the _About_ information from the member's profile as plain text.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes
+
+#### About (Rich Text) (aboutRich) 
+
+**Description**: Displays the _About_ information from the member's profile as rich text.  
+**Type**: Rich content  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes
