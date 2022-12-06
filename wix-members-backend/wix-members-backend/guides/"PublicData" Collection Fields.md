@@ -124,7 +124,7 @@ Custom fields from your Contacts collection can be added in your site's dashboar
 
 #### About (Plain Text) (aboutPlain) 
 
-**Description**: Displays the _About_ information from the member's profile as plain text.  
+**Description**: Displays the **About** information from the member's profile as plain text.  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
@@ -134,7 +134,7 @@ Custom fields from your Contacts collection can be added in your site's dashboar
 
 #### About (Rich Text) (aboutRich) 
 
-**Description**: Displays the _About_ information from the member's profile as rich text.  
+**Description**: Displays the **About** information from the member's profile as rich text.  
 **Type**: Rich content  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
