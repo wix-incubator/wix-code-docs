@@ -556,7 +556,7 @@ The [`setPlanVisibility`](https://www.wix.com/velo/reference/wix-pricing-plans-b
 
 `wix-window`
 
-With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata-obj) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
+With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
 
 ### Updated: insertReference() only works with multi-reference fields
 
