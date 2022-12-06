@@ -4,23 +4,27 @@ title: Introduction
 
 # Introduction
 
-Wix Blog allows site owners to create and manage blogs. They can create and manage posts, categories and tags on their blog page. Site contributers can also create and manage blogs given the appropriate roles and permissions. 
+Wix Blog allows site owners and contributors to create and manage blogs. Site owners and contributors can create and manage posts, categories and tags on their blog in the dashboard. 
 
-There are 3 types of blog roles: 
-> - **Blog Editors** can fully manage the blog, but not other areas of a site.
-> - **Blog Writers** can create and publish their own posts on a blog.
-> - **Guest writer** can only create posts. Their posts must be reviewed and published by a site owner or blog editor. 
+The wix-blog-backend API provides the functionality for getting and querying posts, categories, and tags from a blog.
 
+## Before you begin
 
+Before using any `wixBlogBackend` functions, [add Wix Blog](https://support.wix.com/en/article/wix-blog-adding-and-setting-up-your-blog) to your site. 
 
-
-
-
-
-Before using the `wixBlogBackend` functions, [add Wix Blog](https://support.wix.com/en/article/wix-blog-adding-and-setting-up-your-blog) to your site. 
-
-To use the Blog API, import `wixBlogBackend` from the `wix-blog-backend` module. 
+To use the wix-blog-backend API, import `wixBlogBackend` from the `wix-blog-backend` module. 
 
 ```javascript
 import wixBlogBackend from 'wix-blog-backend';
 ```
+
+## Terminology
+
+- **Posts**: A post is a published article on a blog site. It is also referred to as a publication.
+- **Categories**: A category is a grouping of similar and related posts. A post can be assigned to a maximum of 10 categories.
+- **Tags**: A tag is a subset of a category used to further organize blog posts. Tags provide the ability to filter through a blog. 
+
+
+
+
+
