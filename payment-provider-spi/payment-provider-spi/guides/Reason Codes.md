@@ -1,15 +1,14 @@
 # Reason Codes
 
-These codes must be used in payment service provider responses as well as during event requests to Wix.
-Reason codes provide the merchants with detailed information about the status of different entities, suach as transactions and refunds, as well as notifications about error cases.
+Wix uses codes to represent detailed information about the statuses of different payment-related processes. These codes are used to display information about these processes on your site's dashboard.
 
-Reason codes can be divided into four groups:
-- Account Connection failure reasons
-- Transaction pending reasons
-- Transaction decline reasons
-- Refund decline reasons
+Reason codes can be divided into 3 groups:
+1. Account connection failures
+1. Pending transactions
+1. Declined transaction
 
-## Account Connection reason codes
+
+## Account connection failure codes
 | Reason Code | Name |
 |------------|------|
 | 2000 | Merchant account is not active |
@@ -23,7 +22,7 @@ Reason codes can be divided into four groups:
 | 2008 | Merchant account is in test mode |
 | 2009 | Merchant account does not match currency |
 
-## Transaction Pending reason codes
+## Pending transaction codes
 > **Note**
 > When state is set to `Pending`, the transaction is likely to be approved in the future.
 
@@ -31,7 +30,7 @@ Reason codes can be divided into four groups:
 |---|---|
 | 5005 | Pending fraudulent transaction |
 
-## Transaction Decline reason codes
+## Declined transaction codes
 | Reason Code | Name                                 |
 |-------------|--------------------------------------|
 | 3000        | General bank decline                 |
@@ -96,7 +95,4 @@ Reason codes can be divided into four groups:
 | 5009        | Pending general                      |
 | 6000        | General error                        |
 
-> **Note**:
-> We suggest that you map your errors to Wix `reasonCode`. Thus, both merchants and buyers will get a proper localized error message through UI.
-
-> If you can't find a corresponding `reasonCode`, use `reasonCode: 6000`. Provide your `errorCode` and `errorMessage` so that a complaint and an investigation can be communicated properly to the users.
+> If you can't find a corresponding `reasonCode`, use `reasonCode: 6000` and provide an appropritate `errorCode` and `errorMessage`.
