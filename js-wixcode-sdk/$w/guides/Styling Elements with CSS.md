@@ -1,6 +1,10 @@
 # Styling Elements with CSS
 
-DRAFT
+<blockquote class="important">
+
+__DRAFT__
+
+</blockquote>
 
 Outline:
 
