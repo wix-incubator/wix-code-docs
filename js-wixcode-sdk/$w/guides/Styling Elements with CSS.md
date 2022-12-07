@@ -2,7 +2,7 @@
 
 <blockquote class="important">
 
-__DRAFT__
+## DRAFT
 
 </blockquote>
 
