@@ -1,6 +1,6 @@
 # Reason Codes
 
-Wix uses codes to represent detailed information about the statuses of different payment-related processes. These codes are used to display information about these processes on your site's dashboard.
+Wix uses codes to represent detailed information about the statuses of different payment related processes. These codes are used to display information about these processes on your site's dashboard.
 
 Reason codes can be divided into 3 groups:
 1. Account connection failures
