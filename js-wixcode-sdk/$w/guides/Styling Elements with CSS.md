@@ -14,7 +14,7 @@ Outline:
 > For more information about styling with CSS, see the
 > [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
-## Supported elements'
+## Supported elements
 
 TODO - add elements as they're documented
 
