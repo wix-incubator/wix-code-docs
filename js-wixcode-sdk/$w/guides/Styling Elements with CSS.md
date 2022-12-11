@@ -1,11 +1,5 @@
 # Styling Elements with CSS
 
-<blockquote class="important">
-
-## DRAFT
-
-</blockquote>
-
 Outline:
 
 - about the feature
@@ -13,3 +7,15 @@ Outline:
   - in the styling panel
   - in the code panel
 - brief explanation of constructing semantic class names
+- ~~list of supported elements~~
+- ~~see MDN for full CSS documentation~~
+
+> **Note:**
+> For more information about styling with CSS, see the
+> [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
+
+## Supported elements'
+
+TODO - add elements as they're documented
+
+- [Button](button/css-classes)
