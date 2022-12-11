@@ -1,15 +1,10 @@
 # Button CSS Classes
 
 You can use the classes listed below
-to style your `Button` elements with custom CSS.
+to style your `Button` elements with CSS.
 
-<blockquote class="tip">
-
-__Tip:__
-To learn more, see the
-[MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
-
-</blockquote>
+For more information on styling your elements with CSS, see
+[Styling Elements with CSS]($w/styling-elements-with-css).
 
 ## `.button`
 
