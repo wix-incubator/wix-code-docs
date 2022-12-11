@@ -28,7 +28,7 @@ See the [tutorial](https://support.wix.com/en/article/velo-custom-business-app-e
 
 Need help implementing an SPI? [Find a professional](https://www.wix.com/marketplace) to help you.
 
-## Step 1\. Create a new extension on your Wix site
+### Step 1\. Create a new extension on your Wix site
 
 The first step in setting up your new extension is to add it to your site. This process creates a new folder in the Custom Extensions section of the Velo Sidebar that contains the files for your code.
 
@@ -40,7 +40,7 @@ The first step in setting up your new extension is to add it to your site. This 
 6. Follow the prompts to add the extension and accept any terms and conditions that display.
 7. Enter a name for your integration and click **Add & Edit Code**. The name can't contain spaces or special characters.
 
-## Step 2\. Implement your extension with custom code
+### Step 2\. Implement your extension with custom code
 
 The procedure in the previous section creates a folder in the Custom Extensions  
 section of the Velo Sidebar. The name of the folder is based on the  
@@ -79,7 +79,7 @@ You can test your extension before publishing your site using [functional testin
 
 You can test your extension before publishing your site using \[functional testing\](https://support.wix.com/en/article/velo-functional-testing-in-the-backend) like you would any backend Velo code. Make sure your functions' return values are properly formatted. To test your extension after deploying, add console logs to your code. The results appear in the \[Site Events log\](https://support.wix.com/en/article/velo-about-site-monitoring).
 
-## Step 3\. Deploy the extension
+### Step 3\. Deploy the extension
 
 Once your code files are ready, deploy your extension and enable it on your site.
 
