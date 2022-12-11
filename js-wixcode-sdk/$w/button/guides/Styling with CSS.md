@@ -1,7 +1,10 @@
-# Styling Button Elements with CSS
+# Button Custom CSS Selectors
 
-<blockquote class="important">
+You can use the following selectors
+to style `Button` elements with custom CSS:
 
-## DRAFT
-
-</blockquote>
+| Class            | Description      | Corresponding JS property |
+| ---------------- | ---------------- | ------------------------- |
+| `.button`        | Button container |                           |
+| `.button__label` | Label text       | [`.label`](#label)        |
+| `.button__icon`  | Icon image       | [`.icon`](#icon)          |
