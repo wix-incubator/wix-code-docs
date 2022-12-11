@@ -85,9 +85,9 @@ The Custom Extensions feature currently can’t be added to a site when using Gi
 
 The process of implementing an SPI in Velo generally has 3 steps:
 
-1. [Create a new extension on your site](https://docs.google.com/document/d/1uFFlErHZTFwp9FJ%5F7kOqkWobtTBc7CchSD3bxhQ5xYE/edit#heading=h.kngdq2njrp0v)
-2. [Implement your extension with custom code](https://docs.google.com/document/d/1uFFlErHZTFwp9FJ%5F7kOqkWobtTBc7CchSD3bxhQ5xYE/edit#heading=h.w22gbyhyihtv)
-3. [Deploy the extension](https://docs.google.com/document/d/1uFFlErHZTFwp9FJ%5F7kOqkWobtTBc7CchSD3bxhQ5xYE/edit#heading=h.vo8xjhwdsgcq)
+1. [Create a new extension on your site](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-1-create-a-new-shipping-rates-extension)
+2. [Implement your extension with custom code](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-2-implement-the-extension)
+3. [Deploy the extension](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-3-deploy-the-extension)
 
 See the [tutorial](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta#available-custom-extensions-beta) for each SPI for detailed instructions. 
 
