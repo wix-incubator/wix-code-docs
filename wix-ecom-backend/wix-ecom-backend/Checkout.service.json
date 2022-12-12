@@ -995,6 +995,171 @@
       "isVeloEvent": false
     },
     {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CreateOrderOptions"
+            }
+          ],
+          "doc": "More order creation options.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [Get Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
+        "description": [
+          "Some properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [Get Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `POS`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of \"AVAILABLE\" or \"PARTIALLY_AVAILABLE\".\n+ Before creating the order, remove line items with `availability.status` of \"NOT_AVAILABLE\" and \"NOT_FOUND\" using [Remove Line Items](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n\nThe `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created."
+        ],
+        "examples": [
+          {
+            "title": "Create an order from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myCreateOrderFromCheckoutFunction(checkoutId) {",
+              "  try {",
+              "    await checkout.createOrder(checkoutId);",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myCreateOrderFromCheckoutFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '23a7b29a-3c14-4ef1-9353-f4b714b13217';",
+              "",
+              "myCreateOrderFromCheckoutFunction(checkoutId)",
+              "  .then((createOrderResponse) => {",
+              "    const orderId = createOrderResponse.orderId;",
+              "    const paymentGatewayOrderId = createOrderResponse.paymentGatewayOrderId;",
+              "",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return createOrderResponse;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderId\": \"02843248-495f-45c0-a5d6-e913f647c9f2\",",
+              " *   \"paymentGatewayOrderId\": \"f30440f4-413a-4382-bc38-7280b155a5ed\"",
+              " * }",
+              " *",
+              " */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "createOrderAndCharge",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CreateOrderAndChargeOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderAndChargeResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Deprecated (use createOrder instead)",
+        "description": [],
+        "examples": [
+          {
+            "title": "createOrderAndCharge example",
+            "body": [
+              "",
+              "    function createOrderAndCharge() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
       "name": "getCheckout",
       "params": [
         {
@@ -1059,7 +1224,7 @@
               "import { myGetCheckoutFunction } from 'backend/my-backend-file';",
               "",
               "// Sample checkoutId:",
-              "const checkoutId = \"74cc6825-82a1-4f1f-9fbb-7d73f6be152a\";",
+              "const checkoutId = '74cc6825-82a1-4f1f-9fbb-7d73f6be152a';",
               "",
               "myGetCheckoutFunction(checkoutId)",
               "  .then((checkout) => {",
@@ -1089,7 +1254,7 @@
               " *         \"original\": \"Shirt\",",
               " *         \"translated\": \"Shirt\"",
               " *       },",
-              " *       \"url\": \"https://roysha.wixsite.com/ep-tester\",",
+              " *       \"url\": \"https://example.wixsite.com\",",
               " *       \"price\": {",
               " *         \"amount\": \"10.00\",",
               " *         \"convertedAmount\": \"10.00\",",
@@ -1196,7 +1361,7 @@
               " *         \"original\": \"Shoe\",",
               " *         \"translated\": \"Shoe\"",
               " *       },",
-              " *       \"url\": \"https://roysha.wixsite.com/ep-tester\",",
+              " *       \"url\": \"https://example.wixsite.com\",",
               " *       \"price\": {",
               " *         \"amount\": \"85.00\",",
               " *         \"convertedAmount\": \"85.00\",",
@@ -1610,6 +1775,1849 @@
         ]
       },
       "isVeloEvent": false
+    },
+    {
+      "name": "getCheckoutByCartId",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cart ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.GetCheckoutByCartIdResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves the checkout associated with a specified cart.",
+        "description": [],
+        "examples": [
+          {
+            "title": "getCheckoutByCartId example",
+            "body": [
+              "",
+              "    function getCheckoutByCartId() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "getWixCheckoutUrl",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.GetWixCheckoutURLResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "description": [],
+        "examples": [
+          {
+            "title": "getWixCheckoutUrl example",
+            "body": [
+              "",
+              "    function getWixCheckoutUrl() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "markCheckoutAsCompleted",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Marks a checkout as completed - `checkout.complete` boolean is set to `true`.",
+        "description": [
+          "The `markCheckoutAsCompleted()` function returns a Promise that resolves when the specified checkout is marked as completed."
+        ],
+        "examples": [
+          {
+            "title": "Mark a checkout as completed ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myMarkCheckoutAsCompletedFunction(checkoutId) {",
+              "  try {",
+              "    await checkout.markCheckoutAsCompleted(checkoutId);",
+              "    console.log('Success! Checkout marked as completed');",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myMarkCheckoutAsCompletedFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
+              "",
+              "myMarkCheckoutAsCompletedFunction(checkoutId)",
+              "  .then(() => {",
+              "    console.log('Success! Checkout marked as completed');",
+              "    return;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeCoupon",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove the coupon from.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveCouponResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes the coupon from a specified checkout.",
+        "description": [
+          "The `removeCoupon()` function returns a Promise that resolves to the updated checkout when the coupon is removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "Remove coupon from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " **************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myRemoveCouponFunction(checkoutId) {",
+              "  try {",
+              "    const updatedCheckout = await checkout.removeCoupon(checkoutId);",
+              "    console.log('Success! Updated checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myRemoveCouponFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '75b0d071-8ca0-4227-962f-91d0605c8c3a';",
+              "",
+              "myRemoveCouponFunction(checkoutId)",
+              "  .then((updatedCheckout) => {",
+              "    const checkoutId = updatedCheckout._id;",
+              "    const appliedDiscounts = updatedCheckout.appliedDiscounts;",
+              "    // appliedCoupon boolean value is false if no coupon exists on checkout",
+              "    const appliedCoupon = appliedDiscounts.some(({ coupon }) => coupon);",
+              "",
+              "    console.log('Success! Updated checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"_id\": \"75b0d071-8ca0-4227-962f-91d0605c8c3a\",",
+              " *   \"lineItems\": [",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *       \"quantity\": 3,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Shirt\",",
+              " *         \"translated\": \"Shirt\"",
+              " *       },",
+              " *       \"url\": \"https://example.wixsite.com\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"lineItemPrice\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"totalPriceAfterTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"totalPriceBeforeTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"taxDetails\": {",
+              " *         \"taxableAmount\": {",
+              " *           \"amount\": \"30\",",
+              " *           \"convertedAmount\": \"30\",",
+              " *           \"formattedAmount\": \"$30.00\",",
+              " *           \"formattedConvertedAmount\": \"$30.00\"",
+              " *         },",
+              " *         \"taxRate\": \"0\",",
+              " *         \"totalTax\": {",
+              " *           \"amount\": \"0\",",
+              " *           \"convertedAmount\": \"0\",",
+              " *           \"formattedAmount\": \"$0.00\",",
+              " *           \"formattedConvertedAmount\": \"$0.00\"",
+              " *         },",
+              " *         \"rateBreakdown\": []",
+              " *       },",
+              " *       \"discount\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [],",
+              " *       \"media\": \"wix:image://v1/3c76e2_c5331f937348492a97df87b0a3b34ea4~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\"",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"364115376135191\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\",",
+              " *       \"rootCatalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000002\",",
+              " *       \"quantity\": 1,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"df19c1f7-07d8-a265-42f8-e8dfa824cc6e\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"options\": {",
+              " *           \"variantId\": \"2f430d69-9b75-4874-bfbd-c5f6fa5aff3d\",",
+              " *           \"customTextFields\": {",
+              " *             \"birthday card\": \"Happy Birthday!\"",
+              " *           }",
+              " *         }",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Shoe\",",
+              " *         \"translated\": \"Shoe\"",
+              " *       },",
+              " *       \"url\": \"https://example.wixsite.com\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"lineItemPrice\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"totalPriceAfterTax\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"totalPriceBeforeTax\": {",
+              " *         \"amount\": \"85\",",
+              " *         \"convertedAmount\": \"85\",",
+              " *         \"formattedAmount\": \"$85.00\",",
+              " *         \"formattedConvertedAmount\": \"$85.00\"",
+              " *       },",
+              " *       \"taxDetails\": {",
+              " *         \"taxableAmount\": {",
+              " *           \"amount\": \"85\",",
+              " *           \"convertedAmount\": \"85\",",
+              " *           \"formattedAmount\": \"$85.00\",",
+              " *           \"formattedConvertedAmount\": \"$85.00\"",
+              " *         },",
+              " *         \"taxRate\": \"0\",",
+              " *         \"totalTax\": {",
+              " *           \"amount\": \"0\",",
+              " *           \"convertedAmount\": \"0\",",
+              " *           \"formattedAmount\": \"$0.00\",",
+              " *           \"formattedConvertedAmount\": \"$0.00\"",
+              " *         },",
+              " *         \"rateBreakdown\": []",
+              " *       },",
+              " *       \"discount\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [",
+              " *         {",
+              " *           \"name\": {",
+              " *             \"original\": \"Color\",",
+              " *             \"translated\": \"Color\"",
+              " *           },",
+              " *           \"colorInfo\": {",
+              " *             \"original\": \"Brown\",",
+              " *             \"translated\": \"Brown\",",
+              " *             \"code\": \"#783f04\"",
+              " *           },",
+              " *           \"lineType\": \"COLOR\",",
+              " *           \"color\": \"Brown\"",
+              " *         },",
+              " *         {",
+              " *           \"name\": {",
+              " *             \"original\": \"birthday card\",",
+              " *             \"translated\": \"birthday card\"",
+              " *           },",
+              " *           \"plainText\": {",
+              " *             \"original\": \"Happy Birthday!\",",
+              " *             \"translated\": \"Happy Birthday!\"",
+              " *           },",
+              " *           \"lineType\": \"PLAIN_TEXT\",",
+              " *           \"plainTextValue\": {",
+              " *             \"original\": \"Happy Birthday!\",",
+              " *             \"translated\": \"Happy Birthday!\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"media\": \"wix:image://v1/3c76e2_bf235c38610f4d2a905db71095b351cf~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\",",
+              " *         \"quantityAvailable\": 30",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"364215376135191\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"df19c1f7-07d8-a265-42f8-e8dfa824cc6e\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\",",
+              " *       \"rootCatalogItemId\": \"df19c1f7-07d8-a265-42f8-e8dfa824cc6e\"",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000003\",",
+              " *       \"quantity\": 1,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"9fe8c5b2-9c94-7153-ebb9-8533695e2b6f\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"options\": {",
+              " *           \"Size\": \"Large\",",
+              " *           \"Color\": \"White\"",
+              " *         }",
+              " *       },",
+              " *       \"price\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [],",
+              " *       \"availability\": {",
+              " *         \"status\": \"NOT_FOUND\"",
+              " *       },",
+              " *       \"couponScopes\": [],",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\"",
+              " *     }",
+              " *   ],",
+              " *   \"billingInfo\": {",
+              " *     \"address\": {",
+              " *       \"addressLine1\": \"235 West 23rd Street\",",
+              " *       \"addressLine2\": \"3rd floor\",",
+              " *       \"city\": \"New York\",",
+              " *       \"subdivision\": \"US-NY\",",
+              " *       \"country\": \"US\",",
+              " *       \"postalCode\": \"10011\"",
+              " *     },",
+              " *     \"contactDetails\": {",
+              " *       \"firstName\": \"Jane\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"phone\": \"+1234567890\"",
+              " *     }",
+              " *   },",
+              " *   \"shippingInfo\": {",
+              " *     \"shippingDestination\": {",
+              " *       \"address\": {",
+              " *         \"addressLine1\": \"235 West 23rd Street\",",
+              " *         \"addressLine2\": \"3rd floor\",",
+              " *         \"city\": \"New York\",",
+              " *         \"subdivision\": \"US-NY\",",
+              " *         \"country\": \"US\",",
+              " *         \"postalCode\": \"10011\"",
+              " *       },",
+              " *       \"contactDetails\": {",
+              " *         \"firstName\": \"Jane\",",
+              " *         \"lastName\": \"Doe\",",
+              " *         \"phone\": \"+1234567890\"",
+              " *       }",
+              " *     },",
+              " *     \"selectedCarrierServiceOption\": {",
+              " *       \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *       \"title\": \"Standard US Shipping\",",
+              " *       \"logistics\": {",
+              " *         \"deliveryTime\": \"\"",
+              " *       },",
+              " *       \"cost\": {",
+              " *         \"totalPriceAfterTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"totalPriceBeforeTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"taxDetails\": {",
+              " *           \"taxRate\": \"0\",",
+              " *           \"totalTax\": {",
+              " *             \"amount\": \"0\",",
+              " *             \"convertedAmount\": \"0\",",
+              " *             \"formattedAmount\": \"$0.00\",",
+              " *             \"formattedConvertedAmount\": \"$0.00\"",
+              " *           },",
+              " *           \"rateBreakdown\": []",
+              " *         },",
+              " *         \"price\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         }",
+              " *       },",
+              " *       \"requestedShippingOption\": true,",
+              " *       \"otherCharges\": [],",
+              " *       \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\"",
+              " *     },",
+              " *     \"region\": {",
+              " *       \"_id\": \"009fbe5d-89d3-7825-cbbf-1aab4d908b73\",",
+              " *       \"name\": \"USA shipping\"",
+              " *     },",
+              " *     \"carrierServiceOptions\": [",
+              " *       {",
+              " *         \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\",",
+              " *         \"shippingOptions\": [",
+              " *           {",
+              " *             \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *             \"title\": \"Standard US Shipping\",",
+              " *             \"logistics\": {",
+              " *               \"deliveryTime\": \"\"",
+              " *             },",
+              " *             \"cost\": {",
+              " *               \"price\": {",
+              " *                 \"amount\": \"10\",",
+              " *                 \"convertedAmount\": \"10\",",
+              " *                 \"formattedAmount\": \"$10.00\",",
+              " *                 \"formattedConvertedAmount\": \"$10.00\"",
+              " *               },",
+              " *               \"otherCharges\": []",
+              " *             }",
+              " *           }",
+              " *         ]",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   \"buyerNote\": \"Please wrap it up as a present\",",
+              " *   \"buyerInfo\": {",
+              " *     \"contactId\": \"f7dc17a6-825a-466e-a78e-c4abea0217db\",",
+              " *     \"email\": \"Janedoe@example.com\",",
+              " *     \"memberId\": \"c43190d2-eea3-493e-b6e8-f146850c6873\"",
+              " *   },",
+              " *   \"conversionCurrency\": \"USD\",",
+              " *   \"priceSummary\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"115\",",
+              " *       \"convertedAmount\": \"115\",",
+              " *       \"formattedAmount\": \"$115.00\",",
+              " *       \"formattedConvertedAmount\": \"$115.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"125\",",
+              " *       \"convertedAmount\": \"125\",",
+              " *       \"formattedAmount\": \"$125.00\",",
+              " *       \"formattedConvertedAmount\": \"$125.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"calculationErrors\": {",
+              " *     \"orderValidationErrors\": []",
+              " *   },",
+              " *   \"appliedDiscounts\": [],",
+              " *   \"customFields\": [",
+              " *     {",
+              " *       \"value\": \"12345\",",
+              " *       \"title\": \"Tax ID\",",
+              " *       \"translatedTitle\": \"Tax ID\"",
+              " *     }",
+              " *   ],",
+              " *   \"weightUnit\": \"KG\",",
+              " *   \"currency\": \"USD\",",
+              " *   \"channelType\": \"WEB\",",
+              " *   \"siteLanguage\": \"en\",",
+              " *   \"buyerLanguage\": \"en\",",
+              " *   \"completed\": false,",
+              " *   \"taxIncludedInPrice\": false,",
+              " *   \"createdBy\": {",
+              " *     \"memberId\": \"c43190d2-eea3-493e-b6e8-f146850c6873\"",
+              " *   },",
+              " *   \"_createdDate\": \"2022-10-19T14:22:03.847Z\",",
+              " *   \"_updatedDate\": \"2022-10-19T14:22:30.842Z\",",
+              " *   \"payNow\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"115\",",
+              " *       \"convertedAmount\": \"115\",",
+              " *       \"formattedAmount\": \"$115.00\",",
+              " *       \"formattedConvertedAmount\": \"$115.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"125\",",
+              " *       \"convertedAmount\": \"125\",",
+              " *       \"formattedAmount\": \"$125.00\",",
+              " *       \"formattedConvertedAmount\": \"$125.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"payLater\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"membershipOptions\": {",
+              " *     \"eligibleMemberships\": [],",
+              " *     \"invalidMemberships\": [],",
+              " *     \"selectedMemberships\": {",
+              " *       \"memberships\": []",
+              " *     }",
+              " *   },",
+              " *   \"additionalFees\": []",
+              " * }",
+              " *",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeGiftCard",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveGiftCardResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes the gift card from a specified checkout.",
+        "description": [
+          "The `removeGiftCard()` function returns a Promise that resolves to the updated checkout when the gift card is removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "Remove the gift card from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " **************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myRemoveGiftCardFunction(checkoutId) {",
+              "  try {",
+              "    const updatedCheckout = await checkout.removeGiftCard(checkoutId);",
+              "    console.log('Success! Removed gift card from checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myRemoveGiftCardFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '84d74a0e-5c3c-4113-8bd2-d264cc60d82a';",
+              "",
+              "myRemoveGiftCardFunction(checkoutId)",
+              "  .then((updatedCheckout) => {",
+              "    const checkoutId = updatedCheckout._id;",
+              "    const totalPrice = updatedCheckout.priceSummary.total;",
+              "",
+              "    console.log('Success! Removed gift card from checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"_id\": \"84d74a0e-5c3c-4113-8bd2-d264cc60d82a\",",
+              " *   \"lineItems\": [",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *       \"quantity\": 1,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"1a2d7e83-4bef-31d5-09e1-3326ee271c09\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"options\": {",
+              " *           \"variantId\": \"132b84e8-aab8-47a1-a1f6-2c47557b64a4\"",
+              " *         }",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Watch\",",
+              " *         \"translated\": \"Watch\"",
+              " *       },",
+              " *       \"url\": \"https://example.wixsite.com\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"lineItemPrice\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"totalPriceAfterTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"totalPriceBeforeTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"taxDetails\": {",
+              " *         \"taxableAmount\": {",
+              " *           \"amount\": \"30\",",
+              " *           \"convertedAmount\": \"30\",",
+              " *           \"formattedAmount\": \"$30.00\",",
+              " *           \"formattedConvertedAmount\": \"$30.00\"",
+              " *         },",
+              " *         \"taxRate\": \"0\",",
+              " *         \"totalTax\": {",
+              " *           \"amount\": \"0\",",
+              " *           \"convertedAmount\": \"0\",",
+              " *           \"formattedAmount\": \"$0.00\",",
+              " *           \"formattedConvertedAmount\": \"$0.00\"",
+              " *         },",
+              " *         \"rateBreakdown\": []",
+              " *       },",
+              " *       \"discount\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"$0.00\",",
+              " *         \"formattedConvertedAmount\": \"$0.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [",
+              " *         {",
+              " *           \"name\": {",
+              " *             \"original\": \"Size\",",
+              " *             \"translated\": \"Size\"",
+              " *           },",
+              " *           \"plainText\": {",
+              " *             \"original\": \"Medium\",",
+              " *             \"translated\": \"Medium\"",
+              " *           },",
+              " *           \"lineType\": \"PLAIN_TEXT\",",
+              " *           \"plainTextValue\": {",
+              " *             \"original\": \"Medium\",",
+              " *             \"translated\": \"Medium\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"name\": {",
+              " *             \"original\": \"Color\",",
+              " *             \"translated\": \"Color\"",
+              " *           },",
+              " *           \"colorInfo\": {",
+              " *             \"original\": \"Grey\",",
+              " *             \"translated\": \"Grey\",",
+              " *             \"code\": \"rgb(128, 128, 128)\"",
+              " *           },",
+              " *           \"lineType\": \"COLOR\",",
+              " *           \"color\": \"Grey\"",
+              " *         }",
+              " *       ],",
+              " *       \"media\": \"wix:image://v1/3c76e2_8891bbe3372a428aac976ac59aa0ac74~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\"",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"217537123517253\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"1a2d7e83-4bef-31d5-09e1-3326ee271c09\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\",",
+              " *       \"rootCatalogItemId\": \"1a2d7e83-4bef-31d5-09e1-3326ee271c09\"",
+              " *     }",
+              " *   ],",
+              " *   \"billingInfo\": {",
+              " *     \"address\": {",
+              " *       \"addressLine1\": \"525 5th Avenue\",",
+              " *       \"city\": \"New York\",",
+              " *       \"subdivision\": \"US-NY\",",
+              " *       \"country\": \"US\",",
+              " *       \"postalCode\": \"10173\"",
+              " *     },",
+              " *     \"contactDetails\": {",
+              " *       \"firstName\": \"Jane\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"phone\": \"0555555555\"",
+              " *     }",
+              " *   },",
+              " *   \"shippingInfo\": {",
+              " *     \"shippingDestination\": {",
+              " *       \"address\": {",
+              " *         \"addressLine1\": \"525 5th Avenue\",",
+              " *         \"city\": \"New York\",",
+              " *         \"subdivision\": \"US-NY\",",
+              " *         \"country\": \"US\",",
+              " *         \"postalCode\": \"10173\"",
+              " *       },",
+              " *       \"contactDetails\": {",
+              " *         \"firstName\": \"Jane\",",
+              " *         \"lastName\": \"Doe\",",
+              " *         \"phone\": \"0555555555\"",
+              " *       }",
+              " *     },",
+              " *     \"selectedCarrierServiceOption\": {",
+              " *       \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *       \"title\": \"Standard US Shipping\",",
+              " *       \"logistics\": {",
+              " *         \"deliveryTime\": \"\"",
+              " *       },",
+              " *       \"cost\": {",
+              " *         \"totalPriceAfterTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"totalPriceBeforeTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"taxDetails\": {",
+              " *           \"taxRate\": \"0\",",
+              " *           \"totalTax\": {",
+              " *             \"amount\": \"0\",",
+              " *             \"convertedAmount\": \"0\",",
+              " *             \"formattedAmount\": \"$0.00\",",
+              " *             \"formattedConvertedAmount\": \"$0.00\"",
+              " *           },",
+              " *           \"rateBreakdown\": []",
+              " *         },",
+              " *         \"price\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         }",
+              " *       },",
+              " *       \"requestedShippingOption\": true,",
+              " *       \"otherCharges\": [],",
+              " *       \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\"",
+              " *     },",
+              " *     \"region\": {",
+              " *       \"_id\": \"009fbe5d-89d3-7825-cbbf-1aab4d908b73\",",
+              " *       \"name\": \"USA shipping\"",
+              " *     },",
+              " *     \"carrierServiceOptions\": [",
+              " *       {",
+              " *         \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\",",
+              " *         \"shippingOptions\": [",
+              " *           {",
+              " *             \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *             \"title\": \"Standard US Shipping\",",
+              " *             \"logistics\": {",
+              " *               \"deliveryTime\": \"\"",
+              " *             },",
+              " *             \"cost\": {",
+              " *               \"price\": {",
+              " *                 \"amount\": \"10\",",
+              " *                 \"convertedAmount\": \"10\",",
+              " *                 \"formattedAmount\": \"$10.00\",",
+              " *                 \"formattedConvertedAmount\": \"$10.00\"",
+              " *               },",
+              " *               \"otherCharges\": []",
+              " *             }",
+              " *           }",
+              " *         ]",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   \"buyerInfo\": {",
+              " *     \"contactId\": \"24de6f0b-60ce-4faa-9138-2e39f1415615\",",
+              " *     \"email\": \"janedoe@gmail.com\",",
+              " *     \"memberId\": \"c43190d2-eea3-493e-b6e8-f146850c6873\"",
+              " *   },",
+              " *   \"conversionCurrency\": \"USD\",",
+              " *   \"priceSummary\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"40\",",
+              " *       \"convertedAmount\": \"40\",",
+              " *       \"formattedAmount\": \"$40.00\",",
+              " *       \"formattedConvertedAmount\": \"$40.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"calculationErrors\": {",
+              " *     \"orderValidationErrors\": []",
+              " *   },",
+              " *   \"appliedDiscounts\": [],",
+              " *   \"customFields\": [],",
+              " *   \"weightUnit\": \"KG\",",
+              " *   \"currency\": \"USD\",",
+              " *   \"channelType\": \"WEB\",",
+              " *   \"siteLanguage\": \"en\",",
+              " *   \"buyerLanguage\": \"en\",",
+              " *   \"completed\": false,",
+              " *   \"taxIncludedInPrice\": false,",
+              " *   \"createdBy\": {",
+              " *     \"visitorId\": \"4c7ce95c-9fb3-417d-9f02-b41e82b841f7\"",
+              " *   },",
+              " *   \"_createdDate\": \"2022-10-27T08:51:44.099Z\",",
+              " *   \"_updatedDate\": \"2022-10-27T08:54:53.785Z\",",
+              " *   \"payNow\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"40\",",
+              " *       \"convertedAmount\": \"40\",",
+              " *       \"formattedAmount\": \"$40.00\",",
+              " *       \"formattedConvertedAmount\": \"$40.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"payLater\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"membershipOptions\": {",
+              " *     \"eligibleMemberships\": [],",
+              " *     \"invalidMemberships\": [],",
+              " *     \"selectedMemberships\": {",
+              " *       \"memberships\": []",
+              " *     }",
+              " *   },",
+              " *   \"additionalFees\": [],",
+              " *   \"cartId\": \"d7aca608-cbbd-4a22-9813-0459992abd1f\"",
+              " * }",
+              " *",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeLineItems",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove line items from.",
+          "required": true
+        },
+        {
+          "name": "lineItemIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the line items to be removed.\n",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveLineItemsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes line items from the specified checkout.",
+        "description": [
+          "The `removeLineItems()` function returns a Promise that resolves to the updated checkout when the line items are removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "Remove 2 line items from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " **************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myRemoveLineItemsFunction(checkoutId, lineItemIds) {",
+              "  try {",
+              "    const updatedCheckout = await checkout.removeLineItems(checkoutId, lineItemIds);",
+              "    console.log('Success! Line items removed from checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myRemoveLineItemsFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '23a7b29a-3c14-4ef1-9353-f4b714b13217';",
+              "// Sample line item IDs",
+              "const lineItemIds = [\"00000000-0000-0000-0000-000000000002\", \"00000000-0000-0000-0000-000000000003\"]",
+              "",
+              "myRemoveLineItemsFunction(checkoutId, lineItemIds)",
+              "  .then((updatedCheckout) => {",
+              "    const checkoutId = updatedCheckout._id;",
+              "    const numOfLineItems = updatedCheckout.lineItems.length;",
+              "",
+              "    console.log('Success! Line items removed from checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " *",
+              " * {",
+              " *   \"_id\": \"23a7b29a-3c14-4ef1-9353-f4b714b13217\",",
+              " *   \"lineItems\": [",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *       \"quantity\": 3,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Shirt\",",
+              " *         \"translated\": \"Shirt\"",
+              " *       },",
+              " *       \"url\": \"https://example.wixsite.com\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"lineItemPrice\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"$30.00\",",
+              " *         \"formattedConvertedAmount\": \"$30.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"totalPriceAfterTax\": {",
+              " *         \"amount\": \"20\",",
+              " *         \"convertedAmount\": \"20\",",
+              " *         \"formattedAmount\": \"$20.00\",",
+              " *         \"formattedConvertedAmount\": \"$20.00\"",
+              " *       },",
+              " *       \"totalPriceBeforeTax\": {",
+              " *         \"amount\": \"20\",",
+              " *         \"convertedAmount\": \"20\",",
+              " *         \"formattedAmount\": \"$20.00\",",
+              " *         \"formattedConvertedAmount\": \"$20.00\"",
+              " *       },",
+              " *       \"taxDetails\": {",
+              " *         \"taxableAmount\": {",
+              " *           \"amount\": \"20\",",
+              " *           \"convertedAmount\": \"20\",",
+              " *           \"formattedAmount\": \"$20.00\",",
+              " *           \"formattedConvertedAmount\": \"$20.00\"",
+              " *         },",
+              " *         \"taxRate\": \"0\",",
+              " *         \"totalTax\": {",
+              " *           \"amount\": \"0\",",
+              " *           \"convertedAmount\": \"0\",",
+              " *           \"formattedAmount\": \"$0.00\",",
+              " *           \"formattedConvertedAmount\": \"$0.00\"",
+              " *         },",
+              " *         \"rateBreakdown\": []",
+              " *       },",
+              " *       \"discount\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"$10.00\",",
+              " *         \"formattedConvertedAmount\": \"$10.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [],",
+              " *       \"media\": \"wix:image://v1/3c76e2_c5331f937348492a97df87b0a3b34ea4~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\"",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"364115376135191\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\",",
+              " *       \"rootCatalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *     }",
+              " *   ],",
+              " *   \"billingInfo\": {",
+              " *     \"address\": {",
+              " *       \"addressLine1\": \"235 West 23rd Street\",",
+              " *       \"addressLine2\": \"3rd floor\",",
+              " *       \"city\": \"New York\",",
+              " *       \"subdivision\": \"US-NY\",",
+              " *       \"country\": \"US\",",
+              " *       \"postalCode\": \"10011\"",
+              " *     },",
+              " *     \"contactDetails\": {",
+              " *       \"firstName\": \"Jane\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"phone\": \"+1234567890\"",
+              " *     }",
+              " *   },",
+              " *   \"shippingInfo\": {",
+              " *     \"shippingDestination\": {",
+              " *       \"address\": {",
+              " *         \"addressLine1\": \"235 West 23rd Street\",",
+              " *         \"addressLine2\": \"3rd floor\",",
+              " *         \"city\": \"New York\",",
+              " *         \"subdivision\": \"US-NY\",",
+              " *         \"country\": \"US\",",
+              " *         \"postalCode\": \"10011\"",
+              " *       },",
+              " *       \"contactDetails\": {",
+              " *         \"firstName\": \"Jane\",",
+              " *         \"lastName\": \"Doe\",",
+              " *         \"phone\": \"+1234567890\"",
+              " *       }",
+              " *     },",
+              " *     \"selectedCarrierServiceOption\": {",
+              " *       \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *       \"title\": \"Standard US Shipping\",",
+              " *       \"logistics\": {",
+              " *         \"deliveryTime\": \"\"",
+              " *       },",
+              " *       \"cost\": {",
+              " *         \"totalPriceAfterTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"totalPriceBeforeTax\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"taxDetails\": {",
+              " *           \"taxRate\": \"0\",",
+              " *           \"totalTax\": {",
+              " *             \"amount\": \"0\",",
+              " *             \"convertedAmount\": \"0\",",
+              " *             \"formattedAmount\": \"$0.00\",",
+              " *             \"formattedConvertedAmount\": \"$0.00\"",
+              " *           },",
+              " *           \"rateBreakdown\": []",
+              " *         },",
+              " *         \"price\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         }",
+              " *       },",
+              " *       \"requestedShippingOption\": true,",
+              " *       \"otherCharges\": [],",
+              " *       \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\"",
+              " *     },",
+              " *     \"region\": {",
+              " *       \"_id\": \"009fbe5d-89d3-7825-cbbf-1aab4d908b73\",",
+              " *       \"name\": \"USA shipping\"",
+              " *     },",
+              " *     \"carrierServiceOptions\": [",
+              " *       {",
+              " *         \"carrierId\": \"c8a08776-c095-4dec-8553-8f9698d86adc\",",
+              " *         \"shippingOptions\": [",
+              " *           {",
+              " *             \"code\": \"ed5bbce2-9533-dff4-7db0-13702fd139c5\",",
+              " *             \"title\": \"Standard US Shipping\",",
+              " *             \"logistics\": {",
+              " *               \"deliveryTime\": \"\"",
+              " *             },",
+              " *             \"cost\": {",
+              " *               \"price\": {",
+              " *                 \"amount\": \"10\",",
+              " *                 \"convertedAmount\": \"10\",",
+              " *                 \"formattedAmount\": \"$10.00\",",
+              " *                 \"formattedConvertedAmount\": \"$10.00\"",
+              " *               },",
+              " *               \"otherCharges\": []",
+              " *             }",
+              " *           }",
+              " *         ]",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   \"buyerNote\": \"Please wrap it up as a present\",",
+              " *   \"buyerInfo\": {",
+              " *     \"contactId\": \"f7dc17a6-825a-466e-a78e-c4abea0217db\",",
+              " *     \"email\": \"Janedoe@example.com\",",
+              " *     \"memberId\": \"c43190d2-eea3-493e-b6e8-f146850c6873\"",
+              " *   },",
+              " *   \"conversionCurrency\": \"USD\",",
+              " *   \"priceSummary\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"calculationErrors\": {",
+              " *     \"orderValidationErrors\": []",
+              " *   },",
+              " *   \"appliedDiscounts\": [",
+              " *     {",
+              " *       \"discountType\": \"GLOBAL\",",
+              " *       \"lineItemIds\": [],",
+              " *       \"coupon\": {",
+              " *         \"_id\": \"fbb94b06-7447-4161-9c48-59bfcdc39e77\",",
+              " *         \"code\": \"SUMMERSALE10\",",
+              " *         \"amount\": {",
+              " *           \"amount\": \"10\",",
+              " *           \"convertedAmount\": \"10\",",
+              " *           \"formattedAmount\": \"$10.00\",",
+              " *           \"formattedConvertedAmount\": \"$10.00\"",
+              " *         },",
+              " *         \"name\": \"SUMMERSALE10\",",
+              " *         \"couponType\": \"MoneyOff\"",
+              " *       }",
+              " *     }",
+              " *   ],",
+              " *   \"customFields\": [",
+              " *     {",
+              " *       \"value\": \"12345\",",
+              " *       \"title\": \"Tax ID\",",
+              " *       \"translatedTitle\": \"Tax ID\"",
+              " *     }",
+              " *   ],",
+              " *   \"weightUnit\": \"KG\",",
+              " *   \"currency\": \"USD\",",
+              " *   \"channelType\": \"WEB\",",
+              " *   \"siteLanguage\": \"en\",",
+              " *   \"buyerLanguage\": \"en\",",
+              " *   \"completed\": false,",
+              " *   \"taxIncludedInPrice\": false,",
+              " *   \"createdBy\": {",
+              " *     \"memberId\": \"c43190d2-eea3-493e-b6e8-f146850c6873\"",
+              " *   },",
+              " *   \"_createdDate\": \"2022-10-26T10:55:56.759Z\",",
+              " *   \"_updatedDate\": \"2022-10-26T10:56:59.653Z\",",
+              " *   \"payNow\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"10\",",
+              " *       \"convertedAmount\": \"10\",",
+              " *       \"formattedAmount\": \"$10.00\",",
+              " *       \"formattedConvertedAmount\": \"$10.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"$30.00\",",
+              " *       \"formattedConvertedAmount\": \"$30.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"payLater\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"$0.00\",",
+              " *       \"formattedConvertedAmount\": \"$0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"membershipOptions\": {",
+              " *     \"eligibleMemberships\": [],",
+              " *     \"invalidMemberships\": [],",
+              " *     \"selectedMemberships\": {",
+              " *       \"memberships\": []",
+              " *     }",
+              " *   },",
+              " *   \"additionalFees\": []",
+              " * }",
+              " *",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "updateCheckout",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "checkout",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckout"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckoutOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "checkout",
+        "checkout.customFields.value",
+        "checkout.membershipOptions.selectedMemberships.memberships._id",
+        "checkout.membershipOptions.selectedMemberships.memberships.appId",
+        "checkout.membershipOptions.selectedMemberships.memberships.lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.Checkout"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Updated checkout.\n"
+      },
+      "docs": {
+        "summary": "Update's a checkout's properties.",
+        "description": [
+          "Note the following restrictions:\n\n+ It is not allowed to remove `checkout.buyerInfo.email` once it is set.\n+ If nothing is passed in Update Checkout request, the call will fail.\n+ If `checkoutInfo.customFields` are being updated, `checkoutInfo.customFields.value` is required. Null value is not allowed.\n+ ECOM.ADMIN_MODIFY_CHECKOUTS permission is required to update `merchantDiscounts` and/or all fields in `checkout.buyerInfo` other than `email`."
+        ],
+        "examples": [
+          {
+            "title": "updateCheckout example",
+            "body": [
+              "",
+              "    function updateCheckout() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
     }
   ],
   "messages": [
@@ -1665,6 +3673,16 @@
             }
           ],
           "doc": "Additional fee's price"
+        },
+        {
+          "name": "priceBeforeTax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Additional fee's price before tax"
         },
         {
           "name": "providerAppId",
@@ -2891,7 +4909,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. \"WIX_APP_STORE\" refers to the Wix mobile app."
+          "doc": "Sales channel that created the checkout. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
         },
         {
           "name": "completed",
@@ -2913,7 +4931,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are presented in this currency."
+          "doc": "All the converted prices are displayed in this currency."
         },
         {
           "name": "createdBy",
@@ -2935,7 +4953,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Currency used for pricing in this store."
+          "doc": "The currency used when submitting the order."
         },
         {
           "name": "customFields",
@@ -3178,6 +5196,38 @@
       }
     },
     {
+      "name": "ConversionInfo",
+      "members": [
+        {
+          "name": "conversionRate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The rate used when converting from the site currency to the checkout currency."
+        },
+        {
+          "name": "siteCurrency",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The site currency."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Coupon",
       "members": [
         {
@@ -3238,7 +5288,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
+          "doc": "Sales channel that created the checkout. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
         },
         {
           "name": "checkoutInfo",
@@ -3339,7 +5389,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
+          "doc": "Sales channel that created the checkout. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
         },
         {
           "name": "checkoutInfo",
@@ -3559,7 +5609,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The payment gateway is cashier.\npayment_gateway_order_id will be returned given that money was charged.\nIn some cases, money will not be charged:\nIf the total price is 0 - For example, could be a free item or a an item with 100% discount\nIf the total price is not 0, but the payment is covered by alternative payment methods such as gift card"
+          "doc": "The payment gateway is cashier. `paymentGatewayOrderId` will be returned if money needs to be charged.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
         },
         {
           "name": "paymentResponseToken",
@@ -3709,7 +5759,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of newly created order (ecom order ID)"
+          "doc": "ID of newly created order."
         },
         {
           "name": "paymentGatewayOrderId",
@@ -3719,7 +5769,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The payment gateway is cashier.\npayment_gateway_order_id will be returned given that money needs to be charged.\nIn some cases, money should not be charged:\nIf the total price is 0 - For example, could be a free item or a an item with 100% discount\nIf the total price is not 0, but the payment is covered by alternative payment methods such as gift card"
+          "doc": "The payment gateway is cashier.\n`paymentGatewayOrderId` will be returned if money needs to be charged.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
         },
         {
           "name": "subscriptionId",
@@ -3760,7 +5810,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of newly created order (ecom order ID)"
+          "doc": "ID of newly created order."
         },
         {
           "name": "subscriptionId",
@@ -4471,6 +6521,16 @@
           "doc": ""
         },
         {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
           "name": "entityFqdn",
           "optional": true,
           "type": [
@@ -4498,7 +6558,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dipatching"
+          "doc": "The time of the event. Useful if there was a delay in dispatching"
         },
         {
           "name": "extendedFieldsUpdatedEvent",
@@ -4528,7 +6588,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "This is top level to ease client code dipatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
         },
         {
           "name": "triggeredByAnonymizeRequest",
@@ -4620,6 +6680,77 @@
           "type": [
             {
               "referenceType": "wix-ecom-backend.Checkout.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DoublePaymentErrorData",
+      "members": [
+        {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "subscriptionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDoublePaymentErrorDataIdOneOf",
+            "members": [
+              "orderId",
+              "subscriptionId"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DoublePaymentErrorDataIdOneOf",
+      "members": [
+        {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "subscriptionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
             }
           ],
           "doc": ""
@@ -4760,7 +6891,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Suppoerted values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -4851,6 +6982,45 @@
             }
           ],
           "doc": "Customer's last name"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetCheckoutByCartIdRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cart ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetCheckoutByCartIdResponse",
+      "members": [
+        {
+          "name": "checkout",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Checkout"
+            }
+          ],
+          "doc": "The requested checkout."
         }
       ],
       "docs": {
@@ -6138,6 +8308,46 @@
       }
     },
     {
+      "name": "PaymentErrorResponseData",
+      "members": [
+        {
+          "name": "failureDetails",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "paymentResponseToken",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "transactionStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "PhysicalProperties",
       "members": [
         {
@@ -6348,7 +8558,7 @@
               "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
             }
           ],
-          "doc": "Total additional fees price."
+          "doc": "Total additional fees price before tax."
         },
         {
           "name": "discount",
@@ -6548,6 +8758,26 @@
       }
     },
     {
+      "name": "RedeemErrorData",
+      "members": [
+        {
+          "name": "reason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "RemoveCouponRequest",
       "members": [
         {
@@ -6557,7 +8787,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Checkout ID."
+          "doc": "ID of the checkout to remove the coupon from."
         }
       ],
       "docs": {
@@ -6635,7 +8865,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Checkout ID."
+          "doc": "ID of the checkout to remove line items from."
         },
         {
           "name": "lineItemIds",
@@ -6651,7 +8881,7 @@
               }
             }
           ],
-          "doc": "IDs of the line items to be removed."
+          "doc": "IDs of the line items to remove from the checkout."
         }
       ],
       "docs": {
@@ -7087,6 +9317,77 @@
             }
           ],
           "doc": "Whether tax is included in the price"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ShippingCalculationErrorData",
+      "members": [
+        {
+          "name": "carrierErrors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CarrierErrors"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "generalShippingCalculationError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Details"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfShippingCalculationErrorDataShippingCalculationErrorOneOf",
+            "members": [
+              "carrierErrors",
+              "generalShippingCalculationError"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ShippingCalculationErrorDataShippingCalculationErrorOneOf",
+      "members": [
+        {
+          "name": "carrierErrors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CarrierErrors"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "generalShippingCalculationError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.Details"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -8159,7 +10460,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. \"WIX_APP_STORE\" refers to the Wix mobile app."
+          "doc": "Sales channel that created the checkout. Supported values:\n+ `\"WEB\"`, `\"POS\"`, `\"EBAY\"`, `\"AMAZON\"`, `\"WIX_APP_STORE\"`, `\"WIX_INVOICES\"`, `\"BACKOFFICE_MERCHANT\"`, `\"WISH\"`, `\"OTHER_PLATFORM\"`."
         },
         {
           "name": "completed",
@@ -8181,7 +10482,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are presented in this currency."
+          "doc": "All the converted prices are displayed in this currency."
         },
         {
           "name": "createdBy",
@@ -8203,7 +10504,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Currency used for pricing in this store."
+          "doc": "The currency used when submitting the order."
         },
         {
           "name": "customFields",
