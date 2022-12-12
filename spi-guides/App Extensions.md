@@ -79,7 +79,7 @@ For more information:
 * [Understanding the difference between SPIs and APIs](https://medium.com/wix-engineering/let-others-solve-your-problems-change-your-mindset-from-apis-to-spis-781afa48574f)
 
 
-# Implementing a custom extension with a Velo SPI
+## Implementing a custom extension with a Velo SPI
 
 The Custom Extensions feature currently can’t be added to a site when using Git Integration & Wix CLI (Beta).
 
