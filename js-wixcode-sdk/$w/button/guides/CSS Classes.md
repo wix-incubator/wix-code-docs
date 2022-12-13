@@ -10,9 +10,9 @@ For more information on styling your elements with CSS, see
 <blockquote class="important">
 
 __Important:__
-Element structure and unlisted class names may change in the future
-To avoid breaking changes to your site,
-use only the officially supported class names to target elements.
+Element structure and unlisted class names may change in the future.
+To avoid unintended style changes to your site,
+select elements with only the officially supported class names.
 
 </blockquote>
 
