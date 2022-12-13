@@ -4,11 +4,21 @@ You can use the classes listed below
 to style your `Button` elements with CSS.
 
 For more information on styling your elements with CSS, see
-[Styling Elements with CSS]($w/styling-elements-with-css).
+[Styling Elements with CSS]($w/styling-elements-with-css) and the
+[MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
+
+<blockquote class="important">
+
+__Important:__
+Element structure and unlisted class names may change in the future
+To avoid breaking changes to your site,
+use only the officially supported class names to target elements.
+
+</blockquote>
 
 ## `.button`
 
-Targets the button container.
+Targets button elements.
 For example:
 
 ```css
@@ -21,7 +31,7 @@ For example:
 
 ## `.button__label`
 
-Targets the button [label text]($w/button/label).
+Targets button [label text]($w/button/label).
 For example:
 
 ```css
@@ -35,7 +45,7 @@ For example:
 
 ## `.button__icon`
 
-Targets the button [icon image]($w/button/icon).
+Targets button [icon images]($w/button/icon).
 For example:
 
 ```css
