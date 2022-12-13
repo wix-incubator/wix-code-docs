@@ -12,7 +12,7 @@ For more information on styling your elements with CSS, see
 __Important:__
 Element structure and unlisted class names may change in the future.
 To avoid unintended style changes to your site,
-select elements with only the officially supported class names.
+select elements with the officially supported class names only.
 
 </blockquote>
 
