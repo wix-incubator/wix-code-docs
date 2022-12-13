@@ -8,7 +8,7 @@ Reason codes can be divided into 4 groups:
 1. [Declined transactions](#declined-transaction-codes)
 1. [Declined refunds](#declined-refund-codes)
 
-
+> If you can't find a corresponding reason code for your scenario, use `6000` and provide an appropritate `errorCode` and `errorMessage` with your response.
 ## Account connection failure codes
 | Reason Code | Name |
 |------------|------|
@@ -100,5 +100,3 @@ Reason codes can be divided into 4 groups:
 | 3025 | Insufficient funds for refund |
 | 3032 | Refund attempts exceeded |
 | 3033 | Refund time limit exceeded |
-
-> If you can't find a corresponding `reasonCode`, use `reasonCode: 6000` and provide an appropritate `errorCode` and `errorMessage`.
