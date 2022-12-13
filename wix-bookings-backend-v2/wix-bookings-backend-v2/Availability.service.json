@@ -19,7 +19,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID for which availability is checked.",
+          "doc": "The schedule ID for which availability is being checked.",
           "required": true
         }
       ],
@@ -142,9 +142,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Returns availability entries, describing service availability for booking given the query constraints.\nQuery object support:\n- **filter**: supports\n- `startDate`: Query range start time. Formatted according to RFC3339. When optional timezone field present, will be treated as local-date-time (timezone offset in the format is ignored). Required.\n- `endDate`: Query range end time. Formatted according to RFC3339. When optional timezone field present, will be treated as local-date-time (timezone offset in the format is ignored). Required. // define time span limit and default\n- `serviceId`: A list of one or more service ids.\n- `resourceId`: A list of one or more resource ids (staff ids). Optional.\n- `bookable`: When set, only entries with corresponding bookable values will be returned. Optional. When absent, both bookable and non-bookable slots are returned.\n- `bookingPolicyViolations.tooEarlyToBook`: When set, only entries with corresponding tooEarlyToBook values will be returned. Optional.\n- `bookingPolicyViolations.tooLateToBook`: When set, only entries with corresponding tooLateToBook values will be returned. Optional.\n- `location.businessLocation.id`: Filter by `location.business_location.id`. Supports multiple values. Optional.\n- `openSpots`: Filter by amount of `openSpots`. Supports 'gte' only. Optional.\n- **fields**: supported.\n- **paging**: Paging is supported using CursorPaging. For paging the results, i.e. with a page size of 10, set the `query.cursorPaging.limit` to a value of `10`.\nThe response will contain a value in the `pagingMetadata.cursors.next` field.\nPass this value in the `query.cursorPaging.cursor` field in the following calls and leave the `query` field empty.\n- **fieldsets**: not supported.",
+        "summary": "Describes the availability for sessions\nthat match the specified query criteria.",
         "description": [
-          "> Note about timezone DST gaps\n> Local date time is not defined in cases where DST is started or ended.\n> For example September 5th 2021, 00:05, is not defined in Santiago, Chile, because at 00:00 the clock moved\n> 1 hour forward to 01:00.\n> In such cases, automatic remediation will be applied - the wrong local date time will be forwarded by 1 hour.\n> For example, if QueryAvailability is called with startDate = 2021-09-05T00:00:01.000, endDate = 2021-09-06T00:00:01.000,\n> automatic remediation will be applied to the corrupted startDate, and 2021-09-05T01:00:01.000-2021-09-05T00:00:01.000\n> will be queried instead. Notice that only startDate is shifted one hour forward, and endDate is not adjusted, since it is defined.\n"
+          "The Calendar Availability APIs calculate the availability of sessions for\nappointments and classes, but not\nfor courses.\n\nThe entire list of slots is returned in case you want to display both\navailable and non-available slots in the calendar for your customers.\nUsing the `bookable` property, you can limit the display to available\nslots only.\n\n**Calculating availability**\n\nThe availability is determined\nby checking:\n+ The sessions' open slots. A slot is considered open if the session's\ncapacity is greater than number of participants.\n+ Booking policies. Policies that affect whether a slot is considered\navailable include `tooEarlyToBook`, `tooLateToBook` and `bookOnlineDisabled`.\n\nLocked sessions do not impact session availability and `bookable` can\nbe `true` even if `locked` is true. For example, if a session has a waitlist and a\nplace frees up, the slot is offered to the customers on the waitlist, one by one. The\nsesssion remains locked because there is still a waitlist, but for a period of time\nthere is availability, until a customer takes the slot.\n\n**Handling Daylight Savings Time (DST) for local time zones**\n\nBecause of DST, there are cases where certain times either do not exist\nor exist twice for a local time zone.\nFor example, the tine `00:05` on September 5th 2021 might not exist in Santiago, Chile,\nbecause at `00:00` the clock moved\n1 hour forward to `01:00.\n\nIn this case, the Availability APIs take this\ninto account and mediate the time gaps automatically. The non-existant local time is\nautomtically moved forward 1 hour to match local DST. Local times that exist do not change.\nSo if the `Query Availability` endpoint is called with a `startDate` of `2021-09-05T00:00:01.000`\nand an `endDate` of `2021-09-06T00:00:02.000`, `2021-09-05T01:00:01.000` is used in the query\ninstead. The start time shifts one hour forward and the end time remains the same.\n\n\n**Filtering for available sessions**\n\nQuery object support: **TBD** Remove this when query object is decomposed\n- **filter**: supports\n- `startDate`: Return slots with a start date and time greater than or equal to the given date.\nFormatted in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format.\nIf the `timezone` is specified when querying, the `startDate` for the query is according to the\nlocal date and time, meaning that the timezone offset in the format is ignored.\nRequired.\n- `endDate`: Return slots with an end date and time greater than or equal to the given date.\nFormatted in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format.\nIf the `timezone` is specified when querying, the `endDate` for the query is according to the\nlocal date and time, meaning that the timezone offset in the format is ignored.\nRequired.\n- `serviceId`: Return slots with a service ID that matches a service ID in the given list.\n- `resource.id`: Return slots with a resource ID that matches a resource ID in the given list.\n- `bookable`: When `true`, return only available slots. Otherwise, return both available and non-available slots.\n- `bookingPolicyViolations.tooEarlyToBook`: Return slots that match the given `tooEarlyToBook` value.\n- `bookingPolicyViolations.tooLateToBook`: Return slots that match the given `tooLateToBook` value.\n- `location.id`: Return only slots for the given business locations. Supports multiple values.\n- `openSpots`: Return slots with at least this number of open spaces. Supports 'gte' only. **TBD** Hagai will return to me.\n- **fields**: supported for all fields.\n- **paging**: Paging is supported using CursorPaging. For paging the results, i.e. with a page size of 10, set the `query.cursorPaging.limit` to a value of `10`.\nThe response will contain a value in the `pagingMetadata.cursors.next` field.\nPass this value in the `query.cursorPaging.cursor` field in the following calls and leave the `query` field empty.\n- **fieldsets**: not supported.\n"
         ],
         "examples": [
           {
@@ -175,7 +175,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Booking policy settings for a given Slot/Schedule"
+          "doc": "The policy defining the maximum number of participants that can\nbe booked for a slot or a schedule."
         }
       ],
       "docs": {
@@ -294,7 +294,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID for which availability is checked."
+          "doc": "The schedule ID for which availability is being checked."
         }
       ],
       "docs": {
@@ -354,7 +354,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which availability is to be calculated."
+          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
         }
       ],
       "docs": {
@@ -384,7 +384,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which availability is to be calculated."
+          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
         }
       ],
       "docs": {
@@ -434,7 +434,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Business Location ID. Present if the location is a business location."
+          "doc": "Business location ID. Available only for locations that are business locations,\nmeaning the `location_type` is `\"OWNER_BUSINESS\"`."
         },
         {
           "name": "formattedAddress",
@@ -444,7 +444,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "A string containing the full address of this location."
+          "doc": "The full address of this location."
         },
         {
           "name": "locationType",
@@ -454,7 +454,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Location type.\nOne of:\n- `\"OWNER_BUSINESS\"` The business address as set in the site’s general settings.\n- `\"OWNER_CUSTOM\"` The address as set when creating the service.\n- `\"CUSTOM\"` The address set for the individual session."
+          "doc": "Location type.\n\n- `\"OWNER_BUSINESS\"`: The business address, as set in the site’s general settings.\n- `\"OWNER_CUSTOM\"`: The address as set when creating the service.\n- `\"CUSTOM\"`: The address as set for the individual session.\n"
         },
         {
           "name": "name",
@@ -574,7 +574,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.QueryV2"
             }
           ],
-          "doc": "Partially supported. See description above."
+          "doc": "Partially supported. See description above. **TBD** Docs must update"
         },
         {
           "name": "slotsPerDay",
@@ -584,7 +584,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load per date. For example, when given the value 3,\nat most 3 available slot are returned for each day in the requested date range.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all bookable slots are already included."
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included."
         },
         {
           "name": "timezone",
@@ -594,7 +594,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which availability slots are to be calculated."
+          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
         }
       ],
       "docs": {
@@ -614,7 +614,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.QueryV2"
             }
           ],
-          "doc": "Partially supported. See description above."
+          "doc": "Partially supported. See description above. **TBD** Docs must update"
         },
         {
           "name": "slotsPerDay",
@@ -624,7 +624,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load per date. For example, when given the value 3,\nat most 3 available slot are returned for each day in the requested date range.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all bookable slots are already included."
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included."
         },
         {
           "name": "timezone",
@@ -634,7 +634,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which availability slots are to be calculated."
+          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
         }
       ],
       "docs": {
@@ -661,7 +661,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "List of slots that potentially can be booked."
         },
         {
           "name": "pagingMetadata",
@@ -671,7 +671,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.PagingMetadataV2"
             }
           ],
-          "doc": ""
+          "doc": "Details on the paged set of returned results."
         }
       ],
       "docs": {
@@ -823,7 +823,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.BookingPolicyViolations"
             }
           ],
-          "doc": "Indicators of booking policy violations for the given Schedule."
+          "doc": "Booking policy violations for the schedule."
         },
         {
           "name": "openSpots",
@@ -833,7 +833,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "The number of open spots defined for the schedule."
         },
         {
           "name": "totalSpots",
@@ -843,7 +843,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "The total number of spots defined for the schedule, including\nboth open and non-available spots."
         }
       ],
       "docs": {
@@ -863,7 +863,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The end time of this Slot (formatted according to RFC3339). Required."
+          "doc": "The end time of this slot in\n[RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format. Required."
         },
         {
           "name": "location",
@@ -883,7 +883,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.SlotResource"
             }
           ],
-          "doc": "The resource required for this slot. Currently, in Bookings, this is the relevant staff. Required."
+          "doc": "The resource required for this slot. Currently, the only supported resource\nis the relevant staff member for the slot. Required."
         },
         {
           "name": "scheduleId",
@@ -893,7 +893,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Schedule identifier. Required."
+          "doc": "Schedule ID. Required."
         },
         {
           "name": "serviceId",
@@ -903,7 +903,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service identifier. Required."
+          "doc": "Service ID. Required."
         },
         {
           "name": "sessionId",
@@ -913,7 +913,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Identifier for underlying session when session is a single session or generated from a recurring session. Required."
+          "doc": "ID for the slot's corresponding session, when the session is either a single session\nor a specific session generated from a recurring session. Required."
         },
         {
           "name": "startDate",
@@ -923,7 +923,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The start time of this Slot (formatted according to RFC3339). Required."
+          "doc": "The start time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `startDate` is ignored.\n"
         },
         {
           "name": "timezone",
@@ -933,7 +933,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone according to which the slot is calculated presented."
+          "doc": "The timezone for which slot availability is to be calculated.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `endDate` is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
         }
       ],
       "docs": {
@@ -953,7 +953,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether this available sot is bookable."
+          "doc": "Whether the slot is bookable. Bookability is determined by checking a sessions' open slots and booking policies."
         },
         {
           "name": "bookingPolicyViolations",
@@ -963,7 +963,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.BookingPolicyViolations"
             }
           ],
-          "doc": "Indicators for booking policy violations for the slot."
+          "doc": "Booking policy violations for the slot."
         },
         {
           "name": "locked",
@@ -973,7 +973,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether this slot is locked."
+          "doc": "Indicates whether the slot is locked. Slots that are locked cannot be booked. Read-only. **TBD** Where setr (not API)? Hagai will tell me"
         },
         {
           "name": "openSpots",
@@ -983,7 +983,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of open spots for this availability."
+          "doc": "Number of open spots for this slot."
         },
         {
           "name": "slot",
@@ -993,7 +993,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.Slot"
             }
           ],
-          "doc": "Identifier for underlying session when session is a single session or generated from a recurring session. Required."
+          "doc": "The slot for the corresponding session, when the session is either a single session\nor a specific session generated from a recurring session."
         },
         {
           "name": "totalSpots",
@@ -1003,7 +1003,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots for this availability.\nFor example, for a class of 10 spots with 3 spots booked, `spotsTotal` is 10, `openSpots` is 7."
+          "doc": "Total number of spots for this slot.\nFor example, if a session has a total of 10 spots and 3 spots are booked, `spotsTotal` is 10 and `openSpots` is 7."
         },
         {
           "name": "waitingList",
@@ -1013,7 +1013,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.WaitingList"
             }
           ],
-          "doc": "An object describing the slot's waiting-list and its occupancy."
+          "doc": "An object describing the slot's waitlist and its occupancy."
         }
       ],
       "docs": {
@@ -1034,7 +1034,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Resource ID"
+          "doc": "Resource ID."
         },
         {
           "name": "name",
@@ -1044,7 +1044,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Read only. Resource name."
+          "doc": "Resource name. Read only."
         }
       ],
       "docs": {
@@ -1094,7 +1094,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Number of open spots for this waiting list."
         },
         {
           "name": "totalSpots",
@@ -1104,7 +1104,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots and open spots for this waiting list.\nFor example, a Yoga class of 10 waiting list spots with 3 registered on the waiting list  has total_spots: 10 and open_spots: 7."
+          "doc": "Total number of spots and open spots for this waiting list.\nFor example, a Yoga class with 10 waiting list spots and 3 registered on the waiting list has 10 `total_spots` and 7 `open_spots`."
         }
       ],
       "docs": {
