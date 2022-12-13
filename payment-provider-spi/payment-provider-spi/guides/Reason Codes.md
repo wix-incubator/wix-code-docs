@@ -2,10 +2,11 @@
 
 Wix uses codes to represent detailed information about the statuses of different payment related processes. These codes are used to display information about these processes on your site's dashboard.
 
-Reason codes can be divided into 3 groups:
-1. Account connection failures
-1. Pending transactions
-1. Declined transaction
+Reason codes can be divided into 4 groups:
+1. [Account connection failures](#account-connection-failure-codes)
+1. [Pending transactions](#pending-transaction-codes)
+1. [Declined transactions](#declined-transaction-codes)
+1. [Declined refunds](#declined-refund-codes)
 
 
 ## Account connection failure codes
@@ -55,18 +56,12 @@ Reason codes can be divided into 3 groups:
 | 3019        | Card limit exceeded                  |
 | 3020        | Test card declined                   |
 | 3021        | Tokenization issue                   |
-| 3022        | Refund not allowed                   |
-| 3023        | Payment already refunded             |
-| 3024        | Partial refund not allowed           |
-| 3025        | Insufficient funds for refund        |
 | 3026        | Receiving limit                      |
 | 3027        | Transaction already processed        |
 | 3028        | Insufficient funds wallet            |
 | 3029        | Expired payment source               |
 | 3030        | Buyer canceled                       |
 | 3031        | Transaction action already committed |
-| 3032        | Refund attempts exceeded             |
-| 3033        | Refund time limit exceeded           |
 | 3034        | Installments failed                  |
 | 3035        | Transaction expired                  |
 | 3036        | Invalid PIN                          |
@@ -94,5 +89,16 @@ Reason codes can be divided into 3 groups:
 | 5007        | Pick up card                         |
 | 5009        | Pending general                      |
 | 6000        | General error                        |
+
+
+## Declined refund codes
+| Reason Code | Name |
+|---|---|
+| 3022 | Refund not allowed |
+| 3023 | Payment already refunded |
+| 3024 | Partial refund not allowed |
+| 3025 | Insufficient funds for refund |
+| 3032 | Refund attempts exceeded |
+| 3033 | Refund time limit exceeded |
 
 > If you can't find a corresponding `reasonCode`, use `reasonCode: 6000` and provide an appropritate `errorCode` and `errorMessage`.
