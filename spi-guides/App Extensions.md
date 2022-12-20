@@ -1,8 +1,8 @@
 
 
-# Overview
+# Introduction
 
-Velo’s SPIs enable you to extend Velo’s functionality so that you can:
+Velo SPIs (Service Provider Interfaces) provide you with a very powerful way to extend Velo’s functionality so that you can:
 
 + **Inject your own custom logic into existing app flows**
 
@@ -16,20 +16,17 @@ Velo’s SPIs enable you to extend Velo’s functionality so that you can:
 
   For example, Velo's [Shipping Rates](/spis/wix-ecom/ecom-shipping-rates) custom extension SPI lets you display shipping rates from different external service providers during checkout. Customers can then choose the shipping provider best for them.
 
->**Note**: The Custom Extensions feature is currently in beta and is subject to change. Some custom extensions aren't yet available to all users.
+## Before you begin
+It’s important to note the following points before starting to code:
 
-To use the Velo SPIs, you’ll need a working knowledge of JavaScript. When integrating with an external service, you'll also need familiarity with the external service’s APIs.
+* The Custom Extensions feature is currently in beta and is subject to change. Some custom extensions aren't yet available to all users.
+
+* To use the Velo SPIs, you’ll need a working knowledge of JavaScript. When integrating with an external service, you'll also need familiarity with the external service’s APIs.
 
 
 
 
 
-
-  
-**Examples of custom extensions**
-  
-* When you set up a Wix Store, there are a limited number of payment and shipping rates service providers to choose from. What if you want to use a provider not currently on the list? You can create custom extensions that allow you to add more shipping rate providers to your store's checkout flow. This type of custom extension involves integrating with a 3rd-party service provider.
-* The typical eCommerce checkout process does not allow you to add additional fees that are not related to specific line items. You can use custom extensions to add extra fees like charges for gift wrap or fragile items to your checkout flow. This type of custom extension involves injecting your own logic into an existing Wix app flow.
 
 ## Terminology
 
@@ -44,39 +41,6 @@ Let's make sure our terms are aligned before we get started.
 | Service           | Any additional functionality being added to the site that is not part of the original Wix app flow. The service is coded by the Wix user with the custom extension feature using SPIs.                                                                                                                                                                                                                                                                                                                                                                                               |
 | Wix app           | The Wix app whose functionality is being extended. For example, Wix eCommerce has several SPIs available for customizing its flows with custom extensions.                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
-## What is a Velo SPI? 
-
-Custom extensions are implemented using Velo SPIs. Each extension consists of a set of backend code files that utilize SPI functions for implementing the extension. Wix apps call the functions automatically at specific points in their flows. The functions receive and return data in a specific format. The returned data is then integrated by the Wix app into its flow. In this sense, custom extensions fulfill a kind of contract. The Wix user commits to providing data in a certain format, and the Wix app commits to using this data in its flows at specific points.
-
-The [reference documentation](/spis/getting-started) for each SPI function indicates at what point in a flow an app triggers the function. The documentation also outlines the data provided as arguments to the function when it's triggered, and the format of the data that needs to be returned by the function.
-
-How does it work? 
-
-1. At certain points, a call to a service is triggered by an app's activity on your Wix site.
-2. When triggered, the Wix platform passes the information in the request to the provider. The provider needs this information to provide the service to the Wix platform.
-3. Wix processes the request for the service according to the implementation defined in the custom extension files in the backend.
-4. The service provider returns the needed information and the Wix platform consumes and/or displays the information.
-
-For example, the Wix eCommerce app calls the `calculateAdditionalFees()` SPI function whenever a customer checks out a cart.
-
-This function receives the parameters that it needs from Wix eCommerce (such as the cart, line items, and so on), and must return data about additional fees in a specific structure. The app uses the data received from the function to display additional fees in a customer's checkout flow. You can add any custom logic you like to calculate the additional fees as long as the function returns your data in the proper structure.
-
-Using this extension, you can avoid having to build a whole new checkout flow just to add additional fees to the basic Wix eCommerce functionality.
-
-For example, the Wix eCommerce app calls the \`calculateAdditionalFees()\` SPI function whenever a customer checks out a cart. This function receives the parameters that it needs from Wix eCommerce (such as the cart, line items, and so on), and must return data about additional fees in a specific structure. The app uses the data received from the function to display additional fees in a customer's checkout flow. You can add any custom logic you like to calculate the additional fees as long as the function returns your data in the proper structure. Using this extension, you can avoid having to build a whole new checkout flow just to add additional fees to the basic Wix eCommerce functionality.
-
-## Velo APIs and SPIs: When to use which? 
-
-Without custom extensions, if you want to change your out-of-the-box app flow just a little, you might have to rewrite large parts of the flow, such as creating a custom checkout page. This could involve writing many lines of code and creating custom collections. 
-
-Inherently, because custom extensions only affect a small part of an app's flow, Velo SPIs require fewer lines of code and less maintenance than when working with Velo APIs. So wherever possible, you want to use SPIs. 
-
-  
-Is the SPI you need not yet available? In the meantime, use Velo APIs, such as [accessing 3rd-party's APIs](https://support.wix.com/en/article/velo-accessing-3rd-party-services-with-the-fetch-api) with [wix-fetch](/wix-fetch), and/or using [npm packages](https://support.wix.com/en/article/velo-accessing-3rd-party-services-with-the-fetch-api).
-
-For more information:
-
-* [Understanding the difference between SPIs and APIs](https://medium.com/wix-engineering/let-others-solve-your-problems-change-your-mindset-from-apis-to-spis-781afa48574f)
 
 
 
@@ -155,6 +119,7 @@ Publish your site.
 
   
 There may be a delay between publishing the site and the new extension options appearing on your site.
+
 
 
 
