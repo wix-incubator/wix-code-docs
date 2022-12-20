@@ -11,11 +11,13 @@ As we update and expand the Velo APIs, new versions are released. Here's what yo
 * **Continuing usability**  
   Older versions of the API are still available. This means that you can continue to use older versions of modules even as new versions are released. However, we recommend that you upgrade to the latest version of a module as soon as possible.
 
-## Changes to module names 
+## About module names 
 
 The meanings of module names can change between versions. Use this guide to understand the different module names:
 
-| Module name | Version 1| Version 2 <br/>These modules include `.v2` at the ends of their names.|
+Version 2 modules include `.v2` at the ends of their names.
+
+| Module name | Version 1| Version 2 |
 | ----------- | --------- | --------- |
 | `wix-{module}`| A module that only works with frontend code. <br/> Exceptions: `wix-data`, `wix-fetch`, `wix-router` | A [universal module](#universal-modules). |
 | `wix-{module}-backend`| A module that only works with backend code. | A module that only works with backend code. |
