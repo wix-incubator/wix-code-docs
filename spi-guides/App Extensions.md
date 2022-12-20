@@ -79,17 +79,21 @@ For more information:
 * [Understanding the difference between SPIs and APIs](https://medium.com/wix-engineering/let-others-solve-your-problems-change-your-mindset-from-apis-to-spis-781afa48574f)
 
 
-## Implementing a custom extension with a Velo SPI
+
+
+# Implementing a custom extension with a Velo SPI
+
+
 
 The Custom Extensions feature currently can’t be added to a site when using Git Integration & Wix CLI (Beta).
 
 The process of implementing an SPI in Velo generally has 3 steps:
 
-1. [Create a new extension on your site](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-1-create-a-new-shipping-rates-extension)
-2. [Implement your extension with custom code](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-2-implement-the-extension)
-3. [Deploy the extension](https://support.wix.com/en/article/velo-tutorial-shipping-rates-custom-extension-beta#step-3-deploy-the-extension)
+1. [Create a new extension on your site](#step-1-create-a-new-shipping-rates-extension)
+2. [Implement your extension with custom code](#step-2-implement-the-extension)
+3. [Deploy the extension](#step-3-deploy-the-extension)
 
-See the [tutorial](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta#available-custom-extensions-beta) for each SPI for detailed instructions. 
+See the [tutorial](#available-custom-extensions-beta) for each SPI for detailed instructions. 
 
 Need help implementing an SPI? [Find a professional](https://www.wix.com/marketplace) to help you.
 
@@ -136,8 +140,6 @@ If you don't want to keep all of your code in the main files, you can add files 
 import { functionName } from './myFileName.js';
 ```
 
- import { functionName } from './myFileName.js';
-
 **Test an extension**
 
 You can test your extension before publishing your site using [functional testing](https://support.wix.com/en/article/velo-functional-testing-in-the-backend) like you would any backend Velo code. Make sure your functions' return values are properly formatted. To test your extension after deploying, add console logs to your code. The results appear in the [Site Events log](https://support.wix.com/en/article/velo-about-site-monitoring).
@@ -159,7 +161,6 @@ There may be a delay between publishing the site and the new extension options a
 
 
 
-To learn more:
-+ [Velo: Custom App Extensions Using SPIs](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta)
+Learn more about [Velo: Custom App Extensions Using SPIs](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta)
 
 
