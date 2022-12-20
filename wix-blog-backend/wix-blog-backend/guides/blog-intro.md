@@ -27,9 +27,9 @@ import wixBlogBackend from 'wix-blog-backend';
 
 ## Terminology
 
-- **Posts**: A post is a published article on a blog site. It is also referred to as a publication. A blog can have up to 100K posts. 
-- **Categories**: A category is a grouping of similar and related posts. A post can be assigned to a maximum of 10 categories.
-- **Tags**: A way to further sort and organize blog posts. Tags provide the ability to filter a blog's articles.
+- **Post**: A published article on a blog site. It is also referred to as a publication. A blog can have up to 100K posts. 
+- **Category**: A grouping of similar and related posts. A post can be assigned to a maximum of 10 categories.
+- **Tag**: A way to further sort and organize blog posts. Tags provide the ability to filter a blog's articles.
 
 
 ## Additional Information
