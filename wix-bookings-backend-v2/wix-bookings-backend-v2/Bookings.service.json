@@ -1034,16 +1034,6 @@
       "name": "createBooking",
       "params": [
         {
-          "name": "booking",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Bookings.Booking"
-            }
-          ],
-          "doc": "The booking to create",
-          "required": true
-        },
-        {
           "name": "options",
           "type": [
             {
@@ -1055,12 +1045,9 @@
         }
       ],
       "requiredFields": [
-        "booking",
-        "booking.additionalFields._id",
-        "booking.bookedEntity",
-        "booking.bookedEntity",
-        "booking.contactDetails",
-        "booking.contactDetails.email"
+        "CreateBookingRequest",
+        "options.contactDetails",
+        "options.contactDetails.email"
       ],
       "ret": {
         "type": [
@@ -1078,7 +1065,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a booking.\nTo create a booking for an appointment or a session of a class, pass a booking with the\nrelevant `slot`.\nTo create a booking for the entire course, pass a booking with the relevant `schedule`.\nYou can use the\n[Query Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/query-availability)\nendpoint to check the availability beforehand.\nIf you create a booking for an existing session, we recommend that you\nonly pass `slot.sessionId`. Then, any specified slot details are\ncalculated.\nIf you create a booking for a new session, we recommend to call\n[Query Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/query-availability)\nfirst. Then, pass the retrieved `availability.slot` object as the BookedEntity.Slot of the booking in the request.\nIf you create a booking for a course, we recommend that you pass only\n`schedule.scheduleId` and not the entire `schedule` object. Then, all\nschedule details are automatically calculated.\nBookings are created with a status of `CREATED`. `CREATED` bookings don't\nappear on the business calendar and don't affect a related schedule's\navailability.\nTo create a booking with a given status, pass a booking with the wanted status. This can only be done\nif the FlowControlSettings in the request contains override_booking_status_on_create = true and permitted for BOOKINGS.BOOKING_CREATE_OVERRIDE_BOOKING_STATUS.\nYou can pass a `participantNotification.message` to notify the customer of\nthe creation with an additional message. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\nYou can pass sendSmsReminder as 'true', if you want an SMS reminder would be sent to the phone number specified\nin the ContactDetails, 24 hours before the session starts.\nWhen creating a booking you must pass either `participantsChoices` or\n`totalParticipants`. If you pass `participantsChoices`, all of the\nprovided choices must exist for the service. Otherwise the call returns an\n`INVALID_SERVICE_CHOICES` error.\nWhen creating a booking, you can pass a `selectedPaymentOption`. This specifies\nwhich payment method the customer intends to use. But it's possible for\nthem to later use another supported payment method.\nAfter you have created the booking, you can use the\n[Wix eCommerce APIs](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/introduction)\nfor the [checkout](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/create-checkout)\nand [order](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/create-order-from-checkout)\nsteps of the payment flow.",
+        "summary": "Creates a booking.\nTo create a booking for an appointment or a session of a class, pass the\nrelevant `slot` in the body of the request. You can use the\n[Get Slot Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/get-slot-availability)\nendpoint to check the availability of the session beforehand.\nTo create a booking for the entire course, pass the relevant `schedule` in\nthe body of the request. You can use the\n[Get Schedule Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/get-schedule-availability)\nendpoint to check the availability of the course beforehand.\nBookings are created with a status of `CREATED`. `CREATED` bookings don't\nappear on the business calendar and don't affect a related schedule's\navailability.\nIf you create a booking for an existing session, we recommend that you\nonly pass `slot.sessionId`. Then, any specified slot details are\ncalculated.\nIf you create a booking for a new session, we recommend to call\n[Get Slot Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/get-slot-availability)\nfirst. Then, pass the retrieved `availability.slot` object in the body of\nthe Create Booking request.\nIf you create a booking for a course, we recommend that you pass only\n`schedule.scheduleId` and not the entire `schedule` object. Then, all\nschedule details are automatically calculated.\nWhen creating a booking you must pass either `participantsChoices` or\n`totalParticipants`. If you pass `participantsChoices`, all of the\nprovided choices must exist for the service. Otherwise the call returns an\n`INVALID_SERVICE_CHOICES` error.\nWhen creating a booking, you can pass a `selectedPaymentOption`. This specifies\nwhich payment method the customer intends to use. But it's possible for\nthem to later use another supported payment method.\nAfter you have created the booking, you can use the\n[Wix eCommerce APIs](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/introduction)\nfor the [checkout](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/create-checkout)\nand [order](https://bo.wix.com/wix-docs/rest/ecommerce/checkout/create-order-from-checkout)\nsteps of the payment flow.",
         "description": [],
         "examples": [
           {
@@ -4339,6 +4326,52 @@
       "name": "CreateBookingOptions",
       "members": [
         {
+          "name": "additionalFields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-backend-v2.Bookings.CustomFormField"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Additional custom fields of the booking form. The customer must provide\ninformation for each field when booking the service. For example, that they\nbring their own towels or whether they use a wheelchair.\nMax: 100 fields"
+        },
+        {
+          "name": "bookingSource",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.BookingSource"
+            }
+          ],
+          "doc": "Identifies the source (platform, actor and app) that created this booking.\nThis property of the booking cannot be changed.\nThe app_def_id and app_name will be resolved automatically.\nTODO GAP See if we need this - might be able to get this data from the headers?"
+        },
+        {
+          "name": "contactDetails",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.ContactDetails"
+            }
+          ],
+          "doc": "Contact details of the customer booking the service."
+        },
+        {
+          "name": "externalUserId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A user identifier of an external application user that initiated the book request.\nAllows an external application to later identify its own bookings and correlate to its own internal users"
+        },
+        {
           "name": "flowControlSettings",
           "optional": true,
           "type": [
@@ -4347,6 +4380,26 @@
             }
           ],
           "doc": "Information about whether specific procedures of the standard Wix Bookings\ncreation flow are changed. For example, whether the availability is\nchecked before creating the booking or if additional payment options are\naccepted."
+        },
+        {
+          "name": "internalBusinessNote",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Internal business note. Not visible to the customer.\nMax: 200 characters"
+        },
+        {
+          "name": "numberOfParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of participants. Available only when the service doesn't have\n[variants](https://dev.wix.com/api/rest/wix-bookings/service-options-and-variants/introduction).\nMax: `20`"
         },
         {
           "name": "participantNotification",
@@ -4359,6 +4412,26 @@
           "doc": "Information about a message to send to the customer."
         },
         {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.BookedSchedule"
+            }
+          ],
+          "doc": "Information about the schedule to create a booking for."
+        },
+        {
+          "name": "selectedPaymentOption",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Payment option the customer intends to use.\nMust be one of the payment options defined for the service, unless\nyou pass `flowControlSettings.skipSelectedPaymentOptionValidation` as `true`."
+        },
+        {
           "name": "sendSmsReminder",
           "optional": true,
           "type": [
@@ -4367,6 +4440,16 @@
             }
           ],
           "doc": "Whether to send an SMS reminder to the customer 24 hours before the\nsession starts. The phone number is taken from `contactDetails.phone`.\nDefault: `true`."
+        },
+        {
+          "name": "slot",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.V2Slot"
+            }
+          ],
+          "doc": "Information about the slot to create a booking for.\nIf you set `slot.location.locationType` to `CUSTOM`, the created slot's\nlocation is set to `slot.location.formattedAddress` when provided.\nOtherwise it's set to `contactDetails.fullAddress.formattedAddress`."
         }
       ],
       "docs": {
@@ -4379,13 +4462,50 @@
       "name": "CreateBookingRequest",
       "members": [
         {
-          "name": "booking",
+          "name": "additionalFields",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-backend-v2.Bookings.Booking"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-backend-v2.Bookings.CustomFormField"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "The booking to create"
+          "doc": "Additional custom fields of the booking form. The customer must provide\ninformation for each field when booking the service. For example, that they\nbring their own towels or whether they use a wheelchair.\nMax: 100 fields"
+        },
+        {
+          "name": "bookingSource",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.BookingSource"
+            }
+          ],
+          "doc": "Identifies the source (platform, actor and app) that created this booking.\nThis property of the booking cannot be changed.\nThe app_def_id and app_name will be resolved automatically.\nTODO GAP See if we need this - might be able to get this data from the headers?"
+        },
+        {
+          "name": "contactDetails",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.ContactDetails"
+            }
+          ],
+          "doc": "Contact details of the customer booking the service."
+        },
+        {
+          "name": "externalUserId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A user identifier of an external application user that initiated the book request.\nAllows an external application to later identify its own bookings and correlate to its own internal users"
         },
         {
           "name": "flowControlSettings",
@@ -4398,6 +4518,26 @@
           "doc": "Information about whether specific procedures of the standard Wix Bookings\ncreation flow are changed. For example, whether the availability is\nchecked before creating the booking or if additional payment options are\naccepted."
         },
         {
+          "name": "internalBusinessNote",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Internal business note. Not visible to the customer.\nMax: 200 characters"
+        },
+        {
+          "name": "numberOfParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of participants. Available only when the service doesn't have\n[variants](https://dev.wix.com/api/rest/wix-bookings/service-options-and-variants/introduction).\nMax: `20`"
+        },
+        {
           "name": "participantNotification",
           "optional": true,
           "type": [
@@ -4408,6 +4548,26 @@
           "doc": "Information about a message to send to the customer."
         },
         {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.BookedSchedule"
+            }
+          ],
+          "doc": "Information about the schedule to create a booking for."
+        },
+        {
+          "name": "selectedPaymentOption",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Payment option the customer intends to use.\nMust be one of the payment options defined for the service, unless\nyou pass `flowControlSettings.skipSelectedPaymentOptionValidation` as `true`."
+        },
+        {
           "name": "sendSmsReminder",
           "optional": true,
           "type": [
@@ -4416,6 +4576,64 @@
             }
           ],
           "doc": "Whether to send an SMS reminder to the customer 24 hours before the\nsession starts. The phone number is taken from `contactDetails.phone`.\nDefault: `true`."
+        },
+        {
+          "name": "slot",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.V2Slot"
+            }
+          ],
+          "doc": "Information about the slot to create a booking for.\nIf you set `slot.location.locationType` to `CUSTOM`, the created slot's\nlocation is set to `slot.location.formattedAddress` when provided.\nOtherwise it's set to `contactDetails.fullAddress.formattedAddress`."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCreateBookingRequestBookableItemOneOf",
+            "members": [
+              "schedule",
+              "slot"
+            ]
+          },
+          {
+            "name": "oneOfCreateBookingRequestParticipantsInfoOneOf",
+            "members": [
+              "participantsChoices",
+              "totalParticipants"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateBookingRequestBookableItemOneOf",
+      "members": [
+        {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.BookedSchedule"
+            }
+          ],
+          "doc": "Information about the schedule to create a booking for."
+        },
+        {
+          "name": "slot",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Bookings.V2Slot"
+            }
+          ],
+          "doc": "Information about the slot to create a booking for.\nIf you set `slot.location.locationType` to `CUSTOM`, the created slot's\nlocation is set to `slot.location.formattedAddress` when provided.\nOtherwise it's set to `contactDetails.fullAddress.formattedAddress`."
         }
       ],
       "docs": {
@@ -4427,16 +4645,6 @@
     {
       "name": "CreateBookingRequestFlowControlSettings",
       "members": [
-        {
-          "name": "overrideBookingStatusOnCreate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Whether to allow the user to set the booking's status,\npassed on the booking entity of the request."
-        },
         {
           "name": "skipAvailabilityValidation",
           "optional": true,
@@ -4468,6 +4676,15 @@
           "doc": "Whether customers can pay using a payment method that isn't supported\nfor the service, but that's supported for other services. Your app\nmust have the `BOOKINGS.MANAGE_PAYMENTS` permission scope when passing\n`true`.\nDefault: `false`."
         }
       ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateBookingRequestParticipantsInfoOneOf",
+      "members": [],
       "docs": {
         "description": [
           ""
