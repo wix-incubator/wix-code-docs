@@ -15,7 +15,7 @@ As we update and expand the Velo APIs, new versions are released. Here's what yo
 
 The meanings of module names can change between versions. Use this guide to understand the different module names:
 
-Version 2 modules include `.v2` at the ends of their names.
+> Version 2 modules include `.v2` at the ends of their names.
 
 | Module name | Version 1| Version 2 |
 | ----------- | --------- | --------- |
