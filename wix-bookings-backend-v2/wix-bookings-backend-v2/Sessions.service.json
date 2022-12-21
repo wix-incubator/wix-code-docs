@@ -13,17 +13,19 @@
       "name": "calendarServerQuerySessions",
       "params": [
         {
-          "name": "options",
+          "name": "query",
           "type": [
             {
-              "referenceType": "wix-bookings-backend-v2.Sessions.CalendarServerQuerySessionsOptions"
+              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitQueryV2"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "The query containing filters, paging and field sets.",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "query"
+      ],
       "ret": {
         "type": [
           {
@@ -40,9 +42,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "TBD.",
+        "summary": "Queries for sessions according to the specified filters and paging.",
         "description": [
-          "Defaults:\n- limit: 50\n- recurrence: {\"$exists\": false}\n\nLimits:\n- 1 year max time range\n"
+          "The query must include a time range, as following:\n- `gte(\"end.timestamp\", \"<timestamp value>\")`\n- `lt(\"start.timestamp\", \"<timestamp value>\")`\n\nDefaults:\n- `limit`: `50`\n- `recurrence`: `{\"$exists\": false}`. I.e, only recurring session instances are returned.\n- `sort`: by `start.timestamp` in ascending order.\n- `fieldsets`: public session data is returned.\n\nTo query for recurring sessions, use `{\"$exists\": true}` with an optional `scheduleId` filter.\nTo query for complete sessions having personal information use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).\n\nLimits:\n- Max time range is 1 year.\n- Custom sorting is not supported.\n- Only `$and` logical operator is supported.\n- Only `$hasSome` array operator is supported.\n\nNote:\nFor advanced queries of `EVENT` session instances, consider using the `QueryEventSessionInstances` API."
         ],
         "examples": [
           {
@@ -821,26 +823,6 @@
             }
           ],
           "doc": "UTC date-time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format. If a timezone offset is specified, the time is converted to UTC. For example, if you specify  `new Date('2021-01-06T16:00:00.000-07:00')`, the stored value will be `\"2021-01-06T23:00:00.000Z\"`.\nRequired if `localDateTime` is not specified.\nIf `localDateTime` is specified, `timestamp` is calculated as `localDateTime`, using the business's timezone."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CalendarServerQuerySessionsOptions",
-      "members": [
-        {
-          "name": "query",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitQueryV2"
-            }
-          ],
-          "doc": "TBD"
         }
       ],
       "docs": {
@@ -2325,7 +2307,6 @@
         },
         {
           "name": "query",
-          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-backend-v2.Sessions.QueryV2"
@@ -2365,7 +2346,6 @@
         },
         {
           "name": "query",
-          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-backend-v2.Sessions.QueryV2"
@@ -3257,13 +3237,12 @@
       "members": [
         {
           "name": "query",
-          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitQueryV2"
             }
           ],
-          "doc": "TBD"
+          "doc": "The query containing filters, paging and field sets."
         }
       ],
       "docs": {
@@ -3283,7 +3262,7 @@
               "referenceType": "wix-bookings-backend-v2.Sessions.PagingMetadataV2"
             }
           ],
-          "doc": "TBD"
+          "doc": "Paging metadata."
         },
         {
           "name": "sessions",
@@ -3300,7 +3279,7 @@
               }
             }
           ],
-          "doc": "TBD"
+          "doc": "The sessions matching the given query."
         }
       ],
       "docs": {
