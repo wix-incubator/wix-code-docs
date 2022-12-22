@@ -11,32 +11,12 @@
   "operations": [
     {
       "name": "calendarServerQuerySessions",
-      "params": [
-        {
-          "name": "query",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitQueryV2"
-            }
-          ],
-          "doc": "The query containing filters, paging and field sets.",
-          "required": true
-        }
-      ],
-      "requiredFields": [
-        "query"
-      ],
+      "params": [],
+      "requiredFields": [],
       "ret": {
         "type": [
           {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-bookings-backend-v2.Sessions.V2QuerySessionsResponse"
-                }
-              ]
-            }
+            "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilder"
           }
         ],
         "doc": null
@@ -44,7 +24,36 @@
       "docs": {
         "summary": "Queries for sessions according to the specified filters and paging.",
         "description": [
-          "The query must include a time range, as following:\n- `gte(\"end.timestamp\", \"<timestamp value>\")`\n- `lt(\"start.timestamp\", \"<timestamp value>\")`\n\nDefaults:\n- `limit`: `50`\n- `recurrence`: `{\"$exists\": false}`. I.e, only recurring session instances are returned.\n- `sort`: by `start.timestamp` in ascending order.\n- `fieldsets`: public session data is returned.\n\nTo query for recurring sessions, use `{\"$exists\": true}` with an optional `scheduleId` filter.\nTo query for complete sessions having personal information use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).\n\nLimits:\n- Max time range is 1 year.\n- Custom sorting is not supported.\n- Only `$and` logical operator is supported.\n- Only `$hasSome` array operator is supported.\n\nNote:\nFor advanced queries of `EVENT` session instances, consider using the `QueryEventSessionInstances` API."
+          "",
+          "The query must include a time range, as following:",
+          "- `gte(\"end.timestamp\", \"<timestamp value>\")`",
+          "- `lt(\"start.timestamp\", \"<timestamp value>\")`",
+          "",
+          "Defaults:",
+          "- `limit`: `50`",
+          "- `recurrence`: `{\"$exists\": false}`. I.e, only recurring session instances are returned.",
+          "- `sort`: by `start.timestamp` in ascending order.",
+          "- `fieldsets`: public session data is returned.",
+          "",
+          "To query for recurring sessions, use `{\"$exists\": true}` with an optional `scheduleId` filter.",
+          "To query for complete sessions having personal information use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).",
+          "",
+          "Limits:",
+          "- Max time range is 1 year.",
+          "- Custom sorting is not supported.",
+          "- Only `$and` logical operator is supported.",
+          "- Only `$hasSome` array operator is supported.",
+          "",
+          "Note:",
+          "For advanced queries of `EVENT` session instances, consider using the `QueryEventSessionInstances` API.",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`start.timestamp`|[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt)|",
+          "|`affectedSchedules.scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`tags`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`recurringSessionId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`type`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|"
         ],
         "examples": [
           {
@@ -213,7 +222,14 @@
       "ret": {
         "type": [
           {
-            "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilder"
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-backend-v2.Sessions.QueryEventSessionInstancesResponse"
+                }
+              ]
+            }
           }
         ],
         "doc": null
@@ -221,43 +237,7 @@
       "docs": {
         "summary": "Retrieves a list of event session instances, given the provided paging and filtering.",
         "description": [
-          "",
-          "",
-          "By default session objects without any personal information are returned.",
-          "This means without `participants`, `location`, `calendarConference`, and",
-          "`externalCalendarOverrides`. You can retrieve full session objects by passing",
-          "`ALL_PI` in the `fieldsets` array. It isn't possible to retrieve sessions",
-          "with personal information just for specific participants.",
-          "",
-          "> __Note:__ Sessions are sorted by `start.timestamp`, in ascending order.",
-          "> Other sorting options aren't supported.",
-          "",
-          "",
-          "For a detailed list of supported operations in the Bookings Calendar V2 API, see",
-          "[filtering](https://dev.wix.com/api/rest/wix-bookings/calendar-v2/filters).",
-          "",
-          "",
-          "To learn about working with _Query_ endpoints, see",
-          "[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language)",
-          "and [Sorting and Paging](https://dev.wix.com/api/rest/getting-started/sorting-and-paging).",
-          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
-          "|:---:|:---:|",
-          "|`scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`scheduleOwnerId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`affectedSchedules.scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`affectedSchedules.scheduleOwnerId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`affectedSchedules.scheduleOwnerName`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`title`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`startsWith()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#startsWith)|",
-          "|`tags`|[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome),[`hasAll()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasAll)|",
-          "|`capacity`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`gt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#gt),[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt),[`ge()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ge),[`le()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#le)|",
-          "|`remainingCapacity`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`gt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#gt),[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt),[`ge()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ge),[`le()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#le)|",
-          "|`notes`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`startsWith()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#startsWith)|",
-          "|`totalNumberOfParticipants`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`gt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#gt),[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt),[`ge()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ge),[`le()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#le)|",
-          "|`inheritedFields`|[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome),[`hasAll()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasAll)|",
-          "|`externalCalendarOverrides.title`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne),[`startsWith()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#startsWith)|",
-          "|`recurringSessionId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`instanceOfRecurrence`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|",
-          "|`scheduleOwnerName`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#ne)|"
+          "By default session objects without any personal information are returned.\nThis means without `participants`, `location`, `calendarConference`, and\n`externalCalendarOverrides`. You can retrieve full session objects by passing\n`ALL_PI` in the `fieldsets` array. It isn't possible to retrieve sessions\nwith personal information just for specific participants.\n\n> __Note:__ Sessions are sorted by `start.timestamp`, in ascending order.\n> Other sorting options aren't supported.\n\n\nFor a detailed list of supported operations in the Bookings Calendar V2 API, see\n[filtering](https://dev.wix.com/api/rest/wix-bookings/calendar-v2/filters).\n\n\nTo learn about working with _Query_ endpoints, see\n[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language)\nand [Sorting and Paging](https://dev.wix.com/api/rest/getting-started/sorting-and-paging)."
         ],
         "examples": [
           {
@@ -293,22 +273,44 @@
       "ret": {
         "type": [
           {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-bookings-backend-v2.Sessions.QuerySessionsResponse"
-                }
-              ]
-            }
+            "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilder"
           }
         ],
         "doc": null
       },
       "docs": {
-        "summary": "<blockquote class='warning'>\n__Deprecation Notice:__",
+        "summary": "Queries for sessions according to the specified filters and paging.",
         "description": [
-          "Use `QueryEventSessionInstances` instead.\n</blockquote>\n"
+          "",
+          "The query must include a time range, as following:",
+          "- `gte(\"end.timestamp\", \"<timestamp value>\")`",
+          "- `lt(\"start.timestamp\", \"<timestamp value>\")`",
+          "",
+          "Defaults:",
+          "- `limit`: `50`",
+          "- `recurrence`: `{\"$exists\": false}`. I.e, only recurring session instances are returned.",
+          "- `sort`: by `start.timestamp` in ascending order.",
+          "- `fieldsets`: public session data is returned.",
+          "",
+          "To query for recurring sessions, use `{\"$exists\": true}` with an optional `scheduleId` filter.",
+          "To query for complete sessions having personal information use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).",
+          "",
+          "Limits:",
+          "- Max time range is 1 year.",
+          "- Custom sorting is not supported.",
+          "- Only `$and` logical operator is supported.",
+          "- Only `$hasSome` array operator is supported.",
+          "",
+          "Note:",
+          "For advanced queries of `EVENT` session instances, consider using the `QueryEventSessionInstances` API.",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`start.timestamp`|[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt)|",
+          "|`affectedSchedules.scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`tags`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`recurringSessionId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
+          "|`type`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|"
         ],
         "examples": [
           {
@@ -2186,27 +2188,33 @@
       "members": [
         {
           "name": "fromDate",
+          "optional": true,
           "type": [
-            {
-              "nativeType": "undefined"
-            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\nRequired, if `query.cursorPaging` is omitted.\n`end.timestamp` of all returned sessions is greater than or equal to `fromDate`."
+        },
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.QueryV2"
+            }
+          ],
+          "doc": "Information about filters, paging, and returned fields."
         },
         {
           "name": "toDate",
+          "optional": true,
           "type": [
-            {
-              "nativeType": "undefined"
-            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\nRequired, if `query.cursorPaging` is omitted.\n`start.timestamp` of all returned sessions is less than or equal to `toDate`."
         }
       ],
       "docs": {
@@ -2297,32 +2305,27 @@
       "members": [
         {
           "name": "fromDate",
-          "optional": true,
           "type": [
+            {
+              "nativeType": "undefined"
+            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\nRequired, if `query.cursorPaging` is omitted.\n`end.timestamp` of all returned sessions is greater than or equal to `fromDate`."
-        },
-        {
-          "name": "query",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.QueryV2"
-            }
-          ],
-          "doc": "Information about filters, paging, and returned fields."
+          "doc": ""
         },
         {
           "name": "toDate",
-          "optional": true,
           "type": [
+            {
+              "nativeType": "undefined"
+            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\nRequired, if `query.cursorPaging` is omitted.\n`start.timestamp` of all returned sessions is less than or equal to `toDate`."
+          "doc": ""
         }
       ],
       "docs": {
@@ -2968,6 +2971,160 @@
           "doc": "The feed session version."
         }
       ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilder",
+      "members": [
+        {
+          "name": "ascending",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderAscending"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "descending",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderDescending"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "eq",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderEq"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "find",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderFind"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "hasSome",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderHasSome"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "limit",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderLimit"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lt",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderLt"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderAscending",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderDescending",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderEq",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderFind",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderHasSome",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderLimit",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryBuilderLt",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryResultNext",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionsQueryResultPrev",
+      "members": [],
       "docs": {
         "description": [
           ""
