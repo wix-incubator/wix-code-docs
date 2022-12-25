@@ -42,7 +42,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Returns availability for a given schedule ID\nThe availability for a course is calculated by:\n- Checking for total spots by the schedule's capacity\n- Checking for open spots by subtracting the current number of participants from the total spots\n* current number of participants is calculated by summing the number of participants of all bookings booked to the schedule",
+        "summary": "Returns availability for a given schedule ID\nThe availability for a course is calculated by:\n- Checking for total spots by the schedule's capacity\n- Checking for open spots by subtracting the current number of participants from the total spots\ncurrent number of participants is calculated by summing the number of participants of all bookings booked to the schedule",
         "description": [],
         "examples": [
           {
@@ -144,7 +144,7 @@
       "docs": {
         "summary": "Describes the availability for sessions\nthat match the specified query criteria.",
         "description": [
-          "The Calendar Availability APIs calculate the availability of sessions for\nappointments and classes, but not\nfor courses.\n\nThe entire list of slots is returned in case you want to display both\navailable and non-available slots in the calendar for your customers.\nUsing the `bookable` property, you can limit the display to available\nslots only.\n\n**Calculating availability**\n\nThe availability is determined\nby checking:\n+ The sessions' open slots. A slot is considered open if the session's\ncapacity is greater than number of participants.\n+ Booking policies. Policies that affect whether a slot is considered\navailable include `tooEarlyToBook`, `tooLateToBook` and `bookOnlineDisabled`.\n\nLocked sessions do not impact session availability and `bookable` can\nbe `true` even if `locked` is true. For example, if a session has a waitlist and a\nplace frees up, the slot is offered to the customers on the waitlist, one by one. The\nsesssion remains locked because there is still a waitlist, but for a period of time\nthere is availability, until a customer takes the slot.\n\n**Handling Daylight Savings Time (DST) for local time zones**\n\nBecause of DST, there are cases where certain times either do not exist\nor exist twice for a local time zone.\nFor example, the tine `00:05` on September 5th 2021 might not exist in Santiago, Chile,\nbecause at `00:00` the clock moved\n1 hour forward to `01:00.\n\nIn this case, the Availability APIs take this\ninto account and mediate the time gaps automatically. The non-existant local time is\nautomtically moved forward 1 hour to match local DST. Local times that exist do not change.\nSo if the `Query Availability` endpoint is called with a `startDate` of `2021-09-05T00:00:01.000`\nand an `endDate` of `2021-09-06T00:00:02.000`, `2021-09-05T01:00:01.000` is used in the query\ninstead. The start time shifts one hour forward and the end time remains the same.\n\n\n**Filtering for available sessions**\n\nQuery object support: **TBD** Remove this when query object is decomposed\n- **filter**: supports\n- `startDate`: Return slots with a start date and time greater than or equal to the given date.\nFormatted in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format.\nIf the `timezone` is specified when querying, the `startDate` for the query is according to the\nlocal date and time, meaning that the timezone offset in the format is ignored.\nRequired.\n- `endDate`: Return slots with an end date and time greater than or equal to the given date.\nFormatted in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format.\nIf the `timezone` is specified when querying, the `endDate` for the query is according to the\nlocal date and time, meaning that the timezone offset in the format is ignored.\nRequired.\n- `serviceId`: Return slots with a service ID that matches a service ID in the given list.\n- `resource.id`: Return slots with a resource ID that matches a resource ID in the given list.\n- `bookable`: When `true`, return only available slots. Otherwise, return both available and non-available slots.\n- `bookingPolicyViolations.tooEarlyToBook`: Return slots that match the given `tooEarlyToBook` value.\n- `bookingPolicyViolations.tooLateToBook`: Return slots that match the given `tooLateToBook` value.\n- `location.id`: Return only slots for the given business locations. Supports multiple values.\n- `openSpots`: Return slots with at least this number of open spaces. Supports 'gte' only. **TBD** Hagai will return to me.\n- **fields**: supported for all fields.\n- **paging**: Paging is supported using CursorPaging. For paging the results, i.e. with a page size of 10, set the `query.cursorPaging.limit` to a value of `10`.\nThe response will contain a value in the `pagingMetadata.cursors.next` field.\nPass this value in the `query.cursorPaging.cursor` field in the following calls and leave the `query` field empty.\n- **fieldsets**: not supported.\n"
+          "The Calendar Availability APIs calculate the availability of sessions for\nappointments and classes, but not\nfor courses.\n\nThe entire list of slots is returned in case you want to display both\navailable and non-available slots in the calendar for your customers.\nUsing the `bookable` property, you can limit the display to available\nslots only.\n\nWhen querying, you must enter a start date and an end date. This avoids very large\nresults that can impact performance.\n\n**Calculating availability**\n\nThe availability is determined\nby checking:\n+ **The sessions' open slots**. A slot is considered open if the session's\ncapacity is greater than number of participants.\n+ **Booking policies**. Policies that affect whether a slot is considered\navailable include `tooEarlyToBook`, `tooLateToBook`, and `bookOnlineDisabled`.\n\nLocked sessions do not impact session availability and `bookable` can\nbe `true` even if `locked` is `true`. For example, if a session has a waitlist and a\nplace frees up, the slot is offered to the customers on the waitlist, one by one. The\nsesssion remains locked because there is still a waitlist, but for a period of time\nthere is availability, until a customer on the waitlist takes the slot. Locking\nprevents customers who are not yet on the waitlist from grabbing the slot.\n\n**Handling Daylight Savings Time (DST) for local time zones**\n\nBecause of DST, there are cases where certain times either do not exist\nor exist twice for a local time zone.\nFor example, the tine `00:05` on September 5th 2021 might not exist in Santiago, Chile,\nbecause at `00:00` the clock moved\n1 hour forward to `01:00.\n\nIn this case, the Availability APIs take this\ninto account and mediate the time gaps automatically. The non-existant local time is\nautomtically moved forward 1 hour to match local DST. Local times that exist do not change.\nSo if the `Query Availability` endpoint is called with a `startDate` of `2021-09-05T00:00:01.000`\nand an `endDate` of `2021-09-06T00:00:02.000`, `2021-09-05T01:00:01.000` is used in the query\ninstead. The start time shifts one hour forward and the end time remains the same.\n"
         ],
         "examples": [
           {
@@ -354,7 +354,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
+          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight savings](https://example.com/) are handled when\ncalculating availability.\n"
         }
       ],
       "docs": {
@@ -384,7 +384,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
+          "doc": "The timezone for which slot availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight savings](https://example.com/) are handled when\ncalculating availability.\n"
         }
       ],
       "docs": {
@@ -544,7 +544,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.QueryV2"
             }
           ],
-          "doc": "Partially supported. See description above. **TBD** Docs must update"
+          "doc": "Query options."
         },
         {
           "name": "slotsPerDay",
@@ -554,7 +554,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included."
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\n\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included.\n"
         },
         {
           "name": "timezone",
@@ -564,7 +564,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
+          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings](https://example.com/) are handled when\ncalculating availability.\n"
         }
       ],
       "docs": {
@@ -584,7 +584,7 @@
               "referenceType": "wix-bookings-backend-v2.Availability.QueryV2"
             }
           ],
-          "doc": "Partially supported. See description above. **TBD** Docs must update"
+          "doc": "Query options."
         },
         {
           "name": "slotsPerDay",
@@ -594,7 +594,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included."
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\n\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included.\n"
         },
         {
           "name": "timezone",
@@ -604,7 +604,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
+          "doc": "The timezone for which session availability is to be calculated. If specified,\ndates are based on the local date/time, meaning that the timezone offset\nin the date's format is ignored.\n\nLearn more about how [timezones and daylight\nsavings](https://example.com/) are handled when\ncalculating availability.\n"
         }
       ],
       "docs": {
@@ -678,7 +678,7 @@
               }
             }
           ],
-          "doc": "Array of projected fields. A list of specific field names to return. If `fieldsets` are also specified, the union of `fieldsets` and `fields` is returned."
+          "doc": "List of projected fields to return. All fields are supported."
         },
         {
           "name": "filter",
@@ -688,7 +688,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
+          "doc": "Filter object. For a list of\nfields you can filter by, see [Calendar Availability: Supported Fields, Filters and Sorting](https://example.com/)."
         },
         {
           "name": "sort",
@@ -705,7 +705,7 @@
               }
             }
           ],
-          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+          "doc": "Sort options.\nCurrently, only sorting by `startDate` is supported. For details\non sorting, see [Calendar Availability: Supported Fields, Filters and Sorting](https://example.com/)."
         }
       ],
       "extra": {
@@ -795,7 +795,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The end time of this slot in\n[RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format. Required."
+          "doc": "The end time of this slot in\n[RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) format. Required.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `end_date` is ignored.\n"
         },
         {
           "name": "location",
@@ -855,7 +855,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The start time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `startDate` is ignored.\n"
+          "doc": "The start time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `start_date` is ignored.\n"
         },
         {
           "name": "timezone",
@@ -865,7 +865,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The timezone for which slot availability is to be calculated.\n\nIf `timezone` is specified,\ndates are based on the local date/time. This means that the timezone offset\nin the `endDate` is ignored.\n\nLearn more about how [timezones and daylight\nsavings]() are handled when\ncalculating availability. **TBD** DOCS to fix link.\n"
+          "doc": "The timezone for which slot availability is to be calculated.\n\nLearn more about how [timezones and daylight savings](https://example.com/) are handled when\ncalculating availability.\n"
         }
       ],
       "docs": {
@@ -885,7 +885,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the slot is bookable. Bookability is determined by checking a sessions' open slots and booking policies."
+          "doc": "Whether the slot is bookable. Bookability is determined by checking a\nsession's open slots and booking policies. Locks are not taken into\naccount."
         },
         {
           "name": "bookingPolicyViolations",
@@ -905,7 +905,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether the slot is locked. Slots that are locked cannot be booked. Read-only. **TBD** Where setr (not API)? Hagai will tell me"
+          "doc": "Indicates whether the slot is locked because a waitlist exists.\nWhen a slot frees up, the slot is offered to the next customer on the waitlist. Read-only."
         },
         {
           "name": "openSpots",
@@ -935,7 +935,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots for this slot.\nFor example, if a session has a total of 10 spots and 3 spots are booked, `spotsTotal` is 10 and `openSpots` is 7."
+          "doc": "Total number of spots for this slot.\nFor example, if a session has a total of 10 spots and 3 spots are booked,\n`spotsTotal` is 10 and `openSpots` is 7."
         },
         {
           "name": "waitingList",
@@ -1036,7 +1036,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots and open spots for this waiting list.\nFor example, a Yoga class with 10 waiting list spots and 3 registered on the waiting list has 10 `total_spots` and 7 `open_spots`."
+          "doc": "Total number of spots and open spots for this waiting list.\nFor example, a Yoga class with 10 waiting list spots and 3 registered\non the waiting list has 10 `total_spots` and 7 `open_spots`."
         }
       ],
       "docs": {
