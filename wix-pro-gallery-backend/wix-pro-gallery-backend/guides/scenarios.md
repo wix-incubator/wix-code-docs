@@ -16,7 +16,7 @@ When you add a pro gallery element to your site using the **Add Panel** in the E
 
 ### Scenario 2: Creating a Pro Gallery using the Pro Gallery Backend API (Not recommended)
 
->**Note:** This scenario is not recommended because it has limitations and requires a few extra steps.  
+>**Note:** This scenario is not recommended because it has limitations and requires extra steps.  
 
 When you create a pro gallery on your site's backend, it is a standalone gallery as there isn't a corresponding frontend pro gallery element. However, you may want to display a pro gallery from your site's backend on your site. 
 

@@ -26,7 +26,7 @@ You can get a pro gallery's ID in 2 ways:
 ### Creating a Pro Gallery
 There are [2 ways to create a pro gallery](#scenarios):
 1. Creating a Pro Gallery using the Editor (recommended).
-2. Creating a Pro Gallery using the Pro Gallery Backend API(not recommended). 
+2. Creating a Pro Gallery using the Pro Gallery Backend API (not recommended). 
 
 ### Before you begin
 It's important to note these points regarding before coding:
