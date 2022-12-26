@@ -19,7 +19,7 @@ select elements with the documented class names only.
 
 </blockquote>
 
-## `.video-box`
+## `.video-player`
 
 Targets videoplayer elements.
 For example:
