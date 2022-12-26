@@ -19,7 +19,7 @@ select elements with the documented class names only.
 
 </blockquote>
 
-### `.image`
+## `.image`
 
 Targets image elements.
 For example:
