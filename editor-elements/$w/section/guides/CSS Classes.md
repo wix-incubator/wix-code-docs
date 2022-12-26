@@ -19,7 +19,7 @@ select elements with the documented class names only.
 
 </blockquote>
 
-### `.section`
+## `.section`
 
 Targets section elements.
 For example:
