@@ -45,7 +45,7 @@ For example:
 }
 ```
 
-## Horizontal and vertical line classes
+## Line classes
 
 ### `.horizontal-line`
 
@@ -66,5 +66,45 @@ For example:
 ```css
 .vertical-line {
   border-left: 12px dashed pink;
+}
+```
+
+## Search bar classes
+
+### `.search-bar`
+
+Targets search bar elements.
+For example:
+
+```css
+.search-bar {
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+}
+```
+
+### `.search-bar__icon`
+
+Targets search bar icons.
+For example:
+
+```css
+.search-bar__icon {
+  fill: #840292;
+}
+```
+
+### `.search-bar__input`
+
+Targets search bar input boxes.
+For example:
+
+```css
+.search-bar__input {
+  border: none;
+  border-bottom: 2px solid #840292;
+  background-color: #dfd2f4;
+  font-family: monospace;
 }
 ```
