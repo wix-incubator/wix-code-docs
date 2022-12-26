@@ -21,7 +21,7 @@ select elements with the documented class names only.
 
 ## `.video-box`
 
-Targets videobox elements.
+Targets VideoBox elements.
 For example:
 
 ```css
