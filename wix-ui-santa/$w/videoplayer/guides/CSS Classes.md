@@ -21,7 +21,7 @@ select elements with the documented class names only.
 
 ## `.video-player`
 
-Targets videoplayer elements.
+Targets VideoPlayer elements.
 For example:
 
 ```css
