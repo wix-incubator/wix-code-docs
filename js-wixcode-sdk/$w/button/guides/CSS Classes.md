@@ -19,7 +19,7 @@ select elements with the documented class names only.
 
 </blockquote>
 
-### `.button`
+## `.button`
 
 Targets button elements.
 For example:
@@ -32,7 +32,7 @@ For example:
 }
 ```
 
-### `.button__label`
+## `.button__label`
 
 Targets button [label text]($w/button/label).
 For example:
@@ -46,7 +46,7 @@ For example:
 }
 ```
 
-### `.button__icon`
+## `.button__icon`
 
 Targets button [icon images]($w/button/icon).
 For example:
