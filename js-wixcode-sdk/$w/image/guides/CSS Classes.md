@@ -1,9 +1,9 @@
-# Image CSS Classes
+# Box CSS Classes
 
 > This feature is not yet available to all users.
 
 You can use the classes listed below
-to style your `Image` elements with CSS.
+to style your `Box` elements with CSS.
 
 For more information on styling your elements with CSS, see
 [Styling Elements with CSS]($w/styling-elements-with-css) and the
@@ -19,17 +19,16 @@ select elements with the documented class names only.
 
 </blockquote>
 
-## `.image`
+## `.box`
 
-Targets image elements.
+Targets box elements.
 For example:
 
 ```css
-.image {
+.box {
   width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  border-radius: 12px;
   filter: drop-shadow(16px 16px 10px gray);
-  cursor: grab;
+  background-color: #92f0a0;
 }
 ```
