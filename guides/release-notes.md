@@ -7,6 +7,17 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Wix Blog
+
+`wix-blog-backend`
+
+Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
+  - [posts](wix-blog-backend/posts) 
+  - [categories](wix-blog-backend/categories) 
+  - [tags](wix-blog-backend/tags)
+
+(December 22, 2022)
+
 ### Update: Apply a coupon to specific billing cycles
 
 `wix-marketing-backend`

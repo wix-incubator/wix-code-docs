@@ -34,7 +34,7 @@ import wixBlogBackend from 'wix-blog-backend';
 
 ## Additional Information
 
-With [Wix Multilangual](https://support.wix.com/en/article/wix-multilingual-an-overview), a blog can be translated into multiple languages. 
+With [Wix Multilingual](https://support.wix.com/en/article/wix-multilingual-an-overview), a blog can be translated into multiple languages. 
 Learn more about [translating a blog](https://support.wix.com/en/article/wix-multilingual-translating-your-blog).
 
 
