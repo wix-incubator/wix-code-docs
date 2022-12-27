@@ -10,6 +10,125 @@
   "properties": [],
   "operations": [
     {
+      "name": "createSession",
+      "params": [
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The session to create.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "session",
+        "session.end",
+        "session.scheduleId",
+        "session.start"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-backend-v2.Sessions.CreateSessionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a session.",
+        "description": [
+          "A session is one of the following:\n+ `\"EVENT\"`: Reserved period of time on any [schedule](wix-bookings-backend.sessions/introduction#schedules). For example, an appointment, class, or course. Events are visible in the Dashboard in the Bookings app's [**Booking Calendar**](https://support.wix.com/en/article/wix-bookings-about-the-wix-bookings-calendar) page. Set `type` to `\"EVENT\"` when creating sessions that reserve time on a service's schedule, or when creating a blocked time for a resource.\n+ `\"WORKING_HOURS\"`: Placeholder for available time on a resource’s schedule. Set `type` to `\"WORKING_HOURS\"` when creating sessions for resource availability.\n\nSessions belong to a schedule. Schedules are owned by a resource or a service.\n\nA session may be an individual session or a recurring session.\nAn individual session has a discrete start and end date, while a recurring session defines a series of repeating sessions. An instance of a recurring session is a specific session in a series of repeating sessions, generated according to the recurrence rule.\nThe `start` and `end` properties set the time and duration of the session. For non-recurring sessions, you can use either the `timestamp` or `localDateTime` properties.\nFor recurring sessions, use the `localDateTime` property only. For recurring sessions, the `start` property sets the date and time of the first recurring session, subject to the recurrence rule. For example, if you set the `start` to Saturday, May 1 and your recurrence rule says every second Monday, then the first session will only be on Monday, May 10.\n\nThe `year`, `monthOfYear` and `dayOfMonth` properties in the `end` property are used with the `hourOfDay` and `minutesOfHour` properties to set the duration of each session relative to the `start`.\nThe `UNTIL` keyword in the `recurrence` property sets the date for the last recurring session.\n\nYou can create a session that blocks hours on the resource's calendar, making the resource unavailable.\nCreate a non-recurring session of type `\"EVENT\"`, and add `\"Blocked\"` to the `tags` array.\n\n>**Notes:**\n> + For properties where there is no explicit timezone information, the timezone used is the business’s timezone.\n> + Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can create a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "createSession example",
+            "body": [
+              "",
+              "    function createSession() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "deleteSession",
+      "params": [
+        {
+          "name": "sessionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the session to delete.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.DeleteSessionOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "sessionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Deletes a session.",
+        "description": [
+          "Use the `participantNotification` property to send an email to the participants when the session is deleted.\nWhen deleting a session of type `\"EVENT\"` where a booking exists, the booking's status is updated to `\"CANCELED\"`.\nTo delete a set of recurring sessions, specify the session's `recurringSessionId` in the `sessionId` property in the parameters.\nWhen deleting a recurrence, only future instances of the recurrence are deleted.\n\n>**Note:** Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can delete a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "deleteSession example",
+            "body": [
+              "",
+              "    function deleteSession() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
       "name": "deprecatedQuerySessions",
       "params": [
         {
@@ -226,12 +345,30 @@
     },
     {
       "name": "querySessions",
-      "params": [],
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.QuerySessionsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
       "requiredFields": [],
       "ret": {
         "type": [
           {
-            "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilder"
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-backend-v2.Sessions.V2QuerySessionsResponse"
+                }
+              ]
+            }
           }
         ],
         "doc": null
@@ -240,35 +377,27 @@
         "summary": "Queries for sessions according to the specified filters and paging.",
         "description": [
           "",
-          "The query must include a time range, as following:",
-          "- `gte(\"end.timestamp\", \"<timestamp value>\")`",
-          "- `lt(\"start.timestamp\", \"<timestamp value>\")`",
+          "For a detailed list of supported filters, see [Filtering](https://bo.wix.com/wix-docs/rest/bookings/bookings---calendar/filtering).",
           "",
-          "Defaults:",
-          "- `limit`: `50`",
-          "- `recurrence`: `{\"$exists\": false}`. I.e, only recurring session instances are returned.",
-          "- `sort`: by `start.timestamp` in ascending order.",
-          "- `fieldsets`: public session data is returned.",
+          "The defaults are:",
+          "- `instance` is `true`. Meaning, only instances of recurring sessions and single sessions are returned.",
+          "- `query.cursorPaging.limit` is `50`.",
+          "- sessions are sorted by their `start.timestamp` in `ASC` order.",
+          "- public session data is returned.",
           "",
-          "To query for recurring sessions, use `{\"$exists\": true}` with an optional `scheduleId` filter.",
-          "To query for complete sessions having personal information use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).",
+          "To query for recurring sessions, that define recurrence patterns, use `instance = false`.",
+          "",
+          "To query for complete sessions, having personal information, use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).",
           "",
           "Limits:",
-          "- Max time range is 1 year.",
+          "- The max time range is 1 year.",
           "- Custom sorting is not supported.",
-          "- Only `$and` logical operator is supported.",
-          "- Only `$hasSome` array operator is supported.",
-          "",
-          "Note:",
-          "For advanced queries of `EVENT` session instances, consider using the `QueryEventSessionInstances` API.",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
           "|`scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
-          "|`start.timestamp`|[`lt()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#lt)|",
           "|`affectedSchedules.scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
           "|`tags`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
-          "|`recurringSessionId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
-          "|`type`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|"
+          "|`recurringSessionId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|"
         ],
         "examples": [
           {
@@ -276,6 +405,80 @@
             "body": [
               "",
               "    function querySessions() {",
+              "",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "updateSession",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session ID.",
+          "required": true
+        },
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.UpdateSession"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.UpdateSessionOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "session"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-backend-v2.Sessions.UpdateSessionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Updates a session.",
+        "description": [
+          "When you update a recurring session, only the future instances of the recurrence will be updated. Changing an individual instance's `start` or `end` time will change the way updates to `start` and `end` on the recurring session affect the session instance:\n|Change made to the instance | Effect of changes made to the recurrence\n|--|--|\n|Instance `start` time changed.|Changes to the recurring session's `start` or `end` time will not update the instance.|\n|Instance `end` time changed, changing the session's duration| Changes made to the recurring session's start time will be updated on the instance while keeping the new duration, but changes to the recurring session's `end` time not be updated on the instance.\n|Updating a changed `start` time for an instance back to the recurring session's value.|Future changes to the recurring session `start` and `end` times will update the instance's `starts` and `end` time.\n\nChanges to properties on the recurring session, other than `start` and `end`, are always updated on the recurrence instance.\n\nUse the `options.participantNotification` object to notify participants if the session has been booked.\n\n>**Notes:**\n> + Where there is no explicit timezone information, the timezone used is the business’s timezone.\n> + Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can update a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "updateSession example",
+            "body": [
+              "",
+              "    function updateSession() {",
               "",
               "  }",
               "",
@@ -792,6 +995,172 @@
       }
     },
     {
+      "name": "CommonCursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of sessions to return.<br/>\nDefault to `50`. Maximum `1000`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CommonCursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CommonQueryV2",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CommonCursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results.\nNot used in the first request.\nFollowing requests use the cursor token and not `filter`."
+        },
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Predefined sets of fields to return.\n\nBy default only public session data is returned.\n\nSupported values:\n- `ALL_PI`: Returns complete session objects, having personal information. Requires the `CALENDAR.SESSION_READ_PI` permission.\n"
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Filter object.<br/>\nSee [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language) for more information.\n\nFor a detailed list of supported filters, see\n[Filtering](https://bo.wix.com/wix-docs/rest/bookings/bookings---calendar/filtering).\n"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCommonQueryV2PagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CommonQueryV2PagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CommonCursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results.\nNot used in the first request.\nFollowing requests use the cursor token and not `filter`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateSessionRequest",
+      "members": [
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The session to create."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateSessionResponse",
+      "members": [
+        {
+          "name": "session",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The created session."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "CursorPaging",
       "members": [
         {
@@ -822,6 +1191,46 @@
       }
     },
     {
+      "name": "CursorPagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of sessions returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CommonCursors"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "hasNext",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates if there are more results after the current page.\nIf `true`, another page of results can be retrieved.\nIf `false`, this is the last page."
+        }
+      ],
+      "docs": {
+        "description": [
+          "This is the preferred message for cursor-paging enabled services"
+        ]
+      }
+    },
+    {
       "name": "Cursors",
       "members": [
         {
@@ -845,6 +1254,64 @@
           "doc": "Cursor pointing to previous page in the list of results."
         }
       ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteSessionOptions",
+      "members": [
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteSessionRequest",
+      "members": [
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        },
+        {
+          "name": "sessionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the session to delete."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteSessionResponse",
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -1759,36 +2226,6 @@
       }
     },
     {
-      "name": "Paging",
-      "members": [
-        {
-          "name": "limit",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Number of items to load."
-        },
-        {
-          "name": "offset",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Number of items to skip in the current sort order."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "PagingMetadataV2",
       "members": [
         {
@@ -1940,6 +2377,36 @@
       }
     },
     {
+      "name": "ParticipantNotification",
+      "members": [
+        {
+          "name": "message",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Custom message to send to the participants about the changes to the booking."
+        },
+        {
+          "name": "notifyParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to send the message about the changes to the customer.\n\nDefault: `false`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Price",
       "members": [
         {
@@ -1971,168 +2438,6 @@
             }
           ],
           "doc": "Amount of a down payment or deposit as part of the transaction."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Query1klimitCursorPaging",
-      "members": [
-        {
-          "name": "cursor",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
-        },
-        {
-          "name": "limit",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Number of items to load."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Query1klimitQueryV2",
-      "members": [
-        {
-          "name": "cursorPaging",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitCursorPaging"
-            }
-          ],
-          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
-        },
-        {
-          "name": "fields",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Array of projected fields. A list of specific field names to return. If `fieldsets` are also specified, the union of `fieldsets` and `fields` is returned."
-        },
-        {
-          "name": "fieldsets",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Array of named, predefined sets of projected fields. A array of predefined named sets of fields to be returned. Specifying multiple `fieldsets` will return the union of fields from all sets. If `fields` are also specified, the union of `fieldsets` and `fields` is returned."
-        },
-        {
-          "name": "filter",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Object"
-            }
-          ],
-          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
-        },
-        {
-          "name": "paging",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Paging"
-            }
-          ],
-          "doc": "Paging options to limit and skip the number of items."
-        },
-        {
-          "name": "sort",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-backend-v2.Sessions.Sorting"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfQuery1klimitQueryV2PagingMethodOneOf",
-            "members": [
-              "cursorPaging",
-              "paging"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Query1klimitQueryV2PagingMethodOneOf",
-      "members": [
-        {
-          "name": "cursorPaging",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitCursorPaging"
-            }
-          ],
-          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
-        },
-        {
-          "name": "paging",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Paging"
-            }
-          ],
-          "doc": "Paging options to limit and skip the number of items."
         }
       ],
       "docs": {
@@ -2263,27 +2568,53 @@
       "members": [
         {
           "name": "fromDate",
+          "optional": true,
           "type": [
-            {
-              "nativeType": "undefined"
-            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `end.timestamp` is greater than the `fromDate`, will also be returned.\n"
+        },
+        {
+          "name": "instance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to filter only instances of recurring sessions and single sessions.</br>\nDefault is `true`.\n\nTo filter recurring sessions, that define recurrence patterns, provide `false`.\n"
+        },
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CommonQueryV2"
+            }
+          ],
+          "doc": "The query containing filters, paging and field sets."
         },
         {
           "name": "toDate",
+          "optional": true,
           "type": [
-            {
-              "nativeType": "undefined"
-            },
             {
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `start.timestamp` is less than the `toDate`, will also be returned.<br/>\nMust be at most 1 year after the given `fromDate`.\n"
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether to filter sessions by their type. I.e, `EVENT` or `WORKING_HOURS` sessions.<br/>\nBy default all session types are returned."
         }
       ],
       "docs": {
@@ -2307,6 +2638,7 @@
         },
         {
           "name": "query",
+          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-backend-v2.Sessions.QueryV2"
@@ -2936,160 +3268,6 @@
       }
     },
     {
-      "name": "SessionsQueryBuilder",
-      "members": [
-        {
-          "name": "ascending",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderAscending"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "descending",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderDescending"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "eq",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderEq"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "find",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderFind"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "hasSome",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderHasSome"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "limit",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderLimit"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "lt",
-          "type": [
-            {
-              "referenceType": "wix-bookings-backend-v2.Sessions.SessionsQueryBuilderLt"
-            }
-          ],
-          "doc": ""
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderAscending",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderDescending",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderEq",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderFind",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderHasSome",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderLimit",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryBuilderLt",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryResultNext",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "SessionsQueryResultPrev",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "ShortenCacheRequest",
       "members": [
         {
@@ -3121,36 +3299,6 @@
             }
           ],
           "doc": "The updated cache."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Sorting",
-      "members": [
-        {
-          "name": "fieldName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Name of the field to sort by."
-        },
-        {
-          "name": "order",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Sort order."
         }
       ],
       "docs": {
@@ -3348,16 +3496,456 @@
       }
     },
     {
+      "name": "UpdateSession",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session ID."
+        },
+        {
+          "name": "affectedSchedules",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-backend-v2.Sessions.LinkedSchedule"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "An object specifying a list of schedules and the way each schedule's availability is affected by the session. For example, the schedule of an instructor is affected by sessions of the class that they instruct.\nThe array is inherited from the schedule and can be overridden even if the session is a recurring session."
+        },
+        {
+          "name": "calendarConference",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CalendarConference"
+            }
+          ],
+          "doc": "A conference created for the session according to the details set in the schedule's conference provider information.\nIf the session is a recurring session, this field is inherited from the schedule."
+        },
+        {
+          "name": "capacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of participants that can be added to the session. Defaults to the schedule capacity.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CalendarDateTime"
+            }
+          ],
+          "doc": "An object specifying the end date and time of the session. The `end` time must be after the `start` time and be same type as `start`.\nIf the session is a recurring session, `end` must contain a `localDateTime`."
+        },
+        {
+          "name": "externalCalendarOverrides",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.ExternalCalendarOverrides"
+            }
+          ],
+          "doc": "Title and description values to override session defaults when syncing to an external calendar.\nLearn more about [syncing calendars](https://support.wix.com/en/article/wix-bookings-important-information-about-syncing-google-calendars-with-wix-bookings).\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "inheritedFields",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of properties for which values were inherited from the schedule.\nThis does not include participants that were inherited from the schedule."
+        },
+        {
+          "name": "instanceOfRecurrence",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string representing a recurrence rule (RRULE) if the session is an instance of a recurrence pattern.\nEmpty when the session is not an instance of a recurrence rule, or if the session defines a recurrence pattern, and `recurrence` is not empty."
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Location"
+            }
+          ],
+          "doc": "An object describing the location where the session takes place.\nDefaults to the schedule location.\nFor single sessions, `session.location.businessLocation` can only be provided for locations that are defined in the schedule using `schedule.location` or `schedule.availability.locations`."
+        },
+        {
+          "name": "notes",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional information about the session.\nNotes are not supported for recurring sessions."
+        },
+        {
+          "name": "originalStart",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Original start date and time of the session in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format."
+        },
+        {
+          "name": "participants",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-backend-v2.Sessions.Participant"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of participants booked for the session.\nThe list includes participants who have registered for this specific session, and participants who have registered for a schedule that includes this session.\nIf the session is a recurring session, this field must be empty."
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Rate"
+            }
+          ],
+          "doc": "The price options offered for the session.  Defaults to the schedule rate.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "recurrence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string representing a recurrence rule (RRULE) for a recurring session, as defined in [iCalendar RFC 5545](https://icalendar.org/iCalendar-RFC-5545/3-3-10-recurrence-rule.html).\nIf the session is an instance of a recurrence pattern, the `instanceOfRecurrence` property will be contain the recurrence rule and this property will be empty.\nThe RRULE defines a rule for repeating a session.\nSupported parameters are:\n\n|Keyword|Description|Supported values|\n|--|--|---|\n|`FREQ`|The frequency at which the session is recurs. Required.|`WEEKLY`|\n|`INTERVAL`|How often, in terms of `FREQ`, the session recurs. Default is 1. Optional.|\n|`UNTIL`|The UTC end date and time of the recurrence. Optional.|\n|`BYDAY`|Day of the week when the event should recur. Required.|One of: `MO`, `TU`, `WE`, `TH`, `FR`, `SA`, `SU`|\n\n\nFor example, a session that repeats every second week on a Monday until January 7, 2022 at 8 AM:\n`\"FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;UNTIL=20220107T080000Z\"`\n\n<!--ORIGINAL COMMENTS:\n`FREQ` — The frequency with which the session should be repeated (such as DAILY or WEEKLY).\nSupported `WEEKLY` value is supported.\nINTERVAL — Works together with FREQ to specify how often the session should be repeated. For example, FREQ=WEEKLY;INTERVAL=2 means once every two weeks. Optional. Default value is 1.\nCOUNT — The number of times this event should be repeated. Not yet supported.\nUNTIL — The UTC date & time until which the session should be repeated. This parameter is optional. When it is not specified, the event repeats forever.\nThe format is a short ISO date, followed by 'T' and a short time with seconds and without milliseconds, terminated by the UTC designator 'Z'. For example, until Jan. 19th 2018 at 7:00 AM: 'UNTIL=20180119T070000Z'.\nBYDAY - The days of the week when the event should be repeated. Currently, only a single day is supported. This parameter is mandatory.\nPossible values are: MO, TU, WE, TH, FR, SA, SU\nNote that DTSTART and DTEND lines are not allowed in this field; session start and end times are specified in the start and end fields.\n**Example**: FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;UNTIL=20200427T070000Z\nORIGINAL COMMENTS-->\n"
+        },
+        {
+          "name": "recurringIntervalId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Recurring interval ID. Defined when a session will be a recurring session. read-only. Optional.\nFor exmaple, when creating a class service  with recurring sessions, you add a recurrence rule to create recurring sessions.\nThis field is omitted for single sessions or instances of recurring sessions.\nSpecified when the session was originally generated from a schedule recurring interval.\nDeprecated. Use `recurringSessionId`."
+        },
+        {
+          "name": "recurringSessionId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the recurring session if this session is an instance of a recurrence. Use this ID to update the recurrence and all of the instances."
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule that the session belongs to."
+        },
+        {
+          "name": "scheduleOwnerId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the resource or service that the session's schedule belongs to."
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CalendarDateTime"
+            }
+          ],
+          "doc": "An object specifying the start date and time of the session. If the session is a recurring session, `start` must contain a `localDateTime`."
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session status.\n<!--ONLY:VELO\nOne of:\n- `\"CONFIRMED\"` Default value.\n- `\"CANCELLED\"` The session was deleted.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "tags",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Tags for the session.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "timeReservedAfter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Time reserved after the session end time, derived from the schedule availability constraints and the time between slots. Read-only.\nIf the session is a recurring session, this field must be empty."
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session title.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "totalNumberOfParticipants",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of participants booked for the session. Read-only.\nCalculated as the sum of the party sizes."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session type.\n<!--ONLY:VELO\nOne of:\n- `\"EVENT\"` Reserved period of time on the schedule. For example, an appointment, class, course, or blocked time. Events are visible in the Dashboard in the Bookings app's [Booking Calendar](https://support.wix.com/en/article/wix-bookings-about-the-wix-bookings-calendar) page.\n- `\"WORKING_HOURS\"` Placeholder for available time on a resource’s schedule.\n<!--END:ONLY:VELO-->"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateSessionOptions",
+      "members": [
+        {
+          "name": "fieldmask",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Field mask of fields to update."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateSessionRequest",
+      "members": [
+        {
+          "name": "fieldmask",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Field mask of fields to update."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        },
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The session to update."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateSessionResponse",
+      "members": [
+        {
+          "name": "session",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The updated session."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "V2QuerySessionsRequest",
       "members": [
         {
-          "name": "query",
+          "name": "fromDate",
+          "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-backend-v2.Sessions.Query1klimitQueryV2"
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `end.timestamp` is greater than the `fromDate`, will also be returned.\n"
+        },
+        {
+          "name": "instance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to filter only instances of recurring sessions and single sessions.</br>\nDefault is `true`.\n\nTo filter recurring sessions, that define recurrence patterns, provide `false`.\n"
+        },
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-backend-v2.Sessions.CommonQueryV2"
             }
           ],
           "doc": "The query containing filters, paging and field sets."
+        },
+        {
+          "name": "toDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `start.timestamp` is less than the `toDate`, will also be returned.<br/>\nMust be at most 1 year after the given `fromDate`.\n"
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether to filter sessions by their type. I.e, `EVENT` or `WORKING_HOURS` sessions.<br/>\nBy default all session types are returned."
         }
       ],
       "docs": {
@@ -3370,11 +3958,11 @@
       "name": "V2QuerySessionsResponse",
       "members": [
         {
-          "name": "metadata",
+          "name": "pagingMetadata",
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-backend-v2.Sessions.PagingMetadataV2"
+              "referenceType": "wix-bookings-backend-v2.Sessions.CursorPagingMetadata"
             }
           ],
           "doc": "Paging metadata."
