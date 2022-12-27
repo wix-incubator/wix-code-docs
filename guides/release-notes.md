@@ -11,10 +11,10 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-blog-backend`
 
-Use the new [Blog API](https://www.wix.com/velo/reference/wix-blog-backend) to get, list, and query the following from your blog site:
-  - [posts](https://www.wix.com/velo/reference/wix-blog-backend/posts) 
-  - [categories](https://www.wix.com/velo/reference/wix-blog-backend/categories) 
-  - [tags](https://www.wix.com/velo/reference/wix-blog-backend/tags)
+Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
+  - [posts](wix-blog-backend/posts) 
+  - [categories](wix-blog-backend/categories) 
+  - [tags](wix-blog-backend/tags)
 
 (December 22, 2022)
 
