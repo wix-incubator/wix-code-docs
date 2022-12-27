@@ -7,6 +7,17 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Wix Blog
+
+`wix-blog-backend`
+
+Use the new [Blog API](https://www.wix.com/velo/reference/wix-blog-backend) to get, list, and query the following from your blog site:
+  - [posts](https://www.wix.com/velo/reference/wix-blog-backend/posts) 
+  - [categories](https://www.wix.com/velo/reference/wix-blog-backend/categories) 
+  - [tags](https://www.wix.com/velo/reference/wix-blog-backend/tags)
+
+(December 22, 2022)
+
 ### Update: Apply a coupon to specific billing cycles
 
 `wix-marketing-backend`
