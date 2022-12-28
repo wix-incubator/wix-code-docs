@@ -173,3 +173,30 @@ For example:
   background-color: #a2a2fc;
 }
 ```
+
+## Mobile menu classes
+
+### `.mobile-menu__icon`
+
+Targets the mobile menu show/hide icon.
+For example:
+
+```css
+.mobile-menu__icon {
+  fill: #840292;
+}
+```
+
+### `.mobile-menu`
+
+Targets the mobile menu container element.
+For example:
+
+```css
+.mobile-menu {
+  width: 90%;
+  height: 90%;
+  border: 2px solid black;
+  border-radius: 32px;
+}
+```
