@@ -13,20 +13,23 @@ This article describes how you can choose an existing pro gallery on your site's
   
 We start by calling the [listGalleries()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/progallery/listgalleries) function to get a list of all the pro galleries on our site's backend. Then we choose the pro gallery we want to display on our live site. To export the gallery we want from our site's backend, we call the [getGallery()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/progallery/getgallery) function with the ID of the pro gallery that we chose. To use the exported backend gallery on our frontend, we need to first write code to convert the backend gallery items to the frontend [$w() Gallery](https://www.wix.com/velo/reference/$w/gallery/currentitem) items format. This is because currently the backend gallery API and the frontend $w() Gallery API have different formats. Last, we import our converted items to our page code, and set the items to a particular gallery element on our page. This temporarily overrides the frontend gallery element's items with the converted backend gallery items. Once the site is published, the converted pro gallery items are visible on our live site.
 
-Note
-
+>**Note:**
 This example assumes you used the [createGallery()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/progallery/creategallery) API to create one or more pro galleries in site's your backend. 
 
 ## Before You Start
 
 Before you start working with the Wix pro gallery in code, make sure to [add a Pro Gallery to your site](https://support.wix.com/en/article/wix-pro-gallery-adding-and-setting-up-your-gallery#step-1-add-wix-pro-gallery-to-your-site). In the steps below, we'll first take a look at the code piece by piece to understand what it's doing.
 
-Important
+<blockquote class="important">
+
+__Important:__
 
 Note the following limitations when converting backend gallery items to the frontend [$w() Gallery](https://www.wix.com/velo/reference/$w/gallery/currentitem) items format:  
 
 * Backend galleries that contain text items can't be imported to your page code. Trying to do so throws an error, and breaks the gallery on your live site. This is because text items can't be converted to the frontend gallery items format, as the frontend [$w() Gallery](https://www.wix.com/velo/reference/$w/gallery/currentitem) items currently only support image and video types.
 * Backend galleries items that contain a link with text don't appear on your site. This is because the text property in the item's link object can't be converted to the frontend gallery items format, as the frontend [$w() Gallery](https://www.wix.com/velo/reference/$w/gallery/currentitem) items object doesn't contain a link with text property.
+
+</blockquote>
 
 ## Step 1: List All Pro Galleries on the Backend 
 
@@ -55,9 +58,12 @@ export async function myListGalleriesFunction() {
 
 **Lines 7-11**: We catch and handle any potential errors.
 
-Important
+<blockquote class="important">
+
+__Important:__
 
 The function in this web module is used for functional testing only. If you don't want to expose all your backend gallery contents, [change the function's permissions to "Admin"](https://support.wix.com/en/article/velo-about-web-module-permissions). 
+</blockquote>
 
 ## Step 2: Select a Gallery to Display on Live Site
 
@@ -147,9 +153,11 @@ $w('#galleryButton').onClick(async () => {
 
 **Lines 10-15**: We then catch and handle any potential errors.
 
-Important
+<blockquote class="important">
+__Important:__
 
 Setting the frontend gallery element's items to the converted gallery items temporarily overrides the frontend gallery element's items with the converted backend gallery items. However, the pro gallery element's ID remains the same. For example, if you call the [getGallery()](https://www.wix.com/velo/reference/wix-pro-gallery-backend/progallery/getgallery) function with the gallery element's ID, the original gallery element's items are returned, and not the converted backend gallery items.
+</blockquote>
 
 ## All The Code
 
