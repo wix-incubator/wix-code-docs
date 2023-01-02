@@ -18,13 +18,13 @@ With the Pro Gallery backend API, you can:
 
 You can get a pro gallery's ID in 2 ways:
 
-1. Call the [`listGalleries()`](../progallery/listgalleries) function to get a list of all your site's pro galleries and their IDs, and search for the one you want. 
+1. Call the [`listGalleries()`](./progallery/listgalleries) function to get a list of all your site's pro galleries and their IDs, and search for the one you want. 
 2. Get a pro gallery element's ID by clicking the element in the Editor. Click **Settings > Support**. Scroll down to **Gallery Info** to see the ID. 
 
 ![GalleryID](get-id.png)
 
 ### Creating a Pro Gallery
-There are [2 ways to create a pro gallery](#scenarios):
+There are [2 ways to create a pro gallery](./scenarios):
 1. Create a pro gallery using the Editor (recommended).
 2. Create a pro gallery using the Pro Gallery Backend API (not recommended). 
 
