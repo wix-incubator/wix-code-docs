@@ -24,3 +24,4 @@ For example, an event handler that handles the creation of a site member looks l
 ```js
 export function wixProGallery_onGalleryCreated(event) { }
 ```
+
