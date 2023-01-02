@@ -24,7 +24,7 @@ You can get a pro gallery's ID in 2 ways:
 ![GalleryID](get-id.png)
 
 ### Creating a Pro Gallery
-There are [2 ways to create a pro gallery](#scenarios):
+There are [2 ways to create a pro gallery](./scenarios):
 1. Create a pro gallery using the Editor (recommended).
 2. Create a pro gallery using the Pro Gallery Backend API (not recommended). 
 
