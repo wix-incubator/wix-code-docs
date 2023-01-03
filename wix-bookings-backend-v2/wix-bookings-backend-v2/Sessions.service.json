@@ -424,24 +424,32 @@
         "doc": null
       },
       "docs": {
-        "summary": "Queries for sessions according to the specified filters and paging.",
+        "summary": "Retrieves a list of sessions, given the provided time range, filtering, and paging.",
         "description": [
           "",
-          "For a detailed list of supported filters, see [Filtering](https://bo.wix.com/wix-docs/rest/bookings/bookings---calendar/filtering).",
+          "It is important to note the following limitations:",
+          "- Sessions are always sorted by `start.timestamp` in `ASC` order. You can't override this.",
+          "- The maximum time range you can query is 1 year.",
           "",
-          "The defaults are:",
-          "- `instance` is `true`. Meaning, only instances of recurring sessions and single sessions are returned.",
+          "Query Sessions runs with these defaults, which you can override:",
+          "- All session types are returned.",
+          "- `instance` is true. This means only single sessions and instances of recurring sessions are returned.",
+          "- Session objects are returned with the fields specified in the `NO_PI` fieldset. This means they don't contain personal information.",
           "- `query.cursorPaging.limit` is `50`.",
-          "- sessions are sorted by their `start.timestamp` in `ASC` order.",
-          "- public session data is returned.",
           "",
-          "To query for recurring sessions, that define recurrence patterns, use `instance = false`.",
+          "To query only for events, set `type` to `EVENT`.",
           "",
-          "To query for complete sessions, having personal information, use the `ALL_PI` fieldset (requires the `CALENDAR.SESSION_READ_PI` permission).",
+          "To query for recurring session pattern definitions, set `instance` to `false`.",
           "",
-          "Limits:",
-          "- The max time range is 1 year.",
-          "- Custom sorting is not supported.",
+          "To return session objects including personal information, use the `ALL_PI` fieldset. This requires the CALENDAR.SESSION_READ_PI permission scope.",
+          "",
+          "For details on fieldsets, see [Sessions: Supported Fieldsets](#fieldsets).",
+          "",
+          "For field support for filters, see [Sessions: Supported Filters](#filtering).",
+          "",
+          "To learn about working with _Query_ endpoints in general, see",
+          "[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language) and",
+          "[Field Projection](https://dev.wix.com/api/rest/getting-started/field-projection).",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
           "|`scheduleId`|[`eq()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#eq),[`hasSome()`](wix-bookings-backend.v2.Sessions.SessionsQueryBuilder#hasSome)|",
@@ -1078,7 +1086,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of sessions to return.<br/>\nDefault to `50`. Maximum `1000`."
+          "doc": "Number of sessions to return.\n\nDefault: `50`\nMax: `1000`\n"
         }
       ],
       "docs": {
@@ -1135,7 +1143,7 @@
               }
             }
           ],
-          "doc": "Predefined sets of fields to return.\n\nBy default only public session data is returned.\n\nSupported values:\n- `ALL_PI`: Returns complete session objects, having personal information. Requires the `CALENDAR.SESSION_READ_PI` permission.\n"
+          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns session objects without personal information.\n- `ALL_PI`: Returns complete session objects, including personal information. Requires the CALENDAR.SESSION_READ_PI permission scope.\n\nDefault: `NO_PI`\n"
         },
         {
           "name": "filter",
@@ -1145,7 +1153,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Filter object.<br/>\nSee [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language) for more information.\n\nFor a detailed list of supported filters, see\n[Filtering](https://bo.wix.com/wix-docs/rest/bookings/bookings---calendar/filtering).\n"
+          "doc": "Filter object.<br/>\nSee [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language) for more information.\n\nFor a detailed list of supported filters, see\n[Sessions: Supported Filters](./filtering).\n"
         }
       ],
       "extra": {
@@ -1274,7 +1282,7 @@
               "referenceType": "wix-bookings-backend-v2.Sessions.CommonCursors"
             }
           ],
-          "doc": "Offset that was requested."
+          "doc": "Cursors to navigate through the result pages."
         },
         {
           "name": "hasNext",
@@ -2637,7 +2645,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `end.timestamp` is greater than the `fromDate`, will also be returned.\n"
+          "doc": "*Required**, unless `instance` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
         },
         {
           "name": "instance",
@@ -2647,7 +2655,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to filter only instances of recurring sessions and single sessions.</br>\nDefault is `true`.\n\nTo filter recurring sessions, that define recurrence patterns, provide `false`.\n"
+          "doc": "Whether to return only single sessions and individual instances of recurring sessions.\nTo query for recurring session pattern definitions, set to `false`.\n\nDefault: `true`.\n"
         },
         {
           "name": "query",
@@ -2657,7 +2665,7 @@
               "referenceType": "wix-bookings-backend-v2.Sessions.CommonQueryV2"
             }
           ],
-          "doc": "The query containing filters, paging and field sets."
+          "doc": "Query options."
         },
         {
           "name": "toDate",
@@ -2667,7 +2675,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `start.timestamp` is less than the `toDate`, will also be returned.<br/>\nMust be at most 1 year after the given `fromDate`.\n"
+          "doc": "*Required**, unless `instance` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
         },
         {
           "name": "type",
@@ -2677,7 +2685,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Whether to filter sessions by their type. I.e, `EVENT` or `WORKING_HOURS` sessions.<br/>\nBy default all session types are returned."
+          "doc": "Type of sessions to return.\n\nDefault: `UNDEFINED`. This returns sessions of all types.\n"
         }
       ],
       "docs": {
@@ -3968,7 +3976,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `end.timestamp` is greater than the `fromDate`, will also be returned.\n"
+          "doc": "*Required**, unless `instance` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
         },
         {
           "name": "instance",
@@ -3978,7 +3986,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to filter only instances of recurring sessions and single sessions.</br>\nDefault is `true`.\n\nTo filter recurring sessions, that define recurrence patterns, provide `false`.\n"
+          "doc": "Whether to return only single sessions and individual instances of recurring sessions.\nTo query for recurring session pattern definitions, set to `false`.\n\nDefault: `true`.\n"
         },
         {
           "name": "query",
@@ -3988,7 +3996,7 @@
               "referenceType": "wix-bookings-backend-v2.Sessions.CommonQueryV2"
             }
           ],
-          "doc": "The query containing filters, paging and field sets."
+          "doc": "Query options."
         },
         {
           "name": "toDate",
@@ -3998,7 +4006,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "End of the time range for which sessions are returned\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nRequired, unless `instance` is `false` or `query.cursorPaging` is given.\n\nOverlapping sessions, which their `start.timestamp` is less than the `toDate`, will also be returned.<br/>\nMust be at most 1 year after the given `fromDate`.\n"
+          "doc": "*Required**, unless `instance` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
         },
         {
           "name": "type",
@@ -4008,7 +4016,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Whether to filter sessions by their type. I.e, `EVENT` or `WORKING_HOURS` sessions.<br/>\nBy default all session types are returned."
+          "doc": "Type of sessions to return.\n\nDefault: `UNDEFINED`. This returns sessions of all types.\n"
         }
       ],
       "docs": {
@@ -4045,7 +4053,7 @@
               }
             }
           ],
-          "doc": "The sessions matching the given query."
+          "doc": "List of sessions matching the query."
         }
       ],
       "docs": {
