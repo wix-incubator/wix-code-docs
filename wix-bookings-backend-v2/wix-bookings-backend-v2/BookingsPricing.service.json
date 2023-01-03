@@ -44,17 +44,27 @@
       "docs": {
         "summary": "Calculates the price of a booking.",
         "description": [
-          "In case there is no implementer of the\n[Bookings Pricing Provider SPI](UPDATE-LINK)\nfor the site, the price is calculated using the standard\nWix Bookings pricing logic. Then, you need to pass a `serviceId` in the\n`slot` or `schedule` object inside `bookings.bookedEntity`. Otherwise, the\ncall results in a `MISSING_SERVICE_ID` error.\n\nThe response includes information about each line item's price and the total price."
+          "The returned calculated price includes information about each line\nitem's price and the booking's total price.\n\nThe calculated price is the actual price that will be used to charge the customer, as\nopposed to [`Preview Price`](https://example.com/). `Preview Price` only estimates the price by adding up the price\nof each line item before\nthe booking is actually created.\n\nAfter you create a booking,  you can call `Calculate Price`. `Calculate Price` calls the\ncheckout process to retrieve the actual price. **TBD**: Is this only eCommerce?\n\n## Calculating the price\n\nWix Bookings has its own default pricing logic for calculating the price. When\nusing Wix Bookings' default pricing logic, you must pass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Calculate Price`.\n\nAlternatively you can customize the pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/).\nIf you integrate with a pricing provider, the customized pricing logic becomes\nthe default logic."
         ],
         "examples": [
           {
             "title": "calculatePrice example",
             "body": [
               "",
-              "    function calculatePrice() {",
+              "    ",
+              "    import { bookingsPricing } from 'wix-bookings-backend.v2';",
+              "  ",
+              "    ",
+              "    async function calculatePrice(booking) {",
+              "      try {",
+              "        const result = await bookingsPricing.calculatePrice(booking);",
               "",
-              "  }",
-              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
               "  "
             ]
           }
@@ -93,19 +103,29 @@
         "doc": null
       },
       "docs": {
-        "summary": "Previews the price for a set of line items belonging to the same service.",
+        "summary": "Previews the price for a set of line items belonging to the same service, before a booking is actually created.",
         "description": [
-          "You can only call __Preview Price__ successfully, in case no implementer of\nthe [Bookings Pricing Provider SPI](UPDATE-LINK)\nhas been set up for the site.\n\nPassing line items belonging to different services results in an error.\n\nYou must pass a `serviceId` in the `slot` or `schedule` object inside\n`bookings.bookedEntity`. Otherwise, the call results in a\n`MISSING_SERVICE_ID` error.\n\nThe response includes information about each line item's price and the total price.\n"
+          "The returned price preview information about each line\nitem's price and sums up each line item's price.\n\nThe previewed price is not the actual price that will be used to charge the customer, as\nopposed to [`Calculate Price`](https://example.com/). `Preview Price` only estimates the price by adding up the price\nof each line item before\nthe booking is actually created.\n\nPassing line items that belong to different services results in an error.\n\n## Calculating the previewed price\n\nWix Bookings has its own default pricing logic for previewing the price. You must\npass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Preview Price`.\n\nYou cannot call `Preview Price` if you have customized Bookings' pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/). Calling `Preview Price` if custom pricing\nlogic has been implemented for the site results in an error.\n\n*TBD**: Need a curl example for the object"
         ],
         "examples": [
           {
             "title": "previewPrice example",
             "body": [
               "",
-              "    function previewPrice() {",
+              "    ",
+              "    import { bookingsPricing } from 'wix-bookings-backend.v2';",
+              "  ",
+              "    ",
+              "    async function previewPrice(options) {",
+              "      try {",
+              "        const result = await bookingsPricing.previewPrice(options);",
               "",
-              "  }",
-              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
               "  "
             ]
           }
@@ -334,7 +354,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.BookedSchedule"
             }
           ],
-          "doc": "The booked schedule. The booking is automatically be assigned to the schedule's sessions."
+          "doc": "The booked schedule. The booking is automatically assigned to the schedule's sessions."
         },
         {
           "name": "slot",
@@ -344,7 +364,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.BookedSlot"
             }
           ],
-          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one does'nt already exist."
+          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one doesn't already exist."
         },
         {
           "name": "tags",
@@ -402,7 +422,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.BookedSchedule"
             }
           ],
-          "doc": "The booked schedule. The booking is automatically be assigned to the schedule's sessions."
+          "doc": "The booked schedule. The booking is automatically assigned to the schedule's sessions."
         },
         {
           "name": "slot",
@@ -412,7 +432,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.BookedSlot"
             }
           ],
-          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one does'nt already exist."
+          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one doesn't already exist."
         }
       ],
       "docs": {
@@ -483,7 +503,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Start time of the first session. (formatted according to RFC3339). Read only."
+          "doc": "The start time of the first session in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required."
         },
         {
           "name": "lastSessionEnd",
@@ -494,7 +514,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "End time of the last session. (formatted according to RFC3339). Read only."
+          "doc": "The end time of the last session in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required."
         },
         {
           "name": "location",
@@ -555,7 +575,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The end time of this Slot (formatted according to RFC3339)."
+          "doc": "The end time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required."
         },
         {
           "name": "location",
@@ -565,7 +585,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.Location"
             }
           ],
-          "doc": "Location of the slot takes place."
+          "doc": "Location where the slot's session takes place."
         },
         {
           "name": "resource",
@@ -575,7 +595,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.BookedResource"
             }
           ],
-          "doc": "The resource for the slot."
+          "doc": "The resource used on the slot."
         },
         {
           "name": "scheduleId",
@@ -605,7 +625,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the underlying session when session is a single session or generated from a recurring session.\nIf sessionId is defined in the Create Booking request, the f startDate, endDate, timezone, resource, and location fields from the request are ignored and populated from the session's information."
+          "doc": "ID of the underlying session when session is a single session or generated from a recurring session.\nIf `sessionId` is defined in the Create Booking request, the `startDate`, `endDate`, timezone, resource, and location fields from the request are ignored and populated from the session's information."
         },
         {
           "name": "startDate",
@@ -615,7 +635,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The start time of this slot (formatted according to RFC3339)."
+          "doc": "The start time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat. Required."
         },
         {
           "name": "timezone",
@@ -716,7 +736,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.IdentificationData"
             }
           ],
-          "doc": "id of the identity used to create the booking\nIf both Person identity and App identity are present, person identity takes precedence\nonly `id` is supported. contact_id and identity_type are not supported"
+          "doc": "ID of the creator of the Booking\nIf `appId` and another ID are present, the other ID takes precedence."
         },
         {
           "name": "doubleBooked",
@@ -868,7 +888,7 @@
               }
             }
           ],
-          "doc": "Custom service choices."
+          "doc": "Custom choices."
         },
         {
           "name": "numberOfParticipants",
@@ -909,7 +929,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service ID. Required when no implementer for the\n[Bookings Pricing Provider SPI](UPDATE-LINK)\nhas been set up for the site."
+          "doc": "Service ID.\n\nRequired when not using Wix Booking's default pricing logic.\n\nOptional\nwhen using custom pricing logic defined with the\n[Bookings Pricing Provider SPI](https://example.com/).\n"
         }
       ],
       "docs": {
@@ -1030,7 +1050,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.PriceInfo"
             }
           ],
-          "doc": "Information about each line item's price and the total price."
+          "doc": "Information about each line item's price and the actual total price, as calculated by the checkout process. **TBD**: Only ecommerce?"
         }
       ],
       "docs": {
@@ -1556,7 +1576,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.PriceInfo"
             }
           ],
-          "doc": "Information about each line item's price and the total price."
+          "doc": "Information about each line item's price and the estimated total price based on the line items."
         }
       ],
       "docs": {
@@ -1583,7 +1603,7 @@
               }
             }
           ],
-          "doc": "List of line items including number of participants and price per participant."
+          "doc": "List of line items, including the number of participants and the price per participant."
         },
         {
           "name": "calculatedPrice",
@@ -1593,7 +1613,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Calculated total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as numerical value in the\n`schedule.rate.labeledPriceOptions` object."
+          "doc": "Calculated total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a numerical value in the\n[`schedule.rate.labeledPriceOptions`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) object."
         },
         {
           "name": "currency",
@@ -1613,7 +1633,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total deposit. Available only when the service includes a deposit."
+          "doc": "Total deposit.\n\nAvailable only when: The service includes a deposit\n"
         },
         {
           "name": "priceDescription",
@@ -1623,7 +1643,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description of the total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as text value in the\n`schedule.rate.priceText` field."
+          "doc": "Description of the total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a text value in the\n[`schedule.rate.priceText`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) property."
         }
       ],
       "extra": {
@@ -1654,7 +1674,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Calculated total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as numerical value in the\n`schedule.rate.labeledPriceOptions` object."
+          "doc": "Calculated total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a numerical value in the\n[`schedule.rate.labeledPriceOptions`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) object."
         },
         {
           "name": "priceDescription",
@@ -1664,7 +1684,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description of the total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as text value in the\n`schedule.rate.priceText` field."
+          "doc": "Description of the total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a text value in the\n[`schedule.rate.priceText`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) property."
         }
       ],
       "docs": {
@@ -1684,7 +1704,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value of one of the elements of the `CustomServiceOption.choices` list"
+          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list."
         },
         {
           "name": "optionId",
@@ -1694,7 +1714,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "option (.wix.api.decomposite_of) = \"wix.bookings.catalog.v1.ServiceChoice\";"
+          "doc": "ID of the option.\n\n**TBD** Is it a choice or an option or a service choice or a service option? What is the diff?\n"
         }
       ],
       "extra": {
@@ -1724,7 +1744,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value of one of the elements of the `CustomServiceOption.choices` list"
+          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list."
         }
       ],
       "docs": {
