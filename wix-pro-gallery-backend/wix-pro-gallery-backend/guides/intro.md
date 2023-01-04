@@ -21,7 +21,7 @@ You can get a pro gallery's ID in 2 ways:
 1. Call the [`listGalleries()`](wix-pro-gallery-backend/progallery/listgalleries) function to get a list of all your site's pro galleries and their IDs, and search for the one you want. 
 2. Get a pro gallery element's ID by clicking the element in the Editor. Click **Settings > Support**. Scroll down to **Gallery Info** to see the ID. 
 
-![GalleryID](get-id.png)
+![GalleryID](images/get-id.png) 
 
 ### Creating a Pro Gallery
 There are [2 ways to create a pro gallery](wix-pro-gallery-backend/creating-a-gallery):
