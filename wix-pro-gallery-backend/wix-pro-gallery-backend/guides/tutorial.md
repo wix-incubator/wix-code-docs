@@ -1,8 +1,8 @@
 ---
-title: Display a Pro Gallery on Your Site Using the Pro Gallery Backend API
+title: Tutorial: Display a Pro Gallery on Your Site
 ---
 
-# Velo Tutorial: Displaying a Pro Gallery on Your Site Using the Pro Gallery Backend API
+# Tutorial: Displaying a Pro Gallery on Your Site Using the Pro Gallery Backend API
 
 The [Velo Pro Gallery Backend API](https://www.wix.com/velo/reference/wix-paid-plans.html) allows you to create and manage pro galleries on your site's backend. When you add a pro gallery element to your site, a corresponding pro gallery is automatically created on your site's backend. However, when you use the Pro Gallery backend API to create a pro gallery on your site's backend, you need to do a few steps to display it on your site. 
 
