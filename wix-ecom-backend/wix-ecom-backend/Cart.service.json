@@ -35,7 +35,9 @@
       ],
       "requiredFields": [
         "_id",
-        "options.lineItems.catalogReference"
+        "options.lineItems.catalogReference",
+        "options.lineItems.selectedMembership._id",
+        "options.lineItems.selectedMembership.appId"
       ],
       "ret": {
         "type": [
@@ -222,7 +224,9 @@
         }
       ],
       "requiredFields": [
-        "options.lineItems.catalogReference"
+        "options.lineItems.catalogReference",
+        "options.lineItems.selectedMembership._id",
+        "options.lineItems.selectedMembership.appId"
       ],
       "ret": {
         "type": [
@@ -1255,10 +1259,20 @@
             "title": "getCartByCheckoutId example",
             "body": [
               "",
-              "    function getCartByCheckoutId() {",
+              "    ",
+              "    import { cart } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function getCartByCheckoutId(id) {",
+              "      try {",
+              "        const result = await cart.getCartByCheckoutId(id);",
               "",
-              "  }",
-              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
               "  "
             ]
           }
@@ -6099,7 +6113,7 @@
               "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
             }
           ],
-          "doc": "Partial payment for the given item to be paid upfront during the checkout. Eligible for catalog items with type `DEPOSIT_ONLINE` only."
+          "doc": "Partial payment to be paid upfront during the checkout. Eligible for catalog items with `lineItem.paymentOption` type `DEPOSIT_ONLINE` only."
         },
         {
           "name": "descriptionLines",
@@ -6238,6 +6252,16 @@
             }
           ],
           "doc": "In cases where `catalogReference.catalogItemId` is NOT the actual catalog item ID, this field will return the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ in most cases, this field is the name as `catalogReference.catalogItemId`.\n+ Used in membership validation."
+        },
+        {
+          "name": "selectedMembership",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.V1SelectedMembership"
+            }
+          ],
+          "doc": "Selected membership to be used as payment for this item. Must be used with `lineItem.paymentOption` set to `MEMBERSHIP` or `MEMBERSHIP_OFFLINE`. This field can be empty when `lineItem.paymentOption` is set to `MEMBERSHIP_OFFLINE`."
         },
         {
           "name": "serviceProperties",
@@ -8824,6 +8848,36 @@
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "V1SelectedMembership",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Membership ID."
+        },
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app providing this payment option."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Selected Membership"
         ]
       }
     },
