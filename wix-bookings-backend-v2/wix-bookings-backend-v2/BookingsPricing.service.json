@@ -42,9 +42,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Calculates the price of a booking.",
+        "summary": "Calculates the base price of a booking.",
         "description": [
-          "The returned calculated price includes information about each line\nitem's price and the booking's total price.\n\nThe calculated price is the actual price that will be used to charge the customer, as\nopposed to [`Preview Price`](https://example.com/). `Preview Price` only estimates the price by adding up the price\nof each line item before\nthe booking is actually created.\n\nAfter you create a booking,  you can call `Calculate Price`. `Calculate Price` calls the\ncheckout process to retrieve the actual price. **TBD**: Is this only eCommerce?\n\n## Calculating the price\n\nWix Bookings has its own default pricing logic for calculating the price. When\nusing Wix Bookings' default pricing logic, you must pass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Calculate Price`.\n\nAlternatively you can customize the pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/).\nIf you integrate with a pricing provider, the customized pricing logic becomes\nthe default logic."
+          "You can call `Calculate Price` after a booking is created. The returned calculated price includes information about each line\nitem's price and the booking's total price.\n\nYou can use [`Preview Price`](https://example.com) to get the base price\nbefore a booking is created.\n\nThe calculated price is the base price that will be used as a basis for charging the customer.\nDuring checkout, additional taxes\nand fees might be added to this base price.\n\n## Calculating the price\n\nWix Bookings has its own default pricing logic for calculating the price. When\nusing Wix Bookings' default pricing logic, you must pass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Calculate Price`.\n\nAlternatively you can customize the pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/).\nIf you integrate with a pricing provider, the customized pricing logic becomes\nthe default logic."
         ],
         "examples": [
           {
@@ -103,9 +103,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Previews the price for a set of line items belonging to the same service, before a booking is actually created.",
+        "summary": "Previews the base price for a set of line items belonging to the same service,\nbefore a booking is actually created.",
         "description": [
-          "The returned price preview information about each line\nitem's price and sums up each line item's price.\n\nThe previewed price is not the actual price that will be used to charge the customer, as\nopposed to [`Calculate Price`](https://example.com/). `Preview Price` only estimates the price by adding up the price\nof each line item before\nthe booking is actually created.\n\nPassing line items that belong to different services results in an error.\n\n## Calculating the previewed price\n\nWix Bookings has its own default pricing logic for previewing the price. You must\npass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Preview Price`.\n\nYou cannot call `Preview Price` if you have customized Bookings' pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/). Calling `Preview Price` if custom pricing\nlogic has been implemented for the site results in an error.\n\n*TBD**: Need a curl example for the object"
+          "The returned price preview information about each line\nitem's price and sums up each line item's price.\n\nThe previewed price is not the actual price that will be used to charge the customer.\n`Preview Price` only estimates the base price by adding up the price\nof each line item before\nthe booking is actually created.\n\nUse [`Calculate Price`](https://example.com) to get the base price\nafter the booking is created.\n\nPassing line items that belong to different services results in an error.\n\n## Calculating the previewed price\n\nWix Bookings has its own default pricing logic for previewing the price. You must\npass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Preview Price`.\n\nYou cannot call `Preview Price` if you have customized Bookings pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/). Calling `Preview Price` if custom pricing\nlogic has been implemented for the site results in an error."
         ],
         "examples": [
           {
@@ -888,7 +888,7 @@
               }
             }
           ],
-          "doc": "Custom choices."
+          "doc": "Custom choices. Choices are specific values for an option the customer can choose to book.\nFor example, the option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
         },
         {
           "name": "numberOfParticipants",
@@ -929,7 +929,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service ID.\n\nRequired when not using Wix Booking's default pricing logic.\n\nOptional\nwhen using custom pricing logic defined with the\n[Bookings Pricing Provider SPI](https://example.com/).\n"
+          "doc": "Service ID.\n\nRequired when not using Wix Booking's default pricing logic.\n\nOptional when using custom pricing logic defined with the\n[Bookings Pricing Provider SPI](https://example.com/).\n"
         }
       ],
       "docs": {
@@ -1050,7 +1050,7 @@
               "referenceType": "wix-bookings-backend-v2.BookingsPricing.PriceInfo"
             }
           ],
-          "doc": "Information about each line item's price and the actual total price, as calculated by the checkout process. **TBD**: Only ecommerce?"
+          "doc": "Information about each line item's price and the actual total base price."
         }
       ],
       "docs": {
@@ -1633,7 +1633,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total deposit.\n\nAvailable only when: The service includes a deposit\n"
+          "doc": "Total deposit the customer must pay when booking the service.\n\nAvailable when: The service includes a deposit.\n"
         },
         {
           "name": "priceDescription",
@@ -1704,7 +1704,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list."
+          "doc": "Value for one of the choices in the [`CustomServiceOption.choices`](https://example.com) list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
         },
         {
           "name": "optionId",
@@ -1714,7 +1714,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the option.\n\n**TBD** Is it a choice or an option or a service choice or a service option? What is the diff?\n"
+          "doc": "ID of the corresponding option for the choice. For example, the choice `child`\ncould correspond to the option `ageGroup`. In this case, `optionId` is the ID\nfor the `ageGroup` option."
         }
       ],
       "extra": {
@@ -1744,7 +1744,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list."
+          "doc": "Value for one of the choices in the [`CustomServiceOption.choices`](https://example.com) list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
         }
       ],
       "docs": {
