@@ -163,7 +163,10 @@ Let's say the API returns data that contains numerical IDs in an `id` property.
 Since the IDs are not valid for repeater data, you need to generate new ones. You can do this fairly easily by mapping the existing numerical IDs to their string equivalents and store them in an `_id` property.
 
 ```javascript
-const repeaterData = retrievedData.map(item => item._id = item.id.toString());
+const repeaterData = retrievedData.map(item => {
+    item._id = item.id.toString();
+    return item;
+});
 ```
 
 Then all you need to do is assign the data to the repeater using the `data` property.
