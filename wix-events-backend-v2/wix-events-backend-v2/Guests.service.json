@@ -42,17 +42,27 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of policies, given the provided paging and filter.",
+        "summary": "Query to select guests.\nSupports efficient filtering by `createdDate`, `eventId`, `attendanceStatus`, `secondaryLanguageCode`, `rsvpId`, `orderNumber`, `ticketNumber`, `memberId` or `guestDetails.checkedIn`",
         "description": [],
         "examples": [
           {
             "title": "queryEventGuests example",
             "body": [
               "",
-              "    function queryEventGuests() {",
+              "    ",
+              "    import { guests } from 'wix-events-backend.v2';",
+              "  ",
+              "    ",
+              "    async function queryEventGuests(query) {",
+              "      try {",
+              "        const result = await guests.queryEventGuests(query);",
               "",
-              "  }",
-              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
               "  "
             ]
           }
@@ -323,7 +333,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Date and time when the guest was created."
         },
         {
           "name": "_id",
@@ -333,7 +343,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact id."
+          "doc": "Guest id."
         },
         {
           "name": "_updatedDate",
@@ -343,10 +353,10 @@
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Date and time when the guest was updated."
         },
         {
-          "name": "attendance",
+          "name": "attendanceStatus",
           "optional": true,
           "type": [
             {
@@ -356,14 +366,14 @@
           "doc": "Attendance status"
         },
         {
-          "name": "attendanceUpdatedDate",
+          "name": "attendanceStatusUpdatedDate",
           "optional": true,
           "type": [
             {
               "nativeType": "Date"
             }
           ],
-          "doc": "The last date when contact turned Waiting or Attending"
+          "doc": "The last date and time when the guest attendance status was updated."
         },
         {
           "name": "contactId",
@@ -373,17 +383,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact id."
-        },
-        {
-          "name": "email",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Email."
+          "doc": "CRM contact ID for the person who is a guest."
         },
         {
           "name": "eventId",
@@ -396,34 +396,24 @@
           "doc": "Event id."
         },
         {
-          "name": "firstName",
+          "name": "guestDetails",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-events-backend-v2.Guests.GuestDetails"
             }
           ],
-          "doc": "First name."
+          "doc": "Guest details."
         },
         {
-          "name": "language",
+          "name": "guestSource",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Secondary language."
-        },
-        {
-          "name": "lastName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Last name."
+          "doc": "Guest source."
         },
         {
           "name": "memberId",
@@ -443,7 +433,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order number."
+          "doc": "Order number. Available only when Guest type is ORDER or TICKET."
         },
         {
           "name": "rsvpId",
@@ -453,7 +443,17 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Rsvp id."
+          "doc": "Rsvp id. Available only when Guest type is RSVP."
+        },
+        {
+          "name": "secondaryLanguageCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Secondary language code."
         },
         {
           "name": "ticketNumber",
@@ -463,7 +463,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Ticket number."
+          "doc": "Ticket number. Available only when Guest type is ORDER or TICKET."
         },
         {
           "name": "tickets",
@@ -480,7 +480,7 @@
               }
             }
           ],
-          "doc": "Tickets of the order"
+          "doc": "List of bought tickets."
         }
       ],
       "docs": {
@@ -588,6 +588,66 @@
             }
           ],
           "doc": "Index in the RSVP guest list."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GuestDetails",
+      "members": [
+        {
+          "name": "checkedIn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates if guests is checked in."
+        },
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email."
+        },
+        {
+          "name": "firstName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "First name."
+        },
+        {
+          "name": "formResponse",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-backend-v2.Guests.FormResponse"
+            }
+          ],
+          "doc": "Form response."
+        },
+        {
+          "name": "lastName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Last name."
         }
       ],
       "docs": {
@@ -1105,17 +1165,17 @@
               }
             }
           ],
-          "doc": "Event Policies"
+          "doc": "List of guests."
         },
         {
-          "name": "metadata",
+          "name": "pagingMetadata",
           "optional": true,
           "type": [
             {
               "referenceType": "wix-events-backend-v2.Guests.PagingMetadataV2"
             }
           ],
-          "doc": "Query result's metadata"
+          "doc": "Metadata for the paginated results."
         }
       ],
       "docs": {
@@ -1631,7 +1691,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact event id."
+          "doc": "Guest event id."
         }
       ],
       "docs": {
@@ -1658,7 +1718,7 @@
               }
             }
           ],
-          "doc": "Aggregated contact languages"
+          "doc": "Aggregated guests languages."
         }
       ],
       "docs": {
