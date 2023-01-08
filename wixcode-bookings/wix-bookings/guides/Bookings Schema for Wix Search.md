@@ -107,9 +107,9 @@ The following fields appear in each matching search result [document](https://ww
 
 #### benefits 
 
-**Description**: Lists the benefits included in the plan.
+**Description**: Lists the benefits included in the plan.  
 **Type**: Array of Strings  
 **Can search the content of this field**: Yes  
 **Can facet**: Yes  
-**Can sort**: No
+**Can sort**: No  
 **Can filter**: hasSome, hasAll
