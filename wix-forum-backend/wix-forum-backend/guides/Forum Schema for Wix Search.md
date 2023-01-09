@@ -161,6 +161,14 @@ wixSearch.search(phrase)
 **Can facet**: Yes  
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le
+#### totalComments 
+
+**Description**: Number of comments the post received.  
+**Type**: Number  
+**Can search the content of this field**: No  
+**Can facet**: Yes  
+**Can sort**: Yes  
+**Can filter**: in, eq, ne, gt, ge, lt, le
 
 #### totalComments 
 
@@ -170,3 +178,165 @@ wixSearch.search(phrase)
 **Can facet**: Yes  
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### postTitle 
+
+**Description**: Title of post.  
+**Type**: String
+**Can search the content of this field**: Yes
+**Can facet**: Yes  
+**Can sort**: No 
+**Can filter**: No
+
+#### categoryTitle 
+
+**Description**: Title of category. 
+**Type**: String
+**Can search the content of this field**: No
+**Can facet**: Yes
+**Can sort**: Yes
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### parentId 
+
+**Description**: ID of the parent comment (when contentType is COMMENT).
+
+**Type**: String  
+**Can search the content of this field**: No  
+**Can facet**: Yes  
+**Can sort**: Yes
+**Can filter**:   in, eq, ne, gt, ge, lt, le
+
+#### createdDate 
+
+**Description**: Date and time the comment or post was created.
+**Type**: Date  
+**Can search the content of this field**: No 
+**Can facet**: Yes  
+**Can sort**: Yes  
+**Can filter**: eq, ne, gt, ge, lt, le
+
+#### upvoteCount 
+
+**Description**: Number of upvotes on the comment.
+**Type**: Number  
+**Can search the content of this field**: No  
+**Can facet**: Yes  
+**Can sort**: Yes  
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### downvoteCount 
+
+**Description**: Number of downvotes on the comment.  
+**Type**: Number  
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: Yes  
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### score 
+
+**Description**: Number of upvotes minus the number of downvotes.  
+**Type**: Number  
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: Yes  
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### editedDate 
+
+**Description**: Date and time the comment or post was last edited.	 
+**Type**: Date  
+**Can search the content of this field**: No  
+**Can facet**: No  
+**Can sort**: Yes  
+**Can filter**: eq, ne, gt, ge, lt, le
+
+#### mentions 
+
+**Description**: Users mentioned in post.
+**Type**: Array of strings 
+**Can search the content of this field**: No  
+**Can facet**: No
+**Can sort**: No
+**Can filter**: No
+
+#### markedComments 
+
+**Description**: IDs of the marked comments for this post (selected by forum admin or site owner). 
+**Type**: String  
+**Can search the content of this field**: No  
+**Can facet**: No
+**Can sort**: No
+**Can filter**: No
+
+#### marked 
+
+**Description**: Whether comment is marked.
+**Type**: String  
+**Can search the content of this field**: No  
+**Can facet**: No
+**Can sort**: Yes
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### commentInteraction 
+
+**Description**: Defines what interaction may be applied on the comment. 
+**Type**: String  
+**Can search the content of this field**: No  
+**Can facet**: No
+**Can sort**: No
+**Can filter**: No
+
+#### reactionsCount 
+
+**Description**: Number of people who reacted.  
+**Type**: Number  
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: Yes  
+**Can filter**: in, eq, ne, gt, ge, lt, le
+
+#### images 
+
+**Description**: Images from post content.
+**Type**: Nested
+**Can search the content of this field**: No  
+**Can filter**: Yes
+**Nested fields**:
+
+    #### id 
+
+    **Description**: WixMedia image ID.  
+    **Type**: String 
+    **Can search the content of this field**: No  
+    **Can facet**: No 
+    **Can sort**: No  
+    **Can filter**: No
+
+    #### url 
+
+    **Description**: URL of image.  
+    **Type**: String 
+    **Can search the content of this field**: No  
+    **Can facet**: No 
+    **Can sort**: No  
+    **Can filter**: No
+
+    #### height 
+
+    **Description**: Original height of image.  
+    **Type**: String 
+    **Can search the content of this field**: No  
+    **Can facet**: No 
+    **Can sort**: No  
+    **Can filter**: No
+
+    #### width 
+
+    **Description**: Original width of image.  
+    **Type**: String 
+    **Can search the content of this field**: No  
+    **Can facet**: No 
+    **Can sort**: No  
+    **Can filter**: No
