@@ -107,7 +107,7 @@ The following fields appear in each matching search result [document](https://ww
 
 #### benefits 
 
-**Description**: Lists the benefits included in the pricing plan.  
+**Description**: Lists the pricing plans associated with the service.  
 **Type**: Array of Strings  
 **Can search the content of this field**: Yes  
 **Can facet**: Yes  
