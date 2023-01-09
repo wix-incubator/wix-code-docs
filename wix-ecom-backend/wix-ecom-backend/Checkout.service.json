@@ -10,6 +10,219 @@
   "properties": [],
   "operations": [
     {
+      "name": "addToCheckout",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.AddToCheckoutOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "options.lineItems.catalogReference"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.AddToCheckoutResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Adds [catalog](https://bo.wix.com/wix-docs/rest/ecommerce/catalog-spi/introduction) and/or custom line items to a checkout.",
+        "description": [],
+        "examples": [
+          {
+            "title": "addToCheckout example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function addToCheckout(id, options) {",
+              "      try {",
+              "        const result = await checkout.addToCheckout(id, options);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "createCheckout",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CreateCheckoutOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "options.checkoutInfo.customFields.value",
+        "options.checkoutInfo.membershipOptions.selectedMemberships.memberships._id",
+        "options.checkoutInfo.membershipOptions.selectedMemberships.memberships.appId",
+        "options.checkoutInfo.membershipOptions.selectedMemberships.memberships.lineItemIds",
+        "options.lineItems.catalogReference",
+        "options.lineItems.catalogReference.appId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.Checkout"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - the newly created checkout.\n"
+      },
+      "docs": {
+        "summary": "Creates a checkout.",
+        "description": [
+          "The `createCheckout()` function returns a Promise that resolves to the new checkout when it's created.\n\n> **Notes:**\n> + Checkout must include at least 1 item in the `options.lineItems` or `options.customLineItems` arrays.\n> + `options.channelType` is required.\n> + If `_id` for `options.lineItems`/`customLineItems` is added, make sure that each `_id` is unique.\n> + If `options.checkoutInfo.customFields` are added, then `options.checkoutInfo.customFields.value` is required."
+        ],
+        "examples": [
+          {
+            "title": "createCheckout example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function createCheckout(options) {",
+              "      try {",
+              "        const result = await checkout.createCheckout(options);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.CreateOrderOptions"
+            }
+          ],
+          "doc": "More order creation options.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [Get Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
+        "description": [
+          "Some properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [Get Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `POS`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of \"AVAILABLE\" or \"PARTIALLY_AVAILABLE\".\n+ Before creating the order, remove line items with `availability.status` of \"NOT_AVAILABLE\" and \"NOT_FOUND\" using [Remove Line Items](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n\nThe `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created."
+        ],
+        "examples": [
+          {
+            "title": "createOrder example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function createOrder(id, options) {",
+              "      try {",
+              "        const result = await checkout.createOrder(id, options);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
       "name": "getCheckout",
       "params": [
         {
@@ -620,6 +833,364 @@
               " * }",
               " *",
               " */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "markCheckoutAsCompleted",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Marks a checkout as completed - `checkout.complete` boolean is set to `true`.",
+        "description": [
+          "The `markCheckoutAsCompleted()` function returns a Promise that resolves when the specified checkout is marked as completed."
+        ],
+        "examples": [
+          {
+            "title": "markCheckoutAsCompleted example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function markCheckoutAsCompleted(id) {",
+              "      try {",
+              "        const result = await checkout.markCheckoutAsCompleted(id);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeCoupon",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove the coupon from.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveCouponResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes the coupon from a specified checkout.",
+        "description": [
+          "The `removeCoupon()` function returns a Promise that resolves to the updated checkout when the coupon is removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "removeCoupon example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function removeCoupon(id) {",
+              "      try {",
+              "        const result = await checkout.removeCoupon(id);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeGiftCard",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove the gift card from.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveGiftCardResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes the gift card from a specified checkout.",
+        "description": [
+          "The `removeGiftCard()` function returns a Promise that resolves to the updated checkout when the gift card is removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "removeGiftCard example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function removeGiftCard(id) {",
+              "      try {",
+              "        const result = await checkout.removeGiftCard(id);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "removeLineItems",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove line items from.",
+          "required": true
+        },
+        {
+          "name": "lineItemIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the line items to be removed.\n",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.RemoveLineItemsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes line items from the specified checkout.",
+        "description": [
+          "The `removeLineItems()` function returns a Promise that resolves to the updated checkout when the line items are removed from the specified checkout."
+        ],
+        "examples": [
+          {
+            "title": "removeLineItems example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function removeLineItems(id, lineItemIds) {",
+              "      try {",
+              "        const result = await checkout.removeLineItems(id, lineItemIds);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
+      "name": "updateCheckout",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "checkout",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckout"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckoutOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "checkout",
+        "checkout.customFields.value",
+        "checkout.membershipOptions.selectedMemberships.memberships._id",
+        "checkout.membershipOptions.selectedMemberships.memberships.appId",
+        "checkout.membershipOptions.selectedMemberships.memberships.lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.Checkout"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Updated checkout.\n"
+      },
+      "docs": {
+        "summary": "Update's a checkout's properties.",
+        "description": [
+          "Note the following restrictions:\n\n+ It is not allowed to remove `checkout.buyerInfo.email` once it is set.\n+ If nothing is passed in the request, the call will fail.\n+ To update a checkout with `customLineItems` and/or `merchantDiscounts` the ECOM.ADMIN_MODIFY_CHECKOUTS permission is required."
+        ],
+        "examples": [
+          {
+            "title": "updateCheckout example",
+            "body": [
+              "",
+              "    ",
+              "    import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function updateCheckout(id, checkout, options) {",
+              "      try {",
+              "        const result = await checkout.updateCheckout(id, checkout, options);",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
             ]
           }
         ]
@@ -3127,7 +3698,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item ID. Defaults to an auto-generated ID."
+          "doc": "Custom line item ID. If passed, `id` must be unique.\nDefault: auto-generated ID."
         },
         {
           "name": "descriptionLines",
@@ -4381,7 +4952,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Item availability status. Supported Values:\n+ `\"NOT_FOUND\"`: Item does not exist\n+ `\"NOT_AVAILABLE\"`: Item not in stock\n+ `\"PARTIALLY_AVAILABLE\"`: Available quantity is less than requested"
+          "doc": "Item availability status.\n+ `\"NOT_FOUND\"`: Item does not exist\n+ `\"NOT_AVAILABLE\"`: Item not in stock\n+ `\"PARTIALLY_AVAILABLE\"`: Available quantity is less than requested"
         }
       ],
       "docs": {
@@ -4524,7 +5095,6 @@
       "members": [
         {
           "name": "_id",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -5673,7 +6243,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated product name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Optional - Translated price description according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -5961,7 +6531,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Checkout ID."
+          "doc": "ID of the checkout to remove the gift card from."
         }
       ],
       "docs": {
@@ -6401,7 +6971,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Optional - The date and time for which the service is supposed to be provided. For example, the time of the class."
+          "doc": "Optional - Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
         }
       ],
       "docs": {
