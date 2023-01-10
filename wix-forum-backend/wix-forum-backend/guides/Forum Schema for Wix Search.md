@@ -199,7 +199,7 @@ wixSearch.search(phrase)
 
 #### parentId 
 
-**Description**: ID of the parent comment (when contentType is COMMENT).
+**Description**: ID of the parent comment.
 
 **Type**: String  
 **Can search the content of this field**: No  
@@ -290,7 +290,7 @@ wixSearch.search(phrase)
 
 #### reactionsCount 
 
-**Description**: Number of people who reacted.  
+**Description**: Total number of reactions to a post (likes, shares, and comments).  
 **Type**: Number  
 **Can search the content of this field**: No  
 **Can facet**: No 
@@ -302,41 +302,41 @@ wixSearch.search(phrase)
 **Description**: Images from post content.
 **Type**: Nested
 **Can search the content of this field**: No  
-**Can filter**: Yes
+**Can filter**: in, eq, ne, gt, ge, lt, le
 **Nested fields**:
 
-    #### id 
+#### images.id 
 
-    **Description**: WixMedia image ID.  
-    **Type**: String 
-    **Can search the content of this field**: No  
-    **Can facet**: No 
-    **Can sort**: No  
-    **Can filter**: No
+**Description**: WixMedia image ID (nested under images).  
+**Type**: String 
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: No  
+**Can filter**: No
 
-    #### url 
+#### images.url 
 
-    **Description**: URL of image.  
-    **Type**: String 
-    **Can search the content of this field**: No  
-    **Can facet**: No 
-    **Can sort**: No  
-    **Can filter**: No
+**Description**: URL of image (nested under images).  
+**Type**: String 
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: No  
+**Can filter**: No
 
-    #### height 
+#### images.height 
 
-    **Description**: Original height of image.  
-    **Type**: String 
-    **Can search the content of this field**: No  
-    **Can facet**: No 
-    **Can sort**: No  
-    **Can filter**: No
+**Description**: Original height of image (nested under images).  
+**Type**: String 
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: No  
+**Can filter**: No
 
-    #### width 
+#### images.width 
 
-    **Description**: Original width of image.  
-    **Type**: String 
-    **Can search the content of this field**: No  
-    **Can facet**: No 
-    **Can sort**: No  
-    **Can filter**: No
+**Description**: Original width of image (nested under images).  
+**Type**: String 
+**Can search the content of this field**: No  
+**Can facet**: No 
+**Can sort**: No  
+**Can filter**: No
