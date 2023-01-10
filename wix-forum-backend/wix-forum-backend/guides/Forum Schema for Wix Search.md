@@ -197,7 +197,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### createdDate .  
+#### createdDate   
 
 **Description**: Date and time the comment or post was created.  
 **Type**: Date  
@@ -206,7 +206,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: eq, ne, gt, ge, lt, le  
 
-#### upvoteCount .  
+#### upvoteCount   
 
 **Description**: Number of upvotes on the comment.  
 **Type**: Number  
@@ -215,7 +215,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### downvoteCount .  
+#### downvoteCount   
 
 **Description**: Number of downvotes on the comment.  
 **Type**: Number  
@@ -224,7 +224,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### score .  
+#### score   
 
 **Description**: Number of upvotes minus the number of downvotes.  
 **Type**: Number  
@@ -233,7 +233,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### editedDate .  
+#### editedDate   
 
 **Description**: Date and time the comment or post was last edited.	 
 **Type**: Date  
@@ -242,7 +242,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: eq, ne, gt, ge, lt, le  
 
-#### mentions .  
+#### mentions   
 
 **Description**: Users mentioned in post.  
 **Type**: Array of strings  
@@ -251,7 +251,7 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### markedComments .  
+#### markedComments   
 
 **Description**: IDs of the marked comments for this post (selected by forum admin or site owner).  
 **Type**: String  
@@ -260,7 +260,7 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### marked .  
+#### marked   
 
 **Description**: Whether comment is marked.  
 **Type**: String  
@@ -269,7 +269,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### commentInteraction  . 
+#### commentInteraction   
 
 **Description**: Defines what interaction may be applied on the comment.  
 **Type**: String  
@@ -278,7 +278,7 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### reactionsCount .  
+#### reactionsCount   
 
 **Description**: Total number of reactions to a post (likes, shares, and comments).  
 **Type**: Number  
@@ -287,7 +287,7 @@ wixSearch.search(phrase)
 **Can sort**: Yes  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
 
-#### images .  
+#### images   
 
 **Description**: Images from post content.  
 **Type**: Nested  
@@ -304,7 +304,7 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### images.url .  
+#### images.url   
 
 **Description**: URL of image (nested under images).  
 **Type**: String  
@@ -313,7 +313,7 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### images.height .  
+#### images.height   
 
 **Description**: Original height of image (nested under images).  
 **Type**: String  
