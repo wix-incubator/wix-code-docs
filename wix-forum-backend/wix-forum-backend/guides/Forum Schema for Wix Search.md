@@ -235,7 +235,7 @@ wixSearch.search(phrase)
 
 #### editedDate   
 
-**Description**: Date and time the comment or post was last edited.	 
+**Description**: Date and time the comment or post was last edited.  
 **Type**: Date  
 **Can search the content of this field**: No  
 **Can facet**: No  
