@@ -278,14 +278,14 @@ wixSearch.search(phrase)
 **Can sort**: No  
 **Can filter**: No  
 
-#### reactionsCount   
+<!-- #### reactionsCount   
 
 **Description**: Total number of reactions to a post (likes, shares, and comments).  
 **Type**: Number  
 **Can search the content of this field**: No  
 **Can facet**: No  
 **Can sort**: Yes  
-**Can filter**: in, eq, ne, gt, ge, lt, le  
+**Can filter**: in, eq, ne, gt, ge, lt, le   -->
 
 #### images   
 
