@@ -173,8 +173,8 @@ wixSearch.search(phrase)
 #### postTitle   
 
 **Description**: Title of post.  
-**Type**: String 
-**Can search the content of this field**: Yes 
+**Type**: String  
+**Can search the content of this field**: Yes  
 **Can facet**: Yes  
 **Can sort**: No  
 **Can filter**: No 
