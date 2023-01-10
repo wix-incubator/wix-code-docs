@@ -9,12 +9,12 @@ Use the `config` parameter to:
 
 >Note: Requests to display toasts might be queued and the toast may not be displayed immediately.
 
-## Syntax:
+## Syntax
 ```js
 showToast(config): Promise<Object>
 ```
 
-## Parameters:
+## Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -42,9 +42,9 @@ showToast(config): Promise<Object>
 | `uiType` | ToastActionUiType | The type of call-to-action. Options: `button`, `link` |
 
 ## Returns
-```
+
 Promise<Object>
-```
+
 
 ## Examples
 
