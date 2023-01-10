@@ -328,6 +328,56 @@
       "isVeloEvent": false
     },
     {
+      "name": "currentCartGetCurrentCart",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.CurrentCart.Cart"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Current session's active cart.\n"
+      },
+      "docs": {
+        "summary": "Retrieves the current site visitor's cart.",
+        "description": [
+          "The `getCurrentCart()` function returns a Promise that resolves when the current cart is retrieved."
+        ],
+        "examples": [
+          {
+            "title": "currentCartGetCurrentCart example",
+            "body": [
+              "",
+              "    ",
+              "    import { currentCart } from 'wix-ecom-backend';",
+              "  ",
+              "    ",
+              "    async function currentCartGetCurrentCart() {",
+              "      try {",
+              "        const result = await currentCart.currentCartGetCurrentCart();",
+              "",
+              "        return result;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "    }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false
+    },
+    {
       "name": "deleteCurrentCart",
       "params": [],
       "requiredFields": [],
@@ -828,56 +878,6 @@
       "isVeloEvent": false
     },
     {
-      "name": "getCurrentCart",
-      "params": [],
-      "requiredFields": [],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-ecom-backend.CurrentCart.Cart"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": "Current session's active cart.\n"
-      },
-      "docs": {
-        "summary": "Retrieves the current site visitor's cart.",
-        "description": [
-          "The `getCurrentCart()` function returns a Promise that resolves when the current cart is retrieved."
-        ],
-        "examples": [
-          {
-            "title": "GetCurrentCart example",
-            "body": [
-              "",
-              "    ",
-              "    import { currentCart } from 'wix-ecom-backend';",
-              "  ",
-              "    ",
-              "    async function getCurrentCart() {",
-              "      try {",
-              "        const result = await currentCart.getCurrentCart();",
-              "",
-              "        return result;",
-              "        } catch (error) {",
-              "          console.error(error);",
-              "          // Handle the error",
-              "        }",
-              "    }",
-              "  "
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false
-    },
-    {
       "name": "removeCouponFromCurrentCart",
       "params": [],
       "requiredFields": [],
@@ -1203,25 +1203,150 @@
         ],
         "examples": [
           {
-            "title": "updateCurrentCart example",
+            "title": "Update the current site visitor's cart ",
             "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "    ",
-              "    import { currentCart } from 'wix-ecom-backend';",
-              "  ",
-              "    ",
-              "    async function updateCurrentCart(options) {",
-              "      try {",
-              "        const result = await currentCart.updateCurrentCart(options);",
+              "import { currentCart } from 'wix-ecom-backend';",
               "",
-              "        return result;",
-              "        } catch (error) {",
-              "          console.error(error);",
-              "          // Handle the error",
-              "        }",
-              "    }",
-              "  "
-            ]
+              "export async function myUpdateCurrentCartFunction(options) {",
+              "  try {",
+              "    const updatedCurrentCart = await currentCart.updateCurrentCart(options);",
+              "    console.log('Success! Updated current cart:', updatedCurrentCart);",
+              "    return updatedCurrentCart;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myUpdateCurrentCartFunction } from 'backend/my-backend-file';",
+              "",
+              "// Coupon code to be applied to the current cart",
+              "const updateOptions = {",
+              "  \"couponCode\": \"SUMMERSALE10\"",
+              "}",
+              "",
+              "myUpdateCurrentCartFunction(updateOptions)",
+              "  .then((updatedCurrentCart) => {",
+              "    const cartId = updatedCurrentCart._id;",
+              "    // appliedCoupon boolean resolves to true if coupon object exists",
+              "    const appliedCoupon = !!updatedCurrentCart.appliedDiscounts[0].coupon",
+              "",
+              "    console.log('Success! Updated cart:', updatedCurrentCart);",
+              "    return updatedCurrentCart;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"_id\": \"ba47a627-7bb8-4918-89b2-6a72af464765\",",
+              " *   \"appliedDiscounts\": [",
+              " *     {",
+              " *       \"coupon\": {",
+              " *         \"_id\": \"fbb94b06-7447-4161-9c48-59bfcdc39e77\",",
+              " *         \"code\": \"SUMMERSALE10\"",
+              " *       }",
+              " *     }",
+              " *   ],",
+              " *   \"lineItems\": [",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *       \"quantity\": 1,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Shirt\",",
+              " *         \"translated\": \"Shirt\"",
+              " *       },",
+              " *       \"url\": \"https://example.wixsite.com\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [],",
+              " *       \"image\": \"wix:image://v1/3c76e2_c5331f937348492a97df87b0a3b34ea4~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\"",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"364115376135191\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\"",
+              " *     }",
+              " *   ],",
+              " *   \"buyerInfo\": {",
+              " *     \"visitorId\": \"4c7ce95c-9fb3-417d-9f02-b41e82b841f7\"",
+              " *   },",
+              " *   \"currency\": \"EUR\",",
+              " *   \"conversionCurrency\": \"EUR\",",
+              " *   \"buyerLanguage\": \"en\",",
+              " *   \"siteLanguage\": \"en\",",
+              " *   \"taxIncludedInPrices\": false,",
+              " *   \"weightUnit\": \"KG\",",
+              " *   \"subtotal\": {",
+              " *     \"amount\": \"10\",",
+              " *     \"convertedAmount\": \"10\",",
+              " *     \"formattedAmount\": \"€10.00\",",
+              " *     \"formattedConvertedAmount\": \"€10.00\"",
+              " *   },",
+              " *   \"inSync\": true,",
+              " *   \"_createdDate\": \"2022-05-15T11:31:30.484Z\",",
+              " *   \"_updatedDate\": \"2022-06-16T09:20:23.388Z\"",
+              " * }",
+              " *",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "Apply a coupon to the current cart"
+            }
           }
         ]
       },
