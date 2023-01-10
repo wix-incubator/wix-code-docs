@@ -42,8 +42,9 @@ showToast(config): Promise<Object>
 | `uiType` | ToastActionUiType | The type of call-to-action. Options: `button`, `link` |
 
 ## Returns
-
+```
 Promise<Object>
+```
 
 
 ## Examples
