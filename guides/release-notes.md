@@ -11,7 +11,9 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-dataset`
 
-You can now use the new promise-based  [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync)  function to load a dataset. (January 10, 2022)
+You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
+
+(January 10, 2022)
 
 ### New API: Wix Blog
 
