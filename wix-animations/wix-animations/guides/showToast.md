@@ -48,7 +48,7 @@ Promise<Object>
 
 ## Examples
 
-**Display a toast when a product is updated**
+**Display a success toast when a product is updated**
 
 ```js
 import { showToast } from '@wix/dashboard-sdk';
