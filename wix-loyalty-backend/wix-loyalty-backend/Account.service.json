@@ -29,7 +29,7 @@
               "referenceType": "wix-loyalty-backend.Account.AdjustPointsOptions"
             }
           ],
-          "doc": "",
+          "doc": "Options to use when adjusting points.\n",
           "required": false
         }
       ],
@@ -54,7 +54,7 @@
       "docs": {
         "summary": "Adjusts the point balance of a loyalty account.",
         "description": [
-          "The `adjustPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nTo adjust the points balance of an account you must include an `accountId`, a `revision` number, and the adjustment to make. You can also leave a description to explain the reason for the points adjustment.\n\nThere are two ways to adjust the points of a loyalty account:\n- `balance` allows you to set the total points balance to this new amount.\n- `amount` allows you to alter the points balance by this amount. This amount can be a positive number to increase the points balance or a negative number to decrease the balance.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions) can create loyalty accounts."
+          "The `adjustPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nTo adjust the points balance of an account you must include an `accountId`, a `revision` number, and the adjustment to make. You can also leave a description to explain the reason for the points adjustment.\n\nThere are two ways to adjust the points of a loyalty account:\n- `balance` allows you to set the total points balance to this new amount. The transaction `type` will return as `ADJUST`.\n- `amount` allows you to alter the points balance by this amount. This amount can be a positive number to increase the points balance or a negative number to decrease the balance. The transaction type will return as `GIVE`."
         ],
         "examples": [
           {
@@ -62,25 +62,24 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';",
               "",
-              "/* Sample identifiers value: ",
-              " * {",
-              " *   accountId: '01e34b81-4e48-43e4-b178-c84f3b968574',",
-              " *   revision: 3",
-              " * }  ",
-              " */  ",
+              "// Sample accountId value: '01e34b81-4e48-43e4-b178-c84f3b968574'",
               "",
-              "// Sample description value: 'Sync from external program'  ",
+              "/* Sample options values:",
+              " *  {",
+              " *    balance: 715",
+              " *    description: 'Sync from external program.'",
+              " *    revision: 3",
+              " *   }",
+              " */",
               "",
-              "// Sample balance value: 715  ",
-              "",
-              "export async function myAdjustPointsFunction(identifiers, description, amount) {",
+              "export async function myAdjustPointsFunction() {",
               "  try {",
-              "    const updatedAccount = await account.adjustPoints(identifiers, description, amount);",
+              "    const updatedAccount = await account.adjustPoints(accountId, options);",
               "",
-              "    const updatedBalance = updatedAccount.points.balance;",
-              "    const transactionId = updatedAccount.latestTransaction._id;",
+              "    const updatedBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.account.latestTransaction._id;",
               "",
-              "    console.log('Success! New account balance is: ', updatedBalance, '. This ID for this transaction is: ', transactionId);  ",
+              "    console.log('Success! New account balance is: ', updatedBalance, ' The ID for this transaction is: ', transactionId);  ",
               "",
               "    return updatedAccount;",
               "  } catch (error) {",
@@ -130,7 +129,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact ID for a Wix site contact. See the Contacts API to\n[learn more about a site's contacts](/wix-crm-backend/contacts).\n",
+          "doc": "Contact ID for a Wix site contact. See the [Contacts API](/wix-crm-backend/contacts) to learn more.\n",
           "required": true
         }
       ],
@@ -155,7 +154,7 @@
       "docs": {
         "summary": "Creates a loyalty account for one of a site's contacts.",
         "description": [
-          "The `createAccount()` function returns a Promise that resolves to the new loyalty account when it is created.\n\nTo create a new loyalty account, the customer must first be a site contact with a contact ID. See [contacts](wix-crm-backend/contacts) to learn more about a site's contacts. The site must also have an active loyalty program before loyalty accounts can be created. See the [`activateLoyaltyProgram()`](wix-loyalty-backend/program/activateloyaltyprogram) function to activate a site's loyalty program.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions) can create loyalty accounts."
+          "The `createAccount()` function returns a Promise that resolves to the new loyalty account when it is created.\n\nTo create a new loyalty account, the customer must first be a site contact with a contact ID. See [contacts](wix-crm-backend/contacts) to learn more about a site's contacts. The site must also have an active loyalty program before loyalty accounts can be created. See the [`activateLoyaltyProgram()`](wix-loyalty-backend/program/activateloyaltyprogram) function to activate a site's loyalty program."
         ],
         "examples": [
           {
@@ -165,7 +164,7 @@
               "",
               "// Sample contactId value: 'ff61204b-b19a-5cc8-823b-7eed8ae5fc28'  ",
               "",
-              "export async function myCreateAccountFunction(contactId) {",
+              "export async function myCreateAccountFunction() {",
               "  try {",
               "    const newLoyaltyAccount = await account.createAccount(contactId);  ",
               "",
@@ -183,7 +182,7 @@
               " * {",
               " *   \"account\": {",
               " *     \"_id\": \"1e3f99cf-1e7f-4cba-8777-f081549f49cd\",",
-              " *     \"contactId\": \"4344b020-1042-4827-bf37-f5329e47696c\",",
+              " *     \"contactId\": \"ff61204b-b19a-5cc8-823b-7eed8ae5fc28\",",
               " *     \"points\": {",
               " *       \"balance\": 0,",
               " *       \"earned\": 0,",
@@ -251,7 +250,7 @@
       "docs": {
         "summary": "Adds points to a loyalty account.",
         "description": [
-          "The `earnPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nPoints are earned manually, through a function you add to the Velo code, or through an automatic event. If points were earned manually, then the `appId` is the Wix Loyalty Program's `wixAppId` of `553c79f3-5625-4f38-b14b-ef7c0d1e87df`. For reference, see the code example: **Loyalty account earns points for subscribing to your newsletter**. If points were earned in an automatic event, then the `appId` is from that automation's `sourceUniqueId`.\n\nOnly a positive amount can be added using the `earnPoints()` function. To adjust an account's balance for a negative amount, use [`adjustPoints()`](/wix-loyalty-backend/accounts/adjustpoints).\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions) can create loyalty accounts."
+          "The `earnPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nOnly a positive amount can be added using the `earnPoints()` function, to manually adjust an account's balance for a negative amount, use [`adjustPoints()`](/wix-loyalty-backend/accounts/adjustpoints).\n\nThe `earnPoints()` function allows customers to manually earn points to their loyalty accounts. To use this function you must include an `appId` and an `idempotencyKey`. Any string can be set as the `appId` or `idempotencyKey`. In contrast to when an account earns points through an action taken on your site, the `appId` automatically sets to the source app that generates the points. The transaction `type` is `EARN` for points earned this way."
         ],
         "examples": [
           {
@@ -263,14 +262,14 @@
               " *",
               " * Sample options value:",
               " * {",
-              " *   amount: 50,",
-              " *   description: 'Subscribed to newsletter.',",
-              " *   appId: '553c79f3-5625-4f38-b14b-ef7c0d1e87df',",
-              " *   idempotencyKey: 'bfdc785c-bbc6-447d-b987-220ca649a3b2'",
+              " *   'amount': 50,",
+              " *   'description': 'Subscribed to newsletter.',",
+              " *   'appId': '553c79f3-5625-4f38-b14b-ef7c0d1e87df',",
+              " *   'idempotencyKey': 'bfdc785c-bbc6-447d-b987-220ca649a3b2'",
               " * }",
               " */",
               "",
-              "export async function myEarnPointsFunction(accountId, options) {",
+              "export async function myEarnPointsFunction() {",
               "  try {",
               "    const updatedAccount = await accounts.earnPoints(accountId, options);",
               "",
@@ -315,7 +314,8 @@
               " *     }",
               " *   }",
               " * }",
-              " */"
+              " */",
+              ""
             ]
           }
         ]
@@ -355,7 +355,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Gets an account using the loyalty account ID.",
+        "summary": "Retrieves an account using the loyalty account ID.",
         "description": [
           "The `getAccount()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nYou can also get an account using a secondary ID, such as a contact ID or a member ID with the [`getAccountBySecondaryId()`](wix-loyalty-backend/account/getaccountbysecondaryid) function."
         ],
@@ -367,7 +367,7 @@
               "",
               "// Sample _id value: 'e6f39a5b-a6d0-4556-b889-0cf09d8a84f7'",
               "",
-              "export async function myGetLoyaltyAccountFunction(_id) {",
+              "export async function myGetLoyaltyAccountFunction() {",
               "  try {",
               "    const loyaltyAccount = await account.getAccount(_id);",
               "",
@@ -449,7 +449,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Gets the loyalty account of the specified site contact or member.",
+        "summary": "Retrieves the loyalty account of the specified site contact or member.",
         "description": [
           "The `getAccountBySecondaryId()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nThis function gets a loyalty account using a customer's contact ID or member ID. You can also get an account using the loyalty account ID with the [`getAccount()`](wix-loyalty-backend/account/getaccount) function."
         ],
@@ -459,16 +459,16 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';  ",
               "",
-              "// Sample contactId value: \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\"  ",
+              "// Sample contactId value: '8a71f711-f77b-43fe-9e3d-5c243f94b2bc'  ",
               "",
-              "export async function myGetAccountByContactIdFunction(contactId) {",
+              "export async function myGetAccountByContactIdFunction() {",
               "  try {",
               "    const loyaltyAccount = await account.getAccountBySecondaryId(contactId);  ",
               "",
               "    const accountId = loyaltyAccount.account._id;",
               "    const currentRevision = loyaltyAccount.account.revision;  ",
               "",
-              "    console.log(\"Success! This site contact's loyalty account Id is: \", accountId);  ",
+              "    console.log(\"Success! This site contact's loyalty account ID is: \", accountId);  ",
               "",
               "    return loyaltyAccount;",
               "  } catch (error) {",
@@ -534,9 +534,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Gets the total amount of points earned, redeemed, and adjusted for the entire loyalty program.",
+        "summary": "Retrieves the total amount of points earned, redeemed, and adjusted for the entire loyalty program.",
         "description": [
-          "The `getProgramTotals()` function returns a Promise that resolves to the combined total points for all loyalty accounts in the program.\n\nThe `balance` is the current total of points outstanding, while hte `earned`, `adjusted`, and `redeemed` amounts are the historically accumulated amounts. The totals include the amounts for all loyalty accounts.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions) can get program totals."
+          "The `getProgramTotals()` function returns a Promise that resolves to the combined total points for all loyalty accounts in the program.\n\nThe `balance` is the current total of points outstanding, while the `earned`, `adjusted`, and `redeemed` amounts are the all-time accumulated amounts. The totals include the amounts for all loyalty accounts."
         ],
         "examples": [
           {
@@ -548,8 +548,8 @@
               "  try {",
               "    const programTotals = await account.getProgramTotals();  ",
               "",
-              "    const currentBalance = programTotals.balance;",
-              "    const redeemed = programTotals.redeemed;  ",
+              "    const currentBalance = programTotals.points.balance;",
+              "    const redeemed = programTotals.points.redeemed;  ",
               "",
               "    console.log('Success! ', redeemed, ' total points have been redeemed in the life of this program.');  ",
               "",
@@ -561,10 +561,10 @@
               "",
               "/* Promise resolves to:",
               " * {\"points\": {",
-              " *   \"balance\": 165,",
-              " *   \"earned\": 136,",
-              " *   \"redeemed\": 0,",
-              " *  \"adjusted\": 29",
+              " *   \"balance\": 2046,",
+              " *   \"earned\": 1475,",
+              " *   \"adjusted\": 571,",
+              " *   \"redeemed\": 0",
               " * }} ",
               " */"
             ]
@@ -606,9 +606,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Gets a transaction using the transaction ID.",
+        "summary": "Retrieves a transaction using the transaction ID.",
         "description": [
-          "The `getTransaction()` function returns a Promise that resolves to a loyalty transaction when the specified transaction is retrieved.\n\nLoyalty transactions include activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to get many, or all, of the transactions for a specific loyalty account, use the [`listTransactions()`](wix-loyalty-backend/account/listtransactions) function."
+          "The `getTransaction()` function returns a Promise that resolves to a loyalty transaction when the specified transaction is retrieved.\n\nA loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to retrieve many, or all, of the transactions for a specific loyalty account, use the [`listTransactions()`](wix-loyalty-backend/account/listtransactions) function."
         ],
         "examples": [
           {
@@ -618,15 +618,15 @@
               "",
               "// Sample _id value: '262c8eb0-123e-4117-9fe6-4973a3551688'",
               "",
-              "export async function myGetTransactionFunction(_id) {",
+              "export async function myGetTransactionFunction() {",
               "  try {",
-              "    const transaction = await account.getTransaction(_id);",
+              "    const retrievedTransaction = await account.getTransaction(_id);",
               "",
-              "    const transactionType = transaction.type;",
-              "    const transactionDate = transaction._createdDate;",
+              "    const transactionType = retrievedTransaction.transaction.type;",
+              "    const transactionDate = retrievedTransaction.transaction._createdDate;",
               "",
               "    console.log('Success! That transaction was created on ', transactionDate, ' and is a ', transactionType, ' type.');",
-              "    return transaction;",
+              "    return retrievedTransaction;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
@@ -682,7 +682,7 @@
       "docs": {
         "summary": "Retrieves a list of loyalty accounts, given the provided filters.",
         "description": [
-          "The `listAccounts()` function returns a Promise that resolves to a list of loyalty accounts when the filtered accounts are retrieved.\n\nYou can get selected accounts with an array of `contactIds` or leave that request parameter empty to retrieve a list of all of your site's loyalty accounts.\n\nUse `cursorPaging` to limit how many items load at a time.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions) can retrieve the information for all of a site's loyalty accounts."
+          "The `listAccounts()` function returns a Promise that resolves to a list of loyalty accounts when the filtered accounts are retrieved.\n\nYou can retrieve selected loyalty accounts with an array of `contactIds` or retrieve a list of all of a site's loyalty accounts\n    with an empty request parameter. Use the `cursorPaging` parameters to limit how many items load at a time."
         ],
         "examples": [
           {
@@ -690,19 +690,22 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';  ",
               "",
-              "/* Sample cursorPaging value: {",
-              " *   limit: 3",
-              " * }",
+              "/* Sample options value: ",
+              " *   {",
+              " *   'cursorPaging': {",
+              " *     'limit': 3",
+              " *     }",
+              " *   }",
               " */",
               "",
-              "export async function myListLoyaltyAccountsFunction(cursorPaging) {",
+              "export async function myListLoyaltyAccountsFunction() {",
               "  try {",
-              "    const accountsList = await account.listAccounts(cursorPaging);",
+              "    const accountsList = await account.listAccounts(options);",
               "",
               "    const firstAccountId = accountsList.accounts[0]._id;",
               "    const firstAccountBalance = accountsList.accounts[0].points.balance;",
               "",
-              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, 'and ', firstAccountBalance);  ",
+              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, ' and ', firstAccountBalance);  ",
               "",
               "    return accountsList;",
               "  } catch (error) {",
@@ -799,15 +802,18 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';  ",
               "",
-              "/* Sample contactIds value: [",
-              " *   \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
-              " *   \"6f158e70-26f6-4fce-80a8-1d57e6791c34\"",
-              " * ]",
+              "/* Sample options value: ",
+              " * {",
+              " *   contactIds: [",
+              " *     '8a71f711-f77b-43fe-9e3d-5c243f94b2bc',",
+              " *     '6f158e70-26f6-4fce-80a8-1d57e6791c34'",
+              " *   ]",
+              " * }",
               " */  ",
               "",
-              "export async function myListLoyaltyAccountsFunction(cursorPaging) {",
+              "export async function myListLoyaltyAccountsFunction() {",
               "  try {",
-              "    const accountsList = await account.listAccounts(cursorPaging);  ",
+              "    const accountsList = await account.listAccounts(contactIds);  ",
               "",
               "    const firstAccountId = accountsList.accounts[0]._id;",
               "    const firstAccountBalance = accountsList.accounts[0].points.balance;  ",
@@ -936,7 +942,7 @@
       "docs": {
         "summary": "Retrieves a list of transactions for a specified loyalty account.",
         "description": [
-          "The `listTransactions()` function returns a Promise that resolves to a list of loyalty transactions for the loyalty account specified by the account ID.\n\nLoyalty transactions include activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to get a specific transaction use the [`getTransaction()`](wix-loyalty-backend/account/gettransaction) function."
+          "The `listTransactions()` function returns a Promise that resolves to a list of loyalty transactions for the loyalty account specified by the account ID.\n\nLoyalty transactions include activities that change a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to get a specific transaction use that transaction's ID and the [`getTransaction()`](wix-loyalty-backend/account/gettransaction) function."
         ],
         "examples": [
           {
@@ -946,12 +952,12 @@
               "",
               "// Sample accountId value: 'b04a7524-f0cc-435a-981a-b765f758438b'",
               "",
-              "export async function myListTransactionsFunction(accountId) {",
+              "export async function myListTransactionsFunction() {",
               "  try {",
               "    const transactionsList = await account.listTransactions(accountId);",
               "",
-              "    const firstId = transactionsList.items[0]._id;",
-              "    const firstStatus = transactionsList.items[0].status;",
+              "    const firstId = transactionsList.transactions[0]._id;",
+              "    const firstStatus = transactionsList.transactions[0].type;",
               "",
               "    console.log('The most recent transaction ID is: ', firstId);",
               "    return transactionsList;",
@@ -993,9 +999,14 @@
               " *      \"createdDate\": \"2022-06-19T22:09:23.434Z\",",
               " *      \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
               " *      \"idempotencyKey\": \"5a036e48-4188-4200-a42e-de37c273c3c1\"",
-              " *    }",
-              " *  ]} ",
-              " */"
+              " *   }],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"cursors\": {},",
+              " *     \"hasNext\": false",
+              " *  }} ",
+              " */",
+              ""
             ]
           }
         ]
@@ -1420,7 +1431,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact ID for a Wix site contact. See the Contacts API to\n[learn more about a site's contacts](/wix-crm-backend/contacts)."
+          "doc": "Contact ID for a Wix site contact. See the [Contacts API](/wix-crm-backend/contacts) to learn more."
         }
       ],
       "docs": {
@@ -2008,7 +2019,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's contact ID or special \"me\" identifier to get current identity's data.\nSee the Contacts API to [learn more about a site's contacts](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/contact-object)."
+          "doc": "Account owner's contact ID. See the [Contacts API](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/contact-object) to learn more."
         },
         {
           "name": "memberId",
@@ -2018,7 +2029,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's member ID or special \"me\" identifier to get current identity's data.\nSee the Members API to [learn more about a site's members](https://dev.wix.com/api/rest/members/members/member-object)."
+          "doc": "Account owner's member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object) to learn more."
         }
       ],
       "docs": {
@@ -2038,7 +2049,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's contact ID or special \"me\" identifier to get current identity's data.\nSee the Contacts API to [learn more about a site's contacts](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/contact-object)."
+          "doc": "Account owner's contact ID. See the [Contacts API](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/contact-object) to learn more."
         },
         {
           "name": "memberId",
@@ -2048,7 +2059,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's member ID or special \"me\" identifier to get current identity's data.\nSee the Members API to [learn more about a site's members](https://dev.wix.com/api/rest/members/members/member-object)."
+          "doc": "Account owner's member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object) to learn more."
         }
       ],
       "extra": {
@@ -2327,7 +2338,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `EARN` or `ADJUST`.\n\nIf points were earned or adjusted manually, then the `appId` is the Loyalty app's\n`wixAppId` of `553c79f3-5625-4f38-b14b-ef7c0d1e87df`. If points were earned or adjusted in an automatic event,\nthen the `appId` is from that automation's `sourceUniqueId`."
+          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `EARN` or `ADJUST`. The `appId` can be set to any string when points are manually earned or adjusted. When points are earned or adjusted in an automatic event, the `appId` is from that automation's `sourceAppId`."
         },
         {
           "name": "description",
@@ -2718,7 +2729,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's contact ID. See the Contacts API to [learn more about a site's contacts](/wix-crm-backend/contacts)."
+          "doc": "Account owner's contact ID. See the [Contacts API](/wix-crm-backend/contacts) to learn more."
         },
         {
           "name": "lastActivityDate",
@@ -2750,7 +2761,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's member ID. See the Members API to [learn more about a site's members](/wix-members-backend/introduction)."
+          "doc": "Account owner's member ID. See the [Members API](/wix-members-backend/introduction) to learn more."
         },
         {
           "name": "points",
@@ -4353,7 +4364,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Account owner's member ID. See the Members API to [learn more about a site's members](/wix-members-backend/introduction)."
+          "doc": "Account owner's member ID. See the [Members API](/wix-members-backend/introduction) to learn more."
         },
         {
           "name": "redeemInfo",
