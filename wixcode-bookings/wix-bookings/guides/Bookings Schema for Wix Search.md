@@ -104,3 +104,12 @@ The following fields appear in each matching search result [document](https://ww
 **Can facet**: Yes  
 **Can sort**: No  
 **Can filter**: hasSome, hasAll 
+
+#### benefits 
+
+**Description**: Lists the pricing plans associated with the service.  
+**Type**: Array of Strings  
+**Can search the content of this field**: Yes  
+**Can facet**: Yes  
+**Can sort**: No  
+**Can filter**: hasSome, hasAll
