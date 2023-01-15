@@ -54,7 +54,9 @@
       },
       "docs": {
         "summary": "Adds catalog line items and/or custom line items to a checkout.",
-        "description": [],
+        "description": [
+          "The addToCheckout() function returns a Promise that resolves to the updated checkout when the specified items have been added.\n> **Note:** When adding catalog items, `options.lineItems.catalogReference` is required."
+        ],
         "examples": [
           {
             "title": "Add a catalog item to a checkout ",
@@ -82,8 +84,9 @@
               "",
               "import { myAddToCheckoutFunction } from 'backend/my-backend-file';",
               "",
-              "// Sample addToCheckout function parameters:",
+              "// Sample checkout ID:",
               "const _id = \"63879d9f-0d1c-49aa-a0c5-5fc612a24ec7\";",
+              "// Sample addToCheckout options:",
               "const options = {",
               "  \"lineItems\": [{",
               "    \"catalogReference\": {",
@@ -1530,9 +1533,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [Get Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
+        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [getOrder()](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
         "description": [
-          "Some properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [Get Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `POS`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of \"AVAILABLE\" or \"PARTIALLY_AVAILABLE\".\n+ Before creating the order, remove line items with `availability.status` of \"NOT_AVAILABLE\" and \"NOT_FOUND\" using [Remove Line Items](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `POS` or when order is for pickup.\n\nThe `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created."
+          "The `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created.\nSome properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [getCheckout()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `\"POS\"`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of `\"AVAILABLE\"` or `\"PARTIALLY_AVAILABLE\"`.\n+ Before creating the order, remove line items with `availability.status` of `\"NOT_AVAILABLE\"` and `\"NOT_FOUND\"` using [removeLineItems()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup."
         ],
         "examples": [
           {
@@ -1546,9 +1549,9 @@
               "",
               "export async function myCreateOrderFromCheckoutFunction(checkoutId) {",
               "  try {",
-              "    await checkout.createOrder(checkoutId);",
+              "    const createOrderResponse = await checkout.createOrder(checkoutId);",
               "    console.log('Success! Created an order from the checkout');",
-              "    return;",
+              "    return createOrderResponse;",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
@@ -2516,7 +2519,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Removes the coupon from a specified checkout.",
+        "summary": "Removes the coupon from a specified checkout.\n>**Note:** A checkout can only hold 1 coupon.",
         "description": [
           "The `removeCoupon()` function returns a Promise that resolves to the updated checkout when the coupon is removed from the specified checkout."
         ],
@@ -3139,7 +3142,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Removes the gift card from a specified checkout.",
+        "summary": "Removes the gift card from a specified checkout.\n>**Note:** A checkout can only hold 1 gift card.",
         "description": [
           "The `removeGiftCard()` function returns a Promise that resolves to the updated checkout when the gift card is removed from the specified checkout."
         ],
@@ -3605,7 +3608,7 @@
               }
             }
           ],
-          "doc": "IDs of the line items to be removed.\n",
+          "doc": "IDs of the line items to be removed.\nTo find the IDs of the checkout line items you'd like to remove, pass the `checkout._id` to [getCheckout()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) and look for the IDs under `lineItems` and/or `customLineItems`.\n",
           "required": true
         }
       ],
@@ -6700,7 +6703,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item price."
+          "doc": "Custom line item price. For security reasons, the `price` field should come from backend Velo code, and not be passed from the frontend."
         },
         {
           "name": "quantity",
