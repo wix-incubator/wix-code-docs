@@ -7,6 +7,25 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Dataset onReadyAsync()
+
+`wix-dataset`
+
+You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
+
+(January 10, 2022)
+
+### New API: Wix Blog
+
+`wix-blog-backend`
+
+Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
+  - [posts](wix-blog-backend/posts) 
+  - [categories](wix-blog-backend/categories) 
+  - [tags](wix-blog-backend/tags)
+
+(December 22, 2022)
+
 ### Update: Apply a coupon to specific billing cycles
 
 `wix-marketing-backend`
@@ -556,7 +575,7 @@ The [`setPlanVisibility`](https://www.wix.com/velo/reference/wix-pricing-plans-b
 
 `wix-window`
 
-With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata-obj) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
+With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
 
 ### Updated: insertReference() only works with multi-reference fields
 
