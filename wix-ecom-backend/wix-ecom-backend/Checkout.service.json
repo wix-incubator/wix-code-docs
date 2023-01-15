@@ -1491,110 +1491,6 @@
       "isVeloEvent": false
     },
     {
-      "name": "createOrder",
-      "params": [
-        {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Checkout ID.",
-          "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Checkout.CreateOrderOptions"
-            }
-          ],
-          "doc": "More order creation options.\n",
-          "required": false
-        }
-      ],
-      "requiredFields": [
-        "_id"
-      ],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponse"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [getOrder()](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
-        "description": [
-          "The `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created.\nSome properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [getCheckout()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `\"POS\"`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of `\"AVAILABLE\"` or `\"PARTIALLY_AVAILABLE\"`.\n+ Before creating the order, remove line items with `availability.status` of `\"NOT_AVAILABLE\"` and `\"NOT_FOUND\"` using [removeLineItems()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup."
-        ],
-        "examples": [
-          {
-            "title": "Create an order from a checkout ",
-            "body": [
-              "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
-              " *************************************/",
-              "",
-              "import { checkout } from 'wix-ecom-backend';",
-              "",
-              "export async function myCreateOrderFromCheckoutFunction(checkoutId) {",
-              "  try {",
-              "    const createOrderResponse = await checkout.createOrder(checkoutId);",
-              "    console.log('Success! Created an order from the checkout');",
-              "    return createOrderResponse;",
-              "  } catch (error) {",
-              "    console.error(error);",
-              "    // Handle the error",
-              "  }",
-              "}",
-              "",
-              "/*************",
-              " * Page code *",
-              " ************/",
-              "",
-              "import { myCreateOrderFromCheckoutFunction } from 'backend/my-backend-file';",
-              "",
-              "// Sample checkoutId:",
-              "const checkoutId = '23a7b29a-3c14-4ef1-9353-f4b714b13217';",
-              "",
-              "myCreateOrderFromCheckoutFunction(checkoutId)",
-              "  .then((createOrderResponse) => {",
-              "    const orderId = createOrderResponse.orderId;",
-              "    const paymentGatewayOrderId = createOrderResponse.paymentGatewayOrderId;",
-              "",
-              "    console.log('Success! Created an order from the checkout');",
-              "    return createOrderResponse;",
-              "  })",
-              "  .catch((error) => {",
-              "    console.error(error);",
-              "    // Handle the error",
-              "  });",
-              "",
-              "/* Promise resolves to:",
-              " *",
-              " * {",
-              " *   \"orderId\": \"02843248-495f-45c0-a5d6-e913f647c9f2\",",
-              " *   \"paymentGatewayOrderId\": \"f30440f4-413a-4382-bc38-7280b155a5ed\"",
-              " * }",
-              " *",
-              " */"
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false
-    },
-    {
       "name": "getCheckout",
       "params": [
         {
@@ -5992,7 +5888,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The payment gateway is cashier. `paymentGatewayOrderId` will be returned if money needs to be charged.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
+          "doc": "For online orders, send this value as a parameter to the Wix Pay [`startPayment()`](https://www.wix.com/velo/reference/wix-pay/startpayment) function to enable your buyer to pay for the order.\n`paymentGatewayOrderId` will be returned if money needs to be charged.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
         },
         {
           "name": "paymentResponseToken",
@@ -6152,7 +6048,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The payment gateway is cashier.\n`paymentGatewayOrderId` will be returned if money needs to be charged.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
+          "doc": "`paymentGatewayOrderId` will be returned if money needs to be charged.\nFor online orders, send this value as a parameter to the Wix Pay startPayment() function to enable your buyer to pay for the order.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
         },
         {
           "name": "subscriptionId",
@@ -6162,7 +6058,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of newly created subscription."
+          "doc": "ID of newly created subscription. Learn more about your site's [Subscriptions](https://support.wix.com/en/article/wix-stores-managing-product-subscriptions)."
         }
       ],
       "extra": {
@@ -6203,7 +6099,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of newly created subscription."
+          "doc": "ID of newly created subscription. Learn more about your site's [Subscriptions](https://support.wix.com/en/article/wix-stores-managing-product-subscriptions)."
         }
       ],
       "docs": {
