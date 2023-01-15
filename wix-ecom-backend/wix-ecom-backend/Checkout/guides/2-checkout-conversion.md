@@ -15,11 +15,11 @@ Fields that remain with the same name, in the same location, and with no changes
 | `id`                                            | -                                                         |
 | `status`                                        | -                                                         |
 | `weightUnit` *                                  | `weightUnit`                                              |
-| `buyerNote`  *                                   | `buyerNote`                                               |
+| `buyerNote`  *                                  | `buyerNote`                                               |
 | `currency.code`                                 | `currency`                                                |
-| `currency.symbol`                               | For every price returned, we also provide the formatted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
+| `currency.symbol`                               | For every price returned, we also provide the formatted price under `checkout.priceSummary`.                                                         |
 | `convertedCurrency.code`                        | `conversionCurrency`                                      |
-| `convertedCurrency.symbol`                      | For every converted price returned, we also provide the formatted converted price under `checkout.priceSummary` and/or `order.priceSummary`.                                                         |
+| `convertedCurrency.symbol`                      | For every converted price returned, we also provide the formatted converted price under `checkout.priceSummary`.                                                         |
 | `billingAddress.address`| `billingInfo.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table) for more details.
 | `billingAddress.contactDetails.firstName`       | `billingInfo.contactDetails.firstName`              |
 | `billingAddress.contactDetails.lastName`        | `billingInfo.contactDetails.lastName`               |
@@ -32,7 +32,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `appliedCoupon.code`                            | `appliedDiscounts[i].coupon.code`                                               |
 | `appliedCoupon.discountValue`                   | `appliedDiscounts[i].coupon.amount.amount`                                 |
 | `appliedCoupon.convertedDiscountValue`          | `appliedDiscounts[i].coupon.convertedAmount`                               |
-| `appliedCoupon.couponType`                      | -                                              |
+| `appliedCoupon.couponType`                      | No longer returned.                                               |
 | `totals.subtotal`                               | `priceSummary.subtotal.amount`                                               |
 | `totals.shipping`                               | `priceSummary.shipping.amount`                                               |
 | `totals.tax`                                    | `priceSummary.tax.amount`                                               |
@@ -59,23 +59,23 @@ Fields that remain with the same name, in the same location, and with no changes
 | `shippingInfo.pickupDetails.pickupInstructions`    | `shippingInfo.logistics.instructions`                                     |
 | `shippingInfo.shippingAddress.address`             | `shippingInfo.shippingDestination.address` - See [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table) for more details.  |
 | `shippingInfo.shippingAddress.contactDetails`      | `shippingInfo.shippingDestination.contactDetails` |          |
-| `buyerInfo.id` when `buyerInfo.identityType` value is `CONTACT` | `buyerInfo.contactId`                                               |
-| `buyerInfo.id` when `buyerInfo.identityType` value is `VISITOR` | `buyerInfo.visitorId`                                               |
-| `buyerInfo.id` when `buyerInfo.identityType` value is `MEMBER` | `buyerInfo.memberId`                                               |
-| `buyerInfo.email`    *                              | `buyerInfo.email`                                               |
+| `buyerInfo.id` and `buyerInfo.identityType: CONTACT` | `buyerInfo.contactId` only.                                               |
+| `buyerInfo.id` and `buyerInfo.identityType: VISITOR` | `buyerInfo.visitorId` only.                                               |
+| `buyerInfo.id` and `buyerInfo.identityType: MEMBER` | `buyerInfo.memberId` only.                                              |
+| `buyerInfo.email`*                              | `buyerInfo.email`                                               |
 | `buyerInfo.phone`                                  | `billingInfo.contactDetails.phone`                                        |
 | `buyerInfo.firstName`                              | `billingInfo.contactDetails.firstName`                                    |
 | `buyerInfo.lastName`                               | `billingInfo.contactDetails.lastName`                                     |
-| `lineItems[i].id`                                  | `lineItems[i]._id` - Note: this `_id` is of type GUID. In the Stores Cart API, the `id` is of type Int32.                                               |
+| `lineItems[i].id`                                  | `lineItems[i]._id`. **Note:** this `_id` is of type GUID. In the Stores Cart API, the `id` is of type Int32.                                               |
 | `lineItems[i].productId`                           | `lineItems[i].catalogReference.catalogItemId`
 | `lineItems[i].name`                                | `lineItems[i].productName.original`                          |
-| `lineItems[i].quantity`    *                        | `lineItems[i].quantity`                          |
+| `lineItems[i].quantity`*                        | `lineItems[i].quantity`                          |
 | `lineItems[i].weight`                              | `lineItems[i].physicalProperties.weight`                  |
 | `lineItems[i].sku`                                 | `lineItems[i].physicalProperties.sku`                                               |
 | `lineItems[i].lineItemType: "PHYSICAL"`            | `lineItems[i].itemType.preset: "PHYSICAL"`                                |
 | `lineItems[i].lineItemType: "DIGITAL"`             | `lineItems[i].itemType.preset: "DIGITAL"`                               |
-| `lineItems[i].lineItemType: "CUSTOM_AMOUNT_ITEM`   | `lineItems[i].catalogReference`           |
-| `lineItems[i].notes`                               | -                                               |
+| `lineItems[i].lineItemType: "CUSTOM_AMOUNT_ITEM`   | `lineItems[i].itemType.custom` and `lineItems[i].catalogReference` is empty.            |
+| `lineItems[i].notes`                               | `lineItems[i].descriptionLines[i].plainText.original`                                               |
 | `lineItems[i].customTextFields`                    | `lineItems[i].descriptionLines`                                             |
 | `lineItems[i].mediaItem.mediaType`                 | All line item media in the eCommerce Cart, Checkout, and Order APIs are type image.
 | `lineItems[i].mediaItem.url`                       | `lineItems[i].media.url`                                               |
