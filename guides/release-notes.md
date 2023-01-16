@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Wix Pro Gallery Backend
+
+`wix-pro-gallery-backend`
+
+Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and manage pro galleries on your site's backend. You can also create and manage media items in the pro galleries. 
+
+(January 11, 2023)
+
 ### New API: Dataset onReadyAsync()
 
 `wix-dataset`
