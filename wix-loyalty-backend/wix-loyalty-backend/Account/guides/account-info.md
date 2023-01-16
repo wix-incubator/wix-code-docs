@@ -7,9 +7,9 @@ title: Introduction
 The Loyalty Account API allows you to create and manage your customer loyalty accounts.
 
 With the Loyalty Account API, you can:
-- [Create](/createaccount) a loyalty account for a site contact.
-- Manually [adjust points](/adjustpoints) in a loyalty account.
-- Set up functions that allow loyalty accounts to [earn points](/earnpoints) through their actions.
+- [Create](wix-loyalty-backend/account/createaccount) a loyalty account for a site contact.
+- Manually [adjust points](wix-loyalty-backend/account/adjustpoints) in a loyalty account.
+- Set up functions that allow loyalty accounts to [earn points](wix-loyalty-backend/account/earnpoints) through their actions.
 - Trigger an event handler to run any time an account has a reward available.
 
 To use the Account API, import `{ account }` from the 'wix-loyalty-backend' module. 

@@ -7,8 +7,8 @@ title: Introduction
 The Loyalty Program API allows you to activate and customize your loyalty program.
 
 With the Loyalty Program API, you can:
-- [Activate](/activateloyaltyprogram) your loyalty program.
-- [Customize](/updateloyaltyprogram) the name of the program, as well as the name and icon of the loyalty points unit.
+- [Activate](wix-loyalty-backend/program/activateloyaltyprogram) your loyalty program.
+- [Customize](wix-loyalty-backend/program/updateloyaltyprogram) the name of the program, as well as the name and icon of the loyalty points unit.
 
 To use the Program API, import `{ program }` from the 'wix-loyalty-backend' module. 
 

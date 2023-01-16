@@ -7,9 +7,9 @@ title: Introduction
 The Loyalty API allows you to manage a customized loyalty program that lets customers earn loyalty points which can be redeemed for coupons.
 
 With the Wix Loyalty API, you can:
-- [Activate](/program/activateloyaltyprogram) and [manage](/program/updateloyaltyprogram) a loyalty program.
-- [Create](/account/createaccount) new loyalty accounts for customers.
-- [Adjust points](/account/adjustpoints) in individual loyalty accounts.
+- [Activate](wix-loyalty-backend/program/activateloyaltyprogram) and [manage](wix-loyalty-backend/program/updateloyaltyprogram) a loyalty program.
+- [Create](wix-loyalty-backend/account/createaccount) new loyalty accounts for customers.
+- [Adjust points](wix-loyalty-backend/account/adjustpoints) in individual loyalty accounts.
 
 For more information, see [Wix Loyalty Program: An Overview](https://support.wix.com/en/article/wix-loyalty-program-an-overview).
 
