@@ -7,6 +7,22 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Wix Pro Gallery Backend
+
+`wix-pro-gallery-backend`
+
+Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and manage pro galleries on your site's backend. You can also create and manage media items in the pro galleries. 
+
+(January 11, 2023)
+
+### New API: Dataset onReadyAsync()
+
+`wix-dataset`
+
+You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
+
+(January 10, 2022)
+
 ### New API: Wix Blog
 
 `wix-blog-backend`
@@ -567,7 +583,7 @@ The [`setPlanVisibility`](https://www.wix.com/velo/reference/wix-pricing-plans-b
 
 `wix-window`
 
-With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata-obj) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
+With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
 
 ### Updated: insertReference() only works with multi-reference fields
 
