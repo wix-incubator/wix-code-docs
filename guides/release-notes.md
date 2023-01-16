@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Wix Auth
+
+`wix-auth`
+
+The new [Wix Auth API](wix-auth) provides functionality for working with permissions. The [`elevate()`](wix-auth/elevate) function enables any site visitor to call a function without the required permissions. **Note:** This function replaces the `suppressAuth` option used in some functions. Check a function's reference documentation to see if `elevate()` is supported.
+
+(January 16, 2023)
+
 ### New API: Wix Pro Gallery Backend
 
 `wix-pro-gallery-backend`
