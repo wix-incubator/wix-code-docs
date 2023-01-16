@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-auth`
 
-Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and manage pro galleries on your site's backend. You can also create and manage media items in the pro galleries. 
+The new [Wix Auth API](wix-auth) provides functionality for working with permissions. The [`elevate()`](wix-auth/elevate) function enables any site visitor to call a function without the required permissions. **Note:** This function replaces the `suppressAuth` option used in some functions. Check a function's reference documentation to see if `elevate()` is supported.
 
 (January 16, 2023)
 
@@ -19,7 +19,7 @@ Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and man
 
 `wix-pro-gallery-backend`
 
-The new [Wix Auth API](wix-auth) provides functionality for working with permissions. The [`elevate()`](wix-auth/elevate) function enables any site visitor to call a function without the required permissions. **Note:** This function replaces the `suppressAuth` option used in some functions. Check a function's reference documentation to see if `elevate()` is supported.
+Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and manage pro galleries on your site's backend. You can also create and manage media items in the pro galleries. 
 
 (January 11, 2023)
 
