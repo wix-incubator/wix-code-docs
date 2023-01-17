@@ -4,8 +4,6 @@
 # Developer Preview
 
 
-## Intro
-
 Velo is always in active development. We are constantly adding new APIs and improving existing ones. We want to make sure that we are on the right track and that we are building the right things. To do that, we need your help. For this reason, we release some APIs in Developer Preview mode. This is a way for us to get feedback from you, our users, before we fully release the APIs.
 
 APIs that are in Developer Preview mode include this warning in the API reference:
