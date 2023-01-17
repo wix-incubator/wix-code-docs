@@ -23,7 +23,7 @@ Because we may introduce breaking changes to these APIs, we don't recommend usin
 ### Time limit 
 APIs only stay in Developer Preview mode for a maximum of 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can find the dates for the releases of all Developer Preview APIs in the [release notes](/release-notes).
 
-### Provide feedback 
+### Feedback 
 We want to hear from you. If you have any feedback about an API in Developer Preview, please let us know. You can do this by...
 
 ### Bugs 
