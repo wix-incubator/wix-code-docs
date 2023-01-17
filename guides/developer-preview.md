@@ -12,7 +12,11 @@ APIs that are in Developer Preview mode include this warning in the API referenc
 Here are some important things you need to know about Developer Preview:
 
 ### Breaking changes 
-APIs in Developer Preview are still under production. This means that we may **change them at any time**. Notifications about breaking changes appear in the [release notes](/release-notes) and in the API reference</velo-api-reference> for the affected functions and properties. We will not contact you directly about breaking changes. 
+
+
+
+APIs in Developer Preview are still under production. This means that we may **change them at any time**. Notifications about breaking changes appear in the [release notes](/release-notes) and in the API reference for the affected functions and properties. We will not contact you directly about breaking changes. 
+
 
 Because we may introduce breaking changes to these APIs, we don't recommend using them on live sites. They are for testing and feedback purposes only.
 
