@@ -4,7 +4,7 @@
 # Developer Preview
 
 
-Velo is always in active development. We are constantly adding new APIs. We want to make sure that we're on the right track and that we are building the right things. To do that, we need your help. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you before we fully release them.
+Velo is always in active development. We are constantly adding new APIs. We want to make sure that we're on the right track and building the right things. To do that, we need your help. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you before we fully release them.
 
 APIs in Developer Preview mode include this warning in the API reference:
 ![screen shot of warning]()
