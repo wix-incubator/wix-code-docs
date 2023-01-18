@@ -29,7 +29,7 @@ Here is some important information to know about Developer Preview:
 APIs in Developer Preview are still under production. This means that we **may change them at any time**. Notifications about breaking changes appear in the [release notes](/release-notes) and in the API reference for the affected functions and properties. We will not contact you directly about breaking changes. 
 
 
-Because we may introduce breaking changes to these APIs, we don't recommend using them on live sites. They are for testing and feedback purposes only.
+Because we may introduce breaking changes to these APIs, you shouldn't use them on live sites. They are for testing and feedback purposes only.
 
 ### Time limit 
 APIs only stay in Developer Preview mode for a maximum of 6 months. After that they are fully released, and we don't make any breaking changes to them. You can see which APIs are in Developer Preview in the [table](#current-developer-preview-apis) below. You can also check the API documentation in the reference to see if the developer preview tags have been removed.
