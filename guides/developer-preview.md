@@ -38,7 +38,7 @@ We want your feedback on the APIs in Developer Preview. Let us know about:
 
 * What you're using the API for.
 * Anything blocking you from using the API.
-* Additions and features would you find useful.
+* Additions and features you would find useful.
 
 Please [send us an email](mailto:velo-preview-feedback@wix.com) with your feedback.
 
