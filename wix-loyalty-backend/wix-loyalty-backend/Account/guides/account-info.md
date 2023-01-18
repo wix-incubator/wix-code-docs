@@ -25,5 +25,5 @@ It’s important to note the following points before starting to code:
 
 ## Terminology
 
-- **Account ID:** Every loyalty account gets a new account ID which is different from its contact ID and member ID.
+- **Account ID:** Every loyalty account gets a new account ID which is different from that customer's contact ID and member ID.
 - **Transaction:** A loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points.
