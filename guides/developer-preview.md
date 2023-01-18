@@ -52,11 +52,11 @@ This is a list of the APIs that are currently in Developer Preview mode.
 | Module | Submodule | Function |
 |---|---|---|
 | wix-bookings.v2 | Resources | [deleteResource](/wix-bookings-v2/resources/deleteresource) |
-| - | - | [updateSchedule](/wix-bookings-v2/resources/updateschedule) |
-| - | - | [updateResource](/wix-bookings-v2/resources/updateresource) |
-| - | - | [createResource](/wix-bookings-v2/resources/createresource) |
-| - | - | [queryResources](/wix-bookings-v2/resources/queryresources) |
-| - | - | [listResources](/wix-bookings-v2/resources/listresources) |
+|  |  | [updateSchedule](/wix-bookings-v2/resources/updateschedule) |
+|  |  | [updateResource](/wix-bookings-v2/resources/updateresource) |
+|  |  | [createResource](/wix-bookings-v2/resources/createresource) |
+|  |  | [queryResources](/wix-bookings-v2/resources/queryresources) |
+|  |  | [listResources](/wix-bookings-v2/resources/listresources) |
 | wix-bookings.v2 | Bookings | [cancelBookings](/wix-bookings-v2/bookings/cancelbookings) |
 | - | - | [confirmBookings](/wix-bookings-v2/bookings/confirmbookings) |
 | - | - | [declineBooking](/wix-bookings-v2/bookings/declinebooking) |
