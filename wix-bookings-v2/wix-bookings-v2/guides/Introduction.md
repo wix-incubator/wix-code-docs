@@ -1,4 +1,4 @@
-# About the Wix Bookings Availability Calendar API
+# About the Wix Bookings API
 
 
 &nbsp;
@@ -11,12 +11,13 @@
 
 &nbsp;
 
+The wix-bookings API allows you to manage bookings and calendar functionality on your site.
+
+To enable bookings API functionality for your site, add the [Wix Bookings](https://support.wix.com/en/article/adding-wix-bookings-to-your-site) application to your site. You must upgrade your site to a [Premium Plan](https://support.wix.com/en/article/upgrading-your-site-to-premium-3066683) in order to accept bookings and receive online payments. To accept payments, see [About Accepting Payments](https://support.wix.com/en/article/accepting-payments-on-your-wix-site-7014346).
+
 > **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
-With the Wix Bookings Availability Calendar API, you can retrieve the 
-availability of a calendar's sessions. 
 
-The Calendar Availability APIs calculate the availability of sessions for appointments and classes, but not for courses. 
 
 
 ### Terminology
@@ -65,8 +66,4 @@ The Calendar Availability APIs calculate the availability of sessions for appoin
   as the session being full and having a waitlist, or because an administrator 
   wants to manually screen each customer before adding a customer to a session.
 
-To use the Availability Calendar API, import `{ availabilityCalendar }` from the `wix-bookings.v2` module:
-
-```javascript
-import { availabilityCalendar } from 'wix-bookings.v2';
-```
+> **Note**: You cannot book a service in preview mode, or when logged in as the site owner. To make a booking, publish your site, then either log out of your Wix account, or open the published site in an incognito browser window.
