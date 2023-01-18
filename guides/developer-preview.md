@@ -20,7 +20,7 @@ They also include this tag in the reference for each function:
 
 Once these tags are removed, the API is fully released.
 
-Here are some important information to know about Developer Preview:
+Here is some important information to know about Developer Preview:
 
 ### Breaking changes 
 
