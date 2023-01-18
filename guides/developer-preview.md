@@ -4,9 +4,9 @@
 # Developer Preview
 
 
-Velo is always in active development. We are constantly adding new APIs. We want to make sure that we're on the right track and building the right things. To do that, we need your help. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you before we fully release them.
+Velo is always in active development. We are constantly adding new APIs. We want to make sure that we're on the right track and building the right things. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you before we fully release them.
 
-APIs in Developer Preview mode include this warning in the introduction to their API reference:
+APIs in Developer Preview mode include this note in the introduction to their API reference:
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
     <b>Developer Preview</b>
@@ -20,7 +20,7 @@ They also include this tag in the reference for each function:
 
 Once these tags are removed, the API is fully released.
 
-Here are some important things you need to know about Developer Preview:
+Here are some important things you need to know about Developer Preview.
 
 ### Breaking changes 
 
@@ -40,10 +40,10 @@ We want your feedback on the APIs in Developer Preview. Let us know about:
 * Anything blocking you from using the API.
 * Additions and features you would find useful.
 
-Please [send us an email](mailto:velo-preview-feedback@wix.com) with your feedback.
+Please [email us](mailto:velo-preview-feedback@wix.com) with your feedback.
 
 ### Bugs 
-If you discover a bug in a Developer Preview API, please [send us an email](mailto:velo-preview-feedback@wix.com) and let us know.  We'll fix the bug as soon as possible.
+If you discover a bug in a Developer Preview API, please [email us](mailto:velo-preview-feedback@wix.com) and let us know.  We'll fix the bug as soon as possible.
 
 ### Current Developer Preview APIs 
 
