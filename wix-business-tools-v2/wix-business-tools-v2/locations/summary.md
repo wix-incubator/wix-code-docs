@@ -1,0 +1,1 @@
+Locations enables you to manage a Wix site's business locations.
