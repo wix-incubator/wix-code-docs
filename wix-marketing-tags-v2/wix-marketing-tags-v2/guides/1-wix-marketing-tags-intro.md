@@ -1,5 +1,5 @@
 –--
-title: About the wix-marketing-tags.v2 API
+title: Introduction
 ---
 &nbsp
 
@@ -13,7 +13,7 @@ title: About the wix-marketing-tags.v2 API
 
 > __Note__: This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
-With the wix-marketing-tags.v2, you can embed marketing tags in your website. The supported marketing tags are:
+With Wix Marketing Tags, you can embed marketing tags in your website. The supported marketing tags are:
 
 * [**Google Ads Conversion tag**](https://support.google.com/tagmanager/answer/6105160?hl=en&ref_topic=6334091)
     > **Note:** The **Google Ads Conversion tag** was previously called **Google AdWords tag**.
@@ -27,7 +27,7 @@ These marketing tags enable you to track user activity, ad conversion rates, and
 
 > **Note:** Only one marketing tag of each type is supported per Wix site.
 
-The Marketing Tags APIs allow you to:
+The Marketing Tags API allows you to:
 
 * List marketing tags
 * Create and update marketing tags
@@ -35,7 +35,7 @@ The Marketing Tags APIs allow you to:
 
 ## Import statement
 
-To use the wix-marketing-tags.v2 API,
+To use Wix Marketing Tags,
 import { marketingTags } from 'wix-marketing-tags.v2';
 
 ```js
