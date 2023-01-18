@@ -40,10 +40,9 @@ We want your feedback on the APIs in Developer Preview. Let us know about:
 * Additions and features would you find useful.
 
 Please [send us an email](mailto:velo-preview-feedback@wix.com) with your feedback.
-Please <a href="mailto:velo-preview-feedback@wix.com">send us an email</a> with your feedback.
 
 ### Bugs 
-If you discover a bug in a Developer Preview API, please <a href="mailto:velo-preview-feedback@wix.com">send us an email</a> and let us know.  We will fix the bug as soon as possible.
+If you discover a bug in a Developer Preview API, please [send us an email](mailto:velo-preview-feedback@wix.com) and let us know.  We will fix the bug as soon as possible.
 
 ### Current Developer Preview APIs 
 
