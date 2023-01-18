@@ -11,7 +11,7 @@ title: Introduction
 
 &nbsp
 
-Wix-marketing-tags-v2 events are fired on your site's backend when certain events occur related to marketing tags.
+Wix-marketing-tags.v2 events are fired on your site's backend when certain events occur related to marketing tags.
 You can write event handlers that react to these events. Event handler functions
 receive data that corresponds to the event that fired. Use event handlers
 to create custom responses to marketing tags events.
