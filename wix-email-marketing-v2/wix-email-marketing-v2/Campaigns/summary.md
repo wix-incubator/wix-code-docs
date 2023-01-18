@@ -1,1 +1,1 @@
-The Campaigns API contaiins functionality for working with email marketing campaigns. 
+The Campaigns API contains functionality for working with email marketing campaigns. 
