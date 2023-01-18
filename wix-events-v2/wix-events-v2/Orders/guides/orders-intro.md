@@ -25,7 +25,7 @@ With the Orders API you can
 
 
 To use the Orders API,
-import { orders } from 'wix-events.v2';
+import `orders` from wix-events.v2;
 
 ```js
 import { orders } from 'wix-events.v2';
