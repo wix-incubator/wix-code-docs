@@ -12,6 +12,7 @@ title: Introduction
 
 This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
+
 The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. Use the API to [get](/getsenderdetails) and [update](/updatesenderdetails) your email sender details, and [verify](/verifyemail) your sender email address.
 
 If you send an email campaign with a public email domain (e.g. @gmail.com or @yahoo.com), the email address isn't displayed in the 'from' header. Instead, the email address is replaced with @wixemails.com (or @wixsitemail.com for free users), and the sender's email is placed in the 'reply-to' header.

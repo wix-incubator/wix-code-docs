@@ -12,6 +12,7 @@ title: Introduction
 
 This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
+
 Use the Email Marketing API to manage your email marketing campaigns and sender details, and retrieve your account details. 
 
 With the Email Marketing API, you can:

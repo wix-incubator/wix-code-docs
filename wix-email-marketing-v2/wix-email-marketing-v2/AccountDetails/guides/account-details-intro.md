@@ -12,6 +12,7 @@ title: Introduction
 
 This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
+
 The Account Details API provides functionality for managing your email marketing account information. Use the API to [get your current account details](/getaccountdetails). 
 
 
