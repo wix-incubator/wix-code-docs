@@ -30,7 +30,7 @@ APIs in Developer Preview are still under production. This means that we **may c
 Because we may introduce breaking changes to these APIs, we don't recommend using them on live sites. They are for testing and feedback purposes only.
 
 ### Time limit 
-APIs only stay in Developer Preview mode for 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can see which APIs are in developer preview in the [table]() below. You can also check the reference for the API to see if the developer preview tags have been removed.
+APIs only stay in Developer Preview mode for 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can see which APIs are in developer preview in the [table](#current-developer-preview-apis) below. You can also check the reference for the API to see if the developer preview tags have been removed.
 ### Feedback 
 We want your feedback on the APIs in Developer Preview. Let us know about:
 
@@ -47,8 +47,9 @@ If you discover a bug in a Developer Preview API, please <a href="mailto:velo-pr
 
 This is a list of the APIs that are currently in Developer Preview mode.
 
-| Name | Description | Reference |
+| Name | Reference |
 | --- | --- | --- |
+
 
 
 
