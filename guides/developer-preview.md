@@ -4,9 +4,9 @@
 # Developer Preview
 
 
-Velo is always in active development. We are constantly adding new APIs. We want to make sure that we're on the right track and building the right things. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you before we fully release them.
+Velo is always in active development, and we're constantly adding new APIs. We want to make sure that we're on the right track and building the functionality that you need. For this reason, we release some of the APIs we're still working on in Developer Preview mode for user testing. This is a way for us to get feedback from you and improve our APIs before we fully release them.
 
-APIs in Developer Preview mode include this note in the introduction to their API reference:
+APIs in Developer Preview mode include the following warning in their introductions:
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
     <b>Developer Preview</b>
@@ -20,7 +20,7 @@ They also include this tag in the reference for each function:
 
 Once these tags are removed, the API is fully released.
 
-Here are some important things you need to know about Developer Preview.
+Here are some important information to know about Developer Preview:
 
 ### Breaking changes 
 
@@ -32,9 +32,9 @@ APIs in Developer Preview are still under production. This means that we **may c
 Because we may introduce breaking changes to these APIs, we don't recommend using them on live sites. They are for testing and feedback purposes only.
 
 ### Time limit 
-APIs only stay in Developer Preview mode for 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can see which APIs are in developer preview in the [table](#current-developer-preview-apis) below. You can also check the reference for the API to see if the developer preview tags have been removed.
+APIs only stay in Developer Preview mode for a maximum of 6 months. After that they are fully released, and we don't make any breaking changes to them. You can see which APIs are in Developer Preview in the [table](#current-developer-preview-apis) below. You can also check the API documentation in the reference to see if the developer preview tags have been removed.
 ### Feedback 
-We want your feedback on the APIs in Developer Preview. Let us know about:
+We would appreciate your feedback on the APIs in Developer Preview. Let us know about:
 
 * What you're using the API for.
 * Anything blocking you from using the API.
