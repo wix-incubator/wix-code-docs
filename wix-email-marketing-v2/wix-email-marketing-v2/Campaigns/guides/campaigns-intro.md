@@ -12,6 +12,7 @@ title: Introduction
 
 This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
+
 The Campaigns API provides functionality for managing your email marketing campaigns. Use the API to [get](/getcampaign) and [publish](publishcampaign) a campaign, [list statistics](liststatistics), and [pause scheduling](pausescheduling). 
 
 
