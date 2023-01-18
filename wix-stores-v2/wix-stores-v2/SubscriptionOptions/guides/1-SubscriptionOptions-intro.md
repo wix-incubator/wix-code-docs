@@ -8,8 +8,6 @@ title: About Subscription Options
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-> **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
-
 Wix site owners can create subscriptions to sell their products on a recurring basis. With the Subscription Options API, you can integrate with the store owner's subscriptions in their Wix store to create, delete, get, check and query the site owner's subscriptions.
 
 ## Subscription frequency and duration
