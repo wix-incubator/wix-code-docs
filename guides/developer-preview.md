@@ -50,7 +50,7 @@ This is a list of the APIs that are currently in Developer Preview mode.
 
 | Module | Submodule | Function |
 |---|---|---|
-| wix-bookings.v2 | Resources | [deleteResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/deleteresource "anchor") |
+| wix-bookings.v2 | Resources | [deleteResource](/wix-bookings-v2/resources/deleteresource) |
 | - | - | [updateSchedule](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateschedule "anchor") |
 | - | - | [updateResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateresource "anchor") |
 | - | - | [createResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/createresource "anchor") |
