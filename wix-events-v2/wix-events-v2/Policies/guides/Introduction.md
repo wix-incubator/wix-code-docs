@@ -20,7 +20,7 @@ The Events Policies API provides functionality for creating and managing event p
 
 - **Policy**: Free-text that defines terms & conditions and other policies, as relevant.
 
-## Import Statement**
+## Import Statement
 
 To use the Wix Policies API, import `{ policies }` from the `wix-events.v2` module:
 
