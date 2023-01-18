@@ -13,7 +13,6 @@ APIs in Developer Preview mode include this note in the introduction to their AP
     <br/>
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
-</br>
 
 They also include this tag in the reference for each function:  
 </br>
