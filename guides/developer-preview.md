@@ -48,105 +48,101 @@ If you discover a bug in a Developer Preview API, please <a href="mailto:velo-pr
 
 This is a list of the APIs that are currently in Developer Preview mode.
 
-| Module| Submodule | Function |
-| --- | --- | -- |
-| wix-bookings.v2 | Resources | [deleteResource]()|
-| wix-bookings.v2 | Resources | [updateSchedule]()|
-| wix-bookings.v2 | Resources | [updateResource]()|
-| wix-bookings.v2 | Resources | [createResource]()|
-| wix-bookings.v2 | Resources | [queryResources]()|
-| wix-bookings.v2 | Resources | [listResources]()|
-| wix-bookings.v2 | Bookings | [cancelBookings]()|
-| wix-bookings.v2 | Bookings | [confirmBookings]()|
-| wix-bookings.v2 | Bookings | [declineBooking]()|
-| wix-bookings.v2 | Bookings | [rescheduleBooking]()|
-| wix-bookings.v2 | Bookings | [updateNumberOfParticipants]()|
-| wix-bookings.v2 | AvailabilityCalendar | [queryAvailability]()|
-| wix-inbox.vs | Conversations| [getConversation]()|
-| wix-inbox.vs | Conversations| [getOrCreateConversation]()|
-| wix-email-marketing.v2 | AccountDetails| [getAccountDetails]() |
-| wix-email-marketing.v2 | Campaigns| [reuseCampaign]()|
-| wix-email-marketing.v2 | Campaigns| [deleteCampaign]()|
-| wix-email-marketing.v2 | Campaigns| [pauseScheduling]()|
-| wix-email-marketing.v2 | Campaigns| [sendTest]()|
-| wix-email-marketing.v2 | Campaigns| [publishCampaign]()|
-| wix-email-marketing.v2 | Campaigns| [listCampaigns]()|
-| wix-email-marketing.v2 | Campaigns| [getCampaign]()|
-| wix-email-marketing.v2 | Campaigns| [listRecipients]()|
-| wix-email-marketing.v2 | Campaigns| [listStatistics]()|
-| wix-email-marketing.v2 | CampaignStatistics| [listRecipients]()|
-| wix-email-marketing.v2 | CampaignStatistics| [listStatistics]()|
-| wix-email-marketing.v2 | SenderDetails| [resolveActualFromAddress]()|
-| wix-email-marketing.v2 | SenderDetails| [verifyEmail]()|
-| wix-email-marketing.v2 | SenderDetails| [updateSenderDetails]()|
-| wix-email-marketing.v2 | SenderDetails| [getSenderDetails]()|
-| wix-events.v2 | TicketingOrders| [getSummary]()|
-| wix-events.v2 | TicketingOrders| [confirmOrder]()|
-| wix-events.v2 | TicketingOrders| [bulkUpdateOrders]()|
-| wix-events.v2 | TicketingOrders| [updateOrder]()|
-| wix-events.v2 | TicketingOrders| [getOrder]()|
-| wix-events.v2 | TicketingOrders| [listOrders]()|
-| wix-events.v2 | TicketingCheckout| [updateCheckout]()|
-| wix-events.v2 | TicketingCheckout| [checkout]()|
-| wix-events.v2 | TicketingCheckout| [getInvoice]()|
-| wix-events.v2 | TicketingCheckout| [cancelReservation]()|
-| wix-events.v2 | TicketingCheckout| [createReservation]()|
-| wix-events.v2 | TicketingCheckout| [queryAvailableTickets]()|
-| wix-events.v2 | TicketingCheckout| [listAvailableTickets]()|
-| wix-events.v2 | Policies| [queryPolicies]()|
-| wix-events.v2 | Policies| [deletePolicy]()|
-| wix-events.v2 | Policies| [updatePolicy]()|
-| wix-events.v2 | Policies| [cratePolicy]()|
-| wix-forum.v2 | Categories| [queryCategories]()|
-| wix-forum.v2 | Categories| [getCategoryBySlug]()|
-| wix-forum.v2 | Categories| [getCategory]()|
-| wix-forum.v2 | Posts| [queryPosts]()|
-| wix-forum.v2 | Posts| [getPostBySlug]()|
-| wix-forum.v2 | Posts| [getPost]()|
-| wix-business-tools.v2 | Locations | [archiveLocation]()|
-| wix-business-tools.v2 | Locations | [setDefaultLocation]()|
-| wix-business-tools.v2 | Locations | [queryLocations]()|
-| wix-business-tools.v2 | Locations | [updateLocation]()|
-| wix-business-tools.v2 | Locations | [listLocations]()|
-| wix-business-tools.v2 | Locations | [getlocation]()|
-| wix-business-tools.v2 | Locations | [createLocation]()|
-| wix-loyalty.v2 | Accounts | [listTransactions]() |
-| wix-loyalty.v2 | Accounts | [getTransaction]() |
-| wix-loyalty.v2 | Accounts | [listAccounts]() |
-| wix-loyalty.v2 | Accounts | [getAccountsBySecondaryId]() |
-| wix-loyalty.v2 | Accounts | [getProgramTotals]() |
-| wix-loyalty.v2 | Accounts | [getAccount]() |
-| wix-loyalty.v2 | Accounts | [adjustPoints]() |
-| wix-loyalty.v2 | Accounts | [earnPoints]() |
-| wix-loyalty.v2 | Accounts | [createAccount]() |
-| wix-loyalty.v2 | Programs | [activateLoyaltyProgram]() |
-| wix-loyalty.v2 | Programs | [updateLoyaltyProgram]() |
-| wix-loyalty.v2 | Programs | [getLoyaltyProgram]() |
-| wix-marketing-tags.v2 | MarketingTags | [deleteMarketingTag]()|
-| wix-marketing-tags.v2 | MarketingTags | [listMarketingTags]()|
-| wix-marketing-tags.v2 | MarketingTags | [upsertMarketingTag]()|
-| wix-activity-counters.v2 | ActivityCounters | [getActivityCounters]()|
-| wix-activity-counters.v2 | ActivityCounters | [setActivityCounters]()|
-| wix-activity-counters.v2 | ActivityCounters | [queryActivityCounters]()|
-| wix-stores.v2 | SubscriptionOptions| [allowOneTimePurchases]()|
-| wix-stores.v2 | SubscriptionOptions| [assignSubscriptionOptionsToProduct]()|
-| wix-stores.v2 | SubscriptionOptions| [bulkDeleteSubcriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [bulkUpdateSubscriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [bulkCreateSubcriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [deleteSubscriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [updateSubscriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [createSubscriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [getSubscriptionOption]()|
-| wix-stores.v2 | SubscriptionOptions| [getSubscriptionOptionsForProduct]()|
-| wix-stores.v2 | SubscriptionOptions| [listSubcriptionOptions]()|
-| wix-stores.v2 | SubscriptionOptions| [getProductIdsForSubscriptionOption]()|
-| wix-stores.v2 | SubscriptionOptions| [getOneTimePurchaseStatus]()|
-| wix-inbox.v2 | Message| [listMessages]()|
-| wix-inbox.v2 | Message| [sendMessage]()|
-
-
-
-
+| Module | Submodule | Function |
+|---|---|---|
+| wix-bookings.v2 | Resources | [deleteResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/deleteresource "anchor") |
+| - | - | [updateSchedule](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateschedule "anchor") |
+| - | - | [updateResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateresource "anchor") |
+| - | - | [createResource](https://www.wix.com/velo/reference/wix-bookings-v2/resources/createresource "anchor") |
+| - | - | [queryResources](https://www.wix.com/velo/reference/wix-bookings-v2/resources/queryresources "anchor") |
+| - | - | [listResources](https://www.wix.com/velo/reference/wix-bookings-v2/resources/listresources "anchor") |
+| wix-bookings.v2 | Bookings | [cancelBookings](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/cancelbookings "anchor") |
+| - | - | [confirmBookings](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/confirmbookings "anchor") |
+| - | - | [declineBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/declinebooking "anchor") |
+| - | - | [rescheduleBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/reschedulebooking "anchor") |
+| - | - | [updateNumberOfParticipants](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/updatenumberofparticipants "anchor") |
+| wix-bookings.v2 | AvailabilityCalendar | [queryAvailability](https://www.wix.com/velo/reference/wix-bookings-v2/availabilitycalendar/queryavailability "anchor") |
+| wix-inbox.vs | Conversations | [getConversation](https://www.wix.com/velo/reference/wix-inbox-vs/conversations/getconversation "anchor") |
+| - | - | [getOrCreateConversation](https://www.wix.com/velo/reference/wix-inbox-vs/conversations/getorcreateconversation "anchor") |
+| wix-email-marketing.v2 | AccountDetails | [getAccountDetails](https://www.wix.com/velo/reference/wix-email-marketing-v2/accountdetails/getaccountdetails "anchor") |
+| wix-email-marketing.v2 | Campaigns | [reuseCampaign](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/reusecampaign "anchor") |
+| - | - | [deleteCampaign](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/deletecampaign "anchor") |
+| - | - | [pauseScheduling](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/pausescheduling "anchor") |
+| - | - | [sendTest](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/sendtest "anchor") |
+| - | - | [publishCampaign](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/publishcampaign "anchor") |
+| - | - | [listCampaigns](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/listcampaigns "anchor") |
+| - | - | [getCampaign](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/getcampaign "anchor") |
+| - | - | [listRecipients](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/listrecipients "anchor") |
+| - | - | [listStatistics](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaigns/liststatistics "anchor") |
+| wix-email-marketing.v2 | CampaignStatistics | [listRecipients](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaignstatistics/listrecipients "anchor") |
+| - | - | [listStatistics](https://www.wix.com/velo/reference/wix-email-marketing-v2/campaignstatistics/liststatistics "anchor") |
+| wix-email-marketing.v2 | SenderDetails | [resolveActualFromAddress](https://www.wix.com/velo/reference/wix-email-marketing-v2/senderdetails/resolveactualfromaddress "anchor") |
+| - | - | [verifyEmail](https://www.wix.com/velo/reference/wix-email-marketing-v2/senderdetails/verifyemail "anchor") |
+| - | - | [updateSenderDetails](https://www.wix.com/velo/reference/wix-email-marketing-v2/senderdetails/updatesenderdetails "anchor") |
+| - | - | [getSenderDetails](https://www.wix.com/velo/reference/wix-email-marketing-v2/senderdetails/getsenderdetails "anchor") |
+| wix-events.v2 | TicketingOrders | [getSummary](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/getsummary "anchor") |
+| - | - | [confirmOrder](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/confirmorder "anchor") |
+| - | - | [bulkUpdateOrders](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/bulkupdateorders "anchor") |
+| - | - | [updateOrder](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/updateorder "anchor") |
+| - | - | [getOrder](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/getorder "anchor") |
+| - | - | [listOrders](https://www.wix.com/velo/reference/wix-events-v2/ticketingorders/listorders "anchor") |
+| wix-events.v2 | TicketingCheckout | [updateCheckout](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/updatecheckout "anchor") |
+| - | - | [checkout](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/checkout "anchor") |
+| - | - | [getInvoice](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/getinvoice "anchor") |
+| - | - | [cancelReservation](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/cancelreservation "anchor") |
+| - | - | [createReservation](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/createreservation "anchor") |
+| - | - | [queryAvailableTickets](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/queryavailabletickets "anchor") |
+| - | - | [listAvailableTickets](https://www.wix.com/velo/reference/wix-events-v2/ticketingcheckout/listavailabletickets "anchor") |
+| wix-events.v2 | Policies | [queryPolicies](https://www.wix.com/velo/reference/wix-events-v2/policies/querypolicies "anchor") |
+| - | - | [deletePolicy](https://www.wix.com/velo/reference/wix-events-v2/policies/deletepolicy "anchor") |
+| - | - | [updatePolicy](https://www.wix.com/velo/reference/wix-events-v2/policies/updatepolicy "anchor") |
+| - | - | [cratePolicy](https://www.wix.com/velo/reference/wix-events-v2/policies/cratepolicy "anchor") |
+| wix-forum.v2 | Categories | [queryCategories](https://www.wix.com/velo/reference/wix-forum-v2/categories/querycategories "anchor") |
+| - | - | [getCategoryBySlug](https://www.wix.com/velo/reference/wix-forum-v2/categories/getcategorybyslug "anchor") |
+| - | - | [getCategory](https://www.wix.com/velo/reference/wix-forum-v2/categories/getcategory "anchor") |
+| wix-forum.v2 | Posts | [queryPosts](https://www.wix.com/velo/reference/wix-forum-v2/posts/queryposts "anchor") |
+| - | - | [getPostBySlug](https://www.wix.com/velo/reference/wix-forum-v2/posts/getpostbyslug "anchor") |
+| - | - | [getPost](https://www.wix.com/velo/reference/wix-forum-v2/posts/getpost "anchor") |
+| wix-business-tools.v2 | Locations | [archiveLocation](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/archivelocation "anchor") |
+| - | - | [setDefaultLocation](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/setdefaultlocation "anchor") |
+| - | - | [queryLocations](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/querylocations "anchor") |
+| - | - | [updateLocation](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/updatelocation "anchor") |
+| - | - | [listLocations](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/listlocations "anchor") |
+| - | - | [getlocation](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/getlocation "anchor") |
+| - | - | [createLocation](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/createlocation "anchor") |
+| wix-loyalty.v2 | Accounts | [listTransactions](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/listtransactions "anchor") |
+| - | - | [getTransaction](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/gettransaction "anchor") |
+| - | - | [listAccounts](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/listaccounts "anchor") |
+| - | - | [getAccountsBySecondaryId](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/getaccountsbysecondaryid "anchor") |
+| - | - | [getProgramTotals](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/getprogramtotals "anchor") |
+| - | - | [getAccount](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/getaccount "anchor") |
+| - | - | [adjustPoints](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/adjustpoints "anchor") |
+| - | - | [earnPoints](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/earnpoints "anchor") |
+| - | - | [createAccount](https://www.wix.com/velo/reference/wix-loyalty-v2/accounts/createaccount "anchor") |
+| wix-loyalty.v2 | Programs | [activateLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/activateloyaltyprogram "anchor") |
+| - | - | [updateLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/updateloyaltyprogram "anchor") |
+| - | - | [getLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/getloyaltyprogram "anchor") |
+| wix-marketing-tags.v2 | MarketingTags | [deleteMarketingTag](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/deletemarketingtag "anchor") |
+| - | - | [listMarketingTags](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/listmarketingtags "anchor") |
+| - | - | [upsertMarketingTag](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/upsertmarketingtag "anchor") |
+| wix-activity-counters.v2 | ActivityCounters | [getActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/getactivitycounters "anchor") |
+| - | - | [setActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/setactivitycounters "anchor") |
+| - | - | [queryActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/queryactivitycounters "anchor") |
+| wix-stores.v2 | SubscriptionOptions | [allowOneTimePurchases](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/allowonetimepurchases "anchor") |
+| - | - | [assignSubscriptionOptionsToProduct](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/assignsubscriptionoptionstoproduct "anchor") |
+| - | - | [bulkDeleteSubcriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/bulkdeletesubcriptionoptions "anchor") |
+| - | - | [bulkUpdateSubscriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/bulkupdatesubscriptionoptions "anchor") |
+| - | - | [bulkCreateSubcriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/bulkcreatesubcriptionoptions "anchor") |
+| - | - | [deleteSubscriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/deletesubscriptionoptions "anchor") |
+| - | - | [updateSubscriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/updatesubscriptionoptions "anchor") |
+| - | - | [createSubscriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/createsubscriptionoptions "anchor") |
+| - | - | [getSubscriptionOption](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/getsubscriptionoption "anchor") |
+| - | - | [getSubscriptionOptionsForProduct](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/getsubscriptionoptionsforproduct "anchor") |
+| - | - | [listSubcriptionOptions](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/listsubcriptionoptions "anchor") |
+| - | - | [getProductIdsForSubscriptionOption](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/getproductidsforsubscriptionoption "anchor") |
+| - | - | [getOneTimePurchaseStatus](https://www.wix.com/velo/reference/wix-stores-v2/subscriptionoptions/getonetimepurchasestatus "anchor") |
+| wix-inbox.v2 | Message | [listMessages](https://www.wix.com/velo/reference/wix-inbox-v2/message/listmessages "anchor") |
+| - | - | [sendMessage](https://www.wix.com/velo/reference/wix-inbox-v2/message/sendmessage "anchor") |
 
 
 
