@@ -37,7 +37,7 @@ The Marketing Tags API allows you to:
 ## Import statement
 
 To use Wix Marketing Tags,
-import { marketingTags } from 'wix-marketing-tags.v2';
+import `{ marketingTags }` from the `wix-marketing-tags.v2` module:
 
 ```js
 import { marketingTags } from 'wix-marketing-tags.v2';
