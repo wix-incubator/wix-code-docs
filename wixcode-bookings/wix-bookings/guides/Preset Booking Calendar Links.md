@@ -115,7 +115,7 @@ For example, in the following URL, the resource ID is in bold:
 
 ### Locations
 
-**Forthcoming.** This capability will be added soon.
+> **Forthcoming.** This capability will be added soon.
 
 ### Existing bookings
 
