@@ -2,21 +2,23 @@
 
 
 &nbsp;
+
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
-    <b>Developer Preview</b>
+  <b>Developer Preview</b>
     <br/>
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
+
 &nbsp;
 
-> **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+
 
 With the Wix Bookings V2 API you can manage bookings for a site's services. 
 The booking object holds information about the customer and the session or 
 schedule they have booked. You can then use the 
 eCommerce APIs to handle the checkout and payment flow.
 
-With Wix Bookings V2 API you can retrieve existing bookings and manage the booking's life cycle
+With Wix Bookings V2 API you can retrieve existing bookings and manage the booking's life cycle.
 
 
 ### Terminology
@@ -31,8 +33,8 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
       checkout flow in [eCommerce](https://www.wix.com/velo/reference/wix-ecom-backend).
     + `CONFIRMED`: The site owner has confirmed the booking and it appears in 
       the business calendar.
-        + You can manually confirm a booking via the 
-          [API](#confirmBooking).
+        + You can manually confirm a booking via 
+          [Confirm Booking()](#confirmBooking).
         + Bookings are automatically confirmed when the 
           service 
           is configured to do so and the [eCommerce order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/introduction) 
@@ -41,7 +43,7 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
     + `PENDING`: The booking is waiting to be confirmed or declined by the 
       owner and is displayed in the business calendar.
       You can't manually set bookings as `PENDING` via an API.
-      Bookings are automatically set as `PENDING` when an eCommerce order related to the booking has been created (coming soon).
+      Bookings are automatically set as `PENDING` when an eCommerce order related to the booking has been created.
     + `WAITING_LIST`: The booking is pending on a waiting list.
     + `DECLINED`: The booking has been declined by the site owner.
         + You can manually decline a booking with 
@@ -49,7 +51,7 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
         + Bookings are automatically declined when an eCommerce order has been 
           declined or a double booking happened for free bookings.
     + `CANCELED`: The booking has been canceled by the site owner or the customer.
-        You can cancel bookings with the [API](#cancelBooking).
+        You can cancel bookings with [Cancel Booking()](#cancelBooking).
 + __Double booked__:
   A double booking can happen in case of 2 or more simultaneous eCommerce checkout 
   processes or if the site owner manually accepts bookings that exceed the 
@@ -64,7 +66,7 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
   personal training. Learn more about [services](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business).
 + __Variant__: Unique variation of the service. Each service variant may have 
   a different price.
-+ __Availability__: Free time on a schedule that customers can book. .
++ __Availability__: Free time on a schedule that customers can book.
 + __Schedule__: Entity that holds availability information. A 
   schedule can 
   either belong to a resource (for example, a staff member) or a service. 
