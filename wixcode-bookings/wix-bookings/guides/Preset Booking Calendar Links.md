@@ -109,9 +109,11 @@ To find the ID for a resource using the site dashboard, follow these steps:
 3. Hover over the desired resource in the list of resources to make the "Edit" button appear, then click on the "Edit" button. This opens the page for editing the resource's details.
 4. Once you are on the resource's page, you can find their ID in the page URL in the address bar of the browser, after `/bookings/staff/details/`
 
-For example, in the following URL, the resource ID is in bold:
+For example, in the following URL, the resource ID is `76570209-101f-409b-af97-b445bdb63125`:
 
-`https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/`**`76570209-101f-409b-af97-b445bdb63125`**`?referralInfo=bookings-staff-list`
+```url
+https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/76570209-101f-409b-af97-b445bdb63125?referralInfo=bookings-staff-list
+```
 
 ### Locations
 
