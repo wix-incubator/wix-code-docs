@@ -1,4 +1,4 @@
-–--
+---
 title: Introduction
 ---
 
@@ -73,8 +73,7 @@ You wants to add a "most influential members" widget to your community, based on
 ## Import statement
 
 To use Wix Marketing Tags,
-import { activityCounters } from 'wix-activity-counters.v2';
+import `{ activityCounters }` from the `wix-activity-counters.v2` module:
 
 ```js
 import { activityCounters } from 'wix-activity-counters.v2';
-```
