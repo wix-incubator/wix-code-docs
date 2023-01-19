@@ -18,10 +18,10 @@ title: Introduction
 The Orders API allows you to manage and track ticket orders.
 
 With the Orders API you can
--Get a list of all orders.
--Get an order's information.
--Update an order or change its status.
--Get a summary of total ticket sales.
+- Get a list of all orders.
+- Get an order's information.
+- Update an order or change its status.
+- Get a summary of total ticket sales.
 
 
 To use the Orders API,
