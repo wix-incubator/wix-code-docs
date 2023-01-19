@@ -5,11 +5,11 @@ You can use [query parameters](#quick-reference) to provide a custom link to a W
 ## Introduction 
 
 When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
-Here they select their preferences for the booking they'd like to make: the location, staff member, date and time.
+Here they select their preferences for the location, staff member, date and time.
 
 When the booking calendar page opens, it has no location or staff member selected, and the calendar defaults to the earliest date with an open slot.
 
-With Calendar query parameters, you can create and share a direct link to a booking calendar form with pre-filled default values of your choice.
+With query parameters, you can create and share a direct link to a booking calendar page with pre-filled default values of your choice.
 A site visitor who visits the page via the custom link can still change their selections, but the values you define appear as default choices.
 
 Using query parameters, you can select default values for these fields:
@@ -19,7 +19,7 @@ Using query parameters, you can select default values for these fields:
 + Timezone
 + Date
 
-In addition, you can provide a Booking ID to reschedule an existing appointment.
+In addition, you can provide a Booking ID to create a link for rescheduling an existing appointment.
 
 ## Booking calendar page URL 
 
