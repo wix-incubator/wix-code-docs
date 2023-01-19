@@ -1,4 +1,4 @@
-# Creating a Custom Booking Calendar Link
+# Creating a Preset Booking Calendar Link
 
 Calendar query parameters enable you to provide a custom link to a Wix site's booking calendar page with preset values you choose.
 If you already know how to use query parameters, see the [quick reference](#quick-reference).
