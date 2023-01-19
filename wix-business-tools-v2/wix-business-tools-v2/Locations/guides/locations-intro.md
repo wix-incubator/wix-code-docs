@@ -38,7 +38,7 @@ import { locations } from 'wix-business-tools.v2';
 
 + **Default location:** Location reflected in the site properties. This location is used on invoices.
 + **Type:** Describes whether a location is an office, reception, branch or the headquarters.
-+ **Status:** Indicates whether a location is ACTIVE or INACTIVE.
++ **Status:** Indicates whether a location is `ACTIVE` or `INACTIVE`.
 + **Business Schedule:** Describes the location's regular and exceptional opening hours.
 + **Period:** Regular, weekly recurring opening hours of the location.
 + **Special Hour Period:** Exception to the location's regular hours. The location can be either open or closed during the Special Hour Period.
@@ -47,10 +47,10 @@ import { locations } from 'wix-business-tools.v2';
 
 It’s important to note the following points before starting to code:
 
-+ The Wix Bookings API doesn't support the businessSchedule object.
++ The Wix Bookings API doesn't support the `businessSchedule` object.
 + You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](archivelocation) function.
 + You can't archive the default location.
 + Archived locations can't be unarchived.
 + The [`updateLocation()`](updatelocation) function replaces a location. Currently, you can't partially update a location.
 + Currently, the location type is just informational and doesn't affect a location's functionality.
-+ The status INACTIVE isn't currently supported.
++ The status `INACTIVE` isn't currently supported.
