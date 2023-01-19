@@ -1,7 +1,6 @@
 # Creating a Preset Booking Calendar Link
 
-Calendar query parameters enable you to provide a custom link to a Wix site's booking calendar page with preset values you choose.
-If you already know how to use query parameters, see the [quick reference](#quick-reference).
+You can use [query parameters](#quick-reference) to provide a custom link to a Wix site's [booking calendar page](#booking-calendar-page-url) with preset values you choose.
 
 ## Introduction 
 
@@ -50,7 +49,7 @@ For example, if a Wix site's URL is `www.my-example-site.com` and the service sl
 https://www.my-example-site.com/booking-calendar/initial-consultation
 ```
 
-## Quick reference 
+## Query parameters 
 
 Attach any of the following query parameters to a Wix site booking calendar page URL to preset default settings of your choice:
 
