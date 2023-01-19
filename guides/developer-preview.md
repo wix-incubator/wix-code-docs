@@ -32,7 +32,7 @@ APIs in Developer Preview are still in development. This means that we **may cha
 Because we may introduce breaking changes to these APIs, you shouldn't use them on live sites. They are for testing and feedback purposes only.
 
 ### Time limit 
-APIs only stay in Developer Preview mode for a maximum of 6 months. After that they are fully released, and we don't make any breaking changes to them. You can check the API documentation in the reference to see if the developer preview tags have been removed.
+APIs only stay in Developer Preview mode for a maximum of 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can check the API documentation in the reference to see if the developer preview tags have been removed.
 
 
 
