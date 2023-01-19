@@ -25,7 +25,7 @@ With the Checkout API you can:
 - Preview reservation invoices.
 
 
-To use the Orders API,
+To use the Checkout API,
 import `checkout` from wix-events.v2:
 
 ```js
