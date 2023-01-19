@@ -15,19 +15,19 @@ title: Introduction
 
 > **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
-The Orders API allows you to manage and track ticket orders.
+The Checkout API allows you to manage and track ticket reservations.
 
-With the Orders API you can:
+With the Checkout API you can:
 
-- Get a list of all orders.
-- Get an order's information.
-- Update an order or change its status.
-- Get a summary of total ticket sales.
+- Get lists of available tickets.
+- Create, update, and cancel ticket reservations.
+- Checkout reserved tickets.
+- Preview reservation invoices.
 
 
 To use the Orders API,
-import `orders` from wix-events.v2:
+import `checkout` from wix-events.v2:
 
 ```js
-import { orders } from 'wix-events.v2';
+import { checkout } from 'wix-events.v2';
 ```
