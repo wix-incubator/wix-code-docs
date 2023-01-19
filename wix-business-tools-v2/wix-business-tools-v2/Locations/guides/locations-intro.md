@@ -48,9 +48,9 @@ import { locations } from 'wix-business-tools.v2';
 It’s important to note the following points before starting to code:
 
 + The Wix Bookings API doesn't support the `businessSchedule` object.
-+ You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](archivelocation) function.
++ You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](https://www.wix.com/velo/reference/wix-business-tools.v2/locations/archivelocation) function.
 + You can't archive the default location.
 + Archived locations can't be unarchived.
-+ The [`updateLocation()`](updatelocation) function replaces a location. Currently, you can't partially update a location.
++ The [`updateLocation()`](https://www.wix.com/velo/reference/wix-business-tools.v2/locations/updatelocation) function replaces a location. Currently, you can't partially update a location.
 + Currently, the location type is just informational and doesn't affect a location's functionality.
 + The status `INACTIVE` isn't currently supported.
