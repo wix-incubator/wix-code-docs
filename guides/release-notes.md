@@ -54,7 +54,10 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 `wix-business-tools.v2`
 
-The new [Wix Business Tools API](../wix-business-tools.v2) provides functionality for managing a site’s business information. Currently it contains the Locations submodule, for managing a site’s business locations.
+The new
+[Wix Business Tools API](https://www.wix.com/velo/reference/wix-business-tools.v2)
+provides functionality for managing a site’s business information.
+Currently it contains the Locations submodule, for managing a site’s business locations.
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
