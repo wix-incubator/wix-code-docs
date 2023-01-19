@@ -5,17 +5,17 @@ If you already know how to use query parameters, see the [quick reference](#quic
 
 ## Introduction 
 
-When a site visitor navigates to make a booking on your site, they are taken to a booking calendar page.
+When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
 Here they select their preferences for the booking they'd like to make: the location, staff member, date and time.
 
-Usually, when the booking calendar form opens, it has no location or staff member selected, and the calendar opens to the earliest date with an open slot.
+When the booking calendar page opens, it has no location or staff member selected, and the calendar defaults to the earliest date with an open slot.
 
 With Calendar query parameters, you can create and share a direct link to a booking calendar form with pre-filled default values of your choice.
 A site visitor who visits the page via the custom link can still change their selections, but the values you define appear as default choices.
 
 Using query parameters, you can select default values for these fields:
 
-+ Location
++ Locations
 + Resources (staff members)
 + Timezone
 + Date
@@ -47,44 +47,44 @@ To find the service slug using the site dashboard, follow these steps:
 For example, if a Wix site's URL is `www.my-example-site.com` and the service slug is `initial-consultation`, the URL will be:
 
 ```url
-https://www.my-example-site.com/booking-calendar-initial-consultation
+https://www.my-example-site.com/booking-calendar/initial-consultation
 ```
 
 ## Quick reference 
 
-Attach any of the following query parameters to a Wix site's booking calendar's URL to include the default settings of your choice:
+Attach any of the following query parameters to a Wix site booking calendar page URL to preset default settings of your choice:
 
 | Query Parameter | Description |
 | --------------- | ----------- |
-| `resource`     | One or more resources (staff members) to be selected by default, identified by ID. Separate multiple resource IDs with a comma.|
+| `resource`     | One or more resources (staff members) to be selected by default, identified by ID. Use commas to separate multiple resource IDs.|
 | `timezone`     | Default timezone for the booking calendar, in [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format. For example: `America/Santiago`. **Note:** You can only select a timezone the page supports as an option.  |
 | `date`         | Initial date to open in the booking calendar page, in `YYYY-MM-DD` format. |
-| `location`     | One or more business locations, identified by ID. Separate multiple location IDs with a comma.|
+| `location`     | One or more business locations, identified by ID. Use commas to separate multiple location IDs.|
 | `bookingId`    | ID of an existing booking to reschedule. **Note:** The site member who booked the original session needs to be logged in. |
 
 ## Examples 
 
 The following are examples of URLs for a Wix site booking calendar page with query parameters that preset default values.
 
-### Preset date:
+Preset date:
 
 ```url
 www.your-site.com/booking-calendar/your-service?date=2023-08-20
 ```
 
-### Preset date and timezone:
+Preset date and timezone:
 
 ```url
 www.your-site.com/booking-calendar/your-service?date=2023-08-20&timezone=Australia/Sydney
 ```
 
-### Preset resource and location:
+Preset resource and location:
 
 ```url
 www.your-site.com/booking-calendar/your-service?resource=76570209-101f-409b-af97-b445bdb63125&location=70a4f77e-cd37-455f-bb1d-ce1f0a55dd2b
 ```
 
-### Multiple preset resources and locations:
+Multiple preset resources and locations:
 
 ```url
 www.your-site.com/booking-calendar/your-service?resource=76570209-101f-409b-af97-b445bdb63125,1c20c17c-fc2a-457d-ac91-ac6c41441514&location=70a4f77e-cd37-455f-bb1d-ce1f0a55dd2b,9bb4326f-7446-4451-a4f4-bf154f1848c5
@@ -111,13 +111,11 @@ To find the ID for a resource using the site dashboard, follow these steps:
 
 For example, in the following URL, the resource ID is in bold:
 
-> <code>
-https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/<b>76570209-101f-409b-af97-b445bdb63125</b>?referralInfo=bookings-staff-list
-</code>
+`https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/<b>76570209-101f-409b-af97-b445bdb63125</b>?referralInfo=bookings-staff-list`
 
 ### Locations
 
-**Forthcoming.** It will soon be possible to obtain location IDs by API.
+**Forthcoming.** This capability will be added soon.
 
 ### Existing bookings
 
