@@ -90,7 +90,7 @@ Multiple preset resources and locations:
 www.your-site.com/booking-calendar/your-service?resource=76570209-101f-409b-af97-b445bdb63125,1c20c17c-fc2a-457d-ac91-ac6c41441514&location=70a4f77e-cd37-455f-bb1d-ce1f0a55dd2b,9bb4326f-7446-4451-a4f4-bf154f1848c5
 ```
 
-### Booking ID to reschedule an existing booking, with preset date and locations:
+Booking ID to reschedule an existing booking, with preset date and locations:
 
 ```url
 www.your-site.com/booking-calendar/your-service?bookingId=27f1ca08-81fc-4e27-b245-989eea19fd24&date=2023-07-11&location=70a4f77e-cd37-455f-bb1d-ce1f0a55dd2b,9bb4326f-7446-4451-a4f4-bf154f1848c5
@@ -111,7 +111,7 @@ To find the ID for a resource using the site dashboard, follow these steps:
 
 For example, in the following URL, the resource ID is in bold:
 
-`https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/<b>76570209-101f-409b-af97-b445bdb63125</b>?referralInfo=bookings-staff-list`
+`https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/staff/details/`**`76570209-101f-409b-af97-b445bdb63125`**`?referralInfo=bookings-staff-list`
 
 ### Locations
 
