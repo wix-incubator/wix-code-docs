@@ -7,6 +7,97 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+### Platform update: Versions and universal modules
+
+We've made 2 big changes to the Velo platform:
+
+**Versions:**  
+Versions are now available for Velo modules.
+Modules from v2 and up include a version number in their names.
+Older versions of the modules are still available.
+
+**Universal modules:**  
+New universal modules can be imported directly into any code file on your site.
+This means that you can import modules
+into public and page code without using web modules.
+
+Learn more about [versions and universal modules](/api-overview/api-versions).
+
+(January 19, 2023)
+
+### Platform update: Developer Preview APIs
+
+Today we can announce that we've started releasing APIs
+with the new **Developer Preview** status!
+
+Developer Preview APIs are available for testing,
+but they're under active development and may change at any time.
+For this reason, don't use Developer Preview APIs in production.
+
+We want your feedback on the APIs in Developer Preview. Let us know about:
+
+- What you're using the API for.
+- Anything blocking you from using the API.
+- Additions and features you would find useful.
+- Bugs you've found in the API.
+
+Please
+[email us](mailto:velo-preview-feedback@wix.com)
+with your feedback.
+
+For more information, see [Developer Preview](./developer-preview.md).
+
+(December 19, 2023)
+
+### New Developer Preview API: Wix Business Tools V2
+
+`wix-business-tools.v2`
+
+The new
+[Wix Business Tools API](https://www.wix.com/velo/reference/wix-business-tools.v2)
+provides functionality for managing a site’s business information.
+Currently it contains the Locations submodule, for managing a site’s business locations.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 19, 2023)
+
+### New API: Wix Auth
+
+`wix-auth`
+
+The new [Wix Auth API](wix-auth) provides functionality for working with permissions. The [`elevate()`](wix-auth/elevate) function enables any site visitor to call a function without the required permissions. **Note:** This function replaces the `suppressAuth` option used in some functions. Check a function's reference documentation to see if `elevate()` is supported.
+
+(January 16, 2023)
+
+### New API: Wix Pro Gallery Backend
+
+`wix-pro-gallery-backend`
+
+Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and manage pro galleries on your site's backend. You can also create and manage media items in the pro galleries. 
+
+(January 11, 2023)
+
+### New API: Dataset onReadyAsync()
+
+`wix-dataset`
+
+You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
+
+(January 10, 2022)
+
+### New API: Wix Blog
+
+`wix-blog-backend`
+
+Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
+  - [posts](wix-blog-backend/posts) 
+  - [categories](wix-blog-backend/categories) 
+  - [tags](wix-blog-backend/tags)
+
+(December 22, 2022)
+
 ### Update: Apply a coupon to specific billing cycles
 
 `wix-marketing-backend`
@@ -556,7 +647,7 @@ The [`setPlanVisibility`](https://www.wix.com/velo/reference/wix-pricing-plans-b
 
 `wix-window`
 
-With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata-obj) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
+With the new [`warmupData`](https://www.wix.com/velo/reference/wix-window/warmupdata) API, you can optimize data loading for sites that render both in the backend code and in the client-side code, allowing costly data fetching operations to be done only once. (April 13, 2021)
 
 ### Updated: insertReference() only works with multi-reference fields
 
