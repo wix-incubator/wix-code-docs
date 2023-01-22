@@ -50,6 +50,19 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (December 19, 2023)
 
+### New Developer Preview API: Wix Forum
+
+`wix-forum.v2`
+
+Use the new [Forum API](wix-forum.v2) to get and query the following from your forum:
+
+- [posts](wix-forum.v2/posts)
+- [categories](wix-forum.v2/categories)
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 22, 2023)
+
 ### New Developer Preview API: Wix Business Tools V2
 
 `wix-business-tools.v2`
