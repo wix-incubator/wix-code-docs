@@ -54,7 +54,7 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 `wix-forum.v2`
 
-Use the new [Forum API](wix-forum.v2) to get and query the following from your forum:
+Use the new [Forum API](https://www.wix.com/velo/reference/wix-business-tools.v2) to get and query the following from your forum:
 
 - [posts](wix-forum.v2/posts)
 - [categories](wix-forum.v2/categories)
