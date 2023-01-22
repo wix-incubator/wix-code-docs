@@ -48,7 +48,7 @@ with your feedback.
 
 For more information, see [Developer Preview](./developer-preview.md).
 
-(December 19, 2023)
+(January 19, 2023)
 
 ### New Developer Preview API: Wix Forum
 
