@@ -50,7 +50,7 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (December 19, 2023)
 
-### New API: Wix Forum
+### New Developer Preview API: Wix Forum
 
 `wix-forum.v2`
 
