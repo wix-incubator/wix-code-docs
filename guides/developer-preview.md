@@ -13,9 +13,9 @@ APIs in Developer Preview mode include the following warning in their introducti
     <br/>
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
-
+<br>
 They also include this tag in the reference for each function:  
-</br>
+<br>
 ![developer preview tag](https://user-images.githubusercontent.com/89579857/213133550-2b4fa3e8-e8fc-4513-a733-00abcc70925c.png)
 
 Once these tags are removed, the API is fully released.
@@ -32,7 +32,7 @@ APIs in Developer Preview are still in development. This means that we **may cha
 Because we may introduce breaking changes to these APIs, you shouldn't use them on live sites. They are for testing and feedback purposes only.
 
 ### Time limit 
-APIs only stay in Developer Preview mode for a maximum of 6 months. After that, they are fully released, and we don't make any breaking changes to them. You can check the API documentation in the reference to see if the developer preview tags have been removed.
+APIs only stay in Developer Preview mode for a maximum of 6 months. After that they are fully released, and we don't make any breaking changes to them. You can check the API documentation in the reference to see if the developer preview tags have been removed.
 
 
 
