@@ -50,6 +50,16 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
+### New Developer Preview API: Wix Inbox
+
+The new [Wix Inbox API](https://www.wix.com/velo/reference/wix-inbox-v2) introduces functionality
+for managing [conversations](wix-inbox.v2/conversations) and [messages](wix-inbox.v2/messages)
+between you and your visitors, contacts, and members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
 ### New Developer Preview API: Wix Forum
 
 `wix-forum.v2`
