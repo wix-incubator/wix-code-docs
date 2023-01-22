@@ -54,7 +54,7 @@
       "docs": {
         "summary": "Adjusts the point balance of a loyalty account.",
         "description": [
-          "The `adjustPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nTo adjust the points balance of an account you must include an `accountId`, a `revision` number, and the adjustment to make. You can also leave a description to explain the reason for the points adjustment.\n\nThere are two ways to adjust the points of a loyalty account:\n- `balance` allows you to set the total points balance to this new amount. The transaction `type` will return as `ADJUST`.\n- `amount` allows you to alter the points balance by this amount. This amount can be a positive number to increase the points balance or a negative number to decrease the balance. The transaction type will return as `GIVE`."
+          "The `adjustPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nTo adjust the points balance of an account you must include an `accountId`, a `revision` number, and the adjustment to make. You can also leave a description to explain the reason for the points adjustment.\n\nThere are two ways to adjust the points of a loyalty account:\n- `balance` allows you to set the total points balance to this new amount. The transaction `type` will return as `\"ADJUST\"`.\n- `amount` allows you to alter the points balance by this amount. This amount can be a positive number to increase the points balance or a negative number to decrease the balance. The transaction type will return as `\"GIVE\"`.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can manually adjust points in a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -62,17 +62,17 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';",
               "",
-              "// Sample accountId value: '01e34b81-4e48-43e4-b178-c84f3b968574'",
+              "// Sample accountId value: \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\";",
               "",
               "/* Sample options values:",
               " *  {",
-              " *    balance: 715",
-              " *    description: 'Sync from external program.'",
-              " *    revision: 3",
-              " *   }",
+              " *    balance: 715,",
+              " *    description: \"Sync from external program.\",",
+              " *    revision: \"3\"",
+              " *   };",
               " */",
               "",
-              "export async function myAdjustPointsFunction() {",
+              "export async function myAdjustPointsFunction(accountId, options) {",
               "  try {",
               "    const updatedAccount = await account.adjustPoints(accountId, options);",
               "",
@@ -88,32 +88,119 @@
               "}",
               "",
               "/* Promise resolves to:",
-              " * {\"account\": {",
-              " *   \"_id\": \"e6f39a5b-a6d0-4556-b889-0cf09d8a84f7\",",
-              " *   \"contactId\": \"88615e02-3e8a-4297-8939-5d0a432b322a\",",
-              " *   \"memberId\": \"a517751b-a1ca-4423-8d91-aaf8f5b34215\",",
-              " *   \"points\":   {",
-              " *     \"balance\": 715,",
-              " *     \"earned\": 0,",
-              " *     \"redeemed\": 0,",
-              " *     \"adjusted\": 715",
-              " *   },",
-              " *   \"latestTransaction\":   {",
-              " *     \"_id\": \"9d29cf95-fd2c-4db4-8f4d-2d65c52cacb9\",",
-              " *     \"amount\": 715,",
-              " *     \"type\": \"ADJUST\",",
-              " *     \"description\": \"\",",
-              " *     \"_createdDate\": \"2021-12-07T07:30:23.749Z\",",
-              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
-              " *     \"idempotencyKey\": null",
-              " *   },",
-              " *   \"rewardAvailable\": true,",
-              " *   \"_createdDate\": \"2021-12-06T14:33:19.114Z\",",
-              " *   \"_updatedDate\": \"2021-12-07T07:30:23.749Z\",",
-              " *   \"revision\": \"4\"",
-              " * }} ",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\",",
+              " *     \"contactId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"memberId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"points\": {",
+              " *       \"balance\": 715,",
+              " *       \"earned\": 0,",
+              " *       \"adjusted\": 715,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"da9096b4-a7fe-41a0-bf3b-05c22e3102fb\",",
+              " *       \"amount\": 715,",
+              " *       \"type\": \"ADJUST\",",
+              " *       \"description\": \"Sync from external program.\",",
+              " *       \"_createdDate\": \"2023-01-17T12:04:49.171Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *     },",
+              " *     \"rewardAvailable\": false,",
+              " *     \"_createdDate\": \"2022-11-28T11:57:30.722Z\",",
+              " *     \"_updatedDate\": \"2023-01-17T12:04:49.620Z\",",
+              " *     \"lastActivityDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *     \"revision\": \"2\",",
+              " *     \"tier\": {",
+              " *       \"_id\": \"05e9d924-54c4-4540-94ef-8edd1e303611\",",
+              " *       \"_updatedDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *       \"points\": 715",
+              " *     }",
+              " *   }",
+              " * }",
               " */"
             ]
+          },
+          {
+            "title": "Get a loyalty account's latest revision, then give points to the account ",
+            "body": [
+              "import { account } from 'wix-loyalty-backend';",
+              "import * as wixAuth from 'wix-auth';",
+              "",
+              "// Sample accountId value: \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\". ",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   \"amount\": 50,",
+              " *   \"description\": \"Shared on social media.\"",
+              " * }  ",
+              " */  ",
+              "",
+              "export async function myGetRevisionAndAdjustPointsFunction(accountId, options) {",
+              "",
+              "  // Get the current revision of this loyalty account.",
+              "  const elevatedGetLoyaltyAccount = wixAuth.elevate(account.getAccount);",
+              "  const retrievedLoyaltyAccount = await elevatedGetLoyaltyAccount(accountId);",
+              "  const currentRevision = retrievedLoyaltyAccount.account.revision",
+              "",
+              "  // Update your options parameters for the latest revision",
+              "  options.revision = currentRevision",
+              "",
+              "  // Now call the `adjustPoints()` function.",
+              "  const elevatedAdjustPoints = wixAuth.elevate(account.adjustPoints);",
+              "",
+              "  try {",
+              "    const updatedAccount = await elevatedAdjustPoints(accountId, options);",
+              "",
+              "    const updatedBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.account.latestTransaction._id;",
+              "",
+              "    console.log('Success! New account balance is: ', updatedBalance, '. This ID for this transaction is: ', transactionId);  ",
+              "",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\",",
+              " *     \"contactId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"memberId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"points\": {",
+              " *       \"balance\": 295,",
+              " *       \"earned\": 45,",
+              " *       \"adjusted\": 250,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"060e672a-d86b-4761-b587-1e97a34fd2f6\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"GIVE\",",
+              " *       \"description\": \"\",",
+              " *       \"_createdDate\": \"2023-01-19T12:03:16.752Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-28T11:57:30.722Z\",",
+              " *     \"_updatedDate\": \"2023-01-19T12:03:16.946Z\",",
+              " *     \"lastActivityDate\": \"2023-01-19T12:03:16.945Z\",",
+              " *     \"revision\": \"19\",",
+              " *     \"tier\": {",
+              " *       \"_id\": \"65fdf385-37b9-42e8-81c8-2e5fafe446f0\",",
+              " *       \"_updatedDate\": \"2023-01-19T12:03:16.945Z\",",
+              " *       \"points\": 295",
+              " *     }",
+              " *   }",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "First, retrieve the account using `getAccount()`. Then, extract the `revision` and pass it to `options` argument for the `adjustPoints()` function."
+            }
           }
         ]
       },
@@ -159,7 +246,7 @@
       "docs": {
         "summary": "Creates a loyalty account for one of a site's contacts.",
         "description": [
-          "The `createAccount()` function returns a Promise that resolves to the new loyalty account when it is created.\n\nTo create a new loyalty account, the customer must first be a site contact with a contact ID. See [contacts](wix-crm-backend/contacts) to learn more about a site's contacts. The site must also have an active loyalty program before loyalty accounts can be created. See the [`activateLoyaltyProgram()`](wix-loyalty-backend/program/activateloyaltyprogram) function to activate a site's loyalty program."
+          "The `createAccount()` function returns a Promise that resolves to the new loyalty account when it is created.\n\nTo create a new loyalty account, the customer must first be a site contact with a contact ID. See [contacts](wix-crm-backend/contacts) to learn more about a site's contacts. The site must also have an active loyalty program before loyalty accounts can be created. See the [`activateLoyaltyProgram()`](wix-loyalty-backend/program/activateloyaltyprogram) function to activate a site's loyalty program.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can create a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -260,7 +347,7 @@
       "docs": {
         "summary": "Adds points to a loyalty account.",
         "description": [
-          "The `earnPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nOnly a positive amount can be added using the `earnPoints()` function, to manually adjust an account's balance for a negative amount, use [`adjustPoints()`](/wix-loyalty-backend/accounts/adjustpoints).\n\nThe `earnPoints()` function allows customers to manually earn points to their loyalty accounts. To use this function you must include an `appId` and an `idempotencyKey`. Any string can be set as the `appId` or `idempotencyKey`. In contrast to when an account earns points through an action taken on your site, the `appId` automatically sets to the source app that generates the points. The transaction `type` is `EARN` for points earned this way."
+          "The `earnPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nOnly a positive amount can be added using the `earnPoints()` function, to manually adjust an account's balance for a negative amount, use [`adjustPoints()`](/wix-loyalty-backend/accounts/adjustpoints).\n\nThe `earnPoints()` function allows customers to manually earn points to their loyalty accounts. To use this function you must include an `appId` and an `idempotencyKey`. Any string can be set as the `appId` or `idempotencyKey`. In contrast to when an account earns points through an action taken on your site, the `appId` automatically sets to the source app that generates the points. The transaction `type` is `\"EARN\"` for points earned this way.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can earn loyalty points. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -372,7 +459,7 @@
       "docs": {
         "summary": "Retrieves an account using the loyalty account ID.",
         "description": [
-          "The `getAccount()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nYou can also get an account using a secondary ID, such as a contact ID or a member ID with the [`getAccountBySecondaryId()`](wix-loyalty-backend/account/getaccountbysecondaryid) function."
+          "The `getAccount()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nYou can also get an account using a secondary ID, such as a contact ID or a member ID with the [`getAccountBySecondaryId()`](wix-loyalty-backend/account/getaccountbysecondaryid) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -380,11 +467,11 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';",
               "",
-              "// Sample _id value: 'e6f39a5b-a6d0-4556-b889-0cf09d8a84f7'",
+              "// Sample accountId value: 'e6f39a5b-a6d0-4556-b889-0cf09d8a84f7'",
               "",
               "export async function myGetLoyaltyAccountFunction() {",
               "  try {",
-              "    const loyaltyAccount = await account.getAccount(_id);",
+              "    const loyaltyAccount = await account.getAccount(accountId);",
               "",
               "    const currentBalance = loyaltyAccount.account.points.balance;",
               "    const canGetReward = loyaltyAccount.account.rewardAvailable;",
@@ -471,7 +558,7 @@
       "docs": {
         "summary": "Retrieves the loyalty account of the specified site contact or member.",
         "description": [
-          "The `getAccountBySecondaryId()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nThis function gets a loyalty account using a customer's contact ID or member ID. You can also get an account using the loyalty account ID with the [`getAccount()`](wix-loyalty-backend/account/getaccount) function."
+          "The `getAccountBySecondaryId()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nThis function gets a loyalty account using either a customer's contact ID or member ID. You can also get an account using the loyalty account ID with the [`getAccount()`](wix-loyalty-backend/account/getaccount) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -610,7 +697,7 @@
       "docs": {
         "summary": "Retrieves the total amount of points earned, redeemed, and adjusted for the entire loyalty program.",
         "description": [
-          "The `getProgramTotals()` function returns a Promise that resolves to the combined total points for all loyalty accounts in the program.\n\nThe `balance` is the current total of points outstanding, while the `earned`, `adjusted`, and `redeemed` amounts are the all-time accumulated amounts. The totals include the amounts for all loyalty accounts."
+          "The `getProgramTotals()` function returns a Promise that resolves to the combined total points for all loyalty accounts in the program.\n\nThe `balance` is the current total of points outstanding, while the `earned`, `adjusted`, and `redeemed` amounts are the all-time accumulated amounts. The totals include the amounts for all loyalty accounts.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve the loyalty program totals. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -634,12 +721,14 @@
               "}  ",
               "",
               "/* Promise resolves to:",
-              " * {\"points\": {",
-              " *   \"balance\": 2046,",
-              " *   \"earned\": 1475,",
-              " *   \"adjusted\": 571,",
-              " *   \"redeemed\": 0",
-              " * }} ",
+              " * {",
+              " *   \"points\": {",
+              " *     \"balance\": 2046,",
+              " *     \"earned\": 1475,",
+              " *     \"adjusted\": 571,",
+              " *     \"redeemed\": 0",
+              " *   }",
+              " * } ",
               " */"
             ]
           }
@@ -687,7 +776,7 @@
       "docs": {
         "summary": "Retrieves a transaction using the transaction ID.",
         "description": [
-          "The `getTransaction()` function returns a Promise that resolves to a loyalty transaction when the specified transaction is retrieved.\n\nA loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to retrieve many, or all, of the transactions for a specific loyalty account, use the [`listTransactions()`](wix-loyalty-backend/account/listtransactions) function."
+          "The `getTransaction()` function returns a Promise that resolves to a loyalty transaction.\n\nA loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to retrieve many, or all, of the transactions for a specific loyalty account, use the [`listTransactions()`](wix-loyalty-backend/account/listtransactions) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty transaction. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -695,11 +784,11 @@
             "body": [
               "import { account } from 'wix-loyalty-backend';",
               "",
-              "// Sample _id value: '262c8eb0-123e-4117-9fe6-4973a3551688'",
+              "// Sample transactionId value: '262c8eb0-123e-4117-9fe6-4973a3551688'",
               "",
               "export async function myGetTransactionFunction() {",
               "  try {",
-              "    const retrievedTransaction = await account.getTransaction(_id);",
+              "    const retrievedTransaction = await account.getTransaction(transactionId);",
               "",
               "    const transactionType = retrievedTransaction.transaction.type;",
               "    const transactionDate = retrievedTransaction.transaction._createdDate;",
@@ -766,7 +855,7 @@
       "docs": {
         "summary": "Retrieves a list of loyalty accounts, given the provided filters.",
         "description": [
-          "The `listAccounts()` function returns a Promise that resolves to a list of loyalty accounts when the filtered accounts are retrieved.\n\nYou can retrieve selected loyalty accounts with an array of `contactIds` or retrieve a list of all of a site's loyalty accounts\n    with an empty request parameter. Use the `cursorPaging` parameters to limit how many items load at a time."
+          "The `listAccounts()` function returns a Promise that resolves to a list of loyalty accounts.\n\nYou can retrieve selected loyalty accounts with an array of `contactIds` or retrieve a list of all of a site's loyalty accounts\n    with an empty request parameter. Use the `cursorPaging` parameters to limit how many items load at a time.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve loyalty accounts. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
         ],
         "examples": [
           {
@@ -1056,44 +1145,46 @@
               "}",
               "",
               "/* Promise resolves to:",
-              " *  {\"transactions\": [",
-              " *      {",
-              " *      \"id\": \"03992fc4-8e8c-4406-8d3c-0292ed3be5d8\",",
-              " *      \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
-              " *      \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
-              " *      \"amount\": 150,",
-              " *      \"type\": \"ADJUST\",",
-              " *      \"description\": \"Signed up as site member.\",",
-              " *      \"createdDate\": \"2022-05-23T22:50:49.366Z\",",
-              " *      \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
-              " *    },",
-              " *      {",
-              " *      \"id\": \"70f0711b-e16f-44d7-ad03-4301c78d8623\",",
-              " *      \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
-              " *      \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
-              " *      \"amount\": 50,",
-              " *      \"type\": \"EARN\",",
-              " *      \"description\": \"Shared post on social\",",
-              " *      \"createdDate\": \"2022-05-24T09:11:51.274Z\",",
-              " *      \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
-              " *      \"idempotencyKey\": \"0eb76578-8928-418e-8428-4a330d24186c\"",
-              " *    },",
-              " *      {",
-              " *      \"id\": \"78a5c76e-fe47-4103-bfda-15e05c2ab003\",",
-              " *      \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
-              " *      \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
-              " *      \"amount\": 50,",
-              " *      \"type\": \"EARN\",",
-              " *      \"description\": \"Shared post on social\",",
-              " *      \"createdDate\": \"2022-06-19T22:09:23.434Z\",",
-              " *      \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
-              " *      \"idempotencyKey\": \"5a036e48-4188-4200-a42e-de37c273c3c1\"",
-              " *   }],",
+              " * {",
+              " *   \"transactions\": [{",
+              " *     \"id\": \"03992fc4-8e8c-4406-8d3c-0292ed3be5d8\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 150,",
+              " *     \"type\": \"ADJUST\",",
+              " *     \"description\": \"Signed up as site member.\",",
+              " *     \"createdDate\": \"2022-05-23T22:50:49.366Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"70f0711b-e16f-44d7-ad03-4301c78d8623\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-05-24T09:11:51.274Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"0eb76578-8928-418e-8428-4a330d24186c\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"78a5c76e-fe47-4103-bfda-15e05c2ab003\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-06-19T22:09:23.434Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"5a036e48-4188-4200-a42e-de37c273c3c1\"",
+              " *   }",
+              " *   ],",
               " *   \"pagingMetadata\": {",
               " *     \"count\": 3,",
               " *     \"cursors\": {},",
               " *     \"hasNext\": false",
-              " *  }} ",
+              " *   }",
+              " * } ",
               " */",
               ""
             ]
@@ -2576,7 +2667,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `EARN` or `ADJUST`. The `appId` can be set to any string when points are manually earned or adjusted. When points are earned or adjusted in an automatic event, the `appId` is from that automation's `sourceAppId`."
+          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `\"EARN\"` or `\"ADJUST\"`. The `appId` can be set to any string when points are manually earned or adjusted. When points are earned or adjusted in an automatic event, the `appId` is from that automation's `sourceAppId`."
         },
         {
           "name": "description",
@@ -2629,7 +2720,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Transaction type."
+          "doc": "Transaction type.\n\n+ `\"ADJUST\"`: Point balance was manually adjusted to a loyalty account. See [Adjust Points](https://dev.wix.com/api/rest/wix-loyalty-program/accounts/adjust-points).\n+ `\"EARN\"`: Points were earned by the customer taking an action. See [Earn Points](https://dev.wix.com/api/rest/wix-loyalty-program/accounts/earn-points).\n+ `\"GIVE\"`: Points were manually added to or subtracted from a loyalty account. See [Adjust Points](https://dev.wix.com/api/rest/wix-loyalty-program/accounts/adjust-points).\n+ `\"REDEEM\"`: Points were redeemed by the customer for a reward.\n"
         }
       ],
       "docs": {
