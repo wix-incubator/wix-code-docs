@@ -16,9 +16,7 @@ APIs in Developer Preview mode include the following warning in their introducti
 <br>
 
 They also include this tag in the reference for each function:  
-
 ![developer preview tag](https://user-images.githubusercontent.com/89579857/213133550-2b4fa3e8-e8fc-4513-a733-00abcc70925c.png)
-
 Once these tags are removed, the API is fully released.
 
 Here is some important information to know about Developer Preview:
