@@ -20,7 +20,7 @@ A post is a piece of writing on a forum by site collaborators.
 
 
 > **Note:**
-> This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
 
 To use the Posts API, import `{ posts }` from the `wix-forum.v2` module:
