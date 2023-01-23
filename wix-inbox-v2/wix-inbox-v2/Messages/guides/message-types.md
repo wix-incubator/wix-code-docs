@@ -50,7 +50,7 @@ The above example produces this output:
 
 | Inbox                                                     | Chat Widget                                                           |
 | --------------------------------------------------------- | --------------------------------------------------------------------- |
-| ![Basic message in Wix Inbox](../media/plain__inbox.png) | ![Basic message in the chat widget](../media/plain__chat-widget.png) |
+| ![Basic message in Wix Inbox](media/plain__inbox.png) | ![Basic message in the chat widget](media/plain__chat-widget.png) |
 
 ## Form Messages
 
@@ -101,7 +101,7 @@ It produces this output in Inbox:
 
 | Inbox                                                   |
 | ------------------------------------------------------- |
-| ![Form message in Wix Inbox](../media/form__inbox.png) |
+| ![Form message in Wix Inbox](media/form__inbox.png) |
 
 ## Minimal Messages
 
@@ -133,7 +133,7 @@ It produces this output in Inbox:
 
 | Inbox                                                         |
 | ------------------------------------------------------------- |
-| ![Minimal message in Wix Inbox](../media/minimal__inbox.png) |
+| ![Minimal message in Wix Inbox](media/minimal__inbox.png) |
 
 ## Template Messages
 
@@ -180,7 +180,7 @@ The above example produces this output:
 
 | Inbox                                                           | Chat Widget                                                                 |
 | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| ![Template message in Wix Inbox](../media/template__inbox.png) | ![Template message in the chat widget](../media/template__chat-widget.png) |
+| ![Template message in Wix Inbox](media/template__inbox.png) | ![Template message in the chat widget](media/template__chat-widget.png) |
 
 ## System Messages
 
@@ -218,4 +218,4 @@ The above example produces this output:
 
 | Inbox                                                       |
 | ----------------------------------------------------------- |
-| ![System message in Wix Inbox](../media/system__inbox.png) |
+| ![System message in Wix Inbox](media/system__inbox.png) |
