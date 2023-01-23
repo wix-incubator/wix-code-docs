@@ -52,8 +52,10 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 ### New Developer Preview API: Wix Inbox
 
-The new [Wix Inbox API](https://www.wix.com/velo/reference/wix-inbox-v2) introduces functionality
-for managing [conversations](wix-inbox.v2/conversations) and [messages](wix-inbox.v2/messages)
+`wix-inbox.v2`
+
+The new [Wix Inbox API](/wix-inbox-v2) introduces functionality
+for managing [conversations](/wix-inbox-v2/conversations) and [messages](/wix-inbox-v2/messages)
 between you and your visitors, contacts, and members.
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
@@ -64,10 +66,10 @@ between you and your visitors, contacts, and members.
 
 `wix-forum.v2`
 
-Use the new [Forum API](https://www.wix.com/velo/reference/wix-business-tools.v2) to get and query the following from your forum:
+Use the new [Forum API](/wix-forum-v2) to get and query the following from your forum:
 
-- [posts](wix-forum.v2/posts)
-- [categories](wix-forum.v2/categories)
+- [posts](/wix-forum-v2/posts)
+- [categories](/wix-forum-v2/categories)
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
@@ -78,7 +80,7 @@ Use the new [Forum API](https://www.wix.com/velo/reference/wix-business-tools.v2
 `wix-business-tools.v2`
 
 The new
-[Wix Business Tools API](https://www.wix.com/velo/reference/wix-business-tools.v2)
+[Wix Business Tools API](/wix-business-tools-v2)
 provides functionality for managing a site’s business information.
 Currently it contains the Locations submodule, for managing a site’s business locations.
 
