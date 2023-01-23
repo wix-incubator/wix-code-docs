@@ -11,7 +11,7 @@
 
 &nbsp;
 
-> **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
 With the Wix Bookings Availability Calendar API, you can retrieve the 
 availability of a calendar's sessions. 

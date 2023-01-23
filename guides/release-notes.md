@@ -50,6 +50,23 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
+### New Developer Preview API: Wix Bookings
+
+`wix-bookings.v2`
+
+The new [Wix Bookings API](/wix-bookings-v2) provides functionality for: 
+
+- Managing [bookings](/wix-bookings-v2/bookings),
+  such as confirming, canceling, and rescheduling bookings.
+- Retrieving the availability of a calendar's slots
+  for appointments and classes with the
+  [`queryAvailability()`](/wix-bookings-v2/availability-calendar/query-availability)
+  function.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
 ### New Developer Preview API: Wix Marketing Tags v2
 
 `wix-marketing-tags.v2`
