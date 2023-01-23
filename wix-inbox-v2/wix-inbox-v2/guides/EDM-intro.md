@@ -14,6 +14,12 @@ title: Introduction
 
 &nbsp;
 
+> __Note:__
+> This module is [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend,
+> unless specified otherwise.
+
+
 With Wix Inbox v2, site contributors
 can communicate with the site's visitors, contacts, and members
 through Wix Chat, SMS, a Facebook business page, or other channels.

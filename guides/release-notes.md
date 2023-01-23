@@ -50,7 +50,33 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
-### New Developer Preview API: Wix Inbox
+### New Developer Preview API: Wix Marketing Tags v2
+
+`wix-marketing-tags.v2`
+
+The new [Wix Marketing Tags V2 API](/wix-marketing-tags-v2/introduction) provides functionality for:
+
+- List marketing tags
+- Create and update marketing tags
+- Delete marketing tags
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Activity Counters v2
+
+`wix-activity-counters.v2`
+
+The new [Wix Activity Counters V2 API](/wix-activity-counters-v2/introduction)
+provides functionality for
+managing activity counters for site members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Inbox v2
 
 `wix-inbox.v2`
 
@@ -62,7 +88,7 @@ between you and your visitors, contacts, and members.
 
 (January 23, 2023)
 
-### New Developer Preview API: Wix Forum
+### New Developer Preview API: Wix Forum v2
 
 `wix-forum.v2`
 
@@ -75,7 +101,7 @@ Use the new [Forum API](/wix-forum-v2) to get and query the following from your 
 
 (January 22, 2023)
 
-### New Developer Preview API: Wix Business Tools V2
+### New Developer Preview API: Wix Business Tools v2
 
 `wix-business-tools.v2`
 
