@@ -14,10 +14,9 @@ title: Introduction
 This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
 
-Use the Email Marketing API to manage your email marketing campaigns and sender details, and retrieve your account details. 
+Use the Email Marketing API to manage your email marketing campaigns and retrieve your account details. 
 
 With the Email Marketing API, you can:
 
 * [Get](/accountdetails/getaccountdetails) your email marketing account details. 
 * [Manage](/campaigns) your email marketing campaigns.
-* [Manage](/senderdetails) your sender details.
