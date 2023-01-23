@@ -15,7 +15,7 @@ title: Introduction
 
 The Ticket Definitions API allows you to manage ticket definitions for tickets to your site's events.
 
-With the Checkout API you can:
+With the Ticket Definitions API you can:
 
 - [Access](wix-events-v2/ticketdefinitions/createticketdefinition) and [update](wix-events-v2/ticketdefinitions/updateticketdefinition) the ticket definitions for tickets to an event.
 - [Change the currency](wix-events-v2/ticketdefinitions/changecurrency) used for event tickets.
