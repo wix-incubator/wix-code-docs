@@ -172,7 +172,7 @@ wixSearch.search(phrase)
 
 #### postTitle   
 
-**Description**: Title of post.  
+**Description**: Title of post. Only relevant for Posts. 
 **Type**: String  
 **Can search the content of this field**: Yes  
 **Can facet**: Yes  
@@ -277,15 +277,6 @@ wixSearch.search(phrase)
 **Can facet**: No  
 **Can sort**: No  
 **Can filter**: No  
-
-<!-- #### reactionsCount   
-
-**Description**: Total number of reactions to a post (likes, shares, and comments).  
-**Type**: Number  
-**Can search the content of this field**: No  
-**Can facet**: No  
-**Can sort**: Yes  
-**Can filter**: in, eq, ne, gt, ge, lt, le   -->
 
 #### images   
 
