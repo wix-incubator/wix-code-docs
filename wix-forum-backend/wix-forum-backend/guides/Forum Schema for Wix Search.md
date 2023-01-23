@@ -172,7 +172,7 @@ wixSearch.search(phrase)
 
 #### postTitle   
 
-**Description**: Title of post. Only relevant for Posts. 
+**Description**: Title of post. Only relevant for posts.  
 **Type**: String  
 **Can search the content of this field**: Yes  
 **Can facet**: Yes  
