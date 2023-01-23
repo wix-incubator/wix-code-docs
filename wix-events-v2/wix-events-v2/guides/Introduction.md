@@ -14,7 +14,7 @@ title: Introduction
 
 >**Note**: These modules are [universal](/api-overview/api-versions#universal-modules). Functions in these modules can run on both the backend and frontend, unless specified otherwise.
 
-[Wix Events](https://support.wix.com/en/article/about-wix-events) allows site owners to [create and manage events](https://www.wix.com/velo/reference/wix-events-backend), including selling tickets, tracking orders and managing event policies.
+[Wix Events](https://support.wix.com/en/article/about-wix-events) allows site owners to [create and manage events](https://www.wix.com/velo/reference/wix-events-backend/wixevents), including selling tickets, tracking orders and managing event policies.
 
 ## Terminology
 - **Event** - a type of gathering an individual or a business holds for a group of people. Our APIs support the following types of events:
