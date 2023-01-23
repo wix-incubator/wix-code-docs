@@ -13,16 +13,16 @@ title: Introduction
 &nbsp;
 > **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.  
 
-The Loyalty Program API allows you to activate and customize your loyalty program.
+The Loyalty Programs API allows you to activate and customize your loyalty program.
 
-With the Loyalty Program API, you can:
-- [Activate](wix-loyalty-backend/program/activateloyaltyprogram) your loyalty program.
-- [Customize](wix-loyalty-backend/program/updateloyaltyprogram) the name of the program, as well as the name and icon of the loyalty points unit.
+With the Loyalty Programs API, you can:
+- [Activate](wix-loyalty-v2/programs/activateloyaltyprogram) your loyalty program.
+- [Customize](wix-loyalty-v2/programs/updateloyaltyprogram) the name of the program, as well as the name and icon of the loyalty points unit.
 
-To use the Program API, import `{ program }` from the 'wix-loyalty-backend' module. 
+To use the Loyalty Programs API, import `{ programs }` from the 'wix-loyalty.v2' module. 
 
 ```javascript
-import { program } from 'wix-loyalty-backend';
+import { programs } from 'wix-loyalty.v2';
 ```
 
 ## Before you begin
