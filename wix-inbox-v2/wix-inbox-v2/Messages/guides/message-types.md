@@ -12,7 +12,7 @@ You may see an additional `system` type in some responses.
 
 This article gives a brief overview of each of the message types
 and how to structure the `message` object in your
-[Send Message](#sendmessage) request.
+[`sendMessage()`](#sendmessage) request.
 
 ## Basic Messages
 
