@@ -12,7 +12,7 @@ title: Introduction
 
 &nbsp;
 
->**Note**: These modules are [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in these modules can run on both the backend and frontend, unless specified otherwise.
+>**Note**: These modules are [universal](/api-overview/api-versions#universal-modules). Functions in these modules can run on both the backend and frontend, unless specified otherwise.
 
 [Wix Events](https://support.wix.com/en/article/about-wix-events) allows site owners to create and manage events, including selling tickets, tracking orders and managing event policies.
 
