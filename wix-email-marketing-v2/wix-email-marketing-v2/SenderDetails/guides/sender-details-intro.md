@@ -20,8 +20,8 @@ If you send an email campaign with a public email domain (e.g. @gmail.com or @ya
 
 If you send an email campaign with an email from a Wix managed domain, that email will be displayed in the 'from' header. If you send an email from a custom domain that is not managed by Wix, a line will be inserted that states that the email was sent via wixemails.com.
 
-To use the Sender Details API, import `{ senderDetails }` from the `wix-email-marketing.v2` module:
+To use the Sender Details API, import `{ senderDetails }` from the `wix-sender-details.v2` module:
 
 ```js
-import { senderDetails } from `wix-email-marketing.v2`; 
+import { senderDetails } from `wix-sender-details.v2`; 
 ```
