@@ -13,11 +13,11 @@ title: Introduction
 
 &nbsp;
 
-> **Note:** This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
 The Tickets API allows you to manage tickets for your site's events.
 
-With the Checkout API you can:
+With the Tickets API you can:
 
 - Access and update the tickets for an event.
 - Check in tickets, and delete ticket check-ins.
