@@ -22,7 +22,7 @@ With the Loyalty API, you can:
 
 For more information, see [Wix Loyalty Program: An Overview](https://support.wix.com/en/article/wix-loyalty-program-an-overview).
 
-To use the wix-loyalty API, import `wixLoyalty` from the `'wix-loyalty.v2'` module. 
+To use the wix-loyalty API, import `wixLoyalty` from the `wix-loyalty.v2` module. 
 
 ```javascript
 import wixLoyalty from 'wix-loyalty.v2';

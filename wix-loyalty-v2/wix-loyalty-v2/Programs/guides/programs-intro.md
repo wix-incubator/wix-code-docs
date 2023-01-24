@@ -19,7 +19,7 @@ With the Loyalty Programs API, you can:
 - [Activate](wix-loyalty-v2/programs/activateloyaltyprogram) your loyalty program.
 - [Customize](wix-loyalty-v2/programs/updateloyaltyprogram) the name of the program, as well as the name and icon of the loyalty points unit.
 
-To use the Loyalty Programs API, import `{ programs }` from the `'wix-loyalty.v2'` module. 
+To use the Loyalty Programs API, import `{ programs }` from the `wix-loyalty.v2` module. 
 
 ```javascript
 import { programs } from 'wix-loyalty.v2';
