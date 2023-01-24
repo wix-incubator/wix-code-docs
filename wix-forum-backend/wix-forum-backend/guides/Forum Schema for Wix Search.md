@@ -101,7 +101,7 @@ wixSearch.search(phrase)
 
 #### postId 
 
-**Description**: ID of the post the comment is associated with. Only relevant for posts.  
+**Description**: ID of the post the comment is associated with. Only relevant for comments.  
 **Type**: String   
 **Can search the content of this field**: No  
 **Can facet**: Yes  
