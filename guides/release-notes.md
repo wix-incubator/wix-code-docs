@@ -50,6 +50,21 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
+### New Developer Preview API: Wix Loyalty v2
+
+`wix-loyalty.v2`  
+
+The new [Loyalty API](/wix-loyalty-v2) provides functionality for:
+
+- Activating and managing a site’s [loyalty program](/wix-loyalty-v2/programs).
+- [Creating](/wix-loyalty-v2/accounts/createaccount) new loyalty accounts.
+- [Adjusting points](/wix-loyalty-v2/accounts/adjustpoints) in a loyalty account.  
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).  
+
+(January 25, 2023)
+
+
 ### New Developer Preview API: Wix Events v2
 
 `wix-events.v2`
