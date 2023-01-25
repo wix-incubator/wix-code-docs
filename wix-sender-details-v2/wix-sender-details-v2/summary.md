@@ -1,0 +1,1 @@
+The Sender Details API contains information about your sender details.
