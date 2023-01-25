@@ -7,6 +7,130 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+### Platform update: Versions and universal modules
+
+We've made 2 big changes to the Velo platform:
+
+**Versions:**  
+Versions are now available for Velo modules.
+Modules from v2 and up include a version number in their names.
+Older versions of the modules are still available.
+
+**Universal modules:**  
+New universal modules can be imported directly into any code file on your site.
+This means that you can import modules
+into public and page code without using web modules.
+
+Learn more about [versions and universal modules](/api-overview/api-versions).
+
+(January 19, 2023)
+
+### Platform update: Developer Preview APIs
+
+Today we can announce that we've started releasing APIs
+with the new **Developer Preview** status!
+
+Developer Preview APIs are available for testing,
+but they're under active development and may change at any time.
+For this reason, don't use Developer Preview APIs in production.
+
+We want your feedback on the APIs in Developer Preview. Let us know about:
+
+- What you're using the API for.
+- Anything blocking you from using the API.
+- Additions and features you would find useful.
+- Bugs you've found in the API.
+
+Please
+[email us](mailto:velo-preview-feedback@wix.com)
+with your feedback.
+
+For more information, see [Developer Preview](./developer-preview.md).
+
+(January 19, 2023)
+
+### New Developer Preview API: Wix Bookings
+
+`wix-bookings.v2`
+
+The new [Wix Bookings API](/wix-bookings-v2) provides functionality for: 
+
+- Managing [bookings](/wix-bookings-v2/bookings),
+  such as confirming, canceling, and rescheduling bookings.
+- Retrieving the availability of a calendar's slots
+  for appointments and classes with the
+  [`queryAvailability()`](/wix-bookings-v2/availability-calendar/query-availability)
+  function.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Marketing Tags v2
+
+`wix-marketing-tags.v2`
+
+The new [Wix Marketing Tags V2 API](/wix-marketing-tags-v2/introduction) provides functionality for:
+
+- List marketing tags
+- Create and update marketing tags
+- Delete marketing tags
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Activity Counters v2
+
+`wix-activity-counters.v2`
+
+The new [Wix Activity Counters V2 API](/wix-activity-counters-v2/introduction)
+provides functionality for
+managing activity counters for site members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Inbox v2
+
+`wix-inbox.v2`
+
+The new [Wix Inbox API](/wix-inbox-v2) introduces functionality
+for managing [conversations](/wix-inbox-v2/conversations) and [messages](/wix-inbox-v2/messages)
+between you and your visitors, contacts, and members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Forum v2
+
+`wix-forum.v2`
+
+Use the new [Forum API](/wix-forum-v2) to get and query the following from your forum:
+
+- [posts](/wix-forum-v2/posts)
+- [categories](/wix-forum-v2/categories)
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 22, 2023)
+
+### New Developer Preview API: Wix Business Tools v2
+
+`wix-business-tools.v2`
+
+The new
+[Wix Business Tools API](/wix-business-tools-v2)
+provides functionality for managing a site’s business information.
+Currently it contains the Locations submodule, for managing a site’s business locations.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 19, 2023)
+
 ### New API: Wix Auth
 
 `wix-auth`
