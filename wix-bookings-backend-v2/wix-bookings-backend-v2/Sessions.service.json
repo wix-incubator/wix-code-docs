@@ -181,7 +181,7 @@
           "",
           "Query Sessions runs with these defaults, which you can override:",
           "- All session types are returned.",
-          "- `instance` is true. This means only single sessions and instances of recurring sessions are returned.",
+          "- `instances` is true. This means only single sessions and instances of recurring sessions are returned.",
           "- Session objects are returned with the fields specified in the `NO_PI` fieldset. This means they don't contain personal information.",
           "- `query.cursorPaging.limit` is `50`.",
           "",
@@ -191,7 +191,7 @@
           "",
           "To query only for events, set `type` to `EVENT`. An event is a single or recurring session that appears in a calendar, for example an appointment or a class.",
           "",
-          "To query for recurring session pattern definitions, set `instance` to `false`. In this case, you don't need to specify a time range.",
+          "To query for recurring session pattern definitions, set `instances` to `false`. In this case, you don't need to specify a time range.",
           "",
           "To return session objects including personal information, use the `ALL_PI` fieldset. This requires the CALENDAR.SESSION_READ_PI permission scope.",
           "",
@@ -237,7 +237,7 @@
       "name": "getSession",
       "params": [
         {
-          "name": "_id",
+          "name": "sessionId",
           "type": [
             {
               "nativeType": "string"
@@ -258,7 +258,7 @@
         }
       ],
       "requiredFields": [
-        "_id"
+        "sessionId"
       ],
       "ret": {
         "type": [
@@ -286,9 +286,9 @@
             "body": [
               "import { sessions } from 'wix-bookings-backend.v2';",
               "  ",
-              " async function getSession(id, options) {",
+              " async function getSession(sessionId, options) {",
               "   try {",
-              "     const result = await sessions.getSession(id, options);",
+              "     const result = await sessions.getSession(sessionId, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -312,23 +312,6 @@
       "name": "listSessions",
       "params": [
         {
-          "name": "ids",
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "IDs of the sessions to retrieve.",
-          "required": true
-        },
-        {
           "name": "options",
           "type": [
             {
@@ -339,9 +322,7 @@
           "required": false
         }
       ],
-      "requiredFields": [
-        "ids"
-      ],
+      "requiredFields": [],
       "ret": {
         "type": [
           {
@@ -368,9 +349,9 @@
             "body": [
               "import { sessions } from 'wix-bookings-backend.v2';",
               "  ",
-              " async function listSessions(ids, options) {",
+              " async function listSessions(options) {",
               "   try {",
-              "     const result = await sessions.listSessions(ids, options);",
+              "     const result = await sessions.listSessions(options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -489,7 +470,7 @@
           "",
           "Query Sessions runs with these defaults, which you can override:",
           "- All session types are returned.",
-          "- `instance` is true. This means only single sessions and instances of recurring sessions are returned.",
+          "- `instances` is true. This means only single sessions and instances of recurring sessions are returned.",
           "- Session objects are returned with the fields specified in the `NO_PI` fieldset. This means they don't contain personal information.",
           "- `query.cursorPaging.limit` is `50`.",
           "",
@@ -499,7 +480,7 @@
           "",
           "To query only for events, set `type` to `EVENT`. An event is a single or recurring session that appears in a calendar, for example an appointment or a class.",
           "",
-          "To query for recurring session pattern definitions, set `instance` to `false`. In this case, you don't need to specify a time range.",
+          "To query for recurring session pattern definitions, set `instances` to `false`. In this case, you don't need to specify a time range.",
           "",
           "To return session objects including personal information, use the `ALL_PI` fieldset. This requires the CALENDAR.SESSION_READ_PI permission scope.",
           "",
@@ -1780,15 +1761,6 @@
       "name": "GetSessionRequest",
       "members": [
         {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the session to retrieve."
-        },
-        {
           "name": "fieldsets",
           "optional": true,
           "type": [
@@ -1804,6 +1776,15 @@
             }
           ],
           "doc": "Supported values: `ALL_PI`.\n\nPredefined sets of fields to return.\n\n- `ALL_PI`: Returns complete session object.\n\nIf you don't pass a value in the `fieldsets` array, session object without\npersonal information is returned by default. This means without `participants`,\n`location`, `calendarConference`, and `externalCalendarOverrides`.\n"
+        },
+        {
+          "name": "sessionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the session to retrieve."
         }
       ],
       "docs": {
@@ -1892,6 +1873,23 @@
             }
           ],
           "doc": "Supported values: `ALL_PI`.\n\nPredefined sets of fields to return.\n\n- `ALL_PI`: Returns complete session objects.\n\nIf you don't pass a value in the `fieldsets` array, session objects without\npersonal information are returned by default. This means without `participants`,\n`location`, `calendarConference`, and `externalCalendarOverrides`.\n"
+        },
+        {
+          "name": "sessionIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the sessions to retrieve. Required."
         }
       ],
       "docs": {
@@ -1921,7 +1919,8 @@
           "doc": "Supported values: `ALL_PI`.\n\nPredefined sets of fields to return.\n\n- `ALL_PI`: Returns complete session objects.\n\nIf you don't pass a value in the `fieldsets` array, session objects without\npersonal information are returned by default. This means without `participants`,\n`location`, `calendarConference`, and `externalCalendarOverrides`.\n"
         },
         {
-          "name": "ids",
+          "name": "sessionIds",
+          "optional": true,
           "type": [
             {
               "complexType": {
@@ -1934,7 +1933,7 @@
               }
             }
           ],
-          "doc": "IDs of the sessions to retrieve."
+          "doc": "IDs of the sessions to retrieve. Required."
         }
       ],
       "docs": {
@@ -2712,10 +2711,10 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Required, unless `instance` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
+          "doc": "Required, unless `instances` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
         },
         {
-          "name": "instance",
+          "name": "instances",
           "optional": true,
           "type": [
             {
@@ -2742,7 +2741,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Required, unless `instance` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
+          "doc": "Required, unless `instances` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
         },
         {
           "name": "type",
@@ -2772,10 +2771,10 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Required, unless `instance` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
+          "doc": "Required, unless `instances` is `false` or `query.cursorPaging` is provided.\nStart of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results.\n"
         },
         {
-          "name": "instance",
+          "name": "instances",
           "optional": true,
           "type": [
             {
@@ -2802,7 +2801,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Required, unless `instance` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
+          "doc": "Required, unless `instances` is `false` or `query.cursorPaging` is provided.\nEnd of the time range for which sessions are returned,\nin [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results.\n\nMax: 1 year after `fromDate`.\n"
         },
         {
           "name": "type",
