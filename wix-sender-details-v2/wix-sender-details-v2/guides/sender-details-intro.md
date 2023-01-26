@@ -10,8 +10,8 @@ title: Introduction
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-
-This module is universal. Functions in this module can run on both the backend and frontend, unless specified otherwise.
+&nbsp;
+> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. 
 
 
 The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. Use the API to [get](wix-sender-details-v2/senderdetails/getsenderdetails) and [update](wix-sender-details-v2/senderdetails/updatesenderdetails) your email sender details, and [verify](wix-sender-details-v2/senderdetails/verifyemail) your sender email address.
