@@ -50,6 +50,40 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
+### New Developer Preview API: Wix Sender Details v2
+
+`wix-sender-details.v2`
+
+The new [Wix Sender Details API](/wix-sender-details-v2) provides functionality
+for the information that's displayed as the sender's name and email address
+when sending an email from your Wix site.
+
+Functionalities include:
+
+- [Getting](/wix-sender-details-v2/senderdetails/getsenderdetails) and
+  [updating](/wix-sender-details-v2/senderdetails/updatesenderdetails)
+  your email sender details.
+- [Verifying](/wix-sender-details-v2/senderdetails/verifyemail)
+  your sender email address.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Loyalty v2
+
+`wix-loyalty.v2`
+
+The new [Loyalty API](/wix-loyalty-v2) provides functionality for:
+
+- Activating and managing a site’s [loyalty program](/wix-loyalty-v2/programs).
+- [Creating](/wix-loyalty-v2/accounts/createaccount) new loyalty accounts.
+- [Adjusting points](/wix-loyalty-v2/accounts/adjustpoints) in a loyalty account.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
 ### New Developer Preview API: Wix Events v2
 
 `wix-events.v2`
@@ -68,7 +102,7 @@ The new [Wix Events v2 API](/wix-events-v2) provides functionality for:
 
 (January 25, 2023)
 
-### New Developer Preview API: Wix Bookings
+### New Developer Preview API: Wix Bookings v2
 
 `wix-bookings.v2`
 
