@@ -172,7 +172,7 @@ wixSearch.search(phrase)
 
 #### postTitle   
 
-**Description**: Title of post. Only relevant for posts.  
+**Description**: Title of the post. Only relevant for posts.  
 **Type**: String  
 **Can search the content of this field**: Yes  
 **Can facet**: Yes  
@@ -181,7 +181,7 @@ wixSearch.search(phrase)
 
 #### categoryTitle   
 
-**Description**: Title of category.  
+**Description**: Title of the category.  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: Yes  
@@ -244,7 +244,7 @@ wixSearch.search(phrase)
 
 #### mentions   
 
-**Description**: Users mentioned in post.  
+**Description**: Users mentioned in the post.  
 **Type**: Array of strings  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -253,7 +253,7 @@ wixSearch.search(phrase)
 
 #### markedComments   
 
-**Description**: IDs of the marked comments for this post (selected by forum admin or site owner).  
+**Description**: IDs of the marked comments for the post (selected by forum admin or site owner).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -262,7 +262,7 @@ wixSearch.search(phrase)
 
 #### marked   
 
-**Description**: Whether comment is marked.  
+**Description**: Whether the comment is marked.  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -280,7 +280,7 @@ wixSearch.search(phrase)
 
 #### images   
 
-**Description**: Images from post content.  
+**Description**: Images from the post content.  
 **Type**: Nested  
 **Can search the content of this field**: No  
 **Can filter**: in, eq, ne, gt, ge, lt, le  
@@ -297,7 +297,7 @@ wixSearch.search(phrase)
 
 #### images.url   
 
-**Description**: URL of image (nested under images).  
+**Description**: URL of the image (nested under images).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -306,7 +306,7 @@ wixSearch.search(phrase)
 
 #### images.height   
 
-**Description**: Original height of image (nested under images).  
+**Description**: Original height of the image (nested under images).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -315,7 +315,7 @@ wixSearch.search(phrase)
 
 #### images.width   
 
-**Description**: Original width of image (nested under images).  
+**Description**: Original width of the image (nested under images).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
