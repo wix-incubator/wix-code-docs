@@ -288,7 +288,7 @@ wixSearch.search(phrase)
 
 #### images.id   
 
-**Description**: WixMedia image ID (nested under images).  
+**Description**: WixMedia image ID (nested under `images`).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -297,7 +297,7 @@ wixSearch.search(phrase)
 
 #### images.url   
 
-**Description**: URL of the image (nested under images).  
+**Description**: URL of the image (nested under `images`).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -306,7 +306,7 @@ wixSearch.search(phrase)
 
 #### images.height   
 
-**Description**: Original height of the image (nested under images).  
+**Description**: Original height of the image (nested under `images`).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -315,7 +315,7 @@ wixSearch.search(phrase)
 
 #### images.width   
 
-**Description**: Original width of the image (nested under images).  
+**Description**: Original width of the image (nested under `images`).  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
