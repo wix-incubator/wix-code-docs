@@ -16,7 +16,7 @@ There are new APIs in the [Wix eCommerce module](wix-ecom-backend).
 
 The new APIs provide the following functionality:
 + [Adding items to a checkout](wix-ecom-backend/checkout/addtocheckout)
-+ [Marks a checkout as completed](wix-ecom-backend/checkout/markcheckoutascompleted)
++ [Marking a checkout as completed](wix-ecom-backend/checkout/markcheckoutascompleted)
 + [Removing the coupon from a checkout](wix-ecom-backend/checkout/removecoupon)
 + [Removing the gift card from a checkout](wix-ecom-backend/checkout/removegiftcard)
 + [Removing line items from a checkout](wix-ecom-backend/checkout/removelineitems)
