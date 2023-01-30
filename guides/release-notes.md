@@ -8,6 +8,21 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New APIs: Wix eCommerce Checkout
+
+`wix-ecom-backend`
+
+There are new APIs in the [Wix eCommerce module](wix-ecom-backend).
+
+The new APIs provide the following functionality:
++ [Adding items to a checkout](wix-ecom-backend/checkout/addtocheckout)
++ [Marking a checkout as completed](wix-ecom-backend/checkout/markcheckoutascompleted)
++ [Removing the coupon from a checkout](wix-ecom-backend/checkout/removecoupon)
++ [Removing the gift card from a checkout](wix-ecom-backend/checkout/removegiftcard)
++ [Removing line items from a checkout](wix-ecom-backend/checkout/removelineitems)
+
+(January 26, 2022)
+
 ### Platform update: Versions and universal modules
 
 We've made 2 big changes to the Velo platform:
@@ -50,7 +65,59 @@ For more information, see [Developer Preview](./developer-preview.md).
 
 (January 19, 2023)
 
-### New Developer Preview API: Wix Bookings
+### New Developer Preview API: Wix Sender Details v2
+
+`wix-sender-details.v2`
+
+The new [Wix Sender Details API](/wix-sender-details-v2) provides functionality
+for the information that's displayed as the sender's name and email address
+when sending an email from your Wix site.
+
+Functionalities include:
+
+- [Getting](/wix-sender-details-v2/senderdetails/getsenderdetails) and
+  [updating](/wix-sender-details-v2/senderdetails/updatesenderdetails)
+  your email sender details.
+- [Verifying](/wix-sender-details-v2/senderdetails/verifyemail)
+  your sender email address.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Loyalty v2
+
+`wix-loyalty.v2`
+
+The new [Loyalty API](/wix-loyalty-v2) provides functionality for:
+
+- Activating and managing a site’s [loyalty program](/wix-loyalty-v2/programs).
+- [Creating](/wix-loyalty-v2/accounts/createaccount) new loyalty accounts.
+- [Adjusting points](/wix-loyalty-v2/accounts/adjustpoints) in a loyalty account.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Events v2
+
+`wix-events.v2`
+
+The new [Wix Events v2 API](/wix-events-v2) provides functionality for:
+
+- Creating and managing [events](/wix-events-v2/events).
+- Creating the types of tickets available for an event using
+  [ticket definitions](/wix-events-v2/ticketdefinitions).
+- Creating ticket reservations using [checkout](/wix-events-v2/checkout).
+- Selling [tickets](/wix-events-v2/tickets).
+- Tracking [orders](/wix-events-v2/orders).
+- Creating and managing [policies](/wix-events-v2/policies).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Bookings v2
 
 `wix-bookings.v2`
 
@@ -73,9 +140,9 @@ The new [Wix Bookings API](/wix-bookings-v2) provides functionality for:
 
 The new [Wix Marketing Tags V2 API](/wix-marketing-tags-v2/introduction) provides functionality for:
 
-- List marketing tags
-- Create and update marketing tags
-- Delete marketing tags
+- List marketing tags.
+- Create and update marketing tags.
+- Delete marketing tags.
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
@@ -111,8 +178,8 @@ between you and your visitors, contacts, and members.
 
 Use the new [Forum API](/wix-forum-v2) to get and query the following from your forum:
 
-- [posts](/wix-forum-v2/posts)
-- [categories](/wix-forum-v2/categories)
+- [Posts](/wix-forum-v2/posts).
+- [Categories](/wix-forum-v2/categories).
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
@@ -153,16 +220,17 @@ Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and man
 
 You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
 
-(January 10, 2022)
+(January 10, 2023)
 
 ### New API: Wix Blog
 
 `wix-blog-backend`
 
 Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
-  - [posts](wix-blog-backend/posts) 
-  - [categories](wix-blog-backend/categories) 
-  - [tags](wix-blog-backend/tags)
+
+- [Posts](wix-blog-backend/posts).
+- [Categories](wix-blog-backend/categories).
+- [Tags](wix-blog-backend/tags).
 
 (December 22, 2022)
 
