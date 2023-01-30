@@ -41,6 +41,7 @@ Let's make sure our terms are aligned before we get started.
 | Service           | Any functionality added to the site not part of the original Wix app flow. The service is coded by the Wix user with the custom extension feature using SPIs.                                                                                                                                                                                                                                                                                                                                                                                               |
 | Wix app           | The Wix app where functionality is extended. For example, Wix eCommerce has several SPIs available for customizing its flows with custom extensions.                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+
 Learn more about [Velo: Custom App Extensions Using SPIs](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta)
 
 
