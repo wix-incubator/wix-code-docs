@@ -5,9 +5,9 @@ You can use [query parameters](#quick-reference) to provide a custom link to a W
 ## Introduction 
 
 When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
-Here they select their preferences for the location, staff member, date and time.
+Here they select their preferences for the location (if more than one is available), staff member (if more than one is available), time zone (if the site owner [enables user time zone selection](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings)), date, and time.
 
-When the booking calendar page opens, it has no location or staff member selected, and the calendar defaults to the earliest date with an open slot.
+When the booking calendar page opens, the calendar is set to the default date selected in the Editor, and no location or staff member filters are selected.
 
 With query parameters, you can create and share a direct link to a booking calendar page with pre-filled default values of your choice.
 A site visitor who visits the page via the custom link can still change their selections, but the values you define appear as default choices.
@@ -16,14 +16,14 @@ Using query parameters, you can select default values for these fields:
 
 + Locations
 + Resources (staff members)
-+ Timezone
++ Time zone
 + Date
 
 In addition, you can provide a Booking ID to create a link for rescheduling an existing appointment.
 
 ## Booking calendar page URL 
 
-The booking calendar page is the page on which a Wix site visitor selects details for an appointment and requests a booking.
+The booking calendar page is the page on which a Wix site visitor selects details for an appointment or class and requests a booking.
 Query parameters are added at the end of the URL for this page.
 
 You can find the full URL for a Wix site's booking calendar page by navigating to the page in a browser and looking in the address bar.
@@ -56,7 +56,7 @@ Attach any of the following query parameters to a Wix site booking calendar page
 | Query Parameter | Description |
 | --------------- | ----------- |
 | `resource`     | One or more resources (staff members) to be selected by default, identified by ID. Use commas to separate multiple resource IDs.|
-| `timezone`     | Default timezone for the booking calendar, in [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format. For example: `America/Santiago`. **Note:** You can only select a timezone the page supports as an option.  |
+| `timezone`     | Default time zone for the booking calendar, in [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format. For example: `America/Santiago`. **Note:** You can only select a time zone the page supports as an option. For more information, see [Setting the Time Zone Display](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings).  |
 | `date`         | Initial date to open in the booking calendar page, in `YYYY-MM-DD` format. |
 | `location`     | One or more business locations, identified by ID. Use commas to separate multiple location IDs.|
 | `bookingId`    | ID of an existing booking to reschedule. **Note:** The site member who booked the original session needs to be logged in. |
@@ -71,7 +71,7 @@ Preset date:
 www.your-site.com/booking-calendar/your-service?date=2023-08-20
 ```
 
-Preset date and timezone:
+Preset date and time zone:
 
 ```url
 www.your-site.com/booking-calendar/your-service?date=2023-08-20&timezone=Australia/Sydney
