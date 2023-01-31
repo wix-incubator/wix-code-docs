@@ -58,10 +58,10 @@ Attach any of the following query parameters to a Wix site booking calendar page
 | Query Parameter | Description |
 | --------------- | ----------- |
 | `resource`     | One or more resources (staff members) to be selected by default, identified by ID. Use commas to separate multiple resource IDs.|
-| `timezone`     | Default time zone for the booking calendar, in [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format. For example: `America/Santiago`. **Note:** You can only select a time zone the page supports as an option. For more information, see [Setting the Time Zone Display](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings).  |
+| `timezone`     | Default time zone for the booking calendar, in [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format. For example: `America/Santiago`. **Note:** You can only select a time zone the page supports as an option. For more information, see [Setting the Time Zone Display](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings).|
 | `date`         | Initial date to open in the booking calendar page, in `YYYY-MM-DD` format. |
 | `location`     | One or more business locations, identified by ID. Use commas to separate multiple location IDs.|
-| `bookingId`    | ID of an existing booking to reschedule. **Note:** The site member who booked the original session needs to be logged in. |
+| `bookingId`    | ID of an existing booking to reschedule. **Note:** The site member who booked the original session needs to be logged in.|
 
 ## Examples 
 
