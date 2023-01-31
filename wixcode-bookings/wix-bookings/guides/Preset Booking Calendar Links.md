@@ -8,7 +8,7 @@ When a site visitor navigates to make a booking on a Wix site, they are taken to
 Here they select their preferences for the date and time of their booking.
 Depending on the site's settings, they may also be able to select a time zone, and filter by location and staff member.
 
-When the booking calendar page opens, the calendar appears with default date, time, and time zone values based on the site's settings.
+When the booking calendar page opens, the calendar typically appears with a default date, time, and time zone based on the site's settings.
 No location or staff member filters are selected.
 
 With query parameters, you can create and share a direct link to a booking calendar page with customized pre-filled default values of your choice.
