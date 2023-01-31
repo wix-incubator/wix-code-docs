@@ -2,7 +2,7 @@
 
 # Introduction
 
-Velo SPIs (Service Provider Interfaces) provide you with a powerful way to extend Velo’s functionality so that you can:
+Velo SPIs (Service Provider Interfaces) provide you with a very powerful way to extend Velo’s functionality so that you can:
 
 + **Inject your own custom logic into existing app flows**
 
@@ -21,7 +21,7 @@ It’s important to note the following points before starting to code:
 
 * The Custom Extensions feature is currently in beta and is subject to change. Some custom extensions aren't yet available to all users.
 
-* When integrating with an external service, you'll need familiarity with the external service’s APIs.
+* To use the Velo SPIs, you’ll need a working knowledge of JavaScript. When integrating with an external service, you'll also need familiarity with the external service’s APIs.
 
 
 
@@ -34,13 +34,12 @@ Let's make sure our terms are aligned before we get started.
 
 | Term              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| SPI               | Service Provider Interface. A type of API that supports the custom extensions feature for extending the services you provide on your site. With Velo, the services you provide can be custom logic for your own Velo app flows or through integration with 3rd-party services.                                                                                                                                                                                                                                                                                                               |
-| Custom extensions | A feature that lets you extend the services provided on your site using code. You can make these extensions by adding your own custom logic into a Wix app flow, or by integrating with a 3rd-party.                                                                                                                                       |
-| Service provider  | The provider of the service. The service is either a Velo service or a 3rd-party service.  |
-| Wix user          | You, the site owner or contributor responsible for developing the code needed for the custom extension using Velo SPIs.                                                                                                                                                                                                                                                                                                                                                                           |
-| Service           | Any functionality added to the site not part of the original Wix app flow. The service is coded by the Wix user with the custom extension feature using SPIs.                                                                                                                                                                                                                                                                                                                                                                                               |
-| Wix app           | The Wix app where functionality is extended. For example, Wix eCommerce has several SPIs available for customizing its flows with custom extensions.                                                                                                                                                                                                                                                                                                                                                                                                                           |
-
+| SPI               | Service Provider Interface. A type of API that supports the custom extensions feature for extending the services you provide on your site. With Velo, the services you provide can be custom logic for your own Velo app flows or integration with 3rd-party services.                                                                                                                                                                                                                                                                                                               |
+| Custom extensions | A feature that lets you extend the services provided on your site using code. You can make these extensions by adding your own custom logic into a Wix app flow, or data received from a 3rd-party into a Wix app flow. Custom extensions are implemented by adding files to backend code files to your site. These files contain code for your custom logic using SPI function calls and are triggered at specific points in the Wix app flow.                                                                                                                                      |
+| Service provider  | The one providing a service. The service is either a Velo service or a 3rd-party service. The interface to the service is coded using Velo SPIs by the Wix user. If the service is being provided by a 3rd-party, the Wix user also writes the code for the interface by [accessing 3rd-party's APIs](https://support.wix.com/en/article/velo-accessing-3rd-party-services-with-the-fetch-api) with [wix-fetch](/wix-fetch), and/or using [npm packages](https://support.wix.com/en/article/velo-accessing-3rd-party-services-with-the-fetch-api). |
+| Wix user          | You, the site owner or contributor responsible for developing the code needed for the custom extension using Velo SPIs. Your code uses your own custom logic or accesses a service provided by a 3rd-party.                                                                                                                                                                                                                                                                                                                                                                          |
+| Service           | Any additional functionality being added to the site that is not part of the original Wix app flow. The service is coded by the Wix user with the custom extension feature using SPIs.                                                                                                                                                                                                                                                                                                                                                                                               |
+| Wix app           | The Wix app whose functionality is being extended. For example, Wix eCommerce has several SPIs available for customizing its flows with custom extensions.                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 Learn more about [Velo: Custom App Extensions Using SPIs](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta)
 
@@ -56,10 +55,15 @@ Learn more about [Velo: Custom App Extensions Using SPIs](https://support.wix.co
 
 The Custom Extensions feature currently can’t be added to a site when using Git Integration & Wix CLI (Beta).
 
-The steps below describe how to implement an SPI in Velo. See the [tutorial](#available-custom-extensions-beta) for each SPI for specific instructions. 
+The process of implementing an SPI in Velo generally has 3 steps:
+
+1. [Create a new extension on your site](#step-1-create-a-new-shipping-rates-extension)
+2. [Implement your extension with custom code](#step-2-implement-the-extension)
+3. [Deploy the extension](#step-3-deploy-the-extension)
+
+See the [tutorial](#available-custom-extensions-beta) for each SPI for detailed instructions. 
 
 Need help implementing an SPI? [Find a professional](https://www.wix.com/marketplace) to help you.
-
 
 ### Step 1\. Create a new extension on your Wix site
 
@@ -75,12 +79,14 @@ The first step in setting up your new extension is to add it to your site. This 
 
 ### Step 2\. Implement your extension with custom code
 
-The procedure in the previous step creates a folder in the Custom Extensions section of the Velo Sidebar. The name of the folder is based on the extension you chose. Inside this is another folder with the name of the extension you set up. This folder contains 2 files, \`<my-extension-name>.js\` and \`<my-extension-name>-config.js\`. 
+The procedure in the previous section creates a folder in the Custom Extensions section of the Velo Sidebar. The name of the folder is based on the extension you chose. Inside this is another folder with the name of the extension you set up. This folder contains 2 files, \`<my-extension-name>.js\` and \`<my-extension-name>-config.js\`. 
 
 Default extension files:
 
 * `<my-extension-name>.js`: The code in this file generally defines a function named after the purpose of the custom extension, such as `getShippingRates()` or `getFees()`. The function is called by Wix to retrieve the data provided by your extension.
 * `<my-extension-name>-config.js`: The code in this file generally defines a function that returns an object containing values used to configure your extension.
+
+<!-- Default extension files: + \`<my-extension-name>.js\`: The code in this file generally defines a function named after the purpose of the custom extension, such as \`getShippingRates()\` or \`getFees()\`. The function is called by Wix to retrieve the data provided by your extension. + \`<my-extension-name>-config.js\`: The code in this file generally defines a function that returns an object containing values used to configure your extension. -->
 
 Implement the custom code for your extension in these files. See the SPI tutorial for each [supported custom extension](https://support.wix.com/en/article/velo-custom-business-app-extensions-using-spis-beta#available-custom-extensions-beta) for guidelines for writing your code.
 
@@ -100,10 +106,19 @@ import { functionName } from './myFileName.js';
 
 You can test your extension before publishing your site using [functional testing](https://support.wix.com/en/article/velo-functional-testing-in-the-backend) like you would any backend Velo code. Make sure your functions' return values are properly formatted. To test your extension after deploying, add console logs to your code. The results appear in the [Site Events log](https://support.wix.com/en/article/velo-about-site-monitoring).
 
+<!-- You can test your extension before publishing your site using \[functional testing\](https://support.wix.com/en/article/velo-functional-testing-in-the-backend) like you would any backend Velo code. Make sure your functions' return values are properly formatted. To test your extension after deploying, add console logs to your code. The results appear in the \[Site Events log\](https://support.wix.com/en/article/velo-about-site-monitoring). -->
+
 ### Step 3\. Deploy the extension
 
-Once your code files are ready, enable your extension and publish your site.
+Once your code files are ready, deploy your extension and enable it on your site.
+
   
+Publish your site.
+
+  
+There may be a delay between publishing the site and the new extension options appearing on your site.
+
+
 
 
 
