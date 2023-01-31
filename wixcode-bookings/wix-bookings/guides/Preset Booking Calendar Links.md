@@ -1,13 +1,13 @@
 # Creating a Preset Booking Calendar Link
 
-You can use [query parameters](#quick-reference) to provide a custom link to a Wix site's [booking calendar page](#booking-calendar-page-url) with preset values you choose.
+You can use [query parameters](#query-parameters) to provide a custom link to a Wix site's [booking calendar page](#booking-calendar-page-url) with preset values you choose.
 
 ## Introduction 
 
 When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
-Here they select their preferences for the location (if more than one is available), staff member (if more than one is available), time zone (if the site owner [enables user time zone selection](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings)), date, and time.
+Here they select their preferences for the date and time of their booking, as well as the location (if more than one is available), staff member (if more than one is available), and time zone (if the site owner [enables user time zone selection](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings)).
 
-When the booking calendar page opens, the calendar is set to the default date selected in the Editor, and no location or staff member filters are selected.
+When the booking calendar page opens, the calendar is set to the default date selected in the Editor and the default time zone selected in the site's dashboard. No location or staff member filters are selected.
 
 With query parameters, you can create and share a direct link to a booking calendar page with pre-filled default values of your choice.
 A site visitor who visits the page via the custom link can still change their selections, but the values you define appear as default choices.
@@ -19,11 +19,11 @@ Using query parameters, you can select default values for these fields:
 + Time zone
 + Date
 
-In addition, you can provide a Booking ID to create a link for rescheduling an existing appointment.
+In addition, you can provide a Booking ID to create a link for rescheduling an existing booking.
 
 ## Booking calendar page URL 
 
-The booking calendar page is the page on which a Wix site visitor selects details for an appointment or class and requests a booking.
+The booking calendar page is the page where a Wix site visitor selects details for an appointment or class and requests a booking.
 Query parameters are added at the end of the URL for this page.
 
 You can find the full URL for a Wix site's booking calendar page by navigating to the page in a browser and looking in the address bar.
