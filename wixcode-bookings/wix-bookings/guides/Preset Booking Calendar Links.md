@@ -5,19 +5,21 @@ You can use [query parameters](#query-parameters) to provide a custom link to a 
 ## Introduction 
 
 When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
-Here they select their preferences for the date and time of their booking, as well as the location (if more than one is available), staff member (if more than one is available), and time zone (if the site owner [enables user time zone selection](https://support.wix.com/en/article/setting-the-time-zone-display-in-wix-bookings)).
+Here they select their preferences for the date and time of their booking.
+Depending on the site's settings, they may also be able to select a time zone, and filter by location and staff member.
 
-When the booking calendar page opens, the calendar is set to the default date selected in the Editor and the default time zone selected in the site's dashboard. No location or staff member filters are selected.
+When the booking calendar page opens, the calendar appears with default date, time, and time zone values based on the site's settings.
+No location or staff member filters are selected.
 
-With query parameters, you can create and share a direct link to a booking calendar page with pre-filled default values of your choice.
-A site visitor who visits the page via the custom link can still change their selections, but the values you define appear as default choices.
+With query parameters, you can create and share a direct link to a booking calendar page with customized pre-filled default values of your choice.
+A site visitor who visits the page via your custom link can still change their selections, but the values you define appear as default choices.
 
 Using query parameters, you can select default values for these fields:
 
-+ Locations
-+ Resources (staff members)
-+ Time zone
 + Date
++ Time zone
++ Resources (staff members)
++ Locations
 
 In addition, you can provide a Booking ID to create a link for rescheduling an existing booking.
 
@@ -39,7 +41,7 @@ To find the service slug using the site dashboard, follow these steps:
 
 1. Log into the site dashboard.
 2. Click "Booking Services" in the sidebar menu.
-3. Hover over the desired service in the list of services to make the "Edit" button appear, then click on the "Edit" button. This opens the page for managing the service.
+3. Hover over the desired service in the list of services to make the "Edit" button appear, then click the "Edit" button. This opens the page for managing the service.
 4. Scroll down to the "Marketing & SEO" section on the right, then click "Edit SEO Settings". This opens the "SEO Settings" section.
 5. The service slug appears in the "URL slug" section.
 
@@ -51,7 +53,7 @@ https://www.my-example-site.com/booking-calendar/initial-consultation
 
 ## Query parameters 
 
-Attach any of the following query parameters to a Wix site booking calendar page URL to preset default settings of your choice:
+Attach any of the following query parameters to a Wix site booking calendar page URL to preset customized default settings of your choice:
 
 | Query Parameter | Description |
 | --------------- | ----------- |
@@ -63,7 +65,7 @@ Attach any of the following query parameters to a Wix site booking calendar page
 
 ## Examples 
 
-The following are examples of URLs for a Wix site booking calendar page with query parameters that preset default values.
+The following are examples of URLs for a Wix site booking calendar page with query parameters that set customized default values.
 
 Preset date:
 
@@ -97,7 +99,7 @@ www.your-site.com/booking-calendar/your-service?bookingId=27f1ca08-81fc-4e27-b24
 
 ## Finding IDs 
 
-To preset default resources (staff members) or locations, or to reschedule an existing booking, you need to obtain the IDs for the resources, locations, or existing booking you wish to specify. You can do this as follows:
+To set customized default resources (staff members) or locations, or to reschedule an existing booking, you need to obtain the IDs for the resources, locations, or existing booking you wish to specify. You can do this as follows:
 
 ### Resources
 
@@ -120,4 +122,4 @@ To find the ID for a business location, use [`listLocations()`](/wix-business-to
 
 ### Existing bookings
 
-You can retrieve an existing booking's ID using [`queryBookings()`](/wix-bookings-backend/bookings/querybookings).
+Retrieve an existing booking's ID using [`queryBookings()`](/wix-bookings-backend/bookings/querybookings).
