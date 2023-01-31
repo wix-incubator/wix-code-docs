@@ -116,7 +116,7 @@ https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/s
 
 ### Locations
 
-> **Forthcoming.** This capability will be added soon.
+To find the ID for a business location, use [`listLocations()`](/wix-business-tools-v2/locations/listlocations) or [`queryLocations()`](/wix-business-tools-v2/locations/querylocations).
 
 ### Existing bookings
 
