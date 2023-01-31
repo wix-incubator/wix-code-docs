@@ -10,6 +10,149 @@
   "properties": [],
   "operations": [
     {
+      "name": "createSession",
+      "params": [
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Sessions.Session"
+            }
+          ],
+          "doc": "The session to create.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "session",
+        "session.end",
+        "session.scheduleId",
+        "session.start"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Sessions.CreateSessionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a session.",
+        "description": [
+          "A session is one of the following:\n+ `\"EVENT\"`: Reserved period of time on any [schedule](wix-bookings-backend.sessions/introduction#schedules). For example, an appointment, class, or course. Events are visible in the Dashboard in the Bookings app's [**Booking Calendar**](https://support.wix.com/en/article/wix-bookings-about-the-wix-bookings-calendar) page. Set `type` to `\"EVENT\"` when creating sessions that reserve time on a service's schedule, or when creating a blocked time for a resource.\n+ `\"WORKING_HOURS\"`: Placeholder for available time on a resource’s schedule. Set `type` to `\"WORKING_HOURS\"` when creating sessions for resource availability.\n\nSessions belong to a schedule. Schedules are owned by a resource or a service.\n\nA session may be an individual session or a recurring session.\nAn individual session has a discrete start and end date, while a recurring session defines a series of repeating sessions. An instance of a recurring session is a specific session in a series of repeating sessions, generated according to the recurrence rule.\nThe `start` and `end` properties set the time and duration of the session. For non-recurring sessions, you can use either the `timestamp` or `localDateTime` properties.\nFor recurring sessions, use the `localDateTime` property only. For recurring sessions, the `start` property sets the date and time of the first recurring session, subject to the recurrence rule. For example, if you set the `start` to Saturday, May 1 and your recurrence rule says every second Monday, then the first session will only be on Monday, May 10.\n\nThe `year`, `monthOfYear` and `dayOfMonth` properties in the `end` property are used with the `hourOfDay` and `minutesOfHour` properties to set the duration of each session relative to the `start`.\nThe `UNTIL` keyword in the `recurrence` property sets the date for the last recurring session.\n\nYou can create a session that blocks hours on the resource's calendar, making the resource unavailable.\nCreate a non-recurring session of type `\"EVENT\"`, and add `\"Blocked\"` to the `tags` array.\n\n>**Notes:**\n> + For properties where there is no explicit timezone information, the timezone used is the business’s timezone.\n> + Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can create a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "CreateSession example",
+            "body": [
+              "import { sessions } from 'wix-bookings.v2';",
+              "  ",
+              " async function createSession(session) {",
+              "   try {",
+              "     const result = await sessions.createSession(session);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "     }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "deleteSession",
+      "params": [
+        {
+          "name": "sessionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the session to delete.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Sessions.DeleteSessionOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "sessionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Deletes a session.",
+        "description": [
+          "Use the `participantNotification` property to send an email to the participants when the session is deleted.\nWhen deleting a session of type `\"EVENT\"` where a booking exists, the booking's status is updated to `\"CANCELED\"`.\nTo delete a set of recurring sessions, specify the session's `recurringSessionId` in the `sessionId` property in the parameters.\nWhen deleting a recurrence, only future instances of the recurrence are deleted.\n\n>**Note:** Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can delete a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "DeleteSession example",
+            "body": [
+              "import { sessions } from 'wix-bookings.v2';",
+              "  ",
+              " async function deleteSession(sessionId, options) {",
+              "   try {",
+              "     const result = await sessions.deleteSession(sessionId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "     }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
       "name": "getSession",
       "params": [
         {
@@ -241,6 +384,92 @@
               "  ",
               " async function querySessions() {",
               "   const { items } = sessions.querySessions().find();",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "updateSession",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session ID.",
+          "required": true
+        },
+        {
+          "name": "session",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Sessions.UpdateSession"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Sessions.UpdateSessionOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "session"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Sessions.UpdateSessionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Updates a session.",
+        "description": [
+          "When you update a recurring session, only the future instances of the recurrence will be updated. Changing an individual instance's `start` or `end` time will change the way updates to `start` and `end` on the recurring session affect the session instance:\n|Change made to the instance | Effect of changes made to the recurrence\n|--|--|\n|Instance `start` time changed.|Changes to the recurring session's `start` or `end` time will not update the instance.|\n|Instance `end` time changed, changing the session's duration| Changes made to the recurring session's start time will be updated on the instance while keeping the new duration, but changes to the recurring session's `end` time not be updated on the instance.\n|Updating a changed `start` time for an instance back to the recurring session's value.|Future changes to the recurring session `start` and `end` times will update the instance's `starts` and `end` time.\n\nChanges to properties on the recurring session, other than `start` and `end`, are always updated on the recurrence instance.\n\nUse the `options.participantNotification` object to notify participants if the session has been booked.\n\n>**Notes:**\n> + Where there is no explicit timezone information, the timezone used is the business’s timezone.\n> + Only users with **[Bookings Admin](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin)** permissions can update a session. You can override the permissions by setting the `suppressAuth` option to `true`."
+        ],
+        "examples": [
+          {
+            "title": "UpdateSession example",
+            "body": [
+              "import { sessions } from 'wix-bookings.v2';",
+              "  ",
+              " async function updateSession(id, session, options) {",
+              "   try {",
+              "     const result = await sessions.updateSession(id, session, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "     }",
               " }",
               "  "
             ]
