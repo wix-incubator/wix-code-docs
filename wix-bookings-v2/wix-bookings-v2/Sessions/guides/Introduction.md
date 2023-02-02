@@ -48,6 +48,6 @@ It's important to note the following points before starting to code:
 + __Calendar:__ General overview about the availability and bookings of the business, including its services and resources.
 + __Session:__ An occupied period of time on a schedule. A session of type EVENT is a recurring or single session that appears in a specific block of time in a calendar, such as an appointment or class.
 + __Recurring session:__ A recurring session defines a pattern for repeating sessions that occur on a regular basis.
-Slot: An available period of time in a schedule that can be booked by a customer.
++ __Slot:__ An available period of time in a schedule that can be booked by a customer.
 + __Resource:__ Business asset like a staff member, room, or equipment that's needed to provide a service.
 + __Schedule:__ Collection of all sessions that belong to the same class, course, appointment, or resource.
