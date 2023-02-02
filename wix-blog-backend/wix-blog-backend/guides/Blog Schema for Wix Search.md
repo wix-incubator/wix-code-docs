@@ -36,7 +36,7 @@ The following fields appear in each matching search result [document](https://ww
 
 #### \_id   
 
-**Description**: Event ID.  
+**Description**: The ID of the post.  
 **Type**: String  
 **Can search the content of this field**: No  
 **Can facet**: No  
@@ -45,7 +45,7 @@ The following fields appear in each matching search result [document](https://ww
 
 #### title   
 
-**Description**: Event title.  
+**Description**: The title of the post.  
 **Type**: String  
 **Can search the content of this field**: Yes  
 **Can facet**: No  
@@ -54,7 +54,7 @@ The following fields appear in each matching search result [document](https://ww
 
 #### description   
 
-**Description**: Description of the event.  
+**Description**: Description of the post.  
 **Type**: String  
 **Can search the content of this field**: Yes  
 **Can facet**: No  
@@ -108,7 +108,7 @@ The following fields appear in each matching search result [document](https://ww
 
 ### publishDate   
 
-**Description**: Date and time the post was published.  
+**Description**: Date and time the post was originally published.  
 **Type**: Date  
 **Can search the content of this field**: No  
 **Can facet**: No  
