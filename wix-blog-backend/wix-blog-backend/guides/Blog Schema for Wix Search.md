@@ -79,7 +79,7 @@ The following fields appear in each matching search result [document](https://ww
 **Can sort**: No  
 **Can filter**: No
 
-### hashTags   
+#### hashTags   
 
 **Description**: List of hashtags in the post.  
 **Type**: Array of Strings  
@@ -88,7 +88,7 @@ The following fields appear in each matching search result [document](https://ww
 **Can sort**: No  
 **Can filter**: hasSome, hasAll  
 
-### tags 
+#### tags 
 
 **Description**: List of tags in the post.  
 **Type**: Array of Strings  
@@ -97,7 +97,7 @@ The following fields appear in each matching search result [document](https://ww
 **Can sort**: Yes  
 **Can filter**: hasSome, hasAll  
 
-### tagIds 
+#### tagIds 
 
 **Description**: List of tag IDs in the post.  
 **Type**: Array of Strings  
@@ -106,7 +106,7 @@ The following fields appear in each matching search result [document](https://ww
 **Can sort**: Yes 
 **Can filter**: hasSome, hasAll
 
-### publishDate   
+#### publishDate   
 
 **Description**: Date and time the post was originally published.  
 **Type**: Date  
