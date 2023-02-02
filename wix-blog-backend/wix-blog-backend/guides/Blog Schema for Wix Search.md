@@ -20,7 +20,7 @@ wixSearch.search(phrase)
 ```
 
 > **Notes**
-> The Events fields supported by wix-search are not identical to the fields in your site's [Blog/Posts collection](https://support.wix.com/en/article/velo-wix-blog-schema-for-wix-search
+> The Events fields supported by wix-search are not identical to the fields in your site's [Blog/Posts collection](https://support.wix.com/en/article/velo-wix-blog-schema-for-wix-search)
 
 
 The following fields appear in each matching search result [document](https://www.wix.com/velo/reference/wix-search.WixSearchResult.html#documents) when searching Wix Blog services:
