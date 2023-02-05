@@ -1,5 +1,5 @@
 # Partial Updates
-Most `PATCH` endpoints support partial updates via a combination of a _partial entity body_ and a `fields` parameter.
+Most update endpoints support partial updates via a combination of a _partial entity body_ and a `fields` parameter.
 
 ## Fields parameter
 The `fields` parameter accepts a set of field paths that specifies the entity data to update. In general, the fields path begins from the root of the request body.
