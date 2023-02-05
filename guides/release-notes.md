@@ -8,6 +8,25 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Email Marketing v2
+
+`wix-email-marketing.v2`
+
+The new [Wix Email Marketing API](/wix-email-marketing-v2) provides functionality
+for managing your email marketing campaigns.
+
+Functionalities include:
+
++ [Getting](/wix-email-marketing-v2/accountdetails/getaccountdetails) your email marketing account details.
++ Getting a [list](/wix-email-marketing-v2/campaigns/listcampaigns) of your email campaigns.
++ [Pausing](/wix-email-marketing-v2/campaigns/pausescheduling) a scheduled campaign.
++ [Sending](/wix-email-marketing-v2/campaigns/sendtest) a test email for preview purposes.
++ Getting a [list](/wix-email-marketing-v2/campaigns/liststatistics) of statistics for up to 100 selected campaigns.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(February 5, 2023)
+
 ### New APIs: Wix eCommerce Checkout
 
 `wix-ecom-backend`
