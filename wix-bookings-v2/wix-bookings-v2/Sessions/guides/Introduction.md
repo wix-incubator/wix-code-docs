@@ -38,7 +38,7 @@ import { sessions } from 'wix-bookings.v2';
 
 It's important to note the following points before starting to code:
 
-+ To query all event instances within a time range of up to 1 year, use [`querySession()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/querysessions) with the `options.startDate` and `options.endDate` parameters, and with `options.type` set to `EVENT`.
++ To query all event instances within a time range of up to 1 year, use [`querySessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/querysessions) with the `options.startDate` and `options.endDate` parameters, and with `options.type` set to `EVENT`.
 + By default, [`getSession()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/getsession), [`querySessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/querysessions), and [`listSessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/listsessions) return session objects without personal information. To retrieve full session objects including personal information, use the `ALL_PI` [fieldset](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/fieldsets).
 + Use [`listSessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/listsessions) for retrieving multiple sessions by their IDs. Use [`querySessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/querysessions) to retrieve based on other filters.
 + The [`querySessions()`](https://www.wix.com/velo/reference/wix-bookings-v2/sessions/querysessions) function sorts results by `start.timestamp` in ascending order. You can't override this default sorting.
