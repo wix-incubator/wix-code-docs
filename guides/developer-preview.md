@@ -14,11 +14,7 @@ APIs in Developer Preview mode include the following warning in their introducti
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-&nbsp;
-
-
-They also include this tag in the reference for each function:
-
+They also include this tag in the reference for each function:  
 ![developer preview tag](https://user-images.githubusercontent.com/89579857/213133550-2b4fa3e8-e8fc-4513-a733-00abcc70925c.png)  
 Once these tags are removed, the API is fully released.
 
@@ -74,5 +70,7 @@ This is a list of the APIs that are currently in Developer Preview mode.
 | wix-loyalty.v2 | Programs | [activateLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/activateloyaltyprogram "anchor")<br>[updateLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/updateloyaltyprogram "anchor")<br>[getLoyaltyProgram](https://www.wix.com/velo/reference/wix-loyalty-v2/programs/getloyaltyprogram "anchor") |
 | wix-marketing-tags.v2 | MarketingTags | [deleteMarketingTag](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/deletemarketingtag "anchor")<br>[listMarketingTags](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/listmarketingtags "anchor")<br>[upsertMarketingTag](https://www.wix.com/velo/reference/wix-marketing-tags-v2/marketingtags/upsertmarketingtag "anchor") |
 | wix-sender-details.v2 | SenderDetails | [getSenderDetails](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/getsenderdetails "anchor")<br>[resolveActualFromAddress](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/resolveactualfromaddress "anchor")<br>[updateSenderDetails](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/updatesenderdetails "anchor")<br>[verifyEmail](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/verifyemail "anchor") |
+| wix-email-marketing.v2 | AccountDetails | [getAccountDetails](/wix-email-marketing-v2/accountdetails)
+| wix-email-marketing.v2 | Campaigns | [deleteCampaign](/wix-email-marketing-v2/campaigns/deletecampaign)<br>[getCampaign](/wix-email-marketing-v2/campaigns/getcampaign)<br>[listCampaigns](/wix-email-marketing-v2/campaigns/listcampaigns)<br>[listRecipients](/wix-email-marketing-v2/campaigns/listrecipients)<br>[listStatistics](/wix-email-marketing-v2/campaigns/liststatistics)<br>[pauseScheduling](/wix-email-marketing-v2/campaigns/pausescheduling)<br>[publishCampaign](/wix-email-marketing-v2/campaigns/publishcampaign)<br>[reuseCampaign](/wix-email-marketing-v2/campaigns/reusecampaign)<br>[sendTest](/wix-email-marketing-v2/campaigns/sendtest)|
 
 
