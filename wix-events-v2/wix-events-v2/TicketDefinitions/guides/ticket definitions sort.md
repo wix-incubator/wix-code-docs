@@ -2,16 +2,16 @@
 
 Select functions allow sorting results by field. Use `field:asc` to sort results in **ascending** order, and `field:desc` to sort in **descending** order.
 
-For example, to sort ticket definitions by created date in ascending order, and then by modified date in descending order, use this format in the `options` parameter: 
+For example, to sort ticket definitions by `created` date in ascending order, and then by `modified` date in descending order, use this format in the `options` parameter: 
 
-```json
+```js
 {
   sort: 'created:asc,modified:desc'
 }  
 ```
 
 The following table shows property support for filters and sorting
-for the Ticket Definitions object:
+for the `Ticket Definition` object:
 
 
 | Field           | Sortable | Facetable |
@@ -25,4 +25,4 @@ for the Ticket Definitions object:
 | `state`         |          |           |
 
 __Related content:__
-[`listTicketDefinitions`](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions/listticketdefinitions)
+[`listTicketDefinitions`](wix-events-v2/ticketdefinitions/listticketdefinitions)

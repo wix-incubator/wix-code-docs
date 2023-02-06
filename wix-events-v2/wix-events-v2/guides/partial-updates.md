@@ -1,23 +1,29 @@
 # Partial Updates
-Most update functions support partial updates via a combination of a _partial entity body_ and a `fields` parameter.
+Most update functions support partial updates via a combination of a partial entity body and a `fields` parameter.
 
 ## Fields parameter
 The `fields` parameter accepts a set of field paths that specifies the entity data to update. 
 
-The field path begins from the root of the request body and may contain several levels of fields separated by dot notation. This indicates the specific field for update. 
+The field path begins from the root of the request and may contain several levels of fields in dot notation. This indicates the specific fields to update. 
 
-For example, if the field path is `f.a.b`, `f` represents a field in the request root, `a` is a sub-field in the `f` field and `b` is a sub-field in `f.a`.       
+For example, if the field path is `options.checkoutForm.inputValues.inputName`,  
+- `options` is in the request root  
+- `checkoutForm` is a sub-field of the `options` field  
+- `inputValues` is a sub-field of `options.checkoutForm`  
+- `inputName` is a sub-field of `options.checkoutForm.inputValues`  
 
-When the `fields` parameter contains a sub-path of the entity fields, like `event`, all nested fields are included in the update, for example, `event.title`, `event.description`.
 
-When the `fields` parameter is empty, the request will modify ALL entity fields.
+When the `fields` parameter contains a partial path of the entity fields to update, for example, `event`, all nested fields of `event` are updated, including `event.title` and `event.description`.
+
+When the `fields` parameter is empty, the request modifies all entity fields.
 
 ## Examples
-To update an `Event` title, and reschedule it to a later date, the request would look like this:
-```json
+To update an `Event` title, and reschedule it to a later date, use this format:
+
+```js
 {
   "event": {
-    "title": "My event (rescheduled & relocated)",
+    "title": "My event (rescheduled)",
     "scheduleConfig": {
       "startDate": "2032-05-16T10:00:00.000+03:00",
       "endDate": "2032-05-16T10:30:00.000+03:00"
@@ -34,9 +40,10 @@ To update an `Event` title, and reschedule it to a later date, the request would
 ```
 
 
-To erase optional fields, send an empty body and list the field(s) to update in the `fields` parameter.
-For example, to clear an event description, the request would look like this:
-```json
+To erase optional fields, send an empty body and list the fields to update in the `fields` parameter.
+For example, to clear an event description, use this structure:
+
+```js
 {
   "event": {},
   "fields": {
@@ -48,8 +55,9 @@ For example, to clear an event description, the request would look like this:
 ```
 
 When only one parameter can be updated, the `fields` parameter must still be passed.
-For example, to bulk update the `status` of multiple RSVPs to one event, the request would look like this:
-```json
+For example, to bulk update the `status` of multiple RSVPs to one event, use this format:
+
+```js
 {
   "status": "WAITING",
   "fields": {
@@ -60,4 +68,3 @@ For example, to bulk update the `status` of multiple RSVPs to one event, the req
 }
 ```
 
-[google-protobuf-fieldmask]: https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
