@@ -28,4 +28,4 @@ for the Orders object:
 | `fullyCheckedIn`   |          | Facetable |
 
 __Related content:__
-[listOrders](https://www.wix.com/velo/reference/wix-events-v2/orders/listorders)
+[`listOrders`](https://www.wix.com/velo/reference/wix-events-v2/orders/listorders)
