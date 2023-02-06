@@ -19,7 +19,7 @@ for the Ticket Definitions object:
 
 
 | Field           | Sortable | Facetable |
-|--  -------------|----------|-----------|
+|-----------------|----------|-----------|
 | `created`       | Sortable |           |
 | `modified`      | Sortable |           |
 | `orderIndex`    | Sortable |           |
