@@ -1,5 +1,3 @@
-<!--This article was written using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it in: www.github.com/wix-private/velo-docs -->
-
 
 
 
