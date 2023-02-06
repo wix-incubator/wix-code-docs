@@ -29,4 +29,4 @@ for the Ticket Definitions object:
 | `state`         |          |           |
 
 __Related content:__
-[List Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions/listticketdefinitions)
+[listTicketDefinitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions/listticketdefinitions)

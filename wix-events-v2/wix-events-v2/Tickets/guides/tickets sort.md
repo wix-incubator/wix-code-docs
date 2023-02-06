@@ -32,4 +32,4 @@ for the Tickets object:
 | `eventId`       |          | Facetable |
 
 __Related content:__
-[List Tickets](https://www.wix.com/velo/reference/wix-events-v2/tickets/listtickets)
+[listTickets](https://www.wix.com/velo/reference/wix-events-v2/tickets/listtickets)
