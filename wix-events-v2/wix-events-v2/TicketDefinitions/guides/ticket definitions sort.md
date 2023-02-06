@@ -1,17 +1,13 @@
 # Ticket Definitions: Supported Sorting and Faceting
 
-Select endpoints allow sorting results by field. Use `field:asc` to sort results in **ascending** order, and `field:desc` to sort in **descending** order.
+Select functions allow sorting results by field. Use `field:asc` to sort results in **ascending** order, and `field:desc` to sort in **descending** order.
 
-For example, to sort ticket definitions by created date in ascending order, and then by modified date in descending order: 
-
-```
-?sort=created:asc,modified:desc
-```
-
-or 
+For example, to sort ticket definitions by created date in ascending order, and then by modified date in descending order, use this format in the `options` parameter: 
 
 ```json
-"sort": "created:asc,modified:desc"
+{
+  sort: `created:asc,modified:desc`
+}  
 ```
 
 The following table shows property support for filters and sorting

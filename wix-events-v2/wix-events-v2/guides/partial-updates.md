@@ -1,14 +1,16 @@
 # Partial Updates
-Most update endpoints support partial updates via a combination of a _partial entity body_ and a `fields` parameter.
+Most update functions support partial updates via a combination of a _partial entity body_ and a `fields` parameter.
 
 ## Fields parameter
-The `fields` parameter accepts a set of field paths that specifies the entity data to update. In general, the fields path begins from the root of the request body.
+The `fields` parameter accepts a set of field paths that specifies the entity data to update. 
 
-When the `fields` parameter contains a sub-path of the entity fields, like `event` - all nested fields are included in the update: `event.title`, `event.description`, etc.
+The field path begins from the root of the request body and may contain several levels of fields separated by dot notation. This indicates the specific field for update. 
+
+For example, if the field path is `f.a.b`, `f` represents a field in the request root, `a` is a sub-field in the `f` field and `b` is a sub-field in `f.a`.       
+
+When the `fields` parameter contains a sub-path of the entity fields, like `event`, all nested fields are included in the update, for example, `event.title`, `event.description`.
 
 When the `fields` parameter is empty, the request will modify ALL entity fields.
-
-`fields` parameter behavior follows [google.protobuf.FieldMask][google-protobuf-fieldmask] semantics.
 
 ## Examples
 To update an `Event` title, and reschedule it to a later date, the request would look like this:
