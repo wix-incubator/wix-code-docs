@@ -25,4 +25,4 @@ for the `Ticket Definition` object:
 | `state`         |          |           |
 
 __Related content:__
-[`listTicketDefinitions`](wix-events-v2/ticketdefinitions/listticketdefinitions)
+[`listTicketDefinitions`](/wix-events-v2/ticketdefinitions/listticketdefinitions)

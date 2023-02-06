@@ -24,4 +24,4 @@ for the `Order` object:
 | `fullyCheckedIn`   |          | Facetable |
 
 __Related content:__
-[`listOrders`](wix-events-v2/orders/listorders)
+[`listOrders`](/wix-events-v2/orders/listorders)

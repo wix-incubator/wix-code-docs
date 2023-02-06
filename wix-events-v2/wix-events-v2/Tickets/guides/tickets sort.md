@@ -29,4 +29,4 @@ for the `Ticket` object:
 | `eventId`       |          | Facetable |
 
 __Related content:__
-[`listTickets`](wix-events-v2/tickets/listtickets)
+[`listTickets`](/wix-events-v2/tickets/listtickets)
