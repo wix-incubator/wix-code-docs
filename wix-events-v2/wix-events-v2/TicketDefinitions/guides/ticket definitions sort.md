@@ -6,7 +6,7 @@ For example, to sort ticket definitions by created date in ascending order, and 
 
 ```json
 {
-  sort: `created:asc,modified:desc`
+  sort: 'created:asc,modified:desc'
 }  
 ```
 
