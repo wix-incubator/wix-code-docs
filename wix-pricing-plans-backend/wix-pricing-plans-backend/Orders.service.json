@@ -341,7 +341,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The requested pricing plan order." },
         "locations":
-          [ { "lineno": 409,
+          [ { "lineno": 407,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Gets an order for the currently logged-in member.",
@@ -644,7 +644,7 @@
                         [ "wix-pricing-plans-backend.Orders.Order" ] } ] },
             "doc": "Fulfilled - Pricing plan orders for the current member that match the specified filtering, sorting, and pagination options." },
         "locations":
-          [ { "lineno": 444,
+          [ { "lineno": 442,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Lists orders for the currently logged-in member.",
@@ -731,9 +731,6 @@
             "description":
               [ "The `listOrders()` function returns a Promise that resolves to a list of up to 50 pricing plan orders. ",
                 " You can specify options for filtering, sorting, and paginating the results.",
-                "",
-                "> **Note**: To retrieve more than 50 orders you will need to call the function multiple times",
-                "> while passing a `paging` object to skip the number of results you have already retrieved. See the code example titled \"Pass a paging object with `limit` and `skip` to return a page of orders\"",
                 "",
                 " This function returns the orders on the site. To list orders for the current member only, see the ",
                 " frontend [`listCurrentMemberOrders`](wix-pricing-plans/listCurrentMemberOrders) function.",
@@ -1012,51 +1009,39 @@
                       " */" ],
                   "extra":
                     {  } },
-                { "title": "Pass a paging object with `limit` and `skip` to return a page of orders",
+                { "title": "Iterate through all pages of orders",
                   "body":
                     [ "import { orders } from 'wix-pricing-plans-backend';",
                       "",
-                      "/*Define the number of orders per page, ",
-                      "* and select which page of orders to retrieve",
-                      "*/",
+                      "//Retrieve all orders",
                       "",
-                      "export async function myListOrdersFunction(ordersPerPage, pageNumber) {",
-                      "  const  options = {",
-                      "    suppressAuth : true",
-                      "  };",
+                      "export async function myListAllOrdersFunction() {",
+                      "  let pageNumber = 0;",
                       "",
-                      "  const limits = {",
-                      "    limit : ordersPerPage,",
-                      "    skip : pageNumber * ordersPerPage",
-                      "  }",
+                      "  //Retrieve the first page of 50 orders",
+                      "  let ordersPage = await orders.listOrders(null, null, {skip : 50 * pageNumber}, null);",
+                      "  let ordersAll = ordersPage;",
                       "",
-                      "  try {",
-                      "    const listedOrders = await orders.listOrders(null, null, limits, options);",
-                      "    return listedOrders;",
-                      "  } catch (error) {",
-                      "    console.error(error);",
-                      "  }",
+                      "  //Retrieve subsequent pages of 50 orders until the retrieved page contains no orders",
+                      "  do {",
+                      "    pageNumber++;",
+                      "    try {",
+                      "        ordersPage = await orders.listOrders(null, null, {skip : 50 * pageNumber}, null);",
+                      "    } catch (error) {",
+                      "        console.error(error);",
+                      "    }",
+                      "    ordersAll = ordersAll.concat(ordersPage);",
+                      "  }while(ordersPage.length != 0)",
+                      "",
+                      "  return ordersAll;",
                       "}",
                       "",
                       "/* Promise resolves to an array of order objects",
                       " */",
                       "",
-                      "/* Example of a frontend function that loops though ",
-                      "* all orders and logs them to the console in groups of 10:",
-                      "*",
-                      "*\tconst resultsPerPage = 10;",
-                      "*\tlet pageNumber = 0;",
-                      "*\tlet result = null;",
-                      "*",
-                      "*\t//loop through and log each page of results",
-                      "*\tdo{",
-                      "*\t\tresult = await myListOrdersFunction(resultsPerPage, pageNumber);",
-                      "*\t\tpageNumber++;",
-                      "*\t\tif(result.length != 0) console.log(result);",
-                      "*\t}while(result.length != 0)",
-                      "*/" ],
+                      "" ],
                   "extra":
-                    {  } } ],
+                    { "description": "This example demonstrates how to retrieve all orders, bypassing the maximum limit of 50." } } ],
             "extra":
               {  } },
         "extra":
@@ -1079,7 +1064,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is marked as paid." },
         "locations":
-          [ { "lineno": 267,
+          [ { "lineno": 265,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Marks an offline pricing plan order as paid.",
@@ -1174,7 +1159,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is paused." },
         "locations":
-          [ { "lineno": 303,
+          [ { "lineno": 301,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Pauses a pricing plans order.",
@@ -1274,7 +1259,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order's end date has been postponed or made earlier." },
         "locations":
-          [ { "lineno": 341,
+          [ { "lineno": 339,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Extends the duration of a pricing plan order by postponing the order's `endDate`.",
@@ -1368,7 +1353,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the cancellation process is started." },
         "locations":
-          [ { "lineno": 460,
+          [ { "lineno": 458,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Starts the process of cancelling the logged-in member's pricing plan order.",
@@ -1432,7 +1417,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is resumed." },
         "locations":
-          [ { "lineno": 374,
+          [ { "lineno": 372,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Resumes a paused pricing plan order.",
@@ -1598,7 +1583,7 @@
         "labels": [] },
       { "name": "CurrentMemberFilterOptions",
         "locations":
-          [ { "lineno": 421,
+          [ { "lineno": 419,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Fields to filter by when listing orders for the current member.",
