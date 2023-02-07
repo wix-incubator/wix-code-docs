@@ -1,0 +1,30 @@
+name : build_dev_preview
+
+on: pull_request
+  types:
+    - closed
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3        
+        with:
+          ref: master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Create Branch
+        run : |
+          npm install get-all-files
+          git checkout -b auto-generate-dev-preview
+          node scripts/buildDevPreviewList.mjs
+          git add .
+          git commit -m "New Dev Preview List"
+          gh pr create -B master -H auto-generate-dev-preview --title "New Dev Preview List"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      
+
