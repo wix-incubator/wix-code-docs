@@ -1,3 +1,7 @@
+---
+title: Upload API
+---
+
 # Upload API
 This article demonstrates how to use the `uploadUrl` response from the [Generate File Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileuploadurl) endpoint to upload a file to a site's Media Manager. 
 ## Authorization
