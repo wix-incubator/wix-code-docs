@@ -7,10 +7,10 @@ import fs from 'fs';
 
 function findDevPreviewFunctions() {
     let modules = {};
-    for (const file of getAllFilesSync('./')) {
+    for (const file of getAllFilesSync('../')) {
         if (file.slice(-13) === '.service.json') {
             const previewFunctions = []
-            let jsonData = require(file);
+            let jsonData = require(`../${file}`);
             for(const operation of jsonData.operations) {
                 if (operation.hasOwnProperty('customLabels') && operation['customLabels'].some(e => e.id === 'maturity-beta')) {
                     previewFunctions.push(operation.name);
