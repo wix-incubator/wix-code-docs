@@ -1,3 +1,7 @@
+---
+title: Resumable Upload API
+---
+
 # Resumable Upload API
 This article demonstrates how to use the response object from the [Generate File Resumable Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileresumableuploadurl) endpoint to upload a file to a site's Media Manager. 
 ## Authorization
