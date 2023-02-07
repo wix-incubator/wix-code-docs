@@ -39,6 +39,9 @@ import wixMedia from 'wix-media.v2';
 * **Generate File Resumable Upload Url** vs. **Generate File Upload Url**
   The [Generate File Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileuploadurl) generates an upload URL to allow external clients to upload a file to the Media Manager. However, any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use the [Generate File Resumable Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileresumableuploadurl) instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption. 
 
+  **Using the generated upload and resumable upload URLs**
+  When you get the `uploadUrl` response from Generate File Upload Url, learn how you can use it to [upload a file to the Media Manager](https://www.wix.com/velo/reference/wix-media-v2/upload-api). When you get the `uploadUrl` response from Generate File Resumable Upload Url, learn how you can use it to [resumably upload a file to the Media Manager](https://www.wix.com/velo/reference/wix-media-v2/resumable-upload-api). 
+
 
 * **System folders:** Folders in the Media Manager's file system directory. 
   There are 3 types of system folders:
