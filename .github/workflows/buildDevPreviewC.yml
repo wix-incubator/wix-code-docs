@@ -1,0 +1,34 @@
+name : build_dev_preview
+
+on:
+  pull_request:
+    branches: master
+    types: [ opened, synchronize ]
+
+jobs:
+  build-dev-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3        
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Build Dev Preview List
+        run : |
+          npm install get-all-files
+          git config user.email "adamfri@wix.com"
+          git config user.name "Adam Friedmann"
+          node scripts/buildDevPreviewList.mjs
+          git add .
+          DIFF=$(git status --porcelain)
+          if [[ "$DIFF" == *"developer-preview.md"* ]]; then
+            git commit -m "Auto-generate dev preview list"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      
+
