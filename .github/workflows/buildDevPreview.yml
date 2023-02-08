@@ -24,13 +24,14 @@ jobs:
           git checkout -b auto-generate-dev-preview
           node scripts/buildDevPreviewList.mjs
           git add .
-          $diff = git status --porcelain
-          if [[$diff == *"guides/developer-preview.md"*]];
-          then
+          DIFF=$(git status --porcelain)
+          if [[$DIFF == *"developer-preview.md"*]]; then
+            echo 'Opening PR for new dev '  
             git commit -m "New Dev Preview List"
             git push --set-upstream origin auto-generate-dev-preview --force
             gh pr close auto-generate-dev-preview
             gh pr create --base master --head auto-generate-dev-preview --title "New Dev Preview List" --body "This PR includes an auto-generated list of developer preview APIs."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
