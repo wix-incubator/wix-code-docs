@@ -53,7 +53,6 @@ This is a list of the APIs that are currently in Developer Preview mode.
 <!-- START TABLE -->
 | Module | Submodule | Function |
 |---|---|---|
-| wix-activity-counters.v2 | ActivityCounters | [getActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/getactivitycounters)<br>[queryActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/queryactivitycounters)<br>[setActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/setactivitycounters)<br> |
 | wix-blog-backend | Events | [onTagUpdated](https://www.wix.com/velo/reference/wix-blog-backend/events/ontagupdated)<br> |
 | wix-bookings.v2 | AvailabilityCalendar | [queryAvailability](https://www.wix.com/velo/reference/wix-bookings-v2/availabilitycalendar/queryavailability)<br> |
 | wix-bookings.v2 | Bookings | [cancelBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/cancelbooking)<br>[confirmBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/confirmbooking)<br>[declineBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/declinebooking)<br>[rescheduleBooking](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/reschedulebooking)<br>[updateNumberOfParticipants](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/updatenumberofparticipants)<br> |
