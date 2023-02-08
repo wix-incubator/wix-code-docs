@@ -4,7 +4,7 @@
 
 With booking calendar page [query parameters](#query-parameters), you can:
 
-+ Create a link to a Wix site's [booking calendar page](#booking-calendar-page-url) with preset values you choose.
++ Create a link to a Wix site's [booking calendar page](https://support.wix.com/en/article/wix-bookings-customizing-your-calendar-page) with preset values you choose.
 + Create a link for rescheduling an existing booking.
 
 ## Introduction 
