@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "Variants" Collection Fields
@@ -66,7 +68,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Full Variant Name (fullVariantName) 
 
-**Description**: The full name of the variant.  
+**Description**: The full name of the variant. This is the [Primary field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
 **Type**: Text   
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
