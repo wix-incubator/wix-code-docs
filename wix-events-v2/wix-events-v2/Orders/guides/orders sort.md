@@ -10,8 +10,7 @@ For example, to sort ticket definitions by `created` date in ascending order, an
 }  
 ```
 
-The following table shows property support for filters and sorting
-for the `Order` object:
+The following table shows property support for sorting for the `Order` object:
 
 | Field              | Sortable | Facetable |
 |--------------------|----------|-----------|

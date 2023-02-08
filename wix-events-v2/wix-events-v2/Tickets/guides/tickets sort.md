@@ -11,8 +11,7 @@ For example, to sort tickets by `price` in ascending order, and then by `guestFu
 }  
 ```
 
-The following table shows property support for filters and sorting
-for the `Ticket` object:
+The following table shows property support for sorting for the `Ticket` object:
 
 
 | Field           | Sortable | Facetable |
