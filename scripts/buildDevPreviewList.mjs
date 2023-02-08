@@ -38,7 +38,7 @@ function generateMDTable(data) {
             let formattedFunctions = '';
             for(const func of data[module][submodule].functions){
                 const submodulePath = data[module][submodule].memberOf.length > 0 ? data[module][submodule].memberOf.join('/').toLowerCase() + '/' : '';
-                formattedFunctions += `[${func}](https://www.wix.com/velo/reference/${module}/${submodulePath}${submodule.toLowerCase()}/${func.toLowerCase()})<br>`;
+                formattedFunctions += `[${func}](/${module}/${submodulePath}${submodule.toLowerCase()}/${func.toLowerCase()})<br>`;
             }
             table += `\n| ${module.replace(/(\S+)-(v[1-9])/gm, "$1.$2")} | ${submodule} | ${formattedFunctions} |`;
         }
