@@ -8,15 +8,9 @@ The standard Wix API pagination includes:
 
 The following examples:
 
-```
-?limit=100&offset=20
-```
-
-and
-
-```json
-    "limit": 100, 
-    "offset": 20 
+```js
+    limit: 100, 
+    offset: 20 
 ```
 
 Should return items 21-120 in the results.
