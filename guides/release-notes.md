@@ -8,6 +8,12 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Article: Shareable Booking Calendar Links
+
+`wix-bookings`
+
+The [Shareable Booking Calendar Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-calendar-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking calendar page. This enables you to create a link to a Wix site's booking calendar page with preset values you choose, or to create a link for rescheduling an existing booking. (Feb 12, 2023)
+
 ### New Developer Preview API: Wix Email Marketing v2
 
 `wix-email-marketing.v2`
