@@ -20,7 +20,7 @@ You can write event handlers that react to these events. Event handler functions
 that corresponds to the event that was fired. Use event handlers to create custom responses
 to media events. 
 
-To add a Media event handler, add an **events.js** file to the **Backend** section of your site
+To add a Wix Media event handler, add an **events.js** file to the **Backend** section of your site
 if one does not already exists. All event handler functions for your site are defined in this
 file. 
 

@@ -21,7 +21,7 @@ With the Folders API, you can:
   * Downloading a folder from the Media Manager.
 
 
-Learn more [about the Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how you can access it. 
+Learn more [about the Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
 
 
 > **Note:**

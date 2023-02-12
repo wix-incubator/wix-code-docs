@@ -16,7 +16,7 @@ title: Introduction
 
 
 The Wix Media v2 API provides the functionality to manage media files and folders in a site's Media Manager.
-Learn more [about Wix Media](https://support.wix.com/en/article/).
+Learn more [about Wix Media](https://support.wix.com/en/article/wix-media-about-the-media-manager).
 
 
 > **Note:**
