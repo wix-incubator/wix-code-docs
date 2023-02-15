@@ -12,7 +12,9 @@ title: Introduction
 
 
 &nbsp;
-> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. 
+<!--
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
 
 
 Use the Email Marketing API to manage your email marketing campaigns and retrieve your account details. 

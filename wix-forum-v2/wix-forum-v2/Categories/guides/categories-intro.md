@@ -20,8 +20,9 @@ Categories allow you to sort your forum posts into different groups. They give y
 readers a general idea of what your forum posts are about. 
 
 
-> **Note:**
-> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+<!--
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
 
 
 To use the Categories API, import `{ categories }` from the `wix-forum.v2` module:
