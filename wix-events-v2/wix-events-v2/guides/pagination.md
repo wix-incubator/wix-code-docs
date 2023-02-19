@@ -2,9 +2,9 @@
 
 The standard Wix API pagination includes:
 
-- **limit**: amount of items per response (default is `0`)
+- **limit**: amount of items per response (default is `0`).
 
-- **offset**: number of items to skip
+- **offset**: number of items to skip.
 
 The following examples:
 
