@@ -4,7 +4,7 @@
   "mixes": [],
   "callbacks": [],
   "extra": {},
-  "clientId": "wix-bookings.v2-external_calendar_provider_host",
+  "clientId": "wix-bookings.v2-external_calendar",
   "docs": {},
   "relatedGuides": [],
   "properties": [],
@@ -13,31 +13,50 @@
       "name": "connectByCredentials",
       "params": [
         {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [List Providers](#list-providers) endpoint.",
+          "required": true
+        },
+        {
           "name": "scheduleId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID of the schedule which is to be connected to the external account.",
+          "doc": "ID of the schedule to connect with the external calendar account.",
           "required": true
         },
         {
-          "name": "options",
+          "name": "email",
           "type": [
             {
-              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectByCredentialsOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "",
+          "doc": "Email address for the external calendar account.",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Password for the external calendar account.",
           "required": true
         }
       ],
       "requiredFields": [
-        "options",
-        "options.email",
-        "options.password",
-        "options.providerId",
+        "email",
+        "password",
+        "providerId",
         "scheduleId"
       ],
       "ret": {
@@ -58,7 +77,7 @@
       "docs": {
         "summary": "Connects to an external calendar by directly providing the external calendar account credentials.",
         "description": [
-          "This endpoint validates that the given schedule is either owned by the Wix user connecting the calendar,\nor that the caller has the additional `CALENDAR.MANAGE_ALL_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n\nIf the schedule ownership changes, then the connection to the external calendar will be automatically disconnected.\n\n> **Note**\n> Depends on provider support.\n> Please see the `ListProviders` API for more details."
+          "Once a connection is successfully created, use [List Events](#list-events) to obtain an up-to-date list of events in the connected external calendars.\n\nThis endpoint validates that the specified schedule is owned by the Wix user connecting the calendar,\nor that the caller has the additional `CALENDAR.MANAGE_ALL_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n\nIf the schedule's ownership changes, the connection to the external calendar is automatically disconnected.\n\n> **Note:**\n> Use [List Providers](#list-providers) to find out whether to connect to a particular provider using this endpoint or [Connect by OAuth](#connect-by-o-auth)."
         ],
         "examples": [
           {
@@ -66,15 +85,15 @@
             "body": [
               "import { externalCalendars } from 'wix-bookings.v2';",
               "  ",
-              " async function connectByCredentials(scheduleId, options) {",
+              " async function connectByCredentials(providerId, scheduleId, email, password) {",
               "   try {",
-              "     const result = await externalCalendars.connectByCredentials(scheduleId, options);",
+              "     const result = await externalCalendars.connectByCredentials(providerId, scheduleId, email, password);",
               "",
               "     return result;",
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -92,28 +111,39 @@
       "name": "connectByOAuth",
       "params": [
         {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [List Providers](#list-providers) endpoint.",
+          "required": true
+        },
+        {
           "name": "scheduleId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID of the schedule which is to be connected to the external account.",
+          "doc": "ID of the schedule to connect with the external calendar account.",
           "required": true
         },
         {
-          "name": "options",
+          "name": "redirectUrl",
           "type": [
             {
-              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectByOAuthOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "URL to redirect the user to after they authorize access to the external calendar account.\n\nIf the connection is successfully established, the user is redirected to this URL with a query parameter `connectionId` containing the new connection ID.\nIf the attempt to connect fails, the user is redirected to this URL with a query parameter `error` containing the error type.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "options.redirectUrl",
+        "providerId",
+        "redirectUrl",
         "scheduleId"
       ],
       "ret": {
@@ -132,9 +162,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Connects to an external calendar by using the OAuth authorization protocol.",
+        "summary": "Connects to an external calendar using the OAuth authorization protocol.",
         "description": [
-          "Flow:\n1. The user is redirected to authorize access to its calendar (`ConnectByOAuthResponse.oauth_url`)\n2. The user authorize access\n3. The user is redirected to the provided `ConnectByOAuthRequest.redirect_url`\n\nUpon successful connection, the new established connection ID will be given as `connectionId` query parameter to the provided `ConnectByOAuthRequest.redirect_url`.\n\nUpon failure, the error will be given as `error` query parameter to the provided `ConnectByOAuthRequest.redirect_url`.\nThe error may be one the following:\n- `reject`- the user has rejected the authorization request.\n- `unsupported`- optional error: the user external account type is not supported by the provider.\n- `internal`- error unrelated to the client or the request that prevents the server from fulfilling the request.\n\nThis endpoint validates that the given schedule is either owned by the Wix user connecting the calendar,\nor the caller has the additional `CALENDAR.MANAGE_ALL_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n\nIf the schedule ownership changes, then the connection to the external calendar will be automatically disconnected.\n\n> **Note**\n> Depends on provider support.\n> Please see the `ListProviders` API for more details."
+          "The authorization flow should take place as follows:\n\n1. Send a request to the endpoint with the appropriate parameters.\n2. Redirect the user to the URL received in the response.\n3. The user authorizes access.\n4. The user is redirected to the URL you provide in the `redirectUrl` body parameter, with a query parameter `connectionId` containing the new connection ID.\n\nIf the attempt to connect fails, the user is still redirected to the URL you provide in the `redirectUrl` body parameter,\nbut with a query parameter `error` containing one of the following values:\n\n- `reject`: The user rejected the authorization request.\n- `unsupported`: Connecting to the user's external account type is not supported by the provider.\n- `internal`: An error unrelated to the client or the request that prevents the server from fulfilling the request.\n\nOnce a connection is successfully created, use [List Events](#list-events) to obtain an up-to-date list of events in the connected external calendars.\n\nThis endpoint validates that the specified schedule is owned by the Wix user connecting the calendar,\nor that the caller has the additional `CALENDAR.MANAGE_ALL_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n\nIf the schedule's ownership changes, the connection to the external calendar is automatically disconnected.\n\n> **Note:**\n> Use [List Providers](#list-providers) to find out whether to connect to a particular provider using this endpoint or [Connect by Credentials](#connect-by-credentials)."
         ],
         "examples": [
           {
@@ -142,15 +172,15 @@
             "body": [
               "import { externalCalendars } from 'wix-bookings.v2';",
               "  ",
-              " async function connectByOAuth(scheduleId, options) {",
+              " async function connectByOAuth(providerId, scheduleId, redirectUrl, options) {",
               "   try {",
-              "     const result = await externalCalendars.connectByOAuth(scheduleId, options);",
+              "     const result = await externalCalendars.connectByOAuth(providerId, scheduleId, redirectUrl, options);",
               "",
               "     return result;",
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -174,7 +204,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the connection to be disconnected.",
+          "doc": "ID of the external calendar connection to disconnect.",
           "required": true
         }
       ],
@@ -197,9 +227,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Disconnects from the external calendar.\nWix calendar sessions will be deleted from the external calendar.",
+        "summary": "Disconnects from an external calendar.",
         "description": [
-          "> **Permissions**\n> This endpoint requires the `CALENDAR.MANAGE_OWN_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n> To disconnect any connection, the `CALENDAR.MANAGE_ALL_EXTERNAL_CALENDAR_CONNECTIONS` is also required."
+          "When an external calendar is disconnected, the external calendar connection's `status` is changed to `DISCONNECTED`.\n\nAfter disconnecting, endpoints depending on the connection, such as [List Events](#list-events), can no longer be used.\nExported Wix calendar sessions are deleted from the external calendar."
         ],
         "examples": [
           {
@@ -215,7 +245,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -239,7 +269,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required.",
+          "doc": "ID of the connection to retrieve.",
           "required": true
         }
       ],
@@ -262,9 +292,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Gets a connection to the external calendar.",
+        "summary": "Retrieves an external calendar connection by ID.",
         "description": [
-          "> **Permissions**\n> This endpoint requires the `CALENDAR.READ_OWN_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n> To read all connections, the `CALENDAR.READ_ALL_EXTERNAL_CALENDAR_CONNECTIONS` is also required."
+          "The external calendar connection contains details of the connection between a Wix site's calendar and calendars hosted by an external provider.\n\nThe `syncConfig` property contains configuration details for importing events from an external calendar, exporting events to an external calendar, or both."
         ],
         "examples": [
           {
@@ -280,7 +310,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -304,7 +334,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required.",
+          "doc": "ID of the external calendar connection to list calendars for.",
           "required": true
         }
       ],
@@ -327,9 +357,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Lists the calendars of the external calendar account.",
+        "summary": "Retrieves a list of calendars belonging to the connected external calendar account.",
         "description": [
-          "> **Note**\n> Depends on provider support.\n> Please see the `ListProviders` API for more details."
+          "> **Note:**\n> Before using this endpoint, establish a connection with an external calendar using [Connect By Credentials](#connect-by-credentials) or [Connect By OAuth](#connect-by-o-auth)."
         ],
         "examples": [
           {
@@ -345,7 +375,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -390,9 +420,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Lists the connections to the external calendars.",
+        "summary": "Retrieves a list of external calendar connections.",
         "description": [
-          "> **Permissions**\n> This endpoint requires the `CALENDAR.READ_OWN_EXTERNAL_CALENDAR_CONNECTIONS` permission.\n> To read all connections, the `CALENDAR.READ_ALL_EXTERNAL_CALENDAR_CONNECTIONS` is also required."
+          "Each external calendar connections contains details of a connection between a Wix site's calendar and calendars hosted by an external provider.\n\nThe `syncConfig` property of each connection contains configuration details for importing events from an external calendar, exporting events to an external calendar, or both."
         ],
         "examples": [
           {
@@ -408,7 +438,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -453,9 +483,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Lists the events from all of the connected external calendars.\nThe events are sorted by their start date.",
+        "summary": "Retrieves a list of events from all connected external calendars, based on the provided filtering and paging.",
         "description": [
-          "> **Permissions**\n> This endpoint requires the `CALENDAR.READ_EXTERNAL_CALENDAR_EVENTS` permission."
+          "Use List Events to retrieve an aggregated list of events in the connected external calendars for a specified time range, sorted by start date.\n\n> **Note:**\n> Before using this endpoint, establish a connection with an external calendar using [Connect By Credentials](#connect-by-credentials) or [Connect By OAuth](#connect-by-o-auth)."
         ],
         "examples": [
           {
@@ -471,7 +501,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -505,8 +535,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Lists the external calendar providers installed on the site.\nThe list will include information such as the calendar types that the provider provides, supported connect methods, features, etc.",
-        "description": [],
+        "summary": "Retrieves a list of the external calendar providers for which the site supports integration.",
+        "description": [
+          "The list of external calendar providers includes:\n\n+ External calendar providers that are supported by default, such as Google, Apple, and Microsoft.\n+ External calenders for which the site owner has enabled integration by installing an app.\n\nFor each external calendar provider, the list contains information about supported connection methods and features.\nFor each provider, check `features.connectMethods` to find out whether to use [Connect By Credentials](#connect-by-credentials) or [Connect By OAuth](#connect-by-o-auth) to establish a connection."
+        ],
         "examples": [
           {
             "title": "ListProviders example",
@@ -521,7 +553,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -581,7 +613,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -605,7 +637,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required.",
+          "doc": "ID of the external calendar connection to update.",
           "required": true
         },
         {
@@ -615,7 +647,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
             }
           ],
-          "doc": "The sync configuration to update. Required.",
+          "doc": "Updated sync configuration details.",
           "required": true
         },
         {
@@ -649,9 +681,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Updates the sync configuration of the connection to the external calendar.",
+        "summary": "Updates the specified external calendar connection's sync configuration.",
         "description": [
-          "The sync configuration, may include:\n- Whether to reflect events from the external calendar in the Wix calendar (see the `ListEvents` API for more details)\n- Whether to sync the Wix calendar to the external calendar\n- A list of external calendars to sync\n- etc.\n\n> **Note**\n> Depends on provider support.\n> Please see the `ListProviders` API for more details."
+          "Use Update Sync Config to update a connection's `syncConfig` property.\nThe `syncConfig` property contains settings for enabling, configuring, or disabling functionality, including:\n\n+ Importing events from one or more specified calendars in the connected external calendar account. If this is enabled, use [List Events](#list-events) to retrieve a list of events from the external calendar.\n+ Exporting events from the Wix site's calendar to an external calendar.\n\nTo see an external calendar connection's existing sync configuration, use [Get Connection](#get-connection) or [List Connections](#list-connections) and see the `syncConfig` property.\n\n> **Note:**\n> Supported functionality depends on the provider. Use [List Providers](#list-providers) to see details about providers' supported features."
         ],
         "examples": [
           {
@@ -667,7 +699,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -1102,7 +1134,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "An identifier of an external calendar (within a scope of a connection)."
+          "doc": "External calendar ID."
         },
         {
           "name": "name",
@@ -1112,7 +1144,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The display name of the external calendar (within a scope of a connection).\nE.g, in Google calendar this could be \"Primary\" or \"Birthdays\""
+          "doc": "Display name of the external calendar.\nFor example, \"Primary\" or \"Birthdays\"."
         }
       ],
       "docs": {
@@ -1310,43 +1342,6 @@
       }
     },
     {
-      "name": "ConnectByCredentialsOptions",
-      "members": [
-        {
-          "name": "email",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The external calendar account email."
-        },
-        {
-          "name": "password",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The external calendar account password."
-        },
-        {
-          "name": "providerId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The external calendar provider ID."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "ConnectByCredentialsRequest",
       "members": [
         {
@@ -1356,7 +1351,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The external calendar account email."
+          "doc": "Email address for the external calendar account."
         },
         {
           "name": "password",
@@ -1365,7 +1360,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The external calendar account password."
+          "doc": "Password for the external calendar account."
         },
         {
           "name": "providerId",
@@ -1374,7 +1369,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The external calendar provider ID."
+          "doc": "ID of the external calendar provider. Find this with the [List Providers](#list-providers) endpoint."
         },
         {
           "name": "scheduleId",
@@ -1383,7 +1378,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID of the schedule which is to be connected to the external account."
+          "doc": "ID of the schedule to connect with the external calendar account."
         }
       ],
       "docs": {
@@ -1403,7 +1398,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
             }
           ],
-          "doc": "The established connection."
+          "doc": "Established connection details."
         }
       ],
       "docs": {
@@ -1414,27 +1409,7 @@
     },
     {
       "name": "ConnectByOAuthOptions",
-      "members": [
-        {
-          "name": "providerId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The external calendar provider ID."
-        },
-        {
-          "name": "redirectUrl",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The URL to redirect the user after he completes the authorization flow.\nUpon successful connection, the new established connection ID will be given as `connectionId` query parameter to the provided `redirect_url`."
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -1446,13 +1421,12 @@
       "members": [
         {
           "name": "providerId",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "The external calendar provider ID."
+          "doc": "ID of the external calendar provider. Find this with the [List Providers](#list-providers) endpoint."
         },
         {
           "name": "redirectUrl",
@@ -1461,7 +1435,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The URL to redirect the user after he completes the authorization flow.\nUpon successful connection, the new established connection ID will be given as `connectionId` query parameter to the provided `redirect_url`."
+          "doc": "URL to redirect the user to after they authorize access to the external calendar account.\n\nIf the connection is successfully established, the user is redirected to this URL with a query parameter `connectionId` containing the new connection ID.\nIf the attempt to connect fails, the user is redirected to this URL with a query parameter `error` containing the error type.\n"
         },
         {
           "name": "scheduleId",
@@ -1470,7 +1444,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The schedule ID of the schedule which is to be connected to the external account."
+          "doc": "ID of the schedule to connect with the external calendar account."
         }
       ],
       "docs": {
@@ -1490,7 +1464,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The URL to redirect the user to authorize access to the calendar."
+          "doc": "URL of the external calendar authorization page to redirect the user to."
         }
       ],
       "docs": {
@@ -1510,7 +1484,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection unique ID."
+          "doc": "External calendar connection ID."
         },
         {
           "name": "appId",
@@ -1520,7 +1494,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the Wix App owning the connection."
+          "doc": "ID of the Wix App the external calendar connection belongs to."
         },
         {
           "name": "calendarType",
@@ -1530,7 +1504,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The provided calendar type."
+          "doc": "External calendar type."
         },
         {
           "name": "errorReason",
@@ -1540,7 +1514,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The error reason, if the status is `ERROR`.\nE.g, `TOKEN_REVOKED` if the external calendar access token was revoked."
+          "doc": "Reason for the error, if `status` is `ERROR`.\n\n+ `TOKEN_REVOKED`: External calendar access token revoked.\n+ `EXTERNAL_CALENDAR_CREATION_FAILED`: External calendar creation failed.\n+ `EXTERNAL_CALENDAR_DELETED`: External calendar was deleted.\n"
         },
         {
           "name": "externalAccountEmail",
@@ -1550,7 +1524,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email owning external calendar account. Empty till sync is successful."
+          "doc": "Email address associated with the external calendar account. Empty until sync is completed successfully."
         },
         {
           "name": "providerId",
@@ -1560,7 +1534,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the calendar provider."
+          "doc": "ID of the external calendar provider."
         },
         {
           "name": "scheduleId",
@@ -1570,7 +1544,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the schedule which is connected to the external calendar."
+          "doc": "ID of the schedule connected to the external calendar."
         },
         {
           "name": "status",
@@ -1580,7 +1554,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection status."
+          "doc": "Connection status.\n\n+ `CONNECTED`: A connection has been established with the external calendar.\n+ `SYNC_IN_PROGRESS`: A sync is in progress.\n+ `SYNCED`: External calendar sync complete.\n+ `DISCONNECTED`: External calendar has been disconnected.\n+ `ERROR`: An error occurred when syncing with the external calendar.\n"
         },
         {
           "name": "syncConfig",
@@ -1590,7 +1564,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
             }
           ],
-          "doc": "The sync configuration.\nE.g, whether to list events from the external calendar, sync Wix sessions to the external calendar, etc."
+          "doc": "Sync configuration. Contains settings for enabling, configuring, or disabling functionality, including:\n\n+ Importing events from one or more specified calendars in the connected external calendar account\n+ Exporting events from the Wix site's calendar to an external calendar\n"
         },
         {
           "name": "userId",
@@ -1600,7 +1574,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the Wix user owning the connection."
+          "doc": "ID of the Wix user the external calendar connection belongs to."
         }
       ],
       "docs": {
@@ -1620,7 +1594,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfigListEventFromCalendars"
             }
           ],
-          "doc": "A list of external calendars from which to pull events to the Wix calendar.\nSee the `ListEvents` API for more details."
+          "doc": "Configuration for importing events from external calendars.\nIf enabled, use the [List Events](#list-events) endpoint to retrieve a list of events from external calendars"
         },
         {
           "name": "syncToCalendar",
@@ -1630,7 +1604,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfigSyncToCalendar"
             }
           ],
-          "doc": "External calendar to sync Wix sessions to."
+          "doc": "Configuration for exporting calendars from the Wix site's calendar to a connected external calendar."
         }
       ],
       "docs": {
@@ -1650,7 +1624,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.Calendars"
             }
           ],
-          "doc": "Pull events from specific external calendars."
+          "doc": "Import events from a list of specified external calendars.\n\n**Note**: The list can include the primary calendar.\n"
         },
         {
           "name": "enabled",
@@ -1660,7 +1634,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to pull events from external calendars."
+          "doc": "Whether to enable importing events from external calendars through this connection."
         },
         {
           "name": "primaryCalendar",
@@ -1670,7 +1644,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
             }
           ],
-          "doc": "Pull events from the primary external calendar."
+          "doc": "Import events only from the primary external calendar. Enable this by passing an empty object.\n\n**Note**: Not all external calendar providers designate a primary calendar.\n"
         }
       ],
       "extra": {
@@ -1701,7 +1675,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.Calendars"
             }
           ],
-          "doc": "Pull events from specific external calendars."
+          "doc": "Import events from a list of specified external calendars.\n\n**Note**: The list can include the primary calendar.\n"
         },
         {
           "name": "primaryCalendar",
@@ -1711,7 +1685,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
             }
           ],
-          "doc": "Pull events from the primary external calendar."
+          "doc": "Import events only from the primary external calendar. Enable this by passing an empty object.\n\n**Note**: Not all external calendar providers designate a primary calendar.\n"
         }
       ],
       "docs": {
@@ -1731,7 +1705,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.DedicatedCalendar"
             }
           ],
-          "doc": "Sync to a dedicated external calendar."
+          "doc": "Sync to a dedicated external calendar. Enable this by passing an empty object."
         },
         {
           "name": "enabled",
@@ -1741,7 +1715,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the sync to external calendar is enabled."
+          "doc": "Whether to enable exporting events to an external calendars through this connection."
         },
         {
           "name": "primaryCalendar",
@@ -1751,7 +1725,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
             }
           ],
-          "doc": "Sync to the primary external calendar."
+          "doc": "Sync to the primary external calendar. Enable this by passing an empty object."
         }
       ],
       "extra": {
@@ -1782,7 +1756,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.DedicatedCalendar"
             }
           ],
-          "doc": "Sync to a dedicated external calendar."
+          "doc": "Sync to a dedicated external calendar. Enable this by passing an empty object."
         },
         {
           "name": "primaryCalendar",
@@ -1792,7 +1766,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
             }
           ],
-          "doc": "Sync to the primary external calendar."
+          "doc": "Sync to the primary external calendar. Enable this by passing an empty object."
         }
       ],
       "docs": {
@@ -1910,7 +1884,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the connection to be disconnected."
+          "doc": "ID of the external calendar connection to disconnect."
         }
       ],
       "docs": {
@@ -1930,7 +1904,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
             }
           ],
-          "doc": "The updated connection."
+          "doc": "Updated connection details."
         }
       ],
       "docs": {
@@ -1959,7 +1933,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the event is an all day event. Default is false."
+          "doc": "Whether the event is an all-day event.\n\nDefault: `false`\n"
         },
         {
           "name": "calendarName",
@@ -1969,7 +1943,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "External calendar name if exists. E.g \"main\", \"Birthdays\"."
+          "doc": "Display name of the external calendar.\nFor example, \"Primary\" or \"Birthdays\"."
         },
         {
           "name": "calendarType",
@@ -1979,7 +1953,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The provided calendar type."
+          "doc": "External calendar type."
         },
         {
           "name": "end",
@@ -1989,7 +1963,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The exclusive end time or date of this event (formatted according to RFC3339)."
+          "doc": "End date and time of the event (exclusive), formatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)."
         },
         {
           "name": "scheduleId",
@@ -1999,7 +1973,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the schedule which is connected to the external calendar."
+          "doc": "ID of the schedule connected to the external calendar the event belongs to."
         },
         {
           "name": "scheduleOwnerId",
@@ -2009,7 +1983,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the schedule owner.\nE.g, might be the Staff resource ID of the Bookings App."
+          "doc": "ID of the Wix user the schedule belongs to.\nFor example, the ID of the staff member (resource) whose schedule  owns the schedule."
         },
         {
           "name": "scheduleOwnerName",
@@ -2019,7 +1993,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the schedule owner.\nE.g, might be the Staff name of the Bookings App."
+          "doc": "Name of the Wix user the schedule belongs to.\nFor example, the name of the staff member (resource) who owns the schedule."
         },
         {
           "name": "start",
@@ -2029,7 +2003,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The inclusive start time or date of this event (formatted according to RFC3339)."
+          "doc": "Start date and time of the event (inclusive), formatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)."
         },
         {
           "name": "title",
@@ -2039,12 +2013,21 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The title of the event."
+          "doc": "Event title."
         }
       ],
       "docs": {
         "description": [
           "An external calendar event."
+        ]
+      }
+    },
+    {
+      "name": "ExternalCalendar",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -2099,15 +2082,6 @@
       }
     },
     {
-      "name": "ExternalCalendarProviderHost",
-      "members": [],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "Frequency",
       "members": [
         {
@@ -2137,7 +2111,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required."
+          "doc": "ID of the connection to retrieve."
         }
       ],
       "docs": {
@@ -2354,7 +2328,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required."
+          "doc": "ID of the external calendar connection to list calendars for."
         }
       ],
       "docs": {
@@ -2381,7 +2355,7 @@
               }
             }
           ],
-          "doc": "The calendars of the external calendar account."
+          "doc": "List of calendars belonging to the external calendar account."
         }
       ],
       "docs": {
@@ -2401,7 +2375,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return partial list of connections in case some providers fail. Defaults to false."
+          "doc": "Whether to return a partial list of connections if details can't be retrieved for some connections.\n\nDefault: `false`\n"
         },
         {
           "name": "scheduleIds",
@@ -2418,7 +2392,7 @@
               }
             }
           ],
-          "doc": "Filter connections which connected to the given schedule IDs."
+          "doc": "Schedule IDs to filter by. If provided, only connections between external calendars and the specified schedules is returned.\n\nDefault: Returns all connections.\n"
         }
       ],
       "docs": {
@@ -2438,7 +2412,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return partial list of connections in case some providers fail. Defaults to false."
+          "doc": "Whether to return a partial list of connections if details can't be retrieved for some connections.\n\nDefault: `false`\n"
         },
         {
           "name": "scheduleIds",
@@ -2455,7 +2429,7 @@
               }
             }
           ],
-          "doc": "Filter connections which connected to the given schedule IDs."
+          "doc": "Schedule IDs to filter by. If provided, only connections between external calendars and the specified schedules is returned.\n\nDefault: Returns all connections.\n"
         }
       ],
       "docs": {
@@ -2482,7 +2456,7 @@
               }
             }
           ],
-          "doc": "List of connections matching the filters."
+          "doc": "List of external calendar connections."
         },
         {
           "name": "failedProviderIds",
@@ -2499,7 +2473,7 @@
               }
             }
           ],
-          "doc": "List of failed provider IDs, in case `partialFailure` was provided."
+          "doc": "List of provider IDs for connections for which retrieval failed. Returned only if `partialFailure` body parameter is `true` in the request."
         }
       ],
       "docs": {
@@ -2519,7 +2493,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to filter all day events.\nBy default, both all day and specific time events will be returned.\nIf `true`, then only all day events will be returned.\nIf `false`, then only specific time events will be returned."
+          "doc": "Whether to include only all-day events in the returned list.\nIf `true`, only all-day events are returned.\nIf `false`, only events with a specified time are returned.\n\nDefault: All events are returned.\n"
         },
         {
           "name": "cursorPaging",
@@ -2529,7 +2503,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.CursorPaging"
             }
           ],
-          "doc": "Currently not supported.\nCursor paging"
+          "doc": "Pagination options."
         },
         {
           "name": "fieldsets",
@@ -2546,7 +2520,7 @@
               }
             }
           ],
-          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns events without personal information.\n- `OWN_PI`: Returns complete event objects of owned connections, including personal information.\n\nDefault: `NO_PI`\n"
+          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns event objects without personal information.\n- `OWN_PI`: Returns complete event objects, including personal information.\n\nDefault: `NO_PI`\n"
         },
         {
           "name": "from",
@@ -2556,7 +2530,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Date-time from which to start getting the events.\nRequired, unless `cursorPaging.cursor` is given.\nOverlapping events, which are within the time frame, and started before the given `from`, will be returned.\nFormatted according to RFC3339."
+          "doc": "Date and time from which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `from` time and end after it are included in the returned list.\n"
         },
         {
           "name": "partialFailure",
@@ -2566,7 +2540,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return partial list of events in case some providers fail. Defaults to false."
+          "doc": "Whether to return a partial list of events if details can't be retrieved for some connections.\n\nDefault: `false`\n"
         },
         {
           "name": "scheduleIds",
@@ -2583,7 +2557,7 @@
               }
             }
           ],
-          "doc": "Whether to filter events which connected to the given schedule IDs.\nMaximum of 100 IDs per request"
+          "doc": "Schedule IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to the specified schedules.\nMaximum of 100 schedule IDs per request."
         },
         {
           "name": "to",
@@ -2593,7 +2567,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Date-time until when to get events.\nRequired, unless `cursorPaging.cursor` is given.\nOverlapping events, which are within the time frame, and are due to end after the given `to`, will be returned.\nFormatted according to RFC3339."
+          "doc": "Date and time until which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `to` time and end after it are included in the returned list.\n"
         },
         {
           "name": "userIds",
@@ -2610,7 +2584,7 @@
               }
             }
           ],
-          "doc": "Whether to filter events which connected to the given schedule that belongs to wix user IDs.\nMaximum of 100 IDs per request"
+          "doc": "Wix user IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to schedules belonging to the specified Wix users.\nMaximum of 100 Wix user IDs per request."
         }
       ],
       "docs": {
@@ -2630,7 +2604,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to filter all day events.\nBy default, both all day and specific time events will be returned.\nIf `true`, then only all day events will be returned.\nIf `false`, then only specific time events will be returned."
+          "doc": "Whether to include only all-day events in the returned list.\nIf `true`, only all-day events are returned.\nIf `false`, only events with a specified time are returned.\n\nDefault: All events are returned.\n"
         },
         {
           "name": "cursorPaging",
@@ -2640,7 +2614,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.CursorPaging"
             }
           ],
-          "doc": "Currently not supported.\nCursor paging"
+          "doc": "Pagination options."
         },
         {
           "name": "fieldsets",
@@ -2657,7 +2631,7 @@
               }
             }
           ],
-          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns events without personal information.\n- `OWN_PI`: Returns complete event objects of owned connections, including personal information.\n\nDefault: `NO_PI`\n"
+          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns event objects without personal information.\n- `OWN_PI`: Returns complete event objects, including personal information.\n\nDefault: `NO_PI`\n"
         },
         {
           "name": "from",
@@ -2667,7 +2641,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Date-time from which to start getting the events.\nRequired, unless `cursorPaging.cursor` is given.\nOverlapping events, which are within the time frame, and started before the given `from`, will be returned.\nFormatted according to RFC3339."
+          "doc": "Date and time from which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `from` time and end after it are included in the returned list.\n"
         },
         {
           "name": "partialFailure",
@@ -2677,7 +2651,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return partial list of events in case some providers fail. Defaults to false."
+          "doc": "Whether to return a partial list of events if details can't be retrieved for some connections.\n\nDefault: `false`\n"
         },
         {
           "name": "scheduleIds",
@@ -2694,7 +2668,7 @@
               }
             }
           ],
-          "doc": "Whether to filter events which connected to the given schedule IDs.\nMaximum of 100 IDs per request"
+          "doc": "Schedule IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to the specified schedules.\nMaximum of 100 schedule IDs per request."
         },
         {
           "name": "to",
@@ -2704,7 +2678,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Date-time until when to get events.\nRequired, unless `cursorPaging.cursor` is given.\nOverlapping events, which are within the time frame, and are due to end after the given `to`, will be returned.\nFormatted according to RFC3339."
+          "doc": "Date and time until which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `to` time and end after it are included in the returned list.\n"
         },
         {
           "name": "userIds",
@@ -2721,7 +2695,7 @@
               }
             }
           ],
-          "doc": "Whether to filter events which connected to the given schedule that belongs to wix user IDs.\nMaximum of 100 IDs per request"
+          "doc": "Wix user IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to schedules belonging to the specified Wix users.\nMaximum of 100 Wix user IDs per request."
         }
       ],
       "docs": {
@@ -2748,7 +2722,7 @@
               }
             }
           ],
-          "doc": "List of events matching the filters."
+          "doc": "List of external calendar events matching the filters."
         },
         {
           "name": "failedProviderIds",
@@ -2765,7 +2739,7 @@
               }
             }
           ],
-          "doc": "List of failed provider IDs, in case `partialFailure` was provided."
+          "doc": "List of provider IDs for connections for which retrieval of events failed. Returned only if `partialFailure` body parameter is `true` in the request."
         },
         {
           "name": "pagingMetadata",
@@ -2811,7 +2785,7 @@
               }
             }
           ],
-          "doc": "The external calendar providers installed on the site."
+          "doc": "List of external calendar providers for which the site supports integration."
         }
       ],
       "docs": {
@@ -3609,7 +3583,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the calendar provider."
+          "doc": "ID of the external calendar provider."
         },
         {
           "name": "calendarType",
@@ -3619,7 +3593,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The provided calendar type."
+          "doc": "External calendar provider type."
         },
         {
           "name": "features",
@@ -3629,7 +3603,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ProviderFeatures"
             }
           ],
-          "doc": "The features supported by the provider.\nE.g, whether the provider supports listing events from the external calendar, syncing Wix sessions to the external calendar, etc."
+          "doc": "Features the external calendar provider supports."
         },
         {
           "name": "name",
@@ -3639,7 +3613,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the calendar provider."
+          "doc": "Name of the external calendar provider."
         }
       ],
       "docs": {
@@ -3666,7 +3640,7 @@
               }
             }
           ],
-          "doc": "Supported connect methods, used to connect to the calendar."
+          "doc": "Supported connection methods.\n\nFor providers supporting `OAUTH`, connect with the [Connect by OAuth](#connect-by-o-auth) endpoint.\nFor providers supporting `CREDENTIALS`, connect with the [Connect By Credentials](#connect-by-credentials) endpoint.\n"
         },
         {
           "name": "listEventFromCalendars",
@@ -3676,7 +3650,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Whether events can be listed from the external calendar to the Wix calendar."
+          "doc": "Whether events can be imported from external calendars to the Wix calendar.\n\n+ `NOT_SUPPORTED`: Importing events from the external calendar is not supported.\n+ `PRIMARY_CALENDAR_ONLY`: Events can be imported only from an external calendar designated as primary.\n+ `SPECIFIC_CALENDARS`: Events can be imported from specific external calendars. Use [List Calendars](#list-calendars) to get a list of calendars for a connected external calendar account.\n"
         },
         {
           "name": "syncToCalendar",
@@ -3686,7 +3660,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Whether Wix calendar sessions can be synced to the external calendar."
+          "doc": "Whether Wix calendar sessions can be exported to the external calendar.\n\n+ `NOT_SUPPORTED`: Exporting events to an external calendar is not supported.\n+ `PRIMARY_CALENDAR_ONLY`: Events can only be exported only to an external calendar designated as primary.\n+ `SPECIFIC_CALENDARS`: Events can be exported to specific external calendars. Use [List Calendars](#list-calendars) to get a list of calendars for a connected external calendar account.\n+ `DEDICATED_CALENDAR`: Events can be exported to a newly created, dedicated external calendar in the connected external calendar account.\n"
         },
         {
           "name": "updateSyncConfig",
@@ -3696,7 +3670,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the sync configuration can be updated."
+          "doc": "Whether the sync configuration can be updated after a connection is established.\n\nIf `true`, you can update the sync configuration using the [Update Sync Config](#update-sync-config) endpoint.\n"
         }
       ],
       "docs": {
@@ -5163,6 +5137,17 @@
             }
           ],
           "doc": "Session type.\n<!--ONLY:VELO\nOne of:\n- `\"EVENT\"` Reserved period of time on the schedule. For example, an appointment, class, course, or blocked time. Events are visible in the Dashboard in the Bookings app's [Booking Calendar](https://support.wix.com/en/article/wix-bookings-about-the-wix-bookings-calendar) page.\n- `\"WORKING_HOURS\"` Placeholder for available time on a resource’s schedule.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "version",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionVersion"
+            }
+          ],
+          "doc": "The session version.\nComposed by the schedule, session and participants versions."
         }
       ],
       "docs": {
@@ -5275,24 +5260,14 @@
       "name": "SessionVersion",
       "members": [
         {
-          "name": "scheduleVersion",
+          "name": "number",
           "optional": true,
           "type": [
             {
-              "nativeType": "number"
+              "nativeType": "string"
             }
           ],
-          "doc": "Schedule version number, updated each time the schedule is updated."
-        },
-        {
-          "name": "sessionVersion",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Session version number, updated each time the session is updated."
+          "doc": "Incremental version number, which is updated on each change to the session or on changes affecting the session."
         }
       ],
       "docs": {
@@ -5579,7 +5554,7 @@
               }
             }
           ],
-          "doc": "An optional list of fields to update."
+          "doc": "Optional list of fields to update. If provided, only the specified fields are updated."
         }
       ],
       "docs": {
@@ -5598,7 +5573,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The connection ID. Required."
+          "doc": "ID of the external calendar connection to update."
         },
         {
           "name": "fieldMask",
@@ -5615,7 +5590,7 @@
               }
             }
           ],
-          "doc": "An optional list of fields to update."
+          "doc": "Optional list of fields to update. If provided, only the specified fields are updated"
         },
         {
           "name": "syncConfig",
@@ -5624,7 +5599,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
             }
           ],
-          "doc": "The sync configuration to update. Required."
+          "doc": "Updated sync configuration details."
         }
       ],
       "docs": {
@@ -5644,7 +5619,7 @@
               "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
             }
           ],
-          "doc": "The updated connection."
+          "doc": "Connection with updated sync configuration."
         }
       ],
       "docs": {
