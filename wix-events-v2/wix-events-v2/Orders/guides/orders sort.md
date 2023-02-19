@@ -2,7 +2,7 @@
 
 Select functions allow sorting results by field. Use `field:asc` to sort results in **ascending** order, and `field:desc` to sort in **descending** order.
 
-For example, to sort ticket definitions by `created` date in ascending order, and then by `name` in descending order, use this format in the `options` parameter: 
+For example, to sort orders by `created` date in ascending order, and then by `name` in descending order, use this format in the `options` parameter: 
 
 ```js
 {
