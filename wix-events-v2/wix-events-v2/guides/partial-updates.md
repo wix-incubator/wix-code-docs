@@ -9,7 +9,7 @@ The field path begins from the root of the request and may contain several level
 
 When the `fields` parameter contains a partial path of the entity fields to update, for example, `event`, all nested fields of `event` are updated, including `event.title` and `event.description`.
 
-When the `fields` parameter is empty, the request modifies all entity fields.
+When the `fields` parameter is empty, the request modifies all entity fields. 
 
 ## Examples
 To update an `Event` title, and reschedule it to a later date, use this format: 
