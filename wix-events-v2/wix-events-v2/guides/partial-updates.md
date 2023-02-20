@@ -12,7 +12,7 @@ When the `fields` parameter contains a partial path of the entity fields to upda
 When the `fields` parameter is empty, the request modifies all entity fields.
 
 ## Examples
-To update an `Event` title, and reschedule it to a later date, use this format:
+To update an `Event` title, and reschedule it to a later date, use this format: 
 
 ```js
 {
