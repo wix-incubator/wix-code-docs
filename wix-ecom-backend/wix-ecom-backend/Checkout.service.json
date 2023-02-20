@@ -1491,6 +1491,105 @@
       "isVeloEvent": false
     },
     {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates an order from a specified checkout. To see the order after it's created, pass the `orderId` to [getOrder()](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).",
+        "description": [
+          "The `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created.\nSome properties are marked as required. Note these further requirements:\n\n+ To create an order, `checkout.calculationErrors` must be empty. Pass the checkout ID to [getCheckout()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) to check for errors.\n+ The `paymentToken` property is required if `checkout.giftCard.amount.amount` is less than `checkout.priceSummary.total.amount`, or `checkout.giftCard` is not defined. In other words, `paymentToken` is required when there is a payment to be made.\n+ The `checkout.billingInfo.address` property is required if there is a payment to be made OR checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`). This does not apply when `checkout.channelType` value is `\"POS\"`.\n+ If checkout has changed since last update (for example, item prices have changed or the coupon has expired), order will not be created.\n\nLine item requirements:\n+ Order can only be created if all of the `checkout.lineItems` have an `availability.status` of `\"AVAILABLE\"` or `\"PARTIALLY_AVAILABLE\"`.\n+ Before creating the order, remove line items with `availability.status` of `\"NOT_AVAILABLE\"` and `\"NOT_FOUND\"` using [removeLineItems()](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/remove-line-items).\n+ If custom items are added, make sure to add value in `checkout.lineItems.itemType.custom`.\n+ If a line item is digital ( `checkout.lineItems[n].itemType.preset: DIGITAL` ), then `checkout.lineItems[n].digitalFile` must be provided.\n\nWhen checkout has any shippable line items (`checkout.lineItems.physicalProperties.shippable: true`), the following rules apply:\n+ `checkout.shippingInfo.shippingDestination.address` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup.\n+ `checkout.shippingInfo.selectedCarrierServiceOption` must have value. This does not apply when `checkout.channelType` value is `\"POS\"` or when order is for pickup."
+        ],
+        "examples": [
+          {
+            "title": "Create an order from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myCreateOrderFromCheckoutFunction(checkoutId) {",
+              "  try {",
+              "    const createOrderResponse = await checkout.createOrder(checkoutId);",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return createOrderResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myCreateOrderFromCheckoutFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '23a7b29a-3c14-4ef1-9353-f4b714b13217';",
+              "",
+              "myCreateOrderFromCheckoutFunction(checkoutId)",
+              "  .then((createOrderResponse) => {",
+              "    const orderId = createOrderResponse.orderId;",
+              "    const paymentGatewayOrderId = createOrderResponse.paymentGatewayOrderId;",
+              "",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return createOrderResponse;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderId\": \"02843248-495f-45c0-a5d6-e913f647c9f2\",",
+              " *   \"paymentGatewayOrderId\": \"f30440f4-413a-4382-bc38-7280b155a5ed\"",
+              " * }",
+              " *",
+              " */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
       "name": "getCheckout",
       "params": [
         {
@@ -3770,6 +3869,96 @@
         ]
       },
       "isVeloEvent": false
+    },
+    {
+      "name": "updateCheckout",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "checkout",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckout"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckoutOptions"
+            }
+          ],
+          "doc": "Checkout update options.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "checkout",
+        "checkout.customFields.value",
+        "checkout.membershipOptions.selectedMemberships.memberships._id",
+        "checkout.membershipOptions.selectedMemberships.memberships.appId",
+        "checkout.membershipOptions.selectedMemberships.memberships.lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.Checkout"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Updated checkout.\n"
+      },
+      "docs": {
+        "summary": "Update's a checkout's properties.",
+        "description": [
+          "Note the following restrictions:\n\n+ It is not allowed to remove `checkout.buyerInfo.email` once it is set.\n+ If nothing is passed in the request, the call will fail.\n+ To update a checkout with `customLineItems` and/or `merchantDiscounts` the ECOM.ADMIN_MODIFY_CHECKOUTS permission is required."
+        ],
+        "examples": [
+          {
+            "title": "UpdateCheckout example",
+            "body": [
+              "import { checkout } from 'wix-ecom-backend';",
+              "  ",
+              " async function updateCheckout(id, checkout, options) {",
+              "   try {",
+              "     const result = await checkout.updateCheckout(id, checkout, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
     }
   ],
   "messages": [
@@ -3796,23 +3985,6 @@
     {
       "name": "AddToCheckoutOptions",
       "members": [
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
         {
           "name": "lineItems",
           "optional": true,
@@ -3848,23 +4020,6 @@
             }
           ],
           "doc": "Checkout ID."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -4242,7 +4397,7 @@
               "referenceType": "wix-ecom-backend.Checkout.StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -5590,23 +5745,6 @@
           "doc": "The code of an existing coupon to apply to checkout. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items to be added to checkout."
-        },
-        {
           "name": "giftCardCode",
           "optional": true,
           "type": [
@@ -5689,23 +5827,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to checkout. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items to be added to checkout."
         },
         {
           "name": "giftCardCode",

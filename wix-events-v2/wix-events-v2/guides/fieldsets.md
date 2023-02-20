@@ -14,7 +14,7 @@ The response will also include the following parameters based on the fieldsets p
 
 ## Orders fieldset
 
-By default, the `order` data returned in the response contains `orderNumber`, `eventId`, `contactId`, `memberId`, `anonimyzed` and `fullyCheckedIn` fields.   
+By default, the `order` data returned in the response contains `orderNumber`, `eventId`, `contactId`, `memberId`, `anonimyzed` and `fullyCheckedIn` fields. 
 The response will also include following parameters based on the fieldsets provided in the request.
 
  | Fieldset      | Fields                                                                                                                                                                       |
