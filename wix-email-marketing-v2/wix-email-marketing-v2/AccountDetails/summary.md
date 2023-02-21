@@ -1,1 +1,0 @@
-The Account Details API contains information about your Wix email marketing account.
