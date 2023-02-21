@@ -27,11 +27,16 @@ jobs:
           if [[ "$DIFF" == *"developer-preview.md"* ]]; then
             git commit -m "New Dev Preview List"
             git push --set-upstream origin auto-generate-dev-preview --force
-            sudo apt install mutt
-            echo "Merge dev preview list" | mutt -s "Dev  Preview" adamfri@wix.com
+            echo "changes_pushed=true" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: cinotify/github-action@main
+        if: ${{ env.changes_pushed == "true"}}
+        with:
+          to: 'adamfri@wix.com'
+          subject: 'Merge Dev Preview List'
+          body: 'The dev preview list in the Velo has changed. Please merge it.'
 
       
 
