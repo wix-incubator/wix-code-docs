@@ -1,1 +1,0 @@
-Manage a site's business information.
