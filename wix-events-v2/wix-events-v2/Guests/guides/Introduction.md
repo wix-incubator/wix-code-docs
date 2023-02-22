@@ -3,6 +3,7 @@ title: Introduction
 ---
 # Introduction
 
+
 >**Note**: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
 With Events Guests APIs, site owners can get information about all guests who bought tickets to an event or who RSVP'ed.  
