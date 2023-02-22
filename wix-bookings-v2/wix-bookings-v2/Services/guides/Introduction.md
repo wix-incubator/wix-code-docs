@@ -1,12 +1,12 @@
 # About Wix Bookings Services
 
-
+<br/>
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
     <b>Developer Preview</b>
     <br/>
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
-
+<br/>
 
 The Wix Bookings Services API enables you to retrieve the services your business offers.
 
@@ -65,11 +65,11 @@ Before using the API, make sure to set up [Wix Bookings](https://support.wix.com
         - The business offers a 30-minute haircut service.
         - The schedule allows customers to book 30-minute sessions with 30 minutes between each session. 
         - The staff members are available from 9:00 to 18:00.
-
-
-    - **Class & course schedules**: For classes and courses, the business decides when to schedule a session. This is in contrast to appointments, where the customer decides when to book a session. For classes and courses, the schedule is used to manage the available sessions and holds some aggregated information, such as the start time and end time of a course.
-
-
+    
+    
+    - **Class and course schedules**: For classes and courses, the business decides when to schedule a session. This is in contrast to appointments, where the customer decides when to book a session. For classes and courses, the schedule is used to manage the available sessions and holds some aggregated information, such as the start time and end time of a course.
+    
+    
 - **Session:** An occupied period of time in a schedule. A session is a term we use for any occupied period of time, whether that period is an appointment, class, or course. 
 
     For example, if a “Vinyasa Yoga” class-type service is offered every Monday between 6-7pm, the class on Monday June 5, 2023 from 6-7pm is 1 session in a schedule. 
