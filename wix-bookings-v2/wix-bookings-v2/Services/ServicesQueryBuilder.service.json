@@ -133,7 +133,7 @@
           {
             "title": "Add an `eq` filter to a query",
             "body": [
-              "const query = services.queryServices.eq('calendarPage', '');",
+              "const query = services.queryServices.eq('_id', '\"some-id\"');",
               ""
             ]
           },
@@ -143,7 +143,7 @@
               "import { services } from 'wix-bookings.v2';",
               "",
               "export async function myQueryFunction() {",
-              "  const results = await services.queryServices().eq('_id', '').find();",
+              "  const results = await services.queryServices().eq('_id', '\"some-id\"').find();",
               "",
               "  if (results.items.length > 0) {",
               "    const items = results.items;",
@@ -284,7 +284,7 @@
       ]
     },
     {
-      "name": "ge",
+      "name": "hasAll",
       "params": [
         {
           "name": "propertyName",
@@ -293,17 +293,24 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Property whose value is compared with `value`.",
+          "doc": "Property whose value is compared with `values`.",
           "required": false
         },
         {
           "name": "value",
           "type": [
             {
-              "nativeType": "any"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "any"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "Value to compare against.",
+          "doc": "",
           "required": false
         }
       ],
@@ -317,122 +324,33 @@
         "doc": null
       },
       "docs": {
-        "summary": "Refines a query to match items where the specified property is greater than or equal to the specified value.",
+        "summary": "Refines a query to match items whose specified property contains all of the specified values.",
         "description": [
-          "The `ge()` function refines a `ServicesQueryBuilder` to match only items where the value of the specified `propertyName` is greater than or equal to the specified `value`.",
-          "`ge()` matches only values of the same type. For example, `0` stored as a number doesn't match `'0'` stored as a string.",
-          "If a property contains a number stored as a string (for example, `'0'`), that value is compared alphabetically and not numerically. If a property doesn't have a value, that value is ranked lowest.",
-          "The following types of properties can be compared:",
-          "- Number: Compares numerically.",
-          "- Date: Compares JavaScript Date objects. ",
-          "- String: Compares lexicographically, so `'abc'` is greater than `'ABC'`."
+          "The `hasAll()` function refines a `ServicesQueryBuilder` to match only items where the value of the specified `propertyName` equals all of the specified `values`.",
+          "Matching strings with `hasAll()` is case-sensitive, so `'text'` isn't equal to `'Text'`.",
+          "If the specified property is an array, `hasAll()` matches if that array's elements match all of the specified values."
         ],
         "examples": [
           {
-            "title": "Add a `ge` filter to a query",
+            "title": "Add a `hasAll` filter to a query",
             "body": [
-              "const query = services.queryServices.ge('defaultCapacity', '');",
+              "const query = services.queryServices.hasAll('labelIds', [",
+              "  'red',",
+              "  'blue',",
+              "  'purple',",
+              "]);",
               ""
             ]
           },
           {
-            "title": "Create a query, add a `ge` filter, and run it",
+            "title": "Create a query, add a `hasAll` filter, and run it",
             "body": [
               "import { services } from 'wix-bookings.v2';",
               "",
               "export async function myQueryFunction() {",
               "  const results = await services",
               "    .queryServices()",
-              "    .ge('defaultCapacity', '')",
-              "    .find();",
-              "",
-              "  if (results.items.length > 0) {",
-              "    const items = results.items;",
-              "    const firstItem = items[0];",
-              "    const pageSize = results.pageSize;",
-              "    const hasNext = results.hasNext();",
-              "    const hasPrev = results.hasPrev();",
-              "    const length = results.length;",
-              "    const query = results.query;",
-              "",
-              "    return items;",
-              "  } else {",
-              "    // Handle if no matching items found",
-              "  }",
-              "}",
-              ""
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
-    },
-    {
-      "name": "gt",
-      "params": [
-        {
-          "name": "propertyName",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Property whose value is compared with `value`.",
-          "required": false
-        },
-        {
-          "name": "value",
-          "type": [
-            {
-              "nativeType": "any"
-            }
-          ],
-          "doc": "Value to compare against.",
-          "required": false
-        }
-      ],
-      "requiredFields": [],
-      "ret": {
-        "type": [
-          {
-            "referenceType": "wix-bookings-v2.Services.ServicesQueryBuilder"
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Refines a query to match items where the specified property is greater than the specified value.",
-        "description": [
-          "The `gt()` function refines a `ServicesQueryBuilder` to match only items where the value of the specified `propertyName` is greater than the specified `value`.",
-          "`gt()` matches only values of the same type. For example, `0` stored as a number doesn't match `'0'` stored as a string.",
-          "If a property contains a number stored as a string (for example, `'0'`), that value is compared alphabetically and not numerically. If a property doesn't have a value, that value is ranked lowest.",
-          "The following types of properties can be compared:",
-          "- Number: Compares numerically.",
-          "- Date: Compares JavaScript Date objects. ",
-          "- String: Compares lexicographically, so `'abc'` is greater than `'ABC'`."
-        ],
-        "examples": [
-          {
-            "title": "Add a `gt` filter to a query",
-            "body": [
-              "const query = services.queryServices.gt('timeBetweenSessions', '1212');",
-              ""
-            ]
-          },
-          {
-            "title": "Create a query, add a `gt` filter, and run it",
-            "body": [
-              "import { services } from 'wix-bookings.v2';",
-              "",
-              "export async function myQueryFunction() {",
-              "  const results = await services",
-              "    .queryServices()",
-              "    .gt('timeBetweenSessions', '1212')",
+              "    .hasAll('labelIds', ['red', 'blue', 'purple'])",
               "    .find();",
               "",
               "  if (results.items.length > 0) {",
@@ -603,95 +521,6 @@
       ]
     },
     {
-      "name": "le",
-      "params": [
-        {
-          "name": "propertyName",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Property whose value is compared with `value`.",
-          "required": false
-        },
-        {
-          "name": "value",
-          "type": [
-            {
-              "nativeType": "any"
-            }
-          ],
-          "doc": "Value to compare against.",
-          "required": false
-        }
-      ],
-      "requiredFields": [],
-      "ret": {
-        "type": [
-          {
-            "referenceType": "wix-bookings-v2.Services.ServicesQueryBuilder"
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Refines a query to match items where the specified property is less than or equal to the specified value.",
-        "description": [
-          "The `le()` function refines a `ServicesQueryBuilder` to match only items where the value of the specified `propertyName` is less than or equal to the specified `value`.",
-          "`le()` matches only values of the same type. For example, `0` stored as a number doesn't match `'0'` stored as a string.",
-          "If a property contains a number stored as a string (for example, `'0'`), that value is compared alphabetically and not numerically. If a property doesn't have a value, that value is ranked lowest.",
-          "The following types of properties can be compared:",
-          "- Number: Compares numerically.",
-          "- Date: Compares JavaScript Date objects. ",
-          "- String: Compares lexicographically, so `'ABC'` is less than `'abc'`."
-        ],
-        "examples": [
-          {
-            "title": "Add an `le` filter to a query",
-            "body": [
-              "const query = services.queryServices.le('defaultCapacity', '');",
-              ""
-            ]
-          },
-          {
-            "title": "Create a query, add an `le` filter, and run it",
-            "body": [
-              "import { services } from 'wix-bookings.v2';",
-              "",
-              "export async function myQueryFunction() {",
-              "  const results = await services",
-              "    .queryServices()",
-              "    .le('defaultCapacity', '')",
-              "    .find();",
-              "",
-              "  if (results.items.length > 0) {",
-              "    const items = results.items;",
-              "    const firstItem = items[0];",
-              "    const pageSize = results.pageSize;",
-              "    const hasNext = results.hasNext();",
-              "    const hasPrev = results.hasPrev();",
-              "    const length = results.length;",
-              "    const query = results.query;",
-              "",
-              "    return items;",
-              "  } else {",
-              "    // Handle if no matching items found",
-              "  }",
-              "}",
-              ""
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
-    },
-    {
       "name": "limit",
       "params": [
         {
@@ -763,95 +592,6 @@
       ]
     },
     {
-      "name": "lt",
-      "params": [
-        {
-          "name": "propertyName",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Property whose value is compared with `value`.",
-          "required": false
-        },
-        {
-          "name": "value",
-          "type": [
-            {
-              "nativeType": "any"
-            }
-          ],
-          "doc": "Value to compare against.",
-          "required": false
-        }
-      ],
-      "requiredFields": [],
-      "ret": {
-        "type": [
-          {
-            "referenceType": "wix-bookings-v2.Services.ServicesQueryBuilder"
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Refines a query to match items where the specified property is less than the specified value.",
-        "description": [
-          "The `le()` function refines a `ServicesQueryBuilder` to match only items where the value of the specified `propertyName` is less than the specified `value`.",
-          "`le()` matches only values of the same type. For example, `0` stored as a number doesn't match `'0'` stored as a string.",
-          "If a property contains a number stored as a string (for example, `'0'`), that value is compared alphabetically and not numerically. If a property doesn't have a value, that value is ranked lowest.",
-          "The following types of properties can be compared:",
-          "- Number: Compares numerically.",
-          "- Date: Compares JavaScript Date objects. ",
-          "- String: Compares lexicographically, so `'ABC'` is less than `'abc'`."
-        ],
-        "examples": [
-          {
-            "title": "Add an `lt` filter to a query",
-            "body": [
-              "const query = services.queryServices.lt('timeBetweenSessions', '1212');",
-              ""
-            ]
-          },
-          {
-            "title": "Create a query, add an `lt` filter, and run it",
-            "body": [
-              "import { services } from 'wix-bookings.v2';",
-              "",
-              "export async function myQueryFunction() {",
-              "  const results = await services",
-              "    .queryServices()",
-              "    .lt('timeBetweenSessions', '1212')",
-              "    .find();",
-              "",
-              "  if (results.items.length > 0) {",
-              "    const items = results.items;",
-              "    const firstItem = items[0];",
-              "    const pageSize = results.pageSize;",
-              "    const hasNext = results.hasNext();",
-              "    const hasPrev = results.hasPrev();",
-              "    const length = results.length;",
-              "    const query = results.query;",
-              "",
-              "    return items;",
-              "  } else {",
-              "    // Handle if no matching items found",
-              "  }",
-              "}",
-              ""
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
-    },
-    {
       "name": "ne",
       "params": [
         {
@@ -895,7 +635,7 @@
           {
             "title": "Add an `ne` filter to a query",
             "body": [
-              "const query = services.queryServices.ne('_id', '');",
+              "const query = services.queryServices.ne('_id', '\"some-id\"');",
               ""
             ]
           },
@@ -905,7 +645,78 @@
               "import { services } from 'wix-bookings.v2';",
               "",
               "export async function myQueryFunction() {",
-              "  const results = await services.queryServices().ne('_id', '').find();",
+              "  const results = await services.queryServices().ne('_id', '\"some-id\"').find();",
+              "",
+              "  if (results.items.length > 0) {",
+              "    const items = results.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = results.pageSize;",
+              "    const hasNext = results.hasNext();",
+              "    const hasPrev = results.hasPrev();",
+              "    const length = results.length;",
+              "    const query = results.query;",
+              "",
+              "    return items;",
+              "  } else {",
+              "    // Handle if no matching items found",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "skip",
+      "params": [
+        {
+          "name": "skip",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the query results before returning the results.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "referenceType": "wix-bookings-v2.Services.ServicesQueryBuilder"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Sets the number of items to skip before returning query results.",
+        "description": [
+          "The `skip()` function defines the number of results to skip before returning new query results.",
+          "For example, if you query a collection and 50 items match your query, but you set `skip()` to `10`, the first 10 items that match are ignored, and the 11th through 50th items are returned."
+        ],
+        "examples": [
+          {
+            "title": "Add a `skip` to a query",
+            "body": [
+              "const query = services.queryServices.skip(10);",
+              ""
+            ]
+          },
+          {
+            "title": "Create a query, add a `skip`, and run it",
+            "body": [
+              "import { services } from 'wix-bookings.v2';",
+              "",
+              "export async function myQueryFunction() {",
+              "  const results = await services.queryServices().skip(10).find();",
               "",
               "  if (results.items.length > 0) {",
               "    const items = results.items;",
@@ -977,7 +788,7 @@
           {
             "title": "Add a `startsWith` filter to a query",
             "body": [
-              "const query = services.queryServices.startsWith('name', 'L');",
+              "const query = services.queryServices.startsWith('_id', 'L');",
               ""
             ]
           },
@@ -988,7 +799,7 @@
               "",
               "export async function myQueryFunction() {",
               "  const results = await services.queryServices();",
-              "  startsWith('name', 'L').find();",
+              "  startsWith('_id', 'L').find();",
               "",
               "  if (results.items.length > 0) {",
               "    const items = results.items;",
