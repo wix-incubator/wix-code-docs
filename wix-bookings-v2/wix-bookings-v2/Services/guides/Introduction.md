@@ -55,9 +55,15 @@ Services may differ in the offering they provide, but the API differentiates bet
 
 
 
-## Before you Begin
+## Before You Begin
 
-Before using the API, make sure to set up [Wix Bookings](https://support.wix.com/en/article/wix-bookings-about-wix-bookings) and [create the right services for your business](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business). 
+- Before using the API, make sure to set up [Wix Bookings](https://support.wix.com/en/article/wix-bookings-about-wix-bookings) and [create the right services for your business](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business). 
+
+- To use the Bookings Services API, import `{ services }` from the `wix-bookings.v2` module in your Velo code:
+
+    ```javascript
+    import { services } from 'wix-bookings.v2';
+    ```
 
 ## Terminology
 
@@ -87,9 +93,3 @@ Before using the API, make sure to set up [Wix Bookings](https://support.wix.com
 
 - **Bookings Policy**: Terms the business wants to enforce when customers try to book a service. For example, how far in advance customers may book a service or until what point before the start of a session customers can cancel.
 
-
-To use the Bookings Services API, import `{ services }` from the `wix-bookings.v2` module:
-
-```javascript
-import { services } from 'wix-bookings.v2';
-```
