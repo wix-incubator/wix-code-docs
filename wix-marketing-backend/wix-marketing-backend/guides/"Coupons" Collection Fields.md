@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "Coupons" Collection Fields
@@ -50,7 +52,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Name (name) 
 
-**Description**: Name of the coupon.  
+**Description**: Name of the coupon. This is the [Primary field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
@@ -178,7 +180,6 @@ The following table lists the available options for Namespace and Group:
 | bookings | service |
 | events | event |
 |  | ticket |
-| pricingPlans | plan |
 
 You can define the scope for a coupon as an entire namespace, a group within a namespace, or an item within a group. See the examples below.
 

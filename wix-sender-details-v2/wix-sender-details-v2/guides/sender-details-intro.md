@@ -11,7 +11,10 @@ title: Introduction
 </div>
 
 &nbsp;
-> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. 
+<!--
+> **Note:**
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+--> 
 
 
 The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. Use the API to [get](wix-sender-details-v2/senderdetails/getsenderdetails) and [update](wix-sender-details-v2/senderdetails/updatesenderdetails) your email sender details, and [verify](wix-sender-details-v2/senderdetails/verifyemail) your sender email address.
