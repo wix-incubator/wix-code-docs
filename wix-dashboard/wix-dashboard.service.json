@@ -12,15 +12,15 @@
           "Using the module you can:",
           "- Navigate users to other pages in the dashboard.",
           "- Display modals and toasts.",
-          "- Retrieve state data about the dashboard and use it to customize your page.",
+          "- Retrieve data about changes to the dashboard's state and use it to update your page in real time.",
           "",
           "To use the Wix Dashboard API, import the applicable function from `wix-dashboard`:",
           "",
           "```js",
-          "import { <name-of-function> } from 'wix-dashboard';",
+          "import { <function> } from 'wix-dashboard';",
           "```",
           "## Before you begin",
-          "It's important to note that the Wix Dashboard API is only available in dashboard pages. The functions in this API won't work in any other code files on your site." ],
+          "It's important to note that the Wix Dashboard API can only be used in the page code files for dashboard pages. The functions in this API won't work in any other code files on your site." ],
       "links": [],
       "examples": [],
       "extra":
@@ -124,7 +124,8 @@
         "extra":
           {  } },
       { "name": "openModal",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "componentId",
@@ -150,9 +151,19 @@
                   "body":
                     [ "import { openModal } from 'wix-dashboard';",
                       "",
-                      "const { modalClosed } = await openModal('my-component-id');",
-                      "const closeData = await modalClosed();",
-                      "console.log('The modal was closed and returned:', closeData);" ],
+                      "openModal('my-component-id')",
+                      "  .then( (modalClosed) => {",
+                      "    modalClosed()",
+                      "      .then( (closeData) => {",
+                      "        console.log('The modal was closed and returned:', closeData);",
+                      "      })",
+                      "  })",
+                      "",
+                      "/* ",
+                      "Promise resolves to a function that returns a ",
+                      "promise that resolves to data passed to the to function ",
+                      "that closed the modal.",
+                      "*/" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -160,7 +171,8 @@
         "extra":
           {  } },
       { "name": "showToast",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "config",
@@ -193,17 +205,19 @@
                   "body":
                     [ "import { showToast } from 'wix-dashboard';",
                       "",
-                      "showToast({",
+                      "const config = {",
                       "  message: 'Product updated successfully!',",
                       "  type: 'success',",
-                      "});" ],
+                      "}",
+                      "",
+                      "showToast(config);" ],
                   "extra":
                     {  } },
                 { "title": "Display an error toast with a 'Learn more' link",
                   "body":
                     [ "import { showToast } from 'wix-dashboard';",
                       "",
-                      "const toastConfig = {",
+                      "const config = {",
                       "  message: 'Product update failed.',",
                       "  timeout: 'none',",
                       "  type: 'error',",
@@ -217,22 +231,26 @@
                       "    },",
                       "  },",
                       "};",
-                      "showToast(toastConfig);" ],
+                      "",
+                      "showToast(config);" ],
                   "extra":
                     {  } },
                 { "title": "Remove a displayed toast",
                   "body":
                     [ "import { showToast } from 'wix-dashboard';",
                       "",
-                      "// Display a toast and save the remove function.",
-                      "const { remove } = await showToast({",
+                      "const config = {",
                       "  message: 'Product updated successfully!',",
                       "  type: 'success',",
                       "  timeout: 'none',",
-                      "});",
+                      "}",
+                      "showToast(config)",
+                      "  .then(remove => {",
+                      "    // Remove the toast after 5 seconds.",
+                      "    setTimeout(remove, 5000);",
+                      "  })",
                       "",
-                      "// Remove the toast.",
-                      "remove();" ],
+                      "/* Promise resolves a function that removes the toast. */" ],
                   "extra":
                     {  } } ],
             "extra":
