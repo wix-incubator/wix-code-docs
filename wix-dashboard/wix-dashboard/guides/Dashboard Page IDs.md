@@ -1,6 +1,6 @@
 # Dashboard Page IDs
 
-This table lists the IDs for the pages in the dashboard that you can navigate to using the [navigate()](/navigate) function.
+This table lists the IDs for the pages in the dashboard that you can navigate to using the [navigate()](/wix-dashboard/navigate) function.
 
 | Page Name | Page ID |
 |-----------|---------|
