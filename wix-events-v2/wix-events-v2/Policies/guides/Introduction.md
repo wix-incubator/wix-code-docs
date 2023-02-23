@@ -4,23 +4,16 @@ title: Introduction
 # Introduction
 
 &nbsp;
-<div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
-    <b>Developer Preview</b>
-    <br/>
-    <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
-</div> . 
-
-&nbsp;
 
 <!--
 > __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 -->
 
-The Events Policies API provides functionality for creating and managing event policies. 
+With Events Policies APIs, you can manage the policies for a particular event. For example, you can create, update, and delete policies. You can also reorder policies in the Event Dashboard and checkout form.    
 
-## Terminology
+Policies define terms & conditions for the events, such as terms for canceling attendance, transferring a ticket to another person, and so on. For example: "Participants are entitled to a 100% refund if canceling attendance 1 week prior to the event. After this date, participants will be refunded 50% of the ticket price."    
 
-- **Policy**: Free-text that defines terms & conditions and other policies, as relevant.
+A policy agreement checkbox will be added to the RSVP or checkout form. The policy text can be read in a pop-up window if you click the policy name.
 
 ## Import Statement
 
