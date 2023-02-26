@@ -1,6 +1,8 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
 
 
-# "Collections" Collection Fields
+
+# "AbandonedCarts" Collection Fields
 
 
 
@@ -62,7 +64,8 @@ The field name is listed as the heading of each section, with the field key list
 **Can use in dynamic page URL**: No  
 **Can be sorted**: No  
 **Can be filtered**: No  
-**Read-only**: Yes**Note:** "identityType" is one of the following:
+**Read-only**: Yes  
+**Note:** "identityType" is one of the following:
 -   "MEMBER": Buyer is a logged-in site member.
 -   "CONTACT": A contact has been created for the buyer.
 

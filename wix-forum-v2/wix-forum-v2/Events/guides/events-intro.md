@@ -24,10 +24,14 @@ To add a Forum event handler, add an **events.js** file to the **Backend** secti
 if one does not already exists. All event handler functions for your site are defined in this
 file. 
 
+<!--Recplace with note below when universal modules are working -->
+> **Note:** Backend events don't work when previewing your site.
 
+<!--
 > **Notes:**
-> - This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+> - This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 > - Backend events don't work when previewing your site.
+-->
 
 
 Event handler functions are defined using the following pattern:
