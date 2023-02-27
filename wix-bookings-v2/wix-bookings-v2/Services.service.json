@@ -46,20 +46,19 @@
         "description": [],
         "examples": [
           {
-            "title": "getService example",
+            "title": "Retrieve a service ",
             "body": [
               "import { services } from 'wix-bookings.v2';",
               "  ",
-              " async function getService(serviceId) {",
-              "   try {",
-              "     const result = await services.getService(serviceId);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
+              "async function getService(serviceId) {",
+              "  try {",
+              "    const result = await services.getService(serviceId);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
               "  "
             ]
           }
@@ -120,19 +119,72 @@
         ],
         "examples": [
           {
-            "title": "Query services with defaults ",
+            "title": "Query services with default settings ",
             "body": [
               "",
               "import { services } from 'wix-bookings.v2';",
               "",
               "export async function queryServices() {",
-              "    const result = await services.queryServices().find().items",
-              "    return result",
+              "  const result = await services.queryServices().find().items;",
+              "  return result;",
               "}",
               ""
             ],
             "extra": {
-              "description": "Query services without any filters, defaults to `limit`: 100, and `offset`: 0"
+              "description": "Query services without any filters. The defaults are a `limit` of 100, and an `offset` of 0."
+            }
+          },
+          {
+            "title": "Filter services by category ID",
+            "body": [
+              "",
+              "import { services } from 'wix-bookings.v2';",
+              "",
+              "export async function filterServicesByCategoryId(categoryId) {",
+              "  const result = await services.queryServices()",
+              "    .eq(\"category.id\", categoryId)",
+              "    .find()",
+              "    .items",
+              "  return result;",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "Sort services alphabetically by name ",
+            "body": [
+              "",
+              "import { services } from 'wix-bookings.v2';",
+              "",
+              "export async function getServicesSorted() {",
+              "  const result = await services.queryServices()",
+              "    .ascending(\"name\")",
+              "    .find()",
+              "    .items",
+              "  return result;",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "Filter services by `mainSlug.name` ",
+            "body": [
+              "",
+              "import { path } from 'wix-location';",
+              "import { services } from 'wix-bookings.v2';",
+              "",
+              "export async function getServiceFromPath() {",
+              "  const [serviceNameInUrl] = path;",
+              "  const response = await services.queryServices()",
+              "    .eq(\"mainSlug.name\", serviceNameInUrl)",
+              "    .limit(1)",
+              "    .find()",
+              "  return response.items[0];",
+              "}",
+              ""
+            ],
+            "extra": {
+              "description": "Using the `path` from the `url`, filter and retrieve the relevant service."
             }
           }
         ]
@@ -2486,7 +2538,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
+          "doc": "Filter object in the following format:\n\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\n\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`\n\nRead more about [supported fields and operators](https://dev.wix.com/api/rest/wix-bookings/services-v2/filtering-and-sorting).\n"
         },
         {
           "name": "paging",
@@ -2513,7 +2565,7 @@
               }
             }
           ],
-          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+          "doc": "Sort object in the following format:\n`[ {\"fieldName\":\"sortField1\",\"order\":\"ASC\"},\n{\"fieldName\":\"sortField2\",\"order\":\"DESC\"} ]`\n\nRead more about [sorting](https://dev.wix.com/api/rest/wix-bookings/services-v2/filtering-and-sorting#wix-bookings_services-v2_filtering-and-sorting_sorting).\n"
         }
       ],
       "extra": {
@@ -3750,7 +3802,7 @@
               "referenceType": "wix-bookings-v2.Services.Service"
             }
           ],
-          "doc": "Service to update. [Partial updates](https:\\\\example.com) are supported."
+          "doc": "Service to update. [Partial updates](https://dev.wix.com/api/rest/wix-bookings/bookings/patch-endpoints-and-field-masks-in-update-requests) are supported."
         }
       ],
       "docs": {
