@@ -1,0 +1,4488 @@
+{
+  "name": "Accounts",
+  "memberOf": "wix-loyalty-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-loyalty.v2-account",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "adjustPoints",
+      "params": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.AdjustPointsOptions"
+            }
+          ],
+          "doc": "Options to use when adjusting points.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "accountId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.AdjustPointsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Adjusts the point balance of a loyalty account.",
+        "description": [
+          "The `adjustPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nTo adjust the points balance of an account you must include an `accountId`, a `revision` number, and the adjustment to make. You can also leave a description to explain the reason for the points adjustment.\n\nThere are two ways to adjust the points of a loyalty account:\n- `balance` allows you to set the total points balance to this new amount. The transaction `type` will return as `\"ADJUST\"`.\n- `amount` allows you to alter the points balance by this amount. This amount can be a positive number to increase the points balance or a negative number to decrease the balance. The transaction type will return as `\"GIVE\"`.\n\nAn account may not be adjusted to a negative balance. If you pass values in both the `balance` and the `amount` parameters then the `balance` adjustment takes effect and the `amount` adjustment is ignored.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can manually adjust points in a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Adjust loyalty account balance ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\";",
+              "",
+              "/* Sample options values:",
+              " *  {",
+              " *    balance: 715,",
+              " *    description: \"Sync from external program.\",",
+              " *    revision: \"3\"",
+              " *   };",
+              " */",
+              "",
+              "export async function myAdjustPointsFunction(accountId, options) {",
+              "  try {",
+              "    const updatedAccount = await accounts.adjustPoints(accountId, options);",
+              "",
+              "    const updatedBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.account.latestTransaction._id;",
+              "",
+              "    console.log('Success! New account balance is: ', updatedBalance, ' The ID for this transaction is: ', transactionId);  ",
+              "",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\",",
+              " *     \"contactId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"memberId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"points\": {",
+              " *       \"balance\": 715,",
+              " *       \"earned\": 0,",
+              " *       \"adjusted\": 715,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"da9096b4-a7fe-41a0-bf3b-05c22e3102fb\",",
+              " *       \"amount\": 715,",
+              " *       \"type\": \"ADJUST\",",
+              " *       \"description\": \"Sync from external program.\",",
+              " *       \"_createdDate\": \"2023-01-17T12:04:49.171Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *     },",
+              " *     \"rewardAvailable\": false,",
+              " *     \"_createdDate\": \"2022-11-28T11:57:30.722Z\",",
+              " *     \"_updatedDate\": \"2023-01-17T12:04:49.620Z\",",
+              " *     \"lastActivityDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *     \"revision\": \"2\",",
+              " *     \"tier\": {",
+              " *       \"_id\": \"05e9d924-54c4-4540-94ef-8edd1e303611\",",
+              " *       \"_updatedDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *       \"points\": 715",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get a loyalty account's latest revision, then give points to the account ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "import * as wixAuth from 'wix-auth';",
+              "",
+              "// Sample accountId value: \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\". ",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   \"amount\": 50,",
+              " *   \"description\": \"Shared on social media.\"",
+              " * }  ",
+              " */  ",
+              "",
+              "export async function myGetRevisionAndAdjustPointsFunction(accountId, options) {",
+              "",
+              "  // Get the current revision of this loyalty account.",
+              "  const elevatedGetLoyaltyAccount = wixAuth.elevate(accounts.getAccount);",
+              "  const retrievedLoyaltyAccount = await elevatedGetLoyaltyAccount(accountId);",
+              "  const currentRevision = retrievedLoyaltyAccount.account.revision",
+              "",
+              "  // Update your options parameters for the latest revision",
+              "  options.revision = currentRevision",
+              "",
+              "  // Now call the `adjustPoints()` function.",
+              "  const elevatedAdjustPoints = wixAuth.elevate(accounts.adjustPoints);",
+              "",
+              "  try {",
+              "    const updatedAccount = await elevatedAdjustPoints(accountId, options);",
+              "",
+              "    const updatedBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.account.latestTransaction._id;",
+              "",
+              "    console.log('Success! New account balance is: ', updatedBalance, '. This ID for this transaction is: ', transactionId);  ",
+              "",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\",",
+              " *     \"contactId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"memberId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"points\": {",
+              " *       \"balance\": 295,",
+              " *       \"earned\": 45,",
+              " *       \"adjusted\": 250,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"060e672a-d86b-4761-b587-1e97a34fd2f6\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"GIVE\",",
+              " *       \"description\": \"\",",
+              " *       \"_createdDate\": \"2023-01-19T12:03:16.752Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-28T11:57:30.722Z\",",
+              " *     \"_updatedDate\": \"2023-01-19T12:03:16.946Z\",",
+              " *     \"lastActivityDate\": \"2023-01-19T12:03:16.945Z\",",
+              " *     \"revision\": \"19\",",
+              " *     \"tier\": {",
+              " *       \"_id\": \"65fdf385-37b9-42e8-81c8-2e5fafe446f0\",",
+              " *       \"_updatedDate\": \"2023-01-19T12:03:16.945Z\",",
+              " *       \"points\": 295",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "First, retrieve the account using `getAccount()`. Then, extract the `revision` and pass it to `options` argument for the `adjustPoints()` function."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "createAccount",
+      "params": [
+        {
+          "name": "contactId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID for a Wix site contact. See the [Contacts API](wix-crm-backend/contacts) to learn more.\n",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "contactId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.CreateAccountResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a loyalty account for one of a site's contacts.",
+        "description": [
+          "The `createAccount()` function returns a Promise that resolves to the new loyalty account when it is created.\n\nTo create a new loyalty account, the customer must first be a site contact with a contact ID. See [contacts](wix-crm-backend/contacts) to learn more about a site's contacts. The site must also have an active loyalty program before loyalty accounts can be created. See the [`activateLoyaltyProgram()`](wix-loyalty-v2/programs/activateloyaltyprogram) function to activate a site's loyalty program.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can create a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Create a loyalty account for a site contact ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample contactId value: 'ff61204b-b19a-5cc8-823b-7eed8ae5fc28'  ",
+              "",
+              "export async function myCreateAccountFunction() {",
+              "  try {",
+              "    const newLoyaltyAccount = await accounts.createAccount(contactId);  ",
+              "",
+              "    const accountId = newLoyaltyAccount.account._id;  ",
+              "",
+              "    console.log('Success! The account ID for this new loyalty account is: ', accountId);",
+              "",
+              "    return newLoyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1e3f99cf-1e7f-4cba-8777-f081549f49cd\",",
+              " *     \"contactId\": \"ff61204b-b19a-5cc8-823b-7eed8ae5fc28\",",
+              " *     \"points\": {",
+              " *       \"balance\": 0,",
+              " *       \"earned\": 0,",
+              " *       \"adjusted\": 0,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"rewardAvailable\": false,",
+              " *     \"_createdDate\": \"2022-11-09T12:49:25.408Z\",",
+              " *     \"_updatedDate\": \"2022-11-09T12:49:25.408Z\",",
+              " *     \"revision\": \"1\"",
+              " *   }",
+              " * }  ",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "earnPoints",
+      "params": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EarnPointsOptions"
+            }
+          ],
+          "doc": "Earn points info.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "accountId",
+        "options.appId",
+        "options.idempotencyKey"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.EarnPointsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Adds points to a loyalty account.",
+        "description": [
+          "The `earnPoints()` function returns a Promise that resolves to the updated loyalty account.\n\nOnly a positive amount can be added using the `earnPoints()` function, to manually adjust an account's balance for a negative amount, use [`adjustPoints()`](wix-loyalty-v2/accounts/adjustpoints).\n\nThe `earnPoints()` function allows customers to manually earn points to their loyalty accounts. To use this function you must include an `appId` and an `idempotencyKey`. Any string can be set as the `appId` or `idempotencyKey`. In contrast to when an account earns points through an action taken on your site, the `appId` automatically sets to the source app that generates the points. The transaction `type` is `\"EARN\"` for points earned this way.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can earn loyalty points. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Earn loyalty points ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "/* Sample accountId value: '6d2c421e-3c1a-4464-bf2f-df13a3fc8aea'",
+              " *",
+              " * Sample options value:",
+              " * {",
+              " *   'amount': 50,",
+              " *   'description': 'Subscribed to newsletter.',",
+              " *   'appId': '553c79f3-5625-4f38-b14b-ef7c0d1e87df',",
+              " *   'idempotencyKey': 'bfdc785c-bbc6-447d-b987-220ca649a3b2'",
+              " * }",
+              " */",
+              "",
+              "export async function myEarnPointsFunction() {",
+              "  try {",
+              "    const updatedAccount = await accounts.earnPoints(accountId, options);",
+              "",
+              "    const newBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.latestTransaction._id;",
+              "",
+              "    console.log('Success! New balance is ', newBalance);",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"6d2c421e-3c1a-4464-bf2f-df13a3fc8aea\",",
+              " *     \"contactId\": \"7fa15d5e-49c4-44ef-8111-4cb0a04ca4db\",",
+              " *     \"memberId\": \"7fa15d5e-49c4-44ef-8111-4cb0a04ca4db\",",
+              " *     \"points\": {",
+              " *       \"balance\": 185,",
+              " *       \"earned\": 185,",
+              " *       \"adjusted\": 0,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"4dd51f9d-2664-420a-9802-4df7811a5221\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"EARN\",",
+              " *       \"description\": \"Subscribed to newsletter.\",",
+              " *       \"_createdDate\": \"2022-11-28T14:48:59.887Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"bfdc785c-bbc6-447d-b987-220ca649a3b2\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-09T15:18:53.582Z\",",
+              " *     \"_updatedDate\": \"2022-11-28T14:48:59.940Z\",",
+              " *     \"revision\": \"6\",",
+              " *     \"tier\": {",
+              " *       \"_updatedDate\": \"2022-11-28T14:48:59.939Z\",",
+              " *       \"points\": 185",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "getAccount",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the account to retrieve.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.GetAccountResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves an account using the loyalty account ID.",
+        "description": [
+          "The `getAccount()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nYou can also get an account using a secondary ID, such as a contact ID or a member ID with the [`getAccountBySecondaryId()`](wix-loyalty-v2/accounts/getaccountbysecondaryid) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Get a loyalty account ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: 'e6f39a5b-a6d0-4556-b889-0cf09d8a84f7'",
+              "",
+              "export async function myGetLoyaltyAccountFunction() {",
+              "  try {",
+              "    const loyaltyAccount = await accounts.getAccount(accountId);",
+              "",
+              "    const currentBalance = loyaltyAccount.account.points.balance;",
+              "    const canGetReward = loyaltyAccount.account.rewardAvailable;",
+              "",
+              "    console.log('Success! Current points balance for this account is: ', currentBalance, ' and there is a reward available: ', canGetReward);",
+              "",
+              "    return loyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"e6f39a5b-a6d0-4556-b889-0cf09d8a84f7\",",
+              " *     \"contactId\": \"88615e02-3e8a-4297-8939-5d0a432b322a\",",
+              " *     \"memberId\": \"a517751b-a1ca-4423-8d91-aaf8f5b34215\",",
+              " *     \"points\":   {",
+              " *       \"balance\": 15,",
+              " *       \"earned\": 10,",
+              " *       \"redeemed\": 0,",
+              " *       \"adjusted\": 5",
+              " *     },",
+              " *     \"latestTransaction\":   {",
+              " *       \"_id\": \"262c8eb0-123e-4117-9fe6-4973a3551688\",",
+              " *       \"amount\": 5,",
+              " *       \"type\": \"ADJUST\",",
+              " *       \"description\": \"\",",
+              " *       \"_createdDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"f33ce6re-cy18-445e-8761-23d9471b8b96\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2021-12-06T14:33:19.114Z\",",
+              " *     \"_updatedDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *     \"revision\": \"4\"",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "getAccountBySecondaryId",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.GetAccountBySecondaryIdOptions"
+            }
+          ],
+          "doc": "ID of the customer to retrieve loyalty account for.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "GetAccountBySecondaryIdRequest"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.GetAccountBySecondaryIdResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves the loyalty account of the specified site contact or member.",
+        "description": [
+          "The `getAccountBySecondaryId()` function returns a Promise that resolves to the specified loyalty account when it is retrieved.\n\nThis function gets a loyalty account using either a customer's contact ID or member ID. You can also get an account using the loyalty account ID with the [`getAccount()`](wix-loyalty-v2/accounts/getaccount) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty account. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Get a loyalty account using a contact ID ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';  ",
+              "",
+              "// Sample contactId value: '8a71f711-f77b-43fe-9e3d-5c243f94b2bc'  ",
+              "",
+              "export async function myGetAccountByContactIdFunction() {",
+              "  try {",
+              "    const loyaltyAccount = await accounts.getAccountBySecondaryId(contactId);  ",
+              "",
+              "    const accountId = loyaltyAccount.account._id;",
+              "    const currentRevision = loyaltyAccount.account.revision;  ",
+              "",
+              "    console.log(\"Success! This site contact's loyalty account ID is: \", accountId);  ",
+              "",
+              "    return loyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"dd0020ca-eef0-4ff1-a615-63ecdcdfcd28\",",
+              " *     \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
+              " *     \"points\": {",
+              " *       \"balance\": 700,",
+              " *       \"earned\": 135,",
+              " *       \"adjusted\": 565,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"65ac9989-89cd-40bb-9bfa-52d3b1e2fae2\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"EARN\",",
+              " *       \"description\": \"Signed up for newsletter\",",
+              " *       \"_createdDate\": \"2022-11-09T11:18:44.987Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"b494fca4-3fec-40e9-b7a0-43e51b0b5057\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-08T22:52:44.758Z\",",
+              " *     \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *     \"revision\": \"6\",",
+              " *     \"tier\": {",
+              " *       \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *       \"points\": 700",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "getProgramTotals",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.GetProgramTotalsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves the total amount of points earned, redeemed, and adjusted for the entire loyalty program.",
+        "description": [
+          "The `getProgramTotals()` function returns a Promise that resolves to the combined total points for all loyalty accounts in the program.\n\nThe `balance` is the current total of points outstanding, while the `earned`, `adjusted`, and `redeemed` amounts are the all-time accumulated amounts. The totals include the amounts for all loyalty accounts.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve the loyalty program totals. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Get the total points for the entire loyalty program ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';  ",
+              "",
+              "export async function myGetProgramTotalsFunction() {",
+              "  try {",
+              "    const programTotals = await accounts.getProgramTotals();  ",
+              "",
+              "    const currentBalance = programTotals.points.balance;",
+              "    const redeemed = programTotals.points.redeemed;  ",
+              "",
+              "    console.log('Success! ', redeemed, ' total points have been redeemed in the life of this program.');  ",
+              "",
+              "    return programTotals;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}  ",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"points\": {",
+              " *     \"balance\": 2046,",
+              " *     \"earned\": 1475,",
+              " *     \"adjusted\": 571,",
+              " *     \"redeemed\": 0",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "getTransaction",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.GetTransactionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a transaction using the transaction ID.",
+        "description": [
+          "The `getTransaction()` function returns a Promise that resolves to a loyalty transaction.\n\nA loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to retrieve many, or all, of the transactions for a specific loyalty account, use the [`listTransactions()`](wix-loyalty-v2/accounts/listtransactions) function.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve a loyalty transaction. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Get a transaction ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample transactionId value: '262c8eb0-123e-4117-9fe6-4973a3551688'",
+              "",
+              "export async function myGetTransactionFunction() {",
+              "  try {",
+              "    const retrievedTransaction = await accounts.getTransaction(transactionId);",
+              "",
+              "    const transactionType = retrievedTransaction.transaction.type;",
+              "    const transactionDate = retrievedTransaction.transaction._createdDate;",
+              "",
+              "    console.log('Success! That transaction was created on ', transactionDate, ' and is a ', transactionType, ' type.');",
+              "    return retrievedTransaction;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " *  {\"transaction\":  {",
+              " *  \"_id\": \"262c8eb0-123e-4117-9fe6-4973a3551688\",",
+              " *  \"amount\": 5,",
+              " *  \"type\": \"ADJUST\",",
+              " *  \"description\": \"\",",
+              " *  \"_createdDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *  \"rewardId\": null,",
+              " *  \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *  \"idempotencyKey\": null",
+              " *  }}",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listAccounts",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ListAccountsOptions"
+            }
+          ],
+          "doc": "Options to use when retrieving a list of loyalty accounts.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.ListAccountsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of loyalty accounts, given the provided filters.",
+        "description": [
+          "The `listAccounts()` function returns a Promise that resolves to a list of loyalty accounts.\n\nYou can retrieve selected loyalty accounts with an array of `contactIds` or retrieve a list of all of a site's loyalty accounts\n    with an empty request parameter. Use the `cursorPaging` parameters to limit how many items load at a time.\n\n>**Note:** Only visitors with **Manage Loyalty** [permissions](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions) can retrieve loyalty accounts. You can override the permissions with the `wix-auth` [`elevate()`](wix-auth/elevate) function."
+        ],
+        "examples": [
+          {
+            "title": "Get a list of loyalty accounts, limited to 3 accounts ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';  ",
+              "",
+              "/* Sample options value: ",
+              " *   {",
+              " *   'cursorPaging': {",
+              " *     'limit': 3",
+              " *     }",
+              " *   }",
+              " */",
+              "",
+              "export async function myListLoyaltyAccountsFunction() {",
+              "  try {",
+              "    const accountsList = await accounts.listAccounts(options);",
+              "",
+              "    const firstAccountId = accountsList.accounts[0]._id;",
+              "    const firstAccountBalance = accountsList.accounts[0].points.balance;",
+              "",
+              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, ' and ', firstAccountBalance);  ",
+              "",
+              "    return accountsList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"accounts\": [",
+              " *     {",
+              " *       \"_id\": \"dd0020ca-eef0-4ff1-a615-63ecdcdfcd28\",",
+              " *       \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
+              " *       \"points\": {",
+              " *         \"balance\": 700,",
+              " *         \"earned\": 135,",
+              " *         \"adjusted\": 565,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"65ac9989-89cd-40bb-9bfa-52d3b1e2fae2\",",
+              " *         \"amount\": 50,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"Subscribed to newsletter.\",",
+              " *         \"_createdDate\": \"2022-11-09T11:18:44.987Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"fc3df3c1-36b2-4279-8be1-8e72a05a88c8\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-08T22:52:44.758Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *       \"revision\": \"6\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *         \"points\": 700",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"7b801cdf-e74c-42b7-ba57-a068a78ea6b5\",",
+              " *       \"contactId\": \"6f158e70-26f6-4fce-80a8-1d57e6791c34\",",
+              " *       \"points\": {",
+              " *         \"balance\": 125,",
+              " *         \"earned\": 125,",
+              " *         \"adjusted\": 0,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"93f31476-f3cf-4440-9933-aaca6e61e15b\",",
+              " *         \"amount\": 125,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"\",",
+              " *         \"_createdDate\": \"2022-11-09T06:41:48.450Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"262c8eb0-123e-4117-9fe6-4973a3551688\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-07T15:49:11.763Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T06:41:48.879Z\",",
+              " *       \"revision\": \"3\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T06:41:48.616Z\",",
+              " *         \"points\": 125",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"f0411f1a-ad5a-4b80-94c2-34350cbf1af7\",",
+              " *       \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2cd\",",
+              " *       \"points\": {",
+              " *         \"balance\": 0,",
+              " *         \"earned\": 0,",
+              " *         \"adjusted\": 0,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"rewardAvailable\": false,",
+              " *       \"_createdDate\": \"2022-11-09T06:44:48.159Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T06:44:48.159Z\",",
+              " *       \"revision\": \"1\"",
+              " *     }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"total\": 4,",
+              " *     \"cursors\": {",
+              " *       \"next\": \"4cdca1370d1419d1874c0eb639ef64804fa6d5de.Gh0KDnBvaW50cy5iYWxhbmNlEAEaCREAAAAAAAAAABorCgxfdXBkYXRlZERhdGUaGyoZChcKCiR0aW1lc3RhbXASCREA8HklskV4QiIkZjA0MTFmMWEtYWQ1YS00YjgwLTk0YzItMzQzNTBjYmYxYWY3\"",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get a list of specific loyalty accounts using their account IDs ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';  ",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   contactIds: [",
+              " *     '8a71f711-f77b-43fe-9e3d-5c243f94b2bc',",
+              " *     '6f158e70-26f6-4fce-80a8-1d57e6791c34'",
+              " *   ]",
+              " * }",
+              " */  ",
+              "",
+              "export async function myListLoyaltyAccountsFunction() {",
+              "  try {",
+              "    const accountsList = await accounts.listAccounts(contactIds);  ",
+              "",
+              "    const firstAccountId = accountsList.accounts[0]._id;",
+              "    const firstAccountBalance = accountsList.accounts[0].points.balance;  ",
+              "",
+              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, 'and ', firstAccountBalance);  ",
+              "",
+              "    return accountsList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"accounts\": [",
+              " *     {",
+              " *       \"_id\": \"dd0020ca-eef0-4ff1-a615-63ecdcdfcd28\",",
+              " *       \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
+              " *       \"points\": {",
+              " *         \"balance\": 700,",
+              " *         \"earned\": 135,",
+              " *         \"adjusted\": 565,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"65ac9989-89cd-40bb-9bfa-52d3b1e2fae2\",",
+              " *         \"amount\": 50,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"Subscribed to newsletter.\",",
+              " *         \"_createdDate\": \"2022-11-09T11:18:44.987Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"fc3df3c1-36b2-4279-8be1-8e72a05a88c8\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-08T22:52:44.758Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *       \"revision\": \"6\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *         \"points\": 700",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"7b801cdf-e74c-42b7-ba57-a068a78ea6b5\",",
+              " *       \"contactId\": \"6f158e70-26f6-4fce-80a8-1d57e6791c34\",",
+              " *       \"points\": {",
+              " *         \"balance\": 125,",
+              " *         \"earned\": 125,",
+              " *         \"adjusted\": 0,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"93f31476-f3cf-4440-9933-aaca6e61e15b\",",
+              " *         \"amount\": 125,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"\",",
+              " *         \"_createdDate\": \"2022-11-09T06:41:48.450Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"262c8eb0-123e-4117-9fe6-4973a3551688\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-07T15:49:11.763Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T06:41:48.879Z\",",
+              " *       \"revision\": \"3\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T06:41:48.616Z\",",
+              " *         \"points\": 125",
+              " *       }",
+              " *     }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 2,",
+              " *     \"total\": 2,",
+              " *     \"cursors\": {}",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listTransactions",
+      "params": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ListTransactionsOptions"
+            }
+          ],
+          "doc": "Options to use when retrieving a list of loyalty transactions.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "accountId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-loyalty-v2.Accounts.ListTransactionsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of transactions for a specified loyalty account.",
+        "description": [
+          "The `listTransactions()` function returns a Promise that resolves to a list of loyalty transactions for the loyalty account specified by the account ID.\n\nLoyalty transactions include activities that change a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points. If you want to get a specific transaction use that transaction's ID and the [`getTransaction()`](wix-loyalty-v2/accounts/gettransaction) function."
+        ],
+        "examples": [
+          {
+            "title": "Get a list of transactions for a loyalty account ",
+            "body": [
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: 'b04a7524-f0cc-435a-981a-b765f758438b'",
+              "",
+              "export async function myListTransactionsFunction() {",
+              "  try {",
+              "    const transactionsList = await accounts.listTransactions(accountId);",
+              "",
+              "    const firstId = transactionsList.transactions[0]._id;",
+              "    const firstStatus = transactionsList.transactions[0].type;",
+              "",
+              "    console.log('The most recent transaction ID is: ', firstId);",
+              "    return transactionsList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"transactions\": [{",
+              " *     \"id\": \"03992fc4-8e8c-4406-8d3c-0292ed3be5d8\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 150,",
+              " *     \"type\": \"ADJUST\",",
+              " *     \"description\": \"Signed up as site member.\",",
+              " *     \"createdDate\": \"2022-05-23T22:50:49.366Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"70f0711b-e16f-44d7-ad03-4301c78d8623\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-05-24T09:11:51.274Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"0eb76578-8928-418e-8428-4a330d24186c\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"78a5c76e-fe47-4103-bfda-15e05c2ab003\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-06-19T22:09:23.434Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"5a036e48-4188-4200-a42e-de37c273c3c1\"",
+              " *   }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"cursors\": {},",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "name": "AccountsMerged",
+      "members": [
+        {
+          "name": "sourceAccounts",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Source accounts."
+        },
+        {
+          "name": "updatedAccount",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Merged account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AdjustPointsOptions",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Adjusts the account's point balance by this amount. Must be a whole number with a maximum of 7 digits.\nThe amount can be negative, but cannot be `0`.\n\nMin: `-9999999`\n\nMax: `9999999`\n"
+        },
+        {
+          "name": "balance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Sets the account's point balance to this amount. Must be a positive, whole number or zero.\n\nThe net difference between this new balance and the previous balance will be reflected in the `adjusted` field of the customer's account.\n\nMin: `0`\n\nMax: `999999999`\n"
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description to explain the reason for the points adjustment."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Each time the loyalty account is updated, `revision` increments by 1.\n\nThe current `revision` must be passed when adjusting points in the loyalty account. This\nensures you're working with the latest version of the loyalty account and prevents unintended overwrites.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AdjustPointsRequest",
+      "members": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID."
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Adjusts the account's point balance by this amount. Must be a whole number with a maximum of 7 digits.\nThe amount can be negative, but cannot be `0`.\n\nMin: `-9999999`\n\nMax: `9999999`\n"
+        },
+        {
+          "name": "balance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Sets the account's point balance to this amount. Must be a positive, whole number or zero.\n\nThe net difference between this new balance and the previous balance will be reflected in the `adjusted` field of the customer's account.\n\nMin: `0`\n\nMax: `999999999`\n"
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description to explain the reason for the points adjustment."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Each time the loyalty account is updated, `revision` increments by 1.\n\nThe current `revision` must be passed when adjusting points in the loyalty account. This\nensures you're working with the latest version of the loyalty account and prevents unintended overwrites.\n"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAdjustPointsRequestTypeOneOf",
+            "members": [
+              "amount",
+              "balance"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AdjustPointsRequestTypeOneOf",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Adjusts the account's point balance by this amount. Must be a whole number with a maximum of 7 digits.\nThe amount can be negative, but cannot be `0`.\n\nMin: `-9999999`\n\nMax: `9999999`\n"
+        },
+        {
+          "name": "balance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Sets the account's point balance to this amount. Must be a positive, whole number or zero.\n\nThe net difference between this new balance and the previous balance will be reflected in the `adjusted` field of the customer's account.\n\nMin: `0`\n\nMax: `999999999`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AdjustPointsResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Adjusted loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BillingReference",
+      "members": [
+        {
+          "name": "previousProviderReferenceIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "used to support extend (specifically for domains)"
+        },
+        {
+          "name": "providerName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "billing provider name"
+        },
+        {
+          "name": "providerReferenceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "current provider reference id"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancellationDetails",
+      "members": [
+        {
+          "name": "cancellationCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "cancellation reason code"
+        },
+        {
+          "name": "cancellationReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "cancellation reason description"
+        },
+        {
+          "name": "initiator",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "the initiator of the cancellation"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ContractSwitched",
+      "members": [
+        {
+          "name": "contractSwitchReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason of contract switch"
+        },
+        {
+          "name": "contractSwitchType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of contract switch"
+        },
+        {
+          "name": "previousCycle",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Cycle"
+            }
+          ],
+          "doc": "previous payment cycle"
+        },
+        {
+          "name": "previousMetaSiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "meta site identity that the subscription was previously assigned to\nin the case where a subscription is assigned to a different site during the contract switch"
+        },
+        {
+          "name": "previousProductId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "previous product ID from product catalog"
+        },
+        {
+          "name": "previousProductTypeId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "previous product type ID of the product"
+        },
+        {
+          "name": "productPriceIncreaseData",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ProductPriceIncreaseData"
+            }
+          ],
+          "doc": "contains essential data for price increase case"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is has changed, either upgrade or downgrade"
+        ]
+      }
+    },
+    {
+      "name": "CreateAccountRequest",
+      "members": [
+        {
+          "name": "contactId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID for a Wix site contact. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateAccountResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Created loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        },
+        {
+          "name": "prev",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to previous page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cycle",
+      "members": [
+        {
+          "name": "interval",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Interval"
+            }
+          ],
+          "doc": "repetitive interval"
+        },
+        {
+          "name": "oneTime",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.OneTime"
+            }
+          ],
+          "doc": "one time"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCycleCycleSelectorOneOf",
+            "members": [
+              "interval",
+              "oneTime"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CycleCycleSelectorOneOf",
+      "members": [
+        {
+          "name": "interval",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Interval"
+            }
+          ],
+          "doc": "repetitive interval"
+        },
+        {
+          "name": "oneTime",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.OneTime"
+            }
+          ],
+          "doc": "one time"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The time of the event. Useful if there was a delay in dispatching"
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EarnPointsOptions",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Amount of points to earn. Must be a positive, whole number.\n\nMin: `1`\n\nMax: `9999999`\n"
+        },
+        {
+          "name": "appId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app that initiated the transaction.\n\nIf points were earned manually, then the `appId` is the Loyalty app's\n`wixAppId` of `553c79f3-5625-4f38-b14b-ef7c0d1e87df`. If points were earned in an automatic event,\nthen the `appId` is from that automation's `sourceAppId`.\n"
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of how the points were earned.\n\nMax: 100 characters\n"
+        },
+        {
+          "name": "idempotencyKey",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique string identifier generated by the app. Wix uses this identifier to recognize subsequent retries of the same request."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EarnPointsRequest",
+      "members": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID."
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Amount of points to earn. Must be a positive, whole number.\n\nMin: `1`\n\nMax: `9999999`\n"
+        },
+        {
+          "name": "appId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app that initiated the transaction.\n\nIf points were earned manually, then the `appId` is the Loyalty app's\n`wixAppId` of `553c79f3-5625-4f38-b14b-ef7c0d1e87df`. If points were earned in an automatic event,\nthen the `appId` is from that automation's `sourceAppId`.\n"
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of how the points were earned.\n\nMax: 100 characters\n"
+        },
+        {
+          "name": "idempotencyKey",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique string identifier generated by the app. Wix uses this identifier to recognize subsequent retries of the same request."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EarnPointsResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Updated loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountBySecondaryIdOptions",
+      "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's contact ID. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's member ID. See the [Members API](wix-members-backend/introduction) to learn more."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountBySecondaryIdRequest",
+      "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's contact ID. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's member ID. See the [Members API](wix-members-backend/introduction) to learn more."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfGetAccountBySecondaryIdRequestIdOneOf",
+            "members": [
+              "contactId",
+              "memberId"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountBySecondaryIdRequestIdOneOf",
+      "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's contact ID. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's member ID/ See the [Members API](wix-members-backend/introduction) to learn more."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountBySecondaryIdResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Retrieved loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the account to retrieve."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAccountResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Retrieved loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetCurrentMemberAccountRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetCurrentMemberAccountResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetProgramTotalsRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetProgramTotalsResponse",
+      "members": [
+        {
+          "name": "points",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Points"
+            }
+          ],
+          "doc": "Point totals for the entire program."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetTransactionRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Retrieves a transaction."
+        ]
+      }
+    },
+    {
+      "name": "GetTransactionResponse",
+      "members": [
+        {
+          "name": "transaction",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Transaction"
+            }
+          ],
+          "doc": "Retrieved transaction."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Interval",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "number of interval"
+        },
+        {
+          "name": "unit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "interval unit of measure"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LatestTransaction",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the transaction was created."
+        },
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction ID."
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Amount of earned, adjusted, or redeemed points in the latest transaction."
+        },
+        {
+          "name": "appId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `\"EARN\"` or `\"ADJUST\"`. The `appId` can be set to any string when points are manually earned or adjusted. When points are earned or adjusted in an automatic event, the `appId` is from that automation's `sourceAppId`."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the latest transaction.\n\nMax: 100 characters\n"
+        },
+        {
+          "name": "idempotencyKey",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique string identifier generated by the app. Wix uses this identifier to recognize subsequent retries of the same request.\n\nOnly present if points were added manually using the [`earnPoints()`](/wix-loyalty-v2/accounts/earnpoints) function."
+        },
+        {
+          "name": "redeemInfo",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RedeemInfo"
+            }
+          ],
+          "doc": "Additional information for redeemed points.\n\nOnly present if `type` is `\"REDEEM\"`."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction type.\n\n+ `\"ADJUST\"`: Point balance was manually adjusted to a loyalty account. See [`adjustPoints()`](wix-loyalty-v2/accounts/adjustpoints).\n+ `\"EARN\"`: Points were earned by the customer taking an action. See [`earnPoints()`](wix-loyalty-v2/accounts/earnpoints).\n+ `\"GIVE\"`: Points were manually added to or subtracted from a loyalty account. See [`adjustPoints()`](wix-loyalty-v2/accounts/adjustpoints).\n+ `\"REDEEM\"`: Points were redeemed by the customer for a reward.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAccountsOptions",
+      "members": [
+        {
+          "name": "contactIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of contact IDs. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAccountsRequest",
+      "members": [
+        {
+          "name": "contactIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of contact IDs. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Options to use when retrieving a list of loyalty accounts."
+        ]
+      }
+    },
+    {
+      "name": "ListAccountsResponse",
+      "members": [
+        {
+          "name": "accounts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Retrieved loyalty accounts."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.PagingMetadataV2"
+            }
+          ],
+          "doc": "Details on the paged set of results returned."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListTransactionsOptions",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListTransactionsRequest",
+      "members": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options, such as how many results are listed at a time."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListTransactionsResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.PagingMetadataV2"
+            }
+          ],
+          "doc": "Details on the paged set of results returned."
+        },
+        {
+          "name": "transactions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-loyalty-v2.Accounts.Transaction"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Retrieved transactions."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListUserAccountsOptions",
+      "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load. Minimum `1`, maximum `50`."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the current sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListUserAccountsRequest",
+      "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load. Minimum `1`, maximum `50`."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the current sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListUserAccountsResponse",
+      "members": [
+        {
+          "name": "accounts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccountForMetaSite"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Loyalty accounts."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LoyaltyAccount",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the account was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the account was last updated."
+        },
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's contact ID. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "lastActivityDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Account's last activity date and time."
+        },
+        {
+          "name": "latestTransaction",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LatestTransaction"
+            }
+          ],
+          "doc": "Details of the account's latest transaction."
+        },
+        {
+          "name": "memberId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's member ID. See the [Members API](wix-members-backend/introduction) to learn more."
+        },
+        {
+          "name": "points",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Points"
+            }
+          ],
+          "doc": "Information about the account totals."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the loyalty account is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the loyalty account.\n\nIgnored when creating an account.\n"
+        },
+        {
+          "name": "rewardAvailable",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the account has a reward available. `true` if the amount of points in `points.balance` are enough to redeem for a reward."
+        },
+        {
+          "name": "tier",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Tier"
+            }
+          ],
+          "doc": "Tier information.\n\nThe Loyalty Tiers API is currently unavailable, but the program may be activated and managed from a site's\n[loyalty dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Floyalty-accounts/wizard/).\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "A loyalty account stores a customer's loyalty points balance. A site's customers can earn points to their account\nand redeem those points for rewards."
+        ]
+      }
+    },
+    {
+      "name": "LoyaltyAccountForMetaSite",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Loyalty account."
+        },
+        {
+          "name": "metaSiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Metasite ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OneTime",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadataV2",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Cursors"
+            }
+          ],
+          "doc": "Cursors to navigate through the result pages using `next` and `prev`. Returned if cursor paging is used."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Points",
+      "members": [
+        {
+          "name": "adjusted",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total adjusted points."
+        },
+        {
+          "name": "balance",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Current point balance.\n\nEqual to the sum of `earned` and `adjusted` points, minus `redeemed` points.\n"
+        },
+        {
+          "name": "earned",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total earned points."
+        },
+        {
+          "name": "redeemed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total redeemed points."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PointsUpdated",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Updated account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ProductPriceIncreaseData",
+      "members": [
+        {
+          "name": "previousPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RecurringChargeSucceeded",
+      "members": [
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is successfully renewed"
+        ]
+      }
+    },
+    {
+      "name": "RedeemInfo",
+      "members": [
+        {
+          "name": "referenceEntityId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the specific item that was redeemed in this transaction.\n\nEach reward that is redeemed has a unique `referenceEntityId`."
+        },
+        {
+          "name": "rewardId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the reward that was redeemed."
+        },
+        {
+          "name": "rewardType",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of reward that was redeemed."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RedeemPointsOptions",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of times the given reward will be redeemed. Must be a positive whole number."
+        },
+        {
+          "name": "referenceEntityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Id of the entity that is being redeemed (e.g. orderId for order discount, couponId for coupon reward)."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time points are redeemed.\nTo prevent conflicting changes, the existing `revision` must be used when redeeming points."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RedeemPointsRequest",
+      "members": [
+        {
+          "name": "accountId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID."
+        },
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of times the given reward will be redeemed. Must be a positive whole number."
+        },
+        {
+          "name": "referenceEntityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Id of the entity that is being redeemed (e.g. orderId for order discount, couponId for coupon reward)."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time points are redeemed.\nTo prevent conflicting changes, the existing `revision` must be used when redeeming points."
+        },
+        {
+          "name": "rewardId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reward ID. See [Rewards API](https://dev.wix.com/api/rest/loyalty/rewards/rewards-object) for more details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RedeemPointsResponse",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "Loyalty account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RewardAvailabilityUpdated",
+      "members": [
+        {
+          "name": "rewardAvailable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updateTrigger",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BALANCE_UPDATED'`\n- `'REWARD_UPDATED'`\n- `'TIERS_RECALCULATED'`\n- `'UNDEFINED'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RollingWindow",
+      "members": [
+        {
+          "name": "durationInMonths",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of months to use for the rolling window period.\n\nMin: `12`\nMax: `36`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "*Required.** Period of time used to calculate loyalty points for tier assignment."
+        ]
+      }
+    },
+    {
+      "name": "Subscription",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "subscription identity"
+        },
+        {
+          "name": "active",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "flag indicating whether the subscription is currently active or not"
+        },
+        {
+          "name": "billingReference",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.BillingReference"
+            }
+          ],
+          "doc": "reference to billing system entity"
+        },
+        {
+          "name": "countryCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "the country code to which the subscription was provisioned"
+        },
+        {
+          "name": "createdAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "date subscription was created"
+        },
+        {
+          "name": "cycle",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Cycle"
+            }
+          ],
+          "doc": "payment cycle"
+        },
+        {
+          "name": "metaSiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "id of the meta site that the subscription is assigned to, can be empty, meaning the subscription is either account level or is currently unassigned"
+        },
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "custom metadata associated with the subscription"
+        },
+        {
+          "name": "originalCreationDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "date the original subscription was created in cases where the subscription has been transferred between accounts"
+        },
+        {
+          "name": "productId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "product ID from product catalog"
+        },
+        {
+          "name": "productTypeId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "product type ID of the product"
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "status"
+        },
+        {
+          "name": "transferredAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "date subscription was transferred between accounts"
+        },
+        {
+          "name": "updatedAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "date subscription was updated"
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "always a Wix user"
+        },
+        {
+          "name": "version",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "version"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionAssigned",
+      "members": [
+        {
+          "name": "previousMetaSiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "meta site identity that the subscription was previously assigned to"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is assigned to a meta site"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionAutoRenewTurnedOff",
+      "members": [
+        {
+          "name": "cancellationDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CancellationDetails"
+            }
+          ],
+          "doc": "Cancellation reason information"
+        },
+        {
+          "name": "immediateCancel",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "indicates whether the subscription will be cancelled immediately or not"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription \"AUTO RENEW\" is turned off\""
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionAutoRenewTurnedOn",
+      "members": [
+        {
+          "name": "initiator",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Initiator of request to turn AutoRenew On - Will be \"USER\" or the Application Id of the requesting Service"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription \"AUTO RENEW\" is turned on\""
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionCancelled",
+      "members": [
+        {
+          "name": "cancellationDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.CancellationDetails"
+            }
+          ],
+          "doc": "Cancellation reason information"
+        },
+        {
+          "name": "immediateCancel",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "indicates whether the subscription was cancelled immediately or at end of period"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is cancelled"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionCreated",
+      "members": [
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Meta data about the subscription"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a new subscription is created"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionEvent",
+      "members": [
+        {
+          "name": "assigned",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAssigned"
+            }
+          ],
+          "doc": "subscription assigned to context"
+        },
+        {
+          "name": "autoRenewTurnedOff",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAutoRenewTurnedOff"
+            }
+          ],
+          "doc": "subscription \"AUTON RENEW\" turned off"
+        },
+        {
+          "name": "autoRenewTurnedOn",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAutoRenewTurnedOn"
+            }
+          ],
+          "doc": "subscription \"AUTON RENEW\" turned on"
+        },
+        {
+          "name": "cancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionCancelled"
+            }
+          ],
+          "doc": "subscription cancelled"
+        },
+        {
+          "name": "contractSwitched",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ContractSwitched"
+            }
+          ],
+          "doc": "subscription contract switched / upgraded"
+        },
+        {
+          "name": "created",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionCreated"
+            }
+          ],
+          "doc": "subscription created"
+        },
+        {
+          "name": "eventDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "is this required in the api ?? or is it implicit"
+        },
+        {
+          "name": "eventId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "internal"
+        },
+        {
+          "name": "nearEndOfPeriod",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionNearEndOfPeriod"
+            }
+          ],
+          "doc": "subscription is near renewal"
+        },
+        {
+          "name": "pendingChange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionPendingChange"
+            }
+          ],
+          "doc": "subscription has a pending change set"
+        },
+        {
+          "name": "recurringChargeSucceeded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RecurringChargeSucceeded"
+            }
+          ],
+          "doc": "subscription renewed after recurring charge"
+        },
+        {
+          "name": "transferred",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionTransferred"
+            }
+          ],
+          "doc": "subscription transferred between accounts"
+        },
+        {
+          "name": "unassigned",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionUnassigned"
+            }
+          ],
+          "doc": "subscription unassigned from context"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfSubscriptionEventEventOneOf",
+            "members": [
+              "assigned",
+              "autoRenewTurnedOff",
+              "autoRenewTurnedOn",
+              "cancelled",
+              "contractSwitched",
+              "created",
+              "nearEndOfPeriod",
+              "pendingChange",
+              "recurringChargeSucceeded",
+              "transferred",
+              "unassigned"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionEventEventOneOf",
+      "members": [
+        {
+          "name": "assigned",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAssigned"
+            }
+          ],
+          "doc": "subscription assigned to context"
+        },
+        {
+          "name": "autoRenewTurnedOff",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAutoRenewTurnedOff"
+            }
+          ],
+          "doc": "subscription \"AUTON RENEW\" turned off"
+        },
+        {
+          "name": "autoRenewTurnedOn",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionAutoRenewTurnedOn"
+            }
+          ],
+          "doc": "subscription \"AUTON RENEW\" turned on"
+        },
+        {
+          "name": "cancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionCancelled"
+            }
+          ],
+          "doc": "subscription cancelled"
+        },
+        {
+          "name": "contractSwitched",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ContractSwitched"
+            }
+          ],
+          "doc": "subscription contract switched / upgraded"
+        },
+        {
+          "name": "created",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionCreated"
+            }
+          ],
+          "doc": "subscription created"
+        },
+        {
+          "name": "nearEndOfPeriod",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionNearEndOfPeriod"
+            }
+          ],
+          "doc": "subscription is near renewal"
+        },
+        {
+          "name": "pendingChange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionPendingChange"
+            }
+          ],
+          "doc": "subscription has a pending change set"
+        },
+        {
+          "name": "recurringChargeSucceeded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RecurringChargeSucceeded"
+            }
+          ],
+          "doc": "subscription renewed after recurring charge"
+        },
+        {
+          "name": "transferred",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionTransferred"
+            }
+          ],
+          "doc": "subscription transferred between accounts"
+        },
+        {
+          "name": "unassigned",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.SubscriptionUnassigned"
+            }
+          ],
+          "doc": "subscription unassigned from context"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionNearEndOfPeriod",
+      "members": [
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is near to the end of period - the number days before renewal is defined in the Billing System"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionPendingChange",
+      "members": [
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription has a pending change"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionTransferred",
+      "members": [
+        {
+          "name": "originSubscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription  state before the transfer"
+        },
+        {
+          "name": "targetSubscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription state after the transfer"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is transferred between accounts\nHolds the state of the same subscription before and after the transfer\nsubscription ID is the same in both states"
+        ]
+      }
+    },
+    {
+      "name": "SubscriptionUnassigned",
+      "members": [
+        {
+          "name": "previousMetaSiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "meta site identity that the subscription was previously assigned to"
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.Subscription"
+            }
+          ],
+          "doc": "The subscription"
+        },
+        {
+          "name": "unassignReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'REPLACED_BY_ANOTHER_SUBSCRIPTION'`\n- `'UNKNOWN'`\n- `'USER_REQUESTED'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Will be published when a subscription is unassigned from a meta site"
+        ]
+      }
+    },
+    {
+      "name": "Tier",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tier ID.\n\nThis field will not be returned if the account belongs to the base tier."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the tier information was last recalculated."
+        },
+        {
+          "name": "points",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Points earned and adjusted over the tier's current rolling window."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Tier information."
+        ]
+      }
+    },
+    {
+      "name": "TierDefinition",
+      "members": [
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tier description."
+        },
+        {
+          "name": "icon",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tier icon."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tier name."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Information about the base loyalty tier."
+        ]
+      }
+    },
+    {
+      "name": "TierTotal",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If None, Account belongs to base Tier"
+        },
+        {
+          "name": "numberOfAccounts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of loyalty accounts, that belongs to particular Tier"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TiersProgramSettings",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the loyalty tiers program was created."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the loyalty tiers program was last updated."
+        },
+        {
+          "name": "baseTierDefinition",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.TierDefinition"
+            }
+          ],
+          "doc": "Information about the base loyalty tier."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by `1` each time the loyalty tiers settings are updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the loyalty tiers settings.\n"
+        },
+        {
+          "name": "rollingWindow",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RollingWindow"
+            }
+          ],
+          "doc": "*Required.** Period of time used to calculate loyalty points for tier assignment.\n\nThe loyalty points accumulated during this period determine if the account meets a tier's required point threshold.\n"
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tiers program status."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfTiersProgramSettingsPeriodOneOf",
+            "members": [
+              "rollingWindow"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          "There can be single TiersSettings per site and it's global (i.e. applies to all program's tiers)"
+        ]
+      }
+    },
+    {
+      "name": "TiersProgramSettingsChanged",
+      "members": [
+        {
+          "name": "programSettings",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.TiersProgramSettings"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TiersProgramSettingsPeriodOneOf",
+      "members": [
+        {
+          "name": "rollingWindow",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RollingWindow"
+            }
+          ],
+          "doc": "*Required.** Period of time used to calculate loyalty points for tier assignment.\n\nThe loyalty points accumulated during this period determine if the account meets a tier's required point threshold.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TiersRollingUpdate",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Transaction",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time of the transaction."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction ID."
+        },
+        {
+          "name": "accountId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Loyalty account ID."
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Points earned, adjusted, or redeemed in the latest transaction."
+        },
+        {
+          "name": "appId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app that initiated the transaction.\n\nOnly present if `type` is `\"ADJUST`, `\"EARN\"`, or `\"GIVE\"`.\n\nIf points were earned or adjusted manually, then the `appId` is the Loyalty app's\n`wixAppId` of `553c79f3-5625-4f38-b14b-ef7c0d1e87df`. If points were earned or adjusted in an automatic event,\nthen the `appId` is from that automation's `sourceAppId`."
+        },
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's contact ID. See the [Contacts API](wix-crm-backend/contacts) to learn more."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction description. Only present for automated transactions of `type` `\"EARN\"` or `\"REDEEM\"`, when set by the site owner in the Business Manager."
+        },
+        {
+          "name": "idempotencyKey",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique string identifier generated by the app. Wix uses this identifier to recognize subsequent retries of the same request.\n\nOnly present if points were added manually using the [`earnPoints()`](/wix-loyalty-v2/accounts/earnpoints) function."
+        },
+        {
+          "name": "memberId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Account owner's member ID. See the [Members API](wix-members-backend/introduction) to learn more."
+        },
+        {
+          "name": "redeemInfo",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.RedeemInfo"
+            }
+          ],
+          "doc": "Additional redeem information. Only present if `type` is `\"REDEEM\"`."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Transaction type.\n\n+ `\"ADJUST\"`: Point balance was manually adjusted to a loyalty account. See [`adjustPoints()`](wix-loyalty-v2/accounts/adjustpoints).\n+ `\"EARN\"`: Points were earned by the customer taking an action. See [`earnPoints()`](wix-loyalty-v2/accounts/earnpoints).\n+ `\"GIVE\"`: Points were manually added to or subtracted from a loyalty account. See [`adjustPoints()`](wix-loyalty-v2/accounts/adjustpoints).\n+ `\"REDEEM\"`: Points were redeemed by the customer for a reward.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Loyalty transaction."
+        ]
+      }
+    }
+  ]
+}
