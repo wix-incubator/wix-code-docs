@@ -15,6 +15,11 @@ title: Introduction
 
 &nbsp;
 
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend,
+> unless specified otherwise.
+
 The Wix Bookings Services API enables you to retrieve the services your business offers.
 
 The service contains the information customers need to decide whether to book the business offering. This includes the type of offering (appointment, class, course), scheduling information, locations, booking policies (such as the latest possible time a session can be booked), payment information, and more. Creating and managing your services is the cornerstone for working with Wix Bookings.
