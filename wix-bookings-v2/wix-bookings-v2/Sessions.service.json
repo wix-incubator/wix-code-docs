@@ -51,21 +51,23 @@
         ],
         "examples": [
           {
-            "title": "createSession example",
+            "title": "Create a session  ",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function createSession(session) {",
-              "   try {",
-              "     const result = await sessions.createSession(session);",
+              "import {sessions} from 'wix-bookings.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "async function createSession(scheduleId) {",
+              "    const createdSession =",
+              "        await sessions.createSession({",
+              "            scheduleId,",
+              "            start: {",
+              "                timestamp: new Date('2023-01-01T12:00:00Z')",
+              "            },",
+              "            end: {",
+              "                timestamp: new Date('2023-01-01T13:00:00Z')",
+              "            }",
+              "        })",
+              "    return createdSession",
+              "}"
             ]
           }
         ]
@@ -126,21 +128,13 @@
         ],
         "examples": [
           {
-            "title": "deleteSession example",
+            "title": "Delete a session by ID",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function deleteSession(sessionId, options) {",
-              "   try {",
-              "     const result = await sessions.deleteSession(sessionId, options);",
+              "import {sessions} from 'wix-bookings.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "async function deleteSession(sessionId) {",
+              "    await sessions.deleteSession(sessionId)",
+              "}"
             ]
           }
         ]
@@ -201,21 +195,14 @@
         ],
         "examples": [
           {
-            "title": "getSession example",
+            "title": "Retrieve a session by ID  ",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function getSession(id, options) {",
-              "   try {",
-              "     const result = await sessions.getSession(id, options);",
+              "import {sessions} from 'wix-bookings.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "async function getSession(sessionId) {",
+              "    const session = await sessions.getSession(sessionId)",
+              "    return session",
+              "}"
             ]
           }
         ]
@@ -283,21 +270,14 @@
         ],
         "examples": [
           {
-            "title": "listSessions example",
+            "title": "Retrieve a list of sessions by IDs  ",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function listSessions(ids, options) {",
-              "   try {",
-              "     const result = await sessions.listSessions(ids, options);",
+              "import {sessions} from 'wix-bookings.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "async function listSessions(sessionIds) {",
+              "    const response = await sessions.listSessions(sessionIds)",
+              "    return response.sessions",
+              "}"
             ]
           }
         ]
@@ -319,7 +299,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions which overlap with the time range are included in the results.\n\nAn overlapping session is a session which starts before the `toDate` and ends after the `fromDate`.\nAn overlapping recurring session is such that starts before the `toDate` and its `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.",
+          "doc": "Start of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results. For recurring session definitions, this means the `start` value is before the `fromDate` and the `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.",
           "required": true
         },
         {
@@ -329,7 +309,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "End of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions which overlap with the time range are included in the results.\n\nAn overlapping session is a session which starts before the `toDate` and ends after the `fromDate`.\nAn overlapping recurring session is such that starts before the `toDate` and its `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n\nMax: 1 year after `fromDate` for session instance queries. This limit doesn't apply to recurring session definition queries.\n",
+          "doc": "End of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results. For recurring session definitions, this means the `start` value is before the `toDate` and the `UNTIL` value in the `recurrence` property is after the `toDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n\nMax: 1 year after `fromDate` for session instance queries. This limit doesn't apply to recurring session definition queries.\n",
           "required": true
         },
         {
@@ -406,6 +386,7 @@
           "|`participants.contactId`|[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome),[`eq()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#eq)|",
           "|`participants.approvalStatus`|[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome)|",
           "|`inheritedFields`|[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome),[`hasAll()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasAll)|",
+          "|`externalCalendarOverrides.title`|[`eq()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#ne),[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome),[`startsWith()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#startsWith)|",
           "|`recurringSessionId`|[`eq()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#ne),[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome),[`exists()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#exists)|",
           "|`calendarConference`|[`exists()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#exists)|",
           "|`calendarConference.id`|[`eq()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#eq),[`ne()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#ne),[`hasSome()`](wix-bookings.v2.Sessions.SessionsQueryBuilder#hasSome)|",
@@ -415,14 +396,66 @@
         ],
         "examples": [
           {
-            "title": "querySessions example",
+            "title": "Query sessions within a time range ",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function querySessions() {",
-              "   const { items } = sessions.querySessions().find();",
-              " }",
-              "  "
+              "import {sessions} from 'wix-bookings.v2';",
+              "",
+              "async function querySessions() {",
+              "    const fromDate = new Date('2023-01-01T00:00:00Z')",
+              "    const toDate = new Date('2023-01-07T00:00:00Z')",
+              "    const results = await sessions.querySessions(fromDate, toDate).find()",
+              "    return results.items",
+              "}"
+            ]
+          },
+          {
+            "title": "Query sessions by tags ",
+            "body": [
+              "import {sessions} from 'wix-bookings.v2';",
+              "",
+              "async function querySessionsByTags(fromDate, toDate) {",
+              "    const {items: taggedSessions} = await sessions",
+              "        .querySessions(fromDate, toDate)",
+              "        .hasSome('tags', [",
+              "            'Custom Tag 1',",
+              "            'Custom Tag 2'",
+              "        ])",
+              "        .find()",
+              "    return taggedSessions",
+              "}"
+            ]
+          },
+          {
+            "title": "Query for working hours sessions ",
+            "body": [
+              "import {sessions} from 'wix-bookings.v2';",
+              "",
+              "async function queryWorkingHourSessions(fromDate, toDate) {",
+              "    const options = {",
+              "        type: 'WORKING_HOURS'",
+              "    }",
+              "    const {items: workingHourSessions} = await sessions",
+              "        .querySessions(fromDate, toDate, options)",
+              "        .find()",
+              "    return workingHourSessions",
+              "}"
+            ]
+          },
+          {
+            "title": "Query for a schedule's recurring sessions ",
+            "body": [
+              "import {sessions} from 'wix-bookings.v2';",
+              "",
+              "async function queryRecurringSessionsOfSchedule(fromDate, toDate) {",
+              "    const options = {",
+              "        instances: false",
+              "    }",
+              "    const {items: recurringSessions} = await sessions",
+              "        .querySessions(fromDate, toDate, options)",
+              "        .eq('scheduleId', '36c043ff-82ca-42aa-b980-f75f7364e4f3')",
+              "        .find()",
+              "    return recurringSessions",
+              "}"
             ]
           }
         ]
@@ -494,21 +527,17 @@
         ],
         "examples": [
           {
-            "title": "updateSession example",
+            "title": "Update a session by ID",
             "body": [
-              "import { sessions } from 'wix-bookings.v2';",
-              "  ",
-              " async function updateSession(id, session, options) {",
-              "   try {",
-              "     const result = await sessions.updateSession(id, session, options);",
+              "import {sessions} from 'wix-bookings.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "async function updateSession(sessionId) {",
+              "    const updatedSession =",
+              "        await sessions.updateSession(sessionId, {",
+              "            title: \"An updated title\"",
+              "        })",
+              "    return updatedSession",
+              "}"
             ]
           }
         ]
@@ -2625,7 +2654,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions which overlap with the time range are included in the results.\n\nAn overlapping session is a session which starts before the `toDate` and ends after the `fromDate`.\nAn overlapping recurring session is such that starts before the `toDate` and its `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n"
+          "doc": "Start of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `fromDate` but end after it are included in the results. For recurring session definitions, this means the `start` value is before the `fromDate` and the `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n"
         },
         {
           "name": "includeExternal",
@@ -2665,7 +2694,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "End of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions which overlap with the time range are included in the results.\n\nAn overlapping session is a session which starts before the `toDate` and ends after the `fromDate`.\nAn overlapping recurring session is such that starts before the `toDate` and its `UNTIL` value in the `recurrence` property is after the `fromDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n\nMax: 1 year after `fromDate` for session instance queries. This limit doesn't apply to recurring session definition queries.\n"
+          "doc": "End of the time range for which sessions are returned, in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)).\n\nSessions that begin before the `toDate` but end after it are included in the results. For recurring session definitions, this means the `start` value is before the `toDate` and the `UNTIL` value in the `recurrence` property is after the `toDate`.\n\nRequired, unless `query.cursorPaging` is provided.\n\nMax: 1 year after `fromDate` for session instance queries. This limit doesn't apply to recurring session definition queries.\n"
         },
         {
           "name": "type",
