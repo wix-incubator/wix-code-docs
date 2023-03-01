@@ -9,7 +9,7 @@ We use two types of examples to demonstrate the concepts that you're learning. 
 
 The site we created, [Give & Get](https://www.wix.com/velo-dev/giveandget), is a give and take marketplace for passing on used items to a new owner. You can explore and work on your own version of this site using [this template](https://editor.wix.com/html/editor/web/renderer/new?siteId=bc57d791-a42d-4f8c-b74e-bd51b6dd0095&metaSiteId=398bcfa9-b93e-435a-95ea-9a0c15d56d36&autoDevMode=true). 
 
-![Give & Get site](../media/give-and-get-story.gif)
+![Give & Get site](../media/give_and_get_story.gif)
 
 
 The Give & Get site allows logged-in members to post giveaways that they want to give away. Visitors to the site can request those giveaways and have them delivered. 
