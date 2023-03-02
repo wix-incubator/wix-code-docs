@@ -1,6 +1,6 @@
 # Dashboard Page IDs
 
-This table lists the IDs for the pages in the dashboard that you can navigate to using the [navigate()](/wix-dashboard/navigate) function. There are site requirements needed to make certain pages available. These requirements are listed in the table.
+This table lists the IDs for the pages in the dashboard that you can navigate to using the [`navigate()`](/wix-dashboard/navigate) function. There are site requirements needed to make certain pages available. These requirements are listed in the table.
 
 |Page Name|Page ID|Site Requirements|Location in Dashboard Menu|
 |:----|:----|:----|:----|
