@@ -782,6 +782,97 @@
       ]
     },
     {
+      "name": "setServiceLocations",
+      "params": [
+        {
+          "name": "serviceId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the service.",
+          "required": true
+        },
+        {
+          "name": "locations",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Services.Location"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The locations you specify replace the existing service locations.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.SetServiceLocationsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "locations",
+        "serviceId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Services.SetServiceLocationsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Allows to set the various locations this service is offered at.\nChanging locations may have impact on created sessions and their participants.\nWhen removing locations from a service, this endpoint requires stating what to do with existing sessions occurring at the removed locations.",
+        "description": [],
+        "examples": [
+          {
+            "title": "setServiceLocations example",
+            "body": [
+              "import { services } from 'wix-bookings.v2';",
+              "  ",
+              " async function setServiceLocations(serviceId, locations, options) {",
+              "   try {",
+              "     const result = await services.setServiceLocations(serviceId, locations, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
       "name": "updateService",
       "params": [
         {
@@ -2803,6 +2894,26 @@
       }
     },
     {
+      "name": "MoveToNewLocationsOptions",
+      "members": [
+        {
+          "name": "newLocation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.Location"
+            }
+          ],
+          "doc": "The new location to move existing sessions currently set to a removed location, used when `action` is `MOVE_TO_LOCATION`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "OnlineBooking",
       "members": [
         {
@@ -2924,6 +3035,36 @@
             }
           ],
           "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ParticipantNotification",
+      "members": [
+        {
+          "name": "message",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Custom message to send to the participants about the changes to the booking."
+        },
+        {
+          "name": "notifyParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to send the message about the changes to the customer. `false` by default"
         }
       ],
       "docs": {
@@ -3413,6 +3554,66 @@
       }
     },
     {
+      "name": "RemovedLocationSessionsAction",
+      "members": [
+        {
+          "name": "action",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The action to perform on sessions currently set to a removed location."
+        },
+        {
+          "name": "moveToLocationOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.MoveToNewLocationsOptions"
+            }
+          ],
+          "doc": "Options related to the action, such as a new location to move existing sessions to."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfRemovedLocationSessionsActionActionOptionsOneOf",
+            "members": [
+              "moveToLocationOptions"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RemovedLocationSessionsActionActionOptionsOneOf",
+      "members": [
+        {
+          "name": "moveToLocationOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.MoveToNewLocationsOptions"
+            }
+          ],
+          "doc": "Options related to the action, such as a new location to move existing sessions to."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ReschedulePolicy",
       "members": [
         {
@@ -3642,7 +3843,7 @@
               }
             }
           ],
-          "doc": "The locations this service is offered at. For courses only: Currently, only 1 location is supported."
+          "doc": "The locations this service is offered at.\nOnly multiple locations of type `BUSINESS` are supported. multiple locations of type `CUSTOM` or `CUSTOMER` are not supported.\nFor courses only: Currently, only 1 location is supported, for all location types.\nUse `setServiceLocations` method to change the locations this service is offered at."
         },
         {
           "name": "mainSlug",
@@ -3851,6 +4052,111 @@
             }
           ],
           "doc": "The new slug set as the active slug for the service."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SetServiceLocationsOptions",
+      "members": [
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        },
+        {
+          "name": "removedLocationSessionsAction",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.RemovedLocationSessionsAction"
+            }
+          ],
+          "doc": "The action to perform on sessions currently set to a removed location."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SetServiceLocationsRequest",
+      "members": [
+        {
+          "name": "locations",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Services.Location"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The locations you specify replace the existing service locations."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change, and an optional custom message."
+        },
+        {
+          "name": "removedLocationSessionsAction",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.RemovedLocationSessionsAction"
+            }
+          ],
+          "doc": "The action to perform on sessions currently set to a removed location."
+        },
+        {
+          "name": "serviceId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the service."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SetServiceLocationsResponse",
+      "members": [
+        {
+          "name": "service",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Services.Service"
+            }
+          ],
+          "doc": "The updated service with the newly set locations."
         }
       ],
       "docs": {
@@ -4314,7 +4620,7 @@
               }
             }
           ],
-          "doc": "The locations this service is offered at. For courses only: Currently, only 1 location is supported."
+          "doc": "The locations this service is offered at.\nOnly multiple locations of type `BUSINESS` are supported. multiple locations of type `CUSTOM` or `CUSTOMER` are not supported.\nFor courses only: Currently, only 1 location is supported, for all location types.\nUse `setServiceLocations` method to change the locations this service is offered at."
         },
         {
           "name": "mainSlug",
