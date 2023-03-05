@@ -15,9 +15,9 @@ This table lists the IDs for the pages in the dashboard that you can navigate to
 |Automations|`triggers-page-component`| |Automations|
 |Blog Overview|`social-blog`|Wix Blog app installed|Blog > Overview|
 |Blog Writers|`staff-management.pages.index`|Wix Blog app installed|Blog > Writers|
-|Staff Management|`bookings-staff-list-lazy-component-id`|Wix Blookings app installed|Booking Calendar > Staff|
-|New Staff Member Page|`bookings-staff-details-lazy-component-id`|Wix Blookings app installed|Booking Calendar > Staff|
-|Bookings Settings|`bookings.bookings-settings-page-lazy`|Wix Blookings app installed|Bookings Calendar > Staff|
+|Staff Management|`bookings-staff-list-lazy-component-id`|Wix Bookings app installed|Booking Calendar > Staff|
+|New Staff Member Page|`bookings-staff-details-lazy-component-id`|Wix Bookings app installed|Booking Calendar > Staff|
+|Bookings Settings|`bookings.bookings-settings-page-lazy`|Wix Bookings app installed|Bookings Calendar > Staff|
 |Forms & Submissions|`form-builder-component`| |Communications > Forms & Submissions|
 |Inbox|`engage`| |Communications > Inbox|
 |Contacts List|`contacts-page-component`| |Contacts > Contacts|
@@ -85,4 +85,4 @@ This table lists the IDs for the pages in the dashboard that you can navigate to
 |Subscriptions|`subscriptions-bm`|Wix Pricing Plans app installed|Subscriptions|
 |VideoLibrary|`video.video-library-lazy-page`|Wix Video app installed|Video Library|
 |Site History|`site-history-client`| | |
-|Business Cards|`print-shop-biz-mgr`| |Marketing & SEO > Business Cards &  More|
+|Business Cards|`print-shop-biz-mgr`| |Marketing & SEO > Business Cards & More|
