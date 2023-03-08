@@ -1,5 +1,16 @@
 # About the External Calendars API
 
+
+&nbsp;
+
+<div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
+  <b>Developer Preview</b>
+    <br/>
+    <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
+</div>
+
+&nbsp;
+
 The External Calendars API enables an app to connect and sync a Wix site with external calendars.
 
 With External Calendars, you can:
@@ -16,7 +27,7 @@ The External Calendars API provides built-in support for Google, Microsoft, and 
 
 It’s important to note the following points before starting to code:
 
-+ External calendar providers have different requirements for authentication. Use [List Providers](https://dev.wix.com/api/rest/wix-bookings/external-calendars-v2/list-providers) to find out whether to connect with a provider using [Connect By OAuth](https://dev.wix.com/api/rest/wix-bookings/external-calendars-v2/connect-by-o-auth) or [Connect By Credentials](https://dev.wix.com/api/rest/wix-bookings/external-calendars-v2/connect-by-credentials).
++ External calendar providers have different requirements for authentication. Use [list Providers()](#listProviders) to find out whether to connect with a provider using [Connect By OAuth](https://dev.wix.com/api/rest/wix-bookings/external-calendars-v2/connect-by-o-auth) or [Connect By Credentials()](#connectByCredentials).
 + A connection’s `syncConfig` property contains settings for the external calendar connection, including whether importing and/or exporting of calendar events is enabled.
 
 ## Terminology
