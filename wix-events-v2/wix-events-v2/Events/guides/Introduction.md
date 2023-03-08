@@ -2,7 +2,7 @@
 
 Backend events are fired in your site's backend when certain changes occur in your site's Wix events. You can write event handlers that react to these backend events. Event handler functions receive data that corresponds to the backend event that has occurred. Use event handlers to create custom responses to the backend events.
 
-> Note: For clarity, this reference refers to:
+> **Note**: For clarity, this reference refers to:
 >
 > "backend events" when discussing events that get fired and are handled by event handlers.
 > "Wix events" when discussing events that people attend.
