@@ -23,18 +23,19 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "effectiveAt",
           "type": [
             {
-              "referenceType": "wix-pricing-plans-v2.Orders.CancelOrderOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "Options for canceling orders.",
-          "required": false
+          "doc": "__Required.__ When the order will be canceled. One-time orders can only be canceled `IMMEDIATELY`.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "effectiveAt"
       ],
       "ret": {
         "type": [
@@ -62,9 +63,9 @@
             "body": [
               "import { orders } from 'wix-pricing-plans.v2';",
               "  ",
-              " async function cancelOrder(id, options) {",
+              " async function cancelOrder(id, effectiveAt) {",
               "   try {",
-              "     const result = await orders.cancelOrder(id, options);",
+              "     const result = await orders.cancelOrder(id, effectiveAt);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -333,7 +334,7 @@
               "referenceType": "wix-pricing-plans-v2.Orders.ManagementGetOrderOptions"
             }
           ],
-          "doc": "Options to use when getting an order.\n",
+          "doc": "Options to use when getting an order.",
           "required": false
         }
       ],
@@ -347,13 +348,13 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-pricing-plans-v2.Orders.GetOrderResponse"
+                  "referenceType": "wix-pricing-plans-v2.Orders.Order"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "Order.\n"
       },
       "docs": {
         "summary": "Retrieves an order by ID.",
@@ -733,18 +734,19 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "endDate",
           "type": [
             {
-              "referenceType": "wix-pricing-plans-v2.Orders.PostponeEndDateOptions"
+              "nativeType": "Date"
             }
           ],
-          "doc": "Options for postponing the end date of an order.",
-          "required": false
+          "doc": "New end date and time.\n\nMust be later than the current end date and time.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "endDate"
       ],
       "ret": {
         "type": [
@@ -772,9 +774,9 @@
             "body": [
               "import { orders } from 'wix-pricing-plans.v2';",
               "  ",
-              " async function postponeEndDate(id, options) {",
+              " async function postponeEndDate(id, endDate) {",
               "   try {",
-              "     const result = await orders.postponeEndDate(id, options);",
+              "     const result = await orders.postponeEndDate(id, endDate);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -808,18 +810,19 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "effectiveAt",
           "type": [
             {
-              "referenceType": "wix-pricing-plans-v2.Orders.RequestCancellationOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "Options for requesting a cancellation.",
-          "required": false
+          "doc": "Whether to cancel the order immediately or at the next payment date.\nOne-time payment orders can only be canceled immediately.\n\nSupported values:\n- `\"IMMEDIATELY\"`: Indicates that the order should be canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: Indicates that the order be canceled at the next payment date.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "effectiveAt"
       ],
       "ret": {
         "type": [
@@ -847,9 +850,9 @@
             "body": [
               "import { orders } from 'wix-pricing-plans.v2';",
               "  ",
-              " async function requestCancellation(id, options) {",
+              " async function requestCancellation(id, effectiveAt) {",
               "   try {",
-              "     const result = await orders.requestCancellation(id, options);",
+              "     const result = await orders.requestCancellation(id, effectiveAt);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -1313,26 +1316,6 @@
       }
     },
     {
-      "name": "CancelOrderOptions",
-      "members": [
-        {
-          "name": "effectiveAt",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "When the order is canceled.\n\nOne time orders can only be canceled immediately. Supported values:\n- `\"IMMEDIATELY\"`: The order is canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: The order is canceled at the next payment date.\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "CancelOrderRequest",
       "members": [
         {
@@ -1346,7 +1329,6 @@
         },
         {
           "name": "effectiveAt",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
@@ -4211,26 +4193,6 @@
       }
     },
     {
-      "name": "PostponeEndDateOptions",
-      "members": [
-        {
-          "name": "endDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "New end date and time.\n\nMust be later than the current end date and time.\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "PostponeEndDateRequest",
       "members": [
         {
@@ -4244,7 +4206,6 @@
         },
         {
           "name": "endDate",
-          "optional": true,
           "type": [
             {
               "nativeType": "Date"
@@ -4870,26 +4831,6 @@
       }
     },
     {
-      "name": "RequestCancellationOptions",
-      "members": [
-        {
-          "name": "effectiveAt",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Whether to cancel the order immediately or at the next payment date.\nOne-time payment orders can only be canceled immediately.\n\nSupported values:\n- `\"IMMEDIATELY\"`: Indicates that the order should be canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: Indicates that the order be canceled at the next payment date.\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "RequestCancellationRequest",
       "members": [
         {
@@ -4903,7 +4844,6 @@
         },
         {
           "name": "effectiveAt",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
