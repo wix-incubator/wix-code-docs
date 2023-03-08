@@ -4,8 +4,8 @@ Backend events are fired in your site's backend when certain changes occur in yo
 
 > **Note**: For clarity, this reference refers to:
 >
-> "backend events" when discussing events that get fired and are handled by event handlers.
-> "Wix events" when discussing events that people attend.
+> - "backend events" when discussing events that get fired and are handled by event handlers.  
+> - "Wix events" when discussing events that people attend.
 
 Backend events are **not** fired when previewing your site.
 
