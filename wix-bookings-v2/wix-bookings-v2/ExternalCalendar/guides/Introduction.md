@@ -27,7 +27,7 @@ The External Calendars API provides built-in support for Google, Microsoft, and 
 
 It’s important to note the following points before starting to code:
 
-+ External calendar providers have different requirements for authentication. Use [list Providers()](#listProviders) to find out whether to connect with a provider using [Connect By OAuth](https://dev.wix.com/api/rest/wix-bookings/external-calendars-v2/connect-by-o-auth) or [Connect By Credentials()](#connectByCredentials).
++ External calendar providers have different requirements for authentication. Use [list Providers()](#listProviders) to find out whether to connect with a provider using [Connect By OAuth](#connectByOAuth) or [Connect By Credentials()](#connectByCredentials).
 + A connection’s `syncConfig` property contains settings for the external calendar connection, including whether importing and/or exporting of calendar events is enabled.
 
 ## Terminology
