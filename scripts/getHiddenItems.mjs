@@ -17,7 +17,7 @@ export async function getHiddenItems() {
     const menuConfig = await getMenuData();
     const hiddenItems = findHiddenItems(menuConfig);
     console.log(hiddenItems)
-    fs.writeFileSync('../hiddenItems.json', JSON.stringify(hiddenItems));
+    fs.writeFileSync('./scripts/hiddenItems.json', JSON.stringify(hiddenItems));
 }
 
 async function getMenuData() {
