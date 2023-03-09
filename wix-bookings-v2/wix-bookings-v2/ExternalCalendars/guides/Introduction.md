@@ -24,7 +24,7 @@ With External Calendars, you can:
 + Import events to a Wix site from a connected external calendar.
 + Export events from a Wix site's calendar to a connected external calendar.
 + Retrieve information about calendars belonging to an external calendar account.
-+ Retrieve information about support for external calendar providers.
++ Retrieve information about support for external calendar providers. 
 
 The External Calendars API provides built-in support for Google, Microsoft, and Apple calendars. Integration with additional external calendars can be enabled by installing a calendar integration app from the Wix App Market.
 
