@@ -35,7 +35,9 @@
       ],
       "requiredFields": [
         "_id",
-        "options.lineItems.catalogReference"
+        "options.lineItems.catalogReference",
+        "options.lineItems.catalogReference.appId",
+        "options.lineItems.catalogReference.catalogItemId"
       ],
       "ret": {
         "type": [
@@ -520,12 +522,14 @@
         }
       ],
       "requiredFields": [
+        "options.channelType",
         "options.checkoutInfo.customFields.value",
         "options.checkoutInfo.membershipOptions.selectedMemberships.memberships._id",
         "options.checkoutInfo.membershipOptions.selectedMemberships.memberships.appId",
         "options.checkoutInfo.membershipOptions.selectedMemberships.memberships.lineItemIds",
         "options.lineItems.catalogReference",
-        "options.lineItems.catalogReference.appId"
+        "options.lineItems.catalogReference.appId",
+        "options.lineItems.catalogReference.catalogItemId"
       ],
       "ret": {
         "type": [
@@ -545,7 +549,7 @@
       "docs": {
         "summary": "Creates a checkout.",
         "description": [
-          "The `createCheckout()` function returns a Promise that resolves to the new checkout when it's created.\n\n> **Notes:**\n> + Checkout must include at least 1 item in the `options.lineItems` or `options.customLineItems` arrays.\n> + `options.channelType` is required.\n> + If `_id` for `options.lineItems`/`customLineItems` is added, make sure that each `_id` is unique.\n> + If `options.checkoutInfo.customFields` are added, then `options.checkoutInfo.customFields.value` is required."
+          "The `createCheckout()` function returns a Promise that resolves to the new checkout when it's created.\n\n> **Notes:**\n> + Checkout must include at least 1 item in the `options.lineItems` array.\n> + `options.channelType` is required.\n> + If `_id` for `options.lineItems` is added, make sure that each `_id` is unique.\n> + If `options.checkoutInfo.customFields` are added, then `options.checkoutInfo.customFields.value` is required."
         ],
         "examples": [
           {
@@ -1502,6 +1506,16 @@
           ],
           "doc": "Checkout ID.",
           "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.GetCheckoutOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
         }
       ],
       "requiredFields": [
@@ -2223,9 +2237,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Removes the coupon from a specified checkout.\n>**Note:** A checkout can only hold 1 coupon.",
+        "summary": "Removes the coupon from a specified checkout.",
         "description": [
-          "The `removeCoupon()` function returns a Promise that resolves to the updated checkout when the coupon is removed from the specified checkout."
+          "The `removeCoupon()` function returns a Promise that resolves to the updated checkout when the coupon is removed from the specified checkout.\n\n>**Note:** A checkout can only hold 1 coupon."
         ],
         "examples": [
           {
@@ -2846,9 +2860,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Removes the gift card from a specified checkout.\n>**Note:** A checkout can only hold 1 gift card.",
+        "summary": "Removes the gift card from a specified checkout.",
         "description": [
-          "The `removeGiftCard()` function returns a Promise that resolves to the updated checkout when the gift card is removed from the specified checkout."
+          "The `removeGiftCard()` function returns a Promise that resolves to the updated checkout when the gift card is removed from the specified checkout.\n\n>**Note:** A checkout can only hold 1 gift card."
         ],
         "examples": [
           {
@@ -3770,6 +3784,411 @@
         ]
       },
       "isVeloEvent": false
+    },
+    {
+      "name": "updateCheckout",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        },
+        {
+          "name": "checkout",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckout"
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Checkout.UpdateCheckoutOptions"
+            }
+          ],
+          "doc": "Checkout update options.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "checkout",
+        "checkout.customFields.value",
+        "checkout.membershipOptions.selectedMemberships.memberships._id",
+        "checkout.membershipOptions.selectedMemberships.memberships.appId",
+        "checkout.membershipOptions.selectedMemberships.memberships.lineItemIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.Checkout"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Updated checkout.\n"
+      },
+      "docs": {
+        "summary": "Updates a checkout.",
+        "description": [
+          "The `updateCheckout()` function returns a Promise that resolves to the updated checkout when the specified properties are updated.\n\n>**Notes:**\n> + If nothing is passed in the request, the call will fail.\n> + The `checkout.buyerInfo.email` may not be removed once it is set."
+        ],
+        "examples": [
+          {
+            "title": "Update a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myUpdateCheckoutFunction(_id, checkout, options) {",
+              "  try {",
+              "    const updatedCheckout = await checkout.updateCheckout(_id, checkout, options);",
+              "    console.log('Success! Updated checkout: ', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myUpdateCheckoutFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const _id = \"21fe558e-21a0-4cff-a49b-a4ccb0f7414f\";",
+              "",
+              "const checkout = {",
+              "  // New value for buyerNote",
+              "  \"buyerNote\": \"Please gift wrap this order. Thanks!\"",
+              "}",
+              "",
+              "const options = {",
+              "  // Coupon code to be applied to the checkout",
+              "  \"couponCode\": \"SUMMERSALE10\"",
+              "}",
+              "",
+              "myUpdatecheckoutFunction(_id, checkout, options)",
+              "  .then((updatedCheckout) => {",
+              "    const updatedBuyerNote = updatedCheckout.buyerNote;",
+              "    // appliedCoupon boolean resolves to true if coupon object exists",
+              "    const appliedCoupon = !!updatedCheckout.appliedDiscounts[0].coupon",
+              "",
+              "    console.log('Success! Updated checkout:', updatedCheckout);",
+              "    return updatedCheckout;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"21fe558e-21a0-4cff-a49b-a4ccb0f7414f\",",
+              " *   \"lineItems\": [",
+              " *     {",
+              " *       \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *       \"quantity\": 3,",
+              " *       \"catalogReference\": {",
+              " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
+              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *       },",
+              " *       \"productName\": {",
+              " *         \"original\": \"Shirt\",",
+              " *         \"translated\": \"Shirt\"",
+              " *       },",
+              " *       \"url\": \"https://giftsstore.wixsite.com/greatest-gifts/product-page/shirt\",",
+              " *       \"price\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"lineItemPrice\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"€30.00\",",
+              " *         \"formattedConvertedAmount\": \"€30.00\"",
+              " *       },",
+              " *       \"fullPrice\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"priceBeforeDiscounts\": {",
+              " *         \"amount\": \"10\",",
+              " *         \"convertedAmount\": \"10\",",
+              " *         \"formattedAmount\": \"€10.00\",",
+              " *         \"formattedConvertedAmount\": \"€10.00\"",
+              " *       },",
+              " *       \"totalPriceAfterTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"€30.00\",",
+              " *         \"formattedConvertedAmount\": \"€30.00\"",
+              " *       },",
+              " *       \"totalPriceBeforeTax\": {",
+              " *         \"amount\": \"30\",",
+              " *         \"convertedAmount\": \"30\",",
+              " *         \"formattedAmount\": \"€30.00\",",
+              " *         \"formattedConvertedAmount\": \"€30.00\"",
+              " *       },",
+              " *       \"taxDetails\": {",
+              " *         \"taxableAmount\": {",
+              " *           \"amount\": \"30\",",
+              " *           \"convertedAmount\": \"30\",",
+              " *           \"formattedAmount\": \"€30.00\",",
+              " *           \"formattedConvertedAmount\": \"€30.00\"",
+              " *         },",
+              " *         \"taxRate\": \"0\",",
+              " *         \"totalTax\": {",
+              " *           \"amount\": \"0\",",
+              " *           \"convertedAmount\": \"0\",",
+              " *           \"formattedAmount\": \"€0.00\",",
+              " *           \"formattedConvertedAmount\": \"€0.00\"",
+              " *         },",
+              " *         \"rateBreakdown\": []",
+              " *       },",
+              " *       \"discount\": {",
+              " *         \"amount\": \"0\",",
+              " *         \"convertedAmount\": \"0\",",
+              " *         \"formattedAmount\": \"€0.00\",",
+              " *         \"formattedConvertedAmount\": \"€0.00\"",
+              " *       },",
+              " *       \"descriptionLines\": [],",
+              " *       \"media\": \"wix:image://v1/3c76e2_c5331f937348492a97df87b0a3b34ea4~mv2.jpg#originWidth=1000&originHeight=1000\",",
+              " *       \"availability\": {",
+              " *         \"status\": \"AVAILABLE\"",
+              " *       },",
+              " *       \"physicalProperties\": {",
+              " *         \"sku\": \"364115376135191\",",
+              " *         \"shippable\": true",
+              " *       },",
+              " *       \"couponScopes\": [",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"collection\",",
+              " *             \"entityId\": \"00000000-000000-000000-000000000001\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"namespace\": \"stores\",",
+              " *           \"group\": {",
+              " *             \"name\": \"product\",",
+              " *             \"entityId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *           }",
+              " *         }",
+              " *       ],",
+              " *       \"itemType\": {",
+              " *         \"preset\": \"PHYSICAL\"",
+              " *       },",
+              " *       \"paymentOption\": \"FULL_PAYMENT_ONLINE\",",
+              " *       \"rootCatalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
+              " *     }",
+              " *   ],",
+              " *   \"shippingInfo\": {",
+              " *     \"carrierServiceOptions\": []",
+              " *   },",
+              " *   \"buyerNote\": \"Please gift wrap this order. Thanks!\",",
+              " *   \"buyerInfo\": {",
+              " *     \"contactId\": \"a4bc8d90-a91b-467f-a775-77d65dd0442e\",",
+              " *     \"email\": \"johnnydoe@example.com\",",
+              " *     \"memberId\": \"ea3d74df-b7dc-4ca1-a7c9-c416b9017a86\"",
+              " *   },",
+              " *   \"conversionCurrency\": \"EUR\",",
+              " *   \"priceSummary\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"€30.00\",",
+              " *       \"formattedConvertedAmount\": \"€30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"€30.00\",",
+              " *       \"formattedConvertedAmount\": \"€30.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"calculationErrors\": {",
+              " *     \"orderValidationErrors\": []",
+              " *   },",
+              " *   \"appliedDiscounts\": [",
+              " *     {",
+              " *       \"discountType\": \"GLOBAL\",",
+              " *       \"lineItemIds\": [],",
+              " *       \"coupon\": {",
+              " *         \"_id\": \"fbb94b06-7447-4161-9c48-59bfcdc39e77\",",
+              " *         \"code\": \"SUMMERSALE10\",",
+              " *         \"amount\": {",
+              " *           \"amount\": \"10.0\",",
+              " *           \"convertedAmount\": \"10.0\",",
+              " *           \"formattedAmount\": \"€10.00\",",
+              " *           \"formattedConvertedAmount\": \"€10.00\"",
+              " *         },",
+              " *         \"name\": \"SUMMERSALE10\",",
+              " *         \"couponType\": \"MoneyOff\"",
+              " *       }",
+              " *     }",
+              " *   ],",
+              " *   \"customFields\": [],",
+              " *   \"weightUnit\": \"KG\",",
+              " *   \"currency\": \"EUR\",",
+              " *   \"channelType\": \"WEB\",",
+              " *   \"siteLanguage\": \"en\",",
+              " *   \"buyerLanguage\": \"en\",",
+              " *   \"completed\": false,",
+              " *   \"taxIncludedInPrice\": false,",
+              " *   \"createdBy\": {",
+              " *     \"memberId\": \"ea3d74df-b7dc-4ca1-a7c9-c416b9017a86\"",
+              " *   },",
+              " *   \"_createdDate\": \"2023-02-22T15:49:04.627Z\",",
+              " *   \"_updatedDate\": \"2023-02-22T16:30:58.947Z\",",
+              " *   \"payNow\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"€30.00\",",
+              " *       \"formattedConvertedAmount\": \"€30.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"30\",",
+              " *       \"convertedAmount\": \"30\",",
+              " *       \"formattedAmount\": \"€30.00\",",
+              " *       \"formattedConvertedAmount\": \"€30.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"payLater\": {",
+              " *     \"subtotal\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"shipping\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"tax\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"discount\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"total\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     },",
+              " *     \"additionalFees\": {",
+              " *       \"amount\": \"0\",",
+              " *       \"convertedAmount\": \"0\",",
+              " *       \"formattedAmount\": \"€0.00\",",
+              " *       \"formattedConvertedAmount\": \"€0.00\"",
+              " *     }",
+              " *   },",
+              " *   \"membershipOptions\": {",
+              " *     \"eligibleMemberships\": [],",
+              " *     \"invalidMemberships\": [],",
+              " *     \"selectedMemberships\": {",
+              " *       \"memberships\": []",
+              " *     }",
+              " *   },",
+              " *   \"additionalFees\": [],",
+              " *   \"payNowTotalAfterGiftCard\": {",
+              " *     \"amount\": \"30\",",
+              " *     \"convertedAmount\": \"30\",",
+              " *     \"formattedAmount\": \"€30.00\",",
+              " *     \"formattedConvertedAmount\": \"€30.00\"",
+              " *   }",
+              " * } ",
+              " */"
+            ],
+            "extra": {
+              "description": "Updates the `buyerNote` and adds a coupon to the checkout"
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false
     }
   ],
   "messages": [
@@ -3796,23 +4215,6 @@
     {
       "name": "AddToCheckoutOptions",
       "members": [
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
         {
           "name": "lineItems",
           "optional": true,
@@ -3848,23 +4250,6 @@
             }
           ],
           "doc": "Checkout ID."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -4242,7 +4627,7 @@
               "referenceType": "wix-ecom-backend.Checkout.StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -4614,7 +4999,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "+ When `true` - checkout doesn't have an owner yet and anyone can access it. The first to access it will be new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
+          "doc": "+ If `true`, the checkout doesn't have an owner yet and anyone can access it. The first to access it will be the new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
         },
         {
           "name": "visitorId",
@@ -4666,7 +5051,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "+ When `true` - checkout doesn't have an owner yet and anyone can access it. The first to access it will be new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
+          "doc": "+ If `true`, the checkout doesn't have an owner yet and anyone can access it. The first to access it will be the new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
         },
         {
           "name": "visitorId",
@@ -5200,7 +5585,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are displayed in this currency."
+          "doc": "All converted prices are displayed in this currency in three-letter [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "createdBy",
@@ -5250,7 +5635,7 @@
               "referenceType": "wix-ecom-backend.Checkout.GiftCard"
             }
           ],
-          "doc": "Applied gift card details."
+          "doc": "Applied gift card details.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards)."
         },
         {
           "name": "lineItems",
@@ -5268,7 +5653,7 @@
               }
             }
           ],
-          "doc": "Line items."
+          "doc": "Line items.\n\nMax: 300 items"
         },
         {
           "name": "membershipOptions",
@@ -5415,7 +5800,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - HEX or RGB color code for display."
+          "doc": "HEX or RGB color code for display."
         },
         {
           "name": "original",
@@ -5425,7 +5810,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line color name in site's default language."
+          "doc": "Description line color name in site's default language."
         },
         {
           "name": "translated",
@@ -5435,7 +5820,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line color name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line color name according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -5455,7 +5840,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -5465,7 +5850,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
         }
       ],
       "docs": {
@@ -5561,7 +5946,6 @@
       "members": [
         {
           "name": "channelType",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
@@ -5590,23 +5974,6 @@
           "doc": "The code of an existing coupon to apply to checkout. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items to be added to checkout."
-        },
-        {
           "name": "giftCardCode",
           "optional": true,
           "type": [
@@ -5614,7 +5981,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Gift card code."
+          "doc": "Gift card code.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards).\n"
         },
         {
           "name": "lineItems",
@@ -5648,7 +6015,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -5662,7 +6029,6 @@
       "members": [
         {
           "name": "channelType",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
@@ -5691,23 +6057,6 @@
           "doc": "The code of an existing coupon to apply to checkout. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Checkout.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items to be added to checkout."
-        },
-        {
           "name": "giftCardCode",
           "optional": true,
           "type": [
@@ -5715,7 +6064,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Gift card code."
+          "doc": "Gift card code.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards).\n"
         },
         {
           "name": "lineItems",
@@ -5749,7 +6098,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -6435,7 +6784,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line name in site's default language."
+          "doc": "Description line name in site's default language."
         },
         {
           "name": "translated",
@@ -6445,7 +6794,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line item according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line item according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -7089,7 +7438,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FIELD_NOT_ALLOWED'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'ONE_OF_ALIGNMENT'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -7149,7 +7498,7 @@
               "referenceType": "wix-ecom-backend.Checkout.CommonVatId"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -7228,6 +7577,26 @@
       }
     },
     {
+      "name": "GetCheckoutOptions",
+      "members": [
+        {
+          "name": "refresh",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to refresh the checkout from external sources. Defaults to true."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "GetCheckoutRequest",
       "members": [
         {
@@ -7238,6 +7607,16 @@
             }
           ],
           "doc": "Checkout ID."
+        },
+        {
+          "name": "refresh",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to refresh the checkout from external sources. Defaults to true."
         }
       ],
       "docs": {
@@ -7588,6 +7967,7 @@
       "members": [
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -7688,7 +8068,7 @@
               "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
             }
           ],
-          "doc": "Total price **after** catalog-defined discount and line item discounts."
+          "doc": "Total line item price **after** catalog-defined discount and line item discounts."
         },
         {
           "name": "media",
@@ -7775,7 +8155,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Item quantity."
+          "doc": "Item quantity.\n\nMin: `\"1\"`\nMax: `\"100000\"`\n"
         },
         {
           "name": "rootCatalogItemId",
@@ -7830,7 +8210,7 @@
               "referenceType": "wix-ecom-backend.Checkout.MultiCurrencyPrice"
             }
           ],
-          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "__Deprecated.__ Use `totalPriceAfterTax` minus `taxDetails.totalTax` instead."
         },
         {
           "name": "url",
@@ -8696,7 +9076,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line plain text value in site's default language."
+          "doc": "Description line plain text value in site's default language."
         },
         {
           "name": "translated",
@@ -8706,7 +9086,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -8726,7 +9106,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original price description (in site's default language)."
+          "doc": "Required.** Original price description in site's default language."
         },
         {
           "name": "translated",
@@ -8736,7 +9116,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated price description according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated price description according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -8936,7 +9316,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original item name (in site's default language)."
+          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 80 characters"
         },
         {
           "name": "translated",
@@ -8946,7 +9326,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated item name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 200 characters"
         }
       ],
       "docs": {
@@ -9454,7 +9834,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Optional - The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
+          "doc": "The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
         },
         {
           "name": "scheduledDate",
@@ -9464,7 +9844,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Optional - Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
+          "doc": "Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
         }
       ],
       "docs": {
@@ -9624,7 +10004,7 @@
               "referenceType": "wix-ecom-backend.Checkout.ShippingRegion"
             }
           ],
-          "doc": "Shipping region."
+          "doc": "Shipping region. Based on the address provided."
         },
         {
           "name": "selectedCarrierServiceOption",
@@ -9634,7 +10014,7 @@
               "referenceType": "wix-ecom-backend.Checkout.SelectedCarrierServiceOption"
             }
           ],
-          "doc": "Selected option out of the options allowed for the region (see `region` field).\nThe region field is chosen based on the address provided."
+          "doc": "Selected option out of the options allowed for the `region`."
         },
         {
           "name": "shippingDestination",
@@ -10680,7 +11060,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are displayed in this currency."
+          "doc": "All converted prices are displayed in this currency in three-letter [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "createdBy",
@@ -10730,7 +11110,7 @@
               "referenceType": "wix-ecom-backend.Checkout.GiftCard"
             }
           ],
-          "doc": "Applied gift card details."
+          "doc": "Applied gift card details.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards)."
         },
         {
           "name": "lineItems",
@@ -10748,7 +11128,7 @@
               }
             }
           ],
-          "doc": "Line items."
+          "doc": "Line items.\n\nMax: 300 items"
         },
         {
           "name": "membershipOptions",
@@ -10902,7 +11282,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -10958,7 +11338,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -11706,7 +12086,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -11716,7 +12096,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n+ `CPF`: For individual tax payers.\n+ `CNPJ`: For corporations."
         }
       ],
       "docs": {

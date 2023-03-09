@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "Files" Collection Fields
@@ -42,7 +44,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### ID (\_id) 
 
-**Description**: Unique File ID. This is a system field and is hidden by default. This is the [Main field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
+**Description**: Unique File ID. This is a system field and is hidden by default. This is the [Primary field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  

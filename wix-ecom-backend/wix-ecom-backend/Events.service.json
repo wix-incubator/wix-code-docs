@@ -6493,24 +6493,6 @@
           "doc": "Cart ID."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CartCustomLineItem",
-                    "displayName": "CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
-        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -6557,10 +6539,21 @@
       }
     },
     {
-      "name": "ecomV1CartAddToCurrentCartRequest",
+      "name": "ecomV1CartAddToCurrentCartAndEstimateTotalsRequest",
       "members": [
         {
-          "name": "customLineItems",
+          "name": "billingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartAddress",
+              "displayName": "Address"
+            }
+          ],
+          "doc": "Billing address. Used for calculating tax if all the items in the cart are not shippable."
+        },
+        {
+          "name": "lineItems",
           "optional": true,
           "type": [
             {
@@ -6568,15 +6561,58 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CartCustomLineItem",
-                    "displayName": "CustomLineItem"
+                    "referenceType": "wix-ecom-backend.Events.ecomV1CartLineItem",
+                    "displayName": "LineItem"
                   }
                 ]
               }
             }
           ],
-          "doc": "Custom line items."
+          "doc": "Catalog line items."
         },
+        {
+          "name": "selectedMemberships",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartSelectedMemberships",
+              "displayName": "SelectedMemberships"
+            }
+          ],
+          "doc": "The selected membership payment options and which line items they apply to."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartSelectedShippingOption",
+              "displayName": "SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
+        },
+        {
+          "name": "shippingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartAddress",
+              "displayName": "Address"
+            }
+          ],
+          "doc": "Shipping address. Used for calculating tax and shipping (when applicable)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1CartAddToCurrentCartRequest",
+      "members": [
         {
           "name": "lineItems",
           "optional": true,
@@ -6737,7 +6773,7 @@
               "displayName": "StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -6870,7 +6906,7 @@
               "displayName": "VatId"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -8190,7 +8226,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - HEX or RGB color code for display."
+          "doc": "HEX or RGB color code for display."
         },
         {
           "name": "original",
@@ -8200,7 +8236,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line color name in site's default language."
+          "doc": "Description line color name in site's default language."
         },
         {
           "name": "translated",
@@ -8210,7 +8246,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line color name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line color name according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -8404,25 +8440,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Code of an existing coupon to apply to cart. For more information, see [Coupons API](https://dev.wix.com/api/rest/wix-coupons/coupons/introduction)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CartCustomLineItem",
-                    "displayName": "CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
+          "doc": "Code of an existing coupon to apply to cart. For more information, see the [Coupons API](https://dev.wix.com/api/rest/coupons/coupons/introduction)."
         },
         {
           "name": "lineItems",
@@ -8592,7 +8610,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Mandatory when setting a billing or shipping address if the site visitor isn't logged in."
+          "doc": "Required when setting a billing or shipping address if the site visitor isn't logged in."
         },
         {
           "name": "selectedShippingOption",
@@ -8732,7 +8750,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item price."
+          "doc": "Custom line item price.\nMust be a number or a decimal without symbols."
         },
         {
           "name": "quantity",
@@ -8940,7 +8958,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line name in site's default language."
+          "doc": "Description line name in site's default language."
         },
         {
           "name": "translated",
@@ -8950,7 +8968,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line item according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line item according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -9813,7 +9831,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FIELD_NOT_ALLOWED'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'ONE_OF_ALIGNMENT'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -9833,7 +9851,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact's company"
+          "doc": "Contact's company name."
         },
         {
           "name": "email",
@@ -9843,7 +9861,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email associated with the address"
+          "doc": "Email associated with the address."
         },
         {
           "name": "firstName",
@@ -9853,7 +9871,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact first name"
+          "doc": "Contact's first name."
         },
         {
           "name": "lastName",
@@ -9863,7 +9881,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact last name"
+          "doc": "Contact's last name."
         },
         {
           "name": "phone",
@@ -9873,7 +9891,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact phone number"
+          "doc": "Contact's phone number."
         },
         {
           "name": "vatId",
@@ -9884,7 +9902,7 @@
               "displayName": "VatId"
             }
           ],
-          "doc": "tax info (Currently usable only in Brazil)"
+          "doc": "Tax info. Currently usable only in Brazil."
         }
       ],
       "docs": {
@@ -10282,6 +10300,7 @@
       "members": [
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -10311,7 +10330,7 @@
               "displayName": "CatalogReference"
             }
           ],
-          "doc": "Catalog and item reference. Holds IDs for the item and the catalog it came from, as well as further optional info.\nEmpty in the case of a custom line item."
+          "doc": "Catalog and item reference. Holds IDs for the item and the catalog it came from, as well as further optional info."
         },
         {
           "name": "depositAmount",
@@ -10516,6 +10535,17 @@
       "name": "ecomV1CartLineItemPricesData",
       "members": [
         {
+          "name": "fullPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartMultiCurrencyPrice",
+              "displayName": "MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Item price **before** line item discounts and **before** catalog-defined discount. Defaults to `price` when not provided."
+        },
+        {
           "name": "lineItemPrice",
           "optional": true,
           "type": [
@@ -10610,7 +10640,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Line item ID."
+          "doc": "Line item ID. Required."
         },
         {
           "name": "quantity",
@@ -10620,7 +10650,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "New quantity. Number must 1 or higher."
+          "doc": "New quantity. Number must be 1 or higher. Required."
         }
       ],
       "docs": {
@@ -11076,7 +11106,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line plain text value in site's default language."
+          "doc": "Description line plain text value in site's default language."
         },
         {
           "name": "translated",
@@ -11086,7 +11116,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -11106,7 +11136,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original price description (in site's default language)."
+          "doc": "Required.** Original price description in site's default language."
         },
         {
           "name": "translated",
@@ -11116,7 +11146,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated price description according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated price description according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -11212,7 +11242,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original item name (in site's default language)."
+          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 80 characters"
         },
         {
           "name": "translated",
@@ -11222,7 +11252,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated item name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 200 characters"
         }
       ],
       "docs": {
@@ -11749,7 +11779,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Optional - The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
+          "doc": "The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
         },
         {
           "name": "scheduledDate",
@@ -11759,7 +11789,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Optional - Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
+          "doc": "Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
         }
       ],
       "docs": {
@@ -12523,24 +12553,6 @@
           "doc": "Coupon code. For more information, see [Coupons API](https://dev.wix.com/api/rest/wix-coupons/coupons/introduction)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CartCustomLineItem",
-                    "displayName": "CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
-        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -12941,7 +12953,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -12951,7 +12963,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
         }
       ],
       "docs": {
@@ -12991,24 +13003,6 @@
             }
           ],
           "doc": "Checkout ID."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutCustomLineItem",
-                    "displayName": "CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -13398,7 +13392,7 @@
               "displayName": "StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -13824,7 +13818,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "+ When `true` - checkout doesn't have an owner yet and anyone can access it. The first to access it will be new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
+          "doc": "+ If `true`, the checkout doesn't have an owner yet and anyone can access it. The first to access it will be the new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
         },
         {
           "name": "visitorId",
@@ -13876,7 +13870,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "+ When `true` - checkout doesn't have an owner yet and anyone can access it. The first to access it will be new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
+          "doc": "+ If `true`, the checkout doesn't have an owner yet and anyone can access it. The first to access it will be the new owner.\n+ If `false`, the value in `checkout.createdBy` is the owner."
         },
         {
           "name": "visitorId",
@@ -14406,7 +14400,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. \"WIX_APP_STORE\" refers to the Wix mobile app."
+          "doc": "Sales channel that submitted the order.\n+ `\"UNSPECIFIED\"`: Unspecified sales channel. This value is not supported.\n+ `\"WEB\"`: A web client.\n+ `\"POS\"`: [Point of sale solutions](https://support.wix.com/en/wix-mobile-pos-2196395)\n+ `\"EBAY\"`: [eBay](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-an-ebay-shop)\n+ `\"AMAZON\"`: [Amazon](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-an-amazon-shop)\n+ `\"WISH\"`: [Wish](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-a-wish-shop)\n+ `\"WIX_INVOICES\"`: Wix Invoices app in [your dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Finvoices/settings/general-settings)\n+ `\"WIX_APP_STORE\"`: [Wix Owner app](https://support.wix.com/article/wix-owner-app-an-overview)\n+ `\"BACKOFFICE_MERCHANT\"`: Wix merchant backoffice\n+ `\"OTHER_PLATFORM\"`: Other sales platform."
         },
         {
           "name": "completed",
@@ -14428,7 +14422,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are displayed in this currency."
+          "doc": "All converted prices are displayed in this currency in three-letter [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "createdBy",
@@ -14481,7 +14475,7 @@
               "displayName": "GiftCard"
             }
           ],
-          "doc": "Applied gift card details."
+          "doc": "Applied gift card details.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards)."
         },
         {
           "name": "lineItems",
@@ -14500,7 +14494,7 @@
               }
             }
           ],
-          "doc": "Line items."
+          "doc": "Line items.\n\nMax: 300 items"
         },
         {
           "name": "membershipOptions",
@@ -14745,7 +14739,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - HEX or RGB color code for display."
+          "doc": "HEX or RGB color code for display."
         },
         {
           "name": "original",
@@ -14755,7 +14749,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line color name in site's default language."
+          "doc": "Description line color name in site's default language."
         },
         {
           "name": "translated",
@@ -14765,7 +14759,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line color name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line color name according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -14785,7 +14779,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -14795,7 +14789,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
         }
       ],
       "docs": {
@@ -14892,13 +14886,12 @@
       "members": [
         {
           "name": "channelType",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel that submitted the order. `\"UNSPECIFIED\"` is not allowed."
+          "doc": "Sales channel that submitted the order.\n+ `\"UNSPECIFIED\"`: Unspecified sales channel. This value is not supported.\n+ `\"WEB\"`: A web client.\n+ `\"POS\"`: [Point of sale solutions](https://support.wix.com/en/wix-mobile-pos-2196395)\n+ `\"EBAY\"`: [eBay](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-an-ebay-shop)\n+ `\"AMAZON\"`: [Amazon](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-an-amazon-shop)\n+ `\"WISH\"`: [Wish](https://support.wix.com/en/article/wix-stores-connecting-and-setting-up-a-wish-shop)\n+ `\"WIX_INVOICES\"`: Wix Invoices app in [your dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Finvoices/settings/general-settings)\n+ `\"WIX_APP_STORE\"`: [Wix Owner app](https://support.wix.com/article/wix-owner-app-an-overview)\n+ `\"BACKOFFICE_MERCHANT\"`: Wix merchant backoffice\n+ `\"OTHER_PLATFORM\"`: Other sales platform."
         },
         {
           "name": "checkoutInfo",
@@ -14922,24 +14915,6 @@
           "doc": "Coupon code."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutCustomLineItem",
-                    "displayName": "CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items to be added to checkout."
-        },
-        {
           "name": "giftCardCode",
           "optional": true,
           "type": [
@@ -14947,7 +14922,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Gift card code."
+          "doc": "Gift card code.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards).\n"
         },
         {
           "name": "lineItems",
@@ -14983,7 +14958,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -15445,7 +15420,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item price."
+          "doc": "Custom line item price.\nMust be a number or a decimal without symbols."
         },
         {
           "name": "quantity",
@@ -15646,7 +15621,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line name in site's default language."
+          "doc": "Description line name in site's default language."
         },
         {
           "name": "translated",
@@ -15656,7 +15631,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line item according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line item according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -16318,7 +16293,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FIELD_NOT_ALLOWED'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'ONE_OF_ALIGNMENT'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -16379,7 +16354,7 @@
               "displayName": "CommonVatId"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -16469,6 +16444,16 @@
             }
           ],
           "doc": "Checkout ID."
+        },
+        {
+          "name": "refresh",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to refresh the checkout from external sources. Defaults to true."
         }
       ],
       "docs": {
@@ -16816,6 +16801,7 @@
       "members": [
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -16845,7 +16831,7 @@
               "displayName": "CatalogReference"
             }
           ],
-          "doc": "Catalog and item reference info. See [Catalog SPI](https://bo.wix.com/wix-docs/rest/ecommerce/catalog-spi/introduction) for more details.\nEmpty in the case of a custom line item."
+          "doc": "Catalog and item reference. Includes IDs for the item and the catalog it came from, as well as further optional info."
         },
         {
           "name": "depositAmount",
@@ -16924,7 +16910,7 @@
               "displayName": "MultiCurrencyPrice"
             }
           ],
-          "doc": "Total price **after** catalog-defined discount and line item discounts."
+          "doc": "Total line item price **after** catalog-defined discount and line item discounts."
         },
         {
           "name": "media",
@@ -16946,7 +16932,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of selected payment option for current item. Defaults to `FULL_PAYMENT_ONLINE`.\n+ `FULL_PAYMENT_ONLINE` - The entire payment for this item happens as part of the checkout.\n+ `FULL_PAYMENT_OFFLINE` - The entire payment for this item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `MEMBERSHIP` - Payment for this item is done by charging a membership. When this option is used, `lineItem.price.amount` is 0.\n+ `DEPOSIT_ONLINE` - Partial payment to be paid upfront during the checkout. Initial amount to be paid for each line item is defined by `lineItem.deposit`.\n+ `MEMBERSHIP_OFFLINE` - Payment for this item can only be performed by using a membership and must be manually redeemed in the dashboard by the site owner. When this option is used, `lineItem.price.amount` is 0."
+          "doc": "Type of selected payment option for current item. Defaults to `FULL_PAYMENT_ONLINE`.\n+ `FULL_PAYMENT_ONLINE`: The entire payment for this item happens as part of the checkout.\n+ `FULL_PAYMENT_OFFLINE`: The entire payment for this item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `MEMBERSHIP`: Payment for this item is done by charging a membership. When this option is used, `lineItem.price.amount` is `0`.\n+ `DEPOSIT_ONLINE`: Partial payment to be paid upfront during the checkout. Initial amount to be paid for each line item is defined by `lineItem.deposit`.\n+ `MEMBERSHIP_OFFLINE`: Payment for this item can only be performed by using a membership and must be manually redeemed in the dashboard by the site owner. When this option is used, `lineItem.price.amount` is `0`."
         },
         {
           "name": "physicalProperties",
@@ -17016,7 +17002,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Item quantity."
+          "doc": "Item quantity.\n\nMin: `\"1\"`\nMax: `\"100000\"`\n"
         },
         {
           "name": "rootCatalogItemId",
@@ -17075,7 +17061,7 @@
               "displayName": "MultiCurrencyPrice"
             }
           ],
-          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "__Deprecated.__ Use `totalPriceAfterTax` minus `taxDetails.totalTax` instead."
         },
         {
           "name": "url",
@@ -17951,7 +17937,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line plain text value in site's default language."
+          "doc": "Description line plain text value in site's default language."
         },
         {
           "name": "translated",
@@ -17961,7 +17947,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -17981,7 +17967,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original price description (in site's default language)."
+          "doc": "Required.** Original price description in site's default language."
         },
         {
           "name": "translated",
@@ -17991,7 +17977,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated price description according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated price description according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -18198,7 +18184,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original item name (in site's default language)."
+          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 80 characters"
         },
         {
           "name": "translated",
@@ -18208,7 +18194,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated item name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 200 characters"
         }
       ],
       "docs": {
@@ -18730,7 +18716,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Optional - The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
+          "doc": "The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
         },
         {
           "name": "scheduledDate",
@@ -18740,7 +18726,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Optional - Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
+          "doc": "Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
         }
       ],
       "docs": {
@@ -18907,7 +18893,7 @@
               "displayName": "ShippingRegion"
             }
           ],
-          "doc": "Shipping region."
+          "doc": "Shipping region. Based on the address provided."
         },
         {
           "name": "selectedCarrierServiceOption",
@@ -18918,7 +18904,7 @@
               "displayName": "SelectedCarrierServiceOption"
             }
           ],
-          "doc": "Selected option out of the options allowed for the region (see `region` field).\nThe region field is chosen based on the address provided."
+          "doc": "Selected option out of the options allowed for the `region`."
         },
         {
           "name": "shippingDestination",
@@ -19879,7 +19865,7 @@
               }
             }
           ],
-          "doc": "Merchant discounts to apply to specific line items. If no `lineItemIds` are passed, the discount will be applied to the whole checkout."
+          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -20641,7 +20627,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -20651,7 +20637,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n+ `CPF`: For individual tax payers.\n+ `CNPJ`: For corporations."
         }
       ],
       "docs": {
@@ -22252,6 +22238,90 @@
       }
     },
     {
+      "name": "ecomV1OrderAdditionalFeeDelta",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional fee id."
+        },
+        {
+          "name": "additionalFee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderAdditionalFee",
+              "displayName": "AdditionalFee"
+            }
+          ],
+          "doc": "To update an existing additional fee, remove it and add it (under different id) with the updated values."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAdditionalFeeDeltaDeltaOneOf",
+            "members": [
+              "additionalFee",
+              "removed"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderAdditionalFeeDeltaDeltaOneOf",
+      "members": [
+        {
+          "name": "additionalFee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderAdditionalFee",
+              "displayName": "AdditionalFee"
+            }
+          ],
+          "doc": "To update an existing additional fee, remove it and add it (under different id) with the updated values."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ecomV1OrderAddress",
       "members": [
         {
@@ -22313,7 +22383,7 @@
               "displayName": "StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -22589,6 +22659,90 @@
           }
         ]
       },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderAppliedDiscountDelta",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Discount id."
+        },
+        {
+          "name": "appliedDiscount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderAppliedDiscount",
+              "displayName": "AppliedDiscount"
+            }
+          ],
+          "doc": "To update an existing applied discount, remove it and add it (under different id) with the updated values."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAppliedDiscountDeltaDeltaOneOf",
+            "members": [
+              "appliedDiscount",
+              "removed"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderAppliedDiscountDeltaDeltaOneOf",
+      "members": [
+        {
+          "name": "appliedDiscount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderAppliedDiscount",
+              "displayName": "AppliedDiscount"
+            }
+          ],
+          "doc": "To update an existing applied discount, remove it and add it (under different id) with the updated values."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -23849,7 +24003,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - HEX or RGB color code for display."
+          "doc": "HEX or RGB color code for display."
         },
         {
           "name": "original",
@@ -23859,7 +24013,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line color name in site's default language."
+          "doc": "Description line color name in site's default language."
         },
         {
           "name": "translated",
@@ -23869,7 +24023,79 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line color name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line color name according to buyer language. Defaults to `original` when not provided."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderCommitDeltasRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order id to be updated"
+        },
+        {
+          "name": "changes",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderEditDiffs",
+              "displayName": "OrderEditDiffs"
+            }
+          ],
+          "doc": "Edit order deltas to be applied"
+        },
+        {
+          "name": "orderEditId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Edit order Id representing this change.\nUse this ID to [get](TBD:rest url) this specific edit content."
+        },
+        {
+          "name": "sideEffects",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderEditSideEffects",
+              "displayName": "OrderEditSideEffects"
+            }
+          ],
+          "doc": "Side-effects to happen after order is updated"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderCommitDeltasResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrder",
+              "displayName": "Order"
+            }
+          ],
+          "doc": "Order after edit deltas are applied"
         }
       ],
       "docs": {
@@ -25046,7 +25272,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line name in site's default language."
+          "doc": "Description line name in site's default language."
         },
         {
           "name": "translated",
@@ -25056,7 +25282,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line item according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line item according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -25814,7 +26040,7 @@
               "displayName": "VatId"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -25905,6 +26131,63 @@
             }
           ],
           "doc": "Payment collectability status"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderGetRefundabilityStatusRequest",
+      "members": [
+        {
+          "name": "ecomOrderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderGetRefundabilityStatusResponse",
+      "members": [
+        {
+          "name": "refundabilities",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Events.ecomV1OrderRefundability",
+                    "displayName": "Refundability"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Refundability details."
+        },
+        {
+          "name": "refundablePerItem",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order supports refunding per item."
         }
       ],
       "docs": {
@@ -26768,6 +27051,16 @@
           "doc": "The balance and amount paid on the invoice.\nThis read-only field is calculated based on the invoice totals and payments."
         },
         {
+          "name": "ecomCheckoutId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "associated checkout for this invoice"
+        },
+        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -27210,6 +27503,90 @@
                   }
                 ]
               }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderLineItemDelta",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Line item ID."
+        },
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderLineItem",
+              "displayName": "OrderLineItem"
+            }
+          ],
+          "doc": "Update supports quantity and price related fields - tax, discount, price, etc."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfLineItemDeltaDeltaOneOf",
+            "members": [
+              "lineItem",
+              "removed"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderLineItemDeltaDeltaOneOf",
+      "members": [
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderLineItem",
+              "displayName": "OrderLineItem"
+            }
+          ],
+          "doc": "Update supports quantity and price related fields - tax, discount, price, etc."
+        },
+        {
+          "name": "removed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
             }
           ],
           "doc": ""
@@ -28329,6 +28706,237 @@
       }
     },
     {
+      "name": "ecomV1OrderOrderDeltas",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrder",
+              "displayName": "Order"
+            }
+          ],
+          "doc": "The order that was edited"
+        },
+        {
+          "name": "orderEditId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Edit order Id representing this change.\nUse this ID to [get](TBD:rest url) this specific edit content."
+        },
+        {
+          "name": "sideEffects",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrderEditSideEffects",
+              "displayName": "OrderEditSideEffects"
+            }
+          ],
+          "doc": "Side-effects requested to happen as a result of this edit."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Triggered when order is edited by ordersEdit"
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderOrderEditDiffs",
+      "members": [
+        {
+          "name": "additionalFees",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Events.ecomV1OrderAdditionalFeeDelta",
+                    "displayName": "AdditionalFeeDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed additional fee."
+        },
+        {
+          "name": "lineItemChanges",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Events.ecomV1OrderLineItemDelta",
+                    "displayName": "LineItemDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed order line items."
+        },
+        {
+          "name": "priceSummary",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderPriceSummary",
+              "displayName": "PriceSummary"
+            }
+          ],
+          "doc": "Updated order price summary. overwrites existing price summary.\nbalance will be updated automatically."
+        },
+        {
+          "name": "removedShippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Remove existing shipping info."
+        },
+        {
+          "name": "shippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderShippingInformation",
+              "displayName": "ShippingInformation"
+            }
+          ],
+          "doc": "Shipping info and selected shipping option details."
+        },
+        {
+          "name": "taxSummary",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderTaxSummary",
+              "displayName": "TaxSummary"
+            }
+          ],
+          "doc": "Updated Tax summary. overwrites existing tax summary."
+        },
+        {
+          "name": "upsertAppliedDiscounts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Events.ecomV1OrderAppliedDiscountDelta",
+                    "displayName": "AppliedDiscountDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed discounts."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfOrderEditDiffsShippingUpdateInfoOneOf",
+            "members": [
+              "removedShippingInfo",
+              "shippingInfo"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderOrderEditDiffsShippingUpdateInfoOneOf",
+      "members": [
+        {
+          "name": "removedShippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Remove existing shipping info."
+        },
+        {
+          "name": "shippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderShippingInformation",
+              "displayName": "ShippingInformation"
+            }
+          ],
+          "doc": "Shipping info and selected shipping option details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderOrderEditSideEffects",
+      "members": [
+        {
+          "name": "addActivities",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Add activities to the order. e.g. manually create order flow to suppress editing activites. Default is true."
+        },
+        {
+          "name": "sendCustomFulfillerMails",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If false, do not send mails to custom fulfillers in case of a change of shippable items fulfilled by custom fulfillers. Default is true."
+        },
+        {
+          "name": "sendNotifications",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If false, do not send notifications to uou. Default is true."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ecomV1OrderOrderFulfilled",
       "members": [],
       "docs": {
@@ -28605,7 +29213,7 @@
               "displayName": "Price"
             }
           ],
-          "doc": "Deprecated - please use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
         }
       ],
       "docs": {
@@ -29123,7 +29731,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Description line plain text value in site's default language."
+          "doc": "Description line plain text value in site's default language."
         },
         {
           "name": "translated",
@@ -29133,7 +29741,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -29790,7 +30398,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original price description (in site's default language)."
+          "doc": "Required.** Original price description in site's default language."
         },
         {
           "name": "translated",
@@ -29800,7 +30408,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated price description according to buyer language. Defaults to `original` when not provided."
+          "doc": "Translated price description according to buyer language. Defaults to `original` when not provided."
         }
       ],
       "docs": {
@@ -29907,7 +30515,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required** - Original item name (in site's default language)."
+          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 80 characters"
         },
         {
           "name": "translated",
@@ -29917,7 +30525,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional - Translated item name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 200 characters"
         }
       ],
       "docs": {
@@ -30241,6 +30849,107 @@
             }
           ],
           "doc": "Line item quantity being refunded."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderRefundability",
+      "members": [
+        {
+          "name": "manuallyRefundableReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason why payment is only refundable manually."
+        },
+        {
+          "name": "nonRefundableReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason why payment is not refundable."
+        },
+        {
+          "name": "paymentId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Payment ID."
+        },
+        {
+          "name": "providerLink",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Link to payment provider dashboard."
+        },
+        {
+          "name": "refundabilityStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Payment refundability status."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfRefundabilityAdditionalRefundabilityInfoOneOf",
+            "members": [
+              "manuallyRefundableReason",
+              "nonRefundableReason"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderRefundabilityAdditionalRefundabilityInfoOneOf",
+      "members": [
+        {
+          "name": "manuallyRefundableReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason why payment is only refundable manually."
+        },
+        {
+          "name": "nonRefundableReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason why payment is not refundable."
         }
       ],
       "docs": {
@@ -30677,7 +31386,7 @@
               "displayName": "Price"
             }
           ],
-          "doc": "Deprecated - please use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
         }
       ],
       "docs": {
@@ -36573,6 +37282,111 @@
       }
     },
     {
+      "name": "ecomV1OrderV1BulkMarkOrdersAsPaidRequest",
+      "members": [
+        {
+          "name": "ecomOrderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of orders to mark as paid."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderV1BulkMarkOrdersAsPaidResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderBulkActionMetadata",
+              "displayName": "BulkActionMetadata"
+            }
+          ],
+          "doc": "Bulk action metadata."
+        },
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Events.ecomV1OrderBulkOrderResult",
+                    "displayName": "BulkOrderResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Items updated by the bulk action.\nThe Order entity within the results optimistically changes its payment status to paid, however this process is async."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderV1MarkOrderAsPaidRequest",
+      "members": [
+        {
+          "name": "ecomOrderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Ecom order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrderV1MarkOrderAsPaidResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrderOrder",
+              "displayName": "Order"
+            }
+          ],
+          "doc": "Updated order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ecomV1OrderValue",
       "members": [
         {
@@ -36613,7 +37427,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -36623,7 +37437,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
         }
       ],
       "docs": {
