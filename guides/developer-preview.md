@@ -50,7 +50,7 @@ If you discover a bug in a Developer Preview API, please [email us](mailto:velo-
 
 This is a list of the APIs that are currently in Developer Preview mode.
 
-
+<!-- START TABLE -->
 | Module | Submodule | Function |
 |---|---|---|
 | wix-activity-counters.v2 | ActivityCounters | [getActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/getactivitycounters "anchor")<br>[setActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/setactivitycounters "anchor")<br>[queryActivityCounters](https://www.wix.com/velo/reference/wix-activity-counters-v2/activitycounters/queryactivitycounters "anchor") |
@@ -72,5 +72,5 @@ This is a list of the APIs that are currently in Developer Preview mode.
 | wix-sender-details.v2 | SenderDetails | [getSenderDetails](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/getsenderdetails "anchor")<br>[resolveActualFromAddress](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/resolveactualfromaddress "anchor")<br>[updateSenderDetails](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/updatesenderdetails "anchor")<br>[verifyEmail](https://www.wix.com/velo/reference/wix-sender-details-v2/senderdetails/verifyemail "anchor") |
 | wix-email-marketing.v2 | AccountDetails | [getAccountDetails](/wix-email-marketing-v2/accountdetails)
 | wix-email-marketing.v2 | Campaigns | [deleteCampaign](/wix-email-marketing-v2/campaigns/deletecampaign)<br>[getCampaign](/wix-email-marketing-v2/campaigns/getcampaign)<br>[listCampaigns](/wix-email-marketing-v2/campaigns/listcampaigns)<br>[listRecipients](/wix-email-marketing-v2/campaigns/listrecipients)<br>[listStatistics](/wix-email-marketing-v2/campaigns/liststatistics)<br>[pauseScheduling](/wix-email-marketing-v2/campaigns/pausescheduling)<br>[publishCampaign](/wix-email-marketing-v2/campaigns/publishcampaign)<br>[reuseCampaign](/wix-email-marketing-v2/campaigns/reusecampaign)<br>[sendTest](/wix-email-marketing-v2/campaigns/sendtest)|
-
+<!-- END TABLE -->
 
