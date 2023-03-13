@@ -15,8 +15,8 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 The `wix-widget` and `wix-editor` modules provide functionality for working with Blocks widgets from the [Blocks Panel code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels).
 
 
-* Use [wix-widget](/wix-widget) to manage widget properties, Design Presets and Design Variables. 
-* Use [wix-editor[](/wix editor) to manage widget elements and Dashboard pages, as well as get the viewport of a widget installed on an editor. 
+* Use [`wix-widget`](/wix-widget) to control a widget's properties, Design Presets, and more. 
+* Use [`wix-editor`](/wix editor) to remove or restore widget elements, open Dashboard panels, and more.
 
 (April 24, 2023)
 
@@ -24,7 +24,7 @@ The `wix-widget` and `wix-editor` modules provide functionality for working with
 
 >**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
 
-The [$widget[](/$widget) namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code. 
+The [`$widget`](/$widget) namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code. 
 
 (April 24, 2023)
 
