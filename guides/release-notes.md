@@ -15,16 +15,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 The `wix-widget` and `wix-editor` modules provide functionality for working with Blocks widgets from the [Blocks Panel code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels).
 
 
-* Use [`wix-widget`](/wix-widget) to manage widget properties, Design Presets and Design Variables.
-* Use `wix-editor` to manage widget elements and Dashboard pages, as well as get the viewport of a widget installed on an editor.
+* Use [wix-widget](/wix-widget) to manage widget properties, Design Presets and Design Variables. 
+* Use [wix-editor[](/wix editor) to manage widget elements and Dashboard pages, as well as get the viewport of a widget installed on an editor. 
 
 (April 24, 2023)
 
-### New: The $widget namespace for Wix Blocks Widgets
+### New: The $widget Namespace for Wix Blocks Widgets
 
 >**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
 
-The `$widget` namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code.
+The [$widget[](/$widget) namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code. 
 
 (April 24, 2023)
 
@@ -34,16 +34,16 @@ The `$widget` namespace contains functionality for working with your [Blocks wid
 
 The following elements can be added to [Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
 
-* PanelButton
-* PanelCheckboxGroup
-* PanelDropDown
-* PanelRadioButtonGroup
-* PanelRichText
-* PanelSectionDivider
-* PanelSlider
-* PanelTextInput
-* PanelThumbnails
-* PanelToggleSwitch
+* [PanelButton]($w/panelbutton)
+* [PanelCheckboxGroup]($w/panelcheckboxgroup)
+* [PanelDropDown]($w/paneldropdown)
+* [PanelRadioButtonGroup]($w/panelradiobuttongroup)
+* [PanelRichText]($w/panelrichtext)
+* [PanelSectionDivider]($w/panelsectiondivider)
+* [PanelSlider]($w/panelslider)
+* [PanelTextInput]($w/paneltextinput)
+* [PanelThumbnails]($w/panelthumbnails)
+* [PanelToggleSwitch]($w/paneltoggleswitch)
 
 (April 24, 2023)
 
