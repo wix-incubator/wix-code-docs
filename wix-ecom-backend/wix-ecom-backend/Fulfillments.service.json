@@ -10,7 +10,7 @@
   "properties": [],
   "operations": [
     {
-      "name": "bulkCreateFulfillment",
+      "name": "bulkCreateFulfillments",
       "params": [
         {
           "name": "ordersWithFulfillments",
@@ -26,7 +26,7 @@
               }
             }
           ],
-          "doc": "List of order IDs and their associated fulfillments.",
+          "doc": "List of order IDs and their associated fulfillments' info.",
           "required": true
         }
       ],
@@ -59,13 +59,13 @@
         "description": [],
         "examples": [
           {
-            "title": "bulkCreateFulfillment example",
+            "title": "bulkCreateFulfillments example",
             "body": [
               "import { fulfillments } from 'wix-ecom-backend';",
               "  ",
-              " async function bulkCreateFulfillment(ordersWithFulfillments) {",
+              " async function bulkCreateFulfillments(ordersWithFulfillments) {",
               "   try {",
-              "     const result = await fulfillments.bulkCreateFulfillment(ordersWithFulfillments);",
+              "     const result = await fulfillments.bulkCreateFulfillments(ordersWithFulfillments);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -134,34 +134,100 @@
       },
       "docs": {
         "summary": "Creates an order fulfillment.",
-        "description": [],
+        "description": [
+          "The `createFulfillment()` function returns a Promise that resolves when the fulfillment is created."
+        ],
         "examples": [
           {
-            "title": "createFulfillment example",
+            "title": "Create a fulfillment ",
             "body": [
-              "import { fulfillments } from 'wix-ecom-backend';",
-              "  ",
-              " async function createFulfillment(orderId, fulfillment) {",
-              "   try {",
-              "     const result = await fulfillments.createFulfillment(orderId, fulfillment);",
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
+              "import { fulfillments } from 'wix-ecom-backend';",
+              "",
+              "export async function myCreateFulfillmentFunction(orderId, fulfillment) {",
+              "  try {",
+              "    const newFulfillment = await fulfillments.createFulfillment(orderId, fulfillment);",
+              "    console.log('Success! Created new fulfillment:', newFulfillment);",
+              "    return newFulfillment;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myCreateFulfillmentFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample orderId:",
+              "const orderId = \"e613320a-8e8f-4f8f-9d87-b5edc9f99788\";",
+              "",
+              "// Sample fulfillment object:",
+              "const fulfillment = {",
+              "  \"lineItems\": [{",
+              "    \"id\": \"00000000-0000-0000-0000-000000000001\",",
+              "    \"quantity\": 1",
+              "  }],",
+              "  \"trackingInfo\": {",
+              "    \"trackingNumber\": \"12345\",",
+              "    \"shippingProvider\": \"dhl\"",
+              "  }",
+              "};",
+              "",
+              "myCreateFulfillmentFunction(orderId, fulfillment)",
+              "  .then((newFulfillment) => {",
+              "    const fulfillmentId = newFulfillment.fulfillmentId;",
+              "    const orderFulfillments = newFulfillment.orderWithFulfillments.fulfillments",
+              "    const trackingLink = orderFulfillments[0].trackingInfo.trackingLink;",
+              "",
+              "    console.log('Success! Created newFulfillment:', newFulfillment);",
+              "    return newFulfillment;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderWithFulfillments\": {",
+              " *     \"orderId\": \"e613320a-8e8f-4f8f-9d87-b5edc9f99788\",",
+              " *     \"fulfillments\": [",
+              " *       {",
+              " *         \"_id\": \"91357295-a95c-4973-b210-281640f3e795\",",
+              " *         \"_createdDate\": \"2023-03-06T15:23:29.967Z\",",
+              " *         \"lineItems\": [",
+              " *           {",
+              " *             \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *             \"quantity\": 1",
+              " *           }",
+              " *         ],",
+              " *         \"trackingInfo\": {",
+              " *           \"trackingNumber\": \"12345\",",
+              " *           \"shippingProvider\": \"dhl\",",
+              " *           \"trackingLink\": \"https://www.logistics.dhl/global-en/home/tracking.html?tracking-id=12345\"",
+              " *         }",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   \"fulfillmentId\": \"91357295-a95c-4973-b210-281640f3e795\"",
+              " * }",
+              " *",
+              " */"
+            ],
+            "extra": {
+              "description": "By passing a supported `shippingProvider`, the `trackingLink` field is auto-populated in the response"
+            }
           }
         ]
       },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
+      "isVeloEvent": false
     },
     {
       "name": "deleteFulfillment",
@@ -173,7 +239,7 @@
               "referenceType": "wix-ecom-backend.Fulfillments.DeleteFulfillmentIdentifiers"
             }
           ],
-          "doc": "",
+          "doc": "Order and fulfillment IDs.\n",
           "required": true
         }
       ],
@@ -199,34 +265,69 @@
       },
       "docs": {
         "summary": "Deletes an existing order fulfillment.",
-        "description": [],
+        "description": [
+          "The `deleteFulfillment()` function returns a Promise that resolves when the fulfillment is deleted."
+        ],
         "examples": [
           {
-            "title": "deleteFulfillment example",
+            "title": "Delete a fulfillment ",
             "body": [
-              "import { fulfillments } from 'wix-ecom-backend';",
-              "  ",
-              " async function deleteFulfillment(identifiers) {",
-              "   try {",
-              "     const result = await fulfillments.deleteFulfillment(identifiers);",
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { fulfillments } from 'wix-ecom-backend';",
+              "",
+              "export async function myDeleteFulfillmentFunction(identifiers) {",
+              "  try {",
+              "    const orderFulfillments = await fulfillments.deleteFulfillment(identifiers);",
+              "    console.log('Success! Deleted fulfillment', orderFulfillments);",
+              "    return orderFulfillments;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myDeleteFulfillmentFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample identifiers object:",
+              "const identifiers = {",
+              "  \"orderId\": \"e613320a-8e8f-4f8f-9d87-b5edc9f99788\",",
+              "  \"fulfillmentId\": \"91357295-a95c-4973-b210-281640f3e795\"",
+              "};",
+              "",
+              "myDeleteFulfillmentFunction(identifiers)",
+              "  .then((orderFulfillments) => {",
+              "    const fulfillmentsArray = orderFulfillments.orderWithFulfillments.fulfillments;",
+              "    ",
+              "    console.log('Success! Deleted fulfillment', orderFulfillments);",
+              "    return orderFulfillments;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderWithFulfillments\": {",
+              " *     \"orderId\": \"e613320a-8e8f-4f8f-9d87-b5edc9f99788\",",
+              " *     \"fulfillments\": []",
+              " *   }",
+              " * } ",
+              " *",
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
+      "isVeloEvent": false
     },
     {
       "name": "listFulfillmentsForMultipleOrders",
@@ -245,7 +346,7 @@
               }
             }
           ],
-          "doc": "Order IDs for which to retrieve fulfillments.",
+          "doc": "List of order IDs for which to retrieve fulfillments.",
           "required": true
         }
       ],
@@ -269,34 +370,126 @@
       },
       "docs": {
         "summary": "Retrieves fulfillments associated with multiple specified orders.",
-        "description": [],
+        "description": [
+          "The `listFulfillmentsForMultipleOrders()` function returns a Promise that resolves when the fulfillments are retrieved."
+        ],
         "examples": [
           {
-            "title": "listFulfillmentsForMultipleOrders example",
+            "title": "Retrieve fulfillments for 2 orders ",
             "body": [
-              "import { fulfillments } from 'wix-ecom-backend';",
-              "  ",
-              " async function listFulfillmentsForMultipleOrders(orderIds) {",
-              "   try {",
-              "     const result = await fulfillments.listFulfillmentsForMultipleOrders(orderIds);",
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { fulfillments } from 'wix-ecom-backend';",
+              "",
+              "export async function myListFulfillmentsForMultipleOrdersFunction(orderIds) {",
+              "  try {",
+              "    const ordersFulfillments = await fulfillments.listFulfillmentsForMultipleOrders(orderIds);",
+              "    console.log(\"Success! Retrieved orders' fulfillments:\", ordersFulfillments);",
+              "    return ordersFulfillments;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myListFulfillmentsForMultipleOrdersFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample orderIds:",
+              "const orderIds = [",
+              "  \"ed4595fc-4e3d-4ba6-8583-e9e92b97ec8a\", \"7001d34b-11a6-4a34-8746-dc8ababeca42\"",
+              "];",
+              "",
+              "myListFulfillmentsForMultipleOrdersFunction(orderIds)",
+              "  .then((ordersFulfillments) => {",
+              "    const firstOrderFulfillments = ordersFulfillments[0].fulfillments;",
+              "    const secondOrderFulfillments = ordersFulfillments[1].fulfillments;",
+              "",
+              "    console.log(\"Success! Retrieved orders' fulfillments:\", ordersFulfillments);",
+              "    return ordersFulfillments;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"ordersWithFulfillments\": [",
+              " *     {",
+              " *       \"orderId\": \"ed4595fc-4e3d-4ba6-8583-e9e92b97ec8a\",",
+              " *       \"fulfillments\": [",
+              " *         {",
+              " *           \"_id\": \"3247615d-dbbe-4cc8-a410-6ca809f1283f\",",
+              " *           \"_createdDate\": \"2023-02-27T12:02:57.364Z\",",
+              " *           \"lineItems\": [",
+              " *             {",
+              " *               \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *               \"quantity\": 1",
+              " *             }",
+              " *           ],",
+              " *           \"trackingInfo\": {",
+              " *             \"trackingNumber\": \"87236\",",
+              " *             \"shippingProvider\": \"fedex\",",
+              " *             \"trackingLink\": \"https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=87236\"",
+              " *           }",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     {",
+              " *       \"orderId\": \"7001d34b-11a6-4a34-8746-dc8ababeca42\",",
+              " *       \"fulfillments\": [",
+              " *         {",
+              " *           \"_id\": \"00a7eba6-059e-430c-9f8e-9d3d31dd5e9d\",",
+              " *           \"_createdDate\": \"2023-03-07T11:51:48.233Z\",",
+              " *           \"lineItems\": [",
+              " *             {",
+              " *               \"_id\": \"00000000-0000-0000-0000-000000000003\",",
+              " *               \"quantity\": 1",
+              " *             }",
+              " *           ],",
+              " *           \"trackingInfo\": {",
+              " *             \"trackingNumber\": \"28674\",",
+              " *             \"shippingProvider\": \"dhl\",",
+              " *             \"trackingLink\": \"https://www.logistics.dhl/global-en/home/tracking.html?tracking-id=28674\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"_id\": \"47451ae1-7325-4ef6-a0d8-fb91ffa88e2e\",",
+              " *           \"_createdDate\": \"2023-03-07T10:24:56.406Z\",",
+              " *           \"lineItems\": [",
+              " *             {",
+              " *               \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *               \"quantity\": 1",
+              " *             },",
+              " *             {",
+              " *               \"_id\": \"00000000-0000-0000-0000-000000000002\",",
+              " *               \"quantity\": 1",
+              " *             }",
+              " *           ],",
+              " *           \"trackingInfo\": {",
+              " *             \"trackingNumber\": \"43255\",",
+              " *             \"shippingProvider\": \"fedex\",",
+              " *             \"trackingLink\": \"https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=43255\"",
+              " *           }",
+              " *         }",
+              " *       ]",
+              " *     }",
+              " *   ]",
+              " * }",
+              " *",
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
+      "isVeloEvent": false
     },
     {
       "name": "listFulfillmentsForSingleOrder",
@@ -332,34 +525,101 @@
       },
       "docs": {
         "summary": "Retrieves fulfillments associated with a specified order.",
-        "description": [],
+        "description": [
+          "The `listFulfillmentsForSingleOrder()` function returns a Promise that resolves when the fulfillments are retrieved."
+        ],
         "examples": [
           {
-            "title": "listFulfillmentsForSingleOrder example",
+            "title": "Retrieve an order's fulfillments ",
             "body": [
-              "import { fulfillments } from 'wix-ecom-backend';",
-              "  ",
-              " async function listFulfillmentsForSingleOrder(orderId) {",
-              "   try {",
-              "     const result = await fulfillments.listFulfillmentsForSingleOrder(orderId);",
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { fulfillments } from 'wix-ecom-backend';",
+              "",
+              "export async function myListFulfillmentsForSingleOrderFunction(orderId) {",
+              "  try {",
+              "    const orderFulfillments = await fulfillments.listFulfillmentsForSingleOrder(orderId);",
+              "    console.log('Success! Retrieved order fulfillments:', orderFulfillments);",
+              "    return orderFulfillments;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myListFulfillmentsForSingleOrderFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample orderId:",
+              "const orderId = \"7001d34b-11a6-4a34-8746-dc8ababeca42\";",
+              "",
+              "myListFulfillmentsForSingleOrderFunction(orderId)",
+              "  .then((orderFulfillments) => {",
+              "    const fulfillmentsArray = orderFulfillments.orderWithFulfillments.fulfillments;",
+              "",
+              "    console.log('Success! Retrieved order fulfillments:', orderFulfillments);",
+              "    return orderFulfillments;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderWithFulfillments\": {",
+              " *     \"orderId\": \"7001d34b-11a6-4a34-8746-dc8ababeca42\",",
+              " *     \"fulfillments\": [",
+              " *       {",
+              " *         \"_id\": \"00a7eba6-059e-430c-9f8e-9d3d31dd5e9d\",",
+              " *         \"_createdDate\": \"2023-03-07T11:51:48.233Z\",",
+              " *         \"lineItems\": [",
+              " *           {",
+              " *             \"_id\": \"00000000-0000-0000-0000-000000000003\",",
+              " *             \"quantity\": 1",
+              " *           }",
+              " *         ],",
+              " *         \"trackingInfo\": {",
+              " *           \"trackingNumber\": \"28674\",",
+              " *           \"shippingProvider\": \"dhl\",",
+              " *           \"trackingLink\": \"https://www.logistics.dhl/global-en/home/tracking.html?tracking-id=28674\"",
+              " *         }",
+              " *       },",
+              " *       {",
+              " *         \"_id\": \"47451ae1-7325-4ef6-a0d8-fb91ffa88e2e\",",
+              " *         \"_createdDate\": \"2023-03-07T10:24:56.406Z\",",
+              " *         \"lineItems\": [",
+              " *           {",
+              " *             \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *             \"quantity\": 1",
+              " *           },",
+              " *           {",
+              " *             \"_id\": \"00000000-0000-0000-0000-000000000002\",",
+              " *             \"quantity\": 1",
+              " *           }",
+              " *         ],",
+              " *         \"trackingInfo\": {",
+              " *           \"trackingNumber\": \"43255\",",
+              " *           \"shippingProvider\": \"fedex\",",
+              " *           \"trackingLink\": \"https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=43255\"",
+              " *         }",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " *",
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
+      "isVeloEvent": false
     },
     {
       "name": "updateFulfillment",
@@ -371,7 +631,7 @@
               "referenceType": "wix-ecom-backend.Fulfillments.UpdateFulfillmentIdentifiers"
             }
           ],
-          "doc": "",
+          "doc": "Order and fulfillment IDs to be updated.",
           "required": true
         },
         {
@@ -381,7 +641,7 @@
               "referenceType": "wix-ecom-backend.Fulfillments.UpdateFulfillmentOptions"
             }
           ],
-          "doc": "",
+          "doc": "Available options to use when updating a fulfillment.\n",
           "required": false
         }
       ],
@@ -406,37 +666,98 @@
         "doc": null
       },
       "docs": {
-        "summary": "Updates a fulfillment's properties.",
+        "summary": "Updates a fulfillment's properties.\nTo update a field's value, include the new value in the `fulfillment` field in the body params.\nTo remove a field's value, pass `null`.",
         "description": [
-          "To update a field's value, include the new value in the `fulfillment` field in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Updating line item IDs or fulfilled quantities with this API is not allowed. To update line item IDs or quantities, it's best to delete the fulfillment, and create it again."
+          "The `updateFulfillment()` function returns a Promise that resolves when the fulfillment is updated.\n\n> **Note:** Updating line item IDs or fulfilled quantities with this API is not allowed. To update line item IDs or quantities, it's best to delete the fulfillment, and create it again."
         ],
         "examples": [
           {
-            "title": "updateFulfillment example",
+            "title": "Update a fulfillment ",
             "body": [
-              "import { fulfillments } from 'wix-ecom-backend';",
-              "  ",
-              " async function updateFulfillment(identifiers, options) {",
-              "   try {",
-              "     const result = await fulfillments.updateFulfillment(identifiers, options);",
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
+              "import { fulfillments } from 'wix-ecom-backend';",
+              "",
+              "export async function myUpdateFulfillmentFunction(identifiers, options) {",
+              "  try {",
+              "    const updatedOrderFulfillments = await fulfillments.updateFulfillment(identifiers, options);",
+              "    console.log('Success! Updated fulfillment', updatedOrderFulfillments);",
+              "    return updatedOrderFulfillments;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myUpdateFulfillmentFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample identifiers object:",
+              "const identifiers = {",
+              "  \"orderId\": \"a6c3a817-579d-4cb5-8521-2fe53b2c4bf1\",",
+              "  \"fulfillmentId\": \"a838877d-3f13-49f3-ab29-1cde478e0949\"",
+              "};",
+              "",
+              "// Sample options object updating the trackingNumber:",
+              "const options = {",
+              "  \"fulfillment\": {",
+              "    \"trackingInfo\": {",
+              "      \"trackingNumber\": \"45677\"",
+              "    }",
+              "  }",
+              "};",
+              "",
+              "myUpdateFulfillmentFunction(identifiers, options)",
+              "  .then((updatedOrderFulfillments) => {",
+              "    const fulfillmentsArray = updatedOrderFulfillments.orderWithFulfillments.fulfillments;",
+              "",
+              "    console.log('Success! Updated fulfillment', updatedOrderFulfillments);",
+              "    return updatedOrderFulfillments;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderWithFulfillments\": {",
+              " *     \"orderId\": \"a6c3a817-579d-4cb5-8521-2fe53b2c4bf1\",",
+              " *     \"fulfillments\": [",
+              " *       {",
+              " *         \"_id\": \"a838877d-3f13-49f3-ab29-1cde478e0949\",",
+              " *         \"_createdDate\": \"2023-03-07T14:30:21.535Z\",",
+              " *         \"lineItems\": [",
+              " *           {",
+              " *             \"_id\": \"00000000-0000-0000-0000-000000000001\",",
+              " *             \"quantity\": 1",
+              " *           }",
+              " *         ],",
+              " *         \"trackingInfo\": {",
+              " *           \"trackingNumber\": \"45677\",",
+              " *           \"shippingProvider\": \"usps\",",
+              " *           \"trackingLink\": \"https://tools.usps.com/go/TrackConfirmAction.action?tLabels=45677\"",
+              " *         }",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " *",
+              " */"
+            ],
+            "extra": {
+              "description": "Updates the fulfillment's `trackingNumber`"
+            }
           }
         ]
       },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ]
+      "isVeloEvent": false
     }
   ],
   "messages": [
@@ -537,7 +858,7 @@
               }
             }
           ],
-          "doc": "List of order IDs and their associated fulfillments."
+          "doc": "List of order IDs and their associated fulfillments' info."
         }
       ],
       "docs": {
@@ -641,7 +962,7 @@
               "referenceType": "wix-ecom-backend.Fulfillments.OrderWithFulfillments"
             }
           ],
-          "doc": ""
+          "doc": "List of order IDs and their associated fulfillments."
         }
       ],
       "docs": {
@@ -1359,7 +1680,7 @@
               }
             }
           ],
-          "doc": "Order IDs for which to retrieve fulfillments."
+          "doc": "List of order IDs for which to retrieve fulfillments."
         }
       ],
       "docs": {
@@ -1572,7 +1893,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Fulfillment ID."
+          "doc": "ID of the fulfillment to be updated."
         },
         {
           "name": "orderId",
@@ -1617,7 +1938,7 @@
               "referenceType": "wix-ecom-backend.Fulfillments.UpdateFulfillment"
             }
           ],
-          "doc": ""
+          "doc": "Fulfillment info."
         }
       ],
       "docs": {
