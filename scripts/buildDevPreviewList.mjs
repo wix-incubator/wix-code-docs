@@ -2,8 +2,16 @@ import { getAllFilesSync } from 'get-all-files'
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fs from 'fs';
+
 // Import module, submodules, and functions that are hidden in the menu editor.
-const hiddenItems = require('./hiddenItems.json');
+let hiddenItems;
+try{
+const itemText = fs.readFileSync('./scripts/hiddenItems.txt', 'utf8');
+hiddenItems = JSON.parse(itemText);
+} catch (error){
+    console.log(error)
+}
+
 
 function findDevPreviewFunctions() {
     let modules = {};
