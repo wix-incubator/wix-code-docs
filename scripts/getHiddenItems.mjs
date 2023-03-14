@@ -58,11 +58,8 @@ function findHiddenItems(menuConfig) {
 }
 
 async function getRefDOM() {
-    let data = 'No healthy upstream';
-    do{
     const response = await fetch('https://www.wix.com/velo/reference')
     data = await response.text();
-    } while(data.includes('No healthy upstream'));
     const dom = htmlparser2.parseDocument(data);
     return dom;
 }
