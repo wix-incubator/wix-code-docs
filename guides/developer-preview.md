@@ -74,3 +74,4 @@ This is a list of the APIs that are currently in Developer Preview mode.
 | wix-email-marketing.v2 | Campaigns | [deleteCampaign](/wix-email-marketing-v2/campaigns/deletecampaign)<br>[getCampaign](/wix-email-marketing-v2/campaigns/getcampaign)<br>[listCampaigns](/wix-email-marketing-v2/campaigns/listcampaigns)<br>[listRecipients](/wix-email-marketing-v2/campaigns/listrecipients)<br>[listStatistics](/wix-email-marketing-v2/campaigns/liststatistics)<br>[pauseScheduling](/wix-email-marketing-v2/campaigns/pausescheduling)<br>[publishCampaign](/wix-email-marketing-v2/campaigns/publishcampaign)<br>[reuseCampaign](/wix-email-marketing-v2/campaigns/reusecampaign)<br>[sendTest](/wix-email-marketing-v2/campaigns/sendtest)|
 <!-- END TABLE -->
 
+
