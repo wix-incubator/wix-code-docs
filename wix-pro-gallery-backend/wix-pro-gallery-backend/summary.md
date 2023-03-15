@@ -1,0 +1,1 @@
+The wix-pro-gallery-backend module contains functionality for managing pro galleries in your site's backend.
