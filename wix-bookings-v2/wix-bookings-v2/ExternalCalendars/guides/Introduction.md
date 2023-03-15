@@ -16,7 +16,7 @@ title: Introduction
 &nbsp;
 
 
-The External Calendars API enables an app to connect and sync a Wix site with external calendars.
+The External Calendars API enables you to connect and sync a Wix site with external calendars.
 
 With External Calendars, you can:
 
@@ -34,7 +34,7 @@ It’s important to note the following points before starting to code:
 
 + External calendar providers have different requirements for authentication. Use [`listProviders()`](#listProviders) to find out whether to connect with a provider using [`connectByOAuth()`](#connectByOAuth) or [`connectByCredentials()`](#connectByCredentials).
 + A connection’s `syncConfig` property contains settings for the external calendar connection, including whether importing and/or exporting of calendar events is enabled.
-* Only site collaborators with [Bookings roles](https://support.wix.com/en/article/roles-permissions-overview) can book or edit their bookings. You can override the permissions with the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+* Only site collaborators with [Bookings roles](https://support.wix.com/en/article/roles-permissions-overview) can book or edit their bookings. You can override the permissions with the [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
 
 ## Terminology
@@ -44,3 +44,9 @@ It’s important to note the following points before starting to code:
 + **External calendar connection**: A linkage established between a Wix site’s calendar and one or more external calendars, to enable importing and/or exporting calendar events.
 + **Event**: A single session or recurring session instance that appears in a specific block of time in a calendar, such as an appointment or class.
 + **Schedule**: Collection of all sessions that belong to the same class, course, appointment, or resource in a Wix site's calendar.
+
+To use the External Calendars API, import `{ externalCalendars }` from the `wix-bookings.v2` module:
+
+```javascript
+import { externalCalendars } from 'wix-bookings.v2';
+```
