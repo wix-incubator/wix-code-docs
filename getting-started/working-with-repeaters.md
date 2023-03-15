@@ -546,4 +546,4 @@ Now when a visitor hovers over a repeater item container, the event handler will
 >
 > Want to read more about global and scoped selectors? See [Understanding the Scope of Selector Functions](https://support.wix.com/en/article/velo-repeaters-understanding-the-scope-of-selector-functions) in the Help Center.
 
-You've learned enough about repeaters to start working with them. But, believe it or not, there's still a lot more to know. Want to take a deeper dive? See [Wix Repeaters with Velo](https://support.wix.com/en/velo-by-wix/wix-repeaters-with-velo) in the Help Center and the [Repeater](https://www.wix.com/velo/reference/$w/repeater/introduction) element in the API Reference.
+You've learned enough about repeaters to start working with them. But, believe it or not, there's still a lot more to know. Want to take a deeper dive? See the repeater articles in the [Wix Editor Elements with Velo](https://support.wix.com/en/wix-editor-elements-with-velo) section of the Help Center and the [Repeater](https://www.wix.com/velo/reference/$w/repeater/introduction) element in the API Reference.
