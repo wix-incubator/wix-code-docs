@@ -2,8 +2,16 @@ import { getAllFilesSync } from 'get-all-files'
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fs from 'fs';
+
 // Import module, submodules, and functions that are hidden in the menu editor.
-const hiddenItems = require('./hiddenItems.json');
+let hiddenItems;
+try{
+const itemText = fs.readFileSync('./scripts/hiddenItems.txt', 'utf8');
+hiddenItems = JSON.parse(itemText);
+} catch (error){
+    console.log(error)
+}
+
 
 function findDevPreviewFunctions() {
     let modules = {};
@@ -11,9 +19,11 @@ function findDevPreviewFunctions() {
         if (file.endsWith('.service.json')) {
             // Grab file data
             let jsonData = require(`../${file}`);
-            // Check if the module or submodule is hidden in the menu editor
+            // Check if the module or submodule is hidden in the menu editor.
+            // Query builders are not included in the menu editor editor, but they do have service.json files.
+            // In the files they are listed as members of hidden submodules. So we check for them as well. 
             const longSubmoduleName = `${jsonData.memberOf}.${jsonData.name.toLowerCase()}`;
-            if(hiddenItems.modules.includes(jsonData.memberOf) || hiddenItems.submodules.includes(longSubmoduleName)){continue;}
+            if(hiddenItems.modules.includes(jsonData.memberOf) || hiddenItems.submodules.includes(jsonData.memberOf? jsonData.memberOf.toLowerCase() : '')  || hiddenItems.submodules.includes(longSubmoduleName)){continue;}
             // Process functions
             const previewFunctions = []
             for(const operation of jsonData.operations) {
