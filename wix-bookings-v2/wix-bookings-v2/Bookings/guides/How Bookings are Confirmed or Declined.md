@@ -3,7 +3,7 @@
 
 The following flow presents how `confirmOrDeclineBooking()` determines the booking status.    
 
-![flow](../media/confirmator_flow.png)
+![flow](confirmator_flow.png)
 
 Calling a checkout after creating a booking, is optional, `confirmOrDeclineBooking()` can be called after `createBooking()`
 
