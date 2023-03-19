@@ -38,7 +38,6 @@ import { badges } from 'wix-members.v2';
 
 ## Before you begin
 
-* Badge permissions - Badges can grant site members special permissions to access specific pages.  You can [set badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge) in the Site Members area of the dashboard.
-Badge permissions can't be set in the API.  Site members receive permissions once a permission-granting badge is assigned to them.  
+* Badge permissions - Badges can grant site members special permissions to access specific pages.  You can [set badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge) in the Site Members area of the dashboard.  Badge permissions can't be set in the API.  Site members receive permissions once a permission-granting badge is assigned to them.  
 
 * Member permissions cannot be managed via the badges API. You must set them in the site's dashboard.
