@@ -23,7 +23,7 @@ Badges assigned to specific site members help them stand out from other members.
 
 With the Badges API, you can customize how badges are created and assigned, including, for example, automating creation of specific categories of members who will recieve a given badge, or delegating assignment of badges to site members themselves.
 
-For an overview of badges, see [About Member Badges](https://support.wix.com/en/article/about-member-badges).
+Learn more [about member badges](https://support.wix.com/en/article/about-member-badges).
 
 To use the Badges API,
 import `badges` from wix-members.v2:
