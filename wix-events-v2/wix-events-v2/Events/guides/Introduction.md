@@ -13,12 +13,12 @@ To add an event handler, add an **events.js** file to the **Backend** section of
 
 Event handler functions are defined using the following pattern:
 
-```
+```javascript
 export function <wixAppName>_<eventName>(event) { }
 ```
 
 For example, an event handler that handles the start of a site event looks like this:
 
-```
+```javascript
 export function wixEvents_onEventStarted(event) { }
 ```
