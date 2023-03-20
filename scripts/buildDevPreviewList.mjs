@@ -12,7 +12,6 @@ hiddenItems = JSON.parse(itemText);
     console.log(error)
 }
 
-
 function findDevPreviewFunctions() {
     let modules = {};
     for (const file of getAllFilesSync('../')) {
