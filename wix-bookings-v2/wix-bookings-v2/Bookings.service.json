@@ -10,6 +10,91 @@
   "properties": [],
   "operations": [
     {
+      "name": "bulkCreateBooking",
+      "params": [
+        {
+          "name": "createBookingsInfo",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Bookings.CreateBookingInfo"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Bookings to create.\nMax: 8 bookings.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.BulkCreateBookingOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "createBookingsInfo",
+        "createBookingsInfo.booking",
+        "createBookingsInfo.booking.additionalFields._id",
+        "createBookingsInfo.booking.bookedEntity"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Bookings.BulkCreateBookingResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates multiple bookings.",
+        "description": [
+          "See [`createBooking()`](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/createbooking) documentation.\n\nIf for any of the bookings required fields were not passed on the request or if the caller doesn't have the required permissions to create such booking, the call will fail.\nIf the request contains unavailable bookings, the call will be completed successfully, but the unavailable bookings will not be created and will be considered as a failure on the response."
+        ],
+        "examples": [
+          {
+            "title": "bulkCreateBooking example",
+            "body": [
+              "import { bookings } from 'wix-bookings.v2';",
+              "  ",
+              " async function bulkCreateBooking(createBookingsInfo, options) {",
+              "   try {",
+              "     const result = await bookings.bulkCreateBooking(createBookingsInfo, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
       "name": "cancelBooking",
       "params": [
         {
@@ -30,11 +115,12 @@
             }
           ],
           "doc": "An object representing the available options for canceling a booking.\n",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision"
       ],
       "ret": {
@@ -214,9 +300,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Use `Confirm Or Decline Booking` to determine if the booking is valid, payment is received, and the booking can be processed.\nCall `Confirm Or Decline Booking` after checkout or after calling `Create Booking` to verify the booking.",
+        "summary": "Use `confirmOrDeclineBooking()` to determine if the booking is valid, payment is received, and the booking can be processed.\nCall `confirmOrDeclineBooking()` after checkout or after calling `createBooking()` to verify the booking.",
         "description": [
-          "+ If a session is valid and payment is received, the booking is visible on the calendar.\n+ If a session is double booked, `Confirm Or Decline Booking` can catch this and decline the duplicate booking, the booking is not visible on the calendar."
+          "+ If a session is valid and payment is received, the booking is visible on the calendar.\n+ If a session is double booked, `confirmOrDeclineBooking()` can catch this and decline the duplicate booking, the booking is not visible on the calendar."
         ],
         "examples": [
           {
@@ -293,7 +379,7 @@
       "docs": {
         "summary": "Creates a booking.",
         "description": [
-          "To create a booking for an appointment or a session of a class, pass a booking with the relevant `slot`.\n\nTo create a booking for the entire course, pass a booking with the relevant `schedule`.\nYou can use the [Query Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/query-availability) endpoint to check the availability beforehand.\n\nIf you create a booking for an existing session, we recommend that you only pass `slot.sessionId`.\nThen, any specified slot details are calculated.\n\nIf you create a booking for a new session, we recommend to call\n[Query Availability](https://bo.wix.com/wix-docs/rest/bookings/availabilitycalendar---wip/query-availability)\nfirst.\nThen, pass the retrieved `availability.slot` object as the BookedEntity.Slot of the booking in the request.\n\nBookings are created with a status of `CREATED`.\n`CREATED` bookings don't appear on the business calendar and don't affect a related schedule's availability.\n\nTo create a booking with a given status, pass a booking with the wanted status.\nThis is only permitted for site Owners.\n\nYou can pass a `participantNotification.message` to notify the customer of the booking with a message.\nIt's also necessary to pass `participantNotification.notifyParticipants`as `true` to send the message.\n\nYou can pass `sendSmsReminder` as 'true', if you want an SMS reminder to be sent to the phone number specified in the ContactDetails, 24 hours before the session starts.\n\nWhen creating a booking you must pass either `participantsChoices` or `totalParticipants`. If you pass `participantsChoices`, all the\nprovided choices must exist for the service, otherwise the call returns an `INVALID_SERVICE_CHOICES` error.\n\nWhen creating a booking, you can pass `selectedPaymentOption`.\nThis specifies which payment method the customer plans to use.\nBut it's possible for them to later use another supported payment method.\n\nYou can skip the checkout and payment flow if you call [Confirm Or Decline Booking ](link) otherwise, after you create the booking, you can use the\nWix eCommerce APIs (coming soon) for the checkout and payment flow or use a different service for checkout."
+          "To create a booking for an appointment or a session of a class, pass a booking with the relevant `slot`.\n\nTo create a booking for the entire course, pass a booking with the relevant `schedule`.\nYou can use the [Query Availability](https://dev.wix.com/api/rest/wix-bookings/availability-calendar/query-availability) endpoint to check the availability beforehand.\n\nIf you create a booking for an existing session, we recommend that you only pass `slot.sessionId`.\nThen, any specified slot details are calculated.\n\nIf you create a booking for a new session, we recommend to call\n[Query Availability](https://dev.wix.com/api/rest/wix-bookings/availability-calendar/query-availability)\nfirst.\nThen, pass the retrieved `availability.slot` object as the BookedEntity.Slot of the booking in the request.\n\nBookings are created with a status of `CREATED`.\n`CREATED` bookings don't appear on the business calendar and don't affect a related schedule's availability.\n\nTo create a booking with a given status, pass a booking with the wanted status.\nThis is only permitted for site Owners.\n\nYou can pass a `participantNotification.message` to notify the customer of the booking with a message.\nIt's also necessary to pass `participantNotification.notifyParticipants`as `true` to send the message.\n\nYou can pass `sendSmsReminder` as 'true', if you want an SMS reminder to be sent to the phone number specified in the ContactDetails, 24 hours before the session starts.\n\nWhen creating a booking you must pass either `participantsChoices` or `totalParticipants`. If you pass `participantsChoices`, all the\nprovided choices must exist for the service, otherwise the call returns an `INVALID_SERVICE_CHOICES` error.\n\nWhen creating a booking, you can pass `selectedPaymentOption`.\nThis specifies which payment method the customer plans to use.\nBut it's possible for them to later use another supported payment method.\n\nYou can skip the checkout and payment flow if you call [Confirm Or Decline Booking ](https://dev.wix.com/api/rest/wix-bookings/confirmation/confirm-or-decline-booking) otherwise, after you create the booking, you can use the\nWix eCommerce APIs (coming soon) for the checkout and payment flow or use a different service for checkout."
         ],
         "examples": [
           {
@@ -440,11 +526,12 @@
             }
           ],
           "doc": "An object representing the available options for rescheduling a booking.\n",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision",
         "slot"
       ],
@@ -517,11 +604,12 @@
             }
           ],
           "doc": "",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision"
       ],
       "ret": {
@@ -2222,7 +2310,7 @@
               }
             }
           ],
-          "doc": "Bulk create booking results.\nFor each booking includes whether its creation succeeded along with proper error if such occurred, and the created booking entity if `returnFullEntity` was passed as true."
+          "doc": "Bulk create booking results.\nWhether it successfully created each booking, providing the corresponding error message if a failure occurred, and includes the created booking entity if the `returnFullEntity` is `true`."
         }
       ],
       "docs": {
@@ -2729,7 +2817,6 @@
         },
         {
           "name": "contactId",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2910,16 +2997,6 @@
       "name": "ConfirmOrDeclineBookingOptions",
       "members": [
         {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact ID."
-        },
-        {
           "name": "paymentStatus",
           "optional": true,
           "type": [
@@ -2947,16 +3024,6 @@
             }
           ],
           "doc": "ID of the booking to confirm or decline."
-        },
-        {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact ID."
         },
         {
           "name": "paymentStatus",
