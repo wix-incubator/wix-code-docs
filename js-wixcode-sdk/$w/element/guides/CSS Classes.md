@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 # Element CSS Classes
 
 > This feature is not yet available to all users.
@@ -58,6 +60,48 @@ For example:
   font-weight: 700;
   font-size: .8em;
   color: black;
+}
+```
+
+## Image button classes
+
+### `.image-button`
+
+Targets image button elements.
+For example:
+
+```css
+.image-button {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+}
+```
+
+## Language menu classes
+
+### `.language-menu`
+
+Targets language menu elements.
+For example:
+
+```css
+.language-menu {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+}
+```
+
+### `.language-menu__option`
+
+Targets language menu option elements.
+For example:
+
+```css
+.language-menu__option {
+  background-color: #dfd2f4;
+  font-family: monospace;
 }
 ```
 
