@@ -6,7 +6,7 @@ You can use the [getAppPageData()](#getAppPageData) function in code for custom 
 
 The object passed to a custom product page contains the following properties:
 
-| Property | Type | Description |
+| Name | Type | Description |
 | --- | --- | --- |
 | image | String | URL of the product image. |
 | title | String | Product title. |
