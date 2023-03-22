@@ -8,7 +8,7 @@ When you use the Wix Data API, you may encounter errors. This list includes the 
 
 |<div style="min-width:70px">Code</div>| <div style="min-width:300px">Message</div>| Troubleshooting|
 |---------------------------------------|---------|-----------------|
-|<a id="WDE0001" name="WDE0001">WDE0001</a>| Collection name must be a string.| Check that the collection name you provided is a valid string.
+|[WDE0001](#wde0001)</a>| Collection name must be a string.| Check that the collection name you provided is a valid string.
 |<a id="WDE0002" name="WDE0002">WDE0002</a>| Item ID must be a string.| Check that the item `_id` you provided is a valid string.
 |<a id="WDE0003">WDE0003</a>| Field name must be a string.| Check that the field name you provided is a valid string.
 |<a id="WDE0004">WDE0004</a>| Failed to save {your item name} into {your collection name}. Items must be JavaScript objects.| Check that the item you're saving is a valid JavaScript object.
