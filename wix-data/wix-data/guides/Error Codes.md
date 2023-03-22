@@ -4,6 +4,8 @@
 
 When you use the Wix Data API, you may encounter errors. This list includes the error codes and messages returned by the API and more information to help you resolve issues. If an error persists, [contact support](https://www.wix.com/contact) for help.
 
+(Experimental)
+
 |<div style="min-width:70px">Code</div>| <div style="min-width:300px">Message</div>| Troubleshooting|
 |---------------------------------------|---------|-----------------|
 |<a id="WDE0001" name="WDE0001">WDE0001</a>| Collection name must be a string.| Check that the collection name you provided is a valid string.
