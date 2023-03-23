@@ -8,12 +8,12 @@ When you use the Wix Data API, you may encounter errors. This list includes the 
 
 |<div style="min-width:70px">Code</div>| <div style="min-width:300px">Message</div>| Troubleshooting|
 |---------------------------------------|---------|-----------------|
-|[WDE0001](#wde0001)</a>| Collection name must be a string.| Check that the collection name you provided is a valid string.
-|<a id="WDE0002" name="WDE0002">WDE0002</a>| Item ID must be a string.| Check that the item `_id` you provided is a valid string.
-|<a id="WDE0003">WDE0003</a>| Field name must be a string.| Check that the field name you provided is a valid string.
-|<a id="WDE0004">WDE0004</a>| Failed to save {your item name} into {your collection name}. Items must be JavaScript objects.| Check that the item you're saving is a valid JavaScript object.
+|WDE0001| Collection name must be a string.| Check that the collection name you provided is a valid string.
+|<span id="WDE0002">WDE0002</span>| Item ID must be a string.| Check that the item `_id` you provided is a valid string.
+|<span id="WDE0003">WDE0003</span>| Field name must be a string.| Check that the field name you provided is a valid string.
+|<i id="WDE0004">WDE0004</i>| Failed to save {your item name} into {your collection name}. Items must be JavaScript objects.| Check that the item you're saving is a valid JavaScript object.
 |<a id="WDE0005">WDE0005</a>| Failed to bulk save items into {your collection name}. Items must be an array of JavaScript objects and item IDs must be strings if present.| One or more of the items you tried to save was invalid. Check that the items are an array of valid JavaScript objects and that any `_id` properties in the items are strings. A valid ID key-value pair looks like this:<br>`'_id': 'ffdkj9c2-df8g-f9ke-lk98-4kjhfr89keedb'`.
-|<a id="WDE0006">WDE0006</a>| Failed to bulk save items into {your collection name}.Cannot insert more than 1000 items in one request.| You tried to save too many items at once. Avoid this error by splitting up your request into batches of fewer than 1000 items.
+|<test id="WDE0006">WDE0006</test>| Failed to bulk save items into {your collection name}.Cannot insert more than 1000 items in one request.| You tried to save too many items at once. Avoid this error by splitting up your request into batches of fewer than 1000 items.
 |<a id="WDE0007">WDE0007</a>|Invalid update. Updated object must have an _id property that is a string.| Check that the object you passed for the `item` parameter has a property called `_id` whose value is a valid string.|
 |<a id="WDE0008">WDE0008</a>|wixData.{the function you called} expects between {minimum} and {maximum} arguments, but was called with {the number of arguments you provided}.| The wrong number of arguments were passed to the function. Check your code to make sure that you are passing a valid number of arguments, and that you separate the argument values with commas.|
 |<a id="WDE0009">WDE0009</a>| Document is too large.|The maximum size for a single collection item is 512 KB. Check that the items you're adding are smaller than this.|
