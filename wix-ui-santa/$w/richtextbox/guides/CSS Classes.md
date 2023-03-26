@@ -57,13 +57,13 @@ For example:
 }
 ```
 
-## `.rich-text-box__icons`
+## `.rich-text-box__icon`
 
 Targets rich text box icons.
 For example:
 
 ```css
-.rich-text-box__icons {
+.rich-text-box__icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
