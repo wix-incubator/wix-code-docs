@@ -10,7 +10,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### End of Life: Wix Paid Plans and Wix Paid Plans Backend
 
-`wix-paid-plans`, `wix-paid-plans-backend``
+`wix-paid-plans`, `wix-paid-plans-backend`
 
 The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been removed from the documentation. Their functionality is available in the [`wix-pricing-plans`](wix-pricing-plans) and [`wix-pricing-plans-backend`](wix-pricing-plans-backend) APIs. Existing code containing these deprecated APIs will continue to work.
 
