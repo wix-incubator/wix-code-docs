@@ -20,7 +20,7 @@ The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been remo
 
 `wix-users`, `wix-users-backend`
 
-The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#release-notes_release-notes_new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
+The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
 
 (March 27, 2023)
 
