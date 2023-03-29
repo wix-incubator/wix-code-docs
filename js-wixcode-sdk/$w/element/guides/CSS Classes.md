@@ -82,48 +82,6 @@ For example:
 }
 ```
 
-## Anchor menu classes
-
-### `.anchor-menu`
-
-Targets anchor menu elements.
-For example:
-
-```css
-.anchor-menu {
-  background-color: #e6e6e6;
-  padding: 10px;
-  border-radius: 10px;
-}
-```
-
-### `.anchor-menu__item`
-
-Targets anchor menu list item elements.
-For example:
-
-```css
-.anchor-menu__item {
-  margin-left: 35px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-```
-
-### `.anchor-menu__label`
-
-Targets anchor menu list item text.
-For example:
-
-```css
-.anchor-menu__label {
-  font-family: sans-serif;
-  font-weight: 700;
-  font-size: .8em;
-  color: black;
-}
-```
-
 ## Image button classes
 
 ### `.image-button`
