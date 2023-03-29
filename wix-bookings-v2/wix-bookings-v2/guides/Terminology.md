@@ -1,8 +1,13 @@
 
 # Terminology
 
++ __Availability__: Free time on a schedule that customers can book.
 + __Booking__: Information about the service that the customer has booked. 
   Includes details about the time, location, participants, and price.
++ __Bookings Policy__: Terms the business wants to enforce when 
+  customers try to book a service. For example, how far in advance customers 
+  may book a service or until what point before the start of a session 
+  customers can cancel.
 + __Booking Status__: Information about the booking's life cycle.
     + `CREATED`: The booking has been created, but doesn't yet appear in the 
       business calendar. 
@@ -28,6 +33,9 @@
           declined or a double booking happened for free bookings.
     + `CANCELED`: The booking has been canceled by the site owner or the customer.
         Cancel bookings with [Cancel Booking()](#cancelBooking).
++ __Calendar__: General overview about the availability and bookings of the 
+  business, including its services and resources. Manage your appointments, classes 
+  and courses on the calendar.
 + __Double booked__:
   A double booking can happen in case of 2 or more simultaneous eCommerce checkout 
   processes or if the site owner manually accepts bookings that exceed the 
@@ -37,6 +45,17 @@
     They must then manually resolve the situation.
   + When a double booking happens for free services, the second 
     booking's status is set to `DECLINED` while the first booking is retained.
++ __Deposit__: Amount the customer must pay immediately when checking out the 
+  booking.
++ __Locked Sessions__: Sessions that customers cannot book due to business reasons, such 
+  as the session being full and having a waitlist, or because an administrator 
+  wants to manually screen each customer before adding a customer to a session.
++ __Member__: Someone who is a registered member in the Wix site and has a 
+  login.
++ __Merchant__: The business that offers services that the public (customers) can book. The merchant's business is on a Wix site.
++ __Pricing Provider__: A 3rd-party app that implements custom logic for determining the price of a booking.
++ __Resource__: Business asset like a staff member, room, or equipment that's 
+  needed to provide a service.
 + __Service__: Business offering. For example, a fitness studio may offer a 
   1-hour yoga class, a 45 minute HIIT training session, and a 30 minute 1-on-1 
   personal training. Learn more about [services](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business).
@@ -52,9 +71,6 @@
       on a particular day. Customers sign up for the entire course and not one session. For example, 
       a 12-session introductory course to Pilates, starting on February 1st and
       ending on March 17th.
-+ __Variant__: Unique variation of the service. Each service variant may have 
-  a different price.
-+ __Availability__: Free time on a schedule that customers can book.
 + __Schedule__: A collection of all sessions that belong to the same class, course,
   appointment, or resource. Schedules also comprise available slots that can still be booked.
     + __Session__: An _occupied_ period of time in a schedule. Sessions are the 
@@ -67,24 +83,12 @@
       the availability of a resource, such as a barber with appointments of 30 
       minutes each that are open for booking every weekday between 8:00 - 17:00.
       These slots are calculated according to the constraints of the schedule.
-+ __Calendar__: General overview about the availability and bookings of the 
-  business, including its services and resources. Manage your appointments, classes 
-  and courses on the calendar.
-+ __Resource__: Business asset like a staff member, room, or equipment that's 
-  needed to provide a service.
-+ __Bookings Policy__: Terms the business wants to enforce when 
-  customers try to book a service. For example, how far in advance customers 
-  may book a service or until what point before the start of a session 
-  customers can cancel.
-+ __Locked Sessions__: Sessions that customers cannot book due to business reasons, such 
-  as the session being full and having a waitlist, or because an administrator 
-  wants to manually screen each customer before adding a customer to a session.
-+ __Deposit__: Amount the customer must pay immediately when checking out the 
-  booking.
++ __Variant__: Unique variation of the service. Each service variant may have 
+  a different price.
 + __Visitor__: Anyone who isn't registered as a member or hasn't logged in to 
   the Wix site. If a visitor creates a booking they're added as a contact.
-+ __Member__: Someone who is a registered member in the Wix site and has a 
-  login.
 + __[Wix Pricing Plans](https://support.wix.com/en/article/about-pricing-plans)__: 
   A pre-paid bundle of services or a membership that provides access to certain
   services.
++ __Wix Site Owner__: The person managing the merchant's Wix site.
+
