@@ -63,7 +63,7 @@ For example:
 
 ```css
 .tabs__scroll-button {
-  fill: #FF0000;
+  color: #FF0000;
 }
 ```
 
