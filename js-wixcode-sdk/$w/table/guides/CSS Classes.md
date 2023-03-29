@@ -80,8 +80,8 @@ Targets table body elements.
 For example:
 
 ```css
-.table_body {
-    opacity: 75%
+.table__body {
+  opacity: 75%
 }
 ```
 
