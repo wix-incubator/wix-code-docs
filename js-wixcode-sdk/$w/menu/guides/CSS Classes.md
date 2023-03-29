@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 # Menu CSS Classes
 
 > This feature is not yet available to all users.
@@ -47,6 +49,20 @@ For example:
 }
 ```
 
+### `.horizontal-menu__item-label`
+
+Targets horizontal menu item labels.
+For example:
+
+```css
+.horizontal-menu__item-label {
+  font-family: sans-serif;
+  font-weight: 700;
+  text-transform: lowercase;
+  color: black;
+}
+```
+
 ### `.horizontal-menu__submenu-container`
 
 <!-- TODO - should be horizontal-menu__submenu.
@@ -61,6 +77,19 @@ For example:
 }
 ```
 
+### `.horizontal-menu__submenu-title`
+
+Targets the `menuItem` that opens the submenu.
+For example:
+
+```css
+.horizontal-menu__submenu-title {
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+}
+```
+
 ### `.horizontal-menu__submenu-item`
 
 Targets horizontal submenu items.
@@ -72,18 +101,19 @@ For example:
 }
 ```
 
-<!-- TODO - no idea what submenu title is
+### `.horizontal-menu__submenu-item-label`
 
-### `.horizontal-menu__submenu-title`
-
-Targets xx
+Targets horizontal submenu item labels.
 For example:
 
 ```css
-.horizontal-menu__submenu-title {
-
+.horizontal-menu__submenu-item-label {
+  font-family: sans-serif;
+  text-transform: capitalize;
+  background-color: #5A5A5A;
+  color: #FFFFFF;
 }
-``` -->
+```
 
 ## Vertical menu classes
 
