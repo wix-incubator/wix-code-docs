@@ -28,7 +28,6 @@ Targets text elements.
 Text elements contain multiple text nodes,
 each of which is wrapped in an HTML paragraph or heading tag.
 You can select the entire text element with the `.rich-text` class.
-
 For example:
 
 ```css
