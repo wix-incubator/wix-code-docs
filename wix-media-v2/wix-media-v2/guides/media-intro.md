@@ -71,3 +71,13 @@ import wixMedia from 'wix-media.v2';
     * Video or audio files can have a preview asset containing only a portion of the file.
   
   With the [Generate File Download Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefiledownloadurl), you can use the `assetKeys` parameter to download different assets of a file.  
+
+* **Media Types:** Supported media types include the following:
+  * Image
+  * Video
+  * Audio
+  * Document
+  * Vector
+  * Archive
+  * Model 3D
+  Learn more about [media file types and size limits](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes).
