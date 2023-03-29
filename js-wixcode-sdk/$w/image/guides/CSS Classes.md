@@ -1,9 +1,11 @@
-# Box CSS Classes
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
+# Image CSS Classes
 
 > This feature is not yet available to all users.
 
 You can use the classes listed below
-to style your `Box` elements with CSS.
+to style your `Image` elements with CSS.
 
 For more information on styling your elements with CSS, see
 [Styling Elements with CSS]($w/styling-elements-with-css) and the
@@ -19,16 +21,17 @@ select elements with the documented class names only.
 
 </blockquote>
 
-## `.box`
+## `.image`
 
-Targets box elements.
+Targets image elements.
 For example:
 
 ```css
-.box {
+.image {
   width: 200px;
-  border-radius: 12px;
+  height: 200px;
+  border-radius: 50%;
   filter: drop-shadow(16px 16px 10px gray);
-  background-color: #92f0a0;
+  cursor: grab;
 }
 ```
