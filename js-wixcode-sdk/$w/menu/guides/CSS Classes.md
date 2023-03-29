@@ -21,6 +21,87 @@ select elements with the documented class names only.
 
 </blockquote>
 
+## Anchor menu classes
+
+### `.anchor-menu`
+
+Targets anchor menu elements.
+For example:
+
+```css
+.anchor-menu {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+}
+```
+
+### `.anchor-menu__item`
+
+Targets anchor menu list item elements.
+For example:
+
+```css
+.anchor-menu__item {
+  margin-left: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+```
+
+### `.anchor-menu__label`
+
+Targets anchor menu list item text.
+For example:
+
+```css
+.anchor-menu__label {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: .8em;
+  color: black;
+}
+```
+
+## Dropdown menu classes
+
+### `.dropdown-menu`
+
+Targets dropdown menu elements.
+For example:
+
+```css
+.dropdown-menu {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid black;
+}
+```
+
+### `.dropdown-menu__item`
+
+Targets dropdown menu items.
+For example:
+
+```css
+.dropdown-menu__item {
+  padding: 5px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+```
+
+### `.dropdown-menu__submenu`
+
+Targets dropdown submenu containers.
+For example:
+
+```css
+.dropdown-menu__submenu {
+  background-color: #a2a2fc;
+}
+```
+
 ## Horizontal menu classes
 
 ### `.horizontal-menu`
@@ -30,7 +111,6 @@ For example:
 
 ```css
 .horizontal-menu {
-  width: 100%;
   border: none;
   border-bottom: 2px solid black;
 }
@@ -97,7 +177,8 @@ For example:
 
 ```css
 .horizontal-menu__submenu-item {
-  padding: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 ```
 
@@ -143,6 +224,20 @@ For example:
 }
 ```
 
+### `.vertical-menu__item-label`
+
+Targets vertical menu item labels.
+For example:
+
+```css
+.vertical-menu__item-label {
+  font-family: sans-serif;
+  font-weight: 700;
+  text-transform: lowercase;
+  color: black;
+}
+```
+
 ### `.vertical-menu__submenu`
 
 Targets vertical submenu containers.
@@ -162,44 +257,5 @@ For example:
 ```css
 .vertical-menu__arrow {
   fill: #840292;
-}
-```
-
-## Dropdown menu classes
-
-### `.dropdown-menu`
-
-Targets dropdown menu elements.
-For example:
-
-```css
-.dropdown-menu {
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid black;
-}
-```
-
-### `.dropdown-menu__item`
-
-Targets dropdown menu items.
-For example:
-
-```css
-.dropdown-menu__item {
-  padding: 5px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-```
-
-### `.dropdown-menu__submenu`
-
-Targets dropdown submenu containers.
-For example:
-
-```css
-.dropdown-menu__submenu {
-  background-color: #a2a2fc;
 }
 ```
