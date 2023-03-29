@@ -10,6 +10,91 @@
   "properties": [],
   "operations": [
     {
+      "name": "bulkCreateBooking",
+      "params": [
+        {
+          "name": "createBookingsInfo",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Bookings.CreateBookingInfo"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Bookings to create.\nMax: 8 bookings.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.BulkCreateBookingOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "createBookingsInfo",
+        "createBookingsInfo.booking",
+        "createBookingsInfo.booking.additionalFields._id",
+        "createBookingsInfo.booking.bookedEntity"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Bookings.BulkCreateBookingResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates multiple bookings.",
+        "description": [
+          "See [`createBooking()`](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/createbooking) documentation.\n\nIf for any of the bookings required fields were not passed on the request or if the caller doesn't have the required permissions to create such booking, the call will fail.\nIf the request contains unavailable bookings, the call will be completed successfully, but the unavailable bookings will not be created and will be considered as a failure on the response."
+        ],
+        "examples": [
+          {
+            "title": "bulkCreateBooking example",
+            "body": [
+              "import { bookings } from 'wix-bookings.v2';",
+              "  ",
+              " async function bulkCreateBooking(createBookingsInfo, options) {",
+              "   try {",
+              "     const result = await bookings.bulkCreateBooking(createBookingsInfo, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
       "name": "cancelBooking",
       "params": [
         {
@@ -30,11 +115,12 @@
             }
           ],
           "doc": "An object representing the available options for canceling a booking.\n",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision"
       ],
       "ret": {
@@ -55,7 +141,7 @@
       "docs": {
         "summary": "Cancels a booking.",
         "description": [
-          "The booking status changes to `CANCELED`.\n\nIf the booking was for an appointment, the corresponding session is\ndeleted from the business calendar.\n\nIf the booking was for a class or course, the participants are removed\nfrom the class session or the course. But the course or class session\nremains on the business calendar.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe cancelation. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nIn case you want to cancel a booking on behalf of a customer, we recommend\nto pass `flowControlSettings.ignoreCancellationPolicy` as `false`. This\nensures that the cancelation is validated against the service's cancelation\npolicy."
+          "The booking status changes to `CANCELED`.\n\nIf the booking was for an appointment, the corresponding session is\ndeleted from the business calendar.\n\nIf the booking was for a class or course, the participants are removed\nfrom the class session or the course. But the course or class session\nremains on the business calendar.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe cancelation. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nIn case you want to cancel a booking on behalf of a customer, we recommend\nto pass `flowControlSettings.ignoreCancellationPolicy` as `false`. This\nensures that the cancelation is validated against the service's cancelation\npolicy.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
@@ -71,7 +157,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -141,7 +227,7 @@
       "docs": {
         "summary": "Confirms a booking request and changes the booking status to `CONFIRMED`.",
         "description": [
-          "Calling this method doesn't check whether a slot or schedule is still\navailable at this time.\n\nYou can only confirm bookings for services that require the owner's manual\napproval for bookings and that have a status of `PENDING`.\n\nFor appointment services the slot may become unavailable, depending on the\n[service's](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business)\n`policy.bookingApprovalPolicy.requestsAffectsAvailability`.\n\nCalling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`participants.approvalStatus` to `APPROVED`.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe confirmation. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nBookings are automatically confirmed when the\nservice is configured to automatically confirm\nbookings and the [eCommerce order](https://www.wix.com/velo/reference/wix-ecom-backend/orders)\nhas been approved. The slot's or schedule's availability is checked just\nbefore confirming the booking as part of the automatic flow."
+          "Calling this method doesn't check whether a slot or schedule is still\navailable at this time.\n\nYou can only confirm bookings for services that require the owner's manual\napproval for bookings and that have a status of `PENDING`.\n\nFor appointment services the slot may become unavailable, depending on the\n[service's](https://support.wix.com/en/article/creating-the-right-booking-service-for-your-business)\n`policy.bookingApprovalPolicy.requestsAffectsAvailability`.\n\nCalling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`participants.approvalStatus` to `APPROVED`.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe confirmation. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nBookings are automatically confirmed when the\nservice is configured to automatically confirm\nbookings and the [eCommerce order](https://www.wix.com/velo/reference/wix-ecom-backend/orders)\nhas been approved. The slot's or schedule's availability is checked just\nbefore confirming the booking as part of the automatic flow.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
@@ -157,7 +243,159 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "confirmOrDeclineBooking",
+      "params": [
+        {
+          "name": "bookingId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the booking to confirm or decline.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.ConfirmOrDeclineBookingOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "bookingId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Bookings.ConfirmOrDeclineBookingResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Use `confirmOrDeclineBooking()` to determine if the booking is valid, payment is received, and the booking can be processed.\nCall `confirmOrDeclineBooking()` after checkout or after calling `createBooking()` to verify the booking.",
+        "description": [
+          "+ If a session is valid and payment is received, the booking is visible on the calendar.\n+ If a session is double booked, `confirmOrDeclineBooking()` can catch this and decline the duplicate booking, the booking is not visible on the calendar."
+        ],
+        "examples": [
+          {
+            "title": "confirmOrDeclineBooking example",
+            "body": [
+              "import { bookings } from 'wix-bookings.v2';",
+              "  ",
+              " async function confirmOrDeclineBooking(bookingId, options) {",
+              "   try {",
+              "     const result = await bookings.confirmOrDeclineBooking(bookingId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "createBooking",
+      "params": [
+        {
+          "name": "booking",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.Booking"
+            }
+          ],
+          "doc": "The booking to create.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.CreateBookingOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "booking",
+        "booking.additionalFields._id",
+        "booking.bookedEntity"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.Bookings.CreateBookingResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a booking.",
+        "description": [
+          "To create a booking for an appointment or a session of a class, pass a booking with the relevant `slot`.\n\nTo create a booking for the entire course, pass a booking with the relevant `schedule`.\nYou can use the [Query Availability](https://dev.wix.com/api/rest/wix-bookings/availability-calendar/query-availability) endpoint to check the availability beforehand.\n\nIf you create a booking for an existing session, we recommend that you only pass `slot.sessionId`.\nThen, any specified slot details are calculated.\n\nIf you create a booking for a new session, we recommend to call\n[Query Availability](https://dev.wix.com/api/rest/wix-bookings/availability-calendar/query-availability)\nfirst.\nThen, pass the retrieved `availability.slot` object as the BookedEntity.Slot of the booking in the request.\n\nBookings are created with a status of `CREATED`.\n`CREATED` bookings don't appear on the business calendar and don't affect a related schedule's availability.\n\nTo create a booking with a given status, pass a booking with the wanted status.\nThis is only permitted for site Owners.\n\nYou can pass a `participantNotification.message` to notify the customer of the booking with a message.\nIt's also necessary to pass `participantNotification.notifyParticipants`as `true` to send the message.\n\nYou can pass `sendSmsReminder` as 'true', if you want an SMS reminder to be sent to the phone number specified in the ContactDetails, 24 hours before the session starts.\n\nWhen creating a booking you must pass either `participantsChoices` or `totalParticipants`. If you pass `participantsChoices`, all the\nprovided choices must exist for the service, otherwise the call returns an `INVALID_SERVICE_CHOICES` error.\n\nWhen creating a booking, you can pass `selectedPaymentOption`.\nThis specifies which payment method the customer plans to use.\nBut it's possible for them to later use another supported payment method.\n\nYou can skip the checkout and payment flow if you call [Confirm Or Decline Booking ](https://dev.wix.com/api/rest/wix-bookings/confirmation/confirm-or-decline-booking) otherwise, after you create the booking, you can use the\nWix eCommerce APIs (coming soon) for the checkout and payment flow or use a different service for checkout."
+        ],
+        "examples": [
+          {
+            "title": "createBooking example",
+            "body": [
+              "import { bookings } from 'wix-bookings.v2';",
+              "  ",
+              " async function createBooking(booking, options) {",
+              "   try {",
+              "     const result = await bookings.createBooking(booking, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
               " }",
               "  "
             ]
@@ -227,7 +465,7 @@
       "docs": {
         "summary": "Declines a `PENDING` booking request and changes the booking status to\n`DECLINED`.",
         "description": [
-          "Calling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`participants.approvalStatus` to `DECLINED`.\n\nYou can only decline bookings for services that require the owner's manual\napproval for bookings and that have a status of `PENDING`.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe decline. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message."
+          "Calling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`participants.approvalStatus` to `DECLINED`.\n\nYou can only decline bookings for services that require the owner's manual\napproval for bookings and that have a status of `PENDING`.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe decline. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
@@ -243,7 +481,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -288,11 +526,12 @@
             }
           ],
           "doc": "An object representing the available options for rescheduling a booking.\n",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision",
         "slot"
       ],
@@ -314,7 +553,7 @@
       "docs": {
         "summary": "Reschedules a booking to a different slot or session.",
         "description": [
-          "You can only reschedule bookings for appointments or classes, you can't\nreschedule course bookings.\n\nThe old session is removed from the calendar and the new session is\nadded.\n\nIf you reschedule a booking for a class session the new session must be an\nexisting session for the same class.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe rescheduling. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nIn case the service has\nvariants, you can call this endpoint to update the booking's `totalParticipants` or `participantsChoices`.\nIf you provide `participantsChoices`, all of the provided choices must exist for\nthe service. Otherwise, the call returns an `INVALID_SERVICE_CHOICES` error.\nIf you omit `participantsChoices` in the request, the existing choices are\nkept and not replaced with an empty object.\n\n<!-- INTERNAL PERMISSION COMMENT:\nYou need to have the `BOOKINGS.NUMBER_OF_PARTICIPANTS_UPDATE` permission\nto reschedule bookings including `participantsInfo`.\n<!--END: INTERNAL PERMISSION COMMENT-->\n\nIn case you want to reschedule a booking on behalf of a customer, we recommend\nto pass `flowControlSettings.ignoreReschedulePolicy` as `false`. This\nensures that the rescheduling is validated against the service's rescheduling\npolicy."
+          "You can only reschedule bookings for appointments or classes, you can't\nreschedule course bookings.\n\nThe old session is removed from the calendar and the new session is\nadded.\n\nIf you reschedule a booking for a class session the new session must be an\nexisting session for the same class.\n\nYou can pass a `participantNotification.message` to notify the customer of\nthe rescheduling. You also need to pass `participantNotification.notifyParticipants`\nas `true` to actually send the message.\n\nIn case the service has\nvariants, you can call this endpoint to update the booking's `totalParticipants` or `participantsChoices`.\nIf you provide `participantsChoices`, all of the provided choices must exist for\nthe service. Otherwise, the call returns an `INVALID_SERVICE_CHOICES` error.\nIf you omit `participantsChoices` in the request, the existing choices are\nkept and not replaced with an empty object.\n\n<!-- INTERNAL PERMISSION COMMENT:\nYou need to have the `BOOKINGS.NUMBER_OF_PARTICIPANTS_UPDATE` permission\nto reschedule bookings including `participantsInfo`.\n<!--END: INTERNAL PERMISSION COMMENT-->\n\nIn case you want to reschedule a booking on behalf of a customer, we recommend\nto pass `flowControlSettings.ignoreReschedulePolicy` as `false`. This\nensures that the rescheduling is validated against the service's rescheduling\npolicy.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
@@ -330,7 +569,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -365,11 +604,12 @@
             }
           ],
           "doc": "",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "bookingId",
+        "options",
         "options.revision"
       ],
       "ret": {
@@ -390,7 +630,7 @@
       "docs": {
         "summary": "Updates the number of participants for a booking.",
         "description": [
-          "You can only update the number of participants for class and course\nbookings, you can't update it for appointment bookings.\n\nCalling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`totalNumberOfParticipants`.\n\nWhen updating the number of participants for a booking you must pass either\n`participantsChoices` or `totalParticipants`. If you pass `participantsChoices`\nfor services that have variants,\nall of the provided choices must exist for the service. Otherwise, the\ncall returns an `INVALID_SERVICE_CHOICES` error."
+          "You can only update the number of participants for class and course\nbookings, you can't update it for appointment bookings.\n\nCalling this method also changes the\n[session's](https://www.wix.com/velo/reference/wix-bookings-backend/sessions/getsession)\n`totalNumberOfParticipants`.\n\nWhen updating the number of participants for a booking you must pass either\n`participantsChoices` or `totalParticipants`. If you pass `participantsChoices`\nfor services that have variants,\nall of the provided choices must exist for the service. Otherwise, the\ncall returns an `INVALID_SERVICE_CHOICES` error.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
@@ -406,7 +646,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -721,7 +961,7 @@
               "referenceType": "wix-bookings-v2.Bookings.BookedSlot"
             }
           ],
-          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one doesn't already exist."
+          "doc": "The booked slot, once booked becomes a session, The booking is automatically assigned to the session if it already exists, or creates a session if one doesn't already exist."
         },
         {
           "name": "tags",
@@ -789,7 +1029,7 @@
               "referenceType": "wix-bookings-v2.Bookings.BookedSlot"
             }
           ],
-          "doc": "The booked slot, which once booked becomes a session. The booking is automatically assigned to the session if given, or a session is be created if one doesn't already exist."
+          "doc": "The booked slot, once booked becomes a session, The booking is automatically assigned to the session if it already exists, or creates a session if one doesn't already exist."
         }
       ],
       "docs": {
@@ -839,7 +1079,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Resources schedule ID."
+          "doc": "Resource's schedule ID."
         }
       ],
       "docs": {
@@ -902,7 +1142,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the booked service."
+          "doc": "Booked service ID."
         },
         {
           "name": "timezone",
@@ -952,7 +1192,7 @@
               "referenceType": "wix-bookings-v2.Bookings.BookedResource"
             }
           ],
-          "doc": "The resource used on the slot."
+          "doc": "The resource assigned to the slot."
         },
         {
           "name": "scheduleId",
@@ -982,7 +1222,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the underlying session when session is a single session or generated from a recurring session.\nIf `sessionId` is defined in the Create Booking request, the `startDate`, `endDate`, timezone, resource, and location fields from the request are ignored and populated from the session's information."
+          "doc": "ID of the underlying session when session is a single session or generated from a recurring session.\nIf `sessionId` is defined in the `Create Booking` request, the `startDate`, `endDate`, `timezone`, `resource`, and `location` fields are ignored and populated from the existing session's information."
         },
         {
           "name": "startDate",
@@ -1093,7 +1333,7 @@
               "referenceType": "wix-bookings-v2.Bookings.CommonIdentificationData"
             }
           ],
-          "doc": "ID of the creator of the Booking\nIf `appId` and another ID are present, the other ID takes precedence."
+          "doc": "ID of the creator of the Booking.\nIf `appId` and another ID are present, the other ID takes precedence."
         },
         {
           "name": "doubleBooked",
@@ -1104,7 +1344,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicating if this booking overlaps another existing confirmed booking"
+          "doc": "Whether this booking overlaps another existing confirmed booking. Returned when: `true`"
         },
         {
           "name": "endDate",
@@ -1115,7 +1355,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end date of this booking. For a slot, this is the end date of the slot. For a schedule, the end date of the last session."
+          "doc": "The end date of this booking. For a slot, this is the end date of the slot. For a schedule, this is the end date of the last session."
         },
         {
           "name": "extendedFields",
@@ -1166,7 +1406,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number to be used when updating, rescheduling, or cancelling the booking. The revision number is automatically incremented when the booing is updated."
+          "doc": "Revision number to be used when updating, rescheduling, or cancelling the booking. Revision number, which increments by 1 each time the booking is updated, rescheduled, or canceled. To prevent conflicting changes,the current revision must be passed when updating the booking."
         },
         {
           "name": "selectedPaymentOption",
@@ -1187,7 +1427,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start date of this booking. For a slot, this is the start date of the slot. For a schedule, the start date of the first session."
+          "doc": "The start date of this booking. For a slot, this is the start date of the slot. For a schedule, this is the start date of the first session."
         },
         {
           "name": "status",
@@ -1224,6 +1464,26 @@
       "docs": {
         "description": [
           "The booking object, version 2."
+        ]
+      }
+    },
+    {
+      "name": "BookingAlreadySetPayload",
+      "members": [
+        {
+          "name": "currentBookingStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'CANCELED'`\n- `'CONFIRMED'`\n- `'CREATED'`\n- `'DECLINED'`\n- `'PENDING'`\n- `'WAITING_LIST'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -1610,6 +1870,7 @@
         },
         {
           "name": "contactDetails",
+          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-v2.Bookings.ContactDetails"
@@ -1706,6 +1967,16 @@
             }
           ],
           "doc": "Information about the slot to create a booking for.\nIf you set `slot.location.locationType` to `CUSTOM`, the created slot's\nlocation is set to `slot.location.formattedAddress` when provided.\nOtherwise it's set to `contactDetails.fullAddress.formattedAddress`."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Booking status.\nOne of:\n- `\"CREATED\"` - The booking was created.\n- `\"UPDATED\"` - The booking was updated.\n- `\"CONFIRMED\"` - The booking has been confirmed and appears on the bookings calendar.\nBooking can be manually confirmed using the Set As Confirmed endpoint.\nBooking can be automatically confirmed when the following requirements are met:\n+ The service is configured as automatically confirmed.\n+ Invoking eCommerce checkout API and an order has been created.\n- `\"CANCELED\"` - The booking has been canceled and synced to bookings calendar.\nThe booking can be canceled using cancel API.\n- `\"PENDING\"` - The booking waiting to be confirmed or declined buy the owner and is synced to bookings calendar.\nBookings can be manually set as pending using setAsPending API, requires manage booking status permissions.\nBooking can be automatically set as pending when the following requirements are met:\n+ The Service is configured as manually confirmed.\n+ Invoking the eCommerce checkout API and an order has been created.\n- `\"WAITING_LIST\"` - The booking is pending on a waiting list.\nBooking can be created with this status when invoking waiting list join API.\n- `\"DECLINED\"` - The booking was declined by the owner and synced to bookings calendar.\nBooking can be manually declined using decline API and requires manage booking permissions.\nBooking can be automatically declined when the following requirements are met:\n+ Invoking eCommerce checkout API and the order declined event has been sent.\n+ Invoking eCommerce checkout API and order approved event has been sent, but the booking is offline and the booking causes a double booking."
         }
       ],
       "docs": {
@@ -2039,7 +2310,7 @@
               }
             }
           ],
-          "doc": "Bulk create booking results.\nFor each booking includes whether its creation succeeded along with proper error if such occurred, and the created booking entity if `returnFullEntity` was passed as true."
+          "doc": "Bulk create booking results.\nWhether it successfully created each booking, providing the corresponding error message if a failure occurred, and includes the created booking entity if the `returnFullEntity` is `true`."
         }
       ],
       "docs": {
@@ -2482,7 +2753,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the cancelation policy applies when canceling the booking. When\npassing `false` you can only cancel a booking if the cancelation policy\nallows it. Your app must have the `BOOKINGS.IGNORE_BOOKING_POLICY `\npermission scope when passing `true`.\nDefault: `false`.\n<!--ONLY:VELO\nRequires \"Manage Wix Bookings App\" and \"Manage Bookings' Calendar\" [roles](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin).\n<!--END:ONLY:VELO-->"
+          "doc": "Whether the cancelation policy applies when canceling the booking. When\npassing `false` you can only cancel a booking if the cancelation policy\nallows it.\nDefault: `false`.\n<!--ONLY:VELO\nRequires \"Manage Wix Bookings App\" and \"Manage Bookings' Calendar\" [roles](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin).\n<!--END:ONLY:VELO-->"
         },
         {
           "name": "withRefund",
@@ -2546,7 +2817,6 @@
         },
         {
           "name": "contactId",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2727,16 +2997,6 @@
       "name": "ConfirmOrDeclineBookingOptions",
       "members": [
         {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact's ID."
-        },
-        {
           "name": "paymentStatus",
           "optional": true,
           "type": [
@@ -2744,7 +3004,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Will be passed to bookings.update to indicate the payment status."
+          "doc": "Current payment status of the booking."
         }
       ],
       "docs": {
@@ -2763,17 +3023,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the booking to be confirmed or declined."
-        },
-        {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact's ID."
+          "doc": "ID of the booking to confirm or decline."
         },
         {
           "name": "paymentStatus",
@@ -2783,7 +3033,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Will be passed to bookings.update to indicate the payment status."
+          "doc": "Current payment status of the booking."
         }
       ],
       "docs": {
@@ -2794,95 +3044,6 @@
     },
     {
       "name": "ConfirmOrDeclineBookingResponse",
-      "members": [
-        {
-          "name": "booking",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v2.Bookings.Booking"
-            }
-          ],
-          "doc": ""
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ConfirmOrDeclineOptions",
-      "members": [
-        {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact's ID."
-        },
-        {
-          "name": "paymentStatus",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Will be updated on the booking to indicate the payment status."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ConfirmOrDeclineRequest",
-      "members": [
-        {
-          "name": "bookingId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the booking to be confirmed or declined."
-        },
-        {
-          "name": "contactId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact's ID."
-        },
-        {
-          "name": "paymentStatus",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Will be updated on the booking to indicate the payment status."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ConfirmOrDeclineResponse",
       "members": [
         {
           "name": "booking",
@@ -3129,7 +3290,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the availability is checked before creating the booking. When\npassing `false` a booking is only created when the slot or schedule is\navailable. Your app must have the `BOOKINGS.OVERRIDE_AVAILABILITY`\npermission scope when passing `true`.\nDefault: `false`."
+          "doc": "Whether the availability is checked before creating the booking. When\npassing `false` a booking is only created when the slot or schedule is\navailable.\nDefault: `false`."
         },
         {
           "name": "skipBusinessConfirmation",
@@ -4688,7 +4849,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the rescheduling policy applies when rescheduling the booking.\nWhen passing `false` you can only cancel a booking if the rescheduling\npolicy allows it. Your app must have the `BOOKINGS.IGNORE_BOOKING_POLICY `\npermission scope when passing `true`.\nDefault: `false`.\n<!--ONLY:VELO\nRequires \"Manage Wix Bookings App\" and \"Manage Bookings' Calendar\" [roles](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin).\n<!--END:ONLY:VELO-->"
+          "doc": "Whether the rescheduling policy applies when rescheduling the booking.\nWhen passing `false` you can only cancel a booking if the rescheduling\npolicy allows it.\nDefault: `false`.\n<!--ONLY:VELO\nRequires \"Manage Wix Bookings App\" and \"Manage Bookings' Calendar\" [roles](https://support.wix.com/en/article/roles-permissions-overview#bookings-admin).\n<!--END:ONLY:VELO-->"
         },
         {
           "name": "skipAvailabilityValidation",
@@ -4698,7 +4859,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the availability is checked before rescheduling the booking.\nWhen passing `false` a booking is only created when the slot or\nschedule is available. Your app must have the `BOOKINGS.OVERRIDE_AVAILABILITY`\npermission scope when passing `true`.\nDefault: `false`."
+          "doc": "Whether the availability is checked before rescheduling the booking.\nWhen passing `false` a booking is only created when the slot or\nschedule is available.\nDefault: `false`."
         },
         {
           "name": "skipBusinessConfirmation",
@@ -4708,7 +4869,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the rescheduled booking's status is automatically set to\n`CONFIRMED` for services that normally require the owner's manual\nconfirmation. Your app must have the `BOOKINGS.OVERRIDE_AVAILABILITY`\npermission scope when passing `true`.\nDefault: `false`."
+          "doc": "Whether the rescheduled booking's status is automatically set to\n`CONFIRMED` for services that normally require the owner's manual\nconfirmation.\nDefault: `false`."
         }
       ],
       "docs": {
@@ -5474,7 +5635,7 @@
               "referenceType": "wix-bookings-v2.Bookings.CommonIdentificationData"
             }
           ],
-          "doc": "ID of the creator of the Booking\nIf `appId` and another ID are present, the other ID takes precedence."
+          "doc": "ID of the creator of the Booking.\nIf `appId` and another ID are present, the other ID takes precedence."
         },
         {
           "name": "doubleBooked",
@@ -5485,7 +5646,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicating if this booking overlaps another existing confirmed booking"
+          "doc": "Whether this booking overlaps another existing confirmed booking. Returned when: `true`"
         },
         {
           "name": "endDate",
@@ -5496,7 +5657,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end date of this booking. For a slot, this is the end date of the slot. For a schedule, the end date of the last session."
+          "doc": "The end date of this booking. For a slot, this is the end date of the slot. For a schedule, this is the end date of the last session."
         },
         {
           "name": "extendedFields",
@@ -5547,7 +5708,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number to be used when updating, rescheduling, or cancelling the booking. The revision number is automatically incremented when the booing is updated."
+          "doc": "Revision number to be used when updating, rescheduling, or cancelling the booking. Revision number, which increments by 1 each time the booking is updated, rescheduled, or canceled. To prevent conflicting changes,the current revision must be passed when updating the booking."
         },
         {
           "name": "selectedPaymentOption",
@@ -5568,7 +5729,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start date of this booking. For a slot, this is the start date of the slot. For a schedule, the start date of the first session."
+          "doc": "The start date of this booking. For a slot, this is the start date of the slot. For a schedule, this is the start date of the first session."
         },
         {
           "name": "status",
@@ -6092,6 +6253,7 @@
         },
         {
           "name": "contactDetails",
+          "optional": true,
           "type": [
             {
               "referenceType": "wix-bookings-v2.Bookings.ContactDetails"
@@ -6188,6 +6350,16 @@
             }
           ],
           "doc": "Information about the slot to create a booking for.\nIf you set `slot.location.locationType` to `CUSTOM`, the created slot's\nlocation is set to `slot.location.formattedAddress` when provided.\nOtherwise it's set to `contactDetails.fullAddress.formattedAddress`."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Booking status.\nOne of:\n- `\"CREATED\"` - The booking was created.\n- `\"UPDATED\"` - The booking was updated.\n- `\"CONFIRMED\"` - The booking has been confirmed and appears on the bookings calendar.\nBooking can be manually confirmed using the Set As Confirmed endpoint.\nBooking can be automatically confirmed when the following requirements are met:\n+ The service is configured as automatically confirmed.\n+ Invoking eCommerce checkout API and an order has been created.\n- `\"CANCELED\"` - The booking has been canceled and synced to bookings calendar.\nThe booking can be canceled using cancel API.\n- `\"PENDING\"` - The booking waiting to be confirmed or declined buy the owner and is synced to bookings calendar.\nBookings can be manually set as pending using setAsPending API, requires manage booking status permissions.\nBooking can be automatically set as pending when the following requirements are met:\n+ The Service is configured as manually confirmed.\n+ Invoking the eCommerce checkout API and an order has been created.\n- `\"WAITING_LIST\"` - The booking is pending on a waiting list.\nBooking can be created with this status when invoking waiting list join API.\n- `\"DECLINED\"` - The booking was declined by the owner and synced to bookings calendar.\nBooking can be manually declined using decline API and requires manage booking permissions.\nBooking can be automatically declined when the following requirements are met:\n+ Invoking eCommerce checkout API and the order declined event has been sent.\n+ Invoking eCommerce checkout API and order approved event has been sent, but the booking is offline and the booking causes a double booking."
         }
       ],
       "extra": {
