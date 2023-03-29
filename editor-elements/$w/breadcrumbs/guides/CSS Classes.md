@@ -32,3 +32,16 @@ For example:
   border-style: dotted;
 }
 ```
+
+## `.breadcrumbs__item`
+
+Targets breadcrumbs items.
+For example:
+
+```css
+.breadcrumbs__item {
+  padding: 5px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+```
