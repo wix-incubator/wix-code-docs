@@ -91,3 +91,4 @@
   A pre-paid bundle of services or a membership that provides access to certain
   services.
 + __Wix Site Owner__: The person managing the merchant's Wix site.
+

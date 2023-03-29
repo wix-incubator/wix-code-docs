@@ -1,38 +1,35 @@
-name: sync_menu_editor
+name : build_dev_preview
 
 on:
   schedule:
     - cron: '0 8 * * *'
 
 jobs:
-  check-menu-editor:
+  build-dev-preview:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3        
         with:
           ref: master
       - uses: actions/setup-node@v3
-        with: 
+        with:
           node-version: '18.x'
-      - name: Sync Menu Editor    
-        run: |
+      - name: Build Dev Preview List
+        run : |
+          npm install get-all-files
           npm install node-fetch
-          npm install htmlparser2
-          npm install cheerio
           git config user.email "adamfri@wix.com"
           git config user.name "Adam Friedmann"
           git checkout -b menu-editor-sync
-          node scripts/getHiddenItems.mjs
-          git add scripts/hiddenItems.txt
-          git status --porcelain
+          node scripts/buildDevPreviewList.mjs
+          git add guides/developer-preview.md
           DIFF=$(git status --porcelain)
-          if [[ "$DIFF" == *"hiddenItems.txt"* ]]; then
-            npm install get-all-files
-            node scripts/buildDevPreviewList.mjs
-            git add guides/developer-preview.md
-            git commit -m "Syncing with hidden items in the menu editor"
+          if [[ "$DIFF" == *"developer-preview.md"* ]]; then
+            git commit -m "New dev preview list - menu editor change"
             git push --set-upstream origin menu-editor-sync --force
             echo "changes_pushed=yes" >> $GITHUB_ENV
+            echo "branch_name=menu-editor-sync" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +38,7 @@ jobs:
         with:
           payload: |
             {
-              "branch_name" : "menu-editor-sync"
+              "branch_name" : "${{ env.branch_name }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
