@@ -45,3 +45,16 @@ For example:
   background-color: #116dff;
 }
 ```
+
+## `.collapsible-text__text`
+
+Targets text in collapsible text elements.
+For example:
+
+```css
+.collapsible-text__text {
+  font-family: sans-serif;
+  font-weight: 700;
+  color: black;
+}
+```
