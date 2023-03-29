@@ -39,7 +39,7 @@ For example:
 
 ## `.rich-text__text`
 
-Targets the text in text elements.
+Targets the html text in text elements.
 For example:
 
 ```css
