@@ -64,8 +64,6 @@ For example:
 
 ```css
 .rich-text-box__icon {
-  width: 50px;
-  height: 50px;
   border-radius: 50%;
   box-shadow: 5px 5px 10px;
 }
