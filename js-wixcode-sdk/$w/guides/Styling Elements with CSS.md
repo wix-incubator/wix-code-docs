@@ -18,7 +18,8 @@
 
 ## Supported elements
 
-- [Anchor menu]($w/element/css-classes#anchor-menu)
+- [Accordion]($w/element/css-classes#accordion)
+- [Anchor menu]($w/menu/css-classes#anchor-menu)
 - [Audio player]($w/audioplayer/css-classes)
 - [Box]($w/box/css-classes)
 - [Breadcrumbs]($w/breadcrumbs/css-classes)
