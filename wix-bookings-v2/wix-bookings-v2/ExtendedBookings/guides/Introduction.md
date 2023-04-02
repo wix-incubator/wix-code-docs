@@ -10,8 +10,12 @@
 
 &nbsp;
 
+<!--
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
+
 With the Wix Bookings Extended Bookings API, you can retrieve bookings for a site's services.  
- In addition to retrieving information about bookings, you also retrieve attentional extended information, such as whether the booking can be refunded or rescheduled, and attendance for the booking.
+ In addition to retrieving information about bookings, you also retrieve additional extended information, such as whether the booking can be refunded or rescheduled, and attendance for the booking.
 
 
  ## Before You Begin
@@ -19,7 +23,7 @@ With the Wix Bookings Extended Bookings API, you can retrieve bookings for a sit
  Before using any `extendedBookings` functions, make sure to [install Wix Bookings](https://support.wix.com/en/article/adding-wix-bookings-to-your-site) on your site. 
 
 
-To use the Wix Extended Bookings V2 API, import `{ extendedBookings }` from the `wix-bookings.v2` module:
+To use the Wix Bookings Extended Bookings V2 API, import `{ extendedBookings }` from the `wix-bookings.v2` module:
 
 ```javascript
 import { extendedBookings } from 'wix-bookings.v2';
