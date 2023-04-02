@@ -30,13 +30,15 @@ For example, to change the background color of all buttons to red:
 Use inner classes to style specific elements of a component class. 
 For example, use `.button__label` to style only the labels of button elements.
 
-## Supported elements
+## Available classes
 
-See which global classes are available for any element on your site by selecting the element and viewing <strong>CSS Classes</strong> in 
+See which classes are already available for any element on your site by selecting the element and viewing <strong>CSS Classes</strong> in 
 your code panel:
 ![CSS Classes in code panel](images/css_classes_code_panel.png "CSS Classes in code panel")
 
-Or reference this list of supported elements:
+Or add your own classes in the custom classes field. For more information, see [CustomClasslist](/$w/customclasslist/introduction).
+
+For reference, this is a list of general classes:
 - [Accordion]($w/element/css-classes#accordion)
 - [Anchor menu]($w/menu/css-classes#anchor-menu)
 - [Audio player]($w/audioplayer/css-classes)
