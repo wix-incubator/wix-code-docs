@@ -18,11 +18,11 @@ CSS allows you to customize the appearance of your website, from colors and font
 of different elements. For additional information on CSS styling options, refer to the 
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
+## Add CSS to your site
 
-
-To get started, <strong>add a global.css</strong> file in the <strong>CSS</strong> section of your Page Code. Stylings added to this 
-file will apply to the selected classes throughout your site. To select a class to style, use the name of the component as 
-it's referred to in Velo.  
+To get started, <strong>add a global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
+CSS styles added to this file will apply to the selected classes throughout your site. 
+To select a class to style, use the name of the component as it's referred to in Velo. 
 
 For example, to change the background color of all buttons to red:
 ```css
@@ -36,8 +36,8 @@ For example, use `.button__label` to style only the labels of button elements.
 
 ## Available classes
 
-See which classes are already available for any element on your site by selecting the element and viewing <strong>CSS Classes</strong> in 
-your code panel:
+See which classes are already available for any element on your site by selecting the element and 
+viewing <strong>CSS Classes</strong> in your code panel:
 ![CSS Classes in code panel](images/css_classes_code_panel.png "CSS Classes in code panel")
 
 Or add your own classes in the custom classes field. For more information, see [CustomClasslist](/$w/customclasslist/introduction).
