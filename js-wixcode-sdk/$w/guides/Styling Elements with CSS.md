@@ -2,6 +2,8 @@
 
 # Styling Elements with CSS
 
+> This feature is not yet available to all users.
+
 <!-- Outline:
 
 - about the feature
@@ -12,12 +14,29 @@
 - ~~list of supported elements~~
 - ~~see MDN for full CSS documentation~~ -->
 
-> **Note:**
-> For more information about styling with CSS, see the
-> [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
+You can apply CSS styles to change the appearance of your website, including the colors, fonts, sizes, and positions 
+of various classes of elements. For additional information about styling options with CSS, see 
+the [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
+
+To get started, add a <strong>global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
+In your global.css file, select a class of elements to style using a `.` followed by the name of the class to change. 
+Class names follow the name of the component as it's used in Velo. For example, to change the background color of all buttons to red:
+```css
+.button {
+  background-color: red;
+}
+```
+
+Use inner classes to style only _some_ elements of a component class. 
+For example, a CSS style applied to `.button__label` will only affect the labels of button elements on your page.
 
 ## Supported elements
 
+See which global classes are available for any element on your site by selecting the element and viewing <strong>CSS Classes</strong> in 
+your code panel:
+![CSS Classes in code panel](images/css_classes_code_panel.png "CSS Classes in code panel")
+
+Or reference this list of supported elements:
 - [Accordion]($w/element/css-classes#accordion)
 - [Anchor menu]($w/menu/css-classes#anchor-menu)
 - [Audio player]($w/audioplayer/css-classes)
