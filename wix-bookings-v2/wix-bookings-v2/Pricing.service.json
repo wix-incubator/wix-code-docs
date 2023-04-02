@@ -1,5 +1,5 @@
 {
-  "name": "BookingsPricing",
+  "name": "Pricing",
   "memberOf": "wix-bookings-v2",
   "mixes": [],
   "callbacks": [],
@@ -16,7 +16,7 @@
           "name": "booking",
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.Booking"
+              "referenceType": "wix-bookings-v2.Pricing.Booking"
             }
           ],
           "doc": "Booking to calculate the price for.",
@@ -33,7 +33,7 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-bookings-v2.BookingsPricing.CalculatePriceResponse"
+                  "referenceType": "wix-bookings-v2.Pricing.CalculatePriceResponse"
                 }
               ]
             }
@@ -44,17 +44,17 @@
       "docs": {
         "summary": "Calculates the base price of a booking.",
         "description": [
-          "You can call `Calculate Price` after a booking is created. The returned calculated price includes information about each line\nitem's price and the booking's total price.\n\nYou can use [`Preview Price`](https://example.com) to get the base price\nbefore a booking is created.\n\nThe calculated price is the base price that will be used as a basis for charging the customer.\nDuring checkout, additional taxes\nand fees might be added to this base price.\n\n## Calculating the price\n\nWix Bookings has its own default pricing logic for calculating the price. When\nusing Wix Bookings' default pricing logic, you must pass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Calculate Price`.\n\nAlternatively you can customize the pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/).\nIf you integrate with a pricing provider, the customized pricing logic becomes\nthe default logic. This means that, if the pricing provider SPI is implemented,\nwhen calling the API's `Calculate Price` endpoint,\nthe [SPI's `Calculate Price` endpoint](https://example.com/) is used instead."
+          "You can call [`calculatePrice()`](https://www.wix.com/velo/reference/wix-bookings-v2/pricing/calculateprice) after a booking is created. The returned calculated price includes information about each line\nitem's price and the booking's total price.\n\nYou can use [`previewPrice()`](https://www.wix.com/velo/reference/wix-bookings-v2/pricing/previewprice) to get the base price\nbefore a booking is created.\n\nThe calculated price is the base price that will be used as a basis for charging the customer.\nDuring checkout, additional taxes\nand fees might be added to this base price.\n\n## Calculating the price\n\nWix Bookings has its own default pricing logic for calculating the price. When\nusing Wix Bookings' default pricing logic, you must pass the `serviceId` in the `slot`\nor `schedule` object to [`calculatePrice()`](https://www.wix.com/velo/reference/wix-bookings-v2/pricing/calculateprice).\n\nAlternatively you can customize the pricing logic using the\n[Bookings Pricing Integration REST SPI](https://dev.wix.com/api/rest/wix-bookings/pricing-integration-spi).\nIf you integrate with a pricing provider, the customized pricing logic becomes\nthe default logic. This means that, if the Pricing Integration SPI is implemented,\nwhen calling `calculatePrice()`,\nthe customized logic is used instead."
         ],
         "examples": [
           {
             "title": "calculatePrice example",
             "body": [
-              "import { bookingsPricing } from 'wix-bookings.v2';",
+              "import { pricing } from 'wix-bookings.v2';",
               "  ",
               " async function calculatePrice(booking) {",
               "   try {",
-              "     const result = await bookingsPricing.calculatePrice(booking);",
+              "     const result = await pricing.calculatePrice(booking);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -78,17 +78,26 @@
       "name": "previewPrice",
       "params": [
         {
-          "name": "options",
+          "name": "bookingLineItems",
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.PreviewPriceOptions"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Pricing.BookingLineItem"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "List of line items to preview the price for.",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "bookingLineItems"
+      ],
       "ret": {
         "type": [
           {
@@ -96,7 +105,7 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-bookings-v2.BookingsPricing.PreviewPriceResponse"
+                  "referenceType": "wix-bookings-v2.Pricing.PreviewPriceResponse"
                 }
               ]
             }
@@ -105,19 +114,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Previews the base price for a set of line items belonging to the same service,\nbefore a booking is actually created.",
+        "summary": "Previews the base price for a set of line items belonging to the same service\nbefore a potential booking is actually created.",
         "description": [
-          "The returned price preview information about each line\nitem's price and sums up each line item's price.\n\nThe previewed price is not the actual price that will be used to charge the customer.\n`Preview Price` only estimates the base price by adding up the price\nof each line item before\nthe booking is actually created.\n\nUse [`Calculate Price`](https://example.com) to get the base price\nafter the booking is created.\n\nPassing line items that belong to different services results in an error.\n\n## Calculating the previewed price\n\nWix Bookings has its own default pricing logic for previewing the price. You must\npass the `serviceId` in the [`slot`](https://example.com/)\nor [`schedule`](https://example.com/) object to `Preview Price`.\n\nYou cannot call `Preview Price` if you have customized Bookings pricing logic using the\n[Bookings Pricing Provider SPI](https://example.com/). Calling `Preview Price` if custom pricing\nlogic has been implemented for the site results in an error."
+          "The returned price preview information about each line\nitem's price and sums up each line item's price.\n\nThe previewed price is not the actual price that will be used to charge the customer.\n`Preview Price` only estimates the base price by adding up the price\nof each line item before\nthe booking is actually created.\n\nUse [`Calculate Price`](https://www.wix.com/velo/reference/wix-bookings-v2/pricing/calculateprice) to get the base price\nafter the booking is created.\n\nPassing line items that belong to different services results in an error.\n\n## Calculating the previewed price\n\nWix Bookings has its own default pricing logic for previewing the price. You must\npass the `serviceId` in the `slot`\nor `schedule` object to [`previewPrice()`].\n\nYou cannot call `previewPrice()` if you have customized Bookings pricing logic using the\n[Bookings Pricing Integration REST SPI](https://dev.wix.com/api/rest/wix-bookings/pricing-integration-spi). Calling `previewPrice` if custom pricing\nlogic has been implemented for the site results in an error."
         ],
         "examples": [
           {
             "title": "previewPrice example",
             "body": [
-              "import { bookingsPricing } from 'wix-bookings.v2';",
+              "import { pricing } from 'wix-bookings.v2';",
               "  ",
-              " async function previewPrice(options) {",
+              " async function previewPrice(bookingLineItems) {",
               "   try {",
-              "     const result = await bookingsPricing.previewPrice(options);",
+              "     const result = await pricing.previewPrice(bookingLineItems);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -207,7 +216,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.AddressLocation"
+              "referenceType": "wix-bookings-v2.Pricing.AddressLocation"
             }
           ],
           "doc": "Coordinates of the physical address."
@@ -237,7 +246,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.StreetAddress"
+              "referenceType": "wix-bookings-v2.Pricing.StreetAddress"
             }
           ],
           "doc": "Street name, number and apartment number."
@@ -261,7 +270,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.Subdivision"
+                    "referenceType": "wix-bookings-v2.Pricing.Subdivision"
                   }
                 ]
               }
@@ -335,7 +344,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.StreetAddress"
+              "referenceType": "wix-bookings-v2.Pricing.StreetAddress"
             }
           ],
           "doc": "Street name, number and apartment number."
@@ -355,7 +364,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedSchedule"
+              "referenceType": "wix-bookings-v2.Pricing.BookedSchedule"
             }
           ],
           "doc": "The booked schedule. The booking is automatically assigned to the schedule's sessions."
@@ -365,7 +374,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedSlot"
+              "referenceType": "wix-bookings-v2.Pricing.BookedSlot"
             }
           ],
           "doc": "The booked slot, once booked becomes a session, The booking is automatically assigned to the session if it already exists, or creates a session if one doesn't already exist."
@@ -423,7 +432,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedSchedule"
+              "referenceType": "wix-bookings-v2.Pricing.BookedSchedule"
             }
           ],
           "doc": "The booked schedule. The booking is automatically assigned to the schedule's sessions."
@@ -433,7 +442,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedSlot"
+              "referenceType": "wix-bookings-v2.Pricing.BookedSlot"
             }
           ],
           "doc": "The booked slot, once booked becomes a session, The booking is automatically assigned to the session if it already exists, or creates a session if one doesn't already exist."
@@ -526,7 +535,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.Location"
+              "referenceType": "wix-bookings-v2.Pricing.Location"
             }
           ],
           "doc": "Location where the schedule's sessions take place. Read only."
@@ -586,7 +595,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.Location"
+              "referenceType": "wix-bookings-v2.Pricing.Location"
             }
           ],
           "doc": "Location where the slot's session takes place."
@@ -596,7 +605,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedResource"
+              "referenceType": "wix-bookings-v2.Pricing.BookedResource"
             }
           ],
           "doc": "The resource assigned to the slot."
@@ -703,7 +712,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.CustomFormField"
+                    "referenceType": "wix-bookings-v2.Pricing.CustomFormField"
                   }
                 ]
               }
@@ -716,7 +725,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.BookedEntity"
+              "referenceType": "wix-bookings-v2.Pricing.BookedEntity"
             }
           ],
           "doc": "An object describing the slot or schedule that was booked."
@@ -726,7 +735,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.ContactDetails"
+              "referenceType": "wix-bookings-v2.Pricing.ContactDetails"
             }
           ],
           "doc": "Contact details of the site visitor or member making the booking."
@@ -737,7 +746,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.IdentificationData"
+              "referenceType": "wix-bookings-v2.Pricing.IdentificationData"
             }
           ],
           "doc": "ID of the creator of the Booking.\nIf `appId` and another ID are present, the other ID takes precedence."
@@ -769,7 +778,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.ExtendedFields"
+              "referenceType": "wix-bookings-v2.Pricing.ExtendedFields"
             }
           ],
           "doc": "Additional custom fields. This includes fields managed by Wix, by 3rd-party apps, and by the site.\n\nEmpty fields are not returned.\n"
@@ -789,7 +798,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.ParticipantChoices"
+              "referenceType": "wix-bookings-v2.Pricing.ParticipantChoices"
             }
           ],
           "doc": "Information about the booked service choices and participants.\nAvailable only when the booking includes multiple service variants."
@@ -823,7 +832,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Selected payment option.\nOne of the payment options offered by the service, or another option if `skipSelectedPaymentOptionValidation` is `true`.\nWhen undefined, the payment option is resolved by the service configuration on checkout."
+          "doc": "Selected payment option.\n\nSupported values: `\"OFFLINE\"`, `\"ONLINE\"`, `\"MEMBERSHIP\"`, `\"MEMBERSHIP_OFFLINE\"`.\n\nOne of the payment options offered by the service, or another option if `skipSelectedPaymentOptionValidation` is `true`.\nWhen undefined, the payment option is resolved by the service configuration on checkout.\n"
         },
         {
           "name": "startDate",
@@ -844,7 +853,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Booking status.\nOne of:\n- `\"CREATED\"` - The booking was created.\n- `\"UPDATED\"` - The booking was updated.\n- `\"CONFIRMED\"` - The booking was confirmed and appears on the bookings calendar.\nA booking can be manually confirmed using the [`Confirm Or Decline API`](www.example.com).\nA booking can be automatically confirmed when the following requirements are met:\n+ The service is configured as automatically confirmed.\n+ The system invoked the eCommerce checkout API and created an order.\n- `\"CANCELED\"` - The booking has been canceled and synced to the bookings calendar.\nThe booking can be canceled using [`Cancel Booking API`](www.example.com).\n- `\"PENDING\"` - The booking is waiting to be confirmed or declined by the owner and the booking is synced to the bookings calendar.\nBookings can be manually set as `PENDING` using the [`setAsPending` API](www.example.com), by those with Manage Booking Status permissions scopes.\nBookings can be automatically set as `PENDING` when the following requirements are met:\n+ The service is configured as manually confirmed.\n+ Invoking the eCommerce checkout API and an order has been created.\n- `\"WAITING_LIST\"` - The booking is on a waiting list.\n- `\"DECLINED\"` - The booking was declined by the owner and synced to the Bookings calendar.\nBookings can be manually declined using the [`Decline Booking` API](www.example.com) by those with Manage Booking Status permissions scopes.\nBooking can be automatically declined when one of the following requirements are met:\n+ Invoking the `eCommerce checkout` API and the order declined event has been sent.\n+ Invoking the `eCommerce checkout` API and order approved event has been sent, but the booking is offline and the booking causes a double booking."
+          "doc": "Booking status.\nOne of:\n- `\"CREATED\"` - The booking was created.\n- `\"UPDATED\"` - The booking was updated.\n- `\"CONFIRMED\"` - The booking was confirmed and appears on the bookings calendar. A booking can be manually confirmed using the [`confirmOrDecline()`](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/confirmordeclinebooking) API. A booking can be automatically confirmed when the following requirements are met:\n    + The service is configured as automatically confirmed.\n    + The system invoked the eCommerce checkout API and created an order.\n- `\"CANCELED\"` - The booking has been canceled and synced to the bookings calendar.\nThe booking can be canceled using [`cancelBooking()`](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/cancelbooking) API.\n- `\"PENDING\"` - The booking is waiting to be confirmed or declined by the owner and the booking is synced to the bookings calendar.\nBookings can be manually set as `PENDING` using the `setAsPending()` API, by those with Manage Booking Status permissions scopes.\nBookings can be automatically set as `PENDING` when the following requirements are met:\n    + The service is configured as manually confirmed.\n    + Invoking the eCommerce checkout API and an order has been created.\n- `\"WAITING_LIST\"` - The booking is on a waiting list.\n- `\"DECLINED\"` - The booking was declined by the owner and synced to the Bookings calendar. Bookings can be manually declined using the [`declineBooking()`](https://www.wix.com/velo/reference/wix-bookings-v2/bookings/declinebooking) API by those with Manage Booking Status permission scopes. Bookings can be automatically declined when one of the following requirements are met:\n    + Invoking the `eCommerce checkout` API and the order declined event has been sent.\n    + Invoking the `eCommerce checkout` API and order approved event has been sent, but the booking is offline and the booking causes a double booking."
         },
         {
           "name": "totalParticipants",
@@ -886,7 +895,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.ServiceChoice"
+                    "referenceType": "wix-bookings-v2.Pricing.ServiceChoice"
                   }
                 ]
               }
@@ -933,7 +942,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service ID.\n\nRequired when not using Wix Booking's default pricing logic.\n\nOptional when using custom pricing logic defined with the\n[Bookings Pricing Provider SPI](https://example.com/).\n"
+          "doc": "Service ID.\n\nRequired when not using Wix Booking's default pricing logic.\n"
         }
       ],
       "docs": {
@@ -950,7 +959,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.ParticipantChoices"
+              "referenceType": "wix-bookings-v2.Pricing.ParticipantChoices"
             }
           ],
           "doc": "Information about the booked service choices and participants.\nAvailable only when the booking includes multiple service variants."
@@ -1031,7 +1040,7 @@
           "name": "booking",
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.Booking"
+              "referenceType": "wix-bookings-v2.Pricing.Booking"
             }
           ],
           "doc": "Booking to calculate the price for."
@@ -1051,7 +1060,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.PriceInfo"
+              "referenceType": "wix-bookings-v2.Pricing.PriceInfo"
             }
           ],
           "doc": "Information about each line item's price and the actual total base price."
@@ -1094,7 +1103,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact's email, used to create a new contact or get existing one from the [Contacts API](https://dev.wix.com/api/rest/contacts/contacts). Used to validate coupon usage limitations per contact. If not passed, the coupon usage limitation will not be enforced. (Coupon usage limitation validation is not supported yet)."
+          "doc": "Contact's email, used to create a new contact or get existing one from the [Contacts API](https://www.wix.com/velo/reference/wix-crm/contacts). Used to validate coupon usage limitations per contact. If not passed, the coupon usage limitation will not be enforced. (Coupon usage limitation validation is not supported yet)."
         },
         {
           "name": "firstName",
@@ -1111,7 +1120,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.Address"
+              "referenceType": "wix-bookings-v2.Pricing.Address"
             }
           ],
           "doc": "Contact's full address."
@@ -1195,7 +1204,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "<!--ONLY:VELO\nOne of:\n- `\"SHORT_TEXT\"`\n- `\"LONG_TEXT\"`\n- `\"CHECK_BOX\"`\n<!--END:ONLY:VELO-->"
+          "doc": "Form field value's type at the time of submission.\n\nSupported values: `\"SHORT_TEXT\"`, `\"LONG_TEXT\"`, `\"CHECK_BOX\"`\n"
         }
       ],
       "docs": {
@@ -1225,7 +1234,7 @@
               }
             }
           ],
-          "doc": "Data Extensions extended fields\nKey: Namespace\nValue: extended fields data in Struct format"
+          "doc": "Data Extensions extended fields expressed as a set of key-value pairs:\n\n`key:value`\n\n+ `key` is the namespace, type `string`.\n+ `value` is the data of the extended fields data, type `struct`.\n"
         }
       ],
       "docs": {
@@ -1469,7 +1478,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.ServiceChoices"
+                    "referenceType": "wix-bookings-v2.Pricing.ServiceChoices"
                   }
                 ]
               }
@@ -1515,45 +1524,17 @@
       }
     },
     {
-      "name": "PreviewPriceOptions",
-      "members": [
-        {
-          "name": "bookingLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.BookingLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of line items to preview the price for."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "PreviewPriceRequest",
       "members": [
         {
           "name": "bookingLineItems",
-          "optional": true,
           "type": [
             {
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.BookingLineItem"
+                    "referenceType": "wix-bookings-v2.Pricing.BookingLineItem"
                   }
                 ]
               }
@@ -1576,7 +1557,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.BookingsPricing.PriceInfo"
+              "referenceType": "wix-bookings-v2.Pricing.PriceInfo"
             }
           ],
           "doc": "Information about each line item's price and the estimated total price based on the line items."
@@ -1600,7 +1581,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.BookingLineItem"
+                    "referenceType": "wix-bookings-v2.Pricing.BookingLineItem"
                   }
                 ]
               }
@@ -1616,7 +1597,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Calculated total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a numerical value in the\n[`schedule.rate.labeledPriceOptions`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) object."
+          "doc": "Calculated total price. Available only when the\nservice's\nprice has been set up as a numerical value in the\n`schedule.rate.labeledPriceOptions` object."
         },
         {
           "name": "deposit",
@@ -1636,7 +1617,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description of the total price. Available only when the\n[service](https://dev.wix.com/api/rest/wix-bookings/services/service/create-service)'s\nprice has been set up as a text value in the\n[`schedule.rate.priceText`](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/schedule/schedule-object) property."
+          "doc": "Description of the total price. Available only when the\nservice's\nprice has been set up as a text value in the\n`schedule.rate.priceText` property."
         }
       ],
       "extra": {
@@ -1697,7 +1678,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value for one of the choices in the [`CustomServiceOption.choices`](https://example.com) list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
+          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
         },
         {
           "name": "optionId",
@@ -1737,7 +1718,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Value for one of the choices in the [`CustomServiceOption.choices`](https://example.com) list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
+          "doc": "Value for one of the choices in the `CustomServiceOption.choices` list.\nChoices are specific values for an option the customer can choose to book. For example,\nthe option `ageGroup` may have these choices: `child`, `student`, `adult`, and `senior`.\nEach choice may have a different price."
         }
       ],
       "docs": {
@@ -1758,7 +1739,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-bookings-v2.BookingsPricing.ServiceChoice"
+                    "referenceType": "wix-bookings-v2.Pricing.ServiceChoice"
                   }
                 ]
               }
