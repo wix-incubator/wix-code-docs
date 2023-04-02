@@ -24,7 +24,25 @@ Functionality includes:
 
 **Note:** These modules are in [Developer Preview](./developer-preview.md).
 
-(March 28, 2023)
+(April 2, 2023)
+
+
+### End of Life: Wix Paid Plans and Wix Paid Plans Backend
+
+`wix-paid-plans`, `wix-paid-plans-backend`
+
+The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been removed from the documentation. Their functionality is available in the [`wix-pricing-plans`](wix-pricing-plans) and [`wix-pricing-plans-backend`](wix-pricing-plans-backend) APIs. Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
+
+
+### End of Life: Wix Users and Wix Users Backend
+
+`wix-users`, `wix-users-backend`
+
+The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
 
 
 ### New Article: Shareable Booking Calendar Links
