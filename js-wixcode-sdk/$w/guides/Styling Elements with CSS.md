@@ -14,21 +14,22 @@
 - ~~list of supported elements~~
 - ~~see MDN for full CSS documentation~~ -->
 
-You can apply CSS styles to change the appearance of your website, including the colors, fonts, sizes, and positions 
-of various classes of elements. For additional information about styling options with CSS, see 
-the [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
+CSS allows you to customize the appearance of your website, from colors and fonts to sizes and positions 
+of different elements. For more information on CSS styling options, refer to the 
+[MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
-To get started, add a <strong>global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
-In your global.css file, select a class of elements to style using a `.` with the name of the class to change. 
-Class names follow the name of the component as it's used in Velo. For example, to change the background color of all buttons to red:
+To get started, create a <strong>global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
+In this file, use a `.` followed by the name of the class to select and style. Class names correspond 
+to the name of the component as it's used in Velo.  
+For example, to change the background color of all buttons to red:
 ```css
 .button {
   background-color: red;
 }
 ```
 
-Use inner classes to style only _some_ elements of a component class. 
-For example, a CSS style applied to `.button__label` will only affect the labels of button elements on your page.
+Use inner classes to style specific elements of a component class. 
+For example, to style only the labels of button elements, use `.button__label`.
 
 ## Supported elements
 
