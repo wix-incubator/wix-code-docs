@@ -21,7 +21,7 @@
        + __Automatically__. Bookings are automatically confirmed when the 
           service 
           is configured to do so and the order is approved during the checkout process. An automatic confirmation includes checking availability.
-        + ___Manually__. You can manually confirm a booking using 
+        + __Manually__. You can manually confirm a booking using 
           [Confirm Or Decline Booking()](#confirmordeclinebooking).
           slot's or schedule's availability.
     + `WAITING_LIST`: The booking is on a waiting list.
