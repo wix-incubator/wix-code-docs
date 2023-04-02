@@ -18,8 +18,12 @@ CSS allows you to customize the appearance of your website, from colors and font
 of different elements. For additional information on CSS styling options, refer to the 
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
-To get started, <strong>add a global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
-In that file select a class name to style. Class names correspond to the name of the component as it's used in Velo.  
+
+
+To get started, <strong>add a global.css</strong> file in the <strong>CSS</strong> section of your Page Code. Stylings added to this 
+file will apply to the selected classes throughout your site. To select a class to style, use the name of the component as 
+it's referred to in Velo.  
+
 For example, to change the background color of all buttons to red:
 ```css
 .button {
