@@ -19,7 +19,7 @@ of various classes of elements. For additional information about styling options
 the [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
 To get started, add a <strong>global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
-In your global.css file, select a class of elements to style using a `.` followed by the name of the class to change. 
+In your global.css file, select a class of elements to style using a `.` with the name of the class to change. 
 Class names follow the name of the component as it's used in Velo. For example, to change the background color of all buttons to red:
 ```css
 .button {
