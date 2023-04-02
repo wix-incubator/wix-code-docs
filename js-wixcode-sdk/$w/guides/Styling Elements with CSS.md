@@ -15,7 +15,7 @@
 - ~~see MDN for full CSS documentation~~ -->
 
 CSS allows you to customize the appearance of your website, from colors and fonts to sizes and positions 
-of different elements. For more information on CSS styling options, refer to the 
+of different elements. For additional information on CSS styling options, refer to the 
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
 To get started, create a <strong>global.css</strong> file in the <strong>CSS</strong> section of your Page Code. 
