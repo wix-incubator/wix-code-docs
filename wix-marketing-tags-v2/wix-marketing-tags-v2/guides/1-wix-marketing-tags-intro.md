@@ -64,7 +64,9 @@ import { marketingTags } from 'wix-marketing-tags.v2';
     | Google tag | Tag Manager Container ID | GTM-12345 |
 
 ## Elevate
+
 Functions in Wix Marketing Tags are restricted and only run if you elevate permissions using the wix-auth.elevate() function.
+
 <blockquote class="warning">
 
 __Warning__:
