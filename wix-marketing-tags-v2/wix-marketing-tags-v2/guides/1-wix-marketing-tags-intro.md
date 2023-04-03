@@ -73,3 +73,5 @@ __Warning__:
 Using `elevate()` on a function will allow it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.
 
 </blockquote>
+
+This is a test.
