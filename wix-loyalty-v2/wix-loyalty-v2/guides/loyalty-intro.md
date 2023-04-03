@@ -11,7 +11,10 @@ title: Introduction
 </div>  
 
 &nbsp;
-> **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.  
+<!--
+> **Note:**
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
 
 The Loyalty API allows you to manage a customized loyalty program that lets customers earn loyalty points.
 

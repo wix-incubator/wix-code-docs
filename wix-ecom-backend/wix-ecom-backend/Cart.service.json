@@ -55,7 +55,7 @@
         "doc": "Fulfilled - Cart.\n"
       },
       "docs": {
-        "summary": "Adds catalog line items and/or custom line items to a cart.",
+        "summary": "Adds catalog line items to a cart.",
         "description": [
           "The `addToCart()` function returns a Promise that resolves to the updated cart when the specified items have been added.\n\n> **Note:** When adding catalog items, `options.lineItems.catalogReference` is required."
         ],
@@ -2077,23 +2077,6 @@
       "name": "AddToCartOptions",
       "members": [
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
-        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -2128,23 +2111,6 @@
             }
           ],
           "doc": "Cart ID."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -2191,10 +2157,20 @@
       }
     },
     {
-      "name": "AddToCurrentCartRequest",
+      "name": "AddToCurrentCartAndEstimateTotalsRequest",
       "members": [
         {
-          "name": "customLineItems",
+          "name": "billingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Address"
+            }
+          ],
+          "doc": "Billing address. Used for calculating tax if all the items in the cart are not shippable."
+        },
+        {
+          "name": "lineItems",
           "optional": true,
           "type": [
             {
@@ -2202,14 +2178,54 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
+                    "referenceType": "wix-ecom-backend.Cart.LineItem"
                   }
                 ]
               }
             }
           ],
-          "doc": "Custom line items."
+          "doc": "Catalog line items."
         },
+        {
+          "name": "selectedMemberships",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedMemberships"
+            }
+          ],
+          "doc": "The selected membership payment options and which line items they apply to."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
+        },
+        {
+          "name": "shippingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Address"
+            }
+          ],
+          "doc": "Shipping address. Used for calculating tax and shipping (when applicable)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AddToCurrentCartRequest",
+      "members": [
         {
           "name": "lineItems",
           "optional": true,
@@ -2365,7 +2381,7 @@
               "referenceType": "wix-ecom-backend.Cart.StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -2495,7 +2511,7 @@
               "referenceType": "wix-ecom-backend.Cart.VatId"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -3866,23 +3882,6 @@
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
-        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -3945,23 +3944,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -4321,7 +4303,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item price."
+          "doc": "Custom line item price.\nMust be a number or a decimal without symbols."
         },
         {
           "name": "quantity",
@@ -5410,7 +5392,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FIELD_NOT_ALLOWED'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'ONE_OF_ALIGNMENT'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -5430,7 +5412,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact's company"
+          "doc": "Contact's company name."
         },
         {
           "name": "email",
@@ -5440,7 +5422,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email associated with the address"
+          "doc": "Email associated with the address."
         },
         {
           "name": "firstName",
@@ -5450,7 +5432,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact first name"
+          "doc": "Contact's first name."
         },
         {
           "name": "lastName",
@@ -5460,7 +5442,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact last name"
+          "doc": "Contact's last name."
         },
         {
           "name": "phone",
@@ -5470,7 +5452,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact phone number"
+          "doc": "Contact's phone number."
         },
         {
           "name": "vatId",
@@ -5480,7 +5462,7 @@
               "referenceType": "wix-ecom-backend.Cart.VatId"
             }
           ],
-          "doc": "tax info (Currently usable only in Brazil)"
+          "doc": "Tax info. Currently usable only in Brazil."
         }
       ],
       "docs": {
@@ -5870,6 +5852,7 @@
       "members": [
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -6091,6 +6074,16 @@
       "name": "LineItemPricesData",
       "members": [
         {
+          "name": "fullPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Item price **before** line item discounts and **before** catalog-defined discount. Defaults to `price` when not provided."
+        },
+        {
           "name": "lineItemPrice",
           "optional": true,
           "type": [
@@ -6178,7 +6171,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Line item ID."
+          "doc": "Line item ID. Required."
         },
         {
           "name": "quantity",
@@ -6188,7 +6181,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "New quantity. Number must 1 or higher."
+          "doc": "New quantity. Number must be 1 or higher. Required."
         }
       ],
       "docs": {
@@ -8226,23 +8219,6 @@
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
         },
         {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
-        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -8305,23 +8281,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -8713,7 +8672,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -8723,7 +8682,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
         }
       ],
       "docs": {

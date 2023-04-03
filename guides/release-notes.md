@@ -8,6 +8,49 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
+### New Developer Preview API: Wix Bookings Pricing 
+
+`wix-bookings.v2`
+
+The new [Wix Bookings Pricing API](/wix-bookings-v2/pricing) provides functionality for previewing and calculating pricing for bookings.
+
+Functionality includes:
+
++ [Previewing](/wix-bookings-v2/pricing/previewprice) how much a booking will cost based on its line items.
++ [Calculating](/wix-bookings-v2/pricing/calculateprice) how much a booking will cost based on either: 
+    + Standard pricing logic supplied with Wix Bookings.
+    + Custom pricing logic you implement with the [Pricing Integration REST SPI](https://dev.wix.com/api/rest/wix-bookings/pricing-integration-spi).
+
+**Note:** These modules are in [Developer Preview](./developer-preview.md).
+
+(April 2, 2023)
+
+
+### End of Life: Wix Paid Plans and Wix Paid Plans Backend
+
+`wix-paid-plans`, `wix-paid-plans-backend`
+
+The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been removed from the documentation. Their functionality is available in the [`wix-pricing-plans`](wix-pricing-plans) and [`wix-pricing-plans-backend`](wix-pricing-plans-backend) APIs. Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
+
+
+### End of Life: Wix Users and Wix Users Backend
+
+`wix-users`, `wix-users-backend`
+
+The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
+
+
+### New Article: Shareable Booking Calendar Links
+
+`wix-bookings`
+
+The [Shareable Booking Calendar Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-calendar-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking calendar page. This enables you to create a link to a Wix site's booking calendar page with preset values you choose, or to create a link for rescheduling an existing booking. (Feb 12, 2023)
+
 ### New Developer Preview API: Wix Email Marketing v2
 
 `wix-email-marketing.v2`

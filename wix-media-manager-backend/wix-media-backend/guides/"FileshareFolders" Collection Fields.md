@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "FileshareFolders" Collection Fields
@@ -39,7 +41,7 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Name (name) 
 
-**Description**: Name of folder. This is the [Main field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
+**Description**: Name of folder. This is the [Primary field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
