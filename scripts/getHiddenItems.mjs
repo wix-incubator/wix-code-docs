@@ -16,7 +16,8 @@ getHiddenItems();
 export async function getHiddenItems() {
     const menuConfig = await getMenuData();
     const hiddenItems = findHiddenItems(menuConfig);
-    fs.writeFileSync('./scripts/hiddenItems.txt', JSON.stringify(hiddenItems));
+    console.log(hiddenItems)
+    fs.writeFileSync('./scripts/hiddenItems.json', JSON.stringify(hiddenItems));
 }
 
 async function getMenuData() {
@@ -57,8 +58,11 @@ function findHiddenItems(menuConfig) {
 }
 
 async function getRefDOM() {
+    let data = 'No healthy upstream';
+    do{
     const response = await fetch('https://www.wix.com/velo/reference')
-    const data = await response.text();
+    data = await response.text();
+    } while(data.includes('No healthy upstream'));
     const dom = htmlparser2.parseDocument(data);
     return dom;
 }
