@@ -67,11 +67,6 @@ import { marketingTags } from 'wix-marketing-tags.v2';
 
 Functions in Wix Marketing Tags are restricted and only run if you elevate permissions using the wix-auth.elevate() function.
 
-<blockquote class="warning">
-
-__Warning__:
-Using `elevate()` on a function will allow it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.
-
+<blockquote class='warning'>
+  <p>Using `elevate()` on a function will allow it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
-
-This is a test.
