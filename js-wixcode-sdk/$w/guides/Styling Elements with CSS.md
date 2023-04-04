@@ -42,7 +42,7 @@ viewing <strong>CSS Classes</strong> in your code panel:
 
 Or add your own classes in the custom classes field. For more information, see [CustomClasslist](/$w/customclasslist/introduction).
 
-For reference, this is a list of general classes:
+For reference, here is a list of global classes:
 - [Accordion]($w/element/css-classes#accordion)
 - [Anchor menu]($w/menu/css-classes#anchor-menu)
 - [Audio player]($w/audioplayer/css-classes)
