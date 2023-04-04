@@ -1,0 +1,1 @@
+The wix-email-marketing.v2 module contains functionality for managing your email marketing campaigns.

@@ -8,6 +8,101 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
+### New Developer Preview API: Wix Media v2
+
+`wix-media.v2`
+
+The new [Wix Media API](/wix-media-v2) introduces functionality
+for managing [files](/wix-media-v2/files) and [folders](/wix-media-v2/folders)
+in your site's Media Manager.
+
+Functionality includes: 
+- Importing, updating, and deleting media files
+- Getting and searching files
+- Generating file upload and download URLs
+- Creating, updating, and deleting folders in the Media Manager
+- Getting and searching folders
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 3, 2023)
+### New Developer Preview API: Wix Bookings Pricing 
+
+`wix-bookings.v2`
+
+The new [Wix Bookings Pricing API](/wix-bookings-v2/pricing) provides functionality for previewing and calculating pricing for bookings.
+
+Functionality includes:
+
++ [Previewing](/wix-bookings-v2/pricing/previewprice) how much a booking will cost based on its line items.
++ [Calculating](/wix-bookings-v2/pricing/calculateprice) how much a booking will cost based on either: 
+    + Standard pricing logic supplied with Wix Bookings.
+    + Custom pricing logic you implement with the [Pricing Integration REST SPI](https://dev.wix.com/api/rest/wix-bookings/pricing-integration-spi).
+
+**Note:** These modules are in [Developer Preview](./developer-preview.md).
+
+(April 2, 2023)
+
+
+### End of Life: Wix Paid Plans and Wix Paid Plans Backend
+
+`wix-paid-plans`, `wix-paid-plans-backend`
+
+The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been removed from the documentation. Their functionality is available in the [`wix-pricing-plans`](wix-pricing-plans) and [`wix-pricing-plans-backend`](wix-pricing-plans-backend) APIs. Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
+
+
+### End of Life: Wix Users and Wix Users Backend
+
+`wix-users`, `wix-users-backend`
+
+The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
+
+(March 27, 2023)
+
+
+### New Article: Shareable Booking Calendar Links
+
+`wix-bookings`
+
+The [Shareable Booking Calendar Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-calendar-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking calendar page. This enables you to create a link to a Wix site's booking calendar page with preset values you choose, or to create a link for rescheduling an existing booking. (Feb 12, 2023)
+
+### New Developer Preview API: Wix Email Marketing v2
+
+`wix-email-marketing.v2`
+
+The new [Wix Email Marketing API](/wix-email-marketing-v2) provides functionality
+for managing your email marketing campaigns.
+
+Functionalities include:
+
++ [Getting](/wix-email-marketing-v2/accountdetails/getaccountdetails) your email marketing account details.
++ Getting a [list](/wix-email-marketing-v2/campaigns/listcampaigns) of your email campaigns.
++ [Pausing](/wix-email-marketing-v2/campaigns/pausescheduling) a scheduled campaign.
++ [Sending](/wix-email-marketing-v2/campaigns/sendtest) a test email for preview purposes.
++ Getting a [list](/wix-email-marketing-v2/campaigns/liststatistics) of statistics for up to 100 selected campaigns.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(February 5, 2023)
+
+### New APIs: Wix eCommerce Checkout
+
+`wix-ecom-backend`
+
+There are new APIs in the [Wix eCommerce module](wix-ecom-backend).
+
+The new APIs provide the following functionality:
++ [Adding items to a checkout](wix-ecom-backend/checkout/addtocheckout)
++ [Marking a checkout as completed](wix-ecom-backend/checkout/markcheckoutascompleted)
++ [Removing the coupon from a checkout](wix-ecom-backend/checkout/removecoupon)
++ [Removing the gift card from a checkout](wix-ecom-backend/checkout/removegiftcard)
++ [Removing line items from a checkout](wix-ecom-backend/checkout/removelineitems)
+
+(January 26, 2022)
+
 ### Platform update: Versions and universal modules
 
 We've made 2 big changes to the Velo platform:
@@ -48,14 +143,134 @@ with your feedback.
 
 For more information, see [Developer Preview](./developer-preview.md).
 
-(December 19, 2023)
+(January 19, 2023)
 
-### New Developer Preview API: Wix Business Tools V2
+### New Developer Preview API: Wix Sender Details v2
+
+`wix-sender-details.v2`
+
+The new [Wix Sender Details API](/wix-sender-details-v2) provides functionality
+for the information that's displayed as the sender's name and email address
+when sending an email from your Wix site.
+
+Functionalities include:
+
+- [Getting](/wix-sender-details-v2/senderdetails/getsenderdetails) and
+  [updating](/wix-sender-details-v2/senderdetails/updatesenderdetails)
+  your email sender details.
+- [Verifying](/wix-sender-details-v2/senderdetails/verifyemail)
+  your sender email address.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Loyalty v2
+
+`wix-loyalty.v2`
+
+The new [Loyalty API](/wix-loyalty-v2) provides functionality for:
+
+- Activating and managing a site’s [loyalty program](/wix-loyalty-v2/programs).
+- [Creating](/wix-loyalty-v2/accounts/createaccount) new loyalty accounts.
+- [Adjusting points](/wix-loyalty-v2/accounts/adjustpoints) in a loyalty account.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Events v2
+
+`wix-events.v2`
+
+The new [Wix Events v2 API](/wix-events-v2) provides functionality for:
+
+- Creating and managing [events](/wix-events-v2/events).
+- Creating the types of tickets available for an event using
+  [ticket definitions](/wix-events-v2/ticketdefinitions).
+- Creating ticket reservations using [checkout](/wix-events-v2/checkout).
+- Selling [tickets](/wix-events-v2/tickets).
+- Tracking [orders](/wix-events-v2/orders).
+- Creating and managing [policies](/wix-events-v2/policies).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 25, 2023)
+
+### New Developer Preview API: Wix Bookings v2
+
+`wix-bookings.v2`
+
+The new [Wix Bookings API](/wix-bookings-v2) provides functionality for: 
+
+- Managing [bookings](/wix-bookings-v2/bookings),
+  such as confirming, canceling, and rescheduling bookings.
+- Retrieving the availability of a calendar's slots
+  for appointments and classes with the
+  [`queryAvailability()`](/wix-bookings-v2/availability-calendar/query-availability)
+  function.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Marketing Tags v2
+
+`wix-marketing-tags.v2`
+
+The new [Wix Marketing Tags V2 API](/wix-marketing-tags-v2/introduction) provides functionality for:
+
+- List marketing tags.
+- Create and update marketing tags.
+- Delete marketing tags.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Activity Counters v2
+
+`wix-activity-counters.v2`
+
+The new [Wix Activity Counters V2 API](/wix-activity-counters-v2/introduction)
+provides functionality for
+managing activity counters for site members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Inbox v2
+
+`wix-inbox.v2`
+
+The new [Wix Inbox API](/wix-inbox-v2) introduces functionality
+for managing [conversations](/wix-inbox-v2/conversations) and [messages](/wix-inbox-v2/messages)
+between you and your visitors, contacts, and members.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 23, 2023)
+
+### New Developer Preview API: Wix Forum v2
+
+`wix-forum.v2`
+
+Use the new [Forum API](/wix-forum-v2) to get and query the following from your forum:
+
+- [Posts](/wix-forum-v2/posts).
+- [Categories](/wix-forum-v2/categories).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 22, 2023)
+
+### New Developer Preview API: Wix Business Tools v2
 
 `wix-business-tools.v2`
 
 The new
-[Wix Business Tools API](https://www.wix.com/velo/reference/wix-business-tools.v2)
+[Wix Business Tools API](/wix-business-tools-v2)
 provides functionality for managing a site’s business information.
 Currently it contains the Locations submodule, for managing a site’s business locations.
 
@@ -85,16 +300,17 @@ Use the new [Pro Gallery Backend API](wix-pro-gallery-backend) to create and man
 
 You can now use the new promise-based [`onReadyAsync()`](wix-dataset/dataset/onReadyAsync) function to load a dataset. 
 
-(January 10, 2022)
+(January 10, 2023)
 
 ### New API: Wix Blog
 
 `wix-blog-backend`
 
 Use the new [Blog API](wix-blog-backend) to get, list, and query the following from your blog:
-  - [posts](wix-blog-backend/posts) 
-  - [categories](wix-blog-backend/categories) 
-  - [tags](wix-blog-backend/tags)
+
+- [Posts](wix-blog-backend/posts).
+- [Categories](wix-blog-backend/categories).
+- [Tags](wix-blog-backend/tags).
 
 (December 22, 2022)
 

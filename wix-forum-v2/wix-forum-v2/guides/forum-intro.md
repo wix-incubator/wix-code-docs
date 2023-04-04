@@ -18,9 +18,10 @@ title: Introduction
 The Wix Forum v2 API provides the functionality for retrieving posts and categories from a forum.
 Learn more [about Wix Forum](https://support.wix.com/en/article/wix-forum-about-wix-forum).
 
-
+<!--
 > **Note:**
-> This module is [universal](https://support.wix.com/https://www.wix.com/velo/reference/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
 
 ## Before you begin
 

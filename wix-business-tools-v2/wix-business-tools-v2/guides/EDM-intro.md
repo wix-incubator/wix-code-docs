@@ -14,6 +14,13 @@ title: Introduction
 
 &nbsp;
 
+<!--
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend,
+> unless specified otherwise.
+-->
+
 The Business Tools API enables you to manage business information for a Wix site.
 
 To use the Business Tools API, import `businessTools` from `wix-business-tools.v2`:

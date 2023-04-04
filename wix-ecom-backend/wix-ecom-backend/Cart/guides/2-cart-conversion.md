@@ -6,11 +6,11 @@ title: Stores to eCommerce Cart Conversion Table
 
 To help with migration from the [Stores Cart API](https://www.wix.com/velo/reference/wix-stores/cart) to the eCommerce Cart and [Current Cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart) APIs, refer to the table below for changes in name and/or location.
 
-Certain information that used to be held in the Cart is now kept in the Checkout and/or Order. These properties are indicated in the table below, with more information available in the [Stores Cart to eCommerce Checkout Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/stores-cart-to-ecommerce-checkout-conversion-table).
+Certain information that used to be held in the Cart is now kept in the Checkout. These properties are indicated in the table below, with more information available in the [Stores Cart to eCommerce Checkout Conversion Table](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/stores-cart-to-ecommerce-checkout-conversion-table).
 
 The address object used in the eCommerce APIs is slightly different to the one used in the Stores APIs. For more details, refer to the [address object conversion table](https://www.wix.com/velo/reference/wix-ecom-backend/address-object-conversion-table).
 
-Fields that remain with the same name, in the same location, and with no changes in behavior are marked with an asterisk (*).
+Fields marked with an asterisk (*) signify little to no change in semantics or service location.
 
 
 | Stores Cart                                        | eCommerce Cart                                              |
@@ -20,17 +20,14 @@ Fields that remain with the same name, in the same location, and with no changes
 | `weightUnit`*                                      | `weightUnit`                                               |
 | `buyerNote`*                                       | `buyerNote`                                               |
 | `currency.code`                                    | `currency`                                    |
-| `currency.symbol`                                  | No longer returned. Instead, for every price returned, we also provide the formatted price. For example, `subtotal.formattedAmount`.                                             |
-| `convertedCurrency.code`                           | `conversionCurrency`                          |
-| `convertedCurrency.symbol`                         | No longer returned. Instead, for every converted price returned, we also provide the formatted converted price. For example, `subtotal.formattedConvertedAmount`.                                            |
-| `billingAddress`                                   | Billing address is now kept in the [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) and [Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).   |
-| `appliedCoupon.couponId`                   | `appliedDiscounts[i].coupon.id` - The coupon is now an item in the `appliedDiscounts` array. To get it, search the `appliedDiscounts` array for the only populated `coupon` field.                                               |
-| `appliedCoupon.code`                       | `appliedDiscounts[i].coupon.code` - The coupon is now an item in the `appliedDiscounts` array. To get it, search the `appliedDiscounts` array for the only populated `coupon` field.                                               |
-| `appliedCoupon.name`                               | This field is held only in the [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) under `appliedDiscounts[i].coupon.name`.                                               |
-| `appliedCoupon.discountValue`                      | This field is held only in the [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) under `appliedDiscounts[i].coupon.amount.amount`.                                  |
+| `currency.symbol`                                  | No longer returned. Instead, for every price returned, we also provide the formatted price in `checkout.priceSummary` and/or `order.priceSummary`.|
+| `billingAddress`        | Billing address is now kept in the [Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) and [Order](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder).|
+| `appliedCoupon.couponId`                           | `appliedDiscounts[i].coupon._id` - The coupon is now an item in the `appliedDiscounts` array. To get it, search the `appliedDiscounts` array for the `coupon` field. |
+| `appliedCoupon.code`                               | `appliedDiscounts[i].coupon.code` - The coupon is now an item in the `appliedDiscounts` array. To get it, search the `appliedDiscounts` array for the `coupon` field.  |
+| `appliedCoupon.name`                               | This field is held only in the [Checkout object](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) under `appliedDiscounts[i].coupon.name`.   |
+| `appliedCoupon.discountValue`                      | This field is held only in the [Checkout object](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) under `appliedDiscounts[i].coupon.amount.amount`.|
 | `appliedCoupon.couponType`                         | No longer returned.                                              |
-| `totals`                   | All totals properties are available by using the [estimateCurrentCartTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/estimatecurrentcarttotals) function, or by passing the cart ID to the Cart API's [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals) function. Look for `priceSummary` in the response.                                              |
-| `convertedTotals`                   | All converted totals properties are available by using the [estimateCurrentCartTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/estimatecurrentcarttotals) function, or by passing the cart ID to the Cart API's [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals) function. `priceSummary` in the response.                                              |
+| `totals` | All totals properties are available by using the [estimateCurrentCartTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/estimatecurrentcarttotals) function, or by passing the cart ID to the Cart API's [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals) function, under `priceSummary` in the response.                                              |
 | `shippingInfo`        | All `shippingInfo` properties are available by using the [estimateCurrentCartTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/estimatecurrentcarttotals) function, or by passing the cart ID to the Cart API's [estimateTotals()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/estimatetotals) function.                                              |
 | `buyerInfo.id` and `buyerInfo.identityType: CONTACT`| `buyerInfo.contactId` only.                                               |
 | `buyerInfo.id` and `buyerInfo.identityType: VISITOR`| `buyerInfo.visitorId` only.                                               |
@@ -51,7 +48,7 @@ Fields that remain with the same name, in the same location, and with no changes
 | `lineItems[i].lineItemType: "CUSTOM_AMOUNT_ITEM"`| `lineItems[i].itemType.custom` and `lineItems[i].catalogReference` is empty.                               |
 | `lineItems[i].notes`                             | `lineItems[i].descriptionLines[i].plainText.original`                                               |
 | `lineItems[i].customTextFields`                  | `lineItems[i].descriptionLines`                                             |
-| `lineItems[i].mediaItem.mediaType`               | All line item media in the Cart API are type image. |
+| `lineItems[i].mediaItem.mediaType`               | All line item media in the Cart API are images. |
 | `lineItems[i].mediaItem.url`                     | `lineItems[i].media.url`                                               |
 | `lineItems[i].mediaItem.width`                   | `lineItems[i].media.width`                                               |
 | `lineItems[i].mediaItem.height`                  | `lineItems[i].media.height`                                               |
