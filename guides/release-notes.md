@@ -8,6 +8,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Query Wix Extended Bookings
+
+`wix-bookings.v2`
+
+The new [Wix Extended Bookings API](/wix-bookings-v2/extendedbookings) provides functionality for [querying](/wix-bookings-v2/extendedbookings/queryextendedbookings) bookings including additional details, such as attendance.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 4, 2023)
+
 
 ### New Developer Preview API: Wix Media v2
 
