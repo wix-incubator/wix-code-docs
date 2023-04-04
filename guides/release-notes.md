@@ -8,6 +8,43 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
+### New Developer Preview API: Wix Media v2
+
+`wix-media.v2`
+
+The new [Wix Media API](/wix-media-v2) introduces functionality
+for managing [files](/wix-media-v2/files) and [folders](/wix-media-v2/folders)
+in your site's Media Manager.
+
+Functionality includes: 
+- Importing, updating, and deleting media files
+- Getting and searching files
+- Generating file upload and download URLs
+- Creating, updating, and deleting folders in the Media Manager
+- Getting and searching folders
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 3, 2023)
+### New Developer Preview API: Wix Bookings Pricing 
+
+`wix-bookings.v2`
+
+The new [Wix Bookings Pricing API](/wix-bookings-v2/pricing) provides functionality for previewing and calculating pricing for bookings.
+
+Functionality includes:
+
++ [Previewing](/wix-bookings-v2/pricing/previewprice) how much a booking will cost based on its line items.
++ [Calculating](/wix-bookings-v2/pricing/calculateprice) how much a booking will cost based on either: 
+    + Standard pricing logic supplied with Wix Bookings.
+    + Custom pricing logic you implement with the [Pricing Integration REST SPI](https://dev.wix.com/api/rest/wix-bookings/pricing-integration-spi).
+
+**Note:** These modules are in [Developer Preview](./developer-preview.md).
+
+(April 2, 2023)
+
+
 ### End of Life: Wix Paid Plans and Wix Paid Plans Backend
 
 `wix-paid-plans`, `wix-paid-plans-backend`
@@ -16,6 +53,7 @@ The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been remo
 
 (March 27, 2023)
 
+
 ### End of Life: Wix Users and Wix Users Backend
 
 `wix-users`, `wix-users-backend`
@@ -23,6 +61,7 @@ The deprecated `wix-paid-plans` and `wix-paid-plans-backend` APIs have been remo
 The deprecated `wix-users` and `wix-users-backend` APIs have been removed from the documentation. Their functionality is available as [noted below](#new-api-wix-members-and-wix-members-backend). Additionally, `getPricingPlans()` has moved to the [`Orders`](wix-pricing-plans-backend/orders) API as [`listCurrentMemberOrders()`](wix-pricing-plans-backend/orders/listcurrentmemberorders). Existing code containing these deprecated APIs will continue to work.
 
 (March 27, 2023)
+
 
 ### New Article: Shareable Booking Calendar Links
 
