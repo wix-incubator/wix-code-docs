@@ -170,6 +170,19 @@ For example:
 }
 ```
 
+### `.horizontal-menu__submenu-title-label`
+
+Targets the label of the `menuItem` that opens the submenu.
+For example:
+
+```css
+.horizontal-menu__submenu-title-label {
+  font-family: sans-serif;
+  text-transform: capitalize;
+  color: #5A5A5A;
+}
+```
+
 ### `.horizontal-menu__submenu-item`
 
 Targets horizontal submenu items.
