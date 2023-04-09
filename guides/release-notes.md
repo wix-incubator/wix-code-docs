@@ -8,7 +8,35 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Query Wix Extended Bookings
 
+`wix-bookings.v2`
+
+The new [Wix Extended Bookings API](/wix-bookings-v2/extendedbookings) provides functionality for [querying](/wix-bookings-v2/extendedbookings/queryextendedbookings) bookings including additional details, such as attendance.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 4, 2023)
+
+
+### New Developer Preview API: Wix Media v2
+
+`wix-media.v2`
+
+The new [Wix Media API](/wix-media-v2) introduces functionality
+for managing [files](/wix-media-v2/files) and [folders](/wix-media-v2/folders)
+in your site's Media Manager.
+
+Functionality includes: 
+- Importing, updating, and deleting media files
+- Getting and searching files
+- Generating file upload and download URLs
+- Creating, updating, and deleting folders in the Media Manager
+- Getting and searching folders
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 3, 2023)
 ### New Developer Preview API: Wix Bookings Pricing 
 
 `wix-bookings.v2`
