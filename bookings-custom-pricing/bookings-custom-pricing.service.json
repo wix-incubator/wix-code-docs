@@ -1,0 +1,143 @@
+{ "name": "bookings-custom-pricing",
+  "mixes": [],
+  "labels":
+    [ "new" ],
+  "location":
+    { "lineno": 1,
+      "filename": "custom-pricing-index.js" },
+  "docs":
+    { "summary": "The Bookings Custom Pricing SPI.",
+      "description":
+        [ "The Custom Pricing SPI is a service provider interface that allows site owners and collaborators to add custom pricing ",
+          "to bookings on their site. The custom pricing is calculated and used as the basis for the price",
+          "when checking out the booking, overriding the standard Bookings pricing logic.",
+          "",
+          "Wix Bookings calls the SPI endpoint [`calculatePrice()`](https://www.wix.com/velo/reference/bookings-custom-pricing/calculatePrice) ",
+          "to retrieve the relevant data for a site collaborator to customize the price. ",
+          "Collaborators can then implement their own logic to calculate and return the price. ",
+          "",
+          "Note that the `currency` used by [`calculatePrice()`](https://www.wix.com/velo/reference/bookings-custom-pricing/calculatePrice)",
+          "is your site's currency. You can find the currency of your site using the [`getPaymentCurrency()`](https://www.wix.com/velo/reference/wix-site-backend/generalinfo-obj/getpaymentcurrency)",
+          "function. ",
+          "",
+          "Learn more about the [Bookings Custom Pricing SPI custom extension](https://support.wix.com/en/article/velo-tutorial-bookings-pricing-custom-extension)." ],
+      "links": [],
+      "examples": [],
+      "extra":
+        {  } },
+  "properties": [],
+  "operations":
+    [ { "name": "calculatePrice",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "options",
+              "type": "bookings-custom-pricing.Options",
+              "doc": "Options for line items and shipping options." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "bookings-custom-pricing.CalculatePriceResponse" ] },
+            "doc": "Fulfilled - Additional fees and currency info." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "custom-pricing.js" } ],
+        "docs":
+          { "summary": "Calculates the price of a booking to include during checkout. The calculated price is based on custom business logic.",
+            "description":
+              [ "The `calculatePrice()` function calculates custom pricing checkout pages of a merchant's site.",
+                "The function is automatically called by Wix Bookings when the booking price is calculated." ],
+            "links": [],
+            "examples":
+              [ { "title": "Calculate a custom price for a booking",
+                  "body":
+                    [ "import wixSiteBackend from 'wix-site-backend';",
+                      "",
+                      "// TBD --- THIS IS A PLACEHOLDER FOR NOW",
+                      "",
+                      "export const calculatePrice = async (options) => {",
+                      "  let additionalFees = [];",
+                      "  const feePrice = calculateWrappingFee(options.lineItems);",
+                      "  const currency = await wixSiteBackend.generalInfo.getPaymentCurrency();",
+                      "",
+                      "  if (feePrice) {",
+                      "    additionalFees.push({",
+                      "      code: 'fragile-packaging',",
+                      "      name: 'Fragile Packaging',",
+                      "      price: String(feePrice),",
+                      "      taxDetails: {",
+                      "        taxable: true",
+                      "      }",
+                      "    });",
+                      "  }",
+                      "",
+                      "  return {",
+                      "    currency,",
+                      "    additionalFees",
+                      "  };",
+                      "};",
+                      "",
+                      "// Check if an item is fragile.",
+                      "function isFragile(item) {",
+                      "  const productName = item.productName.toLowerCase();",
+                      "  return productName.includes('glass') || productName.includes('ceramic');",
+                      "}",
+                      "",
+                      "// Charge per fragile item.",
+                      "// Give away free packaging when ordering at least 5 items.",
+                      "function calculateWrappingFee(lineItems) {",
+                      "  const minItemsForFreeWrapping = 5;",
+                      "  let numFragileItems = 0;",
+                      "  lineItems.forEach((item) => {",
+                      "    if (isFragile(item)){",
+                      "      numFragileItems += item.quantity;",
+                      "    }",
+                      "  });",
+                      "  const shouldChargeFee = numFragileItems < minItemsForFreeWrapping;",
+                      "  const price = shouldChargeFee ? numFragileItems : 0;",
+                      "  return price;",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example calculates the custom price for booking a massage using cheaper rates for weekdays and with additional options." } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
+  "callbacks": [],
+  "messages":
+    [ { "name": "CalculatePriceResponse",
+        "locations":
+          [ { "lineno": 24,
+              "filename": "custom-pricing.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "calculatedPrice",
+              "type": "number",
+              "doc": "The custom price.\n\nThe `calculatedPrice` response is based on your site's currency." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Options",
+        "locations":
+          [ { "lineno": 19,
+              "filename": "custom-pricing.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "booking",
+              "type": "wix-bookings-backend.Booking",
+              "doc": "Booking to calculate custom pricing for." } ],
+        "extra":
+          {  },
+        "labels": [] } ],
+  "extra":
+    {  } }
