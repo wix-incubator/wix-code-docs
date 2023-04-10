@@ -63,10 +63,8 @@ import { marketingTags } from 'wix-marketing-tags.v2';
     | Facebook Pixel tag | Pixel ID  | 123456789  |
     | Google tag | Tag Manager Container ID | GTM-12345 |
 
-## Elevate
-
-Functions in Wix Marketing Tags are restricted and only run if you elevate permissions using the wix-auth.elevate() function.
-
+## Override Permissions
+Functions in Wi Marketing Tags are restricted and only run if you elevate permissions using the [`wix-auth.elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 <blockquote class='warning'>
-  <p>Using `elevate()` on a function will allow it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+  <p><strong>Warning:</strong> Using elevate on a function will allow it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
