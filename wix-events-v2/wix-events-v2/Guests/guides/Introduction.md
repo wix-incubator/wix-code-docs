@@ -17,8 +17,8 @@ The Event Guests API allows you to:
 ## Terminology
 
 - **Guest**: The individual who has been invited to the event.
-- **RSVP**: A response from the guest indicating whether they plan to attend the event or not.
-- **Ticket buyer**: The individual who bought one or more tickets to the event.
+- **RSVP**: A response from the guest indicating whether they plan to attend the event.
+- **Ticket buyer**: The individual who bought 1 or more tickets to the event.
 - **Check-in**: The process of verifying a guest's attendance at the event.
 - **Guest list**: A summary of all guests who have been invited to the event.
 - **Organizer**: The person or entity responsible for planning and hosting the event.
