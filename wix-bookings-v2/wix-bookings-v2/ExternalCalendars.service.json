@@ -1,0 +1,5581 @@
+{
+  "name": "ExternalCalendars",
+  "memberOf": "wix-bookings-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-bookings.v2-external_calendar",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "connectByCredentials",
+      "params": [
+        {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [`listProviders()`](#list-providers) function.\n",
+          "required": true
+        },
+        {
+          "name": "scheduleId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule to connect with the external calendar account.",
+          "required": true
+        },
+        {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email address for the external calendar account.",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Password for the external calendar account.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "email",
+        "password",
+        "providerId",
+        "scheduleId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectByCredentialsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Connects to an external calendar by directly providing the external calendar account credentials.",
+        "description": [
+          "Once a connection is successfully created, use [`listEvents()`](#list-events) to obtain an up-to-date list of events in the connected external calendars.\n\n> **Note:**\n> Use [`listProviders()`](#list-providers) to find out whether to connect to a particular provider using this method or [`connectByOAuth()`](#connect-by-o-auth)."
+        ],
+        "examples": [
+          {
+            "title": "Connect with an external calendar by credentials  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function connectByCredentials(providerId, scheduleId, email, password) {",
+              "    const {connection} =",
+              "        await externalCalendars.connectByCredentials(providerId, scheduleId, email, password)",
+              "    return connection",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "connectByOAuth",
+      "params": [
+        {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [`listProviders()`](#list-providers) function.\n",
+          "required": true
+        },
+        {
+          "name": "scheduleId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule to connect with the external calendar account.",
+          "required": true
+        },
+        {
+          "name": "redirectUrl",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL to redirect the user to after they authorize access to the external calendar account.\n\nIf the connection is successfully established, the user is redirected to this URL with a query parameter `connectionId` containing the new connection ID.\nIf the attempt to connect fails, the user is redirected to this URL with a query parameter `error` containing the error type.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "providerId",
+        "redirectUrl",
+        "scheduleId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectByOAuthResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Connects to an external calendar using the OAuth authorization protocol.",
+        "description": [
+          "The authorization flow should take place as follows:\n\n1. Call the function with the appropriate parameters.\n2. Redirect the user to the URL received in the response.\n3. The user authorizes access.\n4. The user is redirected to the URL you provide in the `redirectUrl` parameter, with a query parameter `connectionId` containing the new connection ID.\n\nIf the attempt to connect fails, the user is still redirected to the URL you provide in the `redirectUrl` parameter,\nbut with a query parameter `error` containing one of the following values:\n\n- `reject`: The user rejected the authorization request.\n- `unsupported`: Connecting to the user's external account type is not supported by the provider.\n- `internal`: An error unrelated to the client or the request that prevents the server from fulfilling the request.\n\nOnce a connection is successfully created, use [`listEvents()`](#list-events) to obtain an up-to-date list of events in the connected external calendars.\n\n> **Note:**\n> Use [`listProviders()`](#list-providers) to find out whether to connect to a particular provider using this endpoint or [`connectByCredentials()`](#connect-by-credentials)."
+        ],
+        "examples": [
+          {
+            "title": "Connect with an external calendar by OAuth  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function connectByOAuth(providerId, scheduleId, redirectUrl) {",
+              "    const {oauthUrl} =",
+              "        await externalCalendars.connectByOAuth(providerId, scheduleId, redirectUrl)",
+              "    return oauthUrl",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "disconnect",
+      "params": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to disconnect.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "connectionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.DisconnectResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Disconnects from an external calendar.",
+        "description": [
+          "When an external calendar is disconnected, the external calendar connection's `status` is changed to `DISCONNECTED`.\n\nAfter disconnecting, [`listEvents()`](#list-events) no longer returns events from the disconnected external calendar.\nExported Wix calendar sessions are deleted from the external calendar."
+        ],
+        "examples": [
+          {
+            "title": "Disconnect an external calendar connection  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function disconnect(connectionId) {",
+              "    const {connection: updatedConnection} =",
+              "        await externalCalendars.disconnect(connectionId)",
+              "    return updatedConnection",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "getConnection",
+      "params": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the connection to retrieve.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "connectionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.GetConnectionResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves an external calendar connection by ID.",
+        "description": [
+          "The external calendar connection contains details of the connection between a Wix site's calendar and calendars hosted by an external provider.\n\nThe `syncConfig` property contains configuration details for importing events from an external calendar, exporting events to an external calendar, or both."
+        ],
+        "examples": [
+          {
+            "title": "Get an external calendar connection by ID ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function getConnection(connectionId) {",
+              "    const {connection} = await externalCalendars.getConnection(connectionId)",
+              "    return connection",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listCalendars",
+      "params": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to list calendars for.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "connectionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ListCalendarsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of calendars belonging to the connected external calendar account.",
+        "description": [
+          "> **Note:**\n> Before using this function, establish a connection with an external calendar using [`connectByCredentials()`](#connect-by-credentials) or [`connectByOAuth()`](#connect-by-o-auth)."
+        ],
+        "examples": [
+          {
+            "title": "List calendars belonging to an external calendar account  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listCalendars(connectionId) {",
+              "    const {calendars} = await externalCalendars.listCalendars(connectionId)",
+              "    return calendars",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listConnections",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ListConnectionsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ListConnectionsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of external calendar connections.",
+        "description": [
+          "Each external calendar connections contain details of a connection between a Wix site's calendar and calendars hosted by an external provider.\n\nThe `syncConfig` property of each connection contains configuration details for importing events from an external calendar, exporting events to an external calendar, or both."
+        ],
+        "examples": [
+          {
+            "title": "List all connections ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listConnections() {",
+              "    const {connections} = await externalCalendars.listConnections()",
+              "    return connections",
+              "}"
+            ]
+          },
+          {
+            "title": "List connections by schedule ID  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listConnections(scheduleId) {",
+              "    const options = {",
+              "        scheduleId",
+              "    }",
+              "    const {connections} = await externalCalendars.listConnections(options)",
+              "    return connections",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listEvents",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ListEventsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ListEventsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of events from all connected external calendars, based on the provided filtering and paging.",
+        "description": [
+          "Use List Events to retrieve an aggregated list of events in the connected external calendars for a specified time range, sorted by start date.\n\n> **Note:**\n> Before using this function, establish a connection with an external calendar using [`connectByCredentials()`](#connect-by-credentials) or [`connectByOAuth()`](#connect-by-o-auth)."
+        ],
+        "examples": [
+          {
+            "title": "List all events within a time range  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listEvents() {",
+              "    const options = {",
+              "        from: '2023-01-01T00:00:00Z',",
+              "        to: '2023-01-07T00:00:00Z'",
+              "    }",
+              "    const {events} = await externalCalendars.listEvents(options)",
+              "    return events",
+              "}"
+            ]
+          },
+          {
+            "title": "List events connected to a specified schedule  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listScheduleEvents(from, to) {",
+              "    const options = {",
+              "        from,",
+              "        to,",
+              "        scheduleId: 'b936298d-18a6-4ae8-8e9f-10bf49314c95'",
+              "    }",
+              "    const {events: eventsOfSchedule} = await externalCalendars.listEvents(options)",
+              "    return eventsOfSchedule",
+              "}"
+            ]
+          },
+          {
+            "title": "List events including personal information  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listEventsWithPI(from, to) {",
+              "    const options = {",
+              "        from,",
+              "        to,",
+              "        fieldsets: ['OWN_PI']",
+              "    }",
+              "    const {events: eventsWithPI} = await externalCalendars.listEvents(options)",
+              "    return eventsWithPI",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "listProviders",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.ListProvidersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of the external calendar providers for which the site supports integration.",
+        "description": [
+          "The list of external calendar providers includes:\n\n+ External calendar providers that are supported by default, such as Google, Apple, and Microsoft.\n+ External calenders for which the site owner has enabled integration by installing an app.\n\nFor each external calendar provider, the list contains information about supported connection methods and features.\nFor each provider, check `features.connectMethods` to find out whether to use [`connectByCredentials()`](#connect-by-credentials) or [`connectByOAuth()`](#connect-by-o-auth) to establish a connection.\n"
+        ],
+        "examples": [
+          {
+            "title": "List the supported external calendar providers ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function listProviders() {",
+              "    const {providers} = await externalCalendars.listProviders()",
+              "    return providers",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    },
+    {
+      "name": "updateSyncConfig",
+      "params": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to update.",
+          "required": true
+        },
+        {
+          "name": "syncConfig",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
+            }
+          ],
+          "doc": "Updated sync configuration details.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "connectionId",
+        "syncConfig"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.ExternalCalendars.UpdateSyncConfigResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Updates the specified external calendar connection's sync configuration.",
+        "description": [
+          "Use Update Sync Config to update a connection's `syncConfig` property.\nThe `syncConfig` property contains settings for enabling, configuring, or disabling functionality, including:\n\n+ Importing events from one or more specified calendars in the connected external calendar account. If this is enabled, use [`listEvents()`](#list-events) to retrieve a list of events from the external calendar.\n+ Exporting events from the Wix site's calendar to an external calendar.\n\nTo see an external calendar connection's existing sync configuration, use [`getConnection()`](#get-connection) or [`listConnections()`](#list-connections) and see the `syncConfig` property.\n\n> **Note:**\n> Supported functionality depends on the provider. Use [`listProviders()`](#list-providers) to see details about providers' supported features."
+        ],
+        "examples": [
+          {
+            "title": "Update connection to list events from specific external account calendars  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function updateSyncConfig(connectionId) {",
+              "    const syncConfig = {",
+              "        listEventFromCalendars: {",
+              "            enabled: true,",
+              "            calendars: {",
+              "                calendars: [",
+              "                    {",
+              "                        id: 'a68yu6lp6584z66zorp19z1ab'",
+              "                    },",
+              "                    {",
+              "                        id: '4xve0tohyhnrlzy3lp4zf7b07'",
+              "                    }",
+              "                ]",
+              "            }",
+              "        }",
+              "    }",
+              "    const {connection: updatedConnection} =",
+              "        await externalCalendars.updateSyncConfig(connectionId, syncConfig)",
+              "    return updatedConnection",
+              "}"
+            ]
+          },
+          {
+            "title": "Update connection to sync events to a new dedicated external account calendar  ",
+            "body": [
+              "import {externalCalendars} from 'wix-bookings.v2';",
+              "",
+              "async function updateSyncConfig(connectionId) {",
+              "    const syncConfig = {",
+              "        syncToCalendar: {",
+              "            enabled: true,",
+              "            dedicatedCalendar: {}",
+              "        }",
+              "    }",
+              "    const {connection: updatedConnection} =",
+              "        await externalCalendars.updateSyncConfig(connectionId, syncConfig)",
+              "    return updatedConnection",
+              "}"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "name": "Address",
+      "members": [
+        {
+          "name": "addressLine",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Main address line, usually street and number, as free text."
+        },
+        {
+          "name": "addressLine2",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Free text providing more detailed address info. Usually contains Apt, Suite, and Floor."
+        },
+        {
+          "name": "city",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "City name."
+        },
+        {
+          "name": "country",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Country code."
+        },
+        {
+          "name": "countryFullname",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Country full name."
+        },
+        {
+          "name": "formattedAddress",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string containing the full address of this location."
+        },
+        {
+          "name": "geocode",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.AddressLocation"
+            }
+          ],
+          "doc": "Coordinates of the physical address."
+        },
+        {
+          "name": "hint",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Free text to help find the address."
+        },
+        {
+          "name": "postalCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Zip/postal code."
+        },
+        {
+          "name": "streetAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.StreetAddress"
+            }
+          ],
+          "doc": "Street name, number and apartment number."
+        },
+        {
+          "name": "subdivision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Subdivision. Usually state, region, prefecture or province code, according to [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)."
+        },
+        {
+          "name": "subdivisions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Subdivision"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Multi-level subdivisions from top to bottom."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAddressStreetOneOf",
+            "members": [
+              "addressLine",
+              "streetAddress"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          "Physical address"
+        ]
+      }
+    },
+    {
+      "name": "AddressLocation",
+      "members": [
+        {
+          "name": "latitude",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Address latitude."
+        },
+        {
+          "name": "longitude",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Address longitude."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AddressStreetOneOf",
+      "members": [
+        {
+          "name": "addressLine",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Main address line, usually street and number, as free text."
+        },
+        {
+          "name": "streetAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.StreetAddress"
+            }
+          ],
+          "doc": "Street name, number and apartment number."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Availability",
+      "members": [
+        {
+          "name": "constraints",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.AvailabilityConstraints"
+            }
+          ],
+          "doc": "Constraints for calculating the schedule's availability."
+        },
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the schedule stops being available for booking. No value indicates no end time."
+        },
+        {
+          "name": "linkedSchedules",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.LinkedSchedule"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Other schedules that impact the availability calculation. Relevant only when there are availability constraints."
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the schedule starts to be available for booking."
+        }
+      ],
+      "docs": {
+        "description": [
+          "<!-- Needs updating when recurrence has been tested\nSchedule's availability calculation is executed by the schedule's available intervals and this additional information.\nSchedule's available intervals are recurring intervals (defined in the schedule) minus sessions that has no more spots for bookings (including time between_slots), or schedule's sessions with open spots for bookings.-->"
+        ]
+      }
+    },
+    {
+      "name": "AvailabilityConstraints",
+      "members": [
+        {
+          "name": "slotDurations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "number"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of duration options for slots, in minutes. Minimum value for a duration is 1.\nThe availability calculation generates slots with these durations, where there is no conflict with existing sessions or other availability constraints."
+        },
+        {
+          "name": "slotsSplitInterval",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SplitInterval"
+            }
+          ],
+          "doc": "An object defining the time between available slots' start times.  For example, a slot with slots_split_interval=5 can start every 5 minutes. The default is the slot duration."
+        },
+        {
+          "name": "splitInterval",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Specify how to split the slots in intervals of minutes.\nThis value indicates the time between available slots' start time. e.g., from 5 minute slots (3:00, 3:05, 3:15) and 1 hour slots (3:00, 4:00, 5:00).\nOptional. The default is the first duration in slot_durations field.\nDeprecated. Use the `split_slots_interval.value_in_minutes`."
+        },
+        {
+          "name": "timeBetweenSlots",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of minutes between the `end` of one slot, and the `start` of the next.\nMinimum value is 0, maximum value is 120."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Describes how to calculate the specific slots that are available for booking."
+        ]
+      }
+    },
+    {
+      "name": "AvailabilityPolicy",
+      "members": [
+        {
+          "name": "splitInterval",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SplitInterval"
+            }
+          ],
+          "doc": "Specify how to split the schedule slots in intervals of minutes."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Availability policy applied to all site schedules."
+        ]
+      }
+    },
+    {
+      "name": "AvailabilityPolicyUpdated",
+      "members": [
+        {
+          "name": "availabilityPolicy",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.AvailabilityPolicy"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BusinessSchedule",
+      "members": [
+        {
+          "name": "periods",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.TimePeriod"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Weekly recurring time periods when the business is regularly open or the service is available. Limited to 100 time periods."
+        },
+        {
+          "name": "specialHourPeriod",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.SpecialHourPeriod"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Exceptions to the business's regular hours. The business can be open or closed during the exception."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Business schedule. Regular and exceptional time periods when the business is open or the service is available."
+        ]
+      }
+    },
+    {
+      "name": "Calendar",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "External calendar ID."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Display name of the external calendar.\nFor example, \"Primary\" or \"Birthdays\"."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CalendarConference",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Wix Calendar conference ID."
+        },
+        {
+          "name": "accountOwnerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the account owner in the video conferencing service."
+        },
+        {
+          "name": "conferenceType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conference type.\n<!--ONLY:VELO\nOne of:\n- `\"ONLINE_MEETING_PROVIDER\"` API-generated online meeting.\n- `\"CUSTOM\"` User-defined meeting.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conference description."
+        },
+        {
+          "name": "externalId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conference meeting ID in the provider's conferencing system."
+        },
+        {
+          "name": "guestUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL used by a guest to join the conference."
+        },
+        {
+          "name": "hostUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL used by the host to start the conference."
+        },
+        {
+          "name": "password",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Password to join the conference."
+        },
+        {
+          "name": "providerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conference provider ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CalendarDateTime",
+      "members": [
+        {
+          "name": "localDateTime",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.LocalDateTime"
+            }
+          ],
+          "doc": "An object containing the local date and time for the business's time zone."
+        },
+        {
+          "name": "timeZone",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The time zone. Optional. Derived from the schedule's time zone.\nIn case this field is associated with recurring session, this field is empty."
+        },
+        {
+          "name": "timestamp",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "UTC date-time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format. If a time zone offset is specified, the time is converted to UTC. For example, if you specify  `new Date('2021-01-06T16:00:00.000-07:00')`, the stored value will be `\"2021-01-06T23:00:00.000Z\"`.\nRequired if `localDateTime` is not specified.\nIf `localDateTime` is specified, `timestamp` is calculated as `localDateTime`, using the business's time zone."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Calendars",
+      "members": [
+        {
+          "name": "calendars",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Calendar"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConferenceProvider",
+      "members": [
+        {
+          "name": "providerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conferencing provider ID"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectByCredentialsRequest",
+      "members": [
+        {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email address for the external calendar account."
+        },
+        {
+          "name": "password",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Password for the external calendar account."
+        },
+        {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [`listProviders()`](#list-providers) function."
+        },
+        {
+          "name": "scheduleId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule to connect with the external calendar account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectByCredentialsResponse",
+      "members": [
+        {
+          "name": "connection",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
+            }
+          ],
+          "doc": "Established connection details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectByOAuthOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectByOAuthRequest",
+      "members": [
+        {
+          "name": "providerId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider. Find this with the [`listProviders()`](#list-providers) function."
+        },
+        {
+          "name": "redirectUrl",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL to redirect the user to after they authorize access to the external calendar account.\n\nIf the connection is successfully established, the user is redirected to this URL with a query parameter `connectionId` containing the new connection ID.\nIf the attempt to connect fails, the user is redirected to this URL with a query parameter `error` containing the error type.\n"
+        },
+        {
+          "name": "scheduleId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule to connect with the external calendar account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectByOAuthResponse",
+      "members": [
+        {
+          "name": "oauthUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL of the external calendar authorization page to redirect the user to."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Connection",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "External calendar connection ID."
+        },
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the Wix App the external calendar connection belongs to."
+        },
+        {
+          "name": "calendarType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "External calendar type."
+        },
+        {
+          "name": "errorReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason for the error, if `status` is `ERROR`.\n\n+ `TOKEN_REVOKED`: External calendar access token revoked.\n+ `EXTERNAL_CALENDAR_CREATION_FAILED`: External calendar creation failed.\n+ `EXTERNAL_CALENDAR_DELETED`: External calendar was deleted.\n"
+        },
+        {
+          "name": "externalAccountEmail",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email address associated with the external calendar account. Empty until sync is completed successfully."
+        },
+        {
+          "name": "providerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider."
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule connected to the external calendar."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Connection status.\n\n+ `CONNECTED`: A connection has been established with the external calendar.\n+ `SYNC_IN_PROGRESS`: A sync is in progress.\n+ `SYNCED`: External calendar sync complete.\n+ `DISCONNECTED`: External calendar has been disconnected.\n+ `ERROR`: An error occurred when syncing with the external calendar.\n"
+        },
+        {
+          "name": "syncConfig",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
+            }
+          ],
+          "doc": "Sync configuration. Contains settings for enabling, configuring, or disabling functionality, including:\n\n+ Importing events from one or more specified calendars in the connected external calendar account.\n+ Exporting events from the Wix site's calendar to an external calendar.\n"
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the Wix user the external calendar connection belongs to."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectionSyncConfig",
+      "members": [
+        {
+          "name": "listEventFromCalendars",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfigListEventFromCalendars"
+            }
+          ],
+          "doc": "Configuration for importing events from external calendars.\nIf enabled, use the [`listEvents()`](#list-events) function to retrieve a list of events from external calendars."
+        },
+        {
+          "name": "syncToCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfigSyncToCalendar"
+            }
+          ],
+          "doc": "Configuration for exporting calendars from the Wix site's calendar to a connected external calendar."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectionSyncConfigListEventFromCalendars",
+      "members": [
+        {
+          "name": "calendars",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Calendars"
+            }
+          ],
+          "doc": "Import events from a list of specified external calendars.\n\n**Note**: The list can include the primary calendar.\n"
+        },
+        {
+          "name": "enabled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to enable importing events from external calendars through this connection."
+        },
+        {
+          "name": "primaryCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
+            }
+          ],
+          "doc": "Import events only from the primary external calendar. Enable this by passing an empty object.\n\n**Note**: Not all external calendar providers designate a primary calendar.\n"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfConnectionSyncConfigListEventFromCalendarsListFromOneOf",
+            "members": [
+              "calendars",
+              "primaryCalendar"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectionSyncConfigListEventFromCalendarsListFromOneOf",
+      "members": [
+        {
+          "name": "calendars",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Calendars"
+            }
+          ],
+          "doc": "Import events from a list of specified external calendars.\n\n**Note**: The list can include the primary calendar.\n"
+        },
+        {
+          "name": "primaryCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
+            }
+          ],
+          "doc": "Import events only from the primary external calendar. Enable this by passing an empty object.\n\n**Note**: Not all external calendar providers designate a primary calendar.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectionSyncConfigSyncToCalendar",
+      "members": [
+        {
+          "name": "dedicatedCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.DedicatedCalendar"
+            }
+          ],
+          "doc": "Sync to a dedicated external calendar. Enable this by passing an empty object."
+        },
+        {
+          "name": "enabled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to enable exporting events to an external calendars through this connection."
+        },
+        {
+          "name": "primaryCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
+            }
+          ],
+          "doc": "Sync to the primary external calendar. Enable this by passing an empty object."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfConnectionSyncConfigSyncToCalendarSyncToOneOf",
+            "members": [
+              "dedicatedCalendar",
+              "primaryCalendar"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConnectionSyncConfigSyncToCalendarSyncToOneOf",
+      "members": [
+        {
+          "name": "dedicatedCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.DedicatedCalendar"
+            }
+          ],
+          "doc": "Sync to a dedicated external calendar. Enable this by passing an empty object."
+        },
+        {
+          "name": "primaryCalendar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.PrimaryCalendar"
+            }
+          ],
+          "doc": "Sync to the primary external calendar. Enable this by passing an empty object."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of events to load.\nMax: `1000`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Cursors"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "hasNext",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates if there are more results after the current page.\nIf `true`, another page of results can be retrieved.\nIf `false`, this is the last page."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DedicatedCalendar",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DisconnectRequest",
+      "members": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to disconnect."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DisconnectResponse",
+      "members": [
+        {
+          "name": "connection",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
+            }
+          ],
+          "doc": "Updated connection details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Event",
+      "members": [
+        {
+          "name": "allDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event is an all-day event.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "calendarName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Display name of the external calendar.\nFor example, \"Primary\" or \"Birthdays\"."
+        },
+        {
+          "name": "calendarType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "External calendar type."
+        },
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "End date and time of the event (exclusive), formatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)."
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule connected to the external calendar the event belongs to."
+        },
+        {
+          "name": "scheduleOwnerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the Wix user the schedule belongs to.\nFor example, the ID of the staff member (resource) who owns the schedule."
+        },
+        {
+          "name": "scheduleOwnerName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the Wix user the schedule belongs to.\nFor example, the name of the staff member (resource) who owns the schedule."
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Start date and time of the event (inclusive), formatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)."
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Event title."
+        }
+      ],
+      "docs": {
+        "description": [
+          "An external calendar event."
+        ]
+      }
+    },
+    {
+      "name": "ExternalCalendar",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExternalCalendarInfo",
+      "members": [
+        {
+          "name": "calendarType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The external calendar type (e.g. Google Calendar, iCal, etc)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExternalCalendarOverrides",
+      "members": [
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Synced description of the external calendar event."
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Synced title of the external calendar event."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Frequency",
+      "members": [
+        {
+          "name": "repetition",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The frequency of the recurrence in weeks. i.e. when this value is 4, the interval occurs every 4 weeks. Optional. The default is 1. minimum: 1, maximum: 52."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetConnectionRequest",
+      "members": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the connection to retrieve."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetConnectionResponse",
+      "members": [
+        {
+          "name": "connection",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
+            }
+          ],
+          "doc": "Retrieved external calendar connection."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "HeadersEntry",
+      "members": [
+        {
+          "name": "key",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Interval",
+      "members": [
+        {
+          "name": "daysOfWeek",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The day the interval accrue. Optional. The default is the day of the recurring interval's start time."
+        },
+        {
+          "name": "duration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The duration of the interval in minutes. Required. Part of the session end time calculation. minimum: 1, maximum: 86400."
+        },
+        {
+          "name": "hourOfDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The hour of the day the interval accrue. must be consistent with the Interval start time. Options. The default is 0. minimum: 0, maximum: 23."
+        },
+        {
+          "name": "minuteOfHour",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The minutes of hour the interval accrue. must be consistent with the Interval end time. Options. The default is 0. minimum: 0, maximum: 59."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "IntervalSplit",
+      "members": [
+        {
+          "name": "intervals",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.RecurringInterval"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "newScheduleVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "oldScheduleVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LinkedSchedule",
+      "members": [
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Schedule ID."
+        },
+        {
+          "name": "scheduleOwnerId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Owner ID, of the linked schedule."
+        },
+        {
+          "name": "transparency",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sets this schedule's availability for the duration of the linked schedule's sessions.  Default is `\"BUSY\"`.\n<!--ONLY:REST-->\nIf set to `\"BUSY\"`, this schedule cannot have any available slots during the linked schedule's sessions.\nIf set to `\"FREE\"`, this schedule can have available slots during the linked schedule's sessions.\n<!--END:ONLY:REST-->\n\n<!--ONLY:VELO\nOne of:\n- `\"FREE\"` This schedule can have available slots during the linked schedule's sessions.\n- `\"BUSY\"` This schedule cannot have any available slots during the linked schedule's sessions.\n<!--END:ONLY:VELO-->\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListCalendarsRequest",
+      "members": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to list calendars for."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListCalendarsResponse",
+      "members": [
+        {
+          "name": "calendars",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Calendar"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of calendars belonging to the external calendar account."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConnectionsOptions",
+      "members": [
+        {
+          "name": "partialFailure",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return a partial list of connections if details can't be retrieved for some connections.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "scheduleIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Schedule IDs to filter by. If provided, only connections between external calendars and the specified schedules is returned.\n\nDefault: Returns all connections.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConnectionsRequest",
+      "members": [
+        {
+          "name": "partialFailure",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return a partial list of connections if details can't be retrieved for some connections.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "scheduleIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Schedule IDs to filter by. If provided, only connections between external calendars and the specified schedules is returned.\n\nDefault: Returns all connections.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConnectionsResponse",
+      "members": [
+        {
+          "name": "connections",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of external calendar connections."
+        },
+        {
+          "name": "failedProviderIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of provider IDs for connections for which retrieval failed. Returned only if `partialFailure` parameter is `true` in the request."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListEventsOptions",
+      "members": [
+        {
+          "name": "allDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to include only all-day events in the returned list.\nIf `true`, only all-day events are returned.\nIf `false`, only events with a specified time are returned.\n\nDefault: All events are returned.\n"
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options."
+        },
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns event objects without personal information.\n- `OWN_PI`: Returns complete event objects, including personal information.\n\nDefault: `NO_PI`\n"
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Date and time from which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `from` time and end after it are included in the returned list.\n"
+        },
+        {
+          "name": "partialFailure",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return a partial list of events if details can't be retrieved for some connections.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "scheduleIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Schedule IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to the specified schedules.\nMaximum of 100 schedule IDs per request."
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Date and time until which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `to` time and end after it are included in the returned list.\n"
+        },
+        {
+          "name": "userIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Wix user IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to schedules belonging to the specified Wix users.\nMaximum of 100 Wix user IDs per request."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListEventsRequest",
+      "members": [
+        {
+          "name": "allDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to include only all-day events in the returned list.\nIf `true`, only all-day events are returned.\nIf `false`, only events with a specified time are returned.\n\nDefault: All events are returned.\n"
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CursorPaging"
+            }
+          ],
+          "doc": "Pagination options."
+        },
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Predefined sets of fields to return.\n- `NO_PI`: Returns event objects without personal information.\n- `OWN_PI`: Returns complete event objects, including personal information.\n\nDefault: `NO_PI`\n"
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Date and time from which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `from` time and end after it are included in the returned list.\n"
+        },
+        {
+          "name": "partialFailure",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return a partial list of events if details can't be retrieved for some connections.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "scheduleIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Schedule IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to the specified schedules.\nMaximum of 100 schedule IDs per request."
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Date and time until which to retrieve events,\nformatted according to [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).\nRequired, unless `cursorPaging.cursor` is provided.\n\nEvents which start before the `to` time and end after it are included in the returned list.\n"
+        },
+        {
+          "name": "userIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Wix user IDs to filter by. If provided, the returned list includes only events belonging to external calendars connected to schedules belonging to the specified Wix users.\nMaximum of 100 Wix user IDs per request."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListEventsResponse",
+      "members": [
+        {
+          "name": "events",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Event"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of external calendar events matching the filters."
+        },
+        {
+          "name": "failedProviderIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of provider IDs for connections for which retrieval of events failed. Returned only if `partialFailure` parameter is `true` in the request."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListProvidersRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListProvidersResponse",
+      "members": [
+        {
+          "name": "providers",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Provider"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Retrieves a list of the external calendar providers for which the site supports integration.\n\nThe list of external calendar providers includes:\n\n+ External calendar providers that are supported by default, such as Google, Apple, and Microsoft.\n+ External calenders for which the site owner has enabled integration by installing an app.\n\nFor each external calendar provider, the list contains information about supported connection methods and features.\nFor each provider, check `features.connectMethods` to find out whether to use [`connectByCredentials()`](#connect-by-credentials) or [`connectByOAuth()`](#connect-by-o-auth) to establish a connection.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LocalDateTime",
+      "members": [
+        {
+          "name": "dayOfMonth",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Day of the month, from 1-31."
+        },
+        {
+          "name": "hourOfDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Hour of the day in 24-hour format, from 0-23."
+        },
+        {
+          "name": "minutesOfHour",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Minute, from 0-59."
+        },
+        {
+          "name": "monthOfYear",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Month number, from 1-12."
+        },
+        {
+          "name": "year",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Year. 4-digit format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Location",
+      "members": [
+        {
+          "name": "address",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Free text address used when locationType is `OWNER_CUSTOM`."
+        },
+        {
+          "name": "businessLocation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.LocationsLocation"
+            }
+          ],
+          "doc": "Valid when `locationType` is `OWNER_BUSINESS`. Defaults to the business's location.\n\n`businessSchedule` is not supported by Wix Bookings\n"
+        },
+        {
+          "name": "customAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Address"
+            }
+          ],
+          "doc": "Custom address, used when locationType is `\"OWNER_CUSTOM\"`. Might be used when locationType is `\"CUSTOM\"` in case the owner sets a custom address for the session which is different from the default."
+        },
+        {
+          "name": "locationType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location type.\nOne of:\n- `\"OWNER_BUSINESS\"` The business address as set in the site’s general settings.\n- `\"OWNER_CUSTOM\"` The address as set when creating the service.\n- `\"CUSTOM\"` The address set for the individual session."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LocationsAddress",
+      "members": [
+        {
+          "name": "city",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "City name."
+        },
+        {
+          "name": "country",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "2-letter country code in an [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format."
+        },
+        {
+          "name": "postalCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Postal or zip code."
+        },
+        {
+          "name": "streetAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.LocationsStreetAddress"
+            }
+          ],
+          "doc": "Street address. Includes street name, number, and apartment number in separate fields."
+        },
+        {
+          "name": "subdivision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Code for a subdivision (such as state, prefecture, or province) in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LocationsAddressLocation",
+      "members": [
+        {
+          "name": "latitude",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Latitude of the location. Must be between -90 and 90."
+        },
+        {
+          "name": "longitude",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Longitude of the location. Must be between -180 and 180."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Address Geolocation"
+        ]
+      }
+    },
+    {
+      "name": "LocationsLocation",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location ID."
+        },
+        {
+          "name": "address",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.LocationsAddress"
+            }
+          ],
+          "doc": "Address."
+        },
+        {
+          "name": "archived",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the location is archived. Archived locations can't be updated.\n__Note:__ [Archiving a location](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/archivelocation)\ndoesn't affect its `status`."
+        },
+        {
+          "name": "businessSchedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.BusinessSchedule"
+            }
+          ],
+          "doc": "Business schedule. Array of weekly recurring time periods when the location is open for business. Limited to 100 time periods.\n\n__Note:__ Not supported by Wix Bookings.\n"
+        },
+        {
+          "name": "default",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this is the default location. There can only be one default location per site. The default location can't be archived."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location description."
+        },
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email address."
+        },
+        {
+          "name": "fax",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fax number."
+        },
+        {
+          "name": "locationType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location type. **Note:** Currently not supported."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location name."
+        },
+        {
+          "name": "phone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Phone number."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the location is updated.\nTo prevent conflicting changes, the existing revision must be used when updating a location."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location status. Defaults to `ACTIVE`.\n__Note:__ [Archiving a location](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/archivelocation)\ndoesn't affect the location's status. `INACTIVE` is currently not supported."
+        },
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Timezone in `America/New_York` format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LocationsStreetAddress",
+      "members": [
+        {
+          "name": "apt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Apartment number."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Street name."
+        },
+        {
+          "name": "number",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Street number."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Street address. Includes street name, number, and apartment number in separate fields."
+        ]
+      }
+    },
+    {
+      "name": "MigrationData",
+      "members": [
+        {
+          "name": "businessId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "staffs",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.StaffData"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MigrationEvent",
+      "members": [
+        {
+          "name": "migrationData",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.MigrationData"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MultipleSessionsCreated",
+      "members": [
+        {
+          "name": "schedulesWithSessions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleWithSessions"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OAuthCompletedOptions",
+      "members": [
+        {
+          "name": "body",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Uint8Array"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "headers",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.HeadersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "method",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "pathParams",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.PathParametersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "queryParams",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.QueryParametersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "rawPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "rawQuery",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Participant",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Participant ID. Currently represents the booking.id."
+        },
+        {
+          "name": "approvalStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Approval status for the participant.\n<!-- Commented out untill updateParticipant is exposed Generally the same status as the booking, unless updated using the `updateParticipant()` API. Defaults to `\"UNDEFINED\"`.-->\n<!--ONLY:VELO\nOne of:\n- `\"PENDING\"` Pending business approval.\n- `\"APPROVED\"` Approved by the business.\n- `\"DECLINED\"` Declined by the business.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID."
+        },
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Participant's email address."
+        },
+        {
+          "name": "inherited",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the participant was inherited from the schedule, as opposed to being booked directly to the session."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Participant's name."
+        },
+        {
+          "name": "partySize",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Group or party size. The number of people attending. Defaults to 0. Maximum is 250."
+        },
+        {
+          "name": "phone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Participant's phone number."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ParticipantNotification",
+      "members": [
+        {
+          "name": "message",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Custom message to send to the participants about the changes to the booking."
+        },
+        {
+          "name": "notifyParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to send the message about the changes to the customer.\n\nDefault: `false`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PathParametersEntry",
+      "members": [
+        {
+          "name": "key",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Price",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Required payment amount."
+        },
+        {
+          "name": "currency",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Currency in which the amount is quoted."
+        },
+        {
+          "name": "downPayAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Amount of a down payment or deposit as part of the transaction."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PrimaryCalendar",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Provider",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar provider."
+        },
+        {
+          "name": "calendarType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "External calendar provider type."
+        },
+        {
+          "name": "features",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ProviderFeatures"
+            }
+          ],
+          "doc": "Features the external calendar provider supports."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the external calendar provider."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ProviderFeatures",
+      "members": [
+        {
+          "name": "connectMethods",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Supported connection methods.\n\nFor providers supporting `OAUTH`, connect with the [`connectByOAuth()`](#connect-by-o-auth) function.\nFor providers supporting `CREDENTIALS`, connect with the [`connectByCredentials()`](#connect-by-credentials) function.\n"
+        },
+        {
+          "name": "listEventFromCalendars",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether events can be imported from external calendars to the Wix calendar.\n\n+ `NOT_SUPPORTED`: Importing events from the external calendar is not supported.\n+ `PRIMARY_CALENDAR_ONLY`: Events can be imported only from an external calendar designated as primary.\n+ `SPECIFIC_CALENDARS`: Events can be imported from specific external calendars. Use [`listCalendars()`](#list-calendars) to get a list of calendars for a connected external calendar account.\n"
+        },
+        {
+          "name": "syncToCalendar",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether Wix calendar sessions can be exported to the external calendar.\n\n+ `NOT_SUPPORTED`: Exporting events to an external calendar is not supported.\n+ `PRIMARY_CALENDAR_ONLY`: Events can only be exported only to an external calendar designated as primary.\n+ `SPECIFIC_CALENDARS`: Events can be exported to specific external calendars. Use [`listCalendars()`](#list-calendars) to get a list of calendars for a connected external calendar account.\n+ `DEDICATED_CALENDAR`: Events can be exported to a newly created, dedicated external calendar in the connected external calendar account.\n"
+        },
+        {
+          "name": "updateSyncConfig",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the sync configuration can be updated after a connection is established.\n\nIf `true`, you can update the sync configuration using the [`UpdateSyncConfig()`](#update-sync-config) function.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryParametersEntry",
+      "members": [
+        {
+          "name": "key",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Rate",
+      "members": [
+        {
+          "name": "labeledPriceOptions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Price"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Mapping between a named price option, for example, adult or child prices, and the price, currency, and down payment amount.\nWhen present in an update request, the `default_varied_price` is ignored to support backward compatibility."
+        },
+        {
+          "name": "priceText",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Textual price information used when **Price Per Session** is set to **Custom Price** in the app's service details page.\nWhen present in an update request, the `default_varied_price` is ignored to support backward compatibility."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RawHttpRequest",
+      "members": [
+        {
+          "name": "body",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Uint8Array"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "headers",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.HeadersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "method",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "pathParams",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.PathParametersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "queryParams",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.QueryParametersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "rawPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "rawQuery",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RawHttpResponse",
+      "members": [
+        {
+          "name": "body",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Uint8Array"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "headers",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.HeadersEntry"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "statusCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RecurringInterval",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The recurring interval identifier."
+        },
+        {
+          "name": "affectedSchedules",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.LinkedSchedule"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Specifies the list of linked schedules and the way this link affects the corresponding schedules' availability. Can be calculated from the schedule or overridden on the recurring interval."
+        },
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The end time of the recurring interval. Optional. Empty value indicates that there is no end time."
+        },
+        {
+          "name": "frequency",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Frequency"
+            }
+          ],
+          "doc": "The frequency of the interval. Optional. The default is frequency with the default repetition."
+        },
+        {
+          "name": "interval",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Interval"
+            }
+          ],
+          "doc": "The interval rules. The day, hour and minutes the interval is recurring."
+        },
+        {
+          "name": "intervalType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of recurring interval.\n<!--ONLY:VELO\nOne of:\n- `\"UNDEFINED\"` The default value. Sessions for this interval will be of type EVENT.\n- `\"EVENT\"` A recurring interval of events.\n- `\"WORKING_HOURS\"` A recurring interval for availability.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The start time of the recurring interval. Required."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RecurringSessionSplit",
+      "members": [
+        {
+          "name": "newScheduleVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "oldScheduleVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "recurringSessions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RecurringSessionsUpdated",
+      "members": [
+        {
+          "name": "newRecurringSessions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "New schedule's recurring session list."
+        },
+        {
+          "name": "oldRecurringSessions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Old schedule's recurring session list."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Schedule",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Schedule ID."
+        },
+        {
+          "name": "availability",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Availability"
+            }
+          ],
+          "doc": "An object describing how to calculate the schedule's availability.\nAn empty object indicates that the schedule is not available for booking."
+        },
+        {
+          "name": "calendarConference",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CalendarConference"
+            }
+          ],
+          "doc": "A conference created for the schedule. This is used when a participant is added to a schedule."
+        },
+        {
+          "name": "capacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of participants that can be added to the schedule's sessions.\nMust be at most `1` for schedule whose availability is affected by another schedule. E.g, appointment schedules of the Wix Bookings app."
+        },
+        {
+          "name": "conferenceProvider",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConferenceProvider"
+            }
+          ],
+          "doc": "Conferencing Provider. A schedule with a conferencing provider will use to provider information to create a conference on the provider's system when a session is created on the schedule or on one of its linked schedule's."
+        },
+        {
+          "name": "created",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Schedule creation date."
+        },
+        {
+          "name": "externalCalendarOverrides",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ExternalCalendarOverrides"
+            }
+          ],
+          "doc": "Title and description values to override session defaults when syncing to an external calendar.\nLearn more about [syncing calendars](https://support.wix.com/en/article/wix-bookings-important-information-about-syncing-google-calendars-with-wix-bookings)."
+        },
+        {
+          "name": "inheritedFields",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Fields which were inherited from the Business Info page under Settings in the Dashboard."
+        },
+        {
+          "name": "intervals",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.RecurringInterval"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Specifies the intervals for the sessions calculation. Optional. e.g. when creating class service you can add\npattern for recurring intervals, these intervals can be returned as schedule's sessions or available slots if\nthere are no other availability calculation constraints and the capacity is bigger then the current total number of sessions' participants."
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Location"
+            }
+          ],
+          "doc": "Default location for the schedule's sessions."
+        },
+        {
+          "name": "participants",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Participant"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Participants currently registered to sessions in this schedule.\nParticipants who are registered in the schedule are automatically registered to any session that is created for the schedule."
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Rate"
+            }
+          ],
+          "doc": "Price options offered when booking this schedule's slots. Default is no rate."
+        },
+        {
+          "name": "scheduleOwnerId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule's owner entity. This may be a resource ID or a service ID."
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Schedule status."
+        },
+        {
+          "name": "tags",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Tags for grouping schedules. These tags are the default tags for the schedule's sessions.\nThe Wix Bookings app uses the following predefined tags to set schedule type: `\"INDIVIDUAL\"`, `\"GROUP\"`, and `\"COURSE\"`. Once the schedule type is set using these tags, you cannot update it. In addition to the app's tags, you can create and update your own tags."
+        },
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Default title for the schedule's sessions. Maximum length: 6000 characters."
+        },
+        {
+          "name": "totalNumberOfParticipants",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of participants registered to sessions in this schedule, calculated as the sum of the party sizes."
+        },
+        {
+          "name": "updated",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Schedule last update date."
+        },
+        {
+          "name": "version",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Schedule version number, updated each time the schedule is updated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleCancelled",
+      "members": [
+        {
+          "name": "oldSchedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change and an optional custom message"
+        },
+        {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleCreated",
+      "members": [
+        {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleNotification",
+      "members": [
+        {
+          "name": "availabilityPolicyUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.AvailabilityPolicyUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "instanceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "intervalSplit",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.IntervalSplit"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "migrationEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.MigrationEvent"
+            }
+          ],
+          "doc": "supported only for schedule migration apis."
+        },
+        {
+          "name": "multipleSessionsCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.MultipleSessionsCreated"
+            }
+          ],
+          "doc": "supported only for schedule migration apis."
+        },
+        {
+          "name": "notifyParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to notify participants about changed sessions. deprecated, use participant_notification"
+        },
+        {
+          "name": "preserveFutureSessionsWithParticipants",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "recurringSessionSplit",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.RecurringSessionSplit"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleCancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleCancelled"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleCreated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleUnassignedFromUser",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleUnassignedFromUser"
+            }
+          ],
+          "doc": "Inspect `schedule.scheduleOwnerUserId` on `scheduleUpdated` instead."
+        },
+        {
+          "name": "scheduleUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionCancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionCancelled"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionCreated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "siteProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SitePropertiesOnScheduleCreation"
+            }
+          ],
+          "doc": "site properties. Optional. Given in create schedule notification."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfScheduleNotificationEventOneOf",
+            "members": [
+              "availabilityPolicyUpdated",
+              "intervalSplit",
+              "migrationEvent",
+              "multipleSessionsCreated",
+              "recurringSessionSplit",
+              "scheduleCancelled",
+              "scheduleCreated",
+              "scheduleUnassignedFromUser",
+              "scheduleUpdated",
+              "sessionCancelled",
+              "sessionCreated",
+              "sessionUpdated"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleNotificationEventOneOf",
+      "members": [
+        {
+          "name": "availabilityPolicyUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.AvailabilityPolicyUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "intervalSplit",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.IntervalSplit"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "migrationEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.MigrationEvent"
+            }
+          ],
+          "doc": "supported only for schedule migration apis."
+        },
+        {
+          "name": "multipleSessionsCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.MultipleSessionsCreated"
+            }
+          ],
+          "doc": "supported only for schedule migration apis."
+        },
+        {
+          "name": "recurringSessionSplit",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.RecurringSessionSplit"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleCancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleCancelled"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleCreated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleUnassignedFromUser",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleUnassignedFromUser"
+            }
+          ],
+          "doc": "Inspect `schedule.scheduleOwnerUserId` on `scheduleUpdated` instead."
+        },
+        {
+          "name": "scheduleUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ScheduleUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionCancelled",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionCancelled"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionCreated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionCreated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessionUpdated",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionUpdated"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleUnassignedFromUser",
+      "members": [
+        {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": "The schedule that was unassigned from the user."
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The Wix user id."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Schedule unassigned from user."
+        ]
+      }
+    },
+    {
+      "name": "ScheduleUpdated",
+      "members": [
+        {
+          "name": "newSchedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": "The new schedule after the update."
+        },
+        {
+          "name": "oldSchedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": "The old schedule before the update."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change and an optional custom message"
+        },
+        {
+          "name": "recurringSessions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.RecurringSessionsUpdated"
+            }
+          ],
+          "doc": "Recurring sessions updated event. If this field is given, the reason for the schedule updated event was\nupdating at least one of the given schedule's recurring sessions.\nThis event is triggered by create/update/delete recurring session apis."
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this notification was created as a result of an anonymization request, such as GDPR.\nAn anonymized participant will have the following details:\nname = \"deleted\"\nphone = \"deleted\"\nemail = \"deleted@deleted.com\""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScheduleWithSessions",
+      "members": [
+        {
+          "name": "schedule",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Schedule"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sessions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "siteProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SitePropertiesOnScheduleCreation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Session",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session ID."
+        },
+        {
+          "name": "affectedSchedules",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.LinkedSchedule"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "An object specifying a list of schedules and the way each schedule's availability is affected by the session. For example, the schedule of an instructor is affected by sessions of the class that they instruct.\nThe array is inherited from the schedule and can be overridden even if the session is a recurring session."
+        },
+        {
+          "name": "calendarConference",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CalendarConference"
+            }
+          ],
+          "doc": "A conference created for the session according to the details set in the schedule's conference provider information.\nIf the session is a recurring session, this field is inherited from the schedule."
+        },
+        {
+          "name": "capacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of participants that can be added to the session. Defaults to the schedule capacity.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CalendarDateTime"
+            }
+          ],
+          "doc": "An object specifying the end date and time of the session. The `end` time must be after the `start` time and be same type as `start`.\nIf the session is a recurring session, `end` must contain a `localDateTime`."
+        },
+        {
+          "name": "externalCalendarOverrides",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ExternalCalendarOverrides"
+            }
+          ],
+          "doc": "Title and description values to override session defaults when syncing to an external calendar.\nLearn more about [syncing calendars](https://support.wix.com/en/article/wix-bookings-important-information-about-syncing-google-calendars-with-wix-bookings).\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "inheritedFields",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of properties for which values were inherited from the schedule.\nThis does not include participants that were inherited from the schedule."
+        },
+        {
+          "name": "instanceOfRecurrence",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string representing a recurrence rule (RRULE) if the session is an instance of a recurrence pattern.\nEmpty when the session is not an instance of a recurrence rule, or if the session defines a recurrence pattern, and `recurrence` is not empty."
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Location"
+            }
+          ],
+          "doc": "An object describing the location where the session takes place.\nDefaults to the schedule location.\nFor single sessions, `session.location.businessLocation` can only be provided for locations that are defined in the schedule using `schedule.location` or `schedule.availability.locations`."
+        },
+        {
+          "name": "notes",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional information about the session.\nNotes are not supported for recurring sessions."
+        },
+        {
+          "name": "originalStart",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Original start date and time of the session in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)) format."
+        },
+        {
+          "name": "participants",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.ExternalCalendars.Participant"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of participants booked for the session.\nThe list includes participants who have registered for this specific session, and participants who have registered for a schedule that includes this session.\nIf the session is a recurring session, this field must be empty."
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Rate"
+            }
+          ],
+          "doc": "The price options offered for the session.  Defaults to the schedule rate.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "recurrence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string representing a recurrence rule (RRULE) for a recurring session, as defined in [iCalendar RFC 5545](https://icalendar.org/iCalendar-RFC-5545/3-3-10-recurrence-rule.html).\nIf the session is an instance of a recurrence pattern, the `instanceOfRecurrence` property will be contain the recurrence rule and this property will be empty.\nThe RRULE defines a rule for repeating a session.\nSupported parameters are:\n\n|Keyword|Description|Supported values|\n|--|--|---|\n|`FREQ`|The frequency at which the session is recurs. Required.|`WEEKLY`|\n|`INTERVAL`|How often, in terms of `FREQ`, the session recurs. Default is 1. Optional.|\n|`UNTIL`|The UTC end date and time of the recurrence. Optional.|\n|`BYDAY`|Day of the week when the event should recur. Required.|One of: `MO`, `TU`, `WE`, `TH`, `FR`, `SA`, `SU`|\n\n\nFor example, a session that repeats every second week on a Monday until January 7, 2022 at 8 AM:\n`\"FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;UNTIL=20220107T080000Z\"`\n\n<!--ORIGINAL COMMENTS:\n`FREQ` — The frequency with which the session should be repeated (such as DAILY or WEEKLY).\nSupported `WEEKLY` value is supported.\nINTERVAL — Works together with FREQ to specify how often the session should be repeated. For example, FREQ=WEEKLY;INTERVAL=2 means once every two weeks. Optional. Default value is 1.\nCOUNT — The number of times this event should be repeated. Not yet supported.\nUNTIL — The UTC date & time until which the session should be repeated. This parameter is optional. When it is not specified, the event repeats forever.\nThe format is a short ISO date, followed by 'T' and a short time with seconds and without milliseconds, terminated by the UTC designator 'Z'. For example, until Jan. 19th 2018 at 7:00 AM: 'UNTIL=20180119T070000Z'.\nBYDAY - The days of the week when the event should be repeated. Currently, only a single day is supported. This parameter is mandatory.\nPossible values are: MO, TU, WE, TH, FR, SA, SU\nNote that DTSTART and DTEND lines are not allowed in this field; session start and end times are specified in the start and end fields.\n**Example**: FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;UNTIL=20200427T070000Z\nORIGINAL COMMENTS-->\n"
+        },
+        {
+          "name": "recurringIntervalId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Recurring interval ID. Defined when a session will be a recurring session. read-only. Optional.\nFor exmaple, when creating a class service  with recurring sessions, you add a recurrence rule to create recurring sessions.\nThis field is omitted for single sessions or instances of recurring sessions.\nSpecified when the session was originally generated from a schedule recurring interval.\nDeprecated. Use `recurringSessionId`."
+        },
+        {
+          "name": "recurringSessionId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the recurring session if this session is an instance of a recurrence. Use this ID to update the recurrence and all of the instances."
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the schedule that the session belongs to."
+        },
+        {
+          "name": "scheduleOwnerId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the resource or service that the session's schedule belongs to."
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.CalendarDateTime"
+            }
+          ],
+          "doc": "An object specifying the start date and time of the session. If the session is a recurring session, `start` must contain a `localDateTime`."
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session status.\n<!--ONLY:VELO\nOne of:\n- `\"CONFIRMED\"` Default value.\n- `\"CANCELLED\"` The session was deleted.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "tags",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Tags for the session.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "timeReservedAfter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Time reserved after the session end time, derived from the schedule availability constraints and the time between slots. Read-only.\nIf the session is a recurring session, this field must be empty."
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session title.\nThe value is inherited from the schedule and can be overridden unless the session is a recurring session."
+        },
+        {
+          "name": "totalNumberOfParticipants",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of participants booked for the session. Read-only.\nCalculated as the sum of the party sizes."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Session type.\n<!--ONLY:VELO\nOne of:\n- `\"EVENT\"` Reserved period of time on the schedule. For example, an appointment, class, course, or blocked time. Events are visible in the Dashboard in the Bookings app's [Booking Calendar](https://support.wix.com/en/article/wix-bookings-about-the-wix-bookings-calendar) page.\n- `\"WORKING_HOURS\"` Placeholder for available time on a resource’s schedule.\n<!--END:ONLY:VELO-->"
+        },
+        {
+          "name": "version",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.SessionVersion"
+            }
+          ],
+          "doc": "The session version.\nComposed by the schedule, session and participants versions."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionCancelled",
+      "members": [
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change and an optional custom message"
+        },
+        {
+          "name": "session",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionCreated",
+      "members": [
+        {
+          "name": "session",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionUpdated",
+      "members": [
+        {
+          "name": "newSession",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "oldSession",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Session"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ParticipantNotification"
+            }
+          ],
+          "doc": "Whether to notify participants about the change and an optional custom message"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this notification was created as a result of an anonymization request, such as GDPR.\nAn anonymized participant will have the following details:\nname = \"deleted\"\nphone = \"deleted\"\nemail = \"deleted@deleted.com\""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SessionVersion",
+      "members": [
+        {
+          "name": "number",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Incremental version number, which is updated on each change to the session or on changes affecting the session."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SitePropertiesOnScheduleCreation",
+      "members": [
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The global time zone value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SpecialHourPeriod",
+      "members": [
+        {
+          "name": "comment",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional info about the exception. For example, \"We close earlier on New Year's Eve.\""
+        },
+        {
+          "name": "endDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "End date and time of the exception in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format and [Coordinated Universal Time (UTC)](https://en.wikipedia.org/wiki/Coordinated_Universal_Time)."
+        },
+        {
+          "name": "isClosed",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the business is closed (or the service is not available) during the exception.\n\nDefault: `true`.\n"
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Start date and time of the exception in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format and [Coordinated Universal Time (UTC)](https://en.wikipedia.org/wiki/Coordinated_Universal_Time)."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Exception to the business's regular hours. The business can be open or closed during the exception."
+        ]
+      }
+    },
+    {
+      "name": "SplitInterval",
+      "members": [
+        {
+          "name": "sameAsDuration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the slot duration is used as the split interval value.\nIf `same_as_duration` is `true`, the `value_in_minutes` is the sum of the first duration in\n`schedule.availabilityConstraints.SlotDurations` field, and `schedule.availabilityConstraints.TimeBetweenSlots` field."
+        },
+        {
+          "name": "valueInMinutes",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of minutes between available slots' start times when `same_as_duration` is `false`."
+        }
+      ],
+      "docs": {
+        "description": [
+          "The time between available slots' start times. For example, For 5 minute slots, 3:00, 3:05, 3:15 etc. For 1 hour slots, 3:00, 4:00, 5:00 etc."
+        ]
+      }
+    },
+    {
+      "name": "StaffData",
+      "members": [
+        {
+          "name": "refreshToken",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "resourceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "syncRequestEmail",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "StreetAddress",
+      "members": [
+        {
+          "name": "apt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Apartment number."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Street name."
+        },
+        {
+          "name": "number",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Street number."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Subdivision",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Subdivision code. Usually state, region, prefecture or province code, according to [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Subdivision full name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TimePeriod",
+      "members": [
+        {
+          "name": "closeDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Day of the week the period ends on."
+        },
+        {
+          "name": "closeTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time the period ends in 24-hour [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) extended format. Valid values are `00:00` to `24:00`, where `24:00` represents\nmidnight at the end of the specified day.\n\n__Note:__ If `openDay` and `closeDay` specify the same day of the week `closeTime` must be later than `openTime`.\n"
+        },
+        {
+          "name": "openDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Day of the week the period starts on."
+        },
+        {
+          "name": "openTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time the period starts in 24-hour [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) extended format. Valid values are `00:00` to `24:00`, where `24:00` represents\nmidnight at the end of the specified day."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Weekly recurring time periods when the business is regularly open or the service is available."
+        ]
+      }
+    },
+    {
+      "name": "UpdateSyncConfigOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateSyncConfigRequest",
+      "members": [
+        {
+          "name": "connectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the external calendar connection to update."
+        },
+        {
+          "name": "syncConfig",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.ConnectionSyncConfig"
+            }
+          ],
+          "doc": "Updated sync configuration details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateSyncConfigResponse",
+      "members": [
+        {
+          "name": "connection",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.ExternalCalendars.Connection"
+            }
+          ],
+          "doc": "Connection with updated sync configuration."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Version",
+      "members": [
+        {
+          "name": "participantsVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Participants version number, updated each time the schedule participants are updated."
+        },
+        {
+          "name": "scheduleVersion",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Schedule version number, updated each time the schedule is updated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}
