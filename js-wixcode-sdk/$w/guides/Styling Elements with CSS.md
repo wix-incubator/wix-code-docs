@@ -73,7 +73,7 @@ For reference, here is a list of global classes:
 - [Multi-state box]($w/multistatebox/css-classes)
 - [Page]($w/page/css-classes)
 - [Pagination]($w/pagination/css-classes)
-- [Progress bar]($w/progress-bar/css-classes)
+- [Progress bar]($w/progressbar/css-classes)
 - [Radio button group]($w/radiobuttongroup/css-classes)
 - [Ratings display]($w/ratingsdisplay/css-classes)
 - [Ratings input]($w/ratingsinput/css-classes)
