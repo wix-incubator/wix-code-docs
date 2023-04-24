@@ -18,6 +18,7 @@ The `wix-widget` and `wix-editor` modules provide functionality for working with
 * Use [`wix-widget`](/wix-widget) to control a widget's properties, Design Presets, and more. 
 * Use [`wix-editor`](/wix-editor) to remove or restore widget elements, open Dashboard panels, and more.
 
+
 (April 24, 2023)
 
 ### New: The $widget Namespace for Wix Blocks Widgets
