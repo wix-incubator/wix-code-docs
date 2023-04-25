@@ -64,6 +64,11 @@
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "bulkCreateCoupons"
     },
     {
@@ -121,6 +126,11 @@
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "bulkDeleteCoupons"
     },
     {
@@ -156,25 +166,188 @@
       "docs": {
         "summary": "Creates a new coupon.",
         "description": [
-          "When creating a coupon, the `specification` object must contain values for `name`, `code`, `startTime`, and either `scope` or `minimumSubtotal`. The exception is for a `freeShipping` coupon type, for which you cannot apply a `scope` and `minimumSubtotal` is optional.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application, a group within the application, or a single item within a group. See [Introduction](#introduction) for a table of currently supported coupon scopes. Test [Create](#create) and [again](#createCoupon).\n\nThe `specification` object must also contain a value for exactly 1 of the following coupon properties. This defines the coupon type.\n\n+ `\"moneyOffAmount\"`\n+ `\"percentOffRate\"`\n+ `\"freeShipping\"`\n+ `\"fixedPriceAmount\"`\n+ `\"buyXGetY\"`"
+          "When creating a coupon, the `specification` object must contain values for `name`, `code`, `startTime`, and either `scope` or `minimumSubtotal`. The exception is for a `freeShipping` coupon type, for which you cannot apply a `scope` and `minimumSubtotal` is optional.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application, a group within the application, or a single item within a group. See [Introduction](#introduction) for a table of currently supported coupon scopes.\n\nThe `specification` object must also contain a value for exactly 1 of the following coupon properties. This defines the coupon type.\n\n+ `\"moneyOffAmount\"`\n+ `\"percentOffRate\"`\n+ `\"freeShipping\"`\n+ `\"fixedPriceAmount\"`\n+ `\"buyXGetY\"`"
         ],
         "examples": [
           {
-            "title": "createCoupon example",
+            "title": "Create a new coupon with options ",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
-              "  ",
-              " async function createCoupon(options) {",
-              "   try {",
-              "     const result = await coupons.createCoupon(options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"expirationTime\": new Date(2020, 12, 31),",
+              "    \"usageLimit\": 100,",
+              "    \"limitedToOneItem\": true,",
+              "    \"limitPerCustomer\": 1,",
+              "    \"active\": true,",
+              "    \"scope\": {",
+              "      \"namespace\": \"stores\"",
+              "    },",
+              "    \"moneyOffAmount\": 10",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new \"money off\" coupon ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"scope\": {",
+              "      \"namespace\": \"stores\"",
+              "    },",
+              "    \"moneyOffAmount\": 10 // $10 off original price",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new free shipping coupon ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"freeShipping\": true",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new \"buy x, get y\" coupon ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"scope\": {",
+              "      \"namespace\": \"stores\"",
+              "    },",
+              "    \"buyXGetY\": { // Buy 2 items, get 1 free",
+              "      \"x\": 2,",
+              "      \"y\": 1",
+              "    }",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new coupon that applies to a specific store product ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"scope\": { // Coupon applies to the store product with the specified ID",
+              "      \"namespace\": \"stores\",",
+              "      \"group\": {",
+              "        \"name\": \"product\",",
+              "        \"entityId\": \"3db41c71-6cb6-45f5-88fc-aaf05ed22e54\"",
+              "      }",
+              "    },",
+              "    \"moneyOffAmount\": 10",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new coupon that applies to all event tickets ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"scope\": { // Coupon applies to all event tickets",
+              "      \"namespace\": \"events\",",
+              "      \"group\": {",
+              "        \"name\": \"ticket\"",
+              "      }",
+              "    },",
+              "    \"moneyOffAmount\": 5 // $5 off original ticket price",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new \"percent off\" coupon that applies to all pricing plans ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function createCoupon() {",
+              "  let specification = {",
+              "    \"name\": \"Summer Sale 20%\",",
+              "    \"code\": \"SUMMER20\",",
+              "    \"startTime\": new Date(),",
+              "    \"expirationTime\": new Date('Sep 23, 2022 23:59:00'),",
+              "    \"scope\": { // Coupon applies to all pricing plans",
+              "      \"namespace\": \"pricingPlans\"",
+              "    },",
+              "    \"percentOffRate\": 20",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "}",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"id\": \"c2750c68-c253-42ce-85a4-2c9d09bfbcd8\"}",
+              ""
             ]
           }
         ]
@@ -219,31 +392,22 @@
         "description": [],
         "examples": [
           {
-            "title": "deleteCoupon example",
+            "title": "Delete a coupon ",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
-              "  ",
-              " async function deleteCoupon(id) {",
-              "   try {",
-              "     const result = await coupons.deleteCoupon(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function deleteCoupon(_id) {",
+              "  return coupons.deleteCoupon(_id);",
+              "}",
+              "",
+              "// Returns a promise that is resolved when",
+              "// the coupon is deleted.",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteCoupon"
     },
     {
@@ -303,6 +467,11 @@
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "getCoupon"
     },
     {
@@ -354,21 +523,42 @@
         ],
         "examples": [
           {
-            "title": "updateCoupon example",
+            "title": "Update an existing coupon ",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
-              "  ",
-              " async function updateCoupon(id, options) {",
-              "   try {",
-              "     const result = await coupons.updateCoupon(id, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function updateCoupon(_id, fieldMask, specification) {",
+              "  return coupons.updateCoupon(_id, fieldMask, specification);",
+              "}",
+              "",
+              "// Returns a promise that is resolved when",
+              "// the coupon is updated.",
+              ""
+            ]
+          },
+          {
+            "title": "Update a coupon's expiration date ",
+            "body": [
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export function updateCoupon() {",
+              "  let _id = \"bff1f257-5e7e-437d-9f86-098de337cae6\";",
+              "",
+              "  let fieldMask = \"expirationTime\"",
+              "",
+              "  let newExpirationDate = new Date();",
+              "  newExpirationDate.setMonth(newExpirationDate.getMonth() + 1);",
+              "",
+              "  let specification = {",
+              "    \"expirationTime\": newExpirationDate // Coupon ends in 1 month",
+              "  };",
+              "",
+              "  return coupons.updateCouponFields(_id, fieldMask, specification);",
+              "}",
+              "",
+              "// Returns a promise that is resolved when",
+              "// the coupon is updated.",
+              ""
             ]
           }
         ]
@@ -469,7 +659,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Amount of discounted cycles for subscription item. None specifies for all cycles."
+          "doc": "Reserved for internal use."
         },
         {
           "name": "isFreeShipping",
@@ -854,6 +1044,16 @@
           "doc": "Cart to which the coupon will be applied."
         },
         {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "For calculating by coupon code (usually for apply coupon phase - for validation)."
+        },
+        {
           "name": "currencySymbol",
           "optional": true,
           "type": [
@@ -894,6 +1094,18 @@
           "doc": "Unique identifier of a buyer that applied the coupon. Used to limit coupon use per customer."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCalculateRequestCalculateByOneOf",
+            "members": [
+              "_id",
+              "code",
+              "discount"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -1454,7 +1666,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Item ID (when the coupon scope is limited to just one item)."
+          "doc": "ID of the specific item in the group for which the coupon is applicable. If no `entityId` is specified, the coupon applies to all items in the group. In some cases when a group is specified, an `entityId` is required. See the [introduction](#introduction) for a list of currently supported entities for each namespace and group."
         },
         {
           "name": "name",
@@ -1464,7 +1676,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Coupon scope's group (e.g., product or collection in Wix Stores). See [Introduction](#introduction) for a table of currently supported coupon scopes."
+          "doc": "Name of coupon scope's group (e.g., product or collection in Wix Stores). See [Introduction](#introduction) for a table of currently supported coupon scopes."
         }
       ],
       "docs": {
@@ -1953,7 +2165,7 @@
               "referenceType": "wix-marketing-v2.Coupons.Group"
             }
           ],
-          "doc": "Coupon scope's applied group (e.g., event or ticket in Wix Events)"
+          "doc": "Group within a `namespace` for which the coupon is applicable. If no group is specified, the coupon applies to all items in the namespace. `group` is required in some cases. See the table in the [introduction](#introduction) for a list of currently supported groups for each namespace."
         },
         {
           "name": "namespace",
@@ -2053,7 +2265,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Specifies the amount of discounted cycles for a subscription item.\n\nCan only be set when `appliesToSubscriptions` is `true` and `scope.namespace` is `pricingPlans`.\nIf `discountedCycleCount` is empty, the coupon applies to all available cycles.\n\nMin: `1`\nMax: `999`\n"
+          "doc": "Reserved for internal use."
         },
         {
           "name": "expirationTime",
@@ -2113,7 +2325,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Limit the coupon to carts with a subtotal above this number."
+          "doc": "The coupon is only applicable when the order subtotal is over this amount."
         },
         {
           "name": "moneyOffAmount",
@@ -2284,7 +2496,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Limit the coupon to carts with a subtotal above this number."
+          "doc": "The coupon is only applicable when the order subtotal is over this amount."
         },
         {
           "name": "scope",
