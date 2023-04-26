@@ -91,7 +91,6 @@ async function uploadMyFile(uploadUrl, fileContent) {
 
 
 ## Status/Error Codes
-Errors from this endpoint will 
-The response will include a gRPC/HTTP status code.
+Errors from this endpoint will include an HTTP status code.
         
 

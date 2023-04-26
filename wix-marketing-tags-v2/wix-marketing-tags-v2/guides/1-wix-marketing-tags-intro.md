@@ -63,6 +63,7 @@ import { marketingTags } from 'wix-marketing-tags.v2';
     | Facebook Pixel tag | Pixel ID  | 123456789  |
     | Google tag | Tag Manager Container ID | GTM-12345 |
 
+
 ## Override permissions
 Functions in INSERT_API_NAME are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
