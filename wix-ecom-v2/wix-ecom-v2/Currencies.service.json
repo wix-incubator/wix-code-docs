@@ -64,30 +64,61 @@
       "docs": {
         "summary": "Returns an array of amounts converted from the original (`from`) currency to the target (`to`) currency and the timestamp for the conversion rate used.",
         "description": [
-          "Use the `convertCurrency()` function to convert an array of one or more amounts between two currencies. The `convertCurrency()` function returns an array of converted amounts and the timestamp for the conversion rate used.\n\n> **Note**: The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function.\n"
+          "Use the `convertCurrency()` function to convert an array of one or more amounts between two currencies. The `convertCurrency()` function returns an array of converted amounts and the timestamp for the conversion rate used.\n\n> **Notes**:\n\n> - The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function.\n\n> - This function replaces the [`convertAmounts()`](https://www.wix.com/velo/reference/wix-pay/currencies-obj/currencyconverter-obj/convertamounts) function from the previous version of this API."
         ],
         "examples": [
           {
-            "title": "convertCurrency example",
+            "title": "Convert an array of amounts from one currency to another ",
             "body": [
               "import { currencies } from 'wix-ecom.v2';",
-              "  ",
-              " async function convertCurrency(identifiers, amounts) {",
-              "   try {",
-              "     const result = await currencies.convertCurrency(identifiers, amounts);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "const identifiers =\t{",
+              "  \"from\": \"USD\",",
+              "  \"to\": \"GBP\"",
+              "};",
+              "",
+              "const amounts =\t[ ",
+              "  {",
+              "    \"decimalPlaces\": 2,",
+              "    \"value\": \"1000\"",
+              "  },",
+              "  {",
+              "    \"decimalPlaces\": 2,",
+              "    \"value\": \"20324\"",
+              "  } ",
+              "];",
+              "",
+              "currencies.convertCurrency(identifiers, amounts)",
+              "  .then((convertedAmounts) => {",
+              "  \tconst firstConvertedAmount = convertedAmounts.amounts[0];",
+              "    const timestamp = convertedAmounts.rateTimestamp;",
+              "  });",
+              "",
+              "/* ",
+              " * {",
+              " *   \"amounts\": [",
+              " *     {",
+              " *       \"decimalPlaces\": 2,",
+              " *       \"value\": \"795\"",
+              " *     },",
+              " *     {",
+              " *       \"decimalPlaces\": 2,",
+              " *       \"value\": \"1616287\"",
+              " *     } ",
+              " *   ],",
+              " *   \"timestamp\": \"2023-04-30T21:00:00.277Z",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "convertCurrency"
     },
     {
@@ -100,7 +131,7 @@
               "referenceType": "wix-ecom-v2.Currencies.GetConversionRateIdentifiers"
             }
           ],
-          "doc": "",
+          "doc": "Identifying details needed to get the conversion rate. The combination of the `from` and `to` properties together comprise the unique ID.\n",
           "required": true
         }
       ],
@@ -129,21 +160,25 @@
         "description": [],
         "examples": [
           {
-            "title": "getConversionRate example",
+            "title": "Return the conversion rate and timestamp ",
             "body": [
               "import { currencies } from 'wix-ecom.v2';",
               "  ",
-              " async function getConversionRate(identifiers) {",
-              "   try {",
-              "     const result = await currencies.getConversionRate(identifiers);",
+              "currencies.getConversionRate(\"USD\", \"GBP\")",
+              "  .then((conversionRate) => {",
+              "    const rate = conversionRate.rate;",
+              "    const timestamp = conversionRate.rateTimestamp;",
+              "  });",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/*  conversionRate:",
+              " *  {",
+              " *    \"rate\": {",
+              " *       value: 20,",
+              " *       decimalPlaces: \"2\"",
+              " *    },",
+              " *    \"rateTimestamp\": \"2020-03-15T20:00:00.181Z\"",
+              " *  }",
+              " */"
             ]
           }
         ]
@@ -177,29 +212,40 @@
       },
       "docs": {
         "summary": "Returns an array of currencies. The array lists all currencies for which Wix supports conversion and their symbols.",
-        "description": [],
+        "description": [
+          "> **Note**: This function replaces the [`getAllCurrencies()`](https://www.wix.com/velo/reference/wix-pay/currencies-obj/getallcurrencies) function from the previous version of this API."
+        ],
         "examples": [
           {
-            "title": "listCurrencies example",
+            "title": "Get all supported currencies ",
             "body": [
-              "import { currencies } from 'wix-ecom.v2';",
-              "  ",
-              " async function listCurrencies() {",
-              "   try {",
-              "     const result = await currencies.listCurrencies();",
+              "import {currencies} from 'wix-ecom.v2';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "currencies.listCurrencies()",
+              "  .then((listOfAllCurrencies) => {",
+              "    const firstCurrencyCode = listOfAllCurrencies[0].code;",
+              "    const firstCurrencyCSymbol = listOfAllCurrencies[0].symbol;",
+              "  });",
+              "",
+              "/*",
+              " *  listOfAllCurrencies:",
+              " *  [",
+              " *    {\"code\": \"BIF\", \"symbol\": \"FBu\"},",
+              " *    {\"code\": \"CVE\", \"symbol\": \"$\"},",
+              " *    {\"code\": \"KMF\", \"symbol\": \"CF\"},",
+              " *   ...",
+              " *  ]",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "listCurrencies"
     }
   ],
@@ -214,7 +260,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Original currency to get the rate for."
+          "doc": "Original currency to get the rate for. The `from` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         },
         {
           "name": "to",
@@ -223,7 +269,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Target currency to get the rate for."
+          "doc": "Target currency to get the rate for. The `to` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         }
       ],
       "docs": {
@@ -272,7 +318,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Original currency to convert from."
+          "doc": "Original currency to convert from. The `from` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         },
         {
           "name": "to",
@@ -281,7 +327,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Target currency to convert to."
+          "doc": "Target currency to convert to.  The `to` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         }
       ],
       "docs": {
@@ -317,7 +363,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Original currency to convert from."
+          "doc": "Original currency to convert from. The `from` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         },
         {
           "name": "to",
@@ -326,7 +372,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Target currency to convert to."
+          "doc": "Target currency to convert to. The `to` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         }
       ],
       "docs": {
@@ -451,7 +497,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Original currency to get the rate for."
+          "doc": "Original currency to get the rate for. The `from` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         },
         {
           "name": "to",
@@ -460,7 +506,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Target currency to get the rate for."
+          "doc": "Target currency to get the rate for. The `to` currency code must exist in the array returned by the [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) function."
         }
       ],
       "docs": {
