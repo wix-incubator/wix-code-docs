@@ -42,6 +42,6 @@ To use the Groups API,
 import `groups` from wix-groups.v2:
 
 ```js
-import { groups } from 'wix-groups.v2';
+import { groups } from 'wix-groups.v2';  
 ```
 
