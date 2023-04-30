@@ -25,7 +25,7 @@ wixData.query("Members/FullData")
 This document describes the permissions and fields in your FullData collection.
 
 > **Note:**
-> - This collection has some read-write fields. This means you can use the Wix Data and Wix Dataset APIs to manage these fields. 
+> - This collection has some read-write fields. This means you can use the [Wix Data](/wix-data) and [Wix Dataset](/wix-dataset) APIs to manage these fields. 
 > - For read-only fields, you manage your Members in the [Site Members](https://support.wix.com/en/article/viewing-your-member-list) section of your dashboard.
 
 > **Important:**
@@ -54,89 +54,89 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: No  
-**Can be filtered**: eq, hasSome
-**Read-only**: Yes
+**Can be filtered**: eq, hasSome  
+**Read-only**: Yes  
 
 
 #### Login Email (loginEmail) 
 
-**Description**: Email used by the member to log into the site.
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No 
-**Can be sorted**: No
+**Description**: Email used by the member to log into the site.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
 **Can be filtered**: hasSome, eq  
-**Read-only**: Yes
+**Read-only**: Yes  
 
 #### First Name (firstName) 
 
-**Description**: Member's first name.
-**Type**: Text
-**Can connect to data**: Yes 
-**Can use in dynamic page URL**: No
-**Can be sorted**: Yes
-**Can be filtered**: hasSome, eq
-**Read-write**: Yes
+**Description**: Member's first name.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: Yes  
+**Can be filtered**: hasSome, eq  
+**Read-write**: Yes  
 
 #### Last Name (lastName) 
 
-**Description**: Member's last name. 
-**Type**: Text
+**Description**: Member's last name.  
+**Type**: Text  
 **Can connect to data**: Yes  
-**Can use in dynamic page URL**: No
-**Can be sorted**: Yes
-**Can be filtered**: hasSome, eq 
-**Read-write**: Yes
+**Can use in dynamic page URL**: No  
+**Can be sorted**: Yes  
+**Can be filtered**: hasSome, eq  
+**Read-write**: Yes  
 
 #### Phone (phone) 
 
-**Description**:  Member's phone number.
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No 
-**Can be sorted**: No
-**Can be filtered**: No  
-**Read-only**: Yes
+**Description**:  Member's phone number.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No    
+**Read-only**: Yes  
 
 #### Email (email) 
 
-**Description**: Member's email address. 
-**Type**: Text 
-**Can connect to data**: Yes    
-**Can use in dynamic page URL**: No 
-**Can be sorted**: No
+**Description**: Member's email address.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
 **Can be filtered**: No  
-**Read-only**: Yes
+**Read-only**: Yes  
 
 #### Nickname (nickname) 
 
 **Description**: The name that is displayed on the member's profile page, forum and or blog.  
-**Type**: Text
-**Can connect to data**: YES 
-**Can use in dynamic page URL**: No
-**Can be sorted**: Yes
-**Can be filtered**: hasSome, eq 
-**Read-write**: Yes
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: Yes  
+**Can be filtered**: hasSome, eq  
+**Read-write**: Yes  
 
 #### Slug (slug) 
 
 **Description**: The member's URL-friendly name that is unique across your site. Typically this is made up of the member's email prefix.  
-**Type**: Text
+**Type**: Text  
 **Can connect to data**: Yes  
-**Can use in dynamic page URL**: No 
-**Can be sorted**: No
-**Can be filtered**: eq   
-**Read-only**: Yes
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: eq     
+**Read-only**: Yes  
 
 #### Profile Photo (profilePhoto) 
 
-**Description**: Displays the member's profile photo, if they uplodaded one.
-**Type**: Image
+**Description**: Displays the member's profile photo, if they uplodaded one.  
+**Type**: Image  
 **Can connect to data**: No  
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No  
-**Read-write**: Yes
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No    
+**Read-write**: Yes  
 
 ```json
 {
@@ -150,23 +150,23 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Cover Photo (coverPhoto) 
 
-**Description**: Displays the member's cover photo on their profile page.
-**Type**: Image
+**Description**: Displays the member's cover photo on their profile page.  
+**Type**: Image  
 **Can connect to data**: No  
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
 **Can be filtered**: No  
-**Read-write**: Yes
+**Read-write**: Yes  
 
 #### Satus (status) 
 
-**Description**: Member site access status.
-**Type**: Text
-**Can connect to data**: 
-**Can use in dynamic page URL**: No
-**Can be sorted**: 
-**Can be filtered**: 
-**Read-only**: Yes
+**Description**: Member site access status.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes  
 **Note**: Field value is one of: 
 -   "PENDING" - Member created and waiting for approval by site owner.
 -   "APPROVED" - Member approved and able to log in.
@@ -176,26 +176,26 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Privacy Status (privacyStatus) 
 
-**Description**: Member's privacy status.
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-only**: Yes
+**Description**: Member's privacy status.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes  
 **Note**: Field value is one of: 
 -   "PUBLIC" - The member profile is visible to everyone.
 -   "PRIVATE" - The member profile is hidden from site visitors and members. The member is only returned to site contributors and apps with the appropriate permoissions.
 
 ####  Activity Status (activityStatus) 
 
-**Description**: Member's activity status.
-**Type**: Test
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-only**: Yes
+**Description**: Member's activity status.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes  
 **Note**: Field value is one of: 
 -   "ACTIVE" - The member can write forum posts and blog comments.
 -   "MUTED" - The member cannot write forum posts or blog comments.
@@ -203,60 +203,60 @@ The field name is listed as the heading of each section, with the field key list
 
 #### Last Login Date (lastLoginDate) 
 
-**Description**: Displays the last date and time the member last logged into the site.
-**Type**: Date
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: Yes
-**Can be filtered**: No
-**Read-only**: Yes
+**Description**: Displays the last date and time the member last logged into the site.  
+**Type**: Date  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: Yes  
+**Can be filtered**: No  
+**Read-only**: Yes  
 
 #### Title (title) 
 
-**Description**: Member's title.
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-write**: Yes
+**Description**: Member's title.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-write**: Yes  
 
 #### Created Date (\_createdDate) 
 
-**Description**: Displays the date and time the member registered to the site. This is a system field and is hidden by default.
-**Type**: Date 
+**Description**: Displays the date and time the member registered to the site. This is a system field and is hidden by default.  
+**Type**: Date  
 **Can** **connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes  
 **Can be filtered**: No  
-**Read-only**: Yes
+**Read-only**: Yes  
 
 #### Updated Date (\_updatedDate) 
 
-**Description**: Displays the last date and time the member's details were updated. This is a system field and is hidden by default.
+**Description**: Displays the last date and time the member's details were updated. This is a system field and is hidden by default.  
 **Type**: Date  
 **Can** **connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: No  
 **Can be filtered**: No  
-**Read-only**: Yes
+**Read-only**: Yes  
 
 #### About Plain Text (aboutPlain) 
 
-**Description**: Displays the **About** information from the member's profile as plain text.
-**Type**: Text
-**Can connect to data**: Yes
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-only**: Yes
+**Description**: Displays the **About** information from the member's profile as plain text.  
+**Type**: Text  
+**Can connect to data**: Yes  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes  
 
 #### About Rich Text (aboutRich) 
 
-**Description**: Displays the **About** information from the member's profile as rich text.
-**Type**: Rich Content (object)
-**Can connect to data**: No
-**Can use in dynamic page URL**: No
-**Can be sorted**: No
-**Can be filtered**: No
-**Read-only**: Yes
+**Description**: Displays the **About** information from the member's profile as rich text.  
+**Type**: Rich Content (object)  
+**Can connect to data**: No  
+**Can use in dynamic page URL**: No  
+**Can be sorted**: No  
+**Can be filtered**: No  
+**Read-only**: Yes  
