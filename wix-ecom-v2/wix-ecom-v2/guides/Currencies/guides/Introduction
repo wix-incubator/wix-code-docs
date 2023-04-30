@@ -1,5 +1,5 @@
 ---
-title: About the Wix Currencies API
+title: Introduction
 ---
 
 # About the Wix Currencies API
