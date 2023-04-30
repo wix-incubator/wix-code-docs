@@ -8,6 +8,11 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Article: Shareable Booking Form Links
+
+`wix-bookings`
+
+The [Shareable Booking Form Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-form-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking form page. This enables you to create a link to a Wix site's booking form page with preset values determined by you. (April 30, 2023)
 
 ### New Developer Preview API: Wix Media v2
 
