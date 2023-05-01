@@ -13,9 +13,10 @@ title: Introduction
 
 &nbsp;
 
-<!--
-> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
--->
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend,
+> unless specified otherwise.
 
 The Badges API enables you to create badges on your website, and assign them to site members, either from your site dashboard, or from your live site. Badges are set up in your site dashboard. Wix does not provide preset badges.
 
