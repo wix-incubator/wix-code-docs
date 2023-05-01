@@ -41,7 +41,8 @@ Permission requirements for the functions in this API can be overridden using th
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
+To use the Members API, import `members` from the `wix-groups-v2` module:
 
 ```javascript
-import { members } from "wix-groups-backend";
+import { members } from "wix-groups-v2";
 ```
