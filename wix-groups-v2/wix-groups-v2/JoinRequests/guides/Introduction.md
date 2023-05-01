@@ -27,9 +27,9 @@ The JoinRequests API provides functionality for managing requests to join a grou
 + If a group's privacy level is set to `SECRET`, only site members added by an existing group member can join the group (no request necessary). 
  
 The JoinRequests API provides functionality allowing you to:  
- + [Approve](#approveJoinGroupRequests) requests to join a group. 
- + [List](#listJoinGroupRequests) requests to join a group. 
- + [Query](#queryJoinGroupRequests) requests to join a group.
+ + [Approve](wix-groups-v2/joinrequests/approveJoinGroupRequests) requests to join a group. 
+ + [List](../listJoinGroupRequests) requests to join a group. 
+ + [Query](../#queryJoinGroupRequests) requests to join a group.
  + [Reject](#rejectJoinGroupRequests) requests to join a group. 
 
 ## Override permissions
