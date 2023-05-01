@@ -20,7 +20,7 @@ This API is a newer version of Wix Pay's [Currencies](https://www.wix.com/velo/r
 Functionalities include:
 
 + [Listing currencies](/wix-ecom-v2/currencies/listcurrencies) supported on your site.
-+ [Getting the exchange rate](/wix-ecom-v2/currencies/getconverstionrate) between 2 currencies.
++ [Getting the exchange rate](/wix-ecom-v2/currencies/getconversionrate) between 2 currencies.
 + [Converting amounts](/wix-ecom-v2/currencies/convertcurrency) from 1 currency to another.
 
 
