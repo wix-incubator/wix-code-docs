@@ -43,8 +43,8 @@ Permission requirements for the functions in this API can be overridden using th
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
-To use the JoinRequests API, import `joinRequests` from the `wix-groups-backend` module:
+To use the JoinRequests API, import `joinRequests` from the `wix-groups-v2` module:
 
 ```javascript
-import { joinRequests } from "wix-groups-backend";
+import { joinRequests } from "wix-groups-v2";
 ```
