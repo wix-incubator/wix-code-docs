@@ -1,4 +1,4 @@
-–--
+---
 title: Introduction
 ---
 
@@ -25,13 +25,21 @@ The JoinRequests API provides functionality for managing requests to join a grou
 + If a group's privacy level is set to `SECRET`, only site members added by an existing group member can join the group (no request necessary). 
  
 The JoinRequests API provides functionality allowing you to:  
- + [Approve](wix-groups-backend.joinRequests/approvejoinrequests) requests to join a group. 
- + [List](wix-groups-backend.joinRequests/listjoinrequests) requests to join a group. 
- + [Query](wix-groups-backend.joinRequests/queryjoinrequests) requests to join a group.
- + [Reject](wix-groups-backend.joinRequests/rejectjoinrequests) requests to join a group. 
+ + [Approve](#approvejoinrequests) requests to join a group. 
+ + [List](#listjoinrequests) requests to join a group. 
+ + [Query](#queryjoinrequests) requests to join a group.
+ + [Reject](#rejectjoinrequests) requests to join a group. 
 
-### Permissions Information
->**Note:** You can override the permissions below by setting the `suppressAuth` option to `true`. 
+## Override permissions
+Permission requirements for the functions in this API can be overridden using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function. This will have the following effects:
+ + **[approveJoinRequests()](#approvejoinrequests)** - All site members (including non-group members) can approve site member requests to join a group.
+ + **[listJoinRequests()](#listjoinrequests)** - All site members (including non-group members) can see requests to join a group.
+ + **[queryJoinRequests( )](#queryjoinrequests)** - All site members (including non-group members) can query requests to join a group.
+ + **[rejectJoinGroupRequests()](#rejectjoinrequests)** - All site members (including non-group members) can reject site member requests to join a group.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
 
 |Functions|Permissions
 |--|---|
