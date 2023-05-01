@@ -30,14 +30,14 @@ The JoinRequests API provides functionality allowing you to:
  + [Approve](wix-groups-v2/joinrequests/approveJoinRequests) requests to join a group. 
  + [List](wix-groups-v2/joinrequests/listJoinRequests) requests to join a group. 
  + [Query](wix-groups-v2/joinrequests/queryJoinRequests) requests to join a group.
- + [Reject](wix-groups-v2/joinrequests/rejectJoinRequests) requests to join a group. 
+ + [Reject](../#rejectJoinRequests) requests to join a group. 
 
 ## Override permissions
 Permission requirements for the functions in this API can be overridden using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function. This will have the following effects:
- + [`approveJoinRequests()`](wix-groups-v2/joinrequests/approveJoinRequests) - All site members (including non-group members) can approve site member requests to join a group.
- + [`listJoinRequests()`](wix-groups-v2/joinrequests/listJoinRequests) - All site members (including non-group members) can see requests to join a group.
- + [`queryJoinRequests()`](wix-groups-v2/joinrequests/queryJoinRequests) - All site members (including non-group members) can query requests to join a group.
- + [`rejectJoinGroupRequests()`](wix-groups-v2/joinrequests/rejectJoinRequests) - All site members (including non-group members) can reject site member requests to join a group.
+ + [`approveJoinRequests()`](../approveJoinRequests) - All site members (including non-group members) can approve site member requests to join a group.
+ + [`listJoinRequests()`](../joinrequests/listJoinRequests) - All site members (including non-group members) can see requests to join a group.
+ + [`queryJoinRequests()`](https://www.wix.com/velo/reference/wix-groups-v2/joinrequests/queryJoinRequests) - All site members (including non-group members) can query requests to join a group.
+ + [`rejectJoinGroupRequests()`](#../rejectJoinRequests) - All site members (including non-group members) can reject site member requests to join a group.
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
