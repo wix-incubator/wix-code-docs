@@ -27,17 +27,17 @@ The JoinRequests API provides functionality for managing requests to join a grou
 + If a group's privacy level is set to `SECRET`, only site members added by an existing group member can join the group (no request necessary). 
  
 The JoinRequests API provides functionality allowing you to:  
- + [Approve](wix-groups-v2.joinRequests/approvejoinrequests) requests to join a group. 
- + [List](wix-groups-v2.joinRequests/listjoinrequests) requests to join a group. 
- + [Query](wix-groups-v2.joinRequests/queryjoinrequests) requests to join a group.
- + [Reject](wix-groups-v2.joinRequests/rejectjoinrequests) requests to join a group. 
+ + [Approve](#approveJoinRequests) requests to join a group. 
+ + [List](#listJoinRequests) requests to join a group. 
+ + [Query](#queryJoinRequests) requests to join a group.
+ + [Reject](#rejectJoinRequests) requests to join a group. 
 
 ## Override permissions
 Permission requirements for the functions in this API can be overridden using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function. This will have the following effects:
- + `[approveJoinRequests()](wix-groups-v2.joinRequests/approvejoinrequests)` - All site members (including non-group members) can approve site member requests to join a group.
- + `[listJoinRequests()](wix-groups-v2.joinRequests/listjoinrequests)` - All site members (including non-group members) can see requests to join a group.
- + `[queryJoinRequests( )](wix-groups-v2.joinRequests/queryjoinrequests)` - All site members (including non-group members) can query requests to join a group.
- + `[rejectJoinGroupRequests()](wix-groups-v2.joinRequests/rejectjoinrequests)` - All site members (including non-group members) can reject site member requests to join a group.
+ + [`approveJoinRequests()`](#approveJoinRequests) - All site members (including non-group members) can approve site member requests to join a group.
+ + [`listJoinRequests()`](#listJoinRequests) - All site members (including non-group members) can see requests to join a group.
+ + [`queryJoinRequests()`](#queryJoinRequests) - All site members (including non-group members) can query requests to join a group.
+ + [`rejectJoinGroupRequests()`](#rejectJoinRequests) - All site members (including non-group members) can reject site member requests to join a group.
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
