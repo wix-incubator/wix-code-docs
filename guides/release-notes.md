@@ -15,11 +15,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 The new [Wix Currencies API](/wix-ecom-v2/currencies) provides functionality
 for getting exchange rates and converting between currencies.
 
+> **Note** This API is a newer version of Wix Pay's [Currencies](https://www.wix.com/velo/reference/wix-pay/currencies-obj?branch=jsdoc-migration-wix-pay-currencies-note) API.
+
 Functionalities include:
 
 + [Listing currencies](/wix-ecom-v2/currencies/listcurrencies) supported on your site.
 + [Getting the exchange rate](/wix-ecom-v2/currencies/getconverstionrate) between 2 currencies.
 + [Converting amounts](/wix-ecom-v2/currencies/convertcurrency) from 1 currency to another.
+
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
