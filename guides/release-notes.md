@@ -8,6 +8,24 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Currencies v2
+
+`wix-ecom.v2`
+
+The new [Wix Currencies API](/wix-ecom-v2/currencies) provides functionality
+for getting exchange rates and converting between currencies.
+
+Functionalities include:
+
++ [Listing currencies](/wix-ecom-v2/currencies/listcurrencies) supported on your site.
++ [Getting the exchange rate](/wix-ecom-v2/currencies/getconverstionrate) between 2 currencies.
++ [Converting amounts](/wix-ecom-v2/currencies/convertcurrency) from 1 currency to another.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 5, 2023)
+
+
 ### New Modules for Wix Blocks Panels
 
 >**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
@@ -77,6 +95,7 @@ Functionality includes:
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (April 3, 2023)
+
 ### New Developer Preview API: Wix Bookings Pricing 
 
 `wix-bookings.v2`
