@@ -8,6 +8,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
 ### New Developer Preview API: Wix Currencies v2
 
 `wix-ecom.v2`
@@ -27,6 +28,13 @@ Functionalities include:
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (May 5, 2023)
+
+
+### New Article: Shareable Booking Form Links
+
+`wix-bookings`
+
+The [Shareable Booking Form Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-form-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking form page. This enables you to create a link to a Wix site's booking form page with preset values determined by you. (April 30, 2023)
 
 
 ### New Modules for Wix Blocks Panels
