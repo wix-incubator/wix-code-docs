@@ -54,7 +54,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes  
-**Can be filtered**: eq, ne 
+**Can be filtered**: eq, ne  
 **Read-only**: Yes
 
 #### Description (description) 
