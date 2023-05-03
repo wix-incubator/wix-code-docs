@@ -18,7 +18,7 @@ The Members API provides functionality for managing group members, inluding addi
 + If set to all members, group members can add additional members to the group using the [`addGroupMembers()`](wix-groups-v2/members/addGroupMembers) function (no approval required). 
 + If set to admins only, only admins can add additional members to the group using the `addGroupMembers()` function.
 + The default is set to admins only. 
-+ **Note:** If the `suppressAuth` option is set to `true`, all permissions are overwritten and all site members (including non-group members) can add additional members to a group. 
++ **Note:** If the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function is used, all permissions are overridden, and all site members (including non-group members) can add additional members to a group. 
 
 The Members API provides functionality allowing you to:
  + [Add](wix-groups-v2/members/addgroupmembers) members to a group. 

@@ -21,7 +21,7 @@ The JoinRequests API provides functionality for managing requests to join a grou
 + Group members with group admin permissions determine who can join their group by setting their group [privacy level](https://support.wix.com/en/article/wix-groups-about-groups#your-groups-privacy-permissions).
 + If a group's privacy level is set to `PRIVATE`, a site member can request to join the group on your site's Groups List page.
 + Only site admins or group admins can approve or reject site member requests to join the group, unless the group setting `membersCanApprove` is set to `true`. 
-+ **Note:** If the `suppressAuth` option is set to `true`, all permissions are overwritten, and all site members (including non-group members) can approve or reject site member requests to join a group. 
++ **Note:** If the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function is used, all permissions are overridden, and all site members (including non-group members) can approve or reject site member requests to join a group. 
 + When a site member's request to join the group is approved, the member is added to the group. 
 + If a group's privacy level is set to `PUBLIC`, a site member can join the group (no request necessary). 
 + If a group's privacy level is set to `SECRET`, only site members added by an existing group member can join the group (no request necessary). 
