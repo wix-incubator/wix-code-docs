@@ -41,15 +41,11 @@ The Groups API provides functionality allowing you to:
 ### Permissions Information
 >**Note:** You can override the permissions below by using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
-| Functions                        | Permissions                                      |
-| -------------------------------- | ------------------------------------------------ |
-| `createGroup()`                  | Manage in your site's Dashboard                  |
-|                                  | **Note:** If you override this permission with   |
-|                                  | the elevate() function, you must provide a       |
-|                                  | creatorId when running the function.             |
-| `deleteGroup()`, `updateGroup()` | Site admin, group admin                          |
-| `listGroups()`, `getGroup()`     | For public & private groups: any site member     |
-| `queryGroups()`                  | For secret groups: group members, site admin     |
+| Functions   | Permissions   
+| --- | --- |
+| `createGroup()`                  | Manage in your site's Dashboard **Note:** If you override this permission with the elevate() function, you must provide a creatorId when running the function.
+| `deleteGroup()`, `updateGroup()` | Site admin, group admin 
+| `listGroups()`, `getGroup()`, `queryGroups()` | For public & private groups: any site member. For secret groups: group members, site admin 
 
 
 To use the Groups API,
