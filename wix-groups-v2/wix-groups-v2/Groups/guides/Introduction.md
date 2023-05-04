@@ -38,10 +38,21 @@ The Groups API provides functionality allowing you to:
 * Query groups.
 * Update group information.
 
+### Permissions Information
+>**Note:** You can override the permissions below by using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+|Functions|Permissions,
+|--|---|,
+| `createGroup()`|Manage in your site's Dashboard **Note:** If you override this permission with the elevate() function, you must provide a creatorId when running the function.,
+| `deleteGroup()`, `updateGroup()`|Site admin, group admin,
+| `listGroups()`, `getGroup()`, `queryGroups()`|For public & private groups: any site member <br> For secret groups: group members, site admin,
+
+
 To use the Groups API,
 import `groups` from wix-groups.v2:
 
 ```js
 import { groups } from 'wix-groups.v2';  
 ```
+
 
