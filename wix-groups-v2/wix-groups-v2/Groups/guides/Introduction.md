@@ -47,6 +47,10 @@ The Groups API provides functionality allowing you to:
 | `deleteGroup()`, `updateGroup()` | Site admin, group admin.
 | `listGroups()`, `getGroup()`, `queryGroups()` | For public & private groups: any site member. For secret groups: group members, site admin.
 
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
+
 
 To use the Groups API,
 import `groups` from wix-groups.v2:
