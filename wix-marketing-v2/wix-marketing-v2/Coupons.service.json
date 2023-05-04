@@ -13,6 +13,23 @@
       "name": "bulkCreateCoupons",
       "params": [
         {
+          "name": "specifications",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-marketing-v2.Coupons.Specification"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of coupon specifications to be created.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -23,7 +40,9 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "specifications"
+      ],
       "ret": {
         "type": [
           {
@@ -48,9 +67,9 @@
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
               "  ",
-              " async function bulkCreateCoupons(options) {",
+              " async function bulkCreateCoupons(specifications, options) {",
               "   try {",
-              "     const result = await coupons.bulkCreateCoupons(options);",
+              "     const result = await coupons.bulkCreateCoupons(specifications, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -75,17 +94,26 @@
       "name": "bulkDeleteCoupons",
       "params": [
         {
-          "name": "options",
+          "name": "ids",
           "type": [
             {
-              "referenceType": "wix-marketing-v2.Coupons.BulkDeleteCouponsOptions"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "IDs of coupons to delete.",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "ids"
+      ],
       "ret": {
         "type": [
           {
@@ -110,9 +138,9 @@
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
               "  ",
-              " async function bulkDeleteCoupons(options) {",
+              " async function bulkDeleteCoupons(ids) {",
               "   try {",
-              "     const result = await coupons.bulkDeleteCoupons(options);",
+              "     const result = await coupons.bulkDeleteCoupons(ids);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -211,17 +239,19 @@
       "name": "createCoupon",
       "params": [
         {
-          "name": "options",
+          "name": "specification",
           "type": [
             {
-              "referenceType": "wix-marketing-v2.Coupons.CreateCouponOptions"
+              "referenceType": "wix-marketing-v2.Coupons.Specification"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Coupon to create.",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "specification"
+      ],
       "ret": {
         "type": [
           {
@@ -749,18 +779,37 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "specification",
           "type": [
             {
-              "referenceType": "wix-marketing-v2.Coupons.UpdateCouponOptions"
+              "referenceType": "wix-marketing-v2.Coupons.Specification"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Coupon information to update.",
+          "required": true
+        },
+        {
+          "name": "fieldMask",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Field mask of fields to update (required - passing an empty `fieldMask` will return an error). Valid field masks are any of those in the `specification` field.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "fieldMask",
+        "specification"
       ],
       "ret": {
         "type": [
@@ -1061,23 +1110,6 @@
             }
           ],
           "doc": "Whether to return full coupon entity in the response.\n\nDefault: `false`\n"
-        },
-        {
-          "name": "specifications",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-marketing-v2.Coupons.Specification"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of coupon specifications to be created."
         }
       ],
       "docs": {
@@ -1152,33 +1184,6 @@
             }
           ],
           "doc": "Items created by bulk action."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "BulkDeleteCouponsOptions",
-      "members": [
-        {
-          "name": "ids",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "IDs of coupons to delete."
         }
       ],
       "docs": {
@@ -1711,26 +1716,6 @@
             }
           ],
           "doc": "ID of the entity that the coupon was applied to (orderId, bookingId, etc.)."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CreateCouponOptions",
-      "members": [
-        {
-          "name": "specification",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-marketing-v2.Coupons.Specification"
-            }
-          ],
-          "doc": "Coupon to create."
         }
       ],
       "docs": {
@@ -2436,7 +2421,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Scope namespace (Wix Stores, Wix Bookings, Wix Events)"
+          "doc": "Scope namespace (Wix Stores, Wix Bookings, Wix Events, Wix Pricing Plans)"
         }
       ],
       "docs": {
@@ -2808,43 +2793,6 @@
             }
           ],
           "doc": ""
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "UpdateCouponOptions",
-      "members": [
-        {
-          "name": "fieldMask",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Field mask of fields to update (required - passing an empty `fieldMask` will return an error). Valid field masks are any of those in the `specification` field."
-        },
-        {
-          "name": "specification",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-marketing-v2.Coupons.Specification"
-            }
-          ],
-          "doc": "Coupon information to update."
         }
       ],
       "docs": {
