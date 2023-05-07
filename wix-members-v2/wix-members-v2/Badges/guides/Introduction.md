@@ -36,6 +36,24 @@ Learn more [about member badges](https://support.wix.com/en/article/about-member
 
 * Member permissions cannot be managed via the badges API. You must set them in the site's dashboard.
 
+## Permissions information
+
+
+The following functions in the Badges API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+
+
+* [createBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/createbadge)
+* [deleteBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/deletebadge)
+* [updateBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadge)
+* [assignBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder)
+* [assignBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/assignbadge)
+* [unassignBadge](https://www.wix.com/velo/reference/wix-members-v2/badges/unassignbadge)
+
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
+
 
 To use the Badges API,
 import `badges` from wix-members.v2:
