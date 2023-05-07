@@ -32,7 +32,7 @@ The JoinGroupRequests API provides functionality allowing you to:
  + [Query](wix-groups-v2/JoinGroupRequests/queryJoinGroupRequests) requests to join a group.
  + [Reject](wix-groups-v2/JoinGroupRequests/rejectJoinGroupRequests) requests to join a group. 
 
-## Override permissions
+## Permissions information
 Permission requirements for the functions in this API can be overridden using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function. This will have the following effects:
  + [`approveJoinGroupRequests()`](wix-groups-v2/JoinGroupRequests/approveJoinGroupRequests) - All site members (including non-group members) can approve site member requests to join a group.
  + [`listJoinGroupRequests()`](wix-groups-v2/JoinGroupRequests/listJoinGroupRequests) - All site members (including non-group members) can see requests to join a group.
