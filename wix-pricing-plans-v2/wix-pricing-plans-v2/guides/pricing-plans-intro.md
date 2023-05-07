@@ -41,7 +41,7 @@ Make sure to set up your site to:
 + Accept payments as described in [About Accepting Payments](https://support.wix.com/en/article/about-accepting-payments).         
 + Offer membership plans as described in [About Pricing Plans](https://support.wix.com/en/article/about-pricing-plans). 
  
-When setting up your site to accept pricing plans, define the plans you want to offer [using the Dashboard](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans) or [using the Pricing Plan's Plans APIs](wix-pricing-plans-v2/plans).
+When setting up your site to accept pricing plans, define the plans you want to offer [using the Dashboard](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans) or [using the Pricing Plans' Plans APIs](wix-pricing-plans-v2/plans).
          
 
 ### Managing orders
