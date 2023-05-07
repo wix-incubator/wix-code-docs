@@ -40,7 +40,7 @@ import { policies } from 'wix-events.v2';
 
 ## Permissions information
 
-The following functions in Policies are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the Policies API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
 - `createPolicy()`
 - `deletePolicy()`
