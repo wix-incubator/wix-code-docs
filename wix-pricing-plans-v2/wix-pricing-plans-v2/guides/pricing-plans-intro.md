@@ -50,7 +50,8 @@ Members can order pricing plans in 2 ways:
 + **Online**. Members order and pay for their plans on your site without manual intervention. 
 + **Offline**. Members place their order by phone, text, or email. You manually record each stage of the transaction.
          
-> **Note:**Updating the properties of a pricing plan does not affect any current orders of the plan by members. The existing orders retain their existing terms and pricing.
+> **Note:**
+> Updating the properties of a pricing plan does not affect any current orders of the plan by members. The existing orders retain their existing terms and pricing.
          
  ### Pricing models
 Pricing models contain the [pricing and duration options](https://support.wix.com/en/article/pricing-plans-creating-a-plan#step-3-setting-the-price-and-duration-of-your-plan) for a plan.
