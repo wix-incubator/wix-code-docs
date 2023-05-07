@@ -13,11 +13,6 @@ title: Introduction
 
 &nbsp;
 
-
-<!--
-> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
--->
-
 This service allows you to query and modify the inventory for your store's products.
 
 ## Terminology
@@ -29,6 +24,18 @@ A variant can override the following values from the parent product:
 * SKU
 * Weight
 * Inventory
+
+## Permissions information
+
+
+Functions in the Inventory API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+
+<blockquote class='warning'>
+
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
+
 
 To use the Inventory API,
 import `inventory` from wix-stores.v2:
