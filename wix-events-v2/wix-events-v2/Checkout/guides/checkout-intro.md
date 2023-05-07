@@ -39,10 +39,6 @@ The following functions in Policies are restricted and only run if you elevate p
 - `cancelReservation()`
 - `checkout()`
 - `createReservation()`
-- `getCheckoutOptions()`
-- `getInvoice()`
-- `listAvailableTickets()`
-- `queryAvailableTickets()`
 - `updateCheckout()`
 
 <blockquote class='warning'>
