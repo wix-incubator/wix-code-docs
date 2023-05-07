@@ -26,7 +26,7 @@ With the Orders API you can:
 
 It’s important to note the following points before starting to code:  
 
-- To use the Orders API, import `orders` from wix-events.v2:
+- To use the Orders API, import `orders` from `wix-events.v2`:
 
 ```js
 import { orders } from 'wix-events.v2';
@@ -34,7 +34,7 @@ import { orders } from 'wix-events.v2';
 
 ## Permissions information
 
-The following functions in Policies are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in Orders are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
 - `bulkUpdateOrders()`
 - `confirmOrder()`
