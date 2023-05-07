@@ -13,6 +13,8 @@ title: Introduction
 
 &nbsp;
 
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+
 The Groups API provides functionality for managing groups, including creating, deleting, updating, and querying groups.
 
 ## Settings for Typical Use Case
@@ -46,4 +48,10 @@ The Groups API provides functionality allowing you to:
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
+To use the Groups API,
+import `groups` from wix-groups.v2:
+
+```js
+import { groups } from 'wix-groups.v2';
+```
 
