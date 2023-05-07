@@ -14,10 +14,6 @@ title: Introduction
 &nbsp;
 
 
-> **Note:** This module is [universal](/api-overview/api-versions#universal-modules).
-> Functions in this module can run on both the backend and frontend,
-> unless specified otherwise.
-
 The Currencies API is used to convert from one currency to another and get exchange rates. 
 
  Currency rates are provided by [XE](https://www.xe.com/company/) and are updated on a daily basis. Rates are provided together with the timestamp when they were set. By using the Currencies API you agree to XE's [Terms of Use](https://www.xe.com/en/legal/dfs.php).
@@ -54,3 +50,16 @@ The Currencies API is used to convert from one currency to another and get excha
 + **XE**. A [currency converter provider](https://www.xe.com/company/) that the Currencies API uses. 
 + **Currency code**: A 3-letter [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217) code representing each currency.
 
+
+## Permissions information
+
+
+The following functions in Currencies are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+
+- [`listCurrencies()`](wix-ecom-v2.Currencies.html#listCurrencies)
+- [`convertCurrency()`](wix-ecom-v2.Currencies.html#convertCurrency)
+- [`getConversionRate()`](wix-ecom-v2.Currencies.html#getConversionRate)
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
