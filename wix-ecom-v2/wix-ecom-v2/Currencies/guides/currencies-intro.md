@@ -51,7 +51,7 @@ The Currencies API is used to convert from one currency to another and get excha
 + **Currency code**: A 3-letter [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217) code representing each currency.
 
 
-## Override permissions
+## Permissions information
 
 
 The following functions in Currencies are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
