@@ -52,11 +52,3 @@ The Groups API provides functionality allowing you to:
 </blockquote>
 
 
-To use the Groups API,
-import `groups` from wix-groups.v2:
-
-```js
-import { groups } from 'wix-groups.v2';  
-```
-
-
