@@ -25,4 +25,4 @@ import { coupons } from 'wix-marketing.v2';
 
 ## Terminology
 
-- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group. See [Scope Values](#scope-values) for a table of currently supported coupon scopes.  
+- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group. See [Valid Scope Values](#validscopevalues) for a table of currently supported coupon scopes.  
