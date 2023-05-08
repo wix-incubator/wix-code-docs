@@ -2,7 +2,6 @@
 title: Introduction
 ---
 # Introduction
-
 &nbsp;
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
@@ -13,33 +12,34 @@ title: Introduction
 
 &nbsp;
 
-The Checkout API allows you to manage and track ticket reservations.
+The RSVP API allows you to manage RSVP's to your site's events.
 
-With the Checkout API you can:
+With the RSVP API you can:
 
-- Get lists of available tickets.
-- Create, update, and cancel ticket reservations.
-- Checkout reserved tickets.
-- Preview reservation invoices.
+- Create and update RSVPs to an event.
+- Check-in RSVP.
+- Get information about RSVPs.
 
 ## Before you begin
 
 It’s important to note the following points before starting to code:  
 
-- To use the Checkout API, import `checkout` from `wix-events.v2`:
+- To use the RSVP API, import `{ rsvp }` from `'wix-events.v2'`:
 
 ```js
-import { checkout } from 'wix-events.v2';
+import { rsvp } from 'wix-events.v2';
 ```
 
 ## Permissions information
 
-The following functions in Checkout are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the RSVP API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-- `cancelReservation()`
-- `checkout()`
-- `createReservation()`
-- `updateCheckout()`
+- `bulkUpdateRsvp()`
+- `checkInRsvp()`
+- `createRsvp()`
+- `deleteRsvp()`
+- `deleteRsvpCheckIn()`
+- `updateRsvp()`
 
 <blockquote class='warning'>
 <p>

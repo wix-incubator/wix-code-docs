@@ -11,20 +11,38 @@ title: Introduction
 </div>
 
 &nbsp;
-<!--
-> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
--->
 
 The Ticket Definitions API allows you to manage ticket definitions for tickets to your site's events.
 
 With the Ticket Definitions API you can:
 
-- [Create](wix-events-v2/ticketdefinitions/createticketdefinition) and [update](wix-events-v2/ticketdefinitions/updateticketdefinition) the ticket definitions for tickets to an event.
-- [Change the currency](wix-events-v2/ticketdefinitions/changecurrency) used for event tickets.
+- Create and update the ticket definitions for tickets to an event.
+- Change the currency used for event tickets.
+- Get ticket settings information.
 
+## Before you begin
 
-To use the Ticket Definitions API, import `{ ticketDefinitions }` from `'wix-events.v2'`:
+It’s important to note the following points before starting to code:  
+
+- To use the Ticket Definitions API, import `{ ticketDefinitions }` from `'wix-events.v2'`:
 
 ```js
 import { ticketDefinitions } from 'wix-events.v2';
 ```
+
+## Permissions information
+
+The following functions in the Ticket Definitions API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+
+- `changeCurrency()`
+- `createTicketDefinition()`
+- `deleteTicketDefinition()`
+- `updateTicketDefinition()`
+
+<blockquote class='warning'>
+<p>
+<strong>Warning:</strong>
+Elevating a function allows it to be called by any site visitor.
+Exercise caution to prevent security vulnerabilities.
+</p>
+</blockquote>

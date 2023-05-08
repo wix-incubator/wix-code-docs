@@ -13,33 +13,34 @@ title: Introduction
 
 &nbsp;
 
-The Checkout API allows you to manage and track ticket reservations.
+The Schedule API allows you to manage the event schedule.
 
-With the Checkout API you can:
+With the Schedule API you can:
 
-- Get lists of available tickets.
-- Create, update, and cancel ticket reservations.
-- Checkout reserved tickets.
-- Preview reservation invoices.
+- Get a list of all event schedules.
+- Create and publish draft schedule.
+- Update a schedule.
 
 ## Before you begin
 
 It’s important to note the following points before starting to code:  
 
-- To use the Checkout API, import `checkout` from `wix-events.v2`:
+- To use the Schedule API, import `schedule` from `wix-events.v2`:
 
 ```js
-import { checkout } from 'wix-events.v2';
+import { schedule } from 'wix-events.v2';
 ```
 
 ## Permissions information
 
-The following functions in Checkout are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the Schedule API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-- `cancelReservation()`
-- `checkout()`
-- `createReservation()`
-- `updateCheckout()`
+- `addScheduleItem()`
+- `deleteScheduleItem()`
+- `discardDraft()`
+- `publishDraft()`
+- `rescheduleDraft()`
+- `updateScheduleItem()`
 
 <blockquote class='warning'>
 <p>
