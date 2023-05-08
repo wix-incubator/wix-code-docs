@@ -26,7 +26,7 @@ The Wix Events API provides functionality allowing you to:
 
 It’s important to note the following points before starting to code:  
 
-- To use the Wix Events API, import `schedule` from `wix-events.v2`:
+- To use the Wix Events API, import `wixEvents` from `wix-events.v2`:
 
 ```js
 import { wixEvents } from 'wix-events.v2';
@@ -34,7 +34,7 @@ import { wixEvents } from 'wix-events.v2';
 
 ## Permissions information
 
-The following functions in the Schedule API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the Wix Events API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
 - `bulkCancelEvents()`
 - `bulkDeleteEvents()`
