@@ -1,0 +1,5357 @@
+{
+  "name": "Orders",
+  "memberOf": "wix-pricing-plans-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-pricing-plans.v2-order",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "cancelOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "effectiveAt",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "When the order is canceled.\n\nOne time orders can only be canceled immediately. Supported values:\n- `\"IMMEDIATELY\"`: The order is canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: The order is canceled at the next payment date.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "effectiveAt"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the order is canceled.\n"
+      },
+      "docs": {
+        "summary": "Cancels an existing order.",
+        "description": [
+          "The `cancelOrder()` function returns a Promise that resolves when the order is successfully canceled.\n\nFor orders with recurring payments, a cancellation can be set to occur either `IMMEDIATELY` or at the `NEXT_PAYMENT_DATE`.\nFor orders with one-time payments, a cancellation occurs `IMMEDIATELY`.\n\nCanceling an order changes the order status to `CANCELED`.\n\n#### Canceling during the free trial period.\n\nWhen a buyer cancels their order during the free trial period, the buyer's subscription expires at the end of the free trial period and they won't be billed. The buyer may continue using the benefits until the end of the free trial period.\n\nWhen a site owner cancels an ordered plan during the free trial period, they choose to apply the cancellation `IMMEDIATELY` or at the `NEXT_PAYMENT_DATE`.\n\nCanceling `IMMEDIATELY` will end the subscription for the buyer\nimmediately, even during the free trial period and the buyer won't be billed.\nCanceling at the `NEXT_PAYMENT_DATE` allows the buyer to continue using the benefits of the subscription until the end of the free trial period. Then, the subscription ends and the buyer is not billed."
+        ],
+        "examples": [
+          {
+            "title": "cancelOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function cancelOrder(id, effectiveAt) {",
+              "   try {",
+              "     const result = await orders.cancelOrder(id, effectiveAt);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "cancelOrder"
+    },
+    {
+      "name": "createOfflineOrder",
+      "params": [
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the plan being ordered. See [Plans for more information about plan IDs](plans)",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.CreateOfflineOrderOptions"
+            }
+          ],
+          "doc": "Options for creating an offline order.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "options",
+        "options.memberId",
+        "planId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.CreateOfflineOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - The order of the plan.\n"
+      },
+      "docs": {
+        "summary": "Creates an order for a buyer who purchased the plan with an offline transaction.",
+        "description": [
+          "The `createOfflineOrder()` function returns a Promise that resolves to an `order` object when the order has been created.\n\nPayment of an offline order is handled in 1 of 2 ways.\n- When creating the order, select `true` in the `paid` request parameter.\n- After creation, with the [`markAsPaid()`](#markaspaid) function.\n\nWhen creating a non-free offline order:\n- The order's status is set to `\"PENDING\"` if the start date is in the future. Otherwise, the status is set to `\"ACTIVE\"`.\nThe order's last payment status is set to `\"UNPAID\"` or `\"PAID\"`.\n\nWhen creating a free offline order:\n- The order's status is set to `\"PENDING\"` if the start date is in the future. Otherwise, the status is set to `\"ACTIVE\"`.\n- The order's last payment status is set to `\"NOT_APPLICABLE\"`."
+        ],
+        "examples": [
+          {
+            "title": "createOfflineOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function createOfflineOrder(planId, options) {",
+              "   try {",
+              "     const result = await orders.createOfflineOrder(planId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "createOfflineOrder"
+    },
+    {
+      "name": "getOfflineOrderPreview",
+      "params": [
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the plan of the previewed order.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.GetOfflineOrderPreviewOptions"
+            }
+          ],
+          "doc": "Options for previewing the offline order.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "options",
+        "options.memberId",
+        "planId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.GetOfflineOrderPreviewResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - A preview of the order.\n"
+      },
+      "docs": {
+        "summary": "Provides a preview of an offline order as if it was purchased.",
+        "description": [
+          "The `getOfflineOrderPreview()` function returns a Promise that resolves to a temporary preview of the offline order.\n\nThe preview uses the same logic as purchasing a plan, but the preview is not saved. Because an order is not actually created, the preview's `_id` and `subscriptionId` properties are displayed as a string of multiple zero characters (`000000-0000`).\n\nIf [taxes are configured](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection) for the site, taxes are applied to the preview. If not, `tax` previews as `null`.\n\nYou can preview the order to check purchase limitations, but the limitations are not enforced for the preview. If a pricing plan has a limit on the amount of purchases per buyer, that limit is not considered for generating the preview. But, if that limit has been reached and this order would then exceed the amount of purchases permitted for this buyer, then `purchaseLimitExceeded` will return as `true`. Thus function is not available to the buyer. You specify the member ID for the buyer whose order should be previewed. To get a general price preview for a plan that's not buyer-specific, use the [`getPricePreview()`](#getpricepreview) function."
+        ],
+        "examples": [
+          {
+            "title": "getOfflineOrderPreview example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function getOfflineOrderPreview(planId, options) {",
+              "   try {",
+              "     const result = await orders.getOfflineOrderPreview(planId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "getOfflineOrderPreview"
+    },
+    {
+      "name": "getPricePreview",
+      "params": [
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of plan to preview.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.GetPricePreviewOptions"
+            }
+          ],
+          "doc": "Options for getting a price preview.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "planId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.GetPricePreviewResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - A preview of the pricing for the order.\n"
+      },
+      "docs": {
+        "summary": "Retrieves a preview of an order's pricing as if it was purchased.",
+        "description": [
+          "The `getPricePreview()` function returns a Promise that resolves to a temporary preview of the order's price.\n\nThe price preview uses the same logic for calculating prices as used when purchasing a plan, but the preview is not saved. If [taxes are configured](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection) for the site, taxes are applied to the preview. If not, the `tax` previews as `null`.\n\nBuyers do not have to be logged in to preview the price, as such, the details returned by this function are not buyer-specific. To generate a preview of a purchase for a specific-buyer, use the [`getOfflineOrderPreview()`](#getofflineorderpreview)."
+        ],
+        "examples": [
+          {
+            "title": "getPricePreview example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function getPricePreview(planId, options) {",
+              "   try {",
+              "     const result = await orders.getPricePreview(planId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "getPricePreview"
+    },
+    {
+      "name": "managementGetOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ManagementGetOrderOptions"
+            }
+          ],
+          "doc": "Options to use when getting an order.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.GetOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves an order by ID.",
+        "description": [
+          "The `managementGetOrder()` function returns a Promise that resolves to information about the specified order."
+        ],
+        "examples": [
+          {
+            "title": "managementGetOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function managementGetOrder(id, options) {",
+              "   try {",
+              "     const result = await orders.managementGetOrder(id, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "managementGetOrder"
+    },
+    {
+      "name": "managementListOrders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ManagementListOrdersOptions"
+            }
+          ],
+          "doc": "Filtering, sorting, and pagination options.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.ListOrdersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Lists pricing plan orders.",
+        "description": [
+          "The `managementListOrders()` function returns a Promise that resolves to a list of up to 50 pricing plan orders. You can specify options for filtering, sorting, and paginating the results.\n\nThis function returns the orders on the site. To list orders for the currently logged-in member, use [`memberListOrders()`](#memberlistorders)."
+        ],
+        "examples": [
+          {
+            "title": "managementListOrders example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function managementListOrders(options) {",
+              "   try {",
+              "     const result = await orders.managementListOrders(options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "managementListOrders"
+    },
+    {
+      "name": "markAsPaid",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the order is marked as paid.\n"
+      },
+      "docs": {
+        "summary": "Marks an offline order as paid.",
+        "description": [
+          "The `markAsPaid()` function returns a Promise that resolves when the offline order is successfully marked as paid.\n\nThe entire order is marked as paid, even if the order's payments are recurring.\n\n>**Note:** Marking separate payment cycles as paid is not yet supported. Subsequent offline payments do trigger events and emails, but are not registered as additional offline payments.\n\nMarking an offline order as paid causes the following changes:\n- The order's `lastPaymentStatus` changes to `\"PAID\"`.\n- The order's status changes to either `\"PENDING\"` or `\"ACTIVE\"`, depending on the order's `startDate`.\n\nAn error occurs if you attempt to:\n- Mark an already-paid, offline order as paid. You cannot make an offline order as paid twice.\n- Mark an online order as paid. The `markAsPaid()` function is supported for offline orders only."
+        ],
+        "examples": [
+          {
+            "title": "markAsPaid example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function markAsPaid(id) {",
+              "   try {",
+              "     const result = await orders.markAsPaid(id);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "markAsPaid"
+    },
+    {
+      "name": "memberGetOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.MemberGetOrderOptions"
+            }
+          ],
+          "doc": "Options for getting a logged-in member's order.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.Order"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Requested order.\n"
+      },
+      "docs": {
+        "summary": "Gets an order by ID for the currently logged-in member.",
+        "description": [
+          "The `memberGetOrder()` function returns a Promise that resolves to information about a specified order for the currently logged-in member."
+        ],
+        "examples": [
+          {
+            "title": "memberGetOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function memberGetOrder(id, options) {",
+              "   try {",
+              "     const result = await orders.memberGetOrder(id, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "memberGetOrder"
+    },
+    {
+      "name": "memberListOrders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.MemberListOrdersOptions"
+            }
+          ],
+          "doc": "Filtering, sorting, and pagination options.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-pricing-plans-v2.Orders.MemberListOrdersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Lists orders for the currently logged-in member.",
+        "description": [
+          "The `memberListOrders()` function returns a Promise that resolves to a list of up to 100 pricing plan orders."
+        ],
+        "examples": [
+          {
+            "title": "memberListOrders example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function memberListOrders(options) {",
+              "   try {",
+              "     const result = await orders.memberListOrders(options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "memberListOrders"
+    },
+    {
+      "name": "pauseOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the order is paused.\n"
+      },
+      "docs": {
+        "summary": "Pauses a pricing plan order.",
+        "description": [
+          "The `pauseOrder()` function returns a Promise that resolves when the order is successfully paused.\n\nFor orders with recurring payments, `pauseOrder()` also pauses the payment schedule. Buyers are not charged when an order is paused. Use `pauseOrder()`, for example, if the buyer is away and would like to put their pricing plan membership on hold until they return. Pausing an order affects the end date of the order by adding the time the order is paused to the `endDate`. You can only pause orders with an `\"ACTIVE`\" status.\n\nPausing an order causes the following changes:\n- The order status changes to `\"PAUSED\"`.\n- The `pausePeriods` array is updated.\n\nThe `endDate` and the `earliestEndDate` for the order are adjusted to include the pause period when the order is resumed.\n\nPaused orders can be continued with the [`resumeOrder()`](#resumeorder) function."
+        ],
+        "examples": [
+          {
+            "title": "pauseOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function pauseOrder(id) {",
+              "   try {",
+              "     const result = await orders.pauseOrder(id);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "pauseOrder"
+    },
+    {
+      "name": "postponeEndDate",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "endDate",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "New end date and time.\n\nMust be later than the current end date and time.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "endDate"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the order's end date has been postponed or made earlier.\n\n\n"
+      },
+      "docs": {
+        "summary": "Extends the duration of a pricing plan order by postponing the order's `endDate`.",
+        "description": [
+          "The `postponeEndDate()` function returns a Promise that resolves when the order's end date is successfully changed.\n\nThe new end date and time must be later than the order's current `endDate`.\n\nPostponing the end date of an order does not impact payments. For example, if the pricing plan is for a membership to an online lecture series, and you want to extend the duration of the series because the lecturer could not attend some sessions, you can postpone the end date of the orders for all relevant participants. The participants will not be billed additionally.\n\nPostponing an order causes the following changes:\n- The `endDate` for the order is adjusted to the new end date."
+        ],
+        "examples": [
+          {
+            "title": "postponeEndDate example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function postponeEndDate(id, endDate) {",
+              "   try {",
+              "     const result = await orders.postponeEndDate(id, endDate);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "postponeEndDate"
+    },
+    {
+      "name": "requestCancellation",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "effectiveAt",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether to cancel the order immediately or at the next payment date.\nOne-time payment orders can only be canceled immediately.\n\nSupported values:\n- `\"IMMEDIATELY\"`: Indicates that the order should be canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: Indicates that the order be canceled at the next payment date.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "effectiveAt"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the cancellation process is started.\n"
+      },
+      "docs": {
+        "summary": "Starts the process of canceling an order.",
+        "description": [
+          "The `requestCancellation()` function returns a Promise that resolves when the order cancellation is successfully requested.\n\nFor orders with recurring payments, a cancellation can be set to occur either immediately or at the next payment date. For orders with one-time payments, a cancellation occurs immediately after the request is processed.\n\nRequesting an order cancellation starts the cancellation process. There may be some operations that continue to be processed before the status of the order is changed to `\"CANCELED\"`. For example, payments might need to be refunded before the order is fully canceled.\n"
+        ],
+        "examples": [
+          {
+            "title": "requestCancellation example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function requestCancellation(id, effectiveAt) {",
+              "   try {",
+              "     const result = await orders.requestCancellation(id, effectiveAt);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "requestCancellation"
+    },
+    {
+      "name": "resumeOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Fulfilled - When the order is resumed.\n"
+      },
+      "docs": {
+        "summary": "Resumes a paused pricing plan order.",
+        "description": [
+          "The `resumeOrder()` function returns a Promise that resolves when a paused order is successfully resumed.\n\nFor orders with recurring payments, `resumeOrder()` also restarts the payment schedule.\n\nResuming an order causes the following changes:\n- The order status changes to `\"ACTIVE\"`.\n- The `pausePeriods` array is updated.\n- The `endDate` for the order is adjusted to include the pause period.\n- The `earliestEndDate` is adjusted to include the pause period. (This property is reserved for future use)."
+        ],
+        "examples": [
+          {
+            "title": "resumeOrder example",
+            "body": [
+              "import { orders } from 'wix-pricing-plans.v2';",
+              "  ",
+              " async function resumeOrder(id) {",
+              "   try {",
+              "     const result = await orders.resumeOrder(id);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "resumeOrder"
+    }
+  ],
+  "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ApplicationError",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code."
+        },
+        {
+          "name": "data",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Data related to the error."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the error."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ApplyCouponRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "orderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Draft order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ApplyCouponResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order with applied coupon and recalculated tax."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkActionMetadata",
+      "members": [
+        {
+          "name": "totalFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that couldn't be processed."
+        },
+        {
+          "name": "totalSuccesses",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were successfully processed."
+        },
+        {
+          "name": "undetailedFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of failures without details because detailed failure threshold was exceeded."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkOrderResult",
+      "members": [
+        {
+          "name": "itemMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ItemMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkPauseOrderOptions",
+      "members": [
+        {
+          "name": "returnFullEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true to return Order entity in response."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkPauseOrderRequest",
+      "members": [
+        {
+          "name": "ids",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of Order IDs."
+        },
+        {
+          "name": "returnFullEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true to return Order entity in response."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkPauseOrderResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.BulkActionMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.BulkOrderResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkResumeOrderOptions",
+      "members": [
+        {
+          "name": "returnFullEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true to return Order entity in response."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkResumeOrderRequest",
+      "members": [
+        {
+          "name": "ids",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of Order IDs."
+        },
+        {
+          "name": "returnFullEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true to return Order entity in response."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkResumeOrderResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.BulkActionMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.BulkOrderResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Buyer",
+      "members": [
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID for a buyer."
+        },
+        {
+          "name": "memberId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID for a buyer."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancelOrderRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "effectiveAt",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "When the order is canceled.\n\nOne time orders can only be canceled immediately. Supported values:\n- `\"IMMEDIATELY\"`: The order is canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: The order is canceled at the next payment date.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancelOrderResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cancellation",
+      "members": [
+        {
+          "name": "cause",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason for the cancellation. One of:\n+ `OWNER_ACTION`: Site owner canceled the order.\n+ `MEMBER_ACTION`: Buyer initiated the cancellation.\n+ `PAYMENT_FAILURE`: Payment transaction failed.\n+ `PAYMENT_SETUP_FAILURE`: Buyer's payment details weren't set up correctly.\n+ `UNKNOWN`: Reason for the cancellation is unknown."
+        },
+        {
+          "name": "effectiveAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "When the cancellation takes effect. Set when cancelling the order. One of:\n+ `IMMEDIATELY`: Cancellation occurs immediately and the buyer can no longer use the plan.\n+ `NEXT_PAYMENT_DATE`: Cancellation occurs at the next payment date and time. Buyer can continue to use the plan until that date and time."
+        },
+        {
+          "name": "requestedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the cancellation was requested."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Captcha",
+      "members": [
+        {
+          "name": "token",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Token from captcha"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ChangeStartDateRequest",
+      "members": [
+        {
+          "name": "orderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Draft order ID."
+        },
+        {
+          "name": "startDate",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "New valid from date (timestamp)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ChangeStartDateResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Updated draft order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Coupon",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon ID."
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Total discount of the coupon, as a monetary amount."
+        },
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Code of the applied coupon."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CouponsError",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "planId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateGuestOnlineOrderOptions",
+      "members": [
+        {
+          "name": "captcha",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Captcha"
+            }
+          ],
+          "doc": "Captcha data to prove you are not a robot"
+        },
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "guest",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Guest"
+            }
+          ],
+          "doc": "Visitor info"
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateGuestOnlineOrderRequest",
+      "members": [
+        {
+          "name": "captcha",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Captcha"
+            }
+          ],
+          "doc": "Captcha data to prove you are not a robot"
+        },
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "guest",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Guest"
+            }
+          ],
+          "doc": "Visitor info"
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateGuestOnlineOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOfflineOrderOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the member ordering the plan.\nThis field is required when creating an offline order."
+        },
+        {
+          "name": "paid",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order is paid.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for the ordered plan.\n\nDefault: Current date and time\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission ID that was submitted together with the order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOfflineOrderRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply.\n\nSee [Coupons to learn more](https://dev.wix.com/api/rest/coupons).\n"
+        },
+        {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the member ordering the plan."
+        },
+        {
+          "name": "paid",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order is paid.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the plan being ordered."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for the ordered plan.\n\nDefault: Current date and time\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOfflineOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOnlineOrderOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "onBehalf",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.OnBehalf"
+            }
+          ],
+          "doc": "Provided if checkout is initiated on buyer's behalf."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOnlineOrderRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "onBehalf",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.OnBehalf"
+            }
+          ],
+          "doc": "Provided if checkout is initiated on buyer's behalf."
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateOnlineOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CurrentCycle",
+      "members": [
+        {
+          "name": "endedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "End date and time for the current payment cycle."
+        },
+        {
+          "name": "index",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of the current payment cycle in the order.\n\n`0` when order is in a free trial period. In all other cases, the index starts with `1`.\n"
+        },
+        {
+          "name": "startedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for the current payment cycle."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Current cycle will be empty when order is cancelled, expired or order start date is in the future\nCurrent cycle start and end dates take into account free trial days and suspensions"
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        },
+        {
+          "name": "prev",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to previous page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The time of the event. Useful if there was a delay in dispatching"
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Duration",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The amount of a duration `unit` in a single payment cycle.\n\nCurrently limited to support only `1`.\n"
+        },
+        {
+          "name": "unit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unit of time for the cycle duration."
+        }
+      ],
+      "docs": {
+        "description": [
+          "A duration expressed in number of time units."
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "FormData",
+      "members": [
+        {
+          "name": "formId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reference to the form which was used to gather additional data in checkout."
+        },
+        {
+          "name": "submissionData",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Data submitted to the form at checkout.\nThis field is only returned when `FieldSet.FULL` is specified when fetching the data"
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reference to the submission of the form."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAvailableOrderActionsRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAvailableOrderActionsResponse",
+      "members": [
+        {
+          "name": "cancelableByBuyer",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order can be canceled by the buyer."
+        },
+        {
+          "name": "notSuspendableReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If the order cannot be suspended, a reason is returned here."
+        },
+        {
+          "name": "suspendable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order can be suspended."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetGuestOnlineOrderPreviewOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetGuestOnlineOrderPreviewRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetGuestOnlineOrderPreviewResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Will be missing if limit is exceeded"
+        },
+        {
+          "name": "purchaseLimitExceeded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the purchase limit has already been reached for this plan by this email.\nAlways false for plans without purchase limits."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOfflineOrderPreviewOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID for the buyer who might order the plan offline.\nThis field is required to get an offline order preview."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for plan of the previewed order.\n\nDefault: Current date and time\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOfflineOrderPreviewRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply. See [Coupons to learn more](https://dev.wix.com/api/rest/coupons)."
+        },
+        {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID of the buyer the previewed order is for."
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the plan of the previewed order. See [Plans for more information about plan IDs](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/plans)."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for plan of the previewed order.\n\nDefault: Current date and time\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOfflineOrderPreviewResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "The previewed order, as if the plan had been ordered."
+        },
+        {
+          "name": "purchaseLimitExceeded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this previewed order would exceed the permitted amount of purchases available\nfor this plan for this buyer.\n\nAlways `false` for plans that do not have purchase limits.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOnlineOrderPreviewOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOnlineOrderPreviewRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date for the ordered plan.\n\nDefault: Current date\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOnlineOrderPreviewResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Will be missing if limit is exceeded"
+        },
+        {
+          "name": "purchaseLimitExceeded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the purchase limit has already been reached for this plan by this member.\nAlways false for plans without purchase limits."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrderRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrdersStatsRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrdersStatsResponse",
+      "members": [
+        {
+          "name": "activeOrderCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of active orders."
+        },
+        {
+          "name": "totalOrderCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of orders."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetPricePreviewOptions",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetPricePreviewRequest",
+      "members": [
+        {
+          "name": "couponCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Coupon code to apply.\n\nSee Coupons [to learn more](https://dev.wix.com/api/rest/coupons).\n"
+        },
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of plan to preview."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetPricePreviewResponse",
+      "members": [
+        {
+          "name": "prices",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.SpannedPrice"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Pricing details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Guest",
+      "members": [
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email for checkout"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ItemMetadata",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Item ID. Should always be available, unless it's impossible (for example, when failing to create an item)."
+        },
+        {
+          "name": "error",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.ApplicationError"
+            }
+          ],
+          "doc": "Details about the error in case of failure."
+        },
+        {
+          "name": "originalIndex",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of the item within the request array. Allows for correlation between request and response items."
+        },
+        {
+          "name": "success",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the requested action was successful for this item. When `false`, the `error` field is populated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListOrdersRequest",
+      "members": [
+        {
+          "name": "autoRenewCanceled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Filter by whether or not the auto-renewal of recurring orders was canceled."
+        },
+        {
+          "name": "buyerIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by a buyer's member ID. See [Members to learn more about a site's members](https://dev.wix.com/api/rest/members/members)."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Parameter to define amount of fields to return. FULL returns each order's submission data. Supported values: UNKNOWN_SET, BASIC, FULL"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of orders to return. See [Pagination](https://dev.wix.com/api/rest/getting-started/sorting-and-paging#getting-started_sorting-and-paging_paging) for more information.\n\nMax: `50`\n"
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of orders to skip in the current sort order."
+        },
+        {
+          "name": "orderStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by order status."
+        },
+        {
+          "name": "paymentStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by payment status."
+        },
+        {
+          "name": "planIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by plan IDs. See [Plans to learn more about pricing plans](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/plans)."
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Sorting"
+            }
+          ],
+          "doc": "Sort order.\n\nUse `ASC` for ascending order or `DESC` for descending order.\n\nDefault: `DESC`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListOrdersResponse",
+      "members": [
+        {
+          "name": "orders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.Order"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of orders."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PagingMetadataV2"
+            }
+          ],
+          "doc": "Object containing paging-related data (number of orders returned, offset)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagementGetOrderOptions",
+      "members": [
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagementListOrdersOptions",
+      "members": [
+        {
+          "name": "autoRenewCanceled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Filter by whether or not the auto-renewal of recurring orders was canceled."
+        },
+        {
+          "name": "buyerIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by specific member IDs of buyers who ordered a pricing plan."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Parameter to define amount of fields to return. FULL returns each order's submission data. Supported values: UNKNOWN_SET, BASIC, FULL"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of pricing plan orders to return.\n\nDefault: `50`\n"
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of orders to skip in the current sort order."
+        },
+        {
+          "name": "orderStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by the order status. Supported values:\n+ `DRAFT`: Order has been initiated but payment hasn't been processed yet. The plan isn't yet available for use to the buyer.\n+ `PENDING`: Order has been purchased and its start date is set in the future.\n+ `ACTIVE`: Order has been processed. The plan is available for use.\n+ `PAUSED`: Order, and use of the plan, is [paused](#pauseorder). The order, and use of the plan, can be [resumed](#resumeorder).\n+ `ENDED`: Order has completed its duration and is no longer available for use.\n+ `CANCELED`: Order has been [canceled](#cancelorder)."
+        },
+        {
+          "name": "paymentStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by payment status.\n\nSupported values:\n+ `PAID`: The last payment was paid.\n+ `REFUNDED`: The last payment was refunded.\n+ `FAILED`: The last payment transaction didn't complete.\n+ `UNPAID`: The last payment wasn't paid.\n+ `PENDING`: Awaiting payment.\n+ `NOT_APPLICABLE`: No payment was necessary. For example, for free plans or free trials.\n"
+        },
+        {
+          "name": "planIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by specific IDs of plans that were ordered."
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Sorting"
+            }
+          ],
+          "doc": "Sort order.\n\nUse `ASC` for ascending order or `DESC` for descending order.\n\nDefault: `DESC`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagementQueryOrdersOptions",
+      "members": [
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.QueryV2"
+            }
+          ],
+          "doc": "[See available fields here](https://dev.wix.com/api/rest/pricing-plans/pricing-plans/order-v2/filter-and-sort)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MarkAsPaidRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MarkAsPaidResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberGetOrderOptions",
+      "members": [
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberGetOrderRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberGetOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Requested order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberListOrdersOptions",
+      "members": [
+        {
+          "name": "autoRenewCanceled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Filter for orders where auto renewal was canceled."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of pricing plan orders to return.\n\nDefault: `50`\n"
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of orders to skip in the current sort order."
+        },
+        {
+          "name": "orderStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by the order status. Supported values:\n+ `DRAFT`: Order has been initiated but payment hasn't been processed yet. The plan isn't yet available for use to the buyer.\n+ `PENDING`: Order has been purchased and its start date is set in the future.\n+ `ACTIVE`: Order has been processed. The plan is available for use.\n+ `PAUSED`: Order, and use of the plan, is [paused](#pauseorder). The order, and use of the plan, can be [resumed](#resumeorder).\n+ `ENDED`: Order has completed its duration and is no longer available for use.\n+ `CANCELED`: Order has been [canceled](#cancelorder)."
+        },
+        {
+          "name": "paymentStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Key Path to edit\nManagementListOrdersOptions.paymentStatuses\nProduction value\nFilter by payment status.\nOverride\nFilter by payment status.\n\nSupported values:\n+ `PAID`: The last payment was paid.\n+ `REFUNDED`: The last payment was refunded.\n+ `FAILED`: The last payment transaction didn't complete.\n+ `UNPAID`: The last payment wasn't paid.\n+ `PENDING`: Awaiting payment.\n+ `NOT_APPLICABLE`: No payment was necessary. For example, for free plans or free trials.\nMark down view\nFilter by payment status.\n\nSupported values:\n\nPAID: The last payment was paid.\nREFUNDED: The last payment was refunded.\nFAILED: The last payment transaction didn't complete.\nUNPAID: The last payment wasn't paid.\nPENDING: Awaiting payment.\nNOT_APPLICABLE: No payment was necessary. For example, for free plans or free trials.\n"
+        },
+        {
+          "name": "planIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by plan IDs."
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Sorting"
+            }
+          ],
+          "doc": "Sort order.\n\nUse `ASC` for ascending order or `DESC` for descending order.\n\nDefault: `ASC`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberListOrdersRequest",
+      "members": [
+        {
+          "name": "autoRenewCanceled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Filter for orders where auto renewal was canceled."
+        },
+        {
+          "name": "fieldSet",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'BASIC'`\n- `'FULL'`\n- `'UNKNOWN_SET'`"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Limit the number of pricing plans returned. Default limit is 50."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of entries to offset."
+        },
+        {
+          "name": "orderStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by order status."
+        },
+        {
+          "name": "paymentStatuses",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by payment status."
+        },
+        {
+          "name": "planIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Filter by plan IDs."
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Sorting"
+            }
+          ],
+          "doc": "Sorting direction (defaults to ASC) and field to sort by. [See available fields here](https://dev.wix.com/api/rest/pricing-plans/pricing-plans/order-v2/filter-and-sort)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberListOrdersResponse",
+      "members": [
+        {
+          "name": "orders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.Order"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of orders."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PagingMetadataV2"
+            }
+          ],
+          "doc": "Object containing paging-related data (number of orders returned, offset)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberQueryOrdersOptions",
+      "members": [
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.QueryV2"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OnBehalf",
+      "members": [
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID."
+        },
+        {
+          "name": "orderMethod",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Method by which checkout is initiated on buyer's behalf"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Order",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the order was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the order was updated."
+        },
+        {
+          "name": "autoRenewCanceled",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the order will be canceled at the next payment date.\n\nIf `true`, the order status will be `CANCELED` and the next payment won't be charged. Omitted for single payment orders."
+        },
+        {
+          "name": "buyer",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Buyer"
+            }
+          ],
+          "doc": "The buyer's IDs. Includes `memberId` and `contactId`.\n\nCurrently, Pricing Plan purchases are limited to members only. `contactId` is returned,\nbut a buyer will not be able to purchase a plan without a `memberId`."
+        },
+        {
+          "name": "cancellation",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Cancellation"
+            }
+          ],
+          "doc": "Details about the cancellation of an order.\n\nOnly present if the status is `CANCELED`."
+        },
+        {
+          "name": "currentCycle",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.CurrentCycle"
+            }
+          ],
+          "doc": "Current payment cycle for the order.\n\n`currentCycle` will be omitted if the order's status is `CANCELED` or `ENDED`, or if the `startDate` hasn't passed yet."
+        },
+        {
+          "name": "earliestEndDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Earliest end date and time that the plan for the order can expire.\n\nCalculated by using the original end date plus any pause periods. Omitted if the order is active until canceled. Reserved for future use."
+        },
+        {
+          "name": "endDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Current end date and time for the ordered plan.\n\n`endDate` may be updated over the course of an order. If the order is [paused](#pauseorder),\nit will have a later `endDate` once it [resumes](#resumeorder). `endDate` may also be [postponed](#postponeenddate).\n\nOmitted if the order is valid until canceled and still `ACTIVE`."
+        },
+        {
+          "name": "freeTrialDays",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Free trial period for the order, in days.\n\nOnly available for recurring plans."
+        },
+        {
+          "name": "lastPaymentStatus",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the last payment for the order.\nUpdated automatically for online orders. Updated manually by the site owner for offline orders.\n\nSupported values:\n+ `PAID`: The last payment was paid.\n+ `REFUNDED`: The last payment was refunded.\n+ `FAILED`: The last payment transaction didn't complete.\n+ `UNPAID`: The last payment wasn't paid.\n+ `PENDING`: Awaiting payment.\n+ `NOT_APPLICABLE`: No payment was necessary. For example, for free plans or free trials."
+        },
+        {
+          "name": "pausePeriods",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.PausePeriod"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of periods during which the order is paused."
+        },
+        {
+          "name": "planDescription",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan description at the time of purchase"
+        },
+        {
+          "name": "planId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the plan purchased with the order."
+        },
+        {
+          "name": "planName",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan name at the time of purchase."
+        },
+        {
+          "name": "planPrice",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan price as it was at the moment of order creation."
+        },
+        {
+          "name": "pricing",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PricingDetails"
+            }
+          ],
+          "doc": "Pricing model, price, and payment schedule for the order."
+        },
+        {
+          "name": "startDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for the ordered plan."
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the order. Supported values:\n+ `DRAFT`: Order has been initiated but payment hasn't been processed yet. The plan isn't yet available for use to the buyer.\n+ `PENDING`: Order has been purchased and its start date is set in the future.\n+ `ACTIVE`: Order has been processed. The plan is available for use.\n+ `PAUSED`: Order, and use of the plan, is [paused](#pauseorder). The order, and use of the plan, can be [resumed](#resumeorder).\n+ `ENDED`: Order has completed its duration and is no longer available for use.\n+ `CANCELED`: Order has been [canceled](#cancelorder)."
+        },
+        {
+          "name": "subscriptionId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the related Wix subscription.\n\nEvery pricing plan order corresponds to a Wix subscription, including orders for single payment plans. See a [Pricing Plans overview](https://support.wix.com/en/article/pricing-plans-an-overview#create-plans-to-suit-your-business)."
+        },
+        {
+          "name": "type",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "How the order was processed. Supported values:\n+ `\"ONLINE\"`: The buyer purchased the plan using the site.\n+ `\"OFFLINE\"`: The buyer made a manual, offline purchase without using the site."
+        },
+        {
+          "name": "wixPayOrderId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Wix Pay order ID.\n\nProvided by Wix whether the order is created online or offline. The field is omitted when the order is free."
+        }
+      ],
+      "docs": {
+        "description": [
+          "An order object includes all of the details related to the purchase of a Pricing Plan.\nYou can manage existing orders, create offline orders, and preview orders not yet purchased."
+        ]
+      }
+    },
+    {
+      "name": "OrderAutoRenewCanceled",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order that is canceled, effective at the end of the current payment cycle."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Emitted when a recurring order is canceled for the next payment cycle"
+        ]
+      }
+    },
+    {
+      "name": "OrderCanceled",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Canceled order."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Emitted when an order is canceled immediately or when cycle ends for an order with canceled auto renewal"
+        ]
+      }
+    },
+    {
+      "name": "OrderCycle",
+      "members": [
+        {
+          "name": "endedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "End date and time for this order cycle."
+        },
+        {
+          "name": "index",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of this cycle in the order.\n\n`0` when order is in a free trial period. In all other cases, the index starts with `1`.\n"
+        },
+        {
+          "name": "startedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time for this order cycle."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Order cycle start and end dates take into account free trial days and suspensions"
+        ]
+      }
+    },
+    {
+      "name": "OrderCycleStarted",
+      "members": [
+        {
+          "name": "cycleNumber",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of the payment cycle will be 0 when the order is in the free trial period. In other cases, the cycle number starts from 1."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order whose new cycle started."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Triggered at the start of a new payment cycle for an existing order."
+        ]
+      }
+    },
+    {
+      "name": "OrderEndDatePostponed",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order whose `endDate` was postponed."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderEnded",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order that ended."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderMarkedAsPaid",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order that was marked as paid."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderPaused",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Paused order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderPurchased",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order that was paid for. If a free or an offline order, the order that was created."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderResumed",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Resumed order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderStartDateChanged",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order whose `startDate` changed."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderStarted",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order that reached its `startDate`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrdersQueryOrdersRequest",
+      "members": [
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.QueryV2"
+            }
+          ],
+          "doc": "[See available fields here](https://dev.wix.com/api/rest/pricing-plans/pricing-plans/order-v2/filter-and-sort)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrdersQueryOrdersResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PagingMetadataV2"
+            }
+          ],
+          "doc": "Paging-related data (number of orders returned, offset)."
+        },
+        {
+          "name": "plans",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.Order"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Retrieved orders."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Paging",
+      "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the current sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadataV2",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Cursors"
+            }
+          ],
+          "doc": "Cursors to navigate through the result pages using `next` and `prev`. Returned if cursor paging is used."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PauseOrderRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PauseOrderResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PausePeriod",
+      "members": [
+        {
+          "name": "pauseDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time of the pause period."
+        },
+        {
+          "name": "resumeDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "End date and time of the pause period.\n\nOmitted while the pause period remains `ACTIVE`.\n"
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the pause period. Supported values:\n+ `ACTIVE`: Status while the order is [paused](#pauseorder).\n+ `ENDED`: Status when the order is [resumed](#resumeorder)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PostponeEndDateRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "endDate",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "New end date and time.\n\nMust be later than the current end date and time.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PostponeEndDateResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Price",
+      "members": [
+        {
+          "name": "coupon",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Coupon"
+            }
+          ],
+          "doc": "Coupon applied to the order."
+        },
+        {
+          "name": "currency",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Three-letter currency code in\n[ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
+        },
+        {
+          "name": "discount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Total discount applied to the order."
+        },
+        {
+          "name": "subtotal",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price of the order excluding tax, specified as a monetary amount. For example, `\"9.99\"`."
+        },
+        {
+          "name": "tax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Tax"
+            }
+          ],
+          "doc": "Tax applied to the order.\n\nTax is only applied if the site [has it configured](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection).\n"
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price after tax and discount is applied. Specified as a monetary amount, for example, `\"13.98\"`.\n\nIf no tax is applied, the amount is the same as `subtotal`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PriceDetails",
+      "members": [
+        {
+          "name": "coupon",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Coupon"
+            }
+          ],
+          "doc": "Coupon applied to the order. Empty means no coupon was applied."
+        },
+        {
+          "name": "currency",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Currency code. Must be valid ISO 4217 currency code (e.g., USD)."
+        },
+        {
+          "name": "discount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Total discount applied."
+        },
+        {
+          "name": "freeTrialDays",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Free trial period for the order in days. Only available for recurring plans."
+        },
+        {
+          "name": "planPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan price as it was at the moment of order creation."
+        },
+        {
+          "name": "singlePaymentForDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Duration"
+            }
+          ],
+          "doc": "One-time payment. Order is valid for a specified duration."
+        },
+        {
+          "name": "singlePaymentUnlimited",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "One-time payment. Order is valid until it is canceled."
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Recurrence"
+            }
+          ],
+          "doc": "Order has recurring payments."
+        },
+        {
+          "name": "subtotal",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price of the order excluding tax, specified as a monetary amount. for example, `\"9.99\"`."
+        },
+        {
+          "name": "tax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Tax"
+            }
+          ],
+          "doc": "Tax applied."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price after tax and discount is applied, specified as a monetary amount. For example, `\"13.98\"`.\n\nIf no tax is applied, the amount is the same as `subtotal`.\n"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPriceDetailsPricingModelOneOf",
+            "members": [
+              "singlePaymentForDuration",
+              "singlePaymentUnlimited",
+              "subscription"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PriceDetailsPricingModelOneOf",
+      "members": [
+        {
+          "name": "singlePaymentForDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Duration"
+            }
+          ],
+          "doc": "One-time payment. Order is valid for a specified duration."
+        },
+        {
+          "name": "singlePaymentUnlimited",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "One-time payment. Order is valid until it is canceled."
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Recurrence"
+            }
+          ],
+          "doc": "Order has recurring payments."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PriceDuration",
+      "members": [
+        {
+          "name": "cycleFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Price starts to apply with this cycle.\n\n`1` is the first payment cycle for all pricing models.\n"
+        },
+        {
+          "name": "numberOfCycles",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Amount of cycles to apply price for.\n\nFor `subscription` pricing models with a finite number of cycles, the `numberOfCycles` is the same as `pricing.subscription.cycleCount`.\n\nFor `subscription` pricing models that are unlimited or until-canceled, the `numberOfCycles` is not returned.\n\nFor `singlePaymentForDuration` and `singlePaymentUnlimited` pricing models, the `numberOfCycles` is `1`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PricingDetails",
+      "members": [
+        {
+          "name": "prices",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.SpannedPrice"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Pricing details for all pricing models."
+        },
+        {
+          "name": "singlePaymentForDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Duration"
+            }
+          ],
+          "doc": "Pricing model for an order with a one-time payment and the order is valid for a specific amount of time."
+        },
+        {
+          "name": "singlePaymentUnlimited",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Pricing model for an order with a one-time payment and the order is valid until canceled."
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Recurrence"
+            }
+          ],
+          "doc": "Pricing model for an order with recurring payment cycles."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPricingDetailsPricingModelOneOf",
+            "members": [
+              "singlePaymentForDuration",
+              "singlePaymentUnlimited",
+              "subscription"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PricingDetailsPricingModelOneOf",
+      "members": [
+        {
+          "name": "singlePaymentForDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Duration"
+            }
+          ],
+          "doc": "Pricing model for an order with a one-time payment and the order is valid for a specific amount of time."
+        },
+        {
+          "name": "singlePaymentUnlimited",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Pricing model for an order with a one-time payment and the order is valid until canceled."
+        },
+        {
+          "name": "subscription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Recurrence"
+            }
+          ],
+          "doc": "Pricing model for an order with recurring payment cycles."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryOrdersRequest",
+      "members": [
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.QueryV2"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          "TODO: Write orders filter and sort docs page\nRetrieves a list of up to 1,000 orders, based on the provided paging, [sorting, and filtering](https://dev.wix.com/api/rest/pricing-plans/pricing-plans/order-v2/filter-and-sort)."
+        ]
+      }
+    },
+    {
+      "name": "QueryOrdersResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PagingMetadataV2"
+            }
+          ],
+          "doc": "Paging-related data (number of orders returned, offset)."
+        },
+        {
+          "name": "plans",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.Order"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Order data."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryV2",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "fields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Array of projected fields. A list of specific field names to return. If `fieldsets` are also specified, the union of `fieldsets` and `fields` is returned."
+        },
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Array of named, predefined sets of projected fields. A array of predefined named sets of fields to be returned. Specifying multiple `fieldsets` will return the union of fields from all sets. If `fields` are also specified, the union of `fieldsets` and `fields` is returned."
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Paging"
+            }
+          ],
+          "doc": "Paging options to limit and skip the number of items."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-pricing-plans-v2.Orders.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfQueryV2PagingMethodOneOf",
+            "members": [
+              "cursorPaging",
+              "paging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryV2PagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Paging"
+            }
+          ],
+          "doc": "Paging options to limit and skip the number of items."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Recurrence",
+      "members": [
+        {
+          "name": "cycleCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Amount of payment cycles this subscription is valid for.\n\n`0` for unlimited or until-canceled.\n"
+        },
+        {
+          "name": "cycleDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Duration"
+            }
+          ],
+          "doc": "Length of one payment cycle."
+        }
+      ],
+      "docs": {
+        "description": [
+          "An object specifying how often and for how long payments recur (may be forever)."
+        ]
+      }
+    },
+    {
+      "name": "RequestCancellationRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        },
+        {
+          "name": "effectiveAt",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Whether to cancel the order immediately or at the next payment date.\nOne-time payment orders can only be canceled immediately.\n\nSupported values:\n- `\"IMMEDIATELY\"`: Indicates that the order should be canceled immediately.\n- `\"NEXT_PAYMENT_DATE\"`: Indicates that the order be canceled at the next payment date.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RequestCancellationResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ResumeOrderRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ResumeOrderResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SetSubmissionRequest",
+      "members": [
+        {
+          "name": "orderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "submissionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SetSubmissionResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Order with submission id"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Sorting",
+      "members": [
+        {
+          "name": "fieldName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the field to sort by."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SpannedPrice",
+      "members": [
+        {
+          "name": "duration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.PriceDuration"
+            }
+          ],
+          "doc": "Cycle duration to apply `price` for.\n\nUse with all pricing models.\nCan apply the same price to multiple payment cycles.\n"
+        },
+        {
+          "name": "price",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Price"
+            }
+          ],
+          "doc": "Order price."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Tax",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Total tax, specified as a monetary amount. For example, `\"3.99\"`."
+        },
+        {
+          "name": "includedInPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether tax is included in the original price. When `false`, tax is added at checkout."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the tax. For example, VAT."
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax rate percentage, as a number between 0 and 100. For example, a 7% tax rate is `\"7.00\"`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}
