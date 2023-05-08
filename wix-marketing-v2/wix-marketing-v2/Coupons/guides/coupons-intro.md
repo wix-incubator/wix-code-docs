@@ -15,7 +15,7 @@ title: Introduction
 > **Note:**
 > This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
-The Coupons API allows you to create and manage coupons to promote loyalty and increase sales. Customers can then apply the coupon codes at checkout to take advantage of your offers. With the Coupons API, you can [create](#create) and [update](#update) your coupons.  
+The Coupons API allows you to create and manage coupons to promote loyalty and increase sales. Customers can then apply the coupon codes at checkout to take advantage of your offers. With the Coupons API, you can [create](#createcoupon) and [update](#updatecoupon) your coupons.  
 
 To use the Coupons API, import `{ coupons }` from the `wix-marketing.v2` module. 
 
@@ -25,4 +25,4 @@ import { coupons } from 'wix-marketing.v2';
 
 ## Terminology
 
-- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group. See [Scope Values](#scopevalues) for a table of currently supported coupon scopes.  
+- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group. See [Scope Values](#scope-values) for a table of currently supported coupon scopes.  
