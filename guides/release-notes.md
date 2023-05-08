@@ -8,6 +8,36 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Pricing Plans v2
+
+`wix-pricing-plans.v2`
+
+The new [Wix Pricing Plans API](/wix-pricing-plans-v2) provides functionality
+for creating and managing Plans and Orders.
+
+Functionalities for [Plans](/wix-pricing-plans-v2/plans) include:
+
++ [Getting](/wix-pricing-plans-v2/plans/getplan), [listing](/wix-pricing-plans-v2/plans/listplans), and [querying](/wix-pricing-plans-v2/plans/querypublicplans) plans. 
++ [Creating](/wix-pricing-plans-v2/plans/createplan), [updating](/wix-pricing-plans-v2/plans/updateplan), and [archiving](/wix-pricing-plans-v2/plans/archiveplan) plans. 
++ [Setting a plans visibility](/wix-pricing-plans-v2/plans/setplanvisibility) to be public or hidden.
++ [Getting statistics](/wix-pricing-plans-v2/plans/getplanstats) for plans.
++ [Arranging](/wix-pricing-plans-v2/plans/arrangeplans) plans in a specified order.
++ [Setting](/wix-pricing-plans-v2/plans/makeplanprimary) or [clearing](/wix-pricing-plans-v2/plans/clearprimary) the primary plan.
+
+Functionalities for [Orders](/wix-pricing-plans-v2/orders) include:
+
++ [Getting](/wix-pricing-plans-v2/orders/managementgetorder) and [listing](/wix-pricing-plans-v2/orders/managementlistorders) orders. 
++ [Creating](/wix-pricing-plans-v2/orders/createofflineorder) offline orders.
++ [Marking](/wix-pricing-plans-v2/orders/markaspaid) offline orders as paid.
++ [Preview](/wix-pricing-plans-v2/orders/getpricepreview) pricing details of an order.
++ [Pausing](/wix-pricing-plans-v2/orders/pauseorder), [resuming](/wix-pricing-plans-v2/orders/resumeorder), and [canceling](/wix-pricing-plans-v2/orders/cancelorder) orders.
++ [Extending](/wix-pricing-plans-v2/orders/postponeenddate) order durations.
+
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 8, 2023)
+
 
 ### New Developer Preview API: Wix Currencies v2
 
