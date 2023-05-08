@@ -14,17 +14,7 @@ title: Introduction
 &nbsp;
 
 
-The Pricing Plans Plans API allows you to manage your pricing plans. 
-
-With the Pricing Plans Plans API, you can:
-- [Create](wix-pricing-plans-v2/plans/createplan) and [update](wix-pricing-plans-v2/plans/updateplans) orders.
-- [Get](wix-pricing-plans-v2/plans/getplan), [list](wix-pricing-plans-v2/plans/listplans) and [query](wix-pricing-plans-v2/plans/querypublicplans) plans. 
-- [Set visibility](wix-pricing-plans-v2/plans/setplanvisibility) for which plans are public and which are hidden.
-- [Archive](archivePlan) plans.
-- [Set](wix-pricing-plans-v2/plans/makeplanprimary) or [clear](wix-pricing-plans-v2/plans/clearprimary) the primary plan. This determines if a plan is highlighted with a custom ribbon when viewing the plans on a site.
-- [Get statistics](wix-pricing-plans-v2/plans/getplanstats) about the plans.
-- [Arrange](arrangeplans) the order in which you want plans to be displayed. 
-
+The Pricing Plans Plans API allows you to manage your [Plans](wix-pricing-plans-v2/plans) and [Orders](wix-pricing-plans-v2/orders). 
 
 
 ## Before you begin
