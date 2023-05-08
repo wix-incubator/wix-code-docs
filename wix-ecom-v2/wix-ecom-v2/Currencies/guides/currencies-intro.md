@@ -60,7 +60,7 @@ The following functions in Currencies are restricted and only run if you elevate
 - [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies)
 - [`convertCurrency()`](wix-ecom-v2/currencies/convertcurrency)
 - [`getConversionRate()`](wix-ecom-v2/currencies/getconversionrate)
-- 
+ 
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
