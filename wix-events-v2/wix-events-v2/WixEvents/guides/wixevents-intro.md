@@ -13,33 +13,38 @@ title: Introduction
 
 &nbsp;
 
-The Checkout API allows you to manage and track ticket reservations.
+Wix events are gatherings that an individual or a business holds for a group of people. We refer to these people either as guests, participants, or attendees.
 
-With the Checkout API you can:
+The Wix Events API provides functionality allowing you to:
 
-- Get lists of available tickets.
-- Create, update, and cancel ticket reservations.
-- Checkout reserved tickets.
-- Preview reservation invoices.
+- Get and query Wix event information.
+- Create and update a Wix event.
+- Copy a Wix event.
+- Cancel and delete Wix events.
 
 ## Before you begin
 
 It’s important to note the following points before starting to code:  
 
-- To use the Checkout API, import `checkout` from `wix-events.v2`:
+- To use the Wix Events API, import `schedule` from `wix-events.v2`:
 
 ```js
-import { checkout } from 'wix-events.v2';
+import { wixEvents } from 'wix-events.v2';
 ```
 
 ## Permissions information
 
-The following functions in Checkout are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the Schedule API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-- `cancelReservation()`
-- `checkout()`
-- `createReservation()`
-- `updateCheckout()`
+- `bulkCancelEvents()`
+- `bulkDeleteEvents()`
+- `cancelEvent()`
+- `copyEventV2()`
+- `createEventV2()`
+- `deleteEvent()`
+- `publishDraftEvent()`
+- `queryEventsV2()`
+- `updateEvent()`
 
 <blockquote class='warning'>
 <p>

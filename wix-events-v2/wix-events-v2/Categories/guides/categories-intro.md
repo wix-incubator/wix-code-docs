@@ -13,33 +13,39 @@ title: Introduction
 
 &nbsp;
 
-The Checkout API allows you to manage and track ticket reservations.
+The Categories API allows you to manage the event categories.
 
-With the Checkout API you can:
+With the Categories API you can:
 
-- Get lists of available tickets.
-- Create, update, and cancel ticket reservations.
-- Checkout reserved tickets.
-- Preview reservation invoices.
+- Assign/unassign events to a category.
+- Create and delete categories.
+- Update a category.
 
 ## Before you begin
 
 It’s important to note the following points before starting to code:  
 
-- To use the Checkout API, import `checkout` from `wix-events.v2`:
+- To use the Categories API, import `category` from `wix-events.v2`:
 
 ```js
-import { checkout } from 'wix-events.v2';
+import { categories } from 'wix-events.v2';
 ```
 
 ## Permissions information
 
-The following functions in Checkout are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
+The following functions in the Categories API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-- `cancelReservation()`
-- `checkout()`
-- `createReservation()`
-- `updateCheckout()`
+- `assignEvents()`
+- `bulkAssignEvents()`
+- `bulkAssignEventsAsync()`
+- `bulkUnassignEvents()`
+- `bulkUnassignEventsAsync()`   
+- `bulkCreateCategory()`
+- `createCategory()`
+- `deleteCategory()`
+- `reorderCategoryEvents()`
+- `unassignEvents()`
+- `updateCategory()`
 
 <blockquote class='warning'>
 <p>
