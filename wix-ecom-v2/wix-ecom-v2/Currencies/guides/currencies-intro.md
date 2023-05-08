@@ -20,6 +20,7 @@ The Currencies API is used to convert from one currency to another and get excha
 
  The Currencies API provides these functions: 
 
+
 - Use [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies) to get a list of all the convertible currencies.
 - Use [`convertCurrency()`](wix-ecom-v2/currencies/convertcurrency) to convert amounts between two currencies.
 - Use [`getConversionRate()`](wix-ecom-v2/currencies/conversionrate) to get today’s conversion rate for a pair of currencies.  
@@ -59,6 +60,7 @@ The following functions in Currencies are restricted and only run if you elevate
 - [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies)
 - [`convertCurrency()`](wix-ecom-v2/currencies/convertcurrency)
 - [`getConversionRate()`](wix-ecom-v2/currencies/conversionrate)
+- 
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
