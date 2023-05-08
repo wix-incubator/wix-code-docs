@@ -20,9 +20,10 @@ The Currencies API is used to convert from one currency to another and get excha
 
  The Currencies API provides these functions: 
 
-- Use [`listCurrencies()`](#listCurrencies) to get a list of all the convertible currencies.
-- Use [`convertCurrency()`](#convertCurrency) to convert amounts between two currencies.
-- Use [`getConversionRate()`](#conversionRate) to get today’s conversion rate for a pair of currencies.  
+
+- Use [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies) to get a list of all the convertible currencies.
+- Use [`convertCurrency()`](wix-ecom-v2/currencies/convertcurrency) to convert amounts between two currencies.
+- Use [`getConversionRate()`](wix-ecom-v2/currencies/conversionrate) to get today’s conversion rate for a pair of currencies.  
 
 
 ## Before you begin
@@ -31,7 +32,7 @@ The Currencies API is used to convert from one currency to another and get excha
 
 + The currency converter changes the displayed prices on your site for different currencies but does not change the payment currency. The payment is always made in the [currency set in your site's Dashboard](https://support.wix.com/en/article/setting-your-currency-for-accepting-payments).
 
-+ The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](#listCurrencies) function.
++ The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies) function.
 
 + To use the Currencies API, import `{ currencies }` from the `wix-ecom.v2` module:
 
@@ -56,9 +57,10 @@ The Currencies API is used to convert from one currency to another and get excha
 
 The following functions in Currencies are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-- [`listCurrencies()`](#listCurrencies)
-- [`convertCurrency()`](#convertCurrency)
-- [`getConversionRate()`](#conversionRate)
+- [`listCurrencies()`](wix-ecom-v2/currencies/listcurrencies)
+- [`convertCurrency()`](wix-ecom-v2/currencies/convertcurrency)
+- [`getConversionRate()`](wix-ecom-v2/currencies/conversionrate)
+- 
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
