@@ -25,4 +25,18 @@ import { coupons } from 'wix-marketing.v2';
 
 ## Terminology
 
-- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group. See [Valid Scope Values](#validscopevalues) for a table of currently supported coupon scopes.  
+- **Scope:** The coupon scope defines the items a coupon applies to. You can apply a coupon to all items in a specific Wix application, a group within the application, or a single item within a group.  
+
+The following table lists the currently supported coupon scopes:
+| namespace | group | entityId | Result |
+|---|---|---|---|
+| stores | -- | -- | Applies to all store products |
+| stores | product | product ID | Applies to the specific store product with the provided ID |
+| stores | collection | collection ID | Applies to the specific store collection with the provided ID |
+| bookings | -- | -- | Applies to all bookings services |
+| bookings | service | service ID | Applies to the specific bookings service with the provided ID |
+| events | event | event ID | Applies to the specific event with the provided ID |
+| events | ticket | -- | Applies to all event tickets |
+| events | ticket | ticket ID | Applies to the specific event ticket with the provided ID |
+| pricingPlans | -- | -- | Applies to all pricing plans |
+| pricingPlans | plan | plan ID | Applies to the specific pricing plan with the provided ID |
