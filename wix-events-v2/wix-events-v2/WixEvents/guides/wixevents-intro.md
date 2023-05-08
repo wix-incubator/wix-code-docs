@@ -39,11 +39,10 @@ The following functions in the Wix Events API are restricted and only run if you
 - `bulkCancelEvents()`
 - `bulkDeleteEvents()`
 - `cancelEvent()`
-- `copyEventV2()`
-- `createEventV2()`
+- `copy()`
 - `deleteEvent()`
 - `publishDraftEvent()`
-- `queryEventsV2()`
+- `query()`
 - `updateEvent()`
 
 <blockquote class='warning'>
