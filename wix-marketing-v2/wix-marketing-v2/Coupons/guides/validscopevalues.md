@@ -1,8 +1,8 @@
 ---
-title: Scope Values
+title: Valid Scope Values
 ---
 
-# Scope Values
+# Valid Scope Values
 
 You can define the coupon to apply to a specific product, a collection of products, or to all of the products within a specific Wix Business Solution.
 
