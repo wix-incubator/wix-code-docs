@@ -40,7 +40,7 @@ import wixMedia from 'wix-media.v2';
   The [Generate File Upload Url](wix-media-v2/files/generatefileuploadurl) generates an upload URL to allow external clients to upload a file to the Media Manager. However, any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use the [Generate File Resumable Upload Url](wix-media-v2/files/generatefileresumableuploadurl) instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption. 
 
   **Using the generated upload and resumable upload URLs**
-  When you get the `uploadUrl` response from Generate File Upload Url, learn how you can use it to [upload a file to the Media Manager](wix-media-v2/files/guides/upload-api). When you get the `uploadUrl` response from Generate File Resumable Upload Url, learn how you can use it to [resumably upload a file to the Media Manager](wix-media-v2/files/guides/resumable-upload-api). 
+  When you get the `uploadUrl` response from Generate File Upload Url, learn how you can use it to [upload a file to the Media Manager](wix-media-v2/files/upload-api). When you get the `uploadUrl` response from Generate File Resumable Upload Url, learn how you can use it to [resumably upload a file to the Media Manager](wix-media-v2/files/resumable-upload-api). 
 
 
 * **System folders:** Folders in the Media Manager's file system directory. 

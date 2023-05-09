@@ -15,11 +15,18 @@ title: Introduction
 &nbsp;
 
 
-With the Files API you can:
-* Manage files in the Media Manager.
-* Generate temporary URLS for:
-  * Streaming video files from the Media Manager.
-  * Downloading files from the Media Manager.
+The Files API allows you to manage files and generate file urls from your Media Manager. 
+
+With the Files API, you can:
+- [Get](media/files/getfiledescriptor), [list](media/files/listfiles), and [search](media/files/searchfiles) files.
+- [Import](media/files/importfile), [update](media/files/updatefiledescriptor), and [delete](media/files/bulkdeletefiles) files. 
+- [Restore](media/files/bulkrestorefilesfromtrashbin) files from the trash bin.
+- Generate URLs for:
+  - [Downloading files](media/files/generatefiledownloadurl).
+  - [Downloading a compressed file](media/files/generatefilesdownloadurl).
+  - [Uploading files](media/files/generatefileuploadurl).
+  - [Uploading files larger than 10MB](media/files/generatefileresumableuploadurl).
+  - [Streaming video files](media/files/generatevideostreamingurl).
 
 
 Learn more [about the Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
