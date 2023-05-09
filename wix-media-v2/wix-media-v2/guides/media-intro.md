@@ -15,17 +15,17 @@ title: Introduction
 &nbsp;
 
 
-The Wix Media v2 API provides the functionality to manage media files and folders in a site's Media Manager.
-Learn more [about Wix Media](https://support.wix.com/en/article/wix-media-about-the-media-manager).
+The Wix Media API provides the functionality to manage media files and folders in a site's Media Manager.
+Learn more about [Wix Media](https://support.wix.com/en/article/wix-media-about-the-media-manager).
 
 
-> **Note:**
-> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+<!-- > **Note:**
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. -->
 
 
 ## Before you begin
 
-To use the wix-media-v2 API, import `wixMedia` from the `wix-media.v2` module. 
+To use the wix-media API, import `wixMedia` from the `wix-media.v2` module. 
 
 ```javascript
 import wixMedia from 'wix-media.v2';
