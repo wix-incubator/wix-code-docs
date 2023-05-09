@@ -34,13 +34,13 @@ import wixMedia from 'wix-media.v2';
 ## Terminology
 
 * **Generate File Download Url** vs. **Generate Files Download Url**
-  The Generate Files Download Url generates a permanent URL for downloading a compressed file containing specific files in the Media Manager. However, the [Generate File Download Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefiledownloadurl) generates one or more temporary URLs for downloading a specific file in the Media Manager. You can use the `expirationInMinutes` parameter to set the URL expiration time, making it more secure than the [Generate Files Download Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefilesdownloadurl). Therefore, to download private files, use the Generate File Download Url for each private file that you want to generate a download Url for, instead of the Generate Files Download Url.
+  The Generate Files Download Url generates a permanent URL for downloading a compressed file containing specific files in the Media Manager. However, the [Generate File Download Url](wix-media-v2/files/generatefiledownloadurl) generates one or more temporary URLs for downloading a specific file in the Media Manager. You can use the `expirationInMinutes` parameter to set the URL expiration time, making it more secure than the [Generate Files Download Url](wix-media-v2/files/generatefilesdownloadurl). Therefore, to download private files, use the Generate File Download Url for each private file that you want to generate a download Url for, instead of the Generate Files Download Url.
 
 * **Generate File Resumable Upload Url** vs. **Generate File Upload Url**
-  The [Generate File Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileuploadurl) generates an upload URL to allow external clients to upload a file to the Media Manager. However, any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use the [Generate File Resumable Upload Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileresumableuploadurl) instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption. 
+  The [Generate File Upload Url](wix-media-v2/files/generatefileuploadurl) generates an upload URL to allow external clients to upload a file to the Media Manager. However, any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use the [Generate File Resumable Upload Url](wix-media-v2/files/generatefileresumableuploadurl) instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption. 
 
   **Using the generated upload and resumable upload URLs**
-  When you get the `uploadUrl` response from Generate File Upload Url, learn how you can use it to [upload a file to the Media Manager](https://www.wix.com/velo/reference/wix-media-v2/upload-api). When you get the `uploadUrl` response from Generate File Resumable Upload Url, learn how you can use it to [resumably upload a file to the Media Manager](https://www.wix.com/velo/reference/wix-media-v2/resumable-upload-api). 
+  When you get the `uploadUrl` response from Generate File Upload Url, learn how you can use it to [upload a file to the Media Manager](wix-media-v2/files/guides/upload-api). When you get the `uploadUrl` response from Generate File Resumable Upload Url, learn how you can use it to [resumably upload a file to the Media Manager](wix-media-v2/files/guides/resumable-upload-api). 
 
 
 * **System folders:** Folders in the Media Manager's file system directory. 
@@ -70,7 +70,7 @@ import wixMedia from 'wix-media.v2';
     * An audio file can have different formats and qualities.
     * Video or audio files can have a preview asset containing only a portion of the file.
   
-  With the [Generate File Download Url](https://www.wix.com/velo/reference/wix-media-v2/files/generatefiledownloadurl), you can use the `assetKeys` parameter to download different assets of a file.  
+  With the [Generate File Download Url](wix-media-v2/files/generatefiledownloadurl), you can use the `assetKeys` parameter to download different assets of a file.  
 
 * **Media Types:** Supported media types include the following:
   * Image
