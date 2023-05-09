@@ -14,11 +14,13 @@ title: Introduction
 
 &nbsp;
 
+The Folders API allows you to manage the folders in your Media Manager. 
 
 With the Folders API, you can:
-* Manage folders in the Media Manager.
-* Generate URLS for:
-  * Downloading a folder from the Media Manager.
+- [Get](media/folders/getfolder), [list](media/folders/listfolders), and [search](media/folders/searchfolders) folders.
+- [Create](media/folders/createfolder), [update](media/folders/updatefolder), and [delete](media/folders/bulkdeletefolders) folders. 
+- [Restore](media/folders/bulkrestorefoldersfromtrashbin) folders from the trash bin.
+- [Generate URLs](media/folders/generatefolderdownloadurl) for downloading folders from the Media Manager. 
 
 Learn more about [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
 
