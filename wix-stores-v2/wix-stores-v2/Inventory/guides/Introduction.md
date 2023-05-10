@@ -28,14 +28,17 @@ A variant can override the following values from the parent product:
 
 ## Permissions information
 
-
 Functions in the Inventory API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
-
 <blockquote class='warning'>
-
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
+
+## Events
+
+Inventory API events are fired on your site’s backend when certain events occur with Inventory.
+See [wix-stores-backend events](https://www.wix.com/velo/reference/wix-stores-backend/events)
+for more information related to these events.
 
 
 To use the Inventory API,
