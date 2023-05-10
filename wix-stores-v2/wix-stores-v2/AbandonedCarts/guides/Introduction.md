@@ -15,15 +15,26 @@ title: Introduction
 &nbsp;
 
 
-<!--
-> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
--->
-
 This service allows you to read and delete abandoned carts, and listen to abandoned-related events from Wix Stores.
 
-To use the Abandoned Cart API,
-import `abandonedCart` from wix-stores.v2:
+## Permissions information
+
+Functions in the Abandoned Carts API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
+
+## Events
+
+Abandoned Carts API events are fired on your site’s backend
+when certain events occur with Abandoned Carts.
+See [wix-stores-backend events](https://www.wix.com/velo/reference/wix-stores-backend/events)
+for more information related to these events.
+
+To use the Abandoned Carts API,
+import `abandonedCarts` from wix-stores.v2:
 
 ```js
-import { abandonedCart } from 'wix-stores.v2';
+import { abandonedCarts } from 'wix-stores.v2';
 ```
