@@ -14,22 +14,41 @@ title: Introduction
 
 &nbsp;
 
+The Folders API allows you to manage the folders in your Media Manager. 
 
 With the Folders API, you can:
-* Manage folders in the Media Manager.
-* Generate URLS for:
-  * Downloading a folder from the Media Manager.
+- [Get](media/folders/getfolder), [list](media/folders/listfolders), and [search](media/folders/searchfolders) folders.
+- [Create](media/folders/createfolder), [update](media/folders/updatefolder), and [delete](media/folders/bulkdeletefolders) folders. 
+- [Restore](media/folders/bulkrestorefoldersfromtrashbin) folders from the trash bin.
+- [Generate URLs](media/folders/generatefolderdownloadurl) for downloading folders from the Media Manager. 
 
+Learn more about [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
 
-Learn more [about the Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
+<!-- > **Note:**
+> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. -->
 
-
-> **Note:**
-> This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
-
+## Before You Begin
 
 To use the Folders API, import `{ folders }` from the `wix-media.v2` module:
 
 ```javascript
 import { folders } from 'wix-media.v2';
 ```
+
+## Permissions information
+
+The following functions in Folders are restricted and only run if you elevate permissions
+using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
+function:
+
+- [`bulkRestoreFoldersFromTrashBin()`](wix-media-v2/folders/bulkrestorefoldersfromtrashbin)
+- [`listDeletedFolders()`](wix-media-v2/folders/listdeletedfolders)
+
+
+<blockquote class='warning'>
+<p>
+<strong>Warning:</strong>
+Elevating a function allows it to be called by any site visitor.
+Exercise caution to prevent security vulnerabilities.
+</p>
+</blockquote>
