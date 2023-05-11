@@ -8,10 +8,10 @@ The Wix Data API provides a complete solution for accessing, organizing, configu
 
 With the Wix Data API, you can:
 
-+ Create, modify, and delete [data collections](https://dev.wix.com/api/sdk/data/collections).
-+ Access, manage, and perform aggregations on [data items](https://dev.wix.com/api/sdk/data/items) stored in a project or site's existing data collections.
-+ Create [indexes](https://dev.wix.com/api/sdk/data/indexes) for data collections, to speed up data queries.
-+ Connect [external databases](https://dev.wix.com/api/sdk/data/externaldatabaseconnections) to a Wix project or site.
++ Create, modify, and delete [data collections](https://www.wix.com/velo/reference/wix-data-v2/collections).
++ Access, manage, and perform aggregations on [data items](https://www.wix.com/velo/reference/wix-data-v2/items) stored in a project or site's existing data collections.
++ Create [indexes](https://www.wix.com/velo/reference/wix-data-v2/indexes) for data collections, to speed up data queries.
++ Connect [external databases](https://www.wix.com/velo/reference/wix-data-v2/externaldatabaseconnections) to a Wix project or site.
 
 ## Before you begin
 
@@ -22,8 +22,8 @@ It's important to note the following points before starting to code:
 + The maximum size of an item you can save to a collection is 500 kb.
 + When naming fields in data collections, we recommend avoiding special characters. You can do this by using field names that match this regex pattern: `[a-zA-Z_][a-zA-Z0-9_-]{0,63}`.
 + Each data collection defines a schema of fields for the items it contains. However, this schema isn't enforced. This means that if you add or update an item containing a field or data type that doesn't match the collection's schema specification, your data is stored anyway.
-+ When using data retrieval functions such as [`queryDataItems()`](https://dev.wix.com/api/sdk/data/items/querydataitems) or [`getDataItem()`](https://dev.wix.com/api/sdk/data/items/getdataitem) following an update to a collection's data, the data retrieved may not yet contain the most recent changes. See [Wix Data and Eventual Consistency](https://dev.wix.com/api/sdk/data/eventual-consistency) for more information and instructions for overriding this.
-+ After connecting external database collections to a Wix project or site using the [External Database Connections API](https://dev.wix.com/api/sdk/data/externaldatabaseconnections), you can use the [Data Items API](https://dev.wix.com/api/sdk/data/items) to manage and retrieve data from those collections as if they were Wix Data collections.
++ When using data retrieval functions such as [`queryDataItems()`](https://www.wix.com/velo/reference/wix-data-v2/items/querydataitems) or [`getDataItem()`](https://www.wix.com/velo/reference/wix-data-v2/eventual-consistency) for more information and instructions for overriding this.
++ After connecting external database collections to a Wix project or site using the [External Database Connections API](https://www.wix.com/velo/reference/wix-data-v2/externaldatabaseconnections), you can use the [Data Items API](https://www.wix.com/velo/reference/wix-data-v2/items) to manage and retrieve data from those collections as if they were Wix Data collections.
 
 ## Terminology
 

@@ -8,11 +8,11 @@ The External Database Connections API enables you to connect an external databas
 
 ## Internal vs. external databases
 
-Wix provides a comprehensive platform with integrated database capabilities. You can use the [Data Collections API](https://dev.wix.com/api/sdk/data/collections) to create, modify, and delete data collections in a Wix project or site, and you can use the [Data Items API](https://dev.wix.com/api/sdk/data/items) to access and manage data within those collections.
+Wix provides a comprehensive platform with integrated database capabilities. You can use the [Data Collections API](https://www.wix.com/velo/reference/wix-data-v2/collections) to create, modify, and delete data collections in a Wix project or site, and you can use the [Data Items API](https://www.wix.com/velo/reference/wix-data-v2/items) to access and manage data within those collections.
 
 Wix's database capabilities cover a wide range of use cases for apps that need to store data. However, certain projects have very specific requirements that make it necessary to use an external database. For example, you may need to access existing data that is already stored on an external service, or you may need your data to be stored in a relational database.
 
-Once the connection between an external database and a Wix project or site is established, you can access the collection using Wix Data APIs, including the [Data Items API](https://dev.wix.com/api/sdk/data/items), in the same way you would with a native collection. You can also access the collection through the Content Manager.
+Once the connection between an external database and a Wix project or site is established, you can access the collection using Wix Data APIs, including the [Data Items API](https://www.wix.com/velo/reference/wix-data-v2/items), in the same way you would with a native collection. You can also access the collection through the Content Manager.
 
 For more information on connecting external databases with a Wix site, see [Integrating External Databases with Your Wix Site](https://support.wix.com/en/article/velo-integrating-external-databases-with-your-wix-site).
 
@@ -28,7 +28,7 @@ Otherwise, for details on the required specifications for an external database a
 
 ## Ensuring read-write access
 
-If you want to enable read-write access to your external database using the [Data Items API](https://dev.wix.com/api/sdk/data/items), ensure your external database's table or schema includes the following fields:
+If you want to enable read-write access to your external database using the [Data Items API](https://www.wix.com/velo/reference/wix-data-v2/items), ensure your external database's table or schema includes the following fields:
 * `_id`
 * `_createdDate`
 * `_updatedDate`
