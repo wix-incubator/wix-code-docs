@@ -29,7 +29,7 @@ Functions in the Abandoned Carts API are restricted and only run if you elevate 
 
 Abandoned Carts API events are fired on your site’s backend
 when certain events occur with Abandoned Carts.
-See [wix-stores-backend events](https://www.wix.com/velo/reference/wix-stores-backend/events)
+See [`wix-stores-backend` events](https://www.wix.com/velo/reference/wix-stores-backend/events)
 for more information related to these events.
 
 To use the Abandoned Carts API,
