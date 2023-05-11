@@ -59,3 +59,9 @@ The following functions in the Products API are restricted and only run if you e
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
+
+## Events
+
+Products API events are fired on your site’s backend when certain events occur with products.
+See [`wix-stores-backend` events](https://www.wix.com/velo/reference/wix-stores-backend/events) 
+for more information related to these events.
