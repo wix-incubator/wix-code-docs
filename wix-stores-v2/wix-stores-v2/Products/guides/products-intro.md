@@ -15,7 +15,7 @@ title: Introduction
 > **Note:**
 > This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 
-The eCommerce Products API allows you to manage products to sell.  
+The Stores Products API allows you to manage products to sell.  
 
 With the Products API, you can:
 - [create](#createproduct) and [update](#updateproduct) products
@@ -25,7 +25,7 @@ See [Managing Products](https://support.wix.com/en/managing-products-and-categor
 
 ## Before you begin
 
-To use the Products API, import `{ products }` from the `wix-ecom.v2` module:
+To use the Products API, import `{ products }` from the `wix-stores.v2` module:
 ```js
 import { products } from 'wix-stores.v2';
 ```
