@@ -4,11 +4,11 @@ title: Introduction
 
 # About the Data Items API
 
-The Data Items API allows you to access and manage items in a Wix site or project's data collections.
+The Data Items API allows you to access and manage items in a Wix site's data collections.
 
 With the Data Items API, you can:
 
-+ Create and manage data items in a project or site's collections.
++ Create and manage data items in a site's collections.
 + Retrieve data items from a collection individually or with filtering and sorting queries.
 + Create and manage reference fields.
 + Perform aggregations and calculations on data in collections.
