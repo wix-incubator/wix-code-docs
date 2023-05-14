@@ -8,19 +8,19 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-## Migration of legacy APIs
+### Migration of legacy APIs
 In the past few days, we've re-released a large number of legacy APIs. Behind the scenes, this is part of a large, cross-Wix effort to move all of our APIs to a new infrastructure.
 
 This migration will allow us to release APIs more quickly after they're developed and to align with established design patterns across all of Wix's APIs. This means you can get your hands on better, more consistent APIs, faster than before.
 
 As always, we'll continue to support the legacy APIs, so your existing code will continue to work as it does today.
 
-### What's in this release
+#### What's in this release
 All the new modules are released as a [developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and, unless otherwise mentioned, are [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
 
 Most of the APIs contain the same functionality as the previous version. In some rare cases, a regression was unavoidable. This list outlines the modules (and their respective namespaces) that were released, as well as any new or removed functionality as compared to the previous release:
 
-#### Wix Groups V2 API
+##### Wix Groups V2 API
 
 `wix-groups.v2`
 
@@ -35,7 +35,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     - [`onGroupDescriptionChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdescriptionchanged)
     - [`onGroupCoverChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcoverchanged)
 
-#### Wix Stores V2 API
+##### Wix Stores V2 API
 
 `wix-stores.v2`
 
@@ -48,7 +48,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     New functionality:
     - [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts)
 
-#### Wix Members V2 API
+##### Wix Members V2 API
 
 `wix.members.v2`
 
@@ -64,7 +64,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     - [`onBadgeAssigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeassigned)
     - [`onBadgeUnassigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeunassigned)
 
-#### Wix Ecom V2 API
+##### Wix Ecom V2 API
 
 `wix.ecom.v2`
 
@@ -73,7 +73,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     - `wix-ecom.v2` replaces `wix-pay`. 
     - [`listCurrencies`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) replaces `getAllCurrencies`. 
     
-#### Wix Marketing V2 API
+##### Wix Marketing V2 API
 
 `wix-marketing.v2`
 
