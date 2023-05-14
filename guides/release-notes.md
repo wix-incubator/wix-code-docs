@@ -8,6 +8,76 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+## Migration of legacy APIs
+In the past few days, we've re-released a large number of legacy APIs. Behind the scenes, this is part of a large, cross-Wix effort to move all of our APIs to a new infrastructure.
+
+This migration will allow us to release APIs more quickly after they're developed and to align with established design patterns across all of Wix's APIs. This means you can get your hands on better, more consistent APIs, faster than before.
+
+As always, we'll continue to support the legacy APIs, so your existing code will continue to work as it does today.
+
+### What's in this release
+All the new modules are released as a [developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and, unless otherwise mentioned, are [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version. In some rare cases, a regression was unavoidable. This list outlines the modules (and their respective namespaces) that were released, as well as any new or removed functionality as compared to the previous release:
+
+#### Wix Groups V2 API
+
+`wix-groups.v2`
+
+- Join Group Requests API
+- Members API
+    - `Members.queryMemberships()` no longer has a query builder 
+- Groups API
+    - [`onGroupCreated()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcreated)
+    - [`onGroupDeleted()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdeleted)
+    - [`onGroupDescriptionChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdescriptionchanged)
+    - [`onGroupCoverChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcoverchanged)
+
+#### Wix Stores V2 API
+
+`wix-stores.v2`
+
+- Inventory API
+    - [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants)
+    - [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory)
+
+- Abandoned Carts API
+    - [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts)
+
+#### Wix Members V2 API
+
+`wix.members.v2`
+
+- Badges API
+    - [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) 
+    - [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge)
+    - [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges)
+    - [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder)
+    - [`onBadgeCreated()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgecreated)
+    - [`onBadgeDeleted()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgedeleted)
+    - [`onBadgeUpdated()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeupdated)
+    - [`onBadgeAssigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeassigned)
+    - [`onBadgeUnassigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeunassigned)
+
+#### Wix Ecom V2 API
+
+`wix.ecom.v2`
+
+- Currencies API
+    - `wix-ecom.v2` replaces `wix-pay`. 
+    - `listCurrencies` replaces `getAllCurrencies`. 
+    
+#### Wix Marketing V2 API
+
+`wix-marketing.v2`
+
+- Coupons
+    - [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons)
+    - [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons)
+    - [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon)
+    - [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons) 
+
+
 ### New Developer Preview API: Wix Pricing Plans v2
 
 `wix-pricing-plans.v2`
