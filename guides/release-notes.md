@@ -9,94 +9,76 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ---
 
 ### Migration of legacy APIs
-In the past few days, we've re-released a large number of legacy APIs. Behind the scenes, this is part of a large, cross-Wix effort to move all of our APIs to a new infrastructure.
 
-This migration will allow us to release APIs more quickly after they're developed and to align with established design patterns across all of Wix's APIs. This means you can get your hands on better, more consistent APIs, faster than before.
+In the past week, we've re-released a large number of legacy APIs.
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
 
-As always, we'll continue to support the legacy APIs, so your existing code will continue to work as it does today.
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
 
 #### What's in this release
-All the new modules are released as a [developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and, unless otherwise mentioned, are [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
 
-Most of the APIs contain the same functionality as the previous version. In some rare cases, a regression was unavoidable. This list outlines the modules (and their respective namespaces) that were released, as well as any new or removed functionality as compared to the previous release:
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
 
-##### Wix Groups V2 API
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
 
-`wix-groups.v2`
+`wix-groups.v2`:
 
-- Join Group Requests API
-- Members API
+- JoinGroupRequests replaces JoinRequests.
+- Members:
+  - [`members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships)
+    uses a different query syntax.
+- Roles is not available.
+- CreateRequests is not available.
+- Events: All events are new.
 
-    Removed functionality:
-    - [`Members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships) no longer has a query builder
- 
-- Groups API
+`wix-stores.v2`:
 
-    New functionality:
-    - [`onGroupCreated()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcreated)
-    - [`onGroupDeleted()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdeleted)
-    - [`onGroupDescriptionChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdescriptionchanged)
-    - [`onGroupCoverChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcoverchanged)
+- Inventory
+  - New: [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants).
+  - New: [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory).
+    This function uses a different query syntax.
+- AbandonedCarts:
+  - New: [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts).
+    This function uses a different query syntax.
 
+`wix.members.v2`:
 
-##### Wix Stores V2 API
+- Badges:
+  - New: [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) .
+  - New: [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge).
+  - New: [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges).
+  - New: [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder).
+- Events: All events are new.
 
-`wix-stores.v2`
+`wix.ecom.v2`:
 
-- Inventory API
+- Currencies moved to `wix-ecom.v2` from `wix-pay`.
+  - [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies)
+    replaces `getAllCurrencies()`.
 
-    New functionality:
-    - [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants)
-    - [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory)
+`wix-marketing.v2`:
 
+- Coupons:
+  - New: [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons).
+  - New: [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons).
+  - New: [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon).
+  - New: [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons).
+    This function uses a different query syntax.
 
-- Abandoned Carts API
-
-    New functionality:
-    - [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts)
-
-
-##### Wix Members V2 API
-
-`wix.members.v2`
-
-- Badges API
-
-    New functionality:
-    - [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) 
-    - [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge)
-    - [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges)
-    - [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder)
-    - [`onBadgeCreated()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgecreated)
-    - [`onBadgeDeleted()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgedeleted)
-    - [`onBadgeUpdated()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeupdated)
-    - [`onBadgeAssigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeassigned)
-    - [`onBadgeUnassigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeunassigned)
-
-
-##### Wix Ecom V2 API
-
-`wix.ecom.v2`
-
-- Currencies API
-
-    Changes:
-    - `wix-ecom.v2` replaces `wix-pay`. 
-    - [`listCurrencies`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) replaces `getAllCurrencies`. 
-
-
-##### Wix Marketing V2 API
-
-`wix-marketing.v2`
-
-- Coupons
-
-    New functionality:
-    - [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons)
-    - [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons)
-    - [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon)
-    - [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons) 
-
+(May 15, 2023)
 
 ### New Developer Preview API: Wix Pricing Plans v2
 
