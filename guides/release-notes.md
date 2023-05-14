@@ -28,7 +28,8 @@ Most of the APIs contain the same functionality as the previous version. In some
 - Members API
 
     Removed functionality:
-    - [`Members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships) no longer has a query builder 
+    - [`Members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships) no longer has a query builder
+ 
 - Groups API
 
     New functionality:
@@ -36,6 +37,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     - [`onGroupDeleted()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdeleted)
     - [`onGroupDescriptionChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdescriptionchanged)
     - [`onGroupCoverChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcoverchanged)
+
 
 ##### Wix Stores V2 API
 
@@ -47,16 +49,19 @@ Most of the APIs contain the same functionality as the previous version. In some
     - [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants)
     - [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory)
 
+
 - Abandoned Carts API
 
     New functionality:
     - [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts)
+
 
 ##### Wix Members V2 API
 
 `wix.members.v2`
 
 - Badges API
+
     New functionality:
     - [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) 
     - [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge)
@@ -68,6 +73,7 @@ Most of the APIs contain the same functionality as the previous version. In some
     - [`onBadgeAssigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeassigned)
     - [`onBadgeUnassigned()`](https://www.wix.com/velo/reference/wix-members-v2/events/onbadgeunassigned)
 
+
 ##### Wix Ecom V2 API
 
 `wix.ecom.v2`
@@ -77,7 +83,8 @@ Most of the APIs contain the same functionality as the previous version. In some
     Changes:
     - `wix-ecom.v2` replaces `wix-pay`. 
     - [`listCurrencies`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) replaces `getAllCurrencies`. 
-    
+
+
 ##### Wix Marketing V2 API
 
 `wix-marketing.v2`
