@@ -27,7 +27,7 @@ Most of the APIs contain the same functionality as the previous version. In some
 - Join Group Requests API
 - Members API
     Removed funcionality:
-    - `Members.queryMemberships()` no longer has a query builder 
+    - [`Members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships) no longer has a query builder 
 - Groups API
     New functionality:
     - [`onGroupCreated()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcreated)
