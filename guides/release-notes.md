@@ -8,6 +8,105 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Pricing Plans v2
+
+`wix-pricing-plans.v2`
+
+The new [Wix Pricing Plans API](/wix-pricing-plans-v2) provides functionality
+for creating and managing Plans and Orders.
+
+Functionalities for [Plans](/wix-pricing-plans-v2/plans) include:
+
++ [Getting](/wix-pricing-plans-v2/plans/getplan), [listing](/wix-pricing-plans-v2/plans/listplans), and [querying](/wix-pricing-plans-v2/plans/querypublicplans) plans. 
++ [Creating](/wix-pricing-plans-v2/plans/createplan), [updating](/wix-pricing-plans-v2/plans/updateplan), and [archiving](/wix-pricing-plans-v2/plans/archiveplan) plans. 
++ [Setting a plans visibility](/wix-pricing-plans-v2/plans/setplanvisibility) to be public or hidden.
++ [Getting statistics](/wix-pricing-plans-v2/plans/getplanstats) for plans.
++ [Arranging](/wix-pricing-plans-v2/plans/arrangeplans) plans in a specified order.
++ [Setting](/wix-pricing-plans-v2/plans/makeplanprimary) or [clearing](/wix-pricing-plans-v2/plans/clearprimary) the primary plan.
+
+Functionalities for [Orders](/wix-pricing-plans-v2/orders) include:
+
++ [Getting](/wix-pricing-plans-v2/orders/managementgetorder) and [listing](/wix-pricing-plans-v2/orders/managementlistorders) orders. 
++ [Creating](/wix-pricing-plans-v2/orders/createofflineorder) offline orders.
++ [Marking](/wix-pricing-plans-v2/orders/markaspaid) offline orders as paid.
++ [Preview](/wix-pricing-plans-v2/orders/getpricepreview) pricing details of an order.
++ [Pausing](/wix-pricing-plans-v2/orders/pauseorder), [resuming](/wix-pricing-plans-v2/orders/resumeorder), and [canceling](/wix-pricing-plans-v2/orders/cancelorder) orders.
++ [Extending](/wix-pricing-plans-v2/orders/postponeenddate) order durations.
+
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 8, 2023)
+
+
+### New Developer Preview API: Wix Currencies v2
+
+`wix-ecom.v2`
+
+The new [Wix Currencies API](/wix-ecom-v2/currencies) provides functionality
+for getting exchange rates and converting between currencies.
+
+This API is a newer version of Wix Pay's [Currencies](https://www.wix.com/velo/reference/wix-pay/currencies-obj?branch=jsdoc-migration-wix-pay-currencies-note) API.
+
+Functionalities include:
+
++ [Listing currencies](/wix-ecom-v2/currencies/listcurrencies) supported on your site.
++ [Getting the exchange rate](/wix-ecom-v2/currencies/getconversionrate) between 2 currencies.
++ [Converting amounts](/wix-ecom-v2/currencies/convertcurrency) from 1 currency to another.
+
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 5, 2023)
+
+
+### New Article: Shareable Booking Form Links
+
+`wix-bookings`
+
+The [Shareable Booking Form Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-form-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking form page. This enables you to create a link to a Wix site's booking form page with preset values determined by you. (April 30, 2023)
+
+
+### New Modules for Wix Blocks Panels
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The `wix-widget` and `wix-editor` modules provide functionality for working with Blocks widgets from the [Blocks Panel code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels).
+
+
+* Use [`wix-widget`](/wix-widget) to control a widget's properties, Design Presets, and more. 
+* Use [`wix-editor`](/wix-editor) to remove or restore widget elements, open Dashboard panels, and more.
+
+
+(April 24, 2023)
+
+### New: The $widget Namespace for Wix Blocks Widgets
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The [`$widget`](/$widget) namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code. 
+
+(April 24, 2023)
+
+### New: Blocks Panel Builder Elements
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The following elements can be added to [Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
+
+* [PanelButton]($w/panelbutton)
+* [PanelCheckboxGroup]($w/panelcheckboxgroup)
+* [PanelDropDown]($w/paneldropdown)
+* [PanelRadioButtonGroup]($w/panelradiobuttongroup)
+* [PanelRichText]($w/panelrichtext)
+* [PanelSectionDivider]($w/panelsectiondivider)
+* [PanelSlider]($w/panelslider)
+* [PanelTextInput]($w/paneltextinput)
+* [PanelThumbnails]($w/panelthumbnails)
+* [PanelToggleSwitch]($w/paneltoggleswitch)
+
+(April 24, 2023)
+
 ### New Developer Preview API: Query Wix Extended Bookings
 
 `wix-bookings.v2`
@@ -37,6 +136,7 @@ Functionality includes:
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (April 3, 2023)
+
 ### New Developer Preview API: Wix Bookings Pricing 
 
 `wix-bookings.v2`
