@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# Introduction
+
 Wix Stores events are fired in your site's backend when certain events occur in your site's store. You can write event handlers that react to these events. Event handler functions receive data that corresponds to the event that has occurred. Use event handlers to create custom responses to store events.
 
 To add a store event handler, add an **events.js** file to the **Backend** section of your site if one does not already exist. All event handler functions for your site are defined in this file.
