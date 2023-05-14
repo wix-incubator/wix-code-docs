@@ -65,7 +65,7 @@ Most of the APIs contain the same functionality as the previous version. In some
 
 - Currencies API
     - `wix-ecom.v2` replaces `wix-pay`. 
-    - `listCurrencies` replaces `getAllCurrencies`. 
+    - [`listCurrencies`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) replaces `getAllCurrencies`. 
     
 #### Wix Marketing V2 API
 
