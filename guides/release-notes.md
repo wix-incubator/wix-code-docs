@@ -26,8 +26,10 @@ Most of the APIs contain the same functionality as the previous version. In some
 
 - Join Group Requests API
 - Members API
+    Removed funcionality:
     - `Members.queryMemberships()` no longer has a query builder 
 - Groups API
+    New functionality:
     - [`onGroupCreated()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupcreated)
     - [`onGroupDeleted()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdeleted)
     - [`onGroupDescriptionChanged()`](https://www.wix.com/velo/reference/wix-groups-v2/events/ongroupdescriptionchanged)
@@ -38,10 +40,12 @@ Most of the APIs contain the same functionality as the previous version. In some
 `wix-stores.v2`
 
 - Inventory API
+    New functionality:
     - [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants)
     - [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory)
 
 - Abandoned Carts API
+    New functionality:
     - [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts)
 
 #### Wix Members V2 API
@@ -49,6 +53,7 @@ Most of the APIs contain the same functionality as the previous version. In some
 `wix.members.v2`
 
 - Badges API
+    New functionality:
     - [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) 
     - [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge)
     - [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges)
@@ -64,6 +69,7 @@ Most of the APIs contain the same functionality as the previous version. In some
 `wix.ecom.v2`
 
 - Currencies API
+    Changes:
     - `wix-ecom.v2` replaces `wix-pay`. 
     - [`listCurrencies`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies) replaces `getAllCurrencies`. 
     
@@ -72,6 +78,7 @@ Most of the APIs contain the same functionality as the previous version. In some
 `wix-marketing.v2`
 
 - Coupons
+    New functionality:
     - [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons)
     - [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons)
     - [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon)
