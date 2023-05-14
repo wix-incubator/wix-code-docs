@@ -46,7 +46,7 @@ as well as any new or removed functionality as compared to the previous release:
 
 `wix-stores.v2`:
 
-- Inventory
+- Inventory:
   - New: [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants).
   - New: [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory).
     This function uses a different query syntax.
