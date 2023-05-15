@@ -8,35 +8,96 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### New Developer Preview API: Wix Pricing Plans v2
+### Migration of legacy APIs
 
-`wix-pricing-plans.v2`
+In the past week, we've re-released a large number of legacy APIs.
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
 
-The new [Wix Pricing Plans API](/wix-pricing-plans-v2) provides functionality
-for creating and managing Plans and Orders.
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
 
-Functionalities for [Plans](/wix-pricing-plans-v2/plans) include:
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
 
-+ [Getting](/wix-pricing-plans-v2/plans/getplan), [listing](/wix-pricing-plans-v2/plans/listplans), and [querying](/wix-pricing-plans-v2/plans/querypublicplans) plans. 
-+ [Creating](/wix-pricing-plans-v2/plans/createplan), [updating](/wix-pricing-plans-v2/plans/updateplan), and [archiving](/wix-pricing-plans-v2/plans/archiveplan) plans. 
-+ [Setting a plans visibility](/wix-pricing-plans-v2/plans/setplanvisibility) to be public or hidden.
-+ [Getting statistics](/wix-pricing-plans-v2/plans/getplanstats) for plans.
-+ [Arranging](/wix-pricing-plans-v2/plans/arrangeplans) plans in a specified order.
-+ [Setting](/wix-pricing-plans-v2/plans/makeplanprimary) or [clearing](/wix-pricing-plans-v2/plans/clearprimary) the primary plan.
+#### What's in this release
 
-Functionalities for [Orders](/wix-pricing-plans-v2/orders) include:
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
 
-+ [Getting](/wix-pricing-plans-v2/orders/managementgetorder) and [listing](/wix-pricing-plans-v2/orders/managementlistorders) orders. 
-+ [Creating](/wix-pricing-plans-v2/orders/createofflineorder) offline orders.
-+ [Marking](/wix-pricing-plans-v2/orders/markaspaid) offline orders as paid.
-+ [Preview](/wix-pricing-plans-v2/orders/getpricepreview) pricing details of an order.
-+ [Pausing](/wix-pricing-plans-v2/orders/pauseorder), [resuming](/wix-pricing-plans-v2/orders/resumeorder), and [canceling](/wix-pricing-plans-v2/orders/cancelorder) orders.
-+ [Extending](/wix-pricing-plans-v2/orders/postponeenddate) order durations.
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
 
+`wix-groups.v2`:
 
-**Note:** This module is in [Developer Preview](./developer-preview.md).
+- JoinGroupRequests replaces JoinRequests.
+- Members:
+  - [`members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships)
+    uses a different query syntax.
+- Roles is not available.
+- CreateRequests is not available.
+- Events: All events are new.
 
-(May 8, 2023)
+`wix-stores.v2`:
+
+- Inventory:
+  - New: [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants).
+  - New: [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory).
+    This function uses a different query syntax.
+- AbandonedCarts:
+  - New: [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts).
+    This function uses a different query syntax.
+
+`wix.members.v2`:
+
+- Badges:
+  - New: [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) .
+  - New: [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge).
+  - New: [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges).
+  - New: [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder).
+- Events: All events are new.
+
+`wix.ecom.v2`:
+
+- Currencies moved to `wix-ecom.v2` from `wix-pay`.
+  - [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies)
+    replaces `getAllCurrencies()`.
+
+`wix-marketing.v2`:
+
+- Coupons:
+  - New: [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons).
+  - New: [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons).
+  - New: [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon).
+  - New: [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons).
+    This function uses a different query syntax.
+
+ `wix-pricing-plans.v2`
+
+- Plans:
+  - All plan functions moved to `wix-pricing-plans.v2` Plans from `wix-pricing-plans-backend`.
+- Orders:
+  - [`managementGetOrder()`](/wix-pricing-plans-v2/orders/managementgetorder) replaces `getOrder()`.
+  - [`managementListOrders()`](/wix-pricing-plans-v2/orders/managementlistorders) replaces `listOrders()`.
+  - [`memberGetOrder()`](/wix-pricing-plans-v2/orders/membergetorder) replaces `getCurrentMemberOrder()`.
+  - [`memberListOrders()`](/wix-pricing-plans-v2/orders/memberlistorders) replaces `listCurrentMemberOrders()`.
+  - [`requestCancellation()`](/wix-pricing-plans-v2/orders/requestcancellation) replaces `requestCurrentMemberOrderCancellation()`
+
+  - [`createOfflineOrder()`](/wix-pricing-plans-v2/orders/createofflineorder) moved to Orders from Checkout.
+  - [`getOfflineOrderPreview()`](/wix-pricing-plans-v2/orders/getofflineorderpreview) moved to Orders and replaces `previewOfflineOrder()` from Checkout.
+  - [`getPricePreview()`](/wix-pricing-plans-v2/orders/getpricepreview) moved to Orders and replaces `previewPrice()` from Checkout.
+- Checkout is not available.
+- Events:
+  - `onPlanPurchased()` is not available.
+  - `onPlanUpdated()` is not available.
+
+(May 15, 2023)
 
 
 ### New Developer Preview API: Wix Currencies v2
