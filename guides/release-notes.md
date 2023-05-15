@@ -78,37 +78,26 @@ as well as any new or removed functionality as compared to the previous release:
   - New: [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons).
     This function uses a different query syntax.
 
+ `wix-pricing-plans.v2`
+
+- Plans:
+  - All plan functions moved to `wix-pricing-plans.v2` Plans from `wix-pricing-plans-backend`.
+- Orders:
+  - [`managementGetOrder()`](/wix-pricing-plans-v2/orders/managementgetorder) replaces `getOrder()`.
+  - [`managementListOrders()`](/wix-pricing-plans-v2/orders/managementlistorders) replaces `listOrders()`.
+  - [`memberGetOrder()`](/wix-pricing-plans-v2/orders/membergetorder) replaces `getCurrentMemberOrder()`.
+  - [`memberListOrders()`](/wix-pricing-plans-v2/orders/memberlistorders) replaces `listCurrentMemberOrders()`.
+  - [`requestCancellation()`](/wix-pricing-plans-v2/orders/requestcancellation) replaces `requestCurrentMemberOrderCancellation()`
+
+  - [`createOfflineOrder()`](/wix-pricing-plans-v2/orders/createofflineorder) moved to Orders from Checkout.
+  - [`getOfflineOrderPreview()`](/wix-pricing-plans-v2/orders/getofflineorderpreview) moved to Orders and replaces `previewOfflineOrder()` from Checkout.
+  - [`getPricePreview()`](/wix-pricing-plans-v2/orders/getpricepreview) moved to Orders and replaces `previewPrice()` from Checkout.
+- Checkout is not available.
+- Events:
+  - `onPlanPurchased()` is not available.
+  - `onPlanUpdated()` is not available.
+
 (May 15, 2023)
-
-### New Developer Preview API: Wix Pricing Plans v2
-
-`wix-pricing-plans.v2`
-
-The new [Wix Pricing Plans API](/wix-pricing-plans-v2) provides functionality
-for creating and managing Plans and Orders.
-
-Functionalities for [Plans](/wix-pricing-plans-v2/plans) include:
-
-+ [Getting](/wix-pricing-plans-v2/plans/getplan), [listing](/wix-pricing-plans-v2/plans/listplans), and [querying](/wix-pricing-plans-v2/plans/querypublicplans) plans. 
-+ [Creating](/wix-pricing-plans-v2/plans/createplan), [updating](/wix-pricing-plans-v2/plans/updateplan), and [archiving](/wix-pricing-plans-v2/plans/archiveplan) plans. 
-+ [Setting a plans visibility](/wix-pricing-plans-v2/plans/setplanvisibility) to be public or hidden.
-+ [Getting statistics](/wix-pricing-plans-v2/plans/getplanstats) for plans.
-+ [Arranging](/wix-pricing-plans-v2/plans/arrangeplans) plans in a specified order.
-+ [Setting](/wix-pricing-plans-v2/plans/makeplanprimary) or [clearing](/wix-pricing-plans-v2/plans/clearprimary) the primary plan.
-
-Functionalities for [Orders](/wix-pricing-plans-v2/orders) include:
-
-+ [Getting](/wix-pricing-plans-v2/orders/managementgetorder) and [listing](/wix-pricing-plans-v2/orders/managementlistorders) orders. 
-+ [Creating](/wix-pricing-plans-v2/orders/createofflineorder) offline orders.
-+ [Marking](/wix-pricing-plans-v2/orders/markaspaid) offline orders as paid.
-+ [Preview](/wix-pricing-plans-v2/orders/getpricepreview) pricing details of an order.
-+ [Pausing](/wix-pricing-plans-v2/orders/pauseorder), [resuming](/wix-pricing-plans-v2/orders/resumeorder), and [canceling](/wix-pricing-plans-v2/orders/cancelorder) orders.
-+ [Extending](/wix-pricing-plans-v2/orders/postponeenddate) order durations.
-
-
-**Note:** This module is in [Developer Preview](./developer-preview.md).
-
-(May 8, 2023)
 
 
 ### New Developer Preview API: Wix Currencies v2
