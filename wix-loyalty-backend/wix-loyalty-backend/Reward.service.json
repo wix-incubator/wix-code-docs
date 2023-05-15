@@ -43,8 +43,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a reward.",
-        "description": [],
+        "summary": "Creates a reward that can be redeemed with loyalty points.",
+        "description": [
+          "When a customer [redeems a reward](/coupons/redeem-points-for-coupon), a loyalty coupon is created\nbased on the specifications detailed in either the `discountAmount` or `couponReward` fields. This coupon can\nthen be used by the customer to receive the discount. Note that while the Rewards API uses coupon scopes and specifications,\nno coupon is actually created until a [reward is redeemed](/coupons/redeem-points-for-coupon) with points.\nSee the [Coupons API](https://dev.wix.com/api/rest/coupons) for more information about coupons. The `type` of reward\ncannot be updated.\n\nA reward's `active` status defaults to `false`. To make the reward available to customers,\neither set the `active` field to `true` during creation or call [Update Reward](/update-reward)\nto change the status.\n\nTo customize a reward for each [loyalty tier](/tiers), use the `configsByTier` parameter.\nThis allows you to specify the amount of the earned discount, the cost in loyalty points\nto redeem the reward, and the tier to which this configuration applies. Each tier requires its own\n`configsByTier` configuration. To create a reward that is available to loyalty accounts in the base tier,\nleave the `tierId` field empty. See the [Tiers API](/tiers) for more information on tiers."
+        ],
         "examples": [
           {
             "title": "createReward example",
@@ -181,7 +183,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a reward.\nThis API will return Reward with deprecated fields for backward compatibility",
+        "summary": "Retrieves a reward.",
         "description": [],
         "examples": [
           {
@@ -243,9 +245,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves rewards, given the provided filters.",
+        "summary": "Retrieves a list of rewards.",
         "description": [
-          "> This API will return Reward with deprecated fields for backward compatibility\n> **Notes:**\n> * Only `active` rewards are retrieved.\n> * Includes also rewards that cannot be redeemed because no customer has earned enough points yet."
+          "Only rewards with `\"active\"` set to `\"true\"` will be retrieved. The list includes rewards that are currently\nunredeemable due to insufficient points held by any customers."
         ],
         "examples": [
           {
@@ -322,8 +324,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Updates a loyalty reward.\nThis API will return Reward with deprecated fields for backward compatibility\nBase Tier is taken either from deprecated fields, or config (if deprecated fields are not passed)",
-        "description": [],
+        "summary": "Updates a loyalty reward.",
+        "description": [
+          "Use this endpoint to update details of a reward, such as the name, whether or not a reward is active,\nor the amount of points it costs to redeem. Also use this endpoint to add new tiers that are eligible to redeem a reward.\n\nYou may not change the `type` of a reward. That is set upon creation and cannot be updated."
+        ],
         "examples": [
           {
             "title": "updateReward example",
@@ -492,7 +496,7 @@
               "referenceType": "wix-loyalty-backend.Reward.BulkActionMetadata"
             }
           ],
-          "doc": ""
+          "doc": "Total successes and failures of the bulk create rewards action."
         },
         {
           "name": "results",
@@ -699,7 +703,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Tier ID, or None if base Tier"
+          "doc": "Tier ID, or empty if config applies to the base tier."
         }
       ],
       "docs": {
@@ -719,7 +723,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "If true, coupon also applies to subscriptions."
+          "doc": "Whether the coupon also applies to subscriptions."
         },
         {
           "name": "discountedCycleCount",
@@ -729,7 +733,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Specifies the amount of discounted cycles for subscription item. See Stores Coupons documentation for more info."
+          "doc": "Specifies the amount of discounted cycles for a subscription item.\n\nCan only be set when `appliesToSubscriptions` is `true` and `scope.namespace` is `pricingPlans`.\nIf `discountedCycleCount` is empty, the coupon applies to all available cycles.\n\nMin: `1`\nMax: `999`\n"
         },
         {
           "name": "fixedAmount",
@@ -759,7 +763,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Limit the coupon to only apply to one item in cart."
+          "doc": "Whether the coupon is limited to one item."
         },
         {
           "name": "minimumSubtotal",
@@ -769,7 +773,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Limit the coupon to carts with a subtotal above this number."
+          "doc": "Limit the coupon to carts with a subtotal greater than this number."
         },
         {
           "name": "percentage",
@@ -789,7 +793,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CouponScope"
             }
           ],
-          "doc": "Specifies the type of line items this coupon will apply to."
+          "doc": "Specifies the type of line items this coupon will apply to.\nFor more information, see [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values)."
         }
       ],
       "extra": {
@@ -868,7 +872,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Limit the coupon to carts with a subtotal above this number."
+          "doc": "Limit the coupon to carts with a subtotal greater than this number."
         },
         {
           "name": "scope",
@@ -878,7 +882,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CouponScope"
             }
           ],
-          "doc": "Specifies the type of line items this coupon will apply to."
+          "doc": "Specifies the type of line items this coupon will apply to.\nFor more information, see [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values)."
         }
       ],
       "docs": {
@@ -898,7 +902,7 @@
               "referenceType": "wix-loyalty-backend.Reward.Group"
             }
           ],
-          "doc": ""
+          "doc": "Coupon scope's applied group.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid groups.\n"
         },
         {
           "name": "namespace",
@@ -908,7 +912,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Scope namespace.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid namespaces.\n"
         }
       ],
       "docs": {
@@ -1144,7 +1148,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number. Increments by 1 each time the reward is updated.\nTo prevent conflicting changes, the existing `revision` must be used when deleting the reward."
+          "doc": "Revision number, which increments by `\"1\"` each time the reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when deleting the reward.\n"
         }
       ],
       "docs": {
@@ -1173,7 +1177,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number. Increments by 1 each time the reward is updated.\nTo prevent conflicting changes, the existing `revision` must be used when deleting the reward."
+          "doc": "Revision number, which increments by `\"1\"` each time the reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when deleting the reward.\n"
         }
       ],
       "docs": {
@@ -1209,7 +1213,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Discount details for each tier."
         }
       ],
       "docs": {
@@ -1229,7 +1233,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Discount amount when redeeming the reward. Must be a positive value."
+          "doc": "Discount amount. Must be a positive value."
         },
         {
           "name": "costInPoints",
@@ -1239,7 +1243,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Amount of points required to receive the reward."
+          "doc": "Amount of points required to redeem the reward."
         },
         {
           "name": "tierId",
@@ -1249,7 +1253,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Tier ID, or None if base Tier"
+          "doc": "Tier ID, or empty if config applies to the base tier."
         }
       ],
       "docs": {
@@ -1568,7 +1572,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Discount details for each tier."
         }
       ],
       "docs": {
@@ -1588,7 +1592,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Discount amount."
         },
         {
           "name": "costInPoints",
@@ -1598,7 +1602,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of points required to redeem the reward."
         },
         {
           "name": "tierId",
@@ -1608,7 +1612,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Tier ID, or empty if config applies to the base tier."
         }
       ],
       "docs": {
@@ -1635,7 +1639,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Discount details for each tier."
         }
       ],
       "docs": {
@@ -1655,7 +1659,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of points required to redeem the reward."
         },
         {
           "name": "tierId",
@@ -1665,7 +1669,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Tier ID, or empty if config applies to the base tier."
         }
       ],
       "docs": {
@@ -1724,7 +1728,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Entity ID, if the coupon scope is limited to just one item."
         },
         {
           "name": "name",
@@ -1734,7 +1738,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Name of coupon scope's group.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid groups.\n"
         }
       ],
       "docs": {
@@ -1804,7 +1808,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CursorPaging"
             }
           ],
-          "doc": ""
+          "doc": "Pagination options."
         }
       ],
       "docs": {
@@ -1824,7 +1828,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CursorPaging"
             }
           ],
-          "doc": ""
+          "doc": "Pagination options."
         }
       ],
       "docs": {
@@ -1844,7 +1848,7 @@
               "referenceType": "wix-loyalty-backend.Reward.PagingMetadataV2"
             }
           ],
-          "doc": ""
+          "doc": "Details on the paged set of results returned."
         },
         {
           "name": "rewards",
@@ -1861,7 +1865,7 @@
               }
             }
           ],
-          "doc": "Retrieved rewards."
+          "doc": "Retrieved loyalty rewards."
         }
       ],
       "docs": {
@@ -1948,7 +1952,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Discount details for each tier."
         }
       ],
       "docs": {
@@ -1968,7 +1972,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of points required to redeem the reward."
         },
         {
           "name": "percentage",
@@ -1978,7 +1982,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Percentage discount."
         },
         {
           "name": "tierId",
@@ -1988,7 +1992,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Tier ID, or empty if config applies to the base tier."
         }
       ],
       "docs": {
@@ -2027,7 +2031,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CursorPagingMetadata"
             }
           ],
-          "doc": ""
+          "doc": "Details on the paged set of results returned."
         },
         {
           "name": "rewards",
@@ -2044,7 +2048,7 @@
               }
             }
           ],
-          "doc": "Retrieved rewards."
+          "doc": "Retrieved loyalty rewards."
         }
       ],
       "docs": {
@@ -2097,7 +2101,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the reward is active."
+          "doc": "Whether the reward is active.\n\nDefault: `\"false\"`\n"
         },
         {
           "name": "couponReward",
@@ -2107,7 +2111,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CouponReward"
             }
           ],
-          "doc": ""
+          "doc": "Coupon details."
         },
         {
           "name": "discountAmount",
@@ -2117,7 +2121,7 @@
               "referenceType": "wix-loyalty-backend.Reward.DiscountAmount"
             }
           ],
-          "doc": "Discount amount."
+          "doc": "Discount details."
         },
         {
           "name": "name",
@@ -2131,13 +2135,14 @@
         },
         {
           "name": "revision",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number. Increments by 1 each time the reward is updated.\nTo prevent conflicting changes, the existing `revision` must be used when updating the reward."
+          "doc": "Revision number, which increments by `\"1\"` each time the loyalty reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the loyalty reward."
         },
         {
           "name": "type",
@@ -2147,7 +2152,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reward type. `DISCOUNT_AMOUNT` or `COUPON_REWARD`."
+          "doc": "Reward type.\n\n+ `\"DISCOUNT_AMOUNT\"`: Discount reward. Only available for Wix Restaurants. [Learn more about discounts.](https://support.wix.com/en/article/wix-restaurants-creating-discounts-for-your-customers)\n+ `\"COUPON_REWARD\"`: Coupon reward. [Learn more about coupons.](https://support.wix.com/en/article/using-coupons-as-loyalty-rewards)\n+ `\"COUPON\"`: **Deprecated.** Use `\"COUPON_REWARD\"` instead.\n"
         }
       ],
       "extra": {
@@ -2164,7 +2169,7 @@
       },
       "docs": {
         "description": [
-          "Reward Entity for a single tier, or base tier if tier_id is None. Used to represent Reward for UoU"
+          "A loyalty reward is an object a customer can redeem with loyalty points.\nRedeeming a reward then creates a loyalty coupon that the customer can use."
         ]
       }
     },
@@ -2188,7 +2193,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CouponReward"
             }
           ],
-          "doc": ""
+          "doc": "Coupon details."
         },
         {
           "name": "discountAmount",
@@ -2198,7 +2203,7 @@
               "referenceType": "wix-loyalty-backend.Reward.DiscountAmount"
             }
           ],
-          "doc": "Discount amount."
+          "doc": "Discount details."
         }
       ],
       "docs": {
@@ -2318,7 +2323,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the reward is active."
+          "doc": "Whether the reward is active.\n\nDefault: `\"false\"`\n"
         },
         {
           "name": "couponReward",
@@ -2328,7 +2333,7 @@
               "referenceType": "wix-loyalty-backend.Reward.CouponReward"
             }
           ],
-          "doc": ""
+          "doc": "Coupon details."
         },
         {
           "name": "discountAmount",
@@ -2338,7 +2343,7 @@
               "referenceType": "wix-loyalty-backend.Reward.DiscountAmount"
             }
           ],
-          "doc": "Discount amount."
+          "doc": "Discount details."
         },
         {
           "name": "name",
@@ -2352,13 +2357,14 @@
         },
         {
           "name": "revision",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Revision number. Increments by 1 each time the reward is updated.\nTo prevent conflicting changes, the existing `revision` must be used when updating the reward."
+          "doc": "Revision number, which increments by `\"1\"` each time the loyalty reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the loyalty reward."
         },
         {
           "name": "type",
@@ -2368,7 +2374,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reward type. `DISCOUNT_AMOUNT` or `COUPON_REWARD`."
+          "doc": "Reward type.\n\n+ `\"DISCOUNT_AMOUNT\"`: Discount reward. Only available for Wix Restaurants. [Learn more about discounts.](https://support.wix.com/en/article/wix-restaurants-creating-discounts-for-your-customers)\n+ `\"COUPON_REWARD\"`: Coupon reward. [Learn more about coupons.](https://support.wix.com/en/article/using-coupons-as-loyalty-rewards)\n+ `\"COUPON\"`: **Deprecated.** Use `\"COUPON_REWARD\"` instead.\n"
         }
       ],
       "docs": {
@@ -2387,7 +2393,7 @@
               "referenceType": "wix-loyalty-backend.Reward.Reward"
             }
           ],
-          "doc": "Reward to update."
+          "doc": "Reward information to update."
         }
       ],
       "docs": {
