@@ -52,5 +52,3 @@ The following table shows field support for filters for recurring session defini
 | --------------- | --------------------------------------------- |
 | `scheduleId` | `eq`, `in` |
 
-To learn about working with _Query_ endpoints in general, see
-[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).
