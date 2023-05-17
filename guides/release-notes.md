@@ -8,7 +8,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### New Feature: fields() function in Wix Data query
+### New Feature: `fields()` function in Wix Data query
 
 `wix-data`
 
