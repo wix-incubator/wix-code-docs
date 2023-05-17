@@ -22,7 +22,7 @@ A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fiel
 
 `Wix Editor Elements ($w)`
 
-You can now delete and restore elements from DOM.  
+You can now delete and restore elements from the DOM.  
 
 A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
 2 new functions have been added:
