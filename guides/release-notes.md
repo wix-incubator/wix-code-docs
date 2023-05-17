@@ -8,6 +8,173 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### Migration of legacy APIs
+
+In the past week, we've re-released a large number of legacy APIs.
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
+
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+#### What's in this release
+
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
+
+`wix-groups.v2`:
+
+- JoinGroupRequests replaces JoinRequests.
+- Members:
+  - [`members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships)
+    uses a different query syntax.
+- Roles is not available.
+- CreateRequests is not available.
+- Events: All events are new.
+
+`wix-stores.v2`:
+
+- Inventory:
+  - New: [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants).
+  - New: [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory).
+    This function uses a different query syntax.
+- AbandonedCarts:
+  - New: [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts).
+    This function uses a different query syntax.
+
+`wix.members.v2`:
+
+- Badges:
+  - New: [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) .
+  - New: [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge).
+  - New: [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges).
+  - New: [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder).
+- Events: All events are new.
+
+`wix.ecom.v2`:
+
+- Currencies moved to `wix-ecom.v2` from `wix-pay`.
+  - [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies)
+    replaces `getAllCurrencies()`.
+
+`wix-marketing.v2`:
+
+- Coupons:
+  - New: [`bulkCreateCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkcreatecoupons).
+  - New: [`bulkDeleteCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/bulkdeletecoupons).
+  - New: [`getCoupon()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/getcoupon).
+  - New: [`queryCoupons()`](https://www.wix.com/velo/reference/wix-marketing-v2/coupons/querycoupons).
+    This function uses a different query syntax.
+
+ `wix-pricing-plans.v2`
+
+- Plans:
+  - All plan functions moved to `wix-pricing-plans.v2` Plans from `wix-pricing-plans-backend`.
+- Orders:
+  - [`managementGetOrder()`](/wix-pricing-plans-v2/orders/managementgetorder) replaces `getOrder()`.
+  - [`managementListOrders()`](/wix-pricing-plans-v2/orders/managementlistorders) replaces `listOrders()`.
+  - [`memberGetOrder()`](/wix-pricing-plans-v2/orders/membergetorder) replaces `getCurrentMemberOrder()`.
+  - [`memberListOrders()`](/wix-pricing-plans-v2/orders/memberlistorders) replaces `listCurrentMemberOrders()`.
+  - [`requestCancellation()`](/wix-pricing-plans-v2/orders/requestcancellation) replaces `requestCurrentMemberOrderCancellation()`
+
+  - [`createOfflineOrder()`](/wix-pricing-plans-v2/orders/createofflineorder) moved to Orders from Checkout.
+  - [`getOfflineOrderPreview()`](/wix-pricing-plans-v2/orders/getofflineorderpreview) moved to Orders and replaces `previewOfflineOrder()` from Checkout.
+  - [`getPricePreview()`](/wix-pricing-plans-v2/orders/getpricepreview) moved to Orders and replaces `previewPrice()` from Checkout.
+- Checkout is not available.
+- Events:
+  - `onPlanPurchased()` is not available.
+  - `onPlanUpdated()` is not available.
+
+(May 15, 2023)
+
+### New Bookings Custom Pricing Extension
+
+SPI: `wix-bookings` 
+
+The new [Wix Bookings Custom Pricing extension](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing) gives you the ability to customize pricing for bookings. Use the [calculatePrice()](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing/calculateprice) SPI function to integrate your own custom pricing logic, such as varied pricing for weekend rates or use of special equipment, and so on. Learn more with [this tutorial](https://support.wix.com/en/article/velo-tutorial-bookings-pricing-custom-extension).
+
+(May 17, 2023)
+
+### New Developer Preview API: Wix Currencies v2
+
+`wix-ecom.v2`
+
+The new [Wix Currencies API](/wix-ecom-v2/currencies) provides functionality
+for getting exchange rates and converting between currencies.
+
+This API is a newer version of Wix Pay's [Currencies](https://www.wix.com/velo/reference/wix-pay/currencies-obj?branch=jsdoc-migration-wix-pay-currencies-note) API.
+
+Functionalities include:
+
++ [Listing currencies](/wix-ecom-v2/currencies/listcurrencies) supported on your site.
++ [Getting the exchange rate](/wix-ecom-v2/currencies/getconversionrate) between 2 currencies.
++ [Converting amounts](/wix-ecom-v2/currencies/convertcurrency) from 1 currency to another.
+
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 5, 2023)
+
+
+### New Article: Shareable Booking Form Links
+
+`wix-bookings`
+
+The [Shareable Booking Form Links](https://www.wix.com/velo/reference/wix-bookings/shareable-booking-form-links) article explains how to use query parameters to create a custom shareable link to a Wix site's booking form page. This enables you to create a link to a Wix site's booking form page with preset values determined by you. (April 30, 2023)
+
+
+### New Modules for Wix Blocks Panels
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The `wix-widget` and `wix-editor` modules provide functionality for working with Blocks widgets from the [Blocks Panel code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels).
+
+
+* Use [`wix-widget`](/wix-widget) to control a widget's properties, Design Presets, and more. 
+* Use [`wix-editor`](/wix-editor) to remove or restore widget elements, open Dashboard panels, and more.
+
+
+(April 24, 2023)
+
+### New: The $widget Namespace for Wix Blocks Widgets
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The [`$widget`](/$widget) namespace contains functionality for working with your [Blocks widget's API](https://support.wix.com/en/article/wix-blocks-about-the-widget-api) from within the widget code. 
+
+(April 24, 2023)
+
+### New: Blocks Panel Builder Elements
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The following elements can be added to [Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
+
+* [PanelButton]($w/panelbutton)
+* [PanelCheckboxGroup]($w/panelcheckboxgroup)
+* [PanelDropDown]($w/paneldropdown)
+* [PanelRadioButtonGroup]($w/panelradiobuttongroup)
+* [PanelRichText]($w/panelrichtext)
+* [PanelSectionDivider]($w/panelsectiondivider)
+* [PanelSlider]($w/panelslider)
+* [PanelTextInput]($w/paneltextinput)
+* [PanelThumbnails]($w/panelthumbnails)
+* [PanelToggleSwitch]($w/paneltoggleswitch)
+
+(April 24, 2023)
+
 ### New Developer Preview API: Query Wix Extended Bookings
 
 `wix-bookings.v2`
@@ -37,6 +204,7 @@ Functionality includes:
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (April 3, 2023)
+
 ### New Developer Preview API: Wix Bookings Pricing 
 
 `wix-bookings.v2`
