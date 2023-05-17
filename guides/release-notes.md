@@ -18,7 +18,7 @@ A new [fields()](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields
 
 (May 17, 2023)
 
-### New Feature: Delete/Restore elements from DOM
+### New Feature: Delete/Restore elements from the DOM
 
 `Wix Editor Elements ($w)`
 
