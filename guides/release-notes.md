@@ -8,6 +8,29 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Feature: `fields()` function in Wix Data query
+
+`wix-data`
+
+You can now select which fields a query returns.  
+
+A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+
+(May 17, 2023)
+
+### New Feature: Delete/Restore elements from the DOM
+
+`Wix Editor Elements ($w)`
+
+You can now delete and restore elements from the DOM.  
+
+A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
+2 new functions have been added:
++ [`delete()`](https://www.wix.com/velo/reference/$w/element/delete)
++ [`restore()`](https://www.wix.com/velo/reference/$w/element/restore)  
+
+(May 17, 2023)
+
 ### Migration of legacy APIs
 
 In the past week, we've re-released a large number of legacy APIs.
