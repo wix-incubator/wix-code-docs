@@ -14,7 +14,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 You can now select which fields a query returns.  
 
-A new [fields()](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
 
 (May 17, 2023)
 
