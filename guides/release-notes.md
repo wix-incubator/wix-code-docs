@@ -27,7 +27,7 @@ You can now delete and restore elements from DOM.
 A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
 2 new functions have been added:
 + [delete()](https://www.wix.com/velo/reference/$w/element/delete)
-+ [restore()](https://www.wix.com/velo/reference/$w/element/restore)  
++ [`restore()`](https://www.wix.com/velo/reference/$w/element/restore)  
 
 (May 17, 2023)
 
