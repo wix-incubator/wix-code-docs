@@ -24,9 +24,9 @@ wixData.query("Members/FullData")
 
 This document describes the permissions and fields in your FullData collection.
 
-> **Note:**
 <!-- > - This collection has some read-write fields. This means you can use the [Wix Data](/wix-data) and [Wix Dataset](/wix-dataset) APIs to manage these fields. 
 > - For read-only fields,  -->
+> **Note:**
 > You manage your Members in the [Site Members](https://support.wix.com/en/article/viewing-your-member-list) section of your dashboard.
 
 > **Important:**
