@@ -128,6 +128,8 @@ For example:
 
 ### `.lightbox`
 
+> **Note:** If `lightbox` has media background set up in the design panel, for example an image or  color, then CSS properties will not apply to it. To apply CSS properties, first remove images from the component and set the opacity in the panel to 0.   
+
 Targets lightbox elements.
 For example:
 
