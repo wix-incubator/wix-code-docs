@@ -1,11 +1,17 @@
 # Sessions: Supported Filters
 
-Field support for filters depends on the type of sessions you are querying: session instances of type `EVENT`, session instances of all types, or recurring session definitions.
-They also depend on whether `includeExternal` is `true`.
+The following tables shows property support for filters for the session object.
 
-## Wix Calendar session instances of type `EVENT` (Default)
+Field support for filters depends on the type of sessions:
 
-The following table shows field support for filters for session instances of type `EVENT` when `includeExternal` is `false`:
+* Event-type sessions.
+* Recurring session definitions.
+* Any type of sessions.
+**Note** Field Support for filters also depend on whether external calendars are included.
+
+## Wix Calendar of type EVENT
+
+The following table shows field support for filters for session of type `EVENT` when you do not include external calendars:
 
 
 | Field           | Supported Filters                             |
@@ -30,9 +36,9 @@ The following table shows field support for filters for session instances of typ
 | `calendarConference` | `exists` |
 | `instanceOfRecurrence` | `eq`, `ne`, `in`, `exists` | 
 
-## Session instances of all types
+## Sessions of any type
 
-The following table shows field support for filters for session instances of all types. When `includeExternal` is `true` this table always applies, even if you only query session instances of type `EVENT`:
+The following table shows field support for filters for session of all types. When `includeExternal` is `true` this table always applies, even if you only query session of type `EVENT`:
 
 | Field | Supported Filters  |
 | ----- | ------------------ |
@@ -46,9 +52,12 @@ The following table shows field support for filters for session instances of all
 
 ## Recurring sessions
 
-The following table shows field support for filters for recurring session definitions:
+The following table shows field support for filters for recurring sessions:
 
 | Field           | Supported Filters                             |
 | --------------- | --------------------------------------------- |
 | `scheduleId` | `eq`, `in` |
 
+__Related content:__
+[`listSessions()`](https://example.com/),
+[`querySessions()`](https://example.com)
