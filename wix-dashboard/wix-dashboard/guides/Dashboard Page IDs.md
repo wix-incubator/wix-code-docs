@@ -59,7 +59,7 @@ This table lists the IDs for the pages in the dashboard that you can navigate to
 |Music Library|`music-manager.my-albums`|Wix Music app installed|Music Library|
 |Programs|`challenges-web-business-manager`|Wix Online Programs app installed|Online Programs > Programs|
 |Abandoned Carts|`stores.abandoned-carts`|Wix Stores app installed|Orders > Abandoned Carts|
-|New Order Form|`wixstores-dashboard-create-manual-order-pages-index`|Wix Stores app installed|Orders > Order|
+|New Order Form|`wixstores-dashboard-create-manual-order-pages-index`|Wix Stores app installed|Orders > Orders|
 |Orders List|`stores-orders-manager`|Wix Stores app installed|Orders > Orders|
 |My Albums|`photography-albums-id`|Wix Photo Albums app installed|Photo Albums > My Albums|
 |Pricing Plans|`membership-lazy-component`|Wix Pricing Plans app installed|Pricing Plans|
