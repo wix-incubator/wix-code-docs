@@ -14,13 +14,16 @@ is heavily influenced by MongoQL.
     
 * **Without query builders**: Call query functions that use the API Query Language described in this article to retrieve a list of items.
 
-* **With query builders**: Call query functions that build a query to retrieve a list of items. 
+* **With query builders**: Call query functions that build a query to retrieve a list of items. The syntax for querying with query builders is different than what is described in this article. 
+    
+    The overall flow for querying with this technique is: 
     
     1. These query functions return a `<item>QueryBuilder` object.
     1. The returned object contains the query definition, which is typically used to run the query using the `find()` function. 
     1. The `find` function resolves to an `<item>QueryResult` object that contains the items that match the query, information about the query itself, and functions for paging through the query results.
-
-    > **Note**: Querying with query builders is the standard Velo querying technique.
+    
+    
+> **Note**: Querying with query builders is the standard Velo querying technique.
 
 
 ## API query language syntax
