@@ -10,9 +10,9 @@ is heavily influenced by MongoQL.
 
 ## Velo query techniques
 
-2 types of query techniques are available in Velo: 
+2 types of query techniques are available in Velo. See your specific API to check which technique the query function supports. 
     
-* **Without query builders**: Call query functions that use the API Query Language described in this article to retrieve a list of items.
+* **Without query builders**: Call query functions that use the API Query Language described in this article to retrieve a list of items. Pass an object defining the query as a parameter to the query function.
 
 * **With query builders**: Call query functions that build a query to retrieve a list of items. The syntax for querying with query builders is different than what is described in this article. 
     
@@ -28,25 +28,25 @@ is heavily influenced by MongoQL.
 
 ## API query language syntax
 
-A query object can consist of 5 optional parts:
+The object that you pass to the query function can consist of 5 optional parts:
 
-* [`filter`](#the-filter-section):
+* [`filter`](#the-filter-object):
   Which results to return.
-* [`sort`](#the-sort-section):
+* [`sort`](#the-sort-array):
   In what order.
-* [`paging`](#the-paging-section):
+* [`paging`] (#the-paging-object):
   Return only some of the matched entities.
-* [`fields`](#the-fields-section):
+* [`fields`](#the-fields-array):
   Field projection. Returns only part of each entity.
-* [`fieldsets`](#the-fieldsets-section):
+* [`fieldsets`](#the-fieldsets-array):
   Predefined, named sets of fields with common use.
   This is a shorthand provided by individual APIs.
 
-Each query is always a single JSON object.
-An empty JSON object returns all records
-according to the API's default paging and sort order.
+> **Note**: Usually the query definition is contained in a `query` object. In some cases, the `query` object might be contained inside an `options` object. In other cases, the query's parts might be defined directly inside an `options` object (without a `query` object). See your specific API for information on how to define the object you need to pass to the query function. 
 
-The query object can define a key for each of the above parts:
+Each query is always defined in a single JSON object.
+
+The object can define a key for each of the above parts:
 
 ```json
 {
@@ -58,9 +58,12 @@ The query object can define a key for each of the above parts:
 }
 ```
 
-## The `filter` section
+Specifying an empty JSON object as a parameter to the query function returns all records according to the API's default paging and sort order.
 
-The filter section is a single json object { } with the following rules:
+
+## The `filter` object
+
+The filter object is a single json object { } with the following rules:
 
 ### Equality
 
@@ -76,7 +79,7 @@ Operators use the format `{ "<field>": { "$<operator>": <value> } }`.
 For example, `{ "status": { "$in": ["PENDING", "DONE"] } }`
 matches all entities where status is `"PENDING"` or `"DONE"`.
 
-The operators specified below are supported.
+The operators specified below can be supported. See your specific API for information on supported filter options. 
 
 #### Comparison operators
 
@@ -152,9 +155,9 @@ The following query matches entities that do not contain the `item` field, or wh
 }
 ```
 
-## The `sort` section
+## The `sort` array
 
-The `sort` section is an array of field names and sort order.
+`sort` is an array of field names and sort order.
 If `order` is not specified for a field, the field is sorted in ascending order.
 Sorting is applied to the first `sort` item, then the second, and so on:
 
@@ -172,9 +175,9 @@ Sorting is applied to the first `sort` item, then the second, and so on:
 }
 ```
 
-## The `paging` section
+## The `paging` object
 
-The `paging` section describes the size of the data set to return per response
+The `paging` object describes the size of the data set to return per response
 and how many records to skip.
 Each API can support **offset paging**, **cursor paging**, or both.
 See your specific API for information on supported paging options.
@@ -231,9 +234,9 @@ by forming your request like this:
 }
 ```
 
-## The `fields` section
+## The `fields` array
 
-The `fields` section is an array of field paths to return.
+`fields` is an array of field paths to return.
 If a field path points to an object, the entire sub-object is returned.
 Subsets of sub-objects can be returned by using dot notation.
 In this example,
@@ -249,7 +252,7 @@ and the entire `address` object:
 }
 ```
 
-## The `fieldsets` section
+## The `fieldsets` array
 
 An API may provide named projections to save clients from specifying individual fields in common cases.
 For example,
@@ -257,7 +260,7 @@ the Contacts API implements a fieldset named `BASIC` that contains only
 `id`, `revision`, `info.name.first`, `info.name.last`,
 `primaryInfo.email`, and `primaryInfo.phone`.
 To use a fieldset, specify its name in the `fieldsets` array.
-If both `fieldsets` and `fields` sections exist, the union of both is returned.
+If both `fieldsets` and `fields` arrays exist, the union of both is returned.
 For example:
 
 ```json
