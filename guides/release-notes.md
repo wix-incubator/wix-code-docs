@@ -8,6 +8,44 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Data v2
+
+`wix-data.v2`
+
+The new [Wix Data API](/wix-data-v2) provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
+
++ [Data Items](/wix-data-v2/items): Access and manage items in a Wix site's data collections.
++ [Data Collections](/wix-data-v2/collections): Create data collections and manage existing collections' structure.
++ [Indexes](/wix-data-v2/indexes): Create indexes for data collections, to make querying data faster.
++ [External Database Connections](/wix-data-v2/externaldatabaseconnections): Connect an external database and manage it with Wix Data APIs.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 17, 2023)
+
+### New Feature: `fields()` function in Wix Data query
+
+`wix-data`
+
+You can now select which fields a query returns.  
+
+A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+
+(May 17, 2023)
+
+### New Feature: Delete/Restore elements from the DOM
+
+`Wix Editor Elements ($w)`
+
+You can now delete and restore elements from the DOM.  
+
+A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
+2 new functions have been added:
++ [`delete()`](https://www.wix.com/velo/reference/$w/element/delete)
++ [`restore()`](https://www.wix.com/velo/reference/$w/element/restore)  
+
+(May 17, 2023)
+
 ### Migration of legacy APIs
 
 In the past week, we've re-released a large number of legacy APIs.
@@ -99,6 +137,13 @@ as well as any new or removed functionality as compared to the previous release:
 
 (May 15, 2023)
 
+### New Bookings Custom Pricing Extension
+
+SPI: `wix-bookings` 
+
+The new [Wix Bookings Custom Pricing extension](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing) gives you the ability to customize pricing for bookings. Use the [calculatePrice()](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing/calculateprice) SPI function to integrate your own custom pricing logic, such as varied pricing for weekend rates or use of special equipment, and so on. Learn more with [this tutorial](https://support.wix.com/en/article/velo-tutorial-bookings-pricing-custom-extension).
+
+(May 17, 2023)
 
 ### New Developer Preview API: Wix Currencies v2
 
