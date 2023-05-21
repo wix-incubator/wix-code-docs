@@ -12,9 +12,9 @@ is heavily influenced by MongoQL.
 
 2 types of query techniques are available in Velo. See your specific API to check which technique the query function supports. 
     
-* **Without query builders**: Call query functions that use the API Query Language described in this article to retrieve a list of items. Pass an object defining the query as a parameter to the query function.
+* **Without query builders**: Call query functions to retrieve a list of items using the API Query Language described in this article. Pass an object defining the query as a parameter to the query function.
 
-* **With query builders**: Call query functions that build a query to retrieve a list of items. The syntax for querying with query builders is different than what is described in this article. 
+* **With query builders**: Call query functions that build a query to retrieve a list of items. You can recognize these query functions because they have associated `<item>QueryBuilder` and `<item>QueryResult` class objects. These query functions do not use the API query language syntax described here. 
 
 > **Note**: Querying with query builders is the standard Velo querying technique.
 
@@ -39,8 +39,6 @@ The object that you pass to the query function can consist of 5 optional parts:
 
 Each query is always defined in a single JSON object.
 
-The object can define a key for each of the above parts:
-
 ```json
 {
   "filter": { ... },
@@ -51,12 +49,12 @@ The object can define a key for each of the above parts:
 }
 ```
 
-Specifying an empty JSON object as a parameter to the query function returns all records according to the API's default paging and sort order.
+Specifying an empty JSON object as a parameter to a query function returns all items according to the API's default paging and sort order.
 
 
 ## The filter object
 
-The `filter` is a single json object { } with the following rules:
+The `filter` is a single json object { } with the following syntax for specifying operators:
 
 ### Equality
 
