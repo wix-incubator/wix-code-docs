@@ -15,14 +15,7 @@ is heavily influenced by MongoQL.
 * **Without query builders**: Call query functions that use the API Query Language described in this article to retrieve a list of items. Pass an object defining the query as a parameter to the query function.
 
 * **With query builders**: Call query functions that build a query to retrieve a list of items. The syntax for querying with query builders is different than what is described in this article. 
-    
-    The overall flow for querying with this technique is: 
-    
-    1. These query functions return a `<item>QueryBuilder` object.
-    1. The returned object contains the query definition, which is typically used to run the query using the `find()` function. 
-    1. The `find` function resolves to an `<item>QueryResult` object that contains the items that match the query, information about the query itself, and functions for paging through the query results.
-    
-    
+
 > **Note**: Querying with query builders is the standard Velo querying technique.
 
 
@@ -34,7 +27,7 @@ The object that you pass to the query function can consist of 5 optional parts:
   Which results to return.
 * [`sort`](#the-sort-array):
   In what order.
-* [`paging`] (#the-paging-object):
+* [`paging`](#the-paging-object):
   Return only some of the matched entities.
 * [`fields`](#the-fields-array):
   Field projection. Returns only part of each entity.
@@ -61,9 +54,9 @@ The object can define a key for each of the above parts:
 Specifying an empty JSON object as a parameter to the query function returns all records according to the API's default paging and sort order.
 
 
-## The `filter` object
+## The filter object
 
-The filter object is a single json object { } with the following rules:
+The `filter` is a single json object { } with the following rules:
 
 ### Equality
 
@@ -155,7 +148,7 @@ The following query matches entities that do not contain the `item` field, or wh
 }
 ```
 
-## The `sort` array
+## The sort array
 
 `sort` is an array of field names and sort order.
 If `order` is not specified for a field, the field is sorted in ascending order.
@@ -175,7 +168,7 @@ Sorting is applied to the first `sort` item, then the second, and so on:
 }
 ```
 
-## The `paging` object
+## The paging object
 
 The `paging` object describes the size of the data set to return per response
 and how many records to skip.
@@ -234,9 +227,10 @@ by forming your request like this:
 }
 ```
 
-## The `fields` array
+## The fields array
 
 `fields` is an array of field paths to return.
+
 If a field path points to an object, the entire sub-object is returned.
 Subsets of sub-objects can be returned by using dot notation.
 In this example,
@@ -252,14 +246,17 @@ and the entire `address` object:
 }
 ```
 
-## The `fieldsets` array
+## The fieldsets array
 
 An API may provide named projections to save clients from specifying individual fields in common cases.
+
 For example,
 the Contacts API implements a fieldset named `BASIC` that contains only
 `id`, `revision`, `info.name.first`, `info.name.last`,
 `primaryInfo.email`, and `primaryInfo.phone`.
+
 To use a fieldset, specify its name in the `fieldsets` array.
+
 If both `fieldsets` and `fields` arrays exist, the union of both is returned.
 For example:
 
