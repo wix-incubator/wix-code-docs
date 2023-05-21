@@ -72,7 +72,7 @@ Operators use the format `{ "<field>": { "$<operator>": <value> } }`.
 For example, `{ "status": { "$in": ["PENDING", "DONE"] } }`
 matches all entities where status is `"PENDING"` or `"DONE"`.
 
-The operators specified below can be supported. See your specific API for information on supported filter options. 
+The operators specified below are supported. See the specific API for information on supported filter options for the query function you are using. 
 
 #### Comparison operators
 
