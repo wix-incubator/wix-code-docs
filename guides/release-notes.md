@@ -8,6 +8,24 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Bookings v2 Service Options and Variants
+
+`wix-bookings.v2`
+
+The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/serviceoptionsandvariants) provide functionality for retrieving and managing booking service options and variants. Functionality includes: 
+
++ [Getting](/wix-bookings-v2/serviceoptionsandvariants/createserviceoptionsandvariants), [Getting by service ID](/wix-bookings-v2/serviceoptionsandvariants/getserviceoptionsandvariantsbyserviceid) and [querying](/wix-bookings-v2/serviceoptionsandvariants/queryserviceoptionsandvariants) service options and variants
++ [Creating](/wix-bookings-v2/serviceoptionsandvariants/createserviceoptionsandvariants) and [cloning](/wix-bookings-v2/serviceoptionsandvariants/cloneserviceoptionsandvariants) service options and variants
++ [Updating](/wix-bookings-v2/serviceoptionsandvariants/updateserviceoptionsandvariants) and [Deleting](/wix-bookings-v2/serviceoptionsandvariants/deleteserviceoptionsandvariants) service options and variants
++ [Updating](/wix-bookings-v2/serviceoptionsandvariants/updateserviceoptionsandvariants) and [Deleting](/wix-bookings-v2/serviceoptionsandvariants/deleteserviceoptionsandvariants) service options and variants
++ Backend events for [create](/wix-bookings-v2/events/onserviceoptionsandvariantscreated), update(/wix-bookings-v2/events/onserviceoptionsandvariantsupdated), and delete(/wix-bookings-v2/events/onserviceoptionsandvariantsdeleted) (CUD) operations
+
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(April 4, 2023)
+
+
 ### New Developer Preview API: Wix Data v2
 
 `wix-data.v2`
