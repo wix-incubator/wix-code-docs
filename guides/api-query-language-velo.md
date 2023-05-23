@@ -4,20 +4,15 @@ The query language described in this article
 is implemented partially or in full by certain Wix Velo APIs that support query 
 capabilities.
 
-You may see some similarities between the Wix API Query Language
-and MongoQL. This is because the style of the Wix API Query Language
-is heavily influenced by MongoQL.
-
 ## Velo query techniques
 
 2 types of query techniques are available in Velo. See your specific API to check which technique the query function supports. 
     
-* **Without query builders**: Call query functions to retrieve a list of items using the API Query Language described in this article. Pass an object defining the query as a parameter to the query function.
-
-* **With query builders**: Call query functions that build a query to retrieve a list of items. You can recognize these query functions because they have associated `<item>QueryBuilder` and `<item>QueryResult` class objects. These query functions do not use the API query language syntax described here. 
-
-> **Note**: Querying with query builders is the standard Velo querying technique.
-
+* **With query builders**: Call query functions that build a query to retrieve a list of items. You can recognize these query functions because they have associated `<item>QueryBuilder` and `<item>QueryResult` class objects. This is the standard Velo querying technique.
+    
+    These query functions do not use the API query language syntax described here.  
+    
+* **Without query builders**: Some query functions retrieve a list of items using the API Query Language described in this article. For these queries, pass an object defining the query as a parameter to the query function.
 
 ## API query language syntax
 
@@ -32,29 +27,23 @@ The object that you pass to the query function can consist of 5 optional parts:
 * [`fields`](#the-fields-array):
   Field projection. Returns only part of each entity.
 * [`fieldsets`](#the-fieldsets-array):
-  Predefined, named sets of fields with common use.
+  Predefined, named sets of fields for common use cases.
   This is a shorthand provided by individual APIs.
 
-> **Note**: Usually the query definition is contained in a `query` object. In some cases, the `query` object might be contained inside an `options` object. In other cases, the query's parts might be defined directly inside an `options` object (without a `query` object). See your specific API for information on how to define the object you need to pass to the query function. 
+> **Note**: Usually the query definition is contained in a `query` object. 
+>
+>    + In some cases, the `query` object might be wrapped inside an `options` object.
+>    + In other cases, the query's properties might be defined directly inside an `options` object (without being wrapped in a `query` object). 
+>
+> See your specific API for information on how to define the object you need to pass to the query function. 
 
-Each query is always defined in a single JSON object.
 
-```json
-{
-  "filter": { ... },
-  "sort": [ ... ],
-  "paging": { ... },
-  "fields": [ ... ],
-  "fieldsets": [ ... ]
-}
-```
-
-Specifying an empty JSON object as a parameter to a query function returns all items according to the API's default paging and sort order.
+Specifying an empty object as a parameter to a query function returns all items according to the API's default paging and sort order.
 
 
 ## The filter object
 
-The `filter` is a single json object { } with the following syntax for specifying operators:
+The `filter` is a single object `{ }` with the following syntax for specifying operators:
 
 ### Equality
 
