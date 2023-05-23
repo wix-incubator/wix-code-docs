@@ -12,11 +12,11 @@ capabilities.
     
     These query functions do not use the API query language syntax described here.  
     
-* **Without query builders**: Some query functions retrieve a list of items using the API Query Language described in this article. For these queries, pass an object defining the query as a parameter to the query function.
+* **Without query builders**: Some query functions retrieve a list of items using the API Query Language described in this article. For these queries, pass an object defining the query to the query function.
 
-## API query language syntax
+## Query syntax
 
-The object that you pass to the query function can consist of 5 optional parts:
+You can pass some or all of the following properties to the query function to define the query:
 
 * [`filter`](#the-filter-object):
   Which results to return.
@@ -30,12 +30,12 @@ The object that you pass to the query function can consist of 5 optional parts:
   Predefined, named sets of fields for common use cases.
   This is a shorthand provided by individual APIs.
 
-> **Note**: Usually the query definition is contained in a `query` object. 
->
->    + In some cases, the `query` object might be wrapped inside an `options` object.
->    + In other cases, the query's properties might be defined directly inside an `options` object (without being wrapped in a `query` object). 
->
-> See your specific API for information on how to define the object you need to pass to the query function. 
+Usually these query properties are contained in a `query` object. 
+
++ In some cases, the `query` object might be wrapped inside an `options` object.
++ In other cases, the query's properties might be defined directly inside an `options` object (without being wrapped in a `query` object). 
+
+See your specific API for information on how to define the object you need to pass to the query function. 
 
 
 Specifying an empty object as a parameter to a query function returns all items according to the API's default paging and sort order.
