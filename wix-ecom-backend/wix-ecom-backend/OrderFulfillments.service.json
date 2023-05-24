@@ -35,8 +35,6 @@
         "ordersWithFulfillments.fulfillments",
         "ordersWithFulfillments.fulfillments.lineItems",
         "ordersWithFulfillments.fulfillments.lineItems._id",
-        "ordersWithFulfillments.fulfillments.trackingInfo.shippingProvider",
-        "ordersWithFulfillments.fulfillments.trackingInfo.trackingNumber",
         "ordersWithFulfillments.orderId"
       ],
       "ret": {
@@ -246,8 +244,6 @@
         "fulfillment",
         "fulfillment.lineItems",
         "fulfillment.lineItems._id",
-        "fulfillment.trackingInfo.shippingProvider",
-        "fulfillment.trackingInfo.trackingNumber",
         "orderId"
       ],
       "ret": {
@@ -708,7 +704,7 @@
               "referenceType": "wix-ecom-backend.OrderFulfillments.UpdateFulfillmentOptions"
             }
           ],
-          "doc": "Available options to use when updating a fulfillment.\n",
+          "doc": "Available options to use when updating a fulfillment.",
           "required": false
         }
       ],
@@ -724,13 +720,13 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-ecom-backend.OrderFulfillments.UpdateFulfillmentResponse"
+                  "referenceType": "wix-ecom-backend.OrderFulfillments.OrderWithFulfillments"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "Order ID and the orders' associated fulfillments after update.\n"
       },
       "docs": {
         "summary": "Updates a fulfillment's properties.\nTo update a field's value, include the new value in the `fulfillment` field in the body params.\nTo remove a field's value, pass `null`.",
@@ -1166,6 +1162,36 @@
       }
     },
     {
+      "name": "CustomFulfillmentInfo",
+      "members": [
+        {
+          "name": "fieldsData",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The custom-made keys and values we got, extra info about the fulfillment"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "DeleteFulfillmentIdentifiers",
       "members": [
         {
@@ -1374,6 +1400,16 @@
           "doc": "Fulfillment handling completed"
         },
         {
+          "name": "customInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.OrderFulfillments.CustomFulfillmentInfo"
+            }
+          ],
+          "doc": "Custom-made fulfillment info"
+        },
+        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -1408,9 +1444,20 @@
               "referenceType": "wix-ecom-backend.OrderFulfillments.FulfillmentTrackingInfo"
             }
           ],
-          "doc": "Fulfillment tracking info."
+          "doc": "Tracking info with defined fields"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfFulfillmentFulfillmentInfoOneOf",
+            "members": [
+              "customInfo",
+              "trackingInfo"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           "for now, this is a sub-object of Orders, so can refer to order line items by id."
@@ -1519,6 +1566,36 @@
             }
           ],
           "doc": "Order ID (auto generated upon order creation)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "FulfillmentFulfillmentInfoOneOf",
+      "members": [
+        {
+          "name": "customInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.OrderFulfillments.CustomFulfillmentInfo"
+            }
+          ],
+          "doc": "Custom-made fulfillment info"
+        },
+        {
+          "name": "trackingInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.OrderFulfillments.FulfillmentTrackingInfo"
+            }
+          ],
+          "doc": "Tracking info with defined fields"
         }
       ],
       "docs": {
@@ -1929,6 +2006,16 @@
           "doc": "Fulfillment handling completed"
         },
         {
+          "name": "customInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.OrderFulfillments.CustomFulfillmentInfo"
+            }
+          ],
+          "doc": "Custom-made fulfillment info"
+        },
+        {
           "name": "lineItems",
           "optional": true,
           "type": [
@@ -1963,7 +2050,7 @@
               "referenceType": "wix-ecom-backend.OrderFulfillments.FulfillmentTrackingInfo"
             }
           ],
-          "doc": "Fulfillment tracking info."
+          "doc": "Tracking info with defined fields"
         }
       ],
       "docs": {
@@ -2006,23 +2093,6 @@
       "name": "UpdateFulfillmentOptions",
       "members": [
         {
-          "name": "fieldMask",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Set of fields to update. Fields that aren't included in `fieldMask.paths` are ignored."
-        },
-        {
           "name": "fulfillment",
           "type": [
             {
@@ -2041,23 +2111,6 @@
     {
       "name": "UpdateFulfillmentRequest",
       "members": [
-        {
-          "name": "fieldMask",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Set of fields to update. Fields that aren't included in `fieldMask.paths` are ignored."
-        },
         {
           "name": "fulfillment",
           "optional": true,
