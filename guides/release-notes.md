@@ -8,14 +8,6 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### New Events for Wix Bookings v2
-
-`wix-bookings.v2`
-
-You can now handle events for when bookings are [created](wix-bookings-v2/events/onbookingcreated), [rescheduled](wix-bookings-v2/events/onbookingrescheduled), [confirmed](wix-bookings-v2/events/onbookingconfirmed), [declined](wix-bookings-v2/events/onbookingdeclined), [canceled](wix-bookings-v2/events/onbookingcanceled), and for when [the number of participants has been updated](wix-bookings-v2/events/onbookingnumberofparticipantsupdated). 
-
-(May 23, 2023)
-
 
 ### New Developer Preview API: Wix Bookings v2 Service Options and Variants
 
