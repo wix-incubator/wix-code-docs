@@ -8,6 +8,23 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Wix Bookings v2 Service Options and Variants
+
+`wix-bookings.v2`
+
+The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/serviceoptionsandvariants) provide functionality for retrieving and managing booking service options and variants. Functionality includes: 
+
++ Getting service options and variants by [ID](/wix-bookings-v2/serviceoptionsandvariants/getserviceoptionsandvariants) and by [service ID](/wix-bookings-v2/serviceoptionsandvariants/getserviceoptionsandvariantsbyserviceid)
++ [Querying](/wix-bookings-v2/serviceoptionsandvariants/queryserviceoptionsandvariants) service options and variants
++ [Creating](/wix-bookings-v2/serviceoptionsandvariants/createserviceoptionsandvariants) and [cloning](/wix-bookings-v2/serviceoptionsandvariants/cloneserviceoptionsandvariants) service options and variants
++ [Updating](/wix-bookings-v2/serviceoptionsandvariants/updateserviceoptionsandvariants) and [deleting](/wix-bookings-v2/serviceoptionsandvariants/deleteserviceoptionsandvariants) service options and variants
++ Backend events for [create](/wix-bookings-v2/events/onserviceoptionsandvariantscreated), [update](/wix-bookings-v2/events/onserviceoptionsandvariantsupdated), and [delete](/wix-bookings-v2/events/onserviceoptionsandvariantsdeleted) (CUD) operations
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 22, 2023)
+
+
 ### New Developer Preview API: Wix Data v2
 
 `wix-data.v2`
@@ -21,8 +38,30 @@ The new [Wix Data API](/wix-data-v2) provides a complete solution for accessing,
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
-(May 16, 2023)
+(May 17, 2023)
 
+### New Feature: `fields()` function in Wix Data query
+
+`wix-data`
+
+You can now select which fields a query returns.  
+
+A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+
+(May 17, 2023)
+
+### New Feature: Delete/Restore elements from the DOM
+
+`Wix Editor Elements ($w)`
+
+You can now delete and restore elements from the DOM.  
+
+A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
+2 new functions have been added:
++ [`delete()`](https://www.wix.com/velo/reference/$w/element/delete)
++ [`restore()`](https://www.wix.com/velo/reference/$w/element/restore)  
+
+(May 17, 2023)
 
 ### Migration of legacy APIs
 
@@ -115,6 +154,13 @@ as well as any new or removed functionality as compared to the previous release:
 
 (May 15, 2023)
 
+### New Bookings Custom Pricing Extension
+
+SPI: `wix-bookings` 
+
+The new [Wix Bookings Custom Pricing extension](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing) gives you the ability to customize pricing for bookings. Use the [calculatePrice()](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing/calculateprice) SPI function to integrate your own custom pricing logic, such as varied pricing for weekend rates or use of special equipment, and so on. Learn more with [this tutorial](https://support.wix.com/en/article/velo-tutorial-bookings-pricing-custom-extension).
+
+(May 17, 2023)
 
 ### New Developer Preview API: Wix Currencies v2
 
