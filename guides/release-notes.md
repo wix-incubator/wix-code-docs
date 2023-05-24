@@ -29,7 +29,7 @@ The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/ser
 
 `wix-data.v2`
 
-The new [Wix Data API](/wix-data-v2), combined with the existing provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
+The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](https://www.wix.com/velo/reference/wix-data), provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
 
 + [Data Collections](/wix-data-v2/collections): Create data collections and manage existing collections' structure.
 + [Indexes](/wix-data-v2/indexes): Create indexes for data collections, to make querying data faster.
