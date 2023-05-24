@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# About the External Database Connections API
+
 &nbsp;
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
@@ -11,8 +13,6 @@ title: Introduction
 </div>
 
 &nbsp;
-
-# About the External Database Connections API
 
 The External Database Connections API enables you to connect an external database to a Wix site.
 
