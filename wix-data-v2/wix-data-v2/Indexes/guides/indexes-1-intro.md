@@ -4,6 +4,16 @@ title: Introduction
 
 # About the Indexes API
 
+&nbsp;
+
+<div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
+    <b>Developer Preview</b>
+    <br/>
+    <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
+</div>
+
+&nbsp;
+
 The Indexes API enables you to create indexes for data collections, to make querying data faster.
 
 An index is a map of a collection's data, organized according to fields that you select. An index [increases the speed of queries](https://www.wix.com/velo/reference/wix-data-v2/indexes/indexes-and-query-speed) by providing a query with a shortcut to the information it is looking for. Instead of iterating through every data item in the collection, a query can use the index to skip to potentially relevant items. The larger a collection is, the more time this saves.
