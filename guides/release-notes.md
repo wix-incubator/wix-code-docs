@@ -44,17 +44,21 @@ The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](ht
 
 `wix-data`
 
-You can now select which fields a query returns.  
+An addition to the `WixDataQuery` functions. 
+Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns.  
 
 A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
 
 (May 17, 2023)
 
-### New Feature: Delete/Restore elements from the DOM
+### New Feature: delete and restore elements in the DOM
 
 `Wix Editor Elements ($w)`
 
-You can now delete and restore elements from the DOM.  
+Content in an element that is in `hidden` status can be found by SEO crawlers. 
+You can now `delete` elements in the DOM so that they cannot be found by crawlers. You can `restore` elements to the DOM if required.  
+
+This feature applies to all elements.
 
 A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
 2 new functions have been added:
