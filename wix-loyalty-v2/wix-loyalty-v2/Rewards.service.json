@@ -45,7 +45,7 @@
       "docs": {
         "summary": "Creates a reward that can be redeemed with loyalty points.",
         "description": [
-          "When a customer [redeems a reward](/coupons/redeem-points-for-coupon), a loyalty coupon is created\nbased on the specifications detailed in either the `discountAmount` or `couponReward` fields. This coupon can\nthen be used by the customer to receive the discount. Note that while the Rewards API uses coupon scopes and specifications,\nno coupon is actually created until a [reward is redeemed](/coupons/redeem-points-for-coupon) with points.\nSee the [Coupons API](https://dev.wix.com/api/rest/coupons) for more information about coupons. The `type` of reward\ncannot be updated.\n\nA reward's `active` status defaults to `false`. To make the reward available to customers,\neither set the `active` field to `true` during creation or call [Update Reward](/update-reward)\nto change the status.\n\nTo customize a reward for each [loyalty tier](/tiers), use the `configsByTier` parameter.\nThis allows you to specify the amount of the earned discount, the cost in loyalty points\nto redeem the reward, and the tier to which this configuration applies. Each tier requires its own\n`configsByTier` configuration. To create a reward that is available to loyalty accounts in the base tier,\nleave the `tierId` field empty. See the [Tiers API](/tiers) for more information on tiers."
+          "When a customer redeems a reward, a loyalty coupon is created\nbased on the specifications detailed in either the `discountAmount` or `couponReward` fields. This coupon can\nthen be used by the customer to receive the discount. Note that while the Rewards API uses coupon scopes and specifications,\nno coupon is actually created until a reward is redeemed with points.\nSee the Coupons API for more information about coupons.\n\nA reward's `active` status defaults to `false`. To make the reward available to customers,\neither set the `active` field to `true` during creation or call [`updateReward()`](#updatereward)\nto change the status.\n\nTo customize a reward for each loyalty tier, use the `configsByTier` parameter.\nThis allows you to specify the amount of the earned discount, the cost in loyalty points\nto redeem the reward, and the tier to which this configuration applies. Each tier requires its own\n`configsByTier` configuration. To create a reward that is available to loyalty accounts in the base tier,\nleave the `tierId` field empty. See the Loyalty Tiers API for more information on tiers."
         ],
         "examples": [
           {
@@ -90,18 +90,19 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "revision",
           "type": [
             {
-              "referenceType": "wix-loyalty-v2.Rewards.DeleteRewardOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Revision number, which increments by `\"1\"` each time the reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when deleting the reward.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "revision"
       ],
       "ret": {
         "type": [
@@ -127,9 +128,9 @@
             "body": [
               "import { rewards } from 'wix-loyalty.v2';",
               "  ",
-              " async function deleteReward(id, options) {",
+              " async function deleteReward(id, revision) {",
               "   try {",
-              "     const result = await rewards.deleteReward(id, options);",
+              "     const result = await rewards.deleteReward(id, revision);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -224,7 +225,7 @@
               "referenceType": "wix-loyalty-v2.Rewards.ListRewardsOptions"
             }
           ],
-          "doc": "",
+          "doc": "List options.\n",
           "required": false
         }
       ],
@@ -298,7 +299,7 @@
               "referenceType": "wix-loyalty-v2.Rewards.UpdateReward"
             }
           ],
-          "doc": "",
+          "doc": "Reward info to update.\n",
           "required": true
         }
       ],
@@ -723,7 +724,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the coupon also applies to subscriptions."
+          "doc": "Whether the coupon applies to subscription products.\n\nIf set to `true`, the discount will apply to all billing cycles.\n"
         },
         {
           "name": "discountedCycleCount",
@@ -733,7 +734,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Specifies the amount of discounted cycles for a subscription item.\n\nCan only be set when `appliesToSubscriptions` is `true` and `scope.namespace` is `pricingPlans`.\nIf `discountedCycleCount` is empty, the coupon applies to all available cycles.\n\nMin: `1`\nMax: `999`\n"
+          "doc": "Reserved for internal use."
         },
         {
           "name": "fixedAmount",
@@ -793,7 +794,7 @@
               "referenceType": "wix-loyalty-v2.Rewards.CouponScope"
             }
           ],
-          "doc": "Specifies the type of line items this coupon will apply to.\nFor more information, see [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values)."
+          "doc": "Specifies the type of line items this coupon will apply to.\n\nFor more information, see the Coupons API.\n"
         }
       ],
       "extra": {
@@ -882,7 +883,7 @@
               "referenceType": "wix-loyalty-v2.Rewards.CouponScope"
             }
           ],
-          "doc": "Specifies the type of line items this coupon will apply to.\nFor more information, see [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values)."
+          "doc": "Specifies the type of line items this coupon will apply to.\n\nFor more information, see the Coupons API.\n"
         }
       ],
       "docs": {
@@ -902,7 +903,7 @@
               "referenceType": "wix-loyalty-v2.Rewards.Group"
             }
           ],
-          "doc": "Coupon scope's applied group.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid groups.\n"
+          "doc": "Coupon scope's applied group.\n\nSee the Coupons API for valid groups.\n"
         },
         {
           "name": "namespace",
@@ -912,7 +913,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Scope namespace.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid namespaces.\n"
+          "doc": "Scope namespace.\n\nSee the Coupons API for valid namespaces.\n"
         }
       ],
       "docs": {
@@ -1129,26 +1130,6 @@
             }
           ],
           "doc": "Cursor pointing to previous page in the list of results."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "DeleteRewardOptions",
-      "members": [
-        {
-          "name": "revision",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Revision number, which increments by `\"1\"` each time the reward is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when deleting the reward.\n"
         }
       ],
       "docs": {
@@ -1738,7 +1719,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Name of coupon scope's group.\n\nSee [valid scope values](https://dev.wix.com/api/rest/coupons/coupons/valid-scope-values) for valid groups.\n"
+          "doc": "Name of coupon scope's group.\n\nSee the Coupons API for valid groups.\n"
         }
       ],
       "docs": {
