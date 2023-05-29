@@ -15,7 +15,7 @@ title: Introduction
 &nbsp;
 
 
-This service allows you to manage a site's tasks. Use [tasks](https://support.wix.com/en/article/about-tasks-reminders) to organize and prioritize your work with [Ascend by Wix](https://support.wix.com/en/article/about-ascend-by-wix).
+This service allows you to manage a site's tasks. Use [tasks](https://support.wix.com/en/article/about-tasks-reminders) to organize and prioritize your work with [Ascend by Wix](https://support.wix.com/en/article/about-ascend-by-wix).  
 
 
 ## Permissions information
