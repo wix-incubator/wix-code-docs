@@ -11,7 +11,7 @@ For more information on styling your elements with CSS, see
 [Styling Elements with CSS]($w/styling-elements-with-css) and the
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
-> **Note:** If the component has Media set up in the Background of the design panel, then CSS properties will not apply to it. To apply CSS properties, first toggle off the `Media & pattern` switch in the Background section of the design panel.
+> **Note:** If the component has Media set up in the Background of the design panel, then CSS properties will not apply to it. To apply CSS properties, first toggle off the Media & pattern switch in the Background section of the design panel.
 
 <blockquote class="important">
 
