@@ -8,6 +8,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Events for Wix Bookings v2
+
+`wix-bookings.v2`
+
+You can now handle events for when bookings are [created](wix-bookings-v2/events/onbookingcreated), [rescheduled](wix-bookings-v2/events/onbookingrescheduled), [confirmed](wix-bookings-v2/events/onbookingconfirmed), [declined](wix-bookings-v2/events/onbookingdeclined), [canceled](wix-bookings-v2/events/onbookingcanceled), and for when [the number of participants has been updated](wix-bookings-v2/events/onbookingnumberofparticipantsupdated). 
+
+(May 30, 2023)
+
+
 
 ### New Developer Preview API: Wix Bookings v2 Service Options and Variants
 
@@ -44,21 +53,17 @@ The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](ht
 
 `wix-data`
 
-An addition to the `WixDataQuery` functions. 
-Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns.  
+You can now select which fields a query returns.  
 
 A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
 
 (May 17, 2023)
 
-### New Feature: delete and restore elements in the DOM
+### New Feature: Delete/Restore elements from the DOM
 
 `Wix Editor Elements ($w)`
 
-Content in an element that is in `hidden` status can be found by SEO crawlers. 
-You can now `delete` elements in the DOM so that they cannot be found by crawlers. You can `restore` elements to the DOM if required.  
-
-This feature applies to all elements.
+You can now delete and restore elements from the DOM.  
 
 A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
 2 new functions have been added:
