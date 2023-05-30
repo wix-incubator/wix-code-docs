@@ -40,7 +40,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Get collection rules by collection id\nNOTE if requested collection doesn't exists it returns empty rules instance",
+        "summary": "Get collection rules by collection id.\nNOTE if requested collection doesn't exists it returns empty rules instance",
         "description": [],
         "examples": [
           {
@@ -132,7 +132,7 @@
               "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.CollectionRules"
             }
           ],
-          "doc": "CollectionRules contains validation/initialization rules for certain collection/environment\nEnvironment would be dropped when gridappless schemas go live",
+          "doc": "collection rules to save",
           "required": true
         }
       ],
@@ -155,8 +155,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Updates collection rules",
-        "description": [],
+        "summary": "Updates collection rules.",
+        "description": [
+          "### Errors:\n- `COLLECTION_NOT_FOUND` if no such data collection found\n- `INVALID_RULE` when provided rules are invalid\n- `COLLECTION_SCHEMA_MISMATCH` when rules are valid, but not compatible with collection\nschema (i.e. no such field in the schema). In such case rules are marked as \"incompatible\"\nbut are saved and returned in error body as \"rule\" property."
+        ],
         "examples": [
           {
             "title": "saveCollectionRules example",
@@ -217,7 +219,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Validates data items and returns list of failed rules\nNOTE if collection doesn't exist all data is treated as valid",
+        "summary": "Validates data items and returns list of failed rules.\nNOTE if collection doesn't exist all data is treated as valid",
         "description": [],
         "examples": [
           {
@@ -320,7 +322,7 @@
       ],
       "docs": {
         "description": [
-          "CollectionRules contains validation/initialization rules for certain collection/environment\nEnvironment would be dropped when gridappless schemas go live"
+          "CollectionRules contains validation/initialization rules for certain data collection.\nRules and default values can be incompatible with collection schema but still persisted."
         ]
       }
     },
@@ -335,7 +337,7 @@
               "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.CollectionRules"
             }
           ],
-          "doc": ""
+          "doc": "collection rules saved entity"
         }
       ],
       "docs": {
@@ -658,6 +660,33 @@
       }
     },
     {
+      "name": "EnumeratedOptions",
+      "members": [
+        {
+          "name": "allowedValues",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "any"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "allowed values list"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ExtendedFieldsUpdatedEvent",
       "members": [
         {
@@ -728,7 +757,7 @@
               "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.CollectionRules"
             }
           ],
-          "doc": ""
+          "doc": "retrieved collection rules"
         }
       ],
       "docs": {
@@ -764,7 +793,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "retrieved collection rules"
         }
       ],
       "docs": {
@@ -776,6 +805,16 @@
     {
       "name": "Rule",
       "members": [
+        {
+          "name": "enumeratedOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.EnumeratedOptions"
+            }
+          ],
+          "doc": ""
+        },
         {
           "name": "field",
           "optional": true,
@@ -819,6 +858,36 @@
           "doc": "rule type"
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfRuleOptionsOneOf",
+            "members": [
+              "enumeratedOptions"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RuleOptionsOneOf",
+      "members": [
+        {
+          "name": "enumeratedOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.EnumeratedOptions"
+            }
+          ],
+          "doc": ""
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -835,7 +904,7 @@
               "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.CollectionRules"
             }
           ],
-          "doc": ""
+          "doc": "collection rules to save"
         }
       ],
       "docs": {
@@ -855,7 +924,7 @@
               "referenceType": "wix-autocms-collection-rules-service-v1.Autocms.CollectionRules"
             }
           ],
-          "doc": ""
+          "doc": "saved collection rules"
         }
       ],
       "docs": {
@@ -1014,6 +1083,26 @@
             }
           ],
           "doc": "validation failures, empty if item is valid"
+        },
+        {
+          "name": "originalIndex",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "original item index in request"
+        },
+        {
+          "name": "success",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "true if no validation failures found"
         }
       ],
       "docs": {
