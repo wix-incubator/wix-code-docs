@@ -23,7 +23,7 @@ With the Loyalty API, you can:
 - [Create](wix-loyalty-v2/accounts/createaccount) new loyalty accounts for customers.
 - [Adjust points](wix-loyalty-v2/accounts/adjustpoints) in individual loyalty accounts.
 - Manage the [loyalty rewards](wix-loyalty-v2/rewards) and [loyalty coupons](wix-loyalty-v2/coupons) that points can be redeemed for.
-- [Manage](wix-loyalty-v2/tiers) loyalty tiers and [update global tiers program settings](#updatetiersprogramsettings).
+- Manage [loyalty tiers](wix-loyalty-v2/tiers) and [update](#updatetiersprogramsettings) the global settings for a tiers program.
 
 For more information, see [Wix Loyalty Program: An Overview](https://support.wix.com/en/article/wix-loyalty-program-an-overview).
 
