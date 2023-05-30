@@ -23,6 +23,16 @@
           "required": true
         },
         {
+          "name": "phase",
+          "type": [
+            {
+              "referenceType": "wix-workflows-v2.Phases.PhaseInfo"
+            }
+          ],
+          "doc": "Phase details.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -34,7 +44,8 @@
         }
       ],
       "requiredFields": [
-        "options.phase.name",
+        "phase",
+        "phase.name",
         "workflowId"
       ],
       "ret": {
@@ -63,9 +74,9 @@
             "body": [
               "import { phases } from 'wix-workflows.v2';",
               "  ",
-              " async function createPhase(workflowId, options) {",
+              " async function createPhase(workflowId, phase, options) {",
               "   try {",
-              "     const result = await phases.createPhase(workflowId, options);",
+              "     const result = await phases.createPhase(workflowId, phase, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -288,33 +299,21 @@
           "required": true
         },
         {
-          "name": "_id",
+          "name": "newPosition",
           "type": [
             {
-              "nativeType": "string"
+              "nativeType": "number"
             }
           ],
-          "doc": "ID of the phase to move.",
-          "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-workflows-v2.Phases.MovePhaseOptions"
-            }
-          ],
-          "doc": "",
+          "doc": "New phase position, where the first phase is `0`.\n\nIf a phase already occupies the specified position,\nthat phase and any subsequent phases\nare shifted to the right by 1.",
           "required": true
         }
       ],
       "requiredFields": [
-        "_id",
         "identifiers",
         "identifiers.id",
         "identifiers.workflowId",
-        "options",
-        "options.newPosition"
+        "newPosition"
       ],
       "ret": {
         "type": [
@@ -342,9 +341,9 @@
             "body": [
               "import { phases } from 'wix-workflows.v2';",
               "  ",
-              " async function movePhase(identifiers, id, options) {",
+              " async function movePhase(identifiers, newPosition) {",
               "   try {",
-              "     const result = await phases.movePhase(identifiers, id, options);",
+              "     const result = await phases.movePhase(identifiers, newPosition);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -364,70 +363,6 @@
         }
       ],
       "syntaxName": "movePhase"
-    },
-    {
-      "name": "queryPhases",
-      "params": [
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-workflows-v2.Phases.QueryPhasesOptions"
-            }
-          ],
-          "doc": "",
-          "required": false
-        }
-      ],
-      "requiredFields": [],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-workflows-v2.Phases.QueryPhasesResponse"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Returns a list of phases according to:\n* paging: offset, limit\n* order: by some of the following fields: id, name, position\n* filter: by the following fields of PhaseInfo\n** phaseInfo.id         - Guid\n** phaseInfo.name       - Text\n** phaseInfo.visibility - Text (Visible / Archived)",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
-        "examples": [
-          {
-            "title": "queryPhases example",
-            "body": [
-              "import { phases } from 'wix-workflows.v2';",
-              "  ",
-              " async function queryPhases(options) {",
-              "   try {",
-              "     const result = await phases.queryPhases(options);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "queryPhases"
     },
     {
       "name": "updatePhase",
@@ -698,16 +633,6 @@
     {
       "name": "CreatePhaseOptions",
       "members": [
-        {
-          "name": "phase",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-workflows-v2.Phases.PhaseInfo"
-            }
-          ],
-          "doc": "Phase details."
-        },
         {
           "name": "position",
           "optional": true,
@@ -995,6 +920,15 @@
       "name": "MovePhaseIdentifiers",
       "members": [
         {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the phase to move."
+        },
+        {
           "name": "workflowId",
           "type": [
             {
@@ -1002,25 +936,6 @@
             }
           ],
           "doc": "ID of the workflow that contains the phase to move."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "MovePhaseOptions",
-      "members": [
-        {
-          "name": "newPosition",
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "New phase position, where the first phase is `0`.\n\nIf a phase already occupies the specified position,\nthat phase and any subsequent phases\nare shifted to the right by 1.\n"
         }
       ],
       "docs": {
