@@ -54,7 +54,6 @@ The following functions in Secrets are restricted and only run if you elevate pe
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 
-- [`createSecret()`](wix-secrets-backend-v2/secrets/createsecret)
 - [`deleteSecret()`](wix-secrets-backend-v2/secrets/deletesecret)
 - [`getSecretValue()`](wix-secrets-backend-v2/secrets/getsecretvalue)
 - [`listSecretInfo()`](wix-secrets-backend-v2/secrets/listsecretinfo)
