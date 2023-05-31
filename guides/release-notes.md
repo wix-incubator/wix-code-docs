@@ -8,6 +8,30 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
+### New Developer Preview API: Wix Loyalty Tiers, Rewards, and Coupons
+
+`wix-loyalty.v2`
+
+The new [Wix Loyalty APIs](/wix-loyalty-v2) provide the following functionality: 
+
++ Manage a [loyalty tiers](/wix-loyalty-v2/tiers) program, including [creating](/wix-loyalty-v2/tiers/createtier) new tiers and [updating settings](/wix-loyalty-v2/tiers/updatetiersprogramsettings) that apply to all of the tiers in the program.
++ Manage the [loyalty rewards](/wix-loyalty-v2/rewards) and [loyalty coupons](/wix-loyalty-v2/coupons) that loyalty points can be redeemed for.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 31, 2023)
+
+### New Events for Wix Bookings v2
+
+`wix-bookings.v2`
+
+You can now handle events for when bookings are [created](wix-bookings-v2/events/onbookingcreated), [rescheduled](wix-bookings-v2/events/onbookingrescheduled), [confirmed](wix-bookings-v2/events/onbookingconfirmed), [declined](wix-bookings-v2/events/onbookingdeclined), [canceled](wix-bookings-v2/events/onbookingcanceled), and for when [the number of participants has been updated](wix-bookings-v2/events/onbookingnumberofparticipantsupdated). 
+
+(May 30, 2023)
+
+
+
 ### New Developer Preview API: Wix Bookings v2 Service Options and Variants
 
 `wix-bookings.v2`
@@ -29,14 +53,13 @@ The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/ser
 
 `wix-data.v2`
 
-The new [Wix Data API](/wix-data-v2) provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
+The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](https://www.wix.com/velo/reference/wix-data), provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
 
-+ [Data Items](/wix-data-v2/items): Access and manage items in a Wix site's data collections.
 + [Data Collections](/wix-data-v2/collections): Create data collections and manage existing collections' structure.
 + [Indexes](/wix-data-v2/indexes): Create indexes for data collections, to make querying data faster.
 + [External Database Connections](/wix-data-v2/externaldatabaseconnections): Connect an external database and manage it with Wix Data APIs.
 
-**Note:** This module is in [Developer Preview](./developer-preview.md).
+**Note:** This module is in [Developer Preview](./developer-preview.md). To access and manage items in a Wix site's data collections, please use the existing [`wix-data`](wix-data).
 
 (May 17, 2023)
 
