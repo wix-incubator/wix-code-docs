@@ -15,7 +15,7 @@ title: Introduction
 &nbsp;
 
 
-This service allows you to manage workflow phases, including creating, deleting, updating, and querying workflow phases.
+This service allows you to manage workflow phases, including creating, deleting, and updating workflow phases.
 
 ## Permissions information
 

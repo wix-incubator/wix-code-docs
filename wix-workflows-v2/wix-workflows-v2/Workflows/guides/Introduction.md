@@ -15,7 +15,7 @@ title: Introduction
 &nbsp;
 
 
-This service allows you to manage workflows, including creating, deleting, updating, and querying workflows.
+This service allows you to manage workflows, including creating, deleting, and updating workflows.
 
 ## Permissions information
 

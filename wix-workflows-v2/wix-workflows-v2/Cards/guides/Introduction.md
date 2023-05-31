@@ -15,7 +15,7 @@ title: Introduction
 &nbsp;
 
 
-This service allows you to manage workflow cards, including creating, deleting, updating, and querying workflow cards.
+This service allows you to manage workflow cards, including creating, deleting, and updating workflow cards.
 
 ## Permissions information
 
