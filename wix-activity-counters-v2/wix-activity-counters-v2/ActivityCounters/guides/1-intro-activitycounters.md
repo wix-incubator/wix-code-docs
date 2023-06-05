@@ -13,9 +13,8 @@ title: Introduction
 </div>
 
 &nbsp;
-<!--
+
 > __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
--->
 
 The Activity Counters module allows you to keep track of site members' activity. See "Integrations" below for Wix App activities that are already counted.
 
