@@ -67,9 +67,8 @@ The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](ht
 
 `wix-data`
 
-You can now select which fields a query returns.  
-
-A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+A new feature in [`WixDataQuery`](https://www.wix.com/velo/reference/wix-data/wixdataquery) provides more control over query results. 
+Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns using the new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function.
 
 (May 17, 2023)
 
