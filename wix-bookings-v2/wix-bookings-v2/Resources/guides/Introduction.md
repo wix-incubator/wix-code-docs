@@ -13,6 +13,14 @@ title: Introduction
 
 &nbsp;
 
+## Permissions information
+
+Functions in the Resources API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
+
 
 The Bookings Resources API provides functionality for creating, managing, and querying resources.
 
