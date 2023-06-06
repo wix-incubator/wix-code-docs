@@ -3,7 +3,7 @@
 The `queryAvailability()` endpoint allows you to filter and sort results based on slot availability properties. This article covers field support for filtering and sorting.
 
 ## Fields
-The following table shows supported fields for the `slotAvailability` object. 
+The following table shows supported fields for the `slotAvailability` object.
 If `fields` is provided and not empty, only the provided fields will be included in the returned entity:
 
 __Notes:__
