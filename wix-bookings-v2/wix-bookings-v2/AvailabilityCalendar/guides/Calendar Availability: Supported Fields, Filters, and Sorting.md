@@ -11,20 +11,7 @@ __Notes:__
     + bookable
     + If slot is given, slot.serviceId & slot.scheduleId will always appear on the returned SlotAvailability.slot.
 
-| Field            |                                                                                                                                                                                                            
-|------------------|
-| `slot`           |                                                                                                                                                                                 
-| `slot.startDate` |
-| `slot.endDate`   |                                                                                                                                                                             
-| `slot.sessionId` |                                                                                                                                                                                                              
-| `slot.timezone`  |                                   
-| `slot.resource`  |                                                                                                                                                                                                              
-| `slot.location`  |                                                                                                                                                                                                              
-| `totalSpots`     |                                                                                                                                                                               
-| `openSpots`      |      
-| `waitingList`    |                                                                                                                                                                                                              
-| `bookingPolicyViolations` |                                                                                                                                                                                                              
-
+|
 ## Filtering
 
 Specify the `filter` object in the following format:  
