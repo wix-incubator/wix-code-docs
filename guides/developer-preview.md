@@ -53,6 +53,7 @@ This is a list of the APIs that are currently in Developer Preview mode.
 <!-- START TABLE -->
 | Module | Submodule | Function |
 |---|---|---|
+| wix-activity-counters.v2 | ActivityCountersQueryBuilder | [eq](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/eq)<br>[find](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/find)<br>[in](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/in)<br>[limit](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/limit)<br>[ne](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/ne)<br>[skip](/wix-activity-counters-v2/activitycounters/activitycountersquerybuilder/skip)<br> |
 | wix-activity-counters.v2 | ActivityCounters | [getActivityCounters](/wix-activity-counters-v2/activitycounters/getactivitycounters)<br>[queryActivityCounters](/wix-activity-counters-v2/activitycounters/queryactivitycounters)<br>[setActivityCounters](/wix-activity-counters-v2/activitycounters/setactivitycounters)<br> |
 | wix-blog-backend | Events | [onTagUpdated](/wix-blog-backend/events/ontagupdated)<br> |
 | wix-bookings.v2 | AvailabilityCalendar | [queryAvailability](/wix-bookings-v2/availabilitycalendar/queryavailability)<br> |
