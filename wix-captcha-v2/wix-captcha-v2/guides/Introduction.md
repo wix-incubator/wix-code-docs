@@ -25,8 +25,8 @@ The reCAPTCHA element allows you to present a challenge-response test to site vi
 
 For more information on working with your reCAPTCHA element, click [here](https://support.wix.com/en/article/velo-tutorial-using-recaptcha-to-protect-data-submission).
 
-To use the Captcha API, import `wixCaptcha` from the `wix-captcha.v2` module:
+To use the Captcha API, import `captcha` from the `wix-captcha.v2` module:
 
 ```javascript
-    import wixCaptcha from 'wix-captcha.v2';
+    import captcha from 'wix-captcha.v2';
 ```
