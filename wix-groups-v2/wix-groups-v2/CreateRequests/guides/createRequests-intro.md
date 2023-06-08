@@ -41,6 +41,13 @@ import { createRequests } from 'wix-groups.v2';
 Before you begin coding, make sure to add the [Wix Groups](https://support.wix.com/en/article/wix-groups-adding-and-setting-up-wix-groups) application to your site. 
 
 
+### Settings for Typical Use Case
++ Site admins determine who can create groups. They can choose to require that site members request approval when creating a group. 
++ This setting can be found in your site's Dashboard under **Groups Application > General Settings > Group Creation**. 
++ If set to admin approval required, a site member uses the [`createGroup()`](wix-groups-v2/groups/creategroup) function to create a group, and the group becomes a `groupRequest` with a status of `PENDING`. 
++ Only a site admin can approve or reject requests to create a group. 
++ When a site member's request to create a group is approved, the `groupRequest` status changes to `APPROVED`, and the newly created group is added to the Groups List page of your site. 
+
 ## Terminology
 
 - **Group Request**: A request made by a site member to create the group.
