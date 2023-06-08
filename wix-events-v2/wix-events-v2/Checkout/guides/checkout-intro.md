@@ -13,6 +13,10 @@ title: Introduction
 
 &nbsp;
 
+<!--
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
+
 The Checkout API allows you to manage and track ticket reservations.
 
 With the Checkout API you can:
@@ -22,29 +26,10 @@ With the Checkout API you can:
 - Checkout reserved tickets.
 - Preview reservation invoices.
 
-## Before you begin
 
-It’s important to note the following points before starting to code:  
-
-- To use the Checkout API, import `checkout` from `wix-events.v2`:
+To use the Checkout API,
+import `checkout` from wix-events.v2:
 
 ```js
 import { checkout } from 'wix-events.v2';
 ```
-
-## Permissions information
-
-The following functions in Checkout are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
-
-- `cancelReservation()`
-- `checkout()`
-- `createReservation()`
-- `updateCheckout()`
-
-<blockquote class='warning'>
-<p>
-<strong>Warning:</strong>
-Elevating a function allows it to be called by any site visitor.
-Exercise caution to prevent security vulnerabilities.
-</p>
-</blockquote>
