@@ -8,6 +8,38 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Developer Preview API: Guests
+
+`wix-events.v2`
+
+The new [Guests API](/wix-events-v2/wix-events-v2/Guests) provides the ability to retrieve information about guests attending an event by using the [`queryGuests`](https://www.wix.com/velo/reference/wix-events-v2/guests/queryguests) method.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(June 8, 2023)
+
+### New Developer Preview API: Wix Loyalty Tiers, Rewards, and Coupons
+
+`wix-loyalty.v2`
+
+The new [Wix Loyalty APIs](/wix-loyalty-v2) provide the following functionality: 
+
++ Manage a [loyalty tiers](/wix-loyalty-v2/tiers) program, including [creating](/wix-loyalty-v2/tiers/createtier) new tiers and [updating settings](/wix-loyalty-v2/tiers/updatetiersprogramsettings) that apply to all of the tiers in the program.
++ Manage the [loyalty rewards](/wix-loyalty-v2/rewards) and [loyalty coupons](/wix-loyalty-v2/coupons) that loyalty points can be redeemed for.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 31, 2023)
+
+### New Events for Wix Bookings v2
+
+`wix-bookings.v2`
+
+You can now handle events for when bookings are [created](wix-bookings-v2/events/onbookingcreated), [rescheduled](wix-bookings-v2/events/onbookingrescheduled), [confirmed](wix-bookings-v2/events/onbookingconfirmed), [declined](wix-bookings-v2/events/onbookingdeclined), [canceled](wix-bookings-v2/events/onbookingcanceled), and for when [the number of participants has been updated](wix-bookings-v2/events/onbookingnumberofparticipantsupdated). 
+
+(May 30, 2023)
+
+
 
 ### New Developer Preview API: Wix Bookings v2 Service Options and Variants
 
@@ -44,21 +76,16 @@ The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](ht
 
 `wix-data`
 
-An addition to the `WixDataQuery` functions. 
-Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns.  
-
-A new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function has been added.
+A new feature in [`WixDataQuery`](https://www.wix.com/velo/reference/wix-data/wixdataquery) provides more control over query results. 
+Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns using the new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function.
 
 (May 17, 2023)
 
-### New Feature: delete and restore elements in the DOM
+### New Feature: Delete/Restore elements from the DOM
 
 `Wix Editor Elements ($w)`
 
-Content in an element that is in `hidden` status can be found by SEO crawlers. 
-You can now `delete` elements in the DOM so that they cannot be found by crawlers. You can `restore` elements to the DOM if required.  
-
-This feature applies to all elements.
+You can now delete and restore elements from the DOM.  
 
 A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
 2 new functions have been added:
