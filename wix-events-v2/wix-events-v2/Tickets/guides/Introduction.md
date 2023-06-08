@@ -13,6 +13,10 @@ title: Introduction
 
 &nbsp;
 
+<!--
+> __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+-->
+
 The Tickets API allows you to manage tickets for your site's events.
 
 With the Tickets API you can:
@@ -20,11 +24,9 @@ With the Tickets API you can:
 - Access and update the tickets for an event.
 - Check in tickets, and delete ticket check-ins.
 
-## Before you begin
 
-It’s important to note the following points before starting to code:  
-
-- To use the Tickets API, import `{ tickets }` from `'wix-events.v2'`:
+To use the Tickets API,
+import `tickets` from wix-events.v2:
 
 ```js
 import { tickets } from 'wix-events.v2';
