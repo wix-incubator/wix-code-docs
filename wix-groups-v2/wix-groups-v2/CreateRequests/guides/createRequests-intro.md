@@ -19,20 +19,22 @@ title: Introduction
 > unless specified otherwise.
 
 
-The Roles API provides functionality for managing roles of group [members](https://www.wix.com/velo/reference/wix-members-v2). 
+The Create Requests API provides functionality for managing requests to create a group.
  
-With the Roles API, you can:
-- [Assign](wix-groups-v2/roles/assignrole) a role to specific group members.
-- [Unassign](wix-groups-v2/roles/unassignrole) a role from specific group members.
+With the Create Requests API, you can:
++ [Approve](wix-groups-v2/createrequests/approvegrouprequests) requests to create a group. 
++ [List](wix-groups-v2/createrequests/listgrouprequests) requests to create a group. 
++ [Query](wix-groups-v2/createrequests/querygrouprequests)  requests to create a group.
++ [Reject](wix-groups-v2/createrequests/rejectgrouprequests)  requests to create a group. 
 
 
-> **Note:** This module is only relevant for site admins and group admins.
+> **Note:** This module is only relevant if admin approval is required for creating a group. 
 
 
-To use the Roles API, import `{ roles }` from the `wix-groups.v2` module. 
+To use the Create Requests API, import `{ createRequests }` from the `wix-groups.v2` module. 
 
 ```javascript
-import { roles } from 'wix-groups.v2';
+import { createRequests } from 'wix-groups.v2';
 ```
 
 ## Before you begin
@@ -41,6 +43,5 @@ Before you begin coding, make sure to add the [Wix Groups](https://support.wix.c
 
 ## Terminology
 
-- **Site Admin**: A site owner or site collaborator with admin permissions.
-- **Group Member**: A site member belonging to a group.
-- **Group Admin**: A group member that was assigned the 'group admin' role by either the site admin, or another group admin. The creator of a group is automatically a group admin. The group admin has the same permissions as a site admin, but only for the specified group.
+- **Group Request**: A request made by a site member to create the group.
+- **Site Admin**: A site owner or site collaborator with admin permissions. Site admins determine who can create groups.
