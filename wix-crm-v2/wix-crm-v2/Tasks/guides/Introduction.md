@@ -17,15 +17,6 @@ title: Introduction
 
 This service allows you to manage a site's tasks. Use [tasks](https://support.wix.com/en/article/about-tasks-reminders) to organize and prioritize your work with [Ascend by Wix](https://support.wix.com/en/article/about-ascend-by-wix).
 
-## Permissions information
-
-Functions in the Tasks API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
-
-<blockquote class='warning'>
-<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
-</blockquote>
-
-
 To use the Tasks API,
 import `tasks` from wix-crm.v2:
 
