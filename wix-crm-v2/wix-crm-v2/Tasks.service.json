@@ -23,18 +23,19 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "isCompleted",
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.CompleteTaskOptions"
+              "nativeType": "boolean"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Indication whether the task is completed",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "isCompleted"
       ],
       "ret": {
         "type": [
@@ -52,17 +53,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Set Task to be completed. The task id must exists.",
-        "description": [],
+        "summary": "Sets task as completed.",
+        "description": [
+          "The `completeTask()` function returns a Promise that resolves to the ID of the the task after it is set as completed."
+        ],
         "examples": [
           {
             "title": "completeTask example",
             "body": [
               "import { tasks } from 'wix-crm.v2';",
               "  ",
-              " async function completeTask(id, options) {",
+              " async function completeTask(id, isCompleted) {",
               "   try {",
-              "     const result = await tasks.completeTask(id, options);",
+              "     const result = await tasks.completeTask(id, isCompleted);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -138,28 +141,25 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "countTasks"
     },
     {
       "name": "createTask",
       "params": [
         {
-          "name": "options",
+          "name": "task",
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.CreateTaskOptions"
+              "referenceType": "wix-crm-v2.Tasks.TaskData"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Task object with the creation data",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "task"
+      ],
       "ret": {
         "type": [
           {
@@ -176,17 +176,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Create Task. If the task id already exist - an error will be returned",
-        "description": [],
+        "summary": "Creates a new task.",
+        "description": [
+          "The `createTask()` function returns a Promise that resolves to the ID of the the newly created task after it has been successfully created.\n\nWhen creating a new task, the specified `TaskInfo` object must  contain a `title` value."
+        ],
         "examples": [
           {
             "title": "createTask example",
             "body": [
               "import { tasks } from 'wix-crm.v2';",
               "  ",
-              " async function createTask(options) {",
+              " async function createTask(task) {",
               "   try {",
-              "     const result = await tasks.createTask(options);",
+              "     const result = await tasks.createTask(task);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -200,11 +202,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "createTask"
     },
     {
@@ -291,8 +288,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Get Task by id",
-        "description": [],
+        "summary": "Gets a task by ID.",
+        "description": [
+          "The `getTask()` function returns a Promise that resolves to the task with the given ID."
+        ],
         "examples": [
           {
             "title": "getTask example",
@@ -315,11 +314,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getTask"
     },
     {
@@ -377,11 +371,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getTasksList"
     },
     {
@@ -439,11 +428,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "list"
     },
     {
@@ -553,8 +537,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Delete Task. The task id must exists.",
-        "description": [],
+        "summary": "Removes an existing task.",
+        "description": [
+          "The `removeTask()` function returns a Promise that resolves to the ID of the the removed task after it has been successfully removed."
+        ],
         "examples": [
           {
             "title": "removeTask example",
@@ -598,18 +584,37 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "fields",
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.UpdateTaskFieldsOptions"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Set of desired fields.",
+          "required": true
+        },
+        {
+          "name": "task",
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.TaskData"
+            }
+          ],
+          "doc": "Task object with the updated data",
+          "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "fields",
+        "task"
       ],
       "ret": {
         "type": [
@@ -627,17 +632,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Update Task. The task id must exists.",
-        "description": [],
+        "summary": "Updates the specified fields of an existing task.",
+        "description": [
+          "The `updateTaskFields()` function returns a Promise that resolves to the ID of the the updated task after it has been successfully updated.\n\nOnly the properties passed in the `TaskInfo` object will be updated. All other properties will remain the same.\n\nTo remove a value from the task, pass its corresponding property with a value  of `null`."
+        ],
         "examples": [
           {
             "title": "updateTaskFields example",
             "body": [
               "import { tasks } from 'wix-crm.v2';",
               "  ",
-              " async function updateTaskFields(id, options) {",
+              " async function updateTaskFields(id, fields, task) {",
               "   try {",
-              "     const result = await tasks.updateTaskFields(id, options);",
+              "     const result = await tasks.updateTaskFields(id, fields, task);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -651,35 +658,10 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateTaskFields"
     }
   ],
   "messages": [
-    {
-      "name": "CompleteTaskOptions",
-      "members": [
-        {
-          "name": "isCompleted",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indication whether the task is completed"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
     {
       "name": "CompleteTaskRequest",
       "members": [
@@ -845,26 +827,6 @@
             }
           ],
           "doc": "Tasks in site"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CreateTaskOptions",
-      "members": [
-        {
-          "name": "task",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
-            }
-          ],
-          "doc": "Task object with the creation data"
         }
       ],
       "docs": {
@@ -1896,43 +1858,6 @@
             }
           ],
           "doc": "Task id"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "UpdateTaskFieldsOptions",
-      "members": [
-        {
-          "name": "fields",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Set of desired fields."
-        },
-        {
-          "name": "task",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
-            }
-          ],
-          "doc": "Task object with the updated data"
         }
       ],
       "docs": {
