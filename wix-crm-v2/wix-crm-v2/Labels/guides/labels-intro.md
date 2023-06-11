@@ -25,7 +25,7 @@ With the Labels API, you can:
 + [Find or create ](wix-crm-v2/labels/findorcreatelabel) a label. 
 + [Delete](wix-crm-v2/labels/deletelabel) a label.
 + [Rename](wix-crm-v2/labels/renamelabel) a label.
-+ [Query](wix-crm-v2/labels/querylabel) labels.
++ [Query](wix-crm-v2/labels/querylabels) labels.
 
 
 To use the Labels API, import `{ labels }` from the `wix-crm.v2` module. 
