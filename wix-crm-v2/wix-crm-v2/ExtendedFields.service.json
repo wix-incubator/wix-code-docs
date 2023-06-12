@@ -74,6 +74,16 @@
       "name": "findOrCreateExtendedField",
       "params": [
         {
+          "name": "displayName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Display name to find or create.\n\nIf an existing custom field is an exact match\nfor the specified `displayName`,\nthe existing field is returned.\nIf not, a new field is created and returned.",
+          "required": true
+        },
+        {
           "name": "dataType",
           "type": [
             {
@@ -82,22 +92,11 @@
           ],
           "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name. One of:\n\n- `\"TEXT\"`: Accepts strings.\n- `\"NUMBER\"`: Accepts floats.\n- `\"DATE\"`: Accepts dates formatted as `YYYY-MM-DD`.\n- `\"URL\"`: Accepts strings. Prepends `https://` if no protocol is included.",
           "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.ExtendedFields.FindOrCreateExtendedFieldOptions"
-            }
-          ],
-          "doc": "",
-          "required": true
         }
       ],
       "requiredFields": [
         "dataType",
-        "options",
-        "options.displayName"
+        "displayName"
       ],
       "ret": {
         "type": [
@@ -207,7 +206,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.",
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `fields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.",
           "required": true
         }
       ],
@@ -352,20 +351,20 @@
         "summary": "Creates a query to retrieve a list of extended fields.",
         "description": [
           "",
-          "The `queryExtendedFields()` function builds a query to retrieve a list of extended fields and returns an [`ExtendedFieldsQueryBuilder`](#extendedfieldsquerybuilder) object.",
+          "The `queryExtendedFields()` function builds a query to retrieve a list of extended fields and returns an [`FieldsQueryBuilder`](#fieldsquerybuilder) object.",
           "",
-          "The returned object contains the query definition, which is used to run the query using the [`find()`](#extendedfieldsquerybuilder/find) function.",
+          "The returned object contains the query definition, which is used to run the query using the [`find()`](#fieldsquerybuilder/find) function.",
           "",
-          "You can refine the query by chaining `ExtendedFieldsQueryBuilder` functions onto the query. `ExtendedFieldsQueryBuilder` functions enable you to filter, sort, and control the results that `queryExtendedFields()` returns. ",
+          "You can refine the query by chaining `FieldsQueryBuilder` functions onto the query. `FieldsQueryBuilder` functions enable you to filter, sort, and control the results that `queryExtendedFields()` returns. ",
           "",
-          "`queryExtendedFields()` runs with these `ExtendedFieldsQueryBuilder` defaults, which you can override:",
-          "- [`skip()`](#extendedfieldsquerybuilder/skip)",
-          "- [`limit(50)`](#extendedfieldsquerybuilder/limit)",
-          "- [`descending('_createdDate')`](#extendedfieldsquerybuilder/descending)",
+          "`queryExtendedFields()` runs with these `FieldsQueryBuilder` defaults, which you can override:",
+          "- [`skip()`](#fieldsquerybuilder/skip)",
+          "- [`limit(50)`](#fieldsquerybuilder/limit)",
+          "- [`descending('_createdDate')`](#fieldsquerybuilder/descending)",
           "",
           "> **Note:** Only visitors with **Manage Contacts** permissions can query extended fields.",
           "",
-          "The following `ExtendedFieldsQueryBuilder` functions are supported for `queryExtendedFields()`. For a full description of the `Extended Field` object, see the object returned for the [`items`](#extendedfieldsqueryresult/items) property in [`ExtendedFieldsQueryResult`](#extendedfieldsqueryresult).",
+          "The following `FieldsQueryBuilder` functions are supported for `queryExtendedFields()`. For a full description of the `Extended Field` object, see the object returned for the [`items`](#fieldsqueryresult/items) property in [`FieldsQueryResult`](#fieldsqueryresult).",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
           "|`namespace`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne)|",
@@ -550,7 +549,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes.",
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `fields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.",
           "required": true
         },
         {
@@ -736,7 +735,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes."
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `fields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes."
         },
         {
           "name": "namespace",
@@ -753,25 +752,6 @@
       "docs": {
         "description": [
           "Extended field that was found or created."
-        ]
-      }
-    },
-    {
-      "name": "FindOrCreateExtendedFieldOptions",
-      "members": [
-        {
-          "name": "displayName",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Display name to find or create.\n\nIf an existing custom field is an exact match\nfor the specified `displayName`,\nthe existing field is returned.\nIf not, a new field is created and returned.\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
         ]
       }
     },
@@ -931,7 +911,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.\n"
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `fields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.\n"
         }
       ],
       "docs": {
