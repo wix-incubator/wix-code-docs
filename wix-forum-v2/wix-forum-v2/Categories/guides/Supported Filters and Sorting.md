@@ -1,7 +1,7 @@
-# {{API_TITLE}}: Supported Filters and Sorting
+# Categories: Supported Filters and Sorting
 
 The following table shows field support for filters and sorting
-for the {{ENTITY}} object:
+for the Category object:
 
 | Field           | Supported Filters                             | Sortable |
 | --------------- | --------------------------------------------- | -------- |
