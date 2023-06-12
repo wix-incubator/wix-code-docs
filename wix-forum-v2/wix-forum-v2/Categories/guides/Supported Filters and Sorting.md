@@ -5,7 +5,7 @@ for the Category object:
 
 | Field           | Supported Filters                             | Sortable |
 | --------------- | --------------------------------------------- | -------- |
-| `id`            | `$eq`, `$ne`, `$hasSome    |   Sortable       |
+| `id`            | `$eq`, `$ne`, `$hasSome`    |   Sortable       |
 | `parentId`   | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	   |  |
 | `name`   | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	  |          |
 | `rank`        | `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`	   | Sortable |
@@ -16,6 +16,8 @@ for the Category object:
 | `postViewCount` | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	 | Sortable |
 | `slug` | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	 |          |
 
+Note that the "hasSome" operator works the same as the operator "IN" in SQL.
+
 __Related content:__
-[API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language)`,
+[API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language),
 [queryCategories( )](https://www.wix.com/velo/reference/wix-forum-v2/categories/querycategories)
