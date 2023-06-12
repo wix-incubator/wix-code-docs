@@ -79,13 +79,13 @@
       "name": "findOrCreateExtendedField",
       "params": [
         {
-          "name": "displayName",
+          "name": "dataType",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Display name to find or create.\n\nIf an existing custom field is an exact match\nfor the specified `displayName`,\nthe existing field is returned.\nIf not, a new field is created and returned.",
+          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included.",
           "required": true
         },
         {
@@ -96,11 +96,13 @@
             }
           ],
           "doc": "",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
-        "displayName"
+        "dataType",
+        "options",
+        "options.displayName"
       ],
       "ret": {
         "type": [
@@ -128,9 +130,9 @@
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "  ",
-              " async function findOrCreateExtendedField(displayName, options) {",
+              " async function findOrCreateExtendedField(dataType, options) {",
               "   try {",
-              "     const result = await extendedFields.findOrCreateExtendedField(displayName, options);",
+              "     const result = await extendedFields.findOrCreateExtendedField(dataType, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -281,19 +283,20 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "field",
           "type": [
             {
-              "referenceType": "wix-crm-v2.ExtendedFields.RenameExtendedFieldOptions"
+              "referenceType": "wix-crm-v2.ExtendedFields.RenameExtendedField"
             }
           ],
           "doc": "",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
-        "key",
-        "options.field.displayName"
+        "field",
+        "field.displayName",
+        "key"
       ],
       "ret": {
         "type": [
@@ -321,9 +324,9 @@
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "  ",
-              " async function renameExtendedField(key, options) {",
+              " async function renameExtendedField(key, field) {",
               "   try {",
-              "     const result = await extendedFields.renameExtendedField(key, options);",
+              "     const result = await extendedFields.renameExtendedField(key, field);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -475,14 +478,13 @@
       "name": "FindOrCreateExtendedFieldOptions",
       "members": [
         {
-          "name": "dataType",
-          "optional": true,
+          "name": "displayName",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included.\n"
+          "doc": "Display name to find or create.\n\nIf an existing custom field is an exact match\nfor the specified `displayName`,\nthe existing field is returned.\nIf not, a new field is created and returned.\n"
         }
       ],
       "docs": {
@@ -1135,25 +1137,6 @@
             }
           ],
           "doc": "Extended field namespace.\n\nExtended fields created by site contributors or 3rd-party apps\nare automatically assigned to the `custom` namespace."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "RenameExtendedFieldOptions",
-      "members": [
-        {
-          "name": "field",
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.ExtendedFields.RenameExtendedField"
-            }
-          ],
-          "doc": ""
         }
       ],
       "docs": {
