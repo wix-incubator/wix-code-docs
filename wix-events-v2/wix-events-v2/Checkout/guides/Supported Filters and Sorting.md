@@ -5,12 +5,12 @@ for the Ticket object:
 
 | Field           | Supported Filters                             | Sortable |
 | --------------- | --------------------------------------------- | -------- |
-| `created`            |      Not filterable        |      Sortable    |
-| `price`         |   Not filterable  | Sortable |
-| `orderIndex`   |  Not filterable  |      Sortable    |
-| `ticketDefinitionId`        |   `$eq`, `$ne`, `$hasSome`, `$in`  |  |
-| `eventId` | `$eq`, `$ne`, `$hasSome`, `$in` |  |
-| `name` | `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$hasSome`, `$in`, `$contains`, `$urlized` |    Sortable      |
+| `created`       |      Not filterable                           | Sortable |
+| `price`         |      Not filterable                           | Sortable |
+| `orderIndex`    |      Not filterable                           | Sortable |
+| `ticketDefinitionId` |   `$eq`, `$ne`, `$hasSome`, `$in`        |          |
+| `eventId`       | `$eq`, `$ne`, `$hasSome`, `$in`               |          |
+| `name`          | `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$hasSome`, `$in`, `$contains`, `$urlized` |    Sortable      |
 
 
 __Related content:__

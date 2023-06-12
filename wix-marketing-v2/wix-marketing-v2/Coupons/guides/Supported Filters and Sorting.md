@@ -7,13 +7,13 @@ for the Coupon object:
 | --------------- | --------------------------------------------- | -------- |
 | `id`            | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`   |     Sortable     |
 | `dateCreated`   | `$eq`,`$ne`,`$hasSome`,`$lt`,`$lte`,`$gt`,`$gte`    | Sortable |
-| `expired`   | `$eq`,`$ne` |          |
-| `specification.active`        | `$eq`,`$ne`   |  |
+| `expired`       | `$eq`,`$ne` |          |
+| `specification.active`  | `$eq`,`$ne`   |  |
 | `specification.name` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith` | Sortable |
-| `specification.code`            | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`   |      Sortable    |
-| `specification.usageLimit`   | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`  | Sortable |
+| `specification.code` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`   |      Sortable    |
+| `specification.usageLimit` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`  | Sortable |
 | `specification.limitedToOneItem`   | `$eq`,`$ne`    |          |
-| `scope.namespace`        | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`  | Sortable |
+| `scope.namespace` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith`  | Sortable |
 | `scope.group.name` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith | Sortable` |
 | `scope.group.entityId` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith` |     Sortable     |
 
