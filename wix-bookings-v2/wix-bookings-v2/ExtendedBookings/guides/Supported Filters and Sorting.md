@@ -1,15 +1,6 @@
-# Supported Filters
+# Extended Bookings: Supported Filters and Sorting
 
-
-[`queryExtendedBookings()`](#queryExtendedBookings) runs with these defaults:
-
-+ sorted by `id` in `ASC` order
-+ cursorPaging.limit is `50`
-
-`query.fields` and `query.fieldsets` aren't supported for this endpoint.
-
-The following table shows field support for filters for the booking object:
-
+The following table shows field support for filters for the booking object. All fields listed are sortable.
 
 | Field                                                                       | Supported Filters                             |
 |-----------------------------------------------------------------------------| --------------------------------------------- |
@@ -44,13 +35,10 @@ The following table shows field support for filters for the booking object:
 | participantsInfo.type.participantsChoices.serviceChoices.choices.optionId       |  `hasSome`, `hasAll` |
 | participantsInfo.type.participantsChoices.serviceChoices.choices.choice.custom.value |  `hasSome`, `hasAll` |
 
-
-You can only specify a filter only once per query. If a filter is provided 
-more than once, only the first occurrence affects the returned bookings.
-
-When using filters for dates, you must use [UTC time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
-
 Bookings belonging to a schedule don't have a `sessionId`. Therefore you 
 must use the `sessionId` filter that isn't part of the `query` object to 
 filter bookings for courses.
 
+__Related content:__
+[API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language), 
+[queryExtendedBookings( ) endpoint](https://www.wix.com/velo/reference/wix-bookings-v2/extendedbookings/queryextendedbookings)

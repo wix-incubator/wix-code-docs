@@ -57,4 +57,4 @@ Specify the `sort` object in the following format:
 
 __Related content:__
 [API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language), 
-[Query Availability endpoint](https://www.wix.com/velo/reference/wix-bookings-v2/availabilitycalendar/queryavailability)
+[queryAvailability( ) endpoint](https://www.wix.com/velo/reference/wix-bookings-v2/availabilitycalendar/queryavailability)
