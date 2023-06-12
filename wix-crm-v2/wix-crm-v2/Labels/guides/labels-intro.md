@@ -45,4 +45,4 @@ Functions in the Labels API are restricted and only run if you elevate permissio
 
 ## Terminology
 
-- **Labels**: Tags that help site collaborators categorize and organzie their contacts. Labels can be system-defined or user-defined. 
+- **Labels**: Tags that help site collaborators categorize and organzie their contacts. Labels can be system-defined or user-defined. A contact's assigned labels are available in the contact object under `info.labelKeys`.
