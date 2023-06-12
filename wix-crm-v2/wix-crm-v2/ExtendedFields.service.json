@@ -44,35 +44,30 @@
       "docs": {
         "summary": "Deletes an extended field.",
         "description": [
-          "When an extended field is deleted,\nany contact data stored in the field is permanently deleted as well.\n\nThis function is not a universal function and runs only on the backend."
+          "The `deleteExtendedField()` function returns a Promise that resolves when the specified extended field is deleted.\n\nWhen an extended field is deleted, any contact data stored in the field is permanently deleted as well.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can delete extended fields.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
-            "title": "deleteExtendedField example",
+            "title": "Delete an extended field ",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
-              "  ",
-              " async function deleteExtendedField(key) {",
-              "   try {",
-              "     const result = await extendedFields.deleteExtendedField(key);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myDeleteExtendedFieldFunction() {",
+              "  const key = \"custom.event-name\";",
+              "",
+              "  return extendedFields.deleteExtendedField(key)",
+              "    .then(() => {",
+              "      console.log(\"Extended field deleted\");",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteExtendedField"
     },
     {
@@ -85,7 +80,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included.",
+          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name. One of:\n\n- `\"TEXT\"`: Accepts strings.\n- `\"NUMBER\"`: Accepts floats.\n- `\"DATE\"`: Accepts dates formatted as `YYYY-MM-DD`.\n- `\"URL\"`: Accepts strings. Prepends `https://` if no protocol is included.",
           "required": true
         },
         {
@@ -122,35 +117,84 @@
       "docs": {
         "summary": "Retrieves a custom field with a given name, or creates one if it doesn't exist.",
         "description": [
-          "Successful calls to this endpoint always return a field,\nwhich can be passed to subsequent requests.\n\nTo find an existing custom field without potentially creating a new one, use\n[Get Extended Field](https:dev.wix.com/api/rest/contacts/extended-fields/get-extended-field) or\n[List Extended Fields](https:dev.wix.com/api/rest/contacts/extended-fields/list-extended-fields).\n\nThis function is not a universal function and runs only on the backend."
+          "The `findOrCreateExtendedField()` function returns a Promise that resolves when the specified custom field is found or created.\n\nSuccessful calls to `findOrCreateExtendedField()` always return an extended field, which can be passed to subsequent function calls.\n\nTo find an existing extended field without potentially creating a new one, use [`getExtendedField()`](#getextendedfield) or [`queryExtendedFields()`](#queryextendedfields).\n\n>**Note:** Only visitors with **Manage Contacts** permissions can find or create extended fields.\n\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
-            "title": "findOrCreateExtendedField example",
+            "title": "Create an extended field ",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
-              "  ",
-              " async function findOrCreateExtendedField(dataType, options) {",
-              "   try {",
-              "     const result = await extendedFields.findOrCreateExtendedField(dataType, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myFindOrCreateExtendedFieldFunction() {",
+              "  const displayName = \"Last Contacted\";",
+              "  const dataType = \"DATE\";",
+              "",
+              "  return extendedFields.findOrCreateExtendedField(displayName, dataType)",
+              "    .then((extendedField) => {",
+              "      return extendedField;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/*",
+              " * Promise that resolves to:",
+              " *",
+              " * {",
+              " *   \"field\": {",
+              " *     \"_createdDate\": \"2021-01-19T23:18:16.550Z\",",
+              " *     \"_updatedDate\": \"2021-01-19T23:18:16.550Z\"",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.last-contacted\",",
+              " *     \"displayName\": \"Last Contacted\",",
+              " *     \"dataType\": \"DATE\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *   },",
+              " *   \"newField\": true",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Find an extended field ",
+            "body": [
+              "import { extendedFields } from 'wix-crm.v2';",
+              "",
+              "export function myFindOrCreateExtendedFieldFunction() {",
+              "    const displayName = \"Last Contacted\";",
+              "    const dataType = \"DATE\";",
+              "",
+              "  return extendedFields.findOrCreateExtendedField(displayName, dataType)",
+              "    .then((extendedField) => {",
+              "      return extendedField;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"field\": {",
+              " *     \"_createdDate\": \"2021-01-19T23:18:17Z\",",
+              " *     \"_updatedDate\": \"2021-01-19T23:18:17Z\"",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.last-contacted\",",
+              " *     \"displayName\": \"Last Contacted\",",
+              " *     \"dataType\": \"DATE\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *   },",
+              " *   \"newField\": false",
+              " * }",
+              "*/"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "findOrCreateExtendedField"
     },
     {
@@ -163,7 +207,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.patronus\",\nthe value can be accessed at `info.extendedFields.items[\"custom.patronus\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.",
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.",
           "required": true
         }
       ],
@@ -188,35 +232,44 @@
       "docs": {
         "summary": "Retrieves an extended field.",
         "description": [
-          "This function is not a universal function and runs only on the backend."
+          "The `getExtendedField()` function returns a Promise that resolves when the extended field is retrieved.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can retrieve extended fields.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
-            "title": "getExtendedField example",
+            "title": "Get an extended field ",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
-              "  ",
-              " async function getExtendedField(key) {",
-              "   try {",
-              "     const result = await extendedFields.getExtendedField(key);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myGetExtendedFieldFunction() {",
+              "  const key = \"custom.event-name\";",
+              "",
+              "  return extendedFields.getExtendedField(key)",
+              "    .then((extendedField) => {",
+              "      return extendedField;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"_createdDate\": \"2021-01-19T21:41:39Z\",",
+              " *   \"_updatedDate\": \"2021-01-19T21:41:39Z\"",
+              " *   \"namespace\": \"custom\",",
+              " *   \"key\": \"custom.event-name\",",
+              " *   \"displayName\": \"Event Name\",",
+              " *   \"dataType\": \"TEXT\",",
+              " *   \"fieldType\": \"USER_DEFINED\",",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getExtendedField"
     },
     {
@@ -296,11 +349,23 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of extended fields.",
+        "summary": "Creates a query to retrieve a list of extended fields.",
         "description": [
           "",
-          "For a detailed list of supported operations, see [sorting and filtering for extended fields](https://dev.wix.com/api/rest/contacts/extended-fields/sort-and-filter). To learn more about query language, see",
-          "[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).",
+          "The `queryExtendedFields()` function builds a query to retrieve a list of extended fields and returns an [`ExtendedFieldsQueryBuilder`](#extendedfieldsquerybuilder) object.",
+          "",
+          "The returned object contains the query definition, which is used to run the query using the [`find()`](#extendedfieldsquerybuilder/find) function.",
+          "",
+          "You can refine the query by chaining `ExtendedFieldsQueryBuilder` functions onto the query. `ExtendedFieldsQueryBuilder` functions enable you to filter, sort, and control the results that `queryExtendedFields()` returns. ",
+          "",
+          "`queryExtendedFields()` runs with these `ExtendedFieldsQueryBuilder` defaults, which you can override:",
+          "- [`skip()`](#extendedfieldsquerybuilder/skip)",
+          "- [`limit(50)`](#extendedfieldsquerybuilder/limit)",
+          "- [`descending('_createdDate')`](#extendedfieldsquerybuilder/descending)",
+          "",
+          "> **Note:** Only visitors with **Manage Contacts** permissions can query extended fields.",
+          "",
+          "The following `ExtendedFieldsQueryBuilder` functions are supported for `queryExtendedFields()`. For a full description of the `Extended Field` object, see the object returned for the [`items`](#extendedfieldsqueryresult/items) property in [`ExtendedFieldsQueryResult`](#extendedfieldsqueryresult).",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
           "|`namespace`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne)|",
@@ -313,24 +378,166 @@
         ],
         "examples": [
           {
-            "title": "queryExtendedFields example",
+            "title": "Retrieve all extended fields ",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
-              "  ",
-              " async function queryExtendedFields() {",
-              "   const { items } = extendedFields.queryExtendedFields().find();",
-              " }",
-              "  "
+              "",
+              "export function myQueryExtendedFieldsFunction() {",
+              "  try {",
+              "",
+              "    const queryResults = extendedFields.queryExtendedFields()",
+              "    .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "",
+              "    return items;",
+              "",
+              "  } catch (error) {",
+              "",
+              "    console.error(error);",
+              "    // Handle the error",
+              "",
+              "  }",
+              "}",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *   {",
+              " *     \"_createdDate\": \"2021-03-30T12:41:13.000Z\",",
+              " *     \"_updatedDate\": \"2021-03-30T12:41:13.000Z\",",
+              " *     \"displayName\": \"Event we met at\",",
+              " *     \"key\": \"custom.event-we-met-at\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"custom\",",
+              " *     \"fieldType\": \"USER_DEFINED\"",
+              " *   },",
+              " *   {",
+              " *     \"_createdDate\": \"2021-01-19T23:18:17.000Z\",",
+              " *     \"_updatedDate\": \"2021-01-19T23:18:17.000Z\",",
+              " *     \"displayName\": \"Last Contacted\",",
+              " *     \"key\": \"custom.last-contacted\",",
+              " *     \"dataType\": \"DATE\",",
+              " *     \"namespace\": \"custom\",",
+              " *     \"fieldType\": \"USER_DEFINED\"",
+              " *   },",
+              " *   {",
+              " *     \"_createdDate\": \"2021-01-17T18:42:31.000Z\",",
+              " *     \"_updatedDate\": \"2021-01-17T18:42:31.000Z\",",
+              " *     \"displayName\": \"Patronus\",",
+              " *     \"key\": \"custom.patronus\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"custom\",",
+              " *     \"fieldType\": \"USER_DEFINED\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Display Name (start with first)\",",
+              " *     \"key\": \"contacts.displayByFirstName\",",
+              " *     \"description\": \"Display name starting with first name (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Display Name (start with last)\",",
+              " *     \"key\": \"contacts.displayByLastName\",",
+              " *     \"description\": \"Display name starting with last name (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"VAT ID\",",
+              " *     \"key\": \"invoices.vatId\",",
+              " *     \"description\": \"Vat ID for Wix Invoices\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"invoices\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Membership Status\",",
+              " *     \"key\": \"members.membershipStatus\",",
+              " *     \"description\": \"APPROVED/DENIED/PENDING/INACTIVE (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"members\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Mobile flag\",",
+              " *     \"key\": \"members.mobile\",",
+              " *     \"description\": \"true/false\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"members\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"# of Purchases\",",
+              " *     \"key\": \"ecom.numOfPurchases\",",
+              " *     \"description\": \"Wix Stores purchase count (read only)\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Total Spent Amount\",",
+              " *     \"key\": \"ecom.totalSpentAmount\",",
+              " *     \"description\": \"Wix Stores aggregated spent amount (read only)\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Total Spent Currency\",",
+              " *     \"key\": \"ecom.totalSpentCurrency\",",
+              " *     \"description\": \"Wix Stores currency code (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Last Purchase Date\",",
+              " *     \"key\": \"ecom.lastPurchaseDate\",",
+              " *     \"description\": \"Wix Stores last purchase date (read only)\",",
+              " *     \"dataType\": \"DATE\",",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Effective Subscription Status\",",
+              " *     \"key\": \"emailSubscriptions.subscriptionStatus\",",
+              " *     \"description\": \"SUBSCRIBED/UNSUBSCRIBED/NOT_SET/PENDING (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Effective Deliverability Status\",",
+              " *     \"key\": \"emailSubscriptions.deliverabilityStatus\",",
+              " *     \"description\": \"VALID/BOUNCED/SPAM_COMPLAINT/INACTIVE (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   },",
+              " *   {",
+              " *     \"displayName\": \"Effective Email\",",
+              " *     \"key\": \"emailSubscriptions.effectiveEmail\",",
+              " *     \"description\": \"Effective Email for subscription purposes (read only)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"fieldType\": \"SYSTEM\"",
+              " *   }",
+              " * ]",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "queryExtendedFields"
     },
     {
@@ -343,7 +550,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `extendedFields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes.",
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes.",
           "required": true
         },
         {
@@ -378,37 +585,48 @@
         "doc": "Updated extended field.\n"
       },
       "docs": {
-        "summary": "Updates an extended field's specified properties.",
+        "summary": "Renames an extended field.",
         "description": [
-          "This function is not a universal function and runs only on the backend."
+          "The `renameExtendedField()` function returns a Promise that resolves when the specified extended field's display name is changed\n\n> **Note:** Only visitors with **Manage Contacts** permissions can rename extended fields.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
-            "title": "renameExtendedField example",
+            "title": "Rename an extended field ",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
-              "  ",
-              " async function renameExtendedField(key, field) {",
-              "   try {",
-              "     const result = await extendedFields.renameExtendedField(key, field);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myRenameExtendedFieldFunction() {",
+              "  const key = \"custom.event-venue\";",
+              "  const field = {",
+              "    displayName: \"Event Location\"",
+              "  };",
+              "",
+              "  return extendedFields.renameExtendedField(key, field)",
+              "    .then((renamedExtendedField) => {",
+              "      return renamedExtendedField;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"_createdDate\": \"2021-01-19T22:06:34Z\",",
+              " *   \"_updatedDate\": \"2021-01-20T18:54:14Z\"",
+              " *   \"namespace\": \"custom\",",
+              " *   \"key\": \"custom.event-venue\",",
+              " *   \"displayName\": \"Event Location\",",
+              " *   \"dataType\": \"TEXT\",",
+              " *   \"fieldType\": \"USER_DEFINED\",",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "renameExtendedField"
     }
   ],
@@ -475,7 +693,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of data the field holds.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included."
+          "doc": "Type of data the field holds.\n\nOne of:\n- `\"TEXT\"`: Accepts strings.\n- `\"NUMBER\"`: Accepts floats.\n- `\"DATE\"`: Accepts dates formatted as `YYYY-MM-DD`.\n- `\"URL\"`: Accepts strings. Prepends `https://` if no protocol is included."
         },
         {
           "name": "description",
@@ -507,7 +725,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Indicates whether the extended field is a system field or custom field.\n\n- `SYSTEM`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `USER_DEFINED`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
+          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
         },
         {
           "name": "key",
@@ -518,7 +736,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `extendedFields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes."
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field data is available at `extendedFields[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\n`key` is generated when the extended field is created\nand cannot be modified, even if `displayName` changes."
         },
         {
           "name": "namespace",
@@ -568,7 +786,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included.\n"
+          "doc": "Type of data the field holds.\nIgnored if an existing field is an exact match\nfor the specified display name. One of:\n\n- `\"TEXT\"`: Accepts strings.\n- `\"NUMBER\"`: Accepts floats.\n- `\"DATE\"`: Accepts dates formatted as `YYYY-MM-DD`.\n- `\"URL\"`: Accepts strings. Prepends `https://` if no protocol is included.\n"
         },
         {
           "name": "displayName",
@@ -607,7 +825,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether the extended field was just created or already existed.\n\nIf the field was just created, returns `true`.\nIf it already existed, returns `false`.\n"
+          "doc": "Indicates whether the extended field was just created or already existed.\n\nIf the field was just created, returns `true`.\nIf the field already existed, returns `false`.\n"
         }
       ],
       "docs": {
@@ -713,7 +931,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.patronus\",\nthe value can be accessed at `info.extendedFields.items[\"custom.patronus\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.\n"
+          "doc": "Extended field key.\n\nWhen accessing contact data,\nextended field values are available at `info.extendedFields.items[key]`.\nFor example, if the key is \"custom.notes\",\nthe value can be accessed at `fields[\"custom.notes\"]`.\n\nOnce set, `key` cannot be modified, even if `displayName` changes.\n"
         }
       ],
       "docs": {
@@ -1157,7 +1375,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of data the field holds.\n\n- `TEXT`: Accepts strings.\n- `NUMBER`: Accepts floats.\n- `DATE`: Accepts dates formatted as `YYYY-MM-DD`.\n- `URL`: Accepts strings. Prepends `https://` if no protocol is included."
+          "doc": "Type of data the field holds.\n\nOne of:\n- `\"TEXT\"`: Accepts strings.\n- `\"NUMBER\"`: Accepts floats.\n- `\"DATE\"`: Accepts dates formatted as `YYYY-MM-DD`.\n- `\"URL\"`: Accepts strings. Prepends `https://` if no protocol is included."
         },
         {
           "name": "description",
@@ -1189,7 +1407,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Indicates whether the extended field is a system field or custom field.\n\n- `SYSTEM`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `USER_DEFINED`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
+          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
         },
         {
           "name": "namespace",
