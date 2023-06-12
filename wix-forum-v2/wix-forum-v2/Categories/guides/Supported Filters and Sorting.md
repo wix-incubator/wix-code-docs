@@ -16,8 +16,6 @@ for the Category object:
 | `postViewCount` | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	 | Sortable |
 | `slug` | `$eq`, `$ne`, `$contains`, `$hasSome`, `$urlized`, `$startsWith`, `$endsWith`, `$hasSome`	 |          |
 
-**Note:** The `$hasSome` operator works the same as the operator "IN" in SQL.
-
 __Related content:__
 [API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language),
 [queryCategories( )](https://www.wix.com/velo/reference/wix-forum-v2/categories/querycategories)

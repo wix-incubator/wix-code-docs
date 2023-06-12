@@ -17,7 +17,6 @@ for the Coupon object:
 | `scope.group.name` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith | Sortable` |
 | `scope.group.entityId` | `$eq`,`$ne`,`$hasSome`,`$contains`,`$startsWith` |     Sortable     |
 
-**Note:** The `$hasSome` operator works the same as the operator "IN" in SQL.
 
 __Related content:__
 [API Query Language](https://www.wix.com/velo/reference/api-overview/api-query-language),
