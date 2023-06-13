@@ -45,8 +45,7 @@ The following table shows field support for filtering with the `slotAvailability
 | `openSpots` |  |  | Returns slots with at least this number of open spots. |
 | `totalSpots`    |  |  Not filterable  |  |  |
 | `waitingList`    |  |  Not filterable  |  |  |
-| `bookingPolicyViolations`    |  |  Not filterable  |  |  |                                                                                                                                                                                                                                                                                                                   |
-
+| `bookingPolicyViolations`    |  |  Not filterable  |  |  |
 
 ## Sorting 
 
