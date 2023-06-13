@@ -27,7 +27,7 @@ Specify the `filter` object in the following format:
 The following table shows field support for filtering with the `slotAvailability` object:
 
 | Field                | Required | Filterable | Sortable | Notes |
-| -------------------- | -------- | -----------| -------- | ----- |
+| -------------------- | -------- | ---------- | -------- | ----- |
 | `slot`   |  | Not filterable |  |  |
 | `slot.startDate`            | Required | Not filterable | Sortable | Returns slots that start at, or after, this date. If `timezone` is specified, the `slot.startDate` for the query is according to the local date and time, which means that the timezone offset in the format is ignored.  |
 | `slot.endDate`            | Required  |  |  | Returns slots that end at, or before, this date. If the `timezone `is specified, the `slot.endDate` for the query is according to the local date and time, which means that the timezone offset in the format is ignored. |
