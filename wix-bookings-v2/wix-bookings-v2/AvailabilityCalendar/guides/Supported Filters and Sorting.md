@@ -49,7 +49,7 @@ The following table shows field support for filtering with the `slotAvailability
 
 ## Sorting 
 
-Currently, only sorting by `startDate` is supported.
+Currently, only sorting by `slot.startDate` is supported.
 
 Specify the `sort` object in the following format:  
 
