@@ -28,5 +28,5 @@ For more information on working with your reCAPTCHA element, click [here](https:
 To use the Captcha API, import `captcha` from the `wix-captcha.v2` module:
 
 ```javascript
-    import captcha from 'wix-captcha.v2';  
+    import captcha from 'wix-captcha.v2';   
 ```
