@@ -30,8 +30,8 @@ The following table shows field support for filtering with the `slotAvailability
 | -------------------- | ------------ | ------------- | -------- | ----- |
 | `slot`   |  | Not filterable |  |  |
 | `slot.startDate`            | Required | Not filterable | Sortable | Returns slots that start at, or after, this date. If `timezone` is specified, the `slot.startDate` for the query is according to the local date and time, which means that the timezone offset in the format is ignored.  |
-| `slot.endDate`            | Required  |  |  | Returns slots that end at, or before, this date. If the `timezone `is specified, the `slot.endDate` for the query is according to the local date and time, which means that the timezone offset in the format is ignored. |
-| `slot.serviceId`            |  |  |  | Supports multiple values, returned if slot is provided. |
+| `slot.endDate`            | Required  |  |  | Returns slots that end at, or before, this date. If the `timezone` is specified, the `slot.endDate` for the query is according to the local date and time, which means that the timezone offset in the format is ignored. |
+| `slot.serviceId`            |  |  |  | Supports multiple values. Returned if `slot` is provided. |
 | `slot.resourceId`            |  |  |  |  |
 | `slot.scheduleId`  |  | Not filterable  |  | Returned if `slot` is provided.  |
 | `slot.sessionId`   |  | Not filterable  |  |  |
@@ -49,7 +49,7 @@ The following table shows field support for filtering with the `slotAvailability
 
 ## Sorting 
 
-Currently, only sorting by `startDate` is supported.
+Currently, only sorting by `slot.startDate` is supported.
 
 Specify the `sort` object in the following format:  
 
