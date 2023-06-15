@@ -2,7 +2,6 @@
 title: Introduction
 ---
 # Introduction
-
 &nbsp;
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
@@ -12,22 +11,20 @@ title: Introduction
 </div>
 
 &nbsp;
-
 <!--
 > __Note__: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 -->
 
-The Tickets API allows you to manage tickets for your site's events.
+The Ticket Definitions API allows you to manage ticket definitions for tickets to your site's events.
 
-With the Tickets API you can:
+With the Ticket Definitions API you can:
 
-- Access and update the tickets for an event.
-- Check in tickets, and delete ticket check-ins.
+- [Create](wix-events-v2/ticketdefinitions/createticketdefinition) and [update](wix-events-v2/ticketdefinitions/updateticketdefinition) the ticket definitions for tickets to an event.
+- [Change the currency](wix-events-v2/ticketdefinitions/changecurrency) used for event tickets.
 
 
-To use the Tickets API,
-import `tickets` from wix-events.v2:
+To use the Ticket Definitions API, import `{ ticketDefinitions }` from `'wix-events.v2'`:
 
 ```js
-import { tickets } from 'wix-events.v2';
+import { ticketDefinitions } from 'wix-events.v2';
 ```
