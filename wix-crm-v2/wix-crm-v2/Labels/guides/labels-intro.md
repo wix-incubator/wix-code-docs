@@ -38,7 +38,7 @@ import { labels } from ‘wix-crm.v2’;
 
 Functions in the Labels API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
-<blockquote class=‘warning’>
+<blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
