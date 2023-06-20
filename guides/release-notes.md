@@ -8,29 +8,29 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### Migration of frontend APIs
+### Migration of frontend-only APIs
 
-In an effort to streamline our APIs we have migrated our frontend modules to contain the `-frontend` suffix. Legacy APIs were mostly divided between frontend and backend functionality and while the backend modules were indicated by a `-backend` suffix in the module name, the frontend modules had no indication.
+In an effort to more easily identify which modules only work with frontend code, we've migrated the frontend modules of legacy APIs to contain the `-frontend` suffix. Legacy APIs were mostly divided between frontend and backend functionality and while the backend modules were indicated by a `-backend` suffix in the module name, the frontend modules had no indication.
 
-With the introduction of [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules) we have now migrated the legacy frontend modules to clearly indicate that they are frontend only.
+With the introduction of [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules) we have now migrated the legacy frontend modules to clearly indicate that they are frontend only. For example, the `wix-bookings-frontend` module replaces the `wix-bookings` module.
 
 You don't need to take any action at this time. As always, we'll continue to support the legacy APIs so your existing code will continue to work as it does today.
 
 What's in the release:
-+ `wix-animations-frontend` replaces `wix-animations`
-+ `wix-bookings-frontend` replaces `wix-bookings`
-+ `wix-crm-frontend` replaces `wix-crm`
-+ `wix-events-frontend` replaces `wix-events`
-+ `wix-location-frontend` replaces `wix-location`
-+ `wix-members-frontend` replaces `wix-members`
-+ `wix-pay-frontend` replaces `wix-pay`
-+ `wix-pricing-plans-frontend` replaces `wix-pricing-plans`
-+ `wix-realtime-frontend` replaces `wix-frontend`
-+ `wix-seo-frontend` replaces `wix-seo`
-+ `wix-site-frontend` replaces `wix-site`
-+ `wix-storage-frontend` replaces `wix-storage`
-+ `wix-stores-frontend` replaces `wix-stores`
-+ `wix-window-frontend` replaces `wix-window`
++ `wix-animations-frontend` replaces `wix-animations`.
++ `wix-bookings-frontend` replaces `wix-bookings`.
++ `wix-crm-frontend` replaces `wix-crm`.
++ `wix-events-frontend` replaces `wix-events`.
++ `wix-location-frontend` replaces `wix-location`.
++ `wix-members-frontend` replaces `wix-members`.
++ `wix-pay-frontend` replaces `wix-pay`.
++ `wix-pricing-plans-frontend` replaces `wix-pricing-plans`.
++ `wix-realtime-frontend` replaces `wix-frontend`.
++ `wix-seo-frontend` replaces `wix-seo`.
++ `wix-site-frontend` replaces `wix-site`.
++ `wix-storage-frontend` replaces `wix-storage`.
++ `wix-stores-frontend` replaces `wix-stores`.
++ `wix-window-frontend` replaces `wix-window`.
 
 ### Migration of legacy APIs, batch 2
 
