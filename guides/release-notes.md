@@ -10,11 +10,9 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### Migration of frontend-only APIs
 
-We've migrated the frontend modules of legacy APIs to include the `-frontend` suffix. These legacy APIs were mostly divided between frontend and backend functionality, and while the backend modules were identified by a `-backend` suffix in their names, the frontend modules lacked any indication.
+We've migrated the frontend modules of legacy APIs to include the `-frontend` suffix. For example, the `wix-bookings-frontend` module replaces the `wix-bookings` module. Other than the name, these modules are identical to the modules they are replacing.
 
-Particularly with the introduction of [universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules) this change will reduce the likelihood of confusion. For instance, whereas the new `wix-bookings.v2` module is universal and includes functions that apply to both frontend and backend code, the legacy `wix-bookings` module only includes frontend functions. With this latest update, we've migrated the legacy frontend modules to clearly indicate that they are frontend-only, for example, the `wix-bookings-frontend` module replaces the `wix-bookings` module.
-
-You don't need to take any action at this time. As always, we'll continue to support the legacy APIs so your existing code will continue to work as it does today.
+You don't need to take any action at this time. As always, we'll continue to support the legacy APIs so your existing code will continue to work as it does today. The documentation to these legacy APIs will be hidden, so you should use the new modules for reference.
 
 What's in the release:
 + `wix-animations-frontend` replaces `wix-animations`.
