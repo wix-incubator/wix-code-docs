@@ -10,11 +10,19 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### Migration of frontend-only APIs
 
-We've migrated the frontend modules of legacy APIs to include the `-frontend` suffix. For example, the `wix-bookings-frontend` module replaces the `wix-bookings` module. Other than the name, these modules are identical to the modules they are replacing.
+We've migrated the frontend modules of legacy APIs
+so they now end with `-frontend`
+(for example, `wix-bookings-frontend` replaces `wix-bookings`).
+Other than the name, these modules are identical to the modules they replace.
 
-You don't need to take any action at this time. As always, we'll continue to support the legacy APIs so your existing code will continue to work as it does today. The documentation to these legacy APIs will be hidden, so you should use the new modules for reference.
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs
+so your existing code will continue to work as it does today.
+The legacy APIs will be hidden in the docs,
+so please refer to the new modules for reference.
 
 What's in the release:
+
 + [`wix-animations-frontend`](/wix-animations-frontend) replaces `wix-animations`.
 + [`wix-bookings-frontend`](/wix-bookings-frontend) replaces `wix-bookings`.
 + [`wix-crm-frontend`](/wix-crm-frontend) replaces `wix-crm`.
@@ -29,6 +37,8 @@ What's in the release:
 + [`wix-storage-frontend`](/wix-storage-frontend) replaces `wix-storage`.
 + [`wix-stores-frontend`](/wix-stores-frontend) replaces `wix-stores`.
 + [`wix-window-frontend`](/wix-window-frontend) replaces `wix-window`.
+
+(June 21, 2023)
 
 ### Migration of legacy APIs, batch 2
 
