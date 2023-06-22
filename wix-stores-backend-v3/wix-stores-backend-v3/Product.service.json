@@ -614,6 +614,8 @@
       "requiredFields": [
         "options.products.product",
         "options.products.product.customizations.customizationType",
+        "options.products.product.media.items",
+        "options.products.product.media.main",
         "options.products.product.name",
         "options.products.product.productType",
         "options.products.variants",
@@ -703,6 +705,8 @@
         "products",
         "products.product",
         "products.product._id",
+        "products.product.media.items",
+        "products.product.media.main",
         "products.product.revision",
         "products.variants.variant",
         "products.variants.variant.price",
@@ -789,6 +793,8 @@
         "options.variants.variant.price.basePrice",
         "product",
         "product.customizations.customizationType",
+        "product.media.items",
+        "product.media.main",
         "product.name",
         "product.productType"
       ],
@@ -882,6 +888,8 @@
         "options.variants.variant.price.basePrice",
         "product",
         "product.customizations.customizationType",
+        "product.media.items",
+        "product.media.main",
         "product.revision"
       ],
       "ret": {
@@ -3472,7 +3480,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product base price range. The minimum and maximum prices of all the variants."
@@ -3511,7 +3519,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product cost range. The minimum and maximum costs of all the variants.\nRequires admin permissions to read"
@@ -3568,7 +3576,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product discounted price range. The minimum and maximum prices of all the variants."
@@ -7136,6 +7144,26 @@
       "name": "MediaPlatformMedia",
       "members": [
         {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Image ID from Media Manager. Use when you already uploaded media in Media Manager."
+        },
+        {
+          "name": "altText",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Image alt text. Relevant only for images."
+        },
+        {
           "name": "correlationId",
           "readOnly": true,
           "optional": true,
@@ -7148,27 +7176,46 @@
         },
         {
           "name": "image",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Product image.\nPass existing media ID for image previously saved in Wix media manager.\nPass full image URL to upload an image to Wix media manager.\nIn case of full url the image will be updated eventually."
+          "doc": "Product image."
+        },
+        {
+          "name": "url",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL of image to be uploaded. Upload by url is async process so expect product to be created without any media. If upload successful then media will appear in product later."
         },
         {
           "name": "video",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Product video.\nPass existing media ID for video previously saved in Wix media manager.\nPass full URL to upload a video to Wix media manager. In this case the video will be updated eventually."
+          "doc": "Product video."
         }
       ],
       "extra": {
         "oneOfGroups": [
+          {
+            "name": "oneOfMediaPlatformMediaSetByOneOf",
+            "members": [
+              "_id",
+              "url"
+            ]
+          },
           {
             "name": "oneOfMediaPlatformMediaMediaOneOf",
             "members": [
@@ -7189,23 +7236,55 @@
       "members": [
         {
           "name": "image",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Product image.\nPass existing media ID for image previously saved in Wix media manager.\nPass full image URL to upload an image to Wix media manager.\nIn case of full url the image will be updated eventually."
+          "doc": "Product image."
         },
         {
           "name": "video",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Product video.\nPass existing media ID for video previously saved in Wix media manager.\nPass full URL to upload a video to Wix media manager. In this case the video will be updated eventually."
+          "doc": "Product video."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MediaPlatformMediaSetByOneOf",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Image ID from Media Manager. Use when you already uploaded media in Media Manager."
+        },
+        {
+          "name": "url",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL of image to be uploaded. Upload by url is async process so expect product to be created without any media. If upload successful then media will appear in product later."
         }
       ],
       "docs": {
@@ -7974,36 +8053,6 @@
       }
     },
     {
-      "name": "NumericPropertyRange",
-      "members": [
-        {
-          "name": "maxValue",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-stores-backend-v3.Product.FixedMonetaryAmount"
-            }
-          ],
-          "doc": "Maximum value."
-        },
-        {
-          "name": "minValue",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-stores-backend-v3.Product.FixedMonetaryAmount"
-            }
-          ],
-          "doc": "Minimum value."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "Oembed",
       "members": [
         {
@@ -8485,12 +8534,12 @@
           "doc": "Price per unit settings - base measurement unit and quantity in order to show price per unit data on the product page.\nThis setting is fixed for a product. The specific price per unit value for each variant is set on each variant\nFor example - price per 100 gr. of cheese.\nAllowed only for `type` PHYSICAL."
         },
         {
-          "name": "weightRange",
+          "name": "shippingWeightRange",
           "readOnly": true,
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.WeightRange"
             }
           ],
           "doc": "Product weight range. The minimum and maximum weights of all the variants.\nthis is needed for bulk adjust product properties action, and also exist in the current API."
@@ -9320,6 +9369,36 @@
       }
     },
     {
+      "name": "PriceRange",
+      "members": [
+        {
+          "name": "maxValue",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-stores-backend-v3.Product.FixedMonetaryAmount"
+            }
+          ],
+          "doc": "Maximum value."
+        },
+        {
+          "name": "minValue",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-stores-backend-v3.Product.FixedMonetaryAmount"
+            }
+          ],
+          "doc": "Minimum value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Product",
       "members": [
         {
@@ -9378,7 +9457,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product base price range. The minimum and maximum prices of all the variants."
@@ -9417,7 +9496,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product cost range. The minimum and maximum costs of all the variants.\nRequires admin permissions to read"
@@ -9474,7 +9553,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-stores-backend-v3.Product.NumericPropertyRange"
+              "referenceType": "wix-stores-backend-v3.Product.PriceRange"
             }
           ],
           "doc": "Product discounted price range. The minimum and maximum prices of all the variants."
@@ -11916,6 +11995,59 @@
       }
     },
     {
+      "name": "V3Inventory",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Inventory Item ID"
+        },
+        {
+          "name": "availableForPreorder",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The current preorder availability status calculated based on variants"
+        },
+        {
+          "name": "inStock",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The current purchase availability status calculated based on variants"
+        },
+        {
+          "name": "locationId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location ID"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "V3MaskedProduct",
       "members": [
         {
@@ -12259,15 +12391,22 @@
           "doc": "Digital properties. Can be provided when `product_type` DIGITAL"
         },
         {
-          "name": "inStock",
+          "name": "inventory",
           "readOnly": true,
           "optional": true,
           "type": [
             {
-              "nativeType": "boolean"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-stores-backend-v3.Product.V3Inventory"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "Variant inventory stock status, Generated automatically based on InventoryItems of this variant."
+          "doc": "Variant inventory per location. Calculated automatically based on InventoryItems of this variant."
         },
         {
           "name": "media",
@@ -12724,6 +12863,36 @@
             }
           ],
           "doc": "Video width."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "WeightRange",
+      "members": [
+        {
+          "name": "maxValue",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum weight across all variants associated with product."
+        },
+        {
+          "name": "minValue",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Minimum weight across all variants associated with product."
         }
       ],
       "docs": {
