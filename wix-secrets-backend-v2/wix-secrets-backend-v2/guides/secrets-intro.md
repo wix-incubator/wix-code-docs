@@ -14,20 +14,18 @@ title: Introduction
 &nbsp;
 &nbsp;
 
-The Wix Secrets Backend v2 API contains functionality for managing secrets you safely store in your site's Secrets Manager.
-
-Velo's Secrets Manager allows you to securely store API keys and other secrets on your site. 
-Each secret's value is encrypted, and assigned a name of your choice and an ID.
-You can then use the name or ID to refer to the secret in your backend code rather than hardcoding its value.
+The Wix Secrets Backend v2 API contains functionality for managing secrets on your site. Secrets managed by this API are available in the [Secrets Manager](https://support.wix.com/en/article/velo-working-with-the-secrets-manager) section of your site's dashboard. You can securely store API keys and other secrets on your site. Each secret's value is encrypted, and assigned a name of your choice and an ID. You can then use the name or ID to refer to the secret in your backend code rather than hardcoding its value.
 
 Learn more [about Velo's Secrets Manager](https://support.wix.com/en/article/velo-about-the-secrets-manager).
 
 
 With the Secrets API, you can safely:
 
-- Manage secrets.
-- Retrieve secret values.
-- Retrieve other information about your secrets, such as their names and descriptions.
+- [Create](wix-secrets-backend-v2/secrets/createsecret) a secret.
+- [Delete](wix-secrets-backend-v2/secrets/deletesecret) a secret.
+- [Update](wix-secrets-backend-v2/secrets/updatesecret) a secret.
+- [Retrieve](wix-secrets-backend-v2/secrets/getsecretvalue) a secret value.
+- [Retrieve other information](wix-secrets-backend-v2/secrets/listsecretinfo) about your secrets, such as their names and descriptions.
 
 To use the Secrets API, import `{ secrets }` from the `wix-secrets-backend.v2` module:
 ```javascript
@@ -46,6 +44,7 @@ It's important to note the following:
 **Security considerations**
 - If you currently use private keys in your code, we recommend removing them. You can either create a secret with the Secrets API or the [Functional Testing](https://support.wix.com/en/article/velo-functional-testing-in-the-backend) tool.
 - To prevent malicious users from accessing the values of your secrets, use them only in backend code. Avoid using secret values in frontend code.
+- Do not use [`listSecretInfo()`](#wix-secrets-backend-v2/secrets/listsecretinfo) in a **.jsw** file with anonymous permissions. This is a serious security risk which exposes your secrets to potential leaks. To prevent this, implement `listSecretInfo()` in a separate **.js** file to block frontend access. If you must include `listSecretInfo()` in a **.jsw** file, make sure the exported function has [permissions set](https://support.wix.com/en/article/velo-about-web-module-permissions) to **Admin**. ",
 
 
 ## Permissions information
