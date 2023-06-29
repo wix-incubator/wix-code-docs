@@ -31,8 +31,25 @@ Exercise caution to prevent security vulnerabilities.
 
 The Reviews API provides functionality for managing your site's reviews, including creating, deleting, querying, and updating reviews.
 
+## Before you begin
+
 To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
 
 ```javascript
     import reviews from 'wix-reviews.v2';   
 ```
+
+## Terminology
+
+- **Review**: A site visitor's review about an entity, for example, a Wix Stores product with a rating.
+- **Rating**: A site visitor can give a rating score between 1 and 5 in addition to a written review.
+- **Helpfulness**: How helpful this review was for site visitors.
+- **Reply**: A site owner or moderator can reply to a review via the Dashboard.
+
+## Review Authors
+
+Review authors create reviews either as visitors or as contacts. When a review author creates a review as a visitor with [`createReviewAndContact`](./createReviewAndContact), they're converted to a contact. Once this happens, the author creates reviews using their contact ID with [`createReview`](./createReview). 
+
+## Integration with Ratings
+ 
+ The Reviews API is integrated with the Ratings API. This means that a rating scale is automatically part of a review page in addition to a review description section. Site owners who add a Reviews app to their site don't need to add Ratings. 
