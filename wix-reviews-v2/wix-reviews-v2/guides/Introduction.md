@@ -19,7 +19,7 @@ The following functions in the Reviews API are restricted and only run if you el
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 
-[updateReviews](#updateReviews)
+[updateReviews](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/updatereview)
 
 <blockquote class='warning'>
 <p>
@@ -48,7 +48,7 @@ To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
 
 ## Review Authors
 
-Review authors create reviews either as visitors or as contacts. When a review author creates a review as a visitor with [`createReviewAndContact`](./createReviewAndContact), they're converted to a contact. Once this happens, the author creates reviews using their contact ID with [`createReview`](./createReview). 
+Review authors create reviews either as visitors or as contacts. When a review author creates a review as a visitor with [`createReviewAndContact`](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/createReviewAndContact), they're converted to a contact. Once this happens, the author creates reviews using their contact ID with [`createReview`](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/createReview). 
 
 ## Integration with Ratings
  
