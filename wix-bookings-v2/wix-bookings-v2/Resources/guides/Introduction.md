@@ -11,10 +11,10 @@ The following functions in the Resources API are restricted and only run if you 
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 
-- [`createResource()`](wix-bookings-v2/resources/createResource)
-- [`updateResource()`](wix-bookings-v2/resources/updateResource)
-- [`updateResourceSchedule()`](wix-bookings-v2/resources/updateResourceSchedule)
-- [`deleteResource()`](wix-bookings-v2/resources/deleteResource)
+- [`createResource()`](https://www.wix.com/velo/reference/wix-bookings-v2/resources/createResource)
+- [`updateResource()`](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateResource)
+- [`updateResourceSchedule()`](https://www.wix.com/velo/reference/wix-bookings-v2/resources/updateResourceSchedule)
+- [`deleteResource()`](https://www.wix.com/velo/reference/wix-bookings-v2/resources/deleteResource)
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
