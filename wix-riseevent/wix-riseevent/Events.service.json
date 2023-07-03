@@ -59,6 +59,55 @@
       "syntaxName": "wixRise_onEventCreated"
     },
     {
+      "name": "onEventDisabled",
+      "params": [
+        {
+          "name": "event",
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEventDisabledEvent",
+              "displayName": "EventDisabledEvent"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "nativeType": "void"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "description": [],
+        "examples": [
+          {
+            "title": "onEventDisabled example",
+            "body": [
+              "",
+              "  export function wixRise_onEventDisabled(event) {",
+              "    const eventId = event.metadata.id",
+              "    const entityId = event.data.event._id;",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": true,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "wixRise_onEventDisabled"
+    },
+    {
       "name": "onEventUpdated",
       "params": [
         {
@@ -109,6 +158,26 @@
     }
   ],
   "messages": [
+    {
+      "name": "wixVeloEventsActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "wixVeloEventsBackendEventMetadata",
       "members": [
@@ -344,8 +413,281 @@
       }
     },
     {
+      "name": "wixVeloEventsDomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The time of the event. Useful if there was a delay in dispatching"
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsExtendedFieldsUpdatedEvent",
+              "displayName": "ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsDomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsExtendedFieldsUpdatedEvent",
+              "displayName": "ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "wixVeloEventsEmpty",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsEntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsEntityDeletedEvent",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsEntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -618,6 +960,78 @@
       }
     },
     {
+      "name": "wixVeloEventsEventDisabled",
+      "members": [
+        {
+          "name": "event",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEvent",
+              "displayName": "Event"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsEventDisabledEvent",
+      "members": [
+        {
+          "name": "data",
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEventDisabled",
+              "displayName": "EventDisabled"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "metadata",
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsBackendEventMetadata",
+              "displayName": "BackendEventMetadata"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsEventExpired",
+      "members": [
+        {
+          "name": "event",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-riseevent.Events.wixVeloEventsEvent",
+              "displayName": "Event"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "wixVeloEventsEventUpdateExpirationDateInThePastDetails",
       "members": [
         {
@@ -790,6 +1204,26 @@
             }
           ],
           "doc": "Event"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
