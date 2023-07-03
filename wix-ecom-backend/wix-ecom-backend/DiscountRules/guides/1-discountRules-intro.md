@@ -34,6 +34,5 @@ import { discountRules } from 'wix-ecom-backend';
   - Triggers and discounts can have multiple scopes.
 
 
-- **Trigger**: A set of conditions that must be met for a discount to become applicable. Triggers can be chained so that more than 1 condition must be met. 2 types of trigger are supported:
-  - **Default triggers:** These built-in triggers fire when a specified minimum/maximum item quantity (e.g., "at least 5 items") or cart subtotal (e.g., "no more than $100") is reached. For this trigger to fire, the items must also be part of a defined scope. 
-  - **Custom triggers:** Using the [Custom Trigger Integration SPI](LINK) you can create any condition you want. For example, a trigger that only fires between 8pm-10pm on Mondays and Thursdays, and only on a rainy day.
+- **Trigger**: A set of conditions that must be met for a discount to become applicable. Triggers can be chained so that more than 1 condition must be met.
+  - **Default triggers:** These built-in triggers fire when a specified minimum/maximum item quantity (e.g., "at least 5 items") or cart subtotal (e.g., "no more than $100") is reached. For this trigger to fire, the items must also be part of a defined scope.
