@@ -12,7 +12,6 @@
 &nbsp;
 
 
-
 With the Wix Bookings V2 API you can manage bookings for a site's services. 
 The booking object holds information about the customer and the session or 
 schedule they have booked. You can then use the 
@@ -24,6 +23,14 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
 ### Terminology
 
 For a comprehensive glossary of Wix Bookings terms, see [Terminology](https://www.wix.com/velo/reference/wix-bookings-v2/terminology).
+
+## Before you begin
+
+It’s important to note the following points before starting to code:
+
++ The `participantNotification` field holds only information about the last 
+  message sent to the customer. It also doesn't include details which type of 
+  message has been sent.
 
 To use the Bookings V2 API, import `{ bookings }` from the `wix-bookings.v2` module:
 
