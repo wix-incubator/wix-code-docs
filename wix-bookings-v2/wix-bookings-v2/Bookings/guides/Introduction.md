@@ -20,7 +20,7 @@ eCommerce APIs to handle the checkout and payment flow.
 With Wix Bookings V2 API you can retrieve existing bookings and manage the booking's life cycle.
 
 
-### Terminology
+## Terminology
 
 For a comprehensive glossary of Wix Bookings terms, see [Terminology](https://www.wix.com/velo/reference/wix-bookings-v2/terminology).
 
@@ -31,8 +31,7 @@ It’s important to note the following points before starting to code:
 + The `participantNotification` field holds only information about the last 
   message sent to the customer. It also doesn't include details which type of 
   message has been sent.
-
-To use the Bookings V2 API, import `{ bookings }` from the `wix-bookings.v2` module:
++ To use the Bookings V2 API, import `{ bookings }` from the `wix-bookings.v2` module:
 
 ```javascript
 import { bookings } from 'wix-bookings.v2';
