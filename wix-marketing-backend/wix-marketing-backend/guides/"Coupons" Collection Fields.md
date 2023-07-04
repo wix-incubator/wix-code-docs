@@ -40,9 +40,6 @@ You cannot change the Coupons collection's permissions. 
 
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
-> **Note:**
-> In addition to the filters listed below for each field, 
-
 #### ID (\_id) 
 
 **Description**: The ID of the coupon. This is a system field and is hidden by default.  
