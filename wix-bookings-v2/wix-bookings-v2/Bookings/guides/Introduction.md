@@ -22,7 +22,7 @@ With Wix Bookings V2 API you can retrieve existing bookings and manage the booki
 
 ## Terminology
 
-For a comprehensive glossary of Wix Bookings terms, see [Terminology](https://www.wix.com/velo/reference/wix-bookings-v2/terminology).
+For a comprehensive glossary of Wix Bookings terms, see [Terminology](https://www.wix.com/velo/reference/wix-bookings-v2/terminology). 
 
 ## Before you begin
 
