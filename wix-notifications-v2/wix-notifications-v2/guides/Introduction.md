@@ -13,6 +13,10 @@ title: Introduction
 
 &nbsp;
 
+The Notifications API provides functionality for sending notifications. Notifications are messages that are sent to the site dashboard, Wix app, or browser of your site's [contributors](https://support.wix.com/en/article/roles-permissions-overview).
+
+To learn more about notifications, see [About Your Dashboard Notifications](https://support.wix.com/en/article/about-your-dashboard-notifications).
+
 ## Permissions information
 
 Functions in the Notifications API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
@@ -20,11 +24,6 @@ Functions in the Notifications API are restricted and only run if you elevate pe
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
-
-The Notifications API provides functionality for sending notifications. Notifications are messages that are sent to the site dashboard, Wix app, or browser of your site's [contributors](https://support.wix.com/en/article/roles-permissions-overview).
-
-To learn more about notifications, see [About Your Dashboard Notifications](https://support.wix.com/en/article/about-your-dashboard-notifications).
-
 
 To use the Notifications API, import `notifications` from the `wix-notifications.v2` module:
 
