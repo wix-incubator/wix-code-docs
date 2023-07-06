@@ -32,7 +32,7 @@ import { discountRules } from 'wix-ecom-backend';
 - **Discount:** The change applied to an item's price when conditions are met. Discount can reduce an item's price by percentage or a specified amount, and also by setting an item to a fixed price.
   - Discounts must have a defined scope/s.
 
-- **Scope:** A group of Wix Stores catalog items that qualify for a discount.
+- **Scope:** A group of catalog items that qualify for a discount.
   - Every catalog has 2 scopes "out of the box". For example, Wix Stores has `Specific Products` and `All Products` scopes.
   - Scopes are required in default triggers and discount objects.
   - Triggers and discounts can have multiple scopes.
