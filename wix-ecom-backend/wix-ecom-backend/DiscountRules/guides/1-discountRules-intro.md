@@ -27,9 +27,9 @@ import { discountRules } from 'wix-ecom-backend';
 
 ## Terminology
 
-- **Discount rule:** A set of conditions (scope and/or trigger) that dictate whether an item/product qualifies for a specified discount.
+- **Discount rule:** A set of conditions (scope and trigger) that dictate whether an item/product qualifies for a specified discount.
 
-- **Discount:** The change applied to an item's price when conditions are met. Discount can reduce an item's price by percentage or a specified amount, and also by setting an item to a fixed price.
+- **Discount:** The change applied to an item's price when conditions are met. Discounts can reduce an item's price by percentage or a specified amount, and also by setting an item to a fixed price.
   - Discounts must have a defined scope/s.
 
 - **Scope:** A group of catalog items that qualify for a discount.
