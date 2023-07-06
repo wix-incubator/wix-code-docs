@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "InventoryItems" Collection Fields
@@ -41,6 +43,9 @@ The InventoryItems collection has the following [permissions](https://support.wi
 You cannot change the InventoryItems collection's permissions. 
 
 ### Fields 
+
+> **Note:**
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard). 
 
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
