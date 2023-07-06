@@ -25,6 +25,8 @@ Functions in the Notifications API are restricted and only run if you elevate pe
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
+## Before you begin
+
 To use the Notifications API, import `notifications` from the `wix-notifications.v2` module:
 
 ```javascript
