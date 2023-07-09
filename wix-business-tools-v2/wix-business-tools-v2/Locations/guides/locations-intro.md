@@ -55,3 +55,11 @@ It’s important to note the following points before starting to code:
 + The [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function replaces an existing location with a new location. Currently, you can't partially update a location.
 + Currently, the location type is just informational and doesn't affect a location's functionality.
 + The status `INACTIVE` isn't currently supported.
+
+## Permissions information
+
+Functions in INSERT_API_NAME API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
