@@ -15,7 +15,7 @@ title: Introduction
 > **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. 
 
 
-The Account Details API provides functionality for managing your email marketing account information. Use the API to [get your current account details](/getaccountdetails). 
+The Account Details API provides functionality for managing your email marketing account information. Use the API to [get your current account details](wix-email-marketing-v2/accountdetails/getaccountdetails). 
 
 
 To use the Account Details API, import `accountDetails` from the `wix-email-marketing.v2` module:
@@ -23,3 +23,11 @@ To use the Account Details API, import `accountDetails` from the `wix-email-mark
 ```js
 import { accountDetails } from 'wix-email-marketing.v2';
 ```
+
+## Permissions information
+
+Functions in Account Details API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
