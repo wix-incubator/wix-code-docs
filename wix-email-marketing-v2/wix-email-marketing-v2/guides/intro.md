@@ -26,7 +26,7 @@ With the Email Marketing API, you can:
 
 ## Terminology
 - **Account Details:** Email marketing account information.
-- **Campaigns:** A way to email subscribers of a site in order to provide valuable content and relevant offers. 
+- **Email Campaigns:** A way to email subscribers of a site in order to provide them with valuable content and relevant offers. 
 - **Sender Details:** Information that is displayed as the sender’s name and email address when sending an email from your site.
 
 ## Permissions information

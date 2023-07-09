@@ -21,10 +21,10 @@ With the Campaigns API you can:
 
 - [Get](wix-email-marketing-v2/campaigns/getcampaign) or [list](wix-email-marketing-v2/campaigns/listcampaigns) email campaigns.
 - [Create a draft copy](wix-email-marketing-v2/campaigns/reusecampaign) of an existing campaign. 
-- Permanently [delete](wix-email-marketing-v2/campaigns/deletecampaign) a campaign. 
+- [Permanently delete](wix-email-marketing-v2/campaigns/deletecampaign) a campaign. 
 - [List statistics](wix-email-marketing-v2/campaigns/liststatistics) and [list recipients](wix-email-marketing-v2/campaigns/listrecipients) of campaigns.
 - [Pause](wix-email-marketing-v2/campaigns/pausescheduling) a scheduled campaign.
-- [Publish](wix-email-marketing-v2/campaigns/publishcampaign) a campaign, or [send a test](wix-email-marketing-v2/campaigns/sendtest) email.
+- [Publish](wix-email-marketing-v2/campaigns/publishcampaign) a campaign or [send a test](wix-email-marketing-v2/campaigns/sendtest) email.
 
 
 To use the Campaigns API, import `campaigns` from the `wix-email-marketing.v2` module:
