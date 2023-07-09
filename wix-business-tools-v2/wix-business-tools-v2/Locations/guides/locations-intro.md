@@ -23,9 +23,9 @@ With Locations, site owners can define multiple physical locations for their bus
 
 The Locations API allows you to:
 
-+ List existing locations.
-+ Create, update, and archive locations.
-+ Set a default location that is reflected in the site properties.
++ [Get](wix-business-tools-v2/locations/getlocation), [list](wix-business-tools-v2/locations/listlocations), and [query](wix-business-tools-v2/locations/querylocations) existing locations.
++ [Create](wix-business-tools-v2/locations/createlocation), [update](wix-business-tools-v2/locations/updatelocation), and [archive](wix-business-tools-v2/locations/archivelocation) locations.
++ [Set a default location](wix-business-tools-v2/locations/setdefaultlocation) that is reflected in the site properties.
 
 Read more about how site owners can manage their [location-specific bookings](https://support.wix.com/en/article/wix-bookings-offering-services-at-multiple-locations).
 
@@ -49,9 +49,9 @@ import { locations } from 'wix-business-tools.v2';
 It’s important to note the following points before starting to code:
 
 + The Wix Bookings API doesn't support the `businessSchedule` object.
-+ You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](archivelocation) function.
++ You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](wix-business-tools-v2/locations/archivelocation) function.
 + You can't archive the default location.
 + Archived locations can't be unarchived.
-+ The [`updateLocation()`](updatelocation) function replaces a location. Currently, you can't partially update a location.
++ The [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function replaces an existing location with a new location. Currently, you can't partially update a location.
 + Currently, the location type is just informational and doesn't affect a location's functionality.
 + The status `INACTIVE` isn't currently supported.
