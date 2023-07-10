@@ -20,7 +20,7 @@ Use the Email Marketing API to manage your email marketing campaigns and retriev
 With the Email Marketing API, you can:
 
 * [Get](wix-email-marketing-v2/accountdetails/getaccountdetails) your email marketing account details. 
-* [Manage](wix-email-martketing-v2/campaigns) your email marketing campaigns.
+* [Manage](wix-email-marketing-v2/campaigns) your email marketing campaigns.
 * [Manage](wix-email-marketing-v2/senderdetails) the sender details for your email marketing campaigns. 
 
 
