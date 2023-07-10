@@ -21,6 +21,10 @@ With the Sender Details API you can:
 - [Update](wix-email-marketing-v2/senderdetails/updatesenderdetails) your email sender details.
 - [Verify](wix-email-marketing-v2/senderdetails/verifyemail) your sender email address.
 
+## Before you begin
+
+Before you begin, it is important to note the following information. 
+
 If you send an email campaign with a public email domain (e.g. @gmail.com or @yahoo.com), the email address isn't displayed in the 'from' header. Instead, the email address is replaced with @wixemails.com (or @wixsitemail.com for free users), and the sender's email is placed in the 'reply-to' header.
 
 If you send an email campaign with an email from a Wix managed domain, that email will be displayed in the 'from' header. If you send an email from a custom domain that is not managed by Wix, a line will be inserted that states that the email was sent via wixemails.com.
