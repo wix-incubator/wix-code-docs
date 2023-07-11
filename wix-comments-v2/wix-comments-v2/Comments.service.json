@@ -345,7 +345,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Counts comments that matches given filter",
+        "summary": "Counts comments, given the provided filtering.",
         "description": [],
         "examples": [
           {
@@ -412,8 +412,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a new Comment.\nProvided content might be stored to draftContent field depending on moderation settings",
-        "description": [],
+        "summary": "Creates a new comment.",
+        "description": [
+          "The `appId`, `contextId`, and `resourceId` are all required and associate the comment with the specific\nresource it responds to. See [Valid consumer values]() for a list of the valid values for these fields.\n\nIf the created comment is a direct response to another comment, the `commentId` of the parent comment should be passed\nas `parentComment.id` in this comment's request. See [Parent comments and replies]() for additional information.\n\nWhen no moderation settings are in place, the comment is created with its content in the `content` field\nand its `status` set to `PUBLISHED`. If moderation settings are enabled and the created comment meets the\ncriteria for moderation, it is created with its content in the `draftContent` field and its `status` set to `PENDING`.\nSee [Moderation]() for additional information."
+        ],
         "examples": [
           {
             "title": "createComment example",
@@ -453,18 +455,8 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to delete",
+          "doc": "ID of the Comment to delete.",
           "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-comments-v2.Comments.DeleteCommentOptions"
-            }
-          ],
-          "doc": "",
-          "required": false
         }
       ],
       "requiredFields": [
@@ -486,8 +478,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Delete a Comment",
-        "description": [],
+        "summary": "Deletes a comment.",
+        "description": [
+          "This endpoint deletes the `content` of the comment and sets its `status` to `DELETED`. If you want to retain the\n`content` of the comment and only make it no longer visible, use a site's [Moderation]() settings."
+        ],
         "examples": [
           {
             "title": "deleteComment example",
@@ -527,7 +521,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to retrieve",
+          "doc": "ID of the comment to retrieve.",
           "required": true
         }
       ],
@@ -550,7 +544,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Get a Comment by id",
+        "summary": "Retrieves a comment.",
         "description": [],
         "examples": [
           {
@@ -591,7 +585,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment Id",
+          "doc": "Comment ID.",
           "required": true
         },
         {
@@ -667,7 +661,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to hide",
+          "doc": "ID of the comment to hide.",
           "required": true
         }
       ],
@@ -690,7 +684,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Hide a Comment",
+        "summary": "Hides a comment.",
         "description": [],
         "examples": [
           {
@@ -731,7 +725,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "App Id",
+          "doc": "App ID.",
           "required": true
         },
         {
@@ -810,7 +804,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to mark",
+          "doc": "ID of the comment to mark.",
           "required": true
         }
       ],
@@ -833,8 +827,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Mark a Comment",
-        "description": [],
+        "summary": "Sets `marked` to `TRUE` to mark a comment.",
+        "description": [
+          "You can then filter for marked comments with [Query Comments](comments/query-comments) to apply customizations.\nSee Highlight marked comments for an example."
+        ],
         "examples": [
           {
             "title": "markComment example",
@@ -874,7 +870,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to modify",
+          "doc": "ID of the comment to moderate.",
           "required": true
         },
         {
@@ -884,7 +880,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The revision of the Comment",
+          "doc": "Revision number, which increments by `1` each time the comment is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the comment.",
           "required": true
         },
         {
@@ -961,7 +957,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to publish",
+          "doc": "ID of the comment to publish.",
           "required": true
         }
       ],
@@ -984,7 +980,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Publish a Comment",
+        "summary": "Publishes a comment.",
         "description": [],
         "examples": [
           {
@@ -1019,13 +1015,13 @@
       "name": "queryComments",
       "params": [
         {
-          "name": "appId",
+          "name": "query",
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-comments-v2.Comments.CursorQuery"
             }
           ],
-          "doc": "",
+          "doc": "Query options.",
           "required": true
         },
         {
@@ -1040,9 +1036,9 @@
         }
       ],
       "requiredFields": [
-        "appId",
         "options",
-        "options.query"
+        "options.appId",
+        "query"
       ],
       "ret": {
         "type": [
@@ -1060,17 +1056,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Query Comments using [WQL - Wix Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language)",
-        "description": [],
+        "summary": "Retrieves a list of comments, given the provided paging, filtering, and sorting.",
+        "description": [
+          "For field support for filters and sorting, see [Comments: Supported Filters and Sorting]().\n\nTo learn about working with _Query_ endpoints, see\n[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language),\n[Sorting and Paging](https://dev.wix.com/api/rest/getting-started/sorting-and-paging),\nand [Field Projection](https://dev.wix.com/api/rest/getting-started/field-projection)."
+        ],
         "examples": [
           {
             "title": "queryComments example",
             "body": [
               "import { comments } from 'wix-comments.v2';",
               "  ",
-              " async function queryComments(appId, options) {",
+              " async function queryComments(query, options) {",
               "   try {",
-              "     const result = await comments.queryComments(appId, options);",
+              "     const result = await comments.queryComments(query, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -1101,7 +1099,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to mark",
+          "doc": "ID of the comment to unmark.",
           "required": true
         }
       ],
@@ -1124,7 +1122,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Unmark a Comment",
+        "summary": "Sets `marked` to `FALSE` to unmark a comment.",
         "description": [],
         "examples": [
           {
@@ -1165,7 +1163,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment ID",
+          "doc": "Comment ID.",
           "required": true
         },
         {
@@ -1199,8 +1197,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Update a Comment\nProvided content might be stored to draftContent field depending on moderation settings\nPass the latest `revision` for a successful update",
-        "description": [],
+        "summary": "Updates a comment.",
+        "description": [
+          "Each time the comment is updated, `revision` increments by 1. The current `revision` must be\npassed when updating the comment. This ensures you're working with the latest comment and\nprevents unintended overwrites.\n\nNote that depending on [moderation settings]() the updated content might be stored to\n`draftContent` while waiting approval."
+        ],
         "examples": [
           {
             "title": "updateComment example",
@@ -1394,7 +1394,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Audio"
+          "doc": "Information about the audio."
         },
         {
           "name": "document",
@@ -1404,7 +1404,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Document"
+          "doc": "Information about the document."
         },
         {
           "name": "image",
@@ -1414,7 +1414,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Image"
+          "doc": "Information about the image."
         },
         {
           "name": "mimeType",
@@ -1434,7 +1434,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Video"
+          "doc": "Information about the video."
         }
       ],
       "extra": {
@@ -1467,7 +1467,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Audio"
+          "doc": "Information about the audio."
         },
         {
           "name": "document",
@@ -1477,7 +1477,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Document"
+          "doc": "Information about the document."
         },
         {
           "name": "image",
@@ -1487,7 +1487,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Image"
+          "doc": "Information about the image."
         },
         {
           "name": "video",
@@ -1497,7 +1497,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Video"
+          "doc": "Information about the video."
         }
       ],
       "docs": {
@@ -2366,7 +2366,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Comment was created"
+          "doc": "Date and time the comment was created."
         },
         {
           "name": "_id",
@@ -2377,7 +2377,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment ID"
+          "doc": "Comment ID."
         },
         {
           "name": "_updatedDate",
@@ -2388,7 +2388,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Comment was last updated"
+          "doc": "Date and time the comment was last updated."
         },
         {
           "name": "appId",
@@ -2398,7 +2398,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Owning vertical identifier"
+          "doc": "ID of the app that the comment is added to."
         },
         {
           "name": "author",
@@ -2408,7 +2408,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentAuthor"
             }
           ],
-          "doc": "Comment's author"
+          "doc": "Comment's author."
         },
         {
           "name": "content",
@@ -2418,7 +2418,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentContent"
             }
           ],
-          "doc": "Published comment content"
+          "doc": "Published comment content."
         },
         {
           "name": "contextId",
@@ -2428,7 +2428,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Verticals context"
+          "doc": "ID of the specific context the comment is in response to.\n\nWithin some Wix apps, the `contextId` will be the same as the `resourceId`. For example in Wix Blog,\nthe `contentId` is used as both the `contextId` and the `resourceId`.\n"
         },
         {
           "name": "contextType",
@@ -2438,7 +2438,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Vertical context type. A single application can have multiple contexts, and context_type can be used to distinguish in what context comments are being used. Reserved for internal use."
+          "doc": "Reserved for internal use."
         },
         {
           "name": "draftContent",
@@ -2448,7 +2448,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentContent"
             }
           ],
-          "doc": "Unpublished comment content"
+          "doc": "Unpublished comment content."
         },
         {
           "name": "marked",
@@ -2458,7 +2458,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates if comment is marked"
+          "doc": "Whether the comment is marked."
         },
         {
           "name": "parentComment",
@@ -2468,7 +2468,7 @@
               "referenceType": "wix-comments-v2.Comments.ParentComment"
             }
           ],
-          "doc": "Reference to parent comment"
+          "doc": "Parent comment information.\n\nSee the [Introduction]() for more information about parent comments.\n"
         },
         {
           "name": "rating",
@@ -2479,7 +2479,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Comment rating value"
+          "doc": "Comment rating."
         },
         {
           "name": "reactionSummary",
@@ -2490,7 +2490,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentReactionSummary"
             }
           ],
-          "doc": "Comment reaction summary"
+          "doc": "Summary of reactions."
         },
         {
           "name": "replyCount",
@@ -2501,7 +2501,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "How many published replies comment has"
+          "doc": "Amount of comments that reply to this comment."
         },
         {
           "name": "resourceId",
@@ -2511,7 +2511,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context resource"
+          "doc": "ID of the specific resource that the comment is in response to.\n\nWithin some Wix apps, the `resourceId` will be the same as the `contextId`. For example in Wix Blog,\nthe `contentId` is used as both the `resourceId` and the `contextId`.\n"
         },
         {
           "name": "revision",
@@ -2522,7 +2522,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Represents the current state of an item. Each time the item is modified, its `revision` changes. for an update operation to succeed, you MUST pass the latest revision"
+          "doc": "Revision number, which increments by 1 each time the comment is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the comment."
         },
         {
           "name": "status",
@@ -2533,7 +2533,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment status"
+          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. Moderation can be applied in the [site owner's dashboard]().\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
         },
         {
           "name": "voteSummary",
@@ -2544,12 +2544,12 @@
               "referenceType": "wix-comments-v2.Comments.VoteSummary"
             }
           ],
-          "doc": "Votes summary"
+          "doc": "Summary of votes."
         }
       ],
       "docs": {
         "description": [
-          "Comment definition"
+          "A comment is a user-generated message in response to a specific resource. It allows site visitors\nto share feedback or engage in discussions regarding various types of resources, including blog posts, forum threads,\nor other content. Comments are composed of text, images, videos, or other forms of media."
         ]
       }
     },
@@ -2564,7 +2564,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object)\nfor more details."
         },
         {
           "name": "userId",
@@ -2574,7 +2574,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Wix user ID."
         },
         {
           "name": "visitorId",
@@ -2584,7 +2584,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Visitor ID."
         }
       ],
       "extra": {
@@ -2616,7 +2616,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object)\nfor more details."
         },
         {
           "name": "userId",
@@ -2626,7 +2626,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Wix user ID."
         },
         {
           "name": "visitorId",
@@ -2636,7 +2636,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Visitor ID."
         }
       ],
       "docs": {
@@ -2663,7 +2663,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Content attachments."
         },
         {
           "name": "mentions",
@@ -2680,7 +2680,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Mentions to tag with this comment.\n\nMentions can include users, members, visitors, or groups.\n"
         },
         {
           "name": "richContent",
@@ -2690,12 +2690,12 @@
               "referenceType": "wix-comments-v2.Comments.RichContent"
             }
           ],
-          "doc": ""
+          "doc": "Comment rich content."
         }
       ],
       "docs": {
         "description": [
-          "Comment content"
+          "Comment content."
         ]
       }
     },
@@ -2810,7 +2810,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Amounts of each type of reaction. `\"key\"` is the code for a reaction type and\n`\"value\"` is the amount of that reaction type."
         },
         {
           "name": "total",
@@ -2820,7 +2820,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Total amount of reactions."
         }
       ],
       "docs": {
@@ -2850,7 +2850,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sorting"
+          "doc": "Sorting."
         }
       ],
       "docs": {
@@ -2890,7 +2890,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "App ID to count the comments of."
         },
         {
           "name": "filter",
@@ -2900,7 +2900,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": ""
+          "doc": "Filter options."
         }
       ],
       "docs": {
@@ -2920,7 +2920,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "App ID to count the comments of."
         },
         {
           "name": "filter",
@@ -2930,7 +2930,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": ""
+          "doc": "Filter options."
         }
       ],
       "docs": {
@@ -2950,7 +2950,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of comments."
         }
       ],
       "docs": {
@@ -2970,7 +2970,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "Comment to create"
+          "doc": "Comment to create."
         }
       ],
       "docs": {
@@ -2990,7 +2990,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "Comment to create"
+          "doc": "Comment to create."
         }
       ],
       "docs": {
@@ -3010,7 +3010,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The created Comment"
+          "doc": "Created comment."
         }
       ],
       "docs": {
@@ -3452,18 +3452,7 @@
     },
     {
       "name": "DeleteCommentOptions",
-      "members": [
-        {
-          "name": "cascade",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indicates if child comments must be deleted as well.\nWill be deprecated and be replaced by BulkCommentDelete"
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -3474,23 +3463,13 @@
       "name": "DeleteCommentRequest",
       "members": [
         {
-          "name": "cascade",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indicates if child comments must be deleted as well.\nWill be deprecated and be replaced by BulkCommentDelete"
-        },
-        {
           "name": "commentId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to delete"
+          "doc": "ID of the Comment to delete."
         }
       ],
       "docs": {
@@ -4258,7 +4237,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to retrieve"
+          "doc": "ID of the comment to retrieve."
         }
       ],
       "docs": {
@@ -4278,7 +4257,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The retrieved Comment"
+          "doc": "Retrieved comment."
         }
       ],
       "docs": {
@@ -4298,7 +4277,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "App Id"
+          "doc": "App ID."
         },
         {
           "name": "commentSort",
@@ -4318,7 +4297,7 @@
               "referenceType": "wix-comments-v2.Comments.ReplySort"
             }
           ],
-          "doc": "Reply sorting"
+          "doc": "Reply sorting."
         }
       ],
       "docs": {
@@ -4338,7 +4317,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "App Id"
+          "doc": "App ID."
         },
         {
           "name": "commentId",
@@ -4347,7 +4326,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment Id"
+          "doc": "Comment ID."
         },
         {
           "name": "commentSort",
@@ -4367,7 +4346,7 @@
               "referenceType": "wix-comments-v2.Comments.ReplySort"
             }
           ],
-          "doc": "Reply sorting"
+          "doc": "Reply sorting."
         }
       ],
       "docs": {
@@ -4655,7 +4634,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to hide"
+          "doc": "ID of the comment to hide."
         }
       ],
       "docs": {
@@ -4675,7 +4654,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "Hidden comment"
+          "doc": "Hidden comment."
         }
       ],
       "docs": {
@@ -5301,7 +5280,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Pointer to the next or previous page in the list of results."
         },
         {
           "name": "limit",
@@ -5311,7 +5290,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Number of items to return.\n\nMin: `1`\\n\nMax: `100`\n"
         },
         {
           "name": "repliesLimit",
@@ -5321,7 +5300,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Only taken into account if listing root comments"
+          "doc": "Only taken into account if listing root comments."
         }
       ],
       "docs": {
@@ -5341,7 +5320,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentSort"
             }
           ],
-          "doc": "Comment sorting. Is ignored if cursorPaging.cursor is defined"
+          "doc": "Comment sorting. Is ignored if cursorPaging.cursor is defined."
         },
         {
           "name": "contextId",
@@ -5350,7 +5329,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context Id"
+          "doc": "Context ID."
         },
         {
           "name": "contextType",
@@ -5360,7 +5339,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context Type. Reserved for internal use."
+          "doc": "Reserved for internal use."
         },
         {
           "name": "cursorPaging",
@@ -5370,7 +5349,7 @@
               "referenceType": "wix-comments-v2.Comments.ListCommentsByResourceCursorPaging"
             }
           ],
-          "doc": ""
+          "doc": "Cursor paging."
         },
         {
           "name": "replySort",
@@ -5380,7 +5359,7 @@
               "referenceType": "wix-comments-v2.Comments.ReplySort"
             }
           ],
-          "doc": "Reply sorting. Is ignored if cursorPaging.cursor is defined"
+          "doc": "Reply sorting. Is ignored if cursorPaging.cursor is defined."
         },
         {
           "name": "resourceId",
@@ -5389,7 +5368,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Resource Id"
+          "doc": "Resource ID."
         }
       ],
       "docs": {
@@ -5408,7 +5387,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "App Id"
+          "doc": "App ID."
         },
         {
           "name": "commentSort",
@@ -5418,7 +5397,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentSort"
             }
           ],
-          "doc": "Comment sorting. Is ignored if cursorPaging.cursor is defined"
+          "doc": "Comment sorting. Is ignored if cursorPaging.cursor is defined."
         },
         {
           "name": "contextId",
@@ -5427,7 +5406,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context Id"
+          "doc": "Context ID."
         },
         {
           "name": "contextType",
@@ -5437,7 +5416,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context Type. Reserved for internal use."
+          "doc": "Reserved for internal use."
         },
         {
           "name": "cursorPaging",
@@ -5447,7 +5426,7 @@
               "referenceType": "wix-comments-v2.Comments.ListCommentsByResourceCursorPaging"
             }
           ],
-          "doc": ""
+          "doc": "Cursor paging."
         },
         {
           "name": "replySort",
@@ -5457,7 +5436,7 @@
               "referenceType": "wix-comments-v2.Comments.ReplySort"
             }
           ],
-          "doc": "Reply sorting. Is ignored if cursorPaging.cursor is defined"
+          "doc": "Reply sorting. Is ignored if cursorPaging.cursor is defined."
         },
         {
           "name": "resourceId",
@@ -5466,7 +5445,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Resource Id"
+          "doc": "Resource ID."
         }
       ],
       "docs": {
@@ -5728,7 +5707,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to mark"
+          "doc": "ID of the comment to mark."
         }
       ],
       "docs": {
@@ -5748,7 +5727,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The marked Comment"
+          "doc": "Marked comment."
         }
       ],
       "docs": {
@@ -5818,7 +5797,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Group ID. See the [Groups API](https://dev.wix.com/api/rest/wix-groups/wix-groups/groups/group-object)\nfor more details"
         },
         {
           "name": "memberId",
@@ -5828,7 +5807,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object)\nfor more details."
         },
         {
           "name": "userId",
@@ -5838,7 +5817,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Wix user ID."
         },
         {
           "name": "visitorId",
@@ -5848,7 +5827,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Visitor ID."
         }
       ],
       "extra": {
@@ -5921,7 +5900,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Group ID. See the [Groups API](https://dev.wix.com/api/rest/wix-groups/wix-groups/groups/group-object)\nfor more details"
         },
         {
           "name": "memberId",
@@ -5931,7 +5910,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Member ID. See the [Members API](https://dev.wix.com/api/rest/members/members/member-object)\nfor more details."
         },
         {
           "name": "userId",
@@ -5941,7 +5920,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Wix user ID."
         },
         {
           "name": "visitorId",
@@ -5951,7 +5930,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Visitor ID."
         }
       ],
       "docs": {
@@ -6022,7 +6001,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Action to do regarding draft content"
+          "doc": "Draft content action."
         }
       ],
       "docs": {
@@ -6041,7 +6020,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to modify"
+          "doc": "ID of the comment to moderate."
         },
         {
           "name": "draftContentAction",
@@ -6051,7 +6030,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Action to do regarding draft content"
+          "doc": "Draft content action."
         },
         {
           "name": "revision",
@@ -6060,7 +6039,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The revision of the Comment"
+          "doc": "Revision number, which increments by `1` each time the comment is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the comment.\n"
         }
       ],
       "docs": {
@@ -6080,7 +6059,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "Updated comment"
+          "doc": "Moderated comment."
         }
       ],
       "docs": {
@@ -7071,7 +7050,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Comment ID of the parent comment."
         },
         {
           "name": "author",
@@ -7082,7 +7061,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentAuthor"
             }
           ],
-          "doc": ""
+          "doc": "Author of the parent comment."
         }
       ],
       "docs": {
@@ -7539,7 +7518,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to publish"
+          "doc": "ID of the comment to publish."
         }
       ],
       "docs": {
@@ -7559,7 +7538,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "Published comment"
+          "doc": "Published comment."
         }
       ],
       "docs": {
@@ -7572,13 +7551,13 @@
       "name": "QueryCommentsOptions",
       "members": [
         {
-          "name": "query",
+          "name": "appId",
           "type": [
             {
-              "referenceType": "wix-comments-v2.Comments.CursorQuery"
+              "nativeType": "string"
             }
           ],
-          "doc": "WQL expression"
+          "doc": "App ID to query comments for."
         }
       ],
       "docs": {
@@ -7597,7 +7576,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "App ID to query comments for."
         },
         {
           "name": "query",
@@ -7606,7 +7585,7 @@
               "referenceType": "wix-comments-v2.Comments.CursorQuery"
             }
           ],
-          "doc": "WQL expression"
+          "doc": "Query options."
         }
       ],
       "docs": {
@@ -7633,7 +7612,7 @@
               }
             }
           ],
-          "doc": "The retrieved Comments"
+          "doc": "Retrieved comments."
         },
         {
           "name": "pagingMetadata",
@@ -7643,7 +7622,7 @@
               "referenceType": "wix-comments-v2.Comments.CursorPagingMetadata"
             }
           ],
-          "doc": "Paging metadata"
+          "doc": "Paging metadata."
         }
       ],
       "docs": {
@@ -8209,7 +8188,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Comment to mark"
+          "doc": "ID of the comment to unmark."
         }
       ],
       "docs": {
@@ -8229,7 +8208,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The unmarked Comment"
+          "doc": "Unmarked comment."
         }
       ],
       "docs": {
@@ -8250,7 +8229,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Comment was created"
+          "doc": "Date and time the comment was created."
         },
         {
           "name": "_id",
@@ -8261,7 +8240,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment ID"
+          "doc": "Comment ID."
         },
         {
           "name": "_updatedDate",
@@ -8272,7 +8251,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Comment was last updated"
+          "doc": "Date and time the comment was last updated."
         },
         {
           "name": "appId",
@@ -8282,7 +8261,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Owning vertical identifier"
+          "doc": "ID of the app that the comment is added to."
         },
         {
           "name": "author",
@@ -8292,7 +8271,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentAuthor"
             }
           ],
-          "doc": "Comment's author"
+          "doc": "Comment's author."
         },
         {
           "name": "content",
@@ -8302,7 +8281,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentContent"
             }
           ],
-          "doc": "Published comment content"
+          "doc": "Published comment content."
         },
         {
           "name": "contextId",
@@ -8312,7 +8291,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Verticals context"
+          "doc": "ID of the specific context the comment is in response to.\n\nWithin some Wix apps, the `contextId` will be the same as the `resourceId`. For example in Wix Blog,\nthe `contentId` is used as both the `contextId` and the `resourceId`.\n"
         },
         {
           "name": "contextType",
@@ -8322,7 +8301,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Vertical context type. A single application can have multiple contexts, and context_type can be used to distinguish in what context comments are being used. Reserved for internal use."
+          "doc": "Reserved for internal use."
         },
         {
           "name": "draftContent",
@@ -8332,7 +8311,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentContent"
             }
           ],
-          "doc": "Unpublished comment content"
+          "doc": "Unpublished comment content."
         },
         {
           "name": "marked",
@@ -8342,7 +8321,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates if comment is marked"
+          "doc": "Whether the comment is marked."
         },
         {
           "name": "parentComment",
@@ -8352,7 +8331,7 @@
               "referenceType": "wix-comments-v2.Comments.ParentComment"
             }
           ],
-          "doc": "Reference to parent comment"
+          "doc": "Parent comment information.\n\nSee the [Introduction]() for more information about parent comments.\n"
         },
         {
           "name": "rating",
@@ -8363,7 +8342,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Comment rating value"
+          "doc": "Comment rating."
         },
         {
           "name": "reactionSummary",
@@ -8374,7 +8353,7 @@
               "referenceType": "wix-comments-v2.Comments.CommentReactionSummary"
             }
           ],
-          "doc": "Comment reaction summary"
+          "doc": "Summary of reactions."
         },
         {
           "name": "replyCount",
@@ -8385,7 +8364,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "How many published replies comment has"
+          "doc": "Amount of comments that reply to this comment."
         },
         {
           "name": "resourceId",
@@ -8395,7 +8374,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Context resource"
+          "doc": "ID of the specific resource that the comment is in response to.\n\nWithin some Wix apps, the `resourceId` will be the same as the `contextId`. For example in Wix Blog,\nthe `contentId` is used as both the `resourceId` and the `contextId`.\n"
         },
         {
           "name": "revision",
@@ -8406,7 +8385,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Represents the current state of an item. Each time the item is modified, its `revision` changes. for an update operation to succeed, you MUST pass the latest revision"
+          "doc": "Revision number, which increments by 1 each time the comment is updated.\n\nTo prevent conflicting changes, the current `revision` must be passed when updating the comment."
         },
         {
           "name": "status",
@@ -8417,7 +8396,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment status"
+          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. Moderation can be applied in the [site owner's dashboard]().\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
         },
         {
           "name": "voteSummary",
@@ -8428,7 +8407,7 @@
               "referenceType": "wix-comments-v2.Comments.VoteSummary"
             }
           ],
-          "doc": "Votes summary"
+          "doc": "Summary of votes."
         }
       ],
       "docs": {
@@ -8467,7 +8446,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The updated Comment"
+          "doc": "Comment info to update."
         }
       ],
       "docs": {
@@ -8487,7 +8466,7 @@
               "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "The updated Comment"
+          "doc": "Updated comment."
         }
       ],
       "docs": {
@@ -9056,7 +9035,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of downvotes on this comment."
         },
         {
           "name": "netVoteCount",
@@ -9066,7 +9045,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of upvotes less downvotes on this comment."
         },
         {
           "name": "upvoteCount",
@@ -9076,7 +9055,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "Amount of upvotes on this comment."
         }
       ],
       "docs": {
