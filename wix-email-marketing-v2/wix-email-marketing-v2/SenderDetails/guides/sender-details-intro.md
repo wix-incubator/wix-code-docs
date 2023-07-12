@@ -14,16 +14,7 @@ title: Introduction
 > **Note:** This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise. 
 
 
-The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. 
-
-With the Sender Details API you can: 
-- [Get](wix-email-marketing-v2/senderdetails/getsenderdetails) your email sender details.
-- [Update](wix-email-marketing-v2/senderdetails/updatesenderdetails) your email sender details.
-- [Verify](wix-email-marketing-v2/senderdetails/verifyemail) your sender email address.
-
-## Before you begin
-
-Before you begin, it is important to note the following information. 
+The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. Use the API to [get](wix-email-marketing-v2/senderdetails/getsenderdetails) and [update](wix-email-marketing-v2/senderdetails/updatesenderdetails) your email sender details, and [verify](wix-email-marketing-v2/senderdetails/verifyemail) your sender email address.
 
 If you send an email campaign with a public email domain (e.g. @gmail.com or @yahoo.com), the email address isn't displayed in the 'from' header. Instead, the email address is replaced with @wixemails.com (or @wixsitemail.com for free users), and the sender's email is placed in the 'reply-to' header.
 
@@ -34,11 +25,3 @@ To use the Sender Details API, import `{ senderDetails }` from the `wix-email-ma
 ```js
 import { senderDetails } from `wix-email-marketing.v2`; 
 ```
-
-## Permissions information
-
-Functions in the Sender Details API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
-
-<blockquote class='warning'>
-<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
-</blockquote>

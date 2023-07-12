@@ -4,7 +4,7 @@ title: Querying Indexed Data
 
 # Querying Indexed Data
 
-Indexes accelerate filtering and sorting queries of certain types. For details of the query language used in Wix Data queries, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).
+Indexes accelerate filtering and sorting queries of certain types. Data queries are carried out using the [`queryDataItems()`](https://www.wix.com/velo/reference/wix-data-v2/items/querydataitems) function. For details of the query language used in Wix Data queries, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).
 
 ## Filtering
 
