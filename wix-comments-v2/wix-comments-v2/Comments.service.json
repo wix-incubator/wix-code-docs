@@ -380,21 +380,22 @@
       "name": "createComment",
       "params": [
         {
-          "name": "options",
+          "name": "comment",
           "type": [
             {
-              "referenceType": "wix-comments-v2.Comments.CreateCommentOptions"
+              "referenceType": "wix-comments-v2.Comments.Comment"
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "Comment to create.",
+          "required": true
         }
       ],
       "requiredFields": [
-        "options.comment.appId",
-        "options.comment.content",
-        "options.comment.contextId",
-        "options.comment.resourceId"
+        "comment",
+        "comment.appId",
+        "comment.content",
+        "comment.contextId",
+        "comment.resourceId"
       ],
       "ret": {
         "type": [
@@ -414,7 +415,7 @@
       "docs": {
         "summary": "Creates a new comment.",
         "description": [
-          "The `appId`, `contextId`, and `resourceId` are all required and associate the comment with the specific\nresource it responds to. See [Valid consumer values]() for a list of the valid values for these fields.\n\nIf the created comment is a direct response to another comment, the `commentId` of the parent comment should be passed\nas `parentComment.id` in this comment's request. See [Parent comments and replies]() for additional information.\n\nWhen no moderation settings are in place, the comment is created with its content in the `content` field\nand its `status` set to `PUBLISHED`. If moderation settings are enabled and the created comment meets the\ncriteria for moderation, it is created with its content in the `draftContent` field and its `status` set to `PENDING`.\nSee [Moderation]() for additional information."
+          "The `appId`, `contextId`, and `resourceId` are all required and associate the created comment with the specific\nresource it responds to. See [Integrations](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_integrations) for a list of integrated scopes for these fields.\n\nIf the created comment is a direct response to another comment, the `commentId` of the parent comment should be passed\nas `parentComment.id` in this comment's request. See [Terminology](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_terminology) for additional information on parent comments and replies.\n\nWhen no moderation settings are in place, the comment is created with its content in the `content` field\nand its `status` set to `PUBLISHED`. If moderation settings are enabled and the created comment meets the\ncriteria for moderation, it is created with its content in the `draftContent` field and its `status` set to `PENDING`.\nSee [Moderation](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_moderation) for additional information."
         ],
         "examples": [
           {
@@ -422,9 +423,9 @@
             "body": [
               "import { comments } from 'wix-comments.v2';",
               "  ",
-              " async function createComment(options) {",
+              " async function createComment(comment) {",
               "   try {",
-              "     const result = await comments.createComment(options);",
+              "     const result = await comments.createComment(comment);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -480,7 +481,7 @@
       "docs": {
         "summary": "Deletes a comment.",
         "description": [
-          "This endpoint deletes the `content` of the comment and sets its `status` to `DELETED`. If you want to retain the\n`content` of the comment and only make it no longer visible, use a site's [Moderation]() settings."
+          "This endpoint deletes the `content` of the comment and sets its `status` to `DELETED`. If you want to retain the\n`content` of the comment and only make it no longer visible, use a site's [moderation](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_moderation) settings."
         ],
         "examples": [
           {
@@ -829,7 +830,7 @@
       "docs": {
         "summary": "Sets `marked` to `TRUE` to mark a comment.",
         "description": [
-          "You can then filter for marked comments with [Query Comments](comments/query-comments) to apply customizations.\nSee Highlight marked comments for an example."
+          "You can then filter for marked comments with [Query Comments](#query-comments) to apply customizations.\nSee Highlight marked comments for an example."
         ],
         "examples": [
           {
@@ -1025,19 +1026,18 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "appId",
           "type": [
             {
-              "referenceType": "wix-comments-v2.Comments.QueryCommentsOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "",
+          "doc": "App ID to query comments for.",
           "required": true
         }
       ],
       "requiredFields": [
-        "options",
-        "options.appId",
+        "appId",
         "query"
       ],
       "ret": {
@@ -1066,9 +1066,9 @@
             "body": [
               "import { comments } from 'wix-comments.v2';",
               "  ",
-              " async function queryComments(query, options) {",
+              " async function queryComments(query, appId) {",
               "   try {",
-              "     const result = await comments.queryComments(query, options);",
+              "     const result = await comments.queryComments(query, appId);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -1167,19 +1167,20 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "comment",
           "type": [
             {
-              "referenceType": "wix-comments-v2.Comments.UpdateCommentOptions"
+              "referenceType": "wix-comments-v2.Comments.UpdateComment"
             }
           ],
           "doc": "",
-          "required": false
+          "required": true
         }
       ],
       "requiredFields": [
         "_id",
-        "options.comment.revision"
+        "comment",
+        "comment.revision"
       ],
       "ret": {
         "type": [
@@ -1199,7 +1200,7 @@
       "docs": {
         "summary": "Updates a comment.",
         "description": [
-          "Each time the comment is updated, `revision` increments by 1. The current `revision` must be\npassed when updating the comment. This ensures you're working with the latest comment and\nprevents unintended overwrites.\n\nNote that depending on [moderation settings]() the updated content might be stored to\n`draftContent` while waiting approval."
+          "Each time the comment is updated, `revision` increments by 1. The current `revision` must be\npassed when updating the comment. This ensures you're working with the latest comment and\nprevents unintended overwrites.\n\nNote that depending on [moderation settings](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_moderation)\nthe updated content might be stored to `draftContent` while waiting approval."
         ],
         "examples": [
           {
@@ -1207,9 +1208,9 @@
             "body": [
               "import { comments } from 'wix-comments.v2';",
               "  ",
-              " async function updateComment(id, options) {",
+              " async function updateComment(id, comment) {",
               "   try {",
-              "     const result = await comments.updateComment(id, options);",
+              "     const result = await comments.updateComment(id, comment);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -2468,7 +2469,7 @@
               "referenceType": "wix-comments-v2.Comments.ParentComment"
             }
           ],
-          "doc": "Parent comment information.\n\nSee the [Introduction]() for more information about parent comments.\n"
+          "doc": "Parent comment information.\n\nSee [Terminology](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_terminology) for more information about parent comments.\n"
         },
         {
           "name": "rating",
@@ -2533,7 +2534,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. Moderation can be applied in the [site owner's dashboard]().\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
+          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. See [Moderation](#introduction_moderation).\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
         },
         {
           "name": "voteSummary",
@@ -2549,7 +2550,7 @@
       ],
       "docs": {
         "description": [
-          "A comment is a user-generated message in response to a specific resource. It allows site visitors\nto share feedback or engage in discussions regarding various types of resources, including blog posts, forum threads,\nor other content. Comments are composed of text, images, videos, or other forms of media."
+          "A comment is a user-generated message in response to a specific resource. It allows site visitors\nto share feedback or engage in discussions around different types of resources, including blog posts, forum threads,\nor other site content. Comments are composed of text, images, videos, or other forms of media."
         ]
       }
     },
@@ -2935,7 +2936,7 @@
       ],
       "docs": {
         "description": [
-          ""
+          "Count comments options."
         ]
       }
     },
@@ -2951,26 +2952,6 @@
             }
           ],
           "doc": "Amount of comments."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CreateCommentOptions",
-      "members": [
-        {
-          "name": "comment",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-comments-v2.Comments.Comment"
-            }
-          ],
-          "doc": "Comment to create."
         }
       ],
       "docs": {
@@ -7548,25 +7529,6 @@
       }
     },
     {
-      "name": "QueryCommentsOptions",
-      "members": [
-        {
-          "name": "appId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "App ID to query comments for."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "QueryCommentsRequest",
       "members": [
         {
@@ -8331,7 +8293,7 @@
               "referenceType": "wix-comments-v2.Comments.ParentComment"
             }
           ],
-          "doc": "Parent comment information.\n\nSee the [Introduction]() for more information about parent comments.\n"
+          "doc": "Parent comment information.\n\nSee [Terminology](https://dev.wix.com/api/rest/comments/comments/introduction#comments_comments_introduction_terminology) for more information about parent comments.\n"
         },
         {
           "name": "rating",
@@ -8396,7 +8358,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. Moderation can be applied in the [site owner's dashboard]().\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
+          "doc": "Comment status.\n\nSupported values:\n+ `\"PUBLISHED\"`: This comment is published and publicly visible.\n+ `\"DELETED\"`: This comment is deleted.\n+ `\"PENDING\"`: This comment is pending moderation. See [Moderation](#introduction_moderation).\n+ `\"HIDDEN\"`: This comment has been hidden by a site moderator."
         },
         {
           "name": "voteSummary",
@@ -8408,25 +8370,6 @@
             }
           ],
           "doc": "Summary of votes."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "UpdateCommentOptions",
-      "members": [
-        {
-          "name": "comment",
-          "type": [
-            {
-              "referenceType": "wix-comments-v2.Comments.UpdateComment"
-            }
-          ],
-          "doc": ""
         }
       ],
       "docs": {
