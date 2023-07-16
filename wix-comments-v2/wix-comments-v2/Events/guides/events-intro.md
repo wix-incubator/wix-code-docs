@@ -10,7 +10,8 @@ title: Introduction
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-&nbsp;
+&nbsp;  
+
 Wix Comments events are fired in your site's backend when certain events occur with plans. You can write event handlers that react to these events. Event handler functions receive data that corresponds to the event that has occurred. Use event handlers to create custom responses to pricing plan events.
 
 > **Note:** Backend events don't work when previewing your site.
