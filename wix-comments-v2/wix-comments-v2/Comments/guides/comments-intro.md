@@ -25,7 +25,9 @@ With the Wix Comments API, you can:
 + Engage with visitors who are not site members through guest commenting.  
 
 To use the Comments API, import { comments } from the `wix-comments.v2` module:
-```javascript import { comments } from `wix-comments.v2`; ```
+```javascript
+import { comments } from `wix-comments.v2`;
+```
 
 ## Moderation
 With user-generated content a site owner might want to enable moderation settings to ensure a respectful and appropriate environment. It allows site owners to review and filter comments before they are publicly visible, to prevent spam, offensive language, or inappropriate content from being published. Additionally, moderation settings can help maintain the overall quality of discussions and foster a positive community experience for all participants.  
