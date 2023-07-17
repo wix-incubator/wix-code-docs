@@ -37,7 +37,7 @@ For example, use `.button__label` to style only the labels of button elements.
 
 See which classes are already available for any element on your site by selecting the element and 
 viewing <strong>CSS Classes</strong> in your code panel:
-![CSS Classes in code panel](images/css_classes_code_panel.png "CSS Classes in code panel")
+![CSS Classes in code panel](../media/css_classes_code_panel.png "CSS Classes in code panel")
 
 Or add your own classes in the custom classes field. For more information, see [CustomClasslist](/$w/customclasslist/introduction).
 
