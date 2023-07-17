@@ -8,6 +8,18 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New Module for Wix Blocks: Wix Application
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+This module includes functions to manage and get information about Blocks applications that are installed on a site. 
+
+It includes: 
+* [`getDecodedAppInstance`](https://www.wix.com/velo/reference/wix-application/getdecodedappinstance): Gets an installed Blocks app's instance, including its current pricing plan.
+* [`getAppPageUrl`](https://www.wix.com/velo/reference/wix-application/getapppageurl): Gets the page URL of a Blocks app that was installed as a new page.
+* [`openAppLightbox`](https://www.wix.com/velo/reference/wix-application/openapplightbox): Opens the lightbox of a Blocks app that was installed as a lightbox.
+
+
 ### Migration of frontend-only APIs
 
 We've migrated the frontend modules of legacy APIs
