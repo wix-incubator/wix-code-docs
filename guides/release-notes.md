@@ -10,7 +10,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### New Module for Wix Blocks: Wix Application
 
->**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+>**Note:** Wix Blocks is currently in Beta and open to a limited number of users.
 
 This module includes functions to manage and get information about Blocks applications that are installed on a site. 
 
