@@ -2,7 +2,7 @@
 
 # Styling Elements with CSS
 
-> This feature is not yet available to all users.
+> This property is not yet available to all users.
 
 <!-- Outline:
 - about the feature
