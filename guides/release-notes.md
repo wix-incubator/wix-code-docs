@@ -10,14 +10,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ### Working with Inner (Nested) Widgets in the Blocks Panel Builder
 
->**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+>**Note:** Wix Blocks is in Beta and open to a limited number of users.
 
 Two new functions allow you to access [inner (nested) widgets](https://support.wix.com/en/article/wix-blocks-creating-and-managing-widgets-within-widgets) in the Blocks [Panel Builder](https://support.wix.com/en/article/wix-blocks-designing-custom-panels-for-your-widgets-action-bar-buttons) modules.
 
 `getNestedWidget()` is used for `wix-widget` functions.
 `getScopedWixEditor()` is used for `wix-editor` functions.
 
-July 13, 2023
+(July 19, 2023)
 
 ### Migration of frontend-only APIs
 
