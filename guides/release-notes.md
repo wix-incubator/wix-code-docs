@@ -8,6 +8,17 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### CSS Styling and Custom Class List
+
+`Wix Editor Elements ($w)`
+
+[CSS]($w/styling-elements-with-css) allows you to customize the appearance of your website, from colors and fonts to the sizes 
+and positions of different elements. 
+Use [global classes]($w/styling-elements-with-css/#$w_styling-elements-with-css_available-classes) or create your own 
+with the [Custom Class List element]($w/customclasslist).
+
+(July 19, 2023)
+
 ### Migration of frontend-only APIs
 
 We've migrated the frontend modules of legacy APIs
