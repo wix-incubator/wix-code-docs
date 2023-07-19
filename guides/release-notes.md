@@ -8,6 +8,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### Working with Inner (Nested) Widgets in the Blocks Panel Builder
+
+>**Note:** Wix Blocks is in Beta and open to a limited number of users.
+
+Two new functions allow you to access [inner (nested) widgets](https://support.wix.com/en/article/wix-blocks-creating-and-managing-widgets-within-widgets) in the Blocks [Panel Builder](https://support.wix.com/en/article/wix-blocks-designing-custom-panels-for-your-widgets-action-bar-buttons) modules.
+
+[`getNestedWidget()`](/wix-widget/getnestedwidget) is used for `wix-widget` functions.
+[`getScopedWixEditor()`](/wix-editor/getscopedwixeditor) is used for `wix-editor` functions.
+
+(July 19, 2023)
 
 
 ### CSS Styling and Custom Class List
@@ -33,7 +43,6 @@ It includes:
 * [`openAppLightbox`](https://www.wix.com/velo/reference/wix-application/openapplightbox): Opens the lightbox of a Blocks app that was installed as a lightbox.
 
 (July 18, 2023)
-
 
 ### Migration of frontend-only APIs
 
