@@ -8,6 +8,8 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+
+
 ### CSS Styling and Custom Class List
 
 `Wix Editor Elements ($w)`
@@ -18,6 +20,20 @@ from colors and fonts to the sizes and positions of different elements. Apply CS
 or create your own with the [Custom Class List]($w/customclasslist) element.
 
 (July 19, 2023)
+
+### New Module for Wix Blocks: Wix Application
+
+>**Note:** Wix Blocks is currently in Beta and open to a limited number of users.
+
+This module includes functions to manage and get information about Blocks applications that are installed on a site. 
+
+It includes: 
+* [`getDecodedAppInstance`](https://www.wix.com/velo/reference/wix-application/getdecodedappinstance): Gets an installed Blocks app's instance, including its current pricing plan.
+* [`getAppPageUrl`](https://www.wix.com/velo/reference/wix-application/getapppageurl): Gets the page URL of a Blocks app that was installed as a new page.
+* [`openAppLightbox`](https://www.wix.com/velo/reference/wix-application/openapplightbox): Opens the lightbox of a Blocks app that was installed as a lightbox.
+
+(July 18, 2023)
+
 
 ### Migration of frontend-only APIs
 
