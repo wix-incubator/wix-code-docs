@@ -12,7 +12,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-The new [Effects API]($w/effects) allows you programmatically change the way supported elements are displayed on your site.
+The new [Effects API]($w/effects) allows you to programmatically change the way supported elements are displayed on your site.
 
 (July 19, 2023)
 
