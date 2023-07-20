@@ -20,7 +20,7 @@ The new [Effects API]($w/effects) allows you to programmatically change the way 
 
 `Wix Editor Elements ($w)`
 
->**NOTE:** This feature is currently in Beta and open to a limited number of users.
+>**Note:** This feature is currently in Beta and open to a limited number of users.
 You can now add [CSS]($w/styling-elements-with-css) styling to customize the appearance of your website, 
 from colors and fonts to the sizes and positions of different elements. Apply CSS to available 
 [global classes](https://www.wix.com/velo/reference/$w/styling-elements-with-css#$w_styling-elements-with-css_available-classes) 
