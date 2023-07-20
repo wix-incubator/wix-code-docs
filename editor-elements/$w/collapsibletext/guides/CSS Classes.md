@@ -2,7 +2,7 @@
 
 # Collapsible Text CSS Classes
 
-> This property is not yet available to all users.
+> This feature is not yet available to all users.
 
 You can use the classes listed below
 to style your `CollapsibleText` elements with CSS.
