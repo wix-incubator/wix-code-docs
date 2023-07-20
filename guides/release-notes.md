@@ -12,6 +12,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
+> This feature is not yet available to all users.
 You can now add [CSS]($w/styling-elements-with-css) styling to customize the appearance of your website, 
 from colors and fonts to the sizes and positions of different elements. Use 
 [global classes]($w/styling-elements-with-css/#$w_styling-elements-with-css_available-classes) or create your own 
