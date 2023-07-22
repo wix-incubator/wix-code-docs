@@ -13,6 +13,9 @@ title: Introduction
 
 &nbsp;
 
+The Reviews API provides functionality for managing your site's reviews, including creating, deleting, querying, and updating reviews. 
+
+
 ## Permissions information
 
 The following functions in the Reviews API are restricted and only run if you elevate permissions
@@ -29,8 +32,6 @@ Exercise caution to prevent security vulnerabilities.
 </p>
 </blockquote>
 
-The Reviews API provides functionality for managing your site's reviews, including creating, deleting, querying, and updating reviews.
-
 ## Before you begin
 
 To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
@@ -39,17 +40,25 @@ To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
     import reviews from 'wix-reviews.v2';   
 ```
 
+It's important to note the following points before starting to code:
+- A [`contactId`](https://dev.wix.com/api/rest/contacts) is required to create a review. If the author is already listed as a contact, use [Create Review](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review). If the author is not yet a site contact, use [Create Review and Contact](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review-and-contact). 
+- A review author is limited to one review per entity. Duplicate reviews receive an error response.
+- Moderation for reviews is available only in the [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/published), not through the API. Learn more about [managing reviews](https://support.wix.com/en/article/wix-stores-managing-wix-reviews).
+- Replying to a review is available only in the [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending). 
+
+## Moderation of Reviews
+
+A site owner can adjust moderation settings so that reviews aren't immediately published to their site. Moderation can be set as required if a review contains any of the following:
+- Images or video.
+- One or more specified spam words.
+- Specific ratings scores, for example, to moderate all reviews that are rated 1 or 2. 
+
 ## Terminology
 
-- **Review**: A site visitor's review about an entity, for example, a Wix Stores product with a rating.
-- **Rating**: A site visitor can give a rating score between 1 and 5 in addition to a written review.
-- **Helpfulness**: How helpful this review was for site visitors.
-- **Reply**: A site owner or moderator can reply to a review via the Dashboard.
-
-## Review Authors
-
-Review authors create reviews either as visitors or as contacts. When a review author creates a review as a visitor with [`createReviewAndContact`](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/createReviewAndContact), they're converted to a contact. Once this happens, the author creates reviews using their contact ID with [`createReview`](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/createReview). 
-
-## Integration with Ratings
- 
- The Reviews API is integrated with the Ratings API. This means that a rating scale is automatically part of a review page in addition to a review description section. Site owners who add a Reviews app to their site don't need to add Ratings. 
+| Term | Definition |
+|---------------|-------------------------|
+| Entity | The entity to review. For example, a Wix Stores product. |
+| Namespace | The Wix module that the Reviews API is integrated with. Currently only Wix Stores. |
+| Rating | An author can give a rating score between 1 and 5. The rating is displayed with the site review. |
+| Helpfulness | Site visitors can indicate whether a review was helpful or not. `helpfulness` is calculated by subtracting `foundUnhelpful` from `foundHelpful`. |
+| Reply | A direct reply to a review that was left on the site. The reply is displayed with the review. |
