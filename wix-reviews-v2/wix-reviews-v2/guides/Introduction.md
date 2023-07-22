@@ -48,7 +48,7 @@ It's important to note the following points before starting to code:
 
 ## Moderation of Reviews
 
-A site owner can adjust moderation settings so that reviews aren't immediately published to their site. Moderation can be set as required if a review contains any of the following:
+You can adjust moderation settings so that reviews aren't immediately published to your site. Moderation can be set as required if a review contains any of the following:
 - Images or video.
 - One or more specified spam words.
 - Specific ratings scores, for example, to moderate all reviews that are rated 1 or 2. 
