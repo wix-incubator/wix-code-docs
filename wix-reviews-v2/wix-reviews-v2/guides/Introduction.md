@@ -22,7 +22,7 @@ The following functions in the Reviews API are restricted and only run if you el
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 
-[updateReviews](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/updatereview)
+[updateReviews](wix-reviews-v2/reviews/updatereview)
 
 <blockquote class='warning'>
 <p>
@@ -41,7 +41,7 @@ To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
 ```
 
 It's important to note the following points before starting to code:
-- A [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts) is required to create a review. If the author is already listed as a contact, use [Create Review](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review). If the author is not yet a site contact, use [Create Review and Contact](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review-and-contact). 
+- A [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts) is required to create a review. If the author is already listed as a contact, use [createReview](wix-reviews-v2/reviews/create-review). If the author is not yet a site contact, use [createReviewAndContact](wix-reviews-v2/reviews/create-review-and-contact). 
 - A review author is limited to one review per entity. Duplicate reviews receive an error response.
 - Moderation for reviews is available only in the [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/published), not through the API. Learn more about [managing reviews](https://support.wix.com/en/article/wix-stores-managing-wix-reviews).
 - Replying to a review is available only in the [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending). 
