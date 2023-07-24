@@ -8,6 +8,22 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### Migration of Notifications API
+
+We've re-released another legacy API.
+This follows the [May](#migration-of-legacy-apis) and [June](#migration-of-legacy-apis-batch-2) 2023 re-releases of
+legacy APIs.
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+`wix-notifications.v2`:
+
+- [notify](wix-notifications-v2/notifications/notify) has moved to the `Notifications` namespace within the module.
+  
+(July 24, 2023)
+  
 ### New API: Effects
 
 `Wix Editor Elements ($w)`
