@@ -19,5 +19,20 @@ Use the Email Marketing API to manage your email marketing campaigns and retriev
 
 With the Email Marketing API, you can:
 
-* [Get](/accountdetails/getaccountdetails) your email marketing account details. 
-* [Manage](/campaigns) your email marketing campaigns.
+* [Get](wix-email-marketing-v2/accountdetails/getaccountdetails) your email marketing account details. 
+* [Manage](wix-email-marketing-v2/campaigns) your email marketing campaigns.
+* [Manage](wix-email-marketing-v2/senderdetails) the sender details for your email marketing campaigns. 
+
+
+## Terminology
+- **Account Details:** Email marketing account information.
+- **Email Campaigns:** A way to email subscribers of a site in order to provide them with valuable content and relevant offers. 
+- **Sender Details:** Information that is displayed as the sender’s name and email address when sending an email from your site.
+
+## Permissions information
+
+Functions in the Email Marketing API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>

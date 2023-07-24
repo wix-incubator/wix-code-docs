@@ -8,36 +8,347 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### New Developer Preview API: Wix Pricing Plans v2
+### New API: Effects
 
-`wix-pricing-plans.v2`
+`Wix Editor Elements ($w)`
 
-The new [Wix Pricing Plans API](/wix-pricing-plans-v2) provides functionality
-for creating and managing Plans and Orders.
+The new [Effects API]($w/effects) allows you to programmatically change the way supported elements are displayed on your site.
 
-Functionalities for [Plans](/wix-pricing-plans-v2/plans) include:
+(July 19, 2023)
 
-+ [Getting](/wix-pricing-plans-v2/plans/getplan), [listing](/wix-pricing-plans-v2/plans/listplans), and [querying](/wix-pricing-plans-v2/plans/querypublicplans) plans. 
-+ [Creating](/wix-pricing-plans-v2/plans/createplan), [updating](/wix-pricing-plans-v2/plans/updateplan), and [archiving](/wix-pricing-plans-v2/plans/archiveplan) plans. 
-+ [Setting a plans visibility](/wix-pricing-plans-v2/plans/setplanvisibility) to be public or hidden.
-+ [Getting statistics](/wix-pricing-plans-v2/plans/getplanstats) for plans.
-+ [Arranging](/wix-pricing-plans-v2/plans/arrangeplans) plans in a specified order.
-+ [Setting](/wix-pricing-plans-v2/plans/makeplanprimary) or [clearing](/wix-pricing-plans-v2/plans/clearprimary) the primary plan.
+### CSS Styling and Custom Class List
 
-Functionalities for [Orders](/wix-pricing-plans-v2/orders) include:
+`Wix Editor Elements ($w)`
 
-+ [Getting](/wix-pricing-plans-v2/orders/managementgetorder) and [listing](/wix-pricing-plans-v2/orders/managementlistorders) orders. 
-+ [Creating](/wix-pricing-plans-v2/orders/createofflineorder) offline orders.
-+ [Marking](/wix-pricing-plans-v2/orders/markaspaid) offline orders as paid.
-+ [Preview](/wix-pricing-plans-v2/orders/getpricepreview) pricing details of an order.
-+ [Pausing](/wix-pricing-plans-v2/orders/pauseorder), [resuming](/wix-pricing-plans-v2/orders/resumeorder), and [canceling](/wix-pricing-plans-v2/orders/cancelorder) orders.
-+ [Extending](/wix-pricing-plans-v2/orders/postponeenddate) order durations.
+>**Note:** This feature is currently in Beta and open to a limited number of users.
+You can now add [CSS]($w/styling-elements-with-css) styling to customize the appearance of your website, 
+from colors and fonts to the sizes and positions of different elements. Apply CSS to available 
+[global classes](https://www.wix.com/velo/reference/$w/styling-elements-with-css#$w_styling-elements-with-css_available-classes) 
+or create your own with the [Custom Class List]($w/customclasslist) element.
 
+(July 19, 2023)
+
+### New Module for Wix Blocks: Wix Application
+
+>**Note:** Wix Blocks is currently in Beta and open to a limited number of users.
+
+This module includes functions to manage and get information about Blocks applications that are installed on a site. 
+
+It includes: 
+* [`getDecodedAppInstance`](https://www.wix.com/velo/reference/wix-application/getdecodedappinstance): Gets an installed Blocks app's instance, including its current pricing plan.
+* [`getAppPageUrl`](https://www.wix.com/velo/reference/wix-application/getapppageurl): Gets the page URL of a Blocks app that was installed as a new page.
+* [`openAppLightbox`](https://www.wix.com/velo/reference/wix-application/openapplightbox): Opens the lightbox of a Blocks app that was installed as a lightbox.
+
+(July 18, 2023)
+
+
+### Migration of frontend-only APIs
+
+We've migrated the frontend modules of legacy APIs
+so they now end with `-frontend`
+(for example, `wix-bookings-frontend` replaces `wix-bookings`).
+Other than the name, these modules are identical to the modules they replace.
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs
+so your existing code will continue to work as it does today.
+The legacy APIs will be hidden in the docs,
+so please refer to the new modules for reference.
+
+What's in the release:
+
++ [`wix-animations-frontend`](/wix-animations-frontend) replaces `wix-animations`.
++ [`wix-bookings-frontend`](/wix-bookings-frontend) replaces `wix-bookings`.
++ [`wix-crm-frontend`](/wix-crm-frontend) replaces `wix-crm`.
++ [`wix-events-frontend`](/wix-events-frontend) replaces `wix-events`.
++ [`wix-location-frontend`](/wix-location-frontend) replaces `wix-location`.
++ [`wix-members-frontend`](/wix-members-frontend) replaces `wix-members`.
++ [`wix-pay-frontend`](/wix-pay-frontend) replaces `wix-pay`.
++ [`wix-pricing-plans-frontend`](/wix-pricing-plans-frontend) replaces `wix-pricing-plans`.
++ [`wix-realtime-frontend`](/wix-realtime-frontend) replaces `wix-frontend`.
++ [`wix-seo-frontend`](/wix-seo-frontend) replaces `wix-seo`.
++ [`wix-site-frontend`](/wix-site-frontend) replaces `wix-site`.
++ [`wix-storage-frontend`](/wix-storage-frontend) replaces `wix-storage`.
++ [`wix-stores-frontend`](/wix-stores-frontend) replaces `wix-stores`.
++ [`wix-window-frontend`](/wix-window-frontend) replaces `wix-window`.
+
+(June 21, 2023)
+
+### Migration of legacy APIs, batch 2
+
+In the past few weeks, we've re-released some more legacy APIs.
+This follows the May 2023 re-release of
+[the first batch of APIs](#migration-of-legacy-apis).
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+#### What's in this release
+
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
+
+`wix-secrets.v2`:
+
+- All functions are now in the `Secrets` namespace inside the module.
+
+`wix-workflows.v2`:
+
+- The `Workflows` namespace has been split into `Workflows`, `Tasks`, and `Cards`.
+  Functions are now located in their respective namespaces.
+- Workflows:
+  - [`updateWorkflow()`](/wix-workflows-v2/workflows/updateworkflow) replaces `updateWorkflowFields()`.
+  - [`listWorkflows()`](/wix-workflows-v2/workflows/listworkflows) replaces `listWorkflowsInfo()`.
+  - [`getWorkflow()`](/wix-workflows-v2/workflows/getworkflow) replaces `getWorkflowInfo()`.
+- Phases:
+  - [`updatePhase()`](/wix-workflows-v2/phases/updatePhase) replaces `updatePhaseFields()`.
+  - [`listPhases()`](/wix-workflows-v2/phases/listPhases) replaces `listPhasesInfo()`.
+  - [`getPhase()`](/wix-workflows-v2/phases/getPhase) replaces `getPhaseInfo()`.
+- Cards:
+  - [`updateCard()`](/wix-workflows-v2/cards/gupdateCardetPhase) replaces `updateCardFields()`.
+
+`wix-groups.v2`:
+
+- CreateRequests:
+  - [`approveGroupRequests()`](/wix-groups-v2/createrequests/approveGroupRequests) replaces `approveCreateRequests()`.
+  - [`listGroupRequests()`](/wix-groups-v2/createrequests/listGroupRequests) replaces `listCreateRequests()`.
+  - [`queryGroupRequests()`](/wix-groups-v2/createrequests/queryGroupRequests) replaces `queryCreateRequests()`.
+  - [`rejectGroupRequests()`](/wix-groups-v2/createrequests/rejectGroupRequests) replaces `rejectCreateRequests()`.
+
+`wix-crm.v2`:
+
+- The previous `Contacts` namespace is split into `Contacts`, `Labels`, and `ExtendedFields`.
+- Tasks:
+  - [`updateTaskStatus()`](/wix-crm-v2/tasks/updatetaskstatus) replaces `completeTask()` and `resetTask()`.
+
+`wix-captcha.v2`:
+
+- [`authorize()`](/wix-captcha-v2/captcha/authorize) has moved to the `Captcha` namespace within the module.
+
+(June 20, 2023)
+
+### New API: Wix Dashboard
+
+`wix-dashboard`
+
+The new [Wix Dashboard API](/wix-dashboard) allows you to interact with your site's [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages) using Velo. You can use the API to [navigate](/wix-dashboard/navigate) users to dashboard pages, and [display toast](/wix-dashboard/showtoast) messages.
+
+(June 13, 2023)
+
+### New Developer Preview API: Guests
+
+`wix-events.v2`
+
+The new [Guests API](/wix-events-v2/guests) provides the ability to retrieve information about guests attending an event by using the [`queryGuests`](https://www.wix.com/velo/reference/wix-events-v2/guests/queryguests) method.
 
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
-(May 8, 2023)
+(June 8, 2023)
 
+### New Developer Preview API: Wix Bookings Attendance
+
+`wix-bookings.v2`
+
+The new [Wix Bookings Attendance APIs](/wix-bookings-v2/attendance) provide the following functionality: 
+
++ [Set the attendance](/wix-bookings-v2/attendance/setattendance) for a booked session, such as whether the session was attended and by how many participants. 
++ [Get the attendance information](/wix-bookings-v2/attendance/getattendance) for a booked session.
++ [Query the attendance information](/wix-bookings-v2/attendance/queryattendance) for a booked sessions by booking or by session.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(June 8, 2023)
+
+
+### New Developer Preview API: Wix Loyalty Tiers, Rewards, and Coupons
+
+`wix-loyalty.v2`
+
+The new [Wix Loyalty APIs](/wix-loyalty-v2) provide the following functionality: 
+
++ Manage a [loyalty tiers](/wix-loyalty-v2/tiers) program, including [creating](/wix-loyalty-v2/tiers/createtier) new tiers and [updating settings](/wix-loyalty-v2/tiers/updatetiersprogramsettings) that apply to all of the tiers in the program.
++ Manage the [loyalty rewards](/wix-loyalty-v2/rewards) and [loyalty coupons](/wix-loyalty-v2/coupons) that loyalty points can be redeemed for.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 31, 2023)
+
+### New Events for Wix Bookings v2
+
+`wix-bookings.v2`
+
+You can now handle events for when bookings are [created](wix-bookings-v2/events/onbookingcreated), [rescheduled](wix-bookings-v2/events/onbookingrescheduled), [confirmed](wix-bookings-v2/events/onbookingconfirmed), [declined](wix-bookings-v2/events/onbookingdeclined), [canceled](wix-bookings-v2/events/onbookingcanceled), and for when [the number of participants has been updated](wix-bookings-v2/events/onbookingnumberofparticipantsupdated). 
+
+(May 30, 2023)
+
+
+
+### New Developer Preview API: Wix Bookings v2 Service Options and Variants
+
+`wix-bookings.v2`
+
+The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/serviceoptionsandvariants) provide functionality for retrieving and managing booking service options and variants. Functionality includes: 
+
++ Getting service options and variants by [ID](/wix-bookings-v2/serviceoptionsandvariants/getserviceoptionsandvariants) and by [service ID](/wix-bookings-v2/serviceoptionsandvariants/getserviceoptionsandvariantsbyserviceid)
++ [Querying](/wix-bookings-v2/serviceoptionsandvariants/queryserviceoptionsandvariants) service options and variants
++ [Creating](/wix-bookings-v2/serviceoptionsandvariants/createserviceoptionsandvariants) and [cloning](/wix-bookings-v2/serviceoptionsandvariants/cloneserviceoptionsandvariants) service options and variants
++ [Updating](/wix-bookings-v2/serviceoptionsandvariants/updateserviceoptionsandvariants) and [deleting](/wix-bookings-v2/serviceoptionsandvariants/deleteserviceoptionsandvariants) service options and variants
++ Backend events for [create](/wix-bookings-v2/events/onserviceoptionsandvariantscreated), [update](/wix-bookings-v2/events/onserviceoptionsandvariantsupdated), and [delete](/wix-bookings-v2/events/onserviceoptionsandvariantsdeleted) (CUD) operations
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(May 22, 2023)
+
+
+### New Developer Preview API: Wix Data v2
+
+`wix-data.v2`
+
+The new [Wix Data API](/wix-data-v2), combined with the existing [`wix-data`](https://www.wix.com/velo/reference/wix-data), provides a complete solution for accessing, organizing, configuring, and managing data stored in a Wix site's database. It includes the following submodules:
+
++ [Data Collections](/wix-data-v2/collections): Create data collections and manage existing collections' structure.
++ [Indexes](/wix-data-v2/indexes): Create indexes for data collections, to make querying data faster.
++ [External Database Connections](/wix-data-v2/externaldatabaseconnections): Connect an external database and manage it with Wix Data APIs.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md). To access and manage items in a Wix site's data collections, please use the existing [`wix-data`](wix-data).
+
+(May 17, 2023)
+
+### New Feature: `fields()` function in Wix Data query
+
+`wix-data`
+
+A new feature in [`WixDataQuery`](https://www.wix.com/velo/reference/wix-data/wixdataquery) provides more control over query results. 
+Previously queries returned all fields of the selected result. Now, you can choose which fields your query returns using the new [`fields()`](https://www.wix.com/velo/reference/wix-data/wixdataquery/fields) function.
+
+(May 17, 2023)
+
+### New Feature: Delete/Restore elements from the DOM
+
+`Wix Editor Elements ($w)`
+
+You can now delete and restore elements from the DOM.  
+
+A new [deleted](https://www.wix.com/velo/reference/$w/element/deleted) property has been added.  
+2 new functions have been added:
++ [`delete()`](https://www.wix.com/velo/reference/$w/element/delete)
++ [`restore()`](https://www.wix.com/velo/reference/$w/element/restore)  
+
+(May 17, 2023)
+
+### Migration of legacy APIs
+
+In the past week, we've re-released a large number of legacy APIs.
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
+
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+#### What's in this release
+
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
+
+`wix-groups.v2`:
+
+- JoinGroupRequests replaces JoinRequests.
+- Members:
+  - [`members.queryMemberships()`](https://www.wix.com/velo/reference/wix-groups-v2/members/querymemberships)
+    uses a different query syntax.
+- Roles is not available.
+- CreateRequests is not available.
+- Events: All events are new.
+
+`wix-stores.v2`:
+
+- Inventory:
+  - New: [`getInventoryVariants()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/getinventoryvariants).
+  - New: [`queryInventory()`](https://www.wix.com/velo/reference/wix-stores-v2/inventory/queryinventory).
+    This function uses a different query syntax.
+- AbandonedCarts:
+  - New: [`queryAbandonedCarts()`](https://www.wix.com/velo/reference/wix-stores-v2/abandonedcarts/queryabandonedcarts).
+    This function uses a different query syntax.
+
+`wix.members.v2`:
+
+- Badges:
+  - New: [`getBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getbadge) .
+  - New: [`getMemberCountsPerBadge()`](https://www.wix.com/velo/reference/wix-members-v2/badges/getmembercountsperbadge).
+  - New: [`listBadges()`](https://www.wix.com/velo/reference/wix-members-v2/badges/listbadges).
+  - New: [`updateBadgesDisplayOrder()`](https://www.wix.com/velo/reference/wix-members-v2/badges/updatebadgesdisplayorder).
+- Events: All events are new.
+
+`wix.ecom.v2`:
+
+- Currencies moved to `wix-ecom.v2` from `wix-pay`.
+  - [`listCurrencies()`](https://www.wix.com/velo/reference/wix-ecom-v2/currencies/listcurrencies)
+    replaces `getAllCurrencies()`.
+
+`wix-marketing.v2`:
+
+- Coupons:
+  - New: [`bulkCreateCoupons()`](/wix-marketing-v2/coupons/bulkcreatecoupons).
+  - New: [`bulkDeleteCoupons()`](/wix-marketing-v2/coupons/bulkdeletecoupons).
+  - New: [`getCoupon()`](/wix-marketing-v2/coupons/getcoupon).
+  - New: [`queryCoupons()`](/wix-marketing-v2/coupons/querycoupons).
+    This function uses a different query syntax.
+
+ `wix-pricing-plans.v2`
+
+- Plans:
+  - All plan functions moved to `wix-pricing-plans.v2` Plans from `wix-pricing-plans-backend`.
+- Orders:
+  - [`managementGetOrder()`](/wix-pricing-plans-v2/orders/managementgetorder) replaces `getOrder()`.
+  - [`managementListOrders()`](/wix-pricing-plans-v2/orders/managementlistorders) replaces `listOrders()`.
+  - [`memberGetOrder()`](/wix-pricing-plans-v2/orders/membergetorder) replaces `getCurrentMemberOrder()`.
+  - [`memberListOrders()`](/wix-pricing-plans-v2/orders/memberlistorders) replaces `listCurrentMemberOrders()`.
+  - [`requestCancellation()`](/wix-pricing-plans-v2/orders/requestcancellation) replaces `requestCurrentMemberOrderCancellation()`
+
+  - [`createOfflineOrder()`](/wix-pricing-plans-v2/orders/createofflineorder) moved to Orders from Checkout.
+  - [`getOfflineOrderPreview()`](/wix-pricing-plans-v2/orders/getofflineorderpreview) moved to Orders and replaces `previewOfflineOrder()` from Checkout.
+  - [`getPricePreview()`](/wix-pricing-plans-v2/orders/getpricepreview) moved to Orders and replaces `previewPrice()` from Checkout.
+- Checkout is not available.
+- Events:
+  - `onPlanPurchased()` is not available.
+  - `onPlanUpdated()` is not available.
+
+(May 15, 2023)
+
+### New Bookings Custom Pricing Extension
+
+SPI: `wix-bookings` 
+
+The new [Wix Bookings Custom Pricing extension](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing) gives you the ability to customize pricing for bookings. Use the [calculatePrice()](https://www.wix.com/velo/reference/spis/wix-bookings/bookings-custom-pricing/calculateprice) SPI function to integrate your own custom pricing logic, such as varied pricing for weekend rates or use of special equipment, and so on. Learn more with [this tutorial](https://support.wix.com/en/article/velo-tutorial-bookings-pricing-custom-extension).
+
+(May 17, 2023)
 
 ### New Developer Preview API: Wix Currencies v2
 

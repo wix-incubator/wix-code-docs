@@ -37,11 +37,14 @@ You cannot change the FileshareFolders collection permissions.
 
 ### Fields 
 
+> **Note:**
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
+
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default. 
 
 #### Name (name) 
 
-**Description**: Name of folder. This is the [Primary field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
+**Description**: Name of folder. This is the [Main field](https://support.wix.com/en/article/about-your-database-collection-fields#main-fields).  
 **Type**: Text  
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
