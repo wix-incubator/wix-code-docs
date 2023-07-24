@@ -49,7 +49,7 @@
       "docs": {
         "summary": "Creates a new review using a contact ID.",
         "description": [
-          "This function requires a [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts).\n\nIf the review author does not have a contact ID, use [createReviewAndContact](./createReviewAndContact).\n\nIf moderation is turned on, the review content is checked for content that requires moderation. If so, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
+          "This function requires a [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts).\n\nIf the review author does not have a contact ID, use [createReviewAndContact](./createReviewAndContact).\n\nIf moderation is turned on, the review is checked for content that requires moderation. If moderation is required, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
         ],
         "examples": [
           {
@@ -84,6 +84,26 @@
       "name": "createReviewAndContact",
       "params": [
         {
+          "name": "namespace",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Namespace where the review is created.",
+          "required": true
+        },
+        {
+          "name": "entityId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity to review.",
+          "required": true
+        },
+        {
           "name": "content",
           "type": [
             {
@@ -101,14 +121,13 @@
             }
           ],
           "doc": "",
-          "required": true
+          "required": false
         }
       ],
       "requiredFields": [
         "content",
-        "options",
-        "options.entityId",
-        "options.namespace"
+        "entityId",
+        "namespace"
       ],
       "ret": {
         "type": [
@@ -128,7 +147,7 @@
       "docs": {
         "summary": "Creates a new review and a new contact.",
         "description": [
-          "Use this function when the review author does not have a contact ID. If the review author is already a contact, use [createReview](./createReview).\n\nIf moderation is turned on, the review content is checked for content that requires moderation. If so, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
+          "Use this function when the review author does not have a contact ID. If the review author is already a contact, use [createReview](./createReview).\n\nIf moderation is turned on, the review is checked for content that requires moderation. If moderation is required, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
         ],
         "examples": [
           {
@@ -136,9 +155,9 @@
             "body": [
               "import { reviews } from 'wix-reviews.v2';",
               "  ",
-              " async function createReviewAndContact(content, options) {",
+              " async function createReviewAndContact(namespace, entityId, content, options) {",
               "   try {",
-              "     const result = await reviews.createReviewAndContact(content, options);",
+              "     const result = await reviews.createReviewAndContact(namespace, entityId, content, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -266,9 +285,9 @@
         "doc": "Review.\n"
       },
       "docs": {
-        "summary": "etrieves a review by ID.",
+        "summary": "Retrieves a review by ID.",
         "description": [
-          "To include unpublished reviews, pass `returnPrivateReviews` as `true`. By default, unpublished\nreviews are not returned."
+          "To include unpublished reviews, pass `returnPrivateReviews` as `true`. By default, unpublished reviews are not returned."
         ],
         "examples": [
           {
@@ -323,14 +342,25 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of reviews, given the provided paging, filtering, and sorting. 100 reviews can be returned per request.",
+        "summary": "Creates a query to retrieve a list of  reviews.",
         "description": [
           "",
           "",
-          "Query Reviews runs with these defaults, which you can override:",
+          "The `queryReview` function builds a query to retrieve a list of reviews  and returns a [`ReviewsQueryBuilder`](#reviewsquerybuilder) object.",
           "",
-          "`createdDate` is sorted in `ASC` order",
-          "`paging.limit` is `100`",
+          "The returned object contains the query definition, which is typically used to run the query using the  [`find()`](#reviewsquerybuilder/find) function. ",
+          "",
+          "You can refine the query by chaining `ReviewsQueryBuilder` functions onto the query.  ",
+          "",
+          "`ReviewsQueryBuilder` functions enable you to sort, filter,",
+          "and control the results `queryReviews()` returns.",
+          "",
+          "`queryReviews` runs with these `ReviewsQueryBuilder` defaults,  which you can override:",
+          "",
+          "- [`ascending`( \"_createdDate\")`](#reviewsquerybuilder/ascending) ",
+          "- [`limit(100)`](#reviewsquerybuilder/limit)",
+          "",
+          "The functions that are chained to `queryReviews()` are applied in the order they're called. For example, if you apply `descending('_createdDate')` and then `descending('content.rating')`, the results are sorted first by the `_createdDate`, and then, if there are multiple results with the same `_createdDate`, the items are sorted by `content.rating`.",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
           "|`namespace`|[`eq()`](wix-reviews-v2.Reviews.ReviewsQueryBuilder#eq),[`ne()`](wix-reviews-v2.Reviews.ReviewsQueryBuilder#ne),[`in()`](wix-reviews-v2.Reviews.ReviewsQueryBuilder#in)|",
@@ -376,20 +406,19 @@
           "required": true
         },
         {
-          "name": "review",
+          "name": "options",
           "type": [
             {
-              "referenceType": "wix-reviews-v2.Reviews.UpdateReview"
+              "referenceType": "wix-reviews-v2.Reviews.UpdateReviewOptions"
             }
           ],
           "doc": "",
-          "required": true
+          "required": false
         }
       ],
       "requiredFields": [
         "_id",
-        "review",
-        "review.revision"
+        "options.review.revision"
       ],
       "ret": {
         "type": [
@@ -417,9 +446,9 @@
             "body": [
               "import { reviews } from 'wix-reviews.v2';",
               "  ",
-              " async function updateReview(id, review, options) {",
+              " async function updateReview(id, options) {",
               "   try {",
-              "     const result = await reviews.updateReview(id, review, options);",
+              "     const result = await reviews.updateReview(id, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -1135,15 +1164,6 @@
           "doc": "Email address of the review author."
         },
         {
-          "name": "entityId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the reviewed entity."
-        },
-        {
           "name": "name",
           "optional": true,
           "type": [
@@ -1152,15 +1172,6 @@
             }
           ],
           "doc": "Name of the review author. Displayed as part of the Review."
-        },
-        {
-          "name": "namespace",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Namespace where the review is created."
         }
       ],
       "docs": {
@@ -1198,7 +1209,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the reviewed entity."
+          "doc": "ID of the entity to review."
         },
         {
           "name": "name",
@@ -2229,7 +2240,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Review id"
+          "doc": "Review ID"
         }
       ],
       "docs": {
@@ -2249,7 +2260,7 @@
               "referenceType": "wix-reviews-v2.Reviews.Review"
             }
           ],
-          "doc": "Review id"
+          "doc": "Review ID"
         }
       ],
       "docs": {
@@ -2365,7 +2376,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the entity to review. For example, a Wix Stores product."
+          "doc": "Entity ID. For example, a Wix Stores product ID."
         },
         {
           "name": "foundHelpful",
@@ -2488,7 +2499,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Rating of the review.\n\nMin: `1`\nMax: `5`\n"
+          "doc": "Rating of the review.\n\nMin: `1`\n\nMax: `5`\n"
         },
         {
           "name": "title",
@@ -2576,7 +2587,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sort order.\n\nDefault: `ASC`.\n"
+          "doc": "Sort order.\n\nDefaults to `ascending`.\n"
         }
       ],
       "docs": {
@@ -2650,7 +2661,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the entity to review. For example, a Wix Stores product."
+          "doc": "Entity ID. For example, a Wix Stores product ID."
         },
         {
           "name": "foundHelpful",
@@ -2840,7 +2851,17 @@
     },
     {
       "name": "UpdateReviewOptions",
-      "members": [],
+      "members": [
+        {
+          "name": "review",
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.UpdateReview"
+            }
+          ],
+          "doc": ""
+        }
+      ],
       "docs": {
         "description": [
           ""
