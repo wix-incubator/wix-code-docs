@@ -8,6 +8,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New SPI: eCommerce Validations
+
+The new eCommerce [Validations SPI](spis/wix-ecom/ecom-validations/introduction) is a [custom extension](https://support.wix.com/en/article/velo-custom-app-extensions-using-spis) that allows you to validate a site visitor's cart and checkout. 
+
+The [`GetValidationViolations()`](spis/wix-ecom/ecom-validations/getvalidationviolations) function validates a site visitor's cart or checkout and returns any validation violations. Site visitors can see the validation violations in their cart and checkout pages.
+
+(July 30, 2023)
+
 ### New API: Effects
 
 `Wix Editor Elements ($w)`
