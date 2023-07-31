@@ -22,6 +22,10 @@ We've re-released another legacy API.
 This follows the [May](#migration-of-legacy-apis) and [June](#migration-of-legacy-apis-batch-2) 2023 re-releases of
 legacy APIs.
 
+This API is released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is a 
+[universal module](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
 You don't need to take any action at this time.
 As always, we'll continue to support the legacy APIs,
 so your existing code will continue to work as it does today.
