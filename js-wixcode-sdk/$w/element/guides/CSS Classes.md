@@ -21,67 +21,6 @@ select elements with the documented class names only.
 
 </blockquote>
 
-## Accordion classes
-
-### `.accordion`
-
-Targets accordion elements.
-For example:
-
-```css
-.accordion {
-  opacity: 75%;
-  display: flex;
-}
-```
-
-### `.accordion__title`
-
-Targets accordion title elements.
-For example:
-
-```css
-.accordion__title {
-  text-transform: uppercase;
-  font-weight: 700;
-}
-```
-
-### `.accordion__container`
-
-Targets accordion container elements.
-For example:
-
-```css
-.accordion__container {
-  background-color: #a2a2fc;
-}
-```
-
-### `.accordion__item`
-
-Targets accordion item elements.
-For example:
-
-```css
-.accordion__item {
-  padding: 5px;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-```
-
-### `.accordion__icon`
-
-Targets accordion icon elements.
-For example:
-
-```css
-.accordion__icon {
-  fill: #FF0000;
-}
-```
-
 ## Image button classes
 
 ### `.image-button`
@@ -127,8 +66,6 @@ For example:
 ## Lightbox classes
 
 ### `.lightbox`
-
-> **Note:** If `lightbox` has media background set up in the design panel, for example an image or color, then CSS properties will not apply to it. To apply CSS properties, first remove images from the component and set the opacity in the panel to 0.   
 
 Targets lightbox elements.
 For example:
