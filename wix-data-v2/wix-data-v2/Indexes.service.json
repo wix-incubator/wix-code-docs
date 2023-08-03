@@ -13,22 +13,32 @@
       "name": "createIndex",
       "params": [
         {
-          "name": "options",
+          "name": "dataCollectionId",
           "type": [
             {
-              "referenceType": "wix-data-v2.Indexes.CreateIndexOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "Options for creating an index.\n",
+          "doc": "ID of the data collection for which to generate the index.",
+          "required": true
+        },
+        {
+          "name": "index",
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Index"
+            }
+          ],
+          "doc": "Details of the index to be created.",
           "required": true
         }
       ],
       "requiredFields": [
-        "options",
-        "options.index",
-        "options.index.fields",
-        "options.index.fields.path",
-        "options.index.name"
+        "dataCollectionId",
+        "index",
+        "index.fields",
+        "index.fields.path",
+        "index.name"
       ],
       "ret": {
         "type": [
@@ -37,13 +47,13 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-data-v2.Indexes.CreateIndexResponse"
+                  "referenceType": "wix-data-v2.Indexes.Index"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "Details of the index being generated.\n"
       },
       "docs": {
         "summary": "Creates an index for a data collection.",
@@ -56,9 +66,9 @@
             "body": [
               "import { indexes } from 'wix-data.v2';",
               "  ",
-              " async function createIndex(options) {",
+              " async function createIndex(dataCollectionId, index, options) {",
               "   try {",
-              "     const result = await indexes.createIndex(options);",
+              "     const result = await indexes.createIndex(dataCollectionId, index, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -83,19 +93,29 @@
       "name": "dropIndex",
       "params": [
         {
-          "name": "options",
+          "name": "dataCollectionId",
           "type": [
             {
-              "referenceType": "wix-data-v2.Indexes.DropIndexOptions"
+              "nativeType": "string"
             }
           ],
-          "doc": "Options for dropping an index.\n",
+          "doc": "ID of the data collection for which the index to be dropped is defined.",
+          "required": true
+        },
+        {
+          "name": "indexName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the index to drop.",
           "required": true
         }
       ],
       "requiredFields": [
-        "options",
-        "options.indexName"
+        "dataCollectionId",
+        "indexName"
       ],
       "ret": {
         "type": [
@@ -123,9 +143,9 @@
             "body": [
               "import { indexes } from 'wix-data.v2';",
               "  ",
-              " async function dropIndex(options) {",
+              " async function dropIndex(dataCollectionId, indexName, options) {",
               "   try {",
-              "     const result = await indexes.dropIndex(options);",
+              "     const result = await indexes.dropIndex(dataCollectionId, indexName, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -150,6 +170,16 @@
       "name": "listIndexes",
       "params": [
         {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which to list indexes.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -160,7 +190,9 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "dataCollectionId"
+      ],
       "ret": {
         "type": [
           {
@@ -187,9 +219,9 @@
             "body": [
               "import { indexes } from 'wix-data.v2';",
               "  ",
-              " async function listIndexes(options) {",
+              " async function listIndexes(dataCollectionId, options) {",
               "   try {",
-              "     const result = await indexes.listIndexes(options);",
+              "     const result = await indexes.listIndexes(dataCollectionId, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -214,27 +246,7 @@
   "messages": [
     {
       "name": "CreateIndexOptions",
-      "members": [
-        {
-          "name": "dataCollectionId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the data collection for which to generate the index."
-        },
-        {
-          "name": "index",
-          "type": [
-            {
-              "referenceType": "wix-data-v2.Indexes.Index"
-            }
-          ],
-          "doc": "Details of the index to be created."
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -246,7 +258,6 @@
       "members": [
         {
           "name": "dataCollectionId",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
@@ -292,27 +303,7 @@
     },
     {
       "name": "DropIndexOptions",
-      "members": [
-        {
-          "name": "dataCollectionId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the data collection for which the index to be dropped is defined."
-        },
-        {
-          "name": "indexName",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Name of the index to drop."
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -324,7 +315,6 @@
       "members": [
         {
           "name": "dataCollectionId",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
@@ -510,14 +500,14 @@
       "name": "ListIndexesOptions",
       "members": [
         {
-          "name": "dataCollectionId",
+          "name": "paging",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-data-v2.Indexes.Paging"
             }
           ],
-          "doc": "ID of the data collection for which to list indexes."
+          "doc": "paging"
         }
       ],
       "docs": {
@@ -531,13 +521,22 @@
       "members": [
         {
           "name": "dataCollectionId",
-          "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
           "doc": "ID of the data collection for which to list indexes."
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Paging"
+            }
+          ],
+          "doc": "paging"
         }
       ],
       "docs": {
@@ -565,6 +564,96 @@
             }
           ],
           "doc": "List of all indexes for the requested data collection."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.PagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Paging",
+      "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the current sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query."
         }
       ],
       "docs": {
