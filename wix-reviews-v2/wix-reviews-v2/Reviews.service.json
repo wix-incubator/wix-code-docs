@@ -10,6 +10,92 @@
   "properties": [],
   "operations": [
     {
+      "name": "bulkCreateReview",
+      "params": [
+        {
+          "name": "reviews",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-reviews-v2.Reviews.Review"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Reviews to create.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.BulkCreateReviewOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "reviews",
+        "reviews.author",
+        "reviews.author.contactId",
+        "reviews.content",
+        "reviews.entityId",
+        "reviews.namespace"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-reviews-v2.Reviews.BulkCreateReviewResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Create Bulk Reviews.",
+        "description": [],
+        "examples": [
+          {
+            "title": "bulkCreateReview example",
+            "body": [
+              "import { reviews } from 'wix-reviews.v2';",
+              "  ",
+              " async function bulkCreateReview(reviews, options) {",
+              "   try {",
+              "     const result = await reviews.bulkCreateReview(reviews, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "bulkCreateReview"
+    },
+    {
       "name": "bulkDeleteReviews",
       "params": [
         {
@@ -175,7 +261,7 @@
       "docs": {
         "summary": "Creates a new review using a contact ID.",
         "description": [
-          "This function requires a [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts).\n\nIf the review author does not have a contact ID, use [createReviewAndContact](./createReviewAndContact).\n\nIf moderation is turned on, the review is checked for content that requires moderation. If moderation is required, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
+          "This function requires a [`review.author.contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts).\n\nIf the review author does not have a contact ID, use [createReviewAndContact](./createReviewAndContact)."
         ],
         "examples": [
           {
@@ -273,7 +359,7 @@
       "docs": {
         "summary": "Creates a new review and a new contact.",
         "description": [
-          "Use this function when the review author does not have a contact ID. If the review author is already a contact, use [createReview](./createReview).\n\nIf moderation is turned on, the review is checked for content that requires moderation. If moderation is required, the review remains pending until it's rejected or approved in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).\n\nThe moderation content settings are configured in the site's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/settings/moderation)."
+          "When the review author is not a contact, use this function. Include `name` and `email`, as they're required to create the contact. If these parameters are missing, a new contact and review won't be created.\n\n\nWhen the review author is already a contact, use either this function or [createReview](./createReview). A new review is created but a new contact is not created.\n\n\nAfter a review is created, it may require [moderation](https://www.wix.com/velo/reference/wix-reviews-v2/introduction#moderation)."
         ],
         "examples": [
           {
@@ -898,6 +984,46 @@
       }
     },
     {
+      "name": "ApplicationError",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code."
+        },
+        {
+          "name": "data",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Data related to the error."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the error."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "AsyncSubmitModeratedContentRequest",
       "members": [
         {
@@ -1112,6 +1238,139 @@
       }
     },
     {
+      "name": "BulkActionMetadata",
+      "members": [
+        {
+          "name": "totalFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that couldn't be processed."
+        },
+        {
+          "name": "totalSuccesses",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were successfully processed."
+        },
+        {
+          "name": "undetailedFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of failures without details because detailed failure threshold was exceeded."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkCreateReviewOptions",
+      "members": [
+        {
+          "name": "returnEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkCreateReviewRequest",
+      "members": [
+        {
+          "name": "returnEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "reviews",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-reviews-v2.Reviews.Review"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Reviews to create."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkCreateReviewResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.BulkActionMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "reviews",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-reviews-v2.Reviews.BulkReviewResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Created reviews, only returned if returnEntity is set to true.\nItems are returned for successful operations and when returnEntity in the request is set to true."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "BulkDeleteReviewsOptions",
       "members": [
         {
@@ -1163,6 +1422,36 @@
             }
           ],
           "doc": "Bulk job ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkReviewResult",
+      "members": [
+        {
+          "name": "itemMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.ItemMetadata"
+            }
+          ],
+          "doc": "ItemMetadata"
+        },
+        {
+          "name": "review",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.Review"
+            }
+          ],
+          "doc": "New Reviews"
         }
       ],
       "docs": {
@@ -2141,6 +2430,56 @@
       }
     },
     {
+      "name": "ItemMetadata",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Item ID. Should always be available, unless it's impossible (for example, when failing to create an item)."
+        },
+        {
+          "name": "error",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.ApplicationError"
+            }
+          ],
+          "doc": "Details about the error in case of failure."
+        },
+        {
+          "name": "originalIndex",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of the item within the request array. Allows for correlation between request and response items."
+        },
+        {
+          "name": "success",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the requested action was successful for this item. When `false`, the `error` field is populated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Link",
       "members": [
         {
@@ -2381,6 +2720,36 @@
       "docs": {
         "description": [
           "Action describing changed review moderation status"
+        ]
+      }
+    },
+    {
+      "name": "Origin",
+      "members": [
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The app ID of the APP review origin.\nSet only when the review origin is APP."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of the review origin."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -2838,6 +3207,17 @@
           "doc": "Review namespace. Currently integrated with Wix Stores, as `stores`."
         },
         {
+          "name": "origin",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.Origin"
+            }
+          ],
+          "doc": "Provides information about the origin of the review.\nOrganic reviews are created by site visitors or members.\nApp reviews are created by apps even though a site visitor or member is the author of the review.\nApps can not create or update organic reviews."
+        },
+        {
           "name": "reply",
           "readOnly": true,
           "optional": true,
@@ -2858,6 +3238,17 @@
             }
           ],
           "doc": "Revision number, which increments by 1 each time the review is updated.\nTo prevent conflicting changes,\nthe current revision must be passed when updating the review.\nIgnored when creating a review."
+        },
+        {
+          "name": "verified",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates whether the review has been verified through a Verify Product Purchase call to the Review Product catalog SPI."
         }
       ],
       "docs": {
@@ -3123,6 +3514,17 @@
           "doc": "Review namespace. Currently integrated with Wix Stores, as `stores`."
         },
         {
+          "name": "origin",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-reviews-v2.Reviews.Origin"
+            }
+          ],
+          "doc": "Provides information about the origin of the review.\nOrganic reviews are created by site visitors or members.\nApp reviews are created by apps even though a site visitor or member is the author of the review.\nApps can not create or update organic reviews."
+        },
+        {
           "name": "reply",
           "readOnly": true,
           "optional": true,
@@ -3143,6 +3545,17 @@
             }
           ],
           "doc": "Revision number, which increments by 1 each time the review is updated.\nTo prevent conflicting changes,\nthe current revision must be passed when updating the review.\nIgnored when creating a review."
+        },
+        {
+          "name": "verified",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates whether the review has been verified through a Verify Product Purchase call to the Review Product catalog SPI."
         }
       ],
       "docs": {
