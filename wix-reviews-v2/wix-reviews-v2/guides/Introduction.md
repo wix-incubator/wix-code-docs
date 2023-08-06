@@ -60,14 +60,14 @@ To use the Reviews API, import `reviews` from the `wix-reviews.v2` module:
 ```
 
 It's important to note the following points before starting to code:
-- A [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts) is required to create a review. If the author is already listed as a contact, use [createReview](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review). If the author is not yet a site contact, use [createReviewAndContact](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review-and-contact). 
+- A [`contactId`](https://www.wix.com/velo/reference/wix-crm-v2/contacts) is required to create a review. If the author is already listed as a contact, use either [createReview](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review) or [createReviewAndContact](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review-and-contact). If the author is not yet a site contact, use [createReviewAndContact](https://www.wix.com/velo/reference/wix-reviews-v2/reviews/create-review-and-contact). 
 - A review author is limited to one review per entity. Duplicate reviews receive an error response.
 - Replying to a review is available only in the [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending). 
 
 ## Terminology
 
-- Entity: The entity to review. For example, a Wix Stores product.
-- Namespace: The Wix module that the Reviews API is integrated with. Currently only Wix Stores.
-- Rating: An author can give a rating score between 1 and 5. The rating is displayed with the site review.
-- Helpfulness: Site visitors can indicate whether a review was helpful or not. `helpfulness` is calculated by subtracting `foundUnhelpful` from `foundHelpful`.
-- Reply: A direct reply to a review that was left on the site. The reply is displayed with the review.
+- **Entity**: The entity to review. For example, a Wix Stores product.  
+- **Namespace**: The Wix module that the Reviews API is integrated with. Currently only Wix Stores.  
+- **Rating**: An author can give a rating score between 1 and 5. The rating is displayed with the site review.
+- **Helpfulness**: Site visitors can indicate whether a review was helpful or not. `helpfulness` is calculated by subtracting `foundUnhelpful` from `foundHelpful`.  
+- **Reply**: A direct reply to a review that was left on the site. The reply is displayed with the review.  
