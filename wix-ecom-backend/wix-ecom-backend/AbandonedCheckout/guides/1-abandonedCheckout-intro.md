@@ -12,7 +12,7 @@ title: Introduction
 </div>
 ```
 
-An abandoned checkout is created when:
+An abandoned checkout is created when: 
 
 + A customer begins an eCommerce Checkout process but doesn't complete it (for example, after closing their browser tab before putting in their payment details and making a payment).
 
