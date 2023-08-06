@@ -9184,6 +9184,17 @@
           "doc": "Provider's app id"
         },
         {
+          "name": "target",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartV1Target",
+              "displayName": "V1Target"
+            }
+          ],
+          "doc": "Additional Fee's associated target."
+        },
+        {
           "name": "taxDetails",
           "optional": true,
           "type": [
@@ -10331,6 +10342,17 @@
             }
           ],
           "doc": "Persistent ID that correlates between the various eCommerce elements: cart, checkout, and order."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CartSelectedShippingOption",
+              "displayName": "SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
         },
         {
           "name": "siteLanguage",
@@ -15600,6 +15622,43 @@
       }
     },
     {
+      "name": "ecomV1CartV1Target",
+      "members": [
+        {
+          "name": "association",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional fee association."
+        },
+        {
+          "name": "lineItemIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Additional fee associated line item ids. __Relevant only in case Association = SPECIFIC_LINE_ITEMS__."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Target."
+        ]
+      }
+    },
+    {
       "name": "ecomV1CartValidationError",
       "members": [
         {
@@ -15830,6 +15889,17 @@
             }
           ],
           "doc": "Provider's app id"
+        },
+        {
+          "name": "target",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutV1Target",
+              "displayName": "V1Target"
+            }
+          ],
+          "doc": "Additional Fee's associated target."
         },
         {
           "name": "taxDetails",
@@ -16980,6 +17050,7 @@
         },
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -17099,7 +17170,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cart ID that this checkout was created from. Empty if this checkout wasn't created out of a cart."
+          "doc": "Cart ID that this checkout was created from. Empty if this checkout wasn't created from a cart."
         },
         {
           "name": "channelType",
@@ -17215,7 +17286,7 @@
               "displayName": "MembershipOptions"
             }
           ],
-          "doc": "Reserved for internal use."
+          "doc": "Memberships to apply when creating the order."
         },
         {
           "name": "payLater",
@@ -17651,7 +17722,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Gift card code.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards).\n"
+          "doc": "Gift card code.\n\nThe checkout can only hold 1 `giftCardCode` at a time. If an additional `giftCardCode` is added, it will override the existing `giftCardCode`.\n\n>**Note:** Gift cards are supported through the Wix UI, though the SPI is not currently available. Learn more about [Wix Gift Cards](https://support.wix.com/en/article/wix-stores-setting-up-wix-gift-cards).\n"
         },
         {
           "name": "lineItems",
@@ -17670,24 +17741,6 @@
             }
           ],
           "doc": "Line items to be added to checkout."
-        },
-        {
-          "name": "merchantDiscounts",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutMerchantDiscountInput",
-                    "displayName": "MerchantDiscountInput"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -18104,6 +18157,16 @@
           "doc": "Custom line item ID. If passed, `id` must be unique.\nDefault: auto-generated ID."
         },
         {
+          "name": "depositAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Partial payment to be paid upfront during the checkout. Eligible for catalog items with `lineItem.paymentOption` type `DEPOSIT_ONLINE` only."
+        },
+        {
           "name": "descriptionLines",
           "optional": true,
           "type": [
@@ -18142,6 +18205,27 @@
           "doc": "Custom line item name."
         },
         {
+          "name": "paymentOption",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of selected payment option for current item. Defaults to `FULL_PAYMENT_ONLINE`.\n+ `FULL_PAYMENT_ONLINE`: The entire payment for this item happens as part of the checkout.\n+ `FULL_PAYMENT_OFFLINE`: The entire payment for this item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `MEMBERSHIP`: Payment for this item is done by charging a membership. When this option is used, `lineItem.price.amount` is `0`.\n+ `DEPOSIT_ONLINE`: Partial payment to be paid upfront during the checkout. Initial amount to be paid for each line item is defined by `lineItem.deposit`.\n+ `MEMBERSHIP_OFFLINE`: Payment for this item can only be performed by using a membership and must be manually redeemed in the dashboard by the site owner. When this option is used, `lineItem.price.amount` is `0`."
+        },
+        {
+          "name": "physicalProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutPhysicalProperties",
+              "displayName": "PhysicalProperties"
+            }
+          ],
+          "doc": "Physical properties of the item. When relevant, contains information such as SKU, item weight, and shippability."
+        },
+        {
           "name": "price",
           "optional": true,
           "type": [
@@ -18152,6 +18236,17 @@
           "doc": "Custom line item price.\nMust be a number or a decimal without symbols."
         },
         {
+          "name": "priceDescription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutPriceDescription",
+              "displayName": "PriceDescription"
+            }
+          ],
+          "doc": "Additional description for the price. For example, when price is 0 but additional details about the actual price are needed - \"Starts at $67\"."
+        },
+        {
           "name": "quantity",
           "optional": true,
           "type": [
@@ -18160,6 +18255,17 @@
             }
           ],
           "doc": "Custom line item quantity.\n\nMin: `1`\n\nMax: `100000`\n"
+        },
+        {
+          "name": "serviceProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutServiceProperties",
+              "displayName": "ServiceProperties"
+            }
+          ],
+          "doc": "Service properties. When relevant, this contains information such as date and number of participants."
         }
       ],
       "docs": {
@@ -20167,7 +20273,7 @@
               "displayName": "SelectedMemberships"
             }
           ],
-          "doc": "Reserved for internal use."
+          "doc": "Selected membership to apply to this checkout."
         }
       ],
       "docs": {
@@ -21186,6 +21292,46 @@
             }
           ],
           "doc": "Updated checkout after removal of line items."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1CheckoutRemoveOverrideCheckoutUrlRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the checkout to remove the override checkout url from."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1CheckoutRemoveOverrideCheckoutUrlResponse",
+      "members": [
+        {
+          "name": "checkout",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutCheckout",
+              "displayName": "Checkout"
+            }
+          ],
+          "doc": "Updated checkout after removal of override checkout url."
         }
       ],
       "docs": {
@@ -22777,7 +22923,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Coupon code."
+          "doc": "Coupon code.\n\nThe checkout can only hold 1 `couponCode` at a time. If an additional `couponCode` is added, it will override the existing `couponCode`.\n"
         },
         {
           "name": "giftCardCode",
@@ -22788,24 +22934,6 @@
             }
           ],
           "doc": "Gift card code."
-        },
-        {
-          "name": "merchantDiscounts",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Events.ecomV1CheckoutMerchantDiscountInput",
-                    "displayName": "MerchantDiscountInput"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Merchant discounts to apply to specific line items.\nIf no `lineItemIds` are passed, the discount will be applied to the whole checkout.\n\n>**Note:** The Manage Stores [permission scope](https://devforum.wix.com/en/article/available-permissions) is required to apply merchant discounts.\n"
         }
       ],
       "docs": {
@@ -23386,6 +23514,43 @@
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1CheckoutV1Target",
+      "members": [
+        {
+          "name": "association",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional fee association."
+        },
+        {
+          "name": "lineItemIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Additional fee associated line item ids. __Relevant only in case Association = SPECIFIC_LINE_ITEMS__."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Target."
         ]
       }
     },
