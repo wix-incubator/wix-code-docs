@@ -7,7 +7,33 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-  
+
+### New API: Accordion
+
+`Wix Editor Elements ($w)`
+
+>**Note:** This feature is currently only available in Wix Studio and Editor X.
+
+The new [Accordion API]($w/accordion) allows you to display multiple, collapsible item elements 
+in a vertical stack, each with different content.
+
+(August 9, 2023)
+
+### New Developer Preview API: Wix Comments v2
+
+The new [Comments API](/wix-comments-v2/comments) allows you to manage a customized commenting program.  
+
+Functionality includes:
++ [Creating](/wix-comments-v2/comments/createcomment), [updating](/wix-comments-v2/comments/updatecomment), or [deleting](/wix-comments-v2/comments/deletecomment) a comment.
++ [Getting](/wix-comments-v2/comments/getcomment) or [querying](/wix-comments-v2/comments/querycomments) comments.
++ [Marking](/wix-comments-v2/comments/markcomment) and [Unmarking](/wix-comments-v2/comments/unmarkcomment) a comment.
++ [Counting](/wix-comments-v2/comments/countcomments) comments.
++ Events when a comment is [created](/wix-comments-v2/events/oncommentcreated), [updated](/wix-comments-v2/events/oncommentupdated), [deleted](/wix-comments-v2/events/oncommentdeleted), [marked](/wix-comments-v2/events/oncommentmarked), or [unmarked](/wix-comments-v2/events/oncommentunmarked).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(August 9, 2023)
+
 ### New SPI: eCommerce Validations
 
 The new eCommerce [Validations SPI](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations) is a [custom extension](https://support.wix.com/en/article/velo-custom-app-extensions-using-spis) that allows you to validate a site visitor's cart and checkout. 
@@ -241,7 +267,6 @@ The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/ser
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (May 22, 2023)
-
 
 ### New Developer Preview API: Wix Data v2
 
