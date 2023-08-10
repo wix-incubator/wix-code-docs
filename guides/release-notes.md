@@ -7,6 +7,25 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Dashboard Elements
+
+`Wix Editor Elements ($w)`
+
+The new [Dashboard Elements](https://www.wix.com/velo/reference/$w/dashboardbutton) API allows you to create customized, interactive dashboards for your users.
+
+The following elements can be added to [Dashboard Elements](https://www.wix.com/velo/reference/$w/dashboardbutton):
+
+* [DashboardButton]($w/dashboardbutton)
+* [DashboardHeading]($w/dashboardheading)
+* [DashboardIconHeading]($w/dashboardiconheading)
+* [DashboardInfoIcon]($w/dashboardinfoicon)
+* [DashboardInput]($w/dashboardinput)
+* [DashboardNumberInput]($w/dashboardnumberinput)
+* [DashboardText]($w/dashboardtext)
+* [DashboardTextButton]($w/dashboardtextbutton)
+* [DashboardToggleSwitch]($w/dashboardtoggleswitch)
+
+(August 10, 2023)
 
 ### New Developer Preview API: Guests
 
