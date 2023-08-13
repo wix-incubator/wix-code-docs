@@ -20,7 +20,6 @@ If data requests from your Velo code are not behaving as expected, your site may
 | --- | --- | --- |
 | [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
 | [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 250 seconds / minute<br>Write: 100 seconds / minute | Yes |
 | [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
@@ -99,32 +98,6 @@ You can take the following steps to try and reduce the processing time of indivi
     Querying with an index is faster than querying items directly. All **\_id** and **\_createdDate** fields are indexed by default.
 -   **Use an external database**
     The request timeout quota doesn't apply to external databases. If none of the other options works for you, store your data in an external database and [integrate it with your site](https://support.wix.com/en/article/velo-adding-and-deleting-an-external-database-collection). You can still access this data using Velo and the Wix Data API.
-
-## Overall Processing Time 
-
-Data operations triggered by requests from your site can only take up a certain amount of overall processing time each minute. The quota is 250 seconds for read operations and 100 for write operations. This quota applies to the same functions as the one for [requests per minute](https://docs.google.com/document/d/1CX4Q9QQbBba5Gd6hXIQXdoF9nMmGe_bpXKxPqMFNKP0/edit#heading=h.9rak1u4ndwm0).
-
-For example, consider a site that requests 50 concurrent read operations, each of which takes 5 seconds to execute. In this case, the site reaches the processing time quota for that minute (50 \* 5 = 250) and subsequent operations fail.
-
-For each request that exceeds the quota, the following error appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
-
-`
-WDE0122: Processing time quota exceeded.
-`
-
-### What can I do? 
-
-You can take the following steps to try and reduce the amount of processing time your code uses:
-
--   **Only request data you need**
-    Avoid fetching more items from your collection than you need at one time. Also avoid including reference items in your queries if you don’t need their data. Both of these things increase processing time.
--   **Use indexes**
-    Querying with an index is faster than querying items directly. All **\_id** and **\_createdDate** fields are indexed by default.
--   **Use an external database**
-    The overall processing time quota doesn't apply to external databases. If none of the other options works for you, store your data in an external database and [integrate it with your site](https://support.wix.com/en/article/velo-adding-and-deleting-an-external-database-collection). You can still access this data using Velo and the Wix Data API.
--   **Contact support**
-    [Contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support) to ask for more resources.
-
 ## Collection Storage 
 
 The overall amount of collection storage for each Wix site is 10 GB. This quota only includes data stored in collections. It does not include media or other files stored on your site, which have [separate limits](https://support.wix.com/en/article/about-storage-and-bandwidth). Documents and multimedia content referenced from a collection are also not included. We can increase the storage quota in certain cases. To find out more, [contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support).
