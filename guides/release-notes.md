@@ -7,13 +7,11 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-### New API: Dashboard Elements
+### New: Dashboard Builder Elements
 
 `Wix Editor Elements ($w)`
 
-The new [Dashboard Elements](https://www.wix.com/velo/reference/$w/dashboardbutton) API allows you to create customized, interactive dashboards for your users.
-
-The following elements can be added to [Dashboard Elements](https://www.wix.com/velo/reference/$w/dashboardbutton):
+Dashboard elements provide the following functionality to your user's Dashboard:
 
 * [DashboardButton]($w/dashboardbutton)
 * [DashboardHeading]($w/dashboardheading)
