@@ -12,9 +12,9 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](#requests-per-minute) | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
-| [Individual Request Timeout](#individual-request-timeout) | 5 seconds | No |
-| [Collection Storage](#collection-storage) | 10 GB | Yes |
+| Requests Per Minute | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
+| Individual Request Timeout | 5 seconds | No |
+| Collection Storage | 10 GB | Yes |
 
 ## Requests Per Minute 
 
