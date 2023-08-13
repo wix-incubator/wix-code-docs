@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # About Data Quotas
@@ -8,7 +10,7 @@
 
 
 
-Wix places quotas on data requests made by your site. These quotas affect the processing time and volume of requests that sites can make, as well as the overall collection storage a site can have. Data quotas apply to anything making data requests on your site, including the [Content Manager](https://support.wix.com/en/article/about-the-content-manager-7160473), [Datasets](https://support.wix.com/en/article/about-datasets-6368396), [Wix Forms](https://support.wix.com/en/article/wix-forms-an-overview), and Velo’s [Wix Data API](/wix-data). This article focuses on how these quotas work when using Velo.
+Wix places quotas on data requests made by your site. These quotas affect the processing time and volume of requests that sites can make, as well as the overall collection storage a site can have. Data quotas apply to anything making data requests on your site, including the [Content Management System (CMS)](https://support.wix.com/en/article/about-the-content-manager-7160473), [Datasets](https://support.wix.com/en/article/about-datasets-6368396), [Wix Forms](https://support.wix.com/en/article/wix-forms-an-overview), and Velo’s [Wix Data API](/wix-data). This article focuses on how these quotas work when using Velo.
 
 If data requests from your Velo code are not behaving as expected, your site may be exceeding one of the quotas. Some of these quotas can be increased. [Contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support) for more information.
 
@@ -16,9 +18,9 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute <br> Write: 1500 / minute | Yes |
+| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
 | [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 250 seconds / minute <br> Write: 100 seconds / minute | Yes |
+| [Overall Processing Time](https://support.wix.com/en/article/velo-about-data-quotas#overall-processing-time) | Read: 250 seconds / minute<br>Write: 100 seconds / minute | Yes |
 | [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
