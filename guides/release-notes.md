@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-Dashboard elements provide the following functionality to your user's Dashboard:
+You can now add these elements to dashboard pages in your Wix site or in Wix Blocks:
 
 * [DashboardButton]($w/dashboardbutton)
 * [DashboardHeading]($w/dashboardheading)
