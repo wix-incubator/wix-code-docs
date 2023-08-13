@@ -4,12 +4,6 @@
 
 # About Data Quotas
 
-
-
-
-
-
-
 Wix places quotas on data requests made by your site. These quotas affect the processing time and volume of requests that sites can make, as well as the overall collection storage a site can have. Data quotas apply to anything making data requests on your site, including the [Content Management System (CMS)](https://support.wix.com/en/article/about-the-content-manager-7160473), [Datasets](https://support.wix.com/en/article/about-datasets-6368396), [Wix Forms](https://support.wix.com/en/article/wix-forms-an-overview), and Velo’s [Wix Data API](/wix-data). This article focuses on how these quotas work when using Velo.
 
 If data requests from your Velo code are not behaving as expected, your site may be exceeding one of the quotas. Some of these quotas can be increased. [Contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support) for more information.
@@ -18,13 +12,13 @@ If data requests from your Velo code are not behaving as expected, your site may
 
 | Name | Limit | Can it be increased? |
 | --- | --- | --- |
-| [Requests Per Minute](https://support.wix.com/en/article/velo-about-data-quotas#requests-per-minute) | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
-| [Individual Request Timeout](https://support.wix.com/en/article/velo-about-data-quotas#individual-request-timeout) | 5 seconds | No |
-| [Collection Storage](https://support.wix.com/en/article/velo-about-data-quotas#collection-storage) | 10 GB | Yes |
+| [Requests Per Minute](#requests-per-minute) | Read: 3000 / minute<br>Write: 1500 / minute | Yes |
+| [Individual Request Timeout](#individual-request-timeout) | 5 seconds | No |
+| [Collection Storage](#collection-storage) | 10 GB | Yes |
 
 ## Requests Per Minute 
 
-Wix limits the number of read and write requests you can make from your site per minute. The maximum number for read requests is 3000 and the maximum for write requests is 1500. We can increase these quotas in certain cases. To find out more, [contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support).
+Wix limits the number of read and write requests you can make from your site per minute. The maximum number for read requests is 3000 and the maximum for write requests is 1500. We can increase these quotas in certain cases. To find out more, [contact support](#contact-support).
 
 The following API functions count as 1 request towards the read quota:
 
@@ -76,7 +70,7 @@ You can take the following steps to try and reduce the number of data requests i
 -   **Only make requests when you need the data**  
     Don’t make requests for data you don’t use. For example, if you store extra store product data in a separate collection, only query this collection when you need the data.
 -   **Contact support**  
-    [Contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support) to ask for more resources.
+    [Contact support](#contact-support) to ask for more resources.
 
 ## Individual Request Timeout 
 
@@ -100,7 +94,7 @@ You can take the following steps to try and reduce the processing time of indivi
     The request timeout quota doesn't apply to external databases. If none of the other options works for you, store your data in an external database and [integrate it with your site](https://support.wix.com/en/article/velo-adding-and-deleting-an-external-database-collection). You can still access this data using Velo and the Wix Data API.
 ## Collection Storage 
 
-The overall amount of collection storage for each Wix site is 10 GB. This quota only includes data stored in collections. It does not include media or other files stored on your site, which have [separate limits](https://support.wix.com/en/article/about-storage-and-bandwidth). Documents and multimedia content referenced from a collection are also not included. We can increase the storage quota in certain cases. To find out more, [contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support).
+The overall amount of collection storage for each Wix site is 10 GB. This quota only includes data stored in collections. It does not include media or other files stored on your site, which have [separate limits](https://support.wix.com/en/article/about-storage-and-bandwidth). Documents and multimedia content referenced from a collection are also not included. We can increase the storage quota in certain cases. To find out more, [contact support](#contact-support).
 
 If you try to add data to a collection once you have reached the 10 GB quota, the data is not added and the following error message appears in your [site log](https://support.wix.com/en/article/velo-about-site-monitoring):
 
@@ -127,7 +121,7 @@ You can take the following steps to try and reduce the amount of storage your si
 -   **Use an external database**
     The collection storage quota doesn't apply to external databases. If none of the other options works for you, store your data in an external database and [integrate it with your site](https://support.wix.com/en/article/velo-adding-and-deleting-an-external-database-collection). You can still access this data using Velo and the Wix Data API.
 -   **Contact support**
-    [Contact support](https://support.wix.com/en/article/velo-about-data-quotas#contact-support) to ask for more resources.
+    [Contact support](#contact-support) to ask for more resources.
 
 ## Contact Support 
 
