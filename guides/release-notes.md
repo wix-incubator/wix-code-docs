@@ -15,7 +15,7 @@ Dashboard elements provide the following functionality to your user's Dashboard:
 
 * [DashboardButton]($w/dashboardbutton)
 * [DashboardHeading]($w/dashboardheading)
-* [DashboardIconHeading]($w/dashboardiconheading)
+* [DashboardIconButton]($w/dashboardiconbutton)
 * [DashboardInfoIcon]($w/dashboardinfoicon)
 * [DashboardInput]($w/dashboardinput)
 * [DashboardNumberInput]($w/dashboardnumberinput)
@@ -23,7 +23,7 @@ Dashboard elements provide the following functionality to your user's Dashboard:
 * [DashboardTextButton]($w/dashboardtextbutton)
 * [DashboardToggleSwitch]($w/dashboardtoggleswitch)
 
-(August 10, 2023)
+(August 13, 2023)
 
 ### New API: Accordion
 
