@@ -2228,7 +2228,17 @@
               "nativeType": "string"
             }
           ],
-          "doc": "booking to mark as pending.",
+          "doc": "ID of the booking to mark as PENDING.",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the booking is updated.\nTo prevent conflicting changes, the current revision must be passed when\nmanaging the booking.",
           "required": true
         },
         {
@@ -2243,7 +2253,8 @@
         }
       ],
       "requiredFields": [
-        "bookingId"
+        "bookingId",
+        "revision"
       ],
       "ret": {
         "type": [
@@ -2268,9 +2279,9 @@
             "body": [
               "import { bookings } from 'wix-bookings.v2';",
               "  ",
-              " async function markBookingAsPending(bookingId, options) {",
+              " async function markBookingAsPending(bookingId, revision, options) {",
               "   try {",
-              "     const result = await bookings.markBookingAsPending(bookingId, options);",
+              "     const result = await bookings.markBookingAsPending(bookingId, revision, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -6160,7 +6171,7 @@
       "name": "ConfirmBookingFlowControlSettings",
       "members": [
         {
-          "name": "skipAvailabilityValidation",
+          "name": "checkAvailabilityValidation",
           "optional": true,
           "type": [
             {
@@ -6615,6 +6626,16 @@
             }
           ],
           "doc": "Confirmed booking."
+        },
+        {
+          "name": "doubleBooked",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this booking overlaps with another existing confirmed booking."
         }
       ],
       "docs": {
@@ -8173,14 +8194,24 @@
       "name": "MarkBookingAsPendingOptions",
       "members": [
         {
-          "name": "isDoubleBooked",
+          "name": "flowControlSettings",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-bookings-v2.Bookings.ConfirmBookingFlowControlSettings"
             }
           ],
-          "doc": "indicated whether this booking overlaps with another existing confirmed booking."
+          "doc": "Information about whether specific procedures of the standard Wix Bookings\ncreation flow are changed. For example, whether the availability is\nchecked before confirming the booking."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.ParticipantNotification"
+            }
+          ],
+          "doc": "Information about whether to notify the customer and\nthe message to send."
         },
         {
           "name": "paymentStatus",
@@ -8190,7 +8221,17 @@
               "nativeType": "string"
             }
           ],
-          "doc": "payment status of the booking."
+          "doc": "Payment status to set for the booking.\nOne of:\n- `\"NOT_PAID\"` The booking is not paid for.\n- `\"PAID\"` The booking is fully paid.\n- `\"PARTIALLY_PAID\"` The booking is partially paid.\n- `\"REFUNDED\"` The booking is refunded.\n- `\"EXEMPT\"` The booking is free of charge."
+        },
+        {
+          "name": "sendSmsReminder",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to send an SMS reminder to the customer 24 hours before the\nsession starts. The phone number is taken from `contactDetails.phone`."
         }
       ],
       "docs": {
@@ -8209,17 +8250,27 @@
               "nativeType": "string"
             }
           ],
-          "doc": "booking to mark as pending."
+          "doc": "ID of the booking to mark as PENDING."
         },
         {
-          "name": "isDoubleBooked",
+          "name": "flowControlSettings",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-bookings-v2.Bookings.ConfirmBookingFlowControlSettings"
             }
           ],
-          "doc": "indicated whether this booking overlaps with another existing confirmed booking."
+          "doc": "Information about whether specific procedures of the standard Wix Bookings\ncreation flow are changed. For example, whether the availability is\nchecked before confirming the booking."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Bookings.ParticipantNotification"
+            }
+          ],
+          "doc": "Information about whether to notify the customer and\nthe message to send."
         },
         {
           "name": "paymentStatus",
@@ -8229,7 +8280,26 @@
               "nativeType": "string"
             }
           ],
-          "doc": "payment status of the booking."
+          "doc": "Payment status to set for the booking.\nOne of:\n- `\"NOT_PAID\"` The booking is not paid for.\n- `\"PAID\"` The booking is fully paid.\n- `\"PARTIALLY_PAID\"` The booking is partially paid.\n- `\"REFUNDED\"` The booking is refunded.\n- `\"EXEMPT\"` The booking is free of charge."
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the booking is updated.\nTo prevent conflicting changes, the current revision must be passed when\nmanaging the booking."
+        },
+        {
+          "name": "sendSmsReminder",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to send an SMS reminder to the customer 24 hours before the\nsession starts. The phone number is taken from `contactDetails.phone`."
         }
       ],
       "docs": {
@@ -8250,6 +8320,16 @@
             }
           ],
           "doc": ""
+        },
+        {
+          "name": "doubleBooked",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether this booking overlaps with another existing booking."
         }
       ],
       "docs": {
