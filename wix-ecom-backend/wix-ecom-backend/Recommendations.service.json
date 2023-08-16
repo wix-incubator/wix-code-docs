@@ -26,7 +26,7 @@
               }
             }
           ],
-          "doc": "A list of algorithms checked in a specific order determined by their `appID` and their position in the `algorithms` array.\nSee the method description for more information.\n\nIf no algorithm is able to return at least `minimumRecommendedItems` items, an empty array is returned.",
+          "doc": "Returns a recommendation object containing a list of items to recommend to the customer.\n\n`getRecommendation()` determines which items to recommend based on the given recommendation algorithms.\n\n`getRecommendation()` doesn’t run the algorithms. It calls the installed apps that provide them.\n\nApps may provide algorithms for use with their own catalogs, or for use with catalogs from other apps.\nFor example, Wix Stores provides algorithms that can only be used on its own catalogs.\nTo run an algorithm, the app providing it must be installed, and an app providing a supported catalog must be installed.\nFor more information and to see which algorithms are available on your site or project, call [`listAvailableAlgorithms()`](#listAvailableAlgorithms).\n\n`getRecommendation()` operates as follows:\n1. `getRecommendation()` receives as input a list of algorithms as an array. These algorithms can be provided by different apps and can apply to different catalogs.\n 2. `getRecommendation()` calls the app that corresponds to the `appId` of the first algorithm in the list of algorithms. It passes that algorithm’s ID and the IDs of any subsequent algorithms in the array for the same app.\n3. The app runs the algorithms.\n4. `getRecommendation()` returns items recommendations from the first algorithm (according to its position in the `algorithms` array) that meets the minimum number of recommendations. At that point `getRecommendation()` stops calling other apps.\n5. If none of the algorithms run by the first app meet the minimum recommended items, `getRecommendation()` finds the next algorithm in the array with a new `appId` (an ID of an app that has not yet been called), and repeats the process.\n6. If no algorithms in the `algorithms` array recommend at least the minimum recommended items, `getRecommendation()` returns an empty array.\n",
           "required": true
         },
         {
@@ -36,7 +36,7 @@
               "referenceType": "wix-ecom-backend.Recommendations.GetRecommendationOptions"
             }
           ],
-          "doc": "Get recommendation options.\n",
+          "doc": "Get recommendation options.",
           "required": false
         }
       ],
@@ -116,9 +116,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Returns a list of recommendation algorithms that can be used on your Wix site or project. These algorithms can be used with [Get Recommendation](#getrecommendation) to supply item recommendations to the customer.",
+        "summary": "Returns a list of recommendation algorithms that can be used on your Wix site or project. These algorithms can be used with [`getRecommendation()`](#getRecommendation) to provide item recommendations to the customer.",
         "description": [
-          "Information about each algorithm is stored in the Dev Center as a Component of the app that provides it.\nEach Component specifies which catalogs its algorithm may be applied to using a list of `catalog_app_ids`.\nThese are the IDs of Wix or 3rd party apps that implement the Catalog SPI.\nAlgorithms provided by installed apps are only returned if at least one supported app implementing the Catalog SPI is also installed.\n(In other words, if another installed app has an `app_id` listed in `catalog_app_ids`.)"
+          "Algorithms are run by the apps that provide them, and can only be used on catalogs they support. Apps may provide algorithms for use with their own catalogs and/or catalogs from other apps.\n\nThe app which provides an algorithm is referenced by that algorithm’s `appId`. The apps whose catalogs are supported by an algorithm are referenced by the IDs in that algorithm’s `catalogAppIds` array.\n\n\nFor an algorithm to be considered “Available” and returned in this method’s response, the algorithm must meet the following conditions:\n1. The algorithm’s `appId` must match the ID of an installed Wix app.\n2. At least 1 of the IDs in `catalogAppIds` must match the ID of an installed Wix app.\n\nWix app IDs are [listed here](https://dev.wix.com/api/rest/getting-started/wix-business-solutions#getting-started_wix-business-solutions_about-wix-business-solutions)."
         ],
         "examples": [
           {
