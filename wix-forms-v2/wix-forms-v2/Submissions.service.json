@@ -13,20 +13,13 @@
       "name": "bulkMarkSubmissionsAsSeen",
       "params": [
         {
-          "name": "ids",
+          "name": "formId",
           "type": [
             {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
+              "nativeType": "string"
             }
           ],
-          "doc": "Submission IDs to mark as seen.",
+          "doc": "ID of the form which the submissions belongs to.",
           "required": true
         },
         {
@@ -41,9 +34,9 @@
         }
       ],
       "requiredFields": [
-        "ids",
+        "formId",
         "options",
-        "options.formId"
+        "options.ids"
       ],
       "ret": {
         "type": [
@@ -69,9 +62,9 @@
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "  ",
-              " async function bulkMarkSubmissionsAsSeen(ids, options) {",
+              " async function bulkMarkSubmissionsAsSeen(formId, options) {",
               "   try {",
-              "     const result = await submissions.bulkMarkSubmissionsAsSeen(ids, options);",
+              "     const result = await submissions.bulkMarkSubmissionsAsSeen(formId, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -127,7 +120,7 @@
       "docs": {
         "summary": "Confirms a submission.",
         "description": [
-          "You can only confirm a submission that has a `PENDING` status. The default status when a submission is created is `CONFIRMED`. You can change the default status for individual submissions using the [Create Submission](https://dev.wix.com/docs/rest/api-reference/wix-forms/form-submissions/create-submission) or [Update Submission](https://dev.wix.com/docs/rest/api-reference/wix-forms/form-submissions/update-submission) endpoints."
+          "You can only confirm a submission that has a `PENDING` status. The default status when a submission is created is `CONFIRMED`. You can change the default status for individual submissions using the [`createSubmission()`](#createsubmission) or [`updateSubmission()`](#updatesubmission) methods."
         ],
         "examples": [
           {
@@ -162,20 +155,13 @@
       "name": "countSubmissions",
       "params": [
         {
-          "name": "formIds",
+          "name": "namespace",
           "type": [
             {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
+              "nativeType": "string"
             }
           ],
-          "doc": "Form IDs.",
+          "doc": "Identifies the app which the form submissions belong to. For example, the namespace for the Wix Forms App is `\"wix.form_app.form\"`. The namespace of a submission can be retrieved using the Get Submission endpoint.",
           "required": true
         },
         {
@@ -190,9 +176,9 @@
         }
       ],
       "requiredFields": [
-        "formIds",
+        "namespace",
         "options",
-        "options.namespace"
+        "options.formIds"
       ],
       "ret": {
         "type": [
@@ -210,7 +196,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Counts the submissions belonging to the specified forms.",
+        "summary": "Counts the number of submissions belonging to the specified forms.",
         "description": [],
         "examples": [
           {
@@ -218,9 +204,9 @@
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "  ",
-              " async function countSubmissions(formIds, options) {",
+              " async function countSubmissions(namespace, options) {",
               "   try {",
-              "     const result = await submissions.countSubmissions(formIds, options);",
+              "     const result = await submissions.countSubmissions(namespace, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -384,13 +370,23 @@
       "name": "getMediaUploadUrl",
       "params": [
         {
-          "name": "formId",
+          "name": "filename",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Form ID.",
+          "doc": "Name of file to upload.",
+          "required": true
+        },
+        {
+          "name": "mimeType",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "[Mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#) of file to upload.\n\nFor example, `'image/png'`",
           "required": true
         },
         {
@@ -405,10 +401,10 @@
         }
       ],
       "requiredFields": [
-        "formId",
+        "filename",
+        "mimeType",
         "options",
-        "options.filename",
-        "options.mimeType"
+        "options.formId"
       ],
       "ret": {
         "type": [
@@ -426,7 +422,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a URL, generated by [Media Manager](https://dev.wix.com/api/rest/media/media-manager/files/generate-file-upload-url), to allow clients to upload a file to a form for submission.",
+        "summary": "Retrieves a URL, generated by Media Manager, to use when creating a submission with a field for uploading files.",
         "description": [],
         "examples": [
           {
@@ -434,9 +430,9 @@
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "  ",
-              " async function getMediaUploadUrl(formId, options) {",
+              " async function getMediaUploadUrl(filename, mimeType, options) {",
               "   try {",
-              "     const result = await submissions.getMediaUploadUrl(formId, options);",
+              "     const result = await submissions.getMediaUploadUrl(filename, mimeType, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -531,7 +527,7 @@
               "referenceType": "wix-forms-v2.Submissions.QuerySubmissionsByNamespaceOptions"
             }
           ],
-          "doc": "",
+          "doc": "Query options.\n",
           "required": false
         }
       ],
@@ -545,14 +541,17 @@
         "doc": null
       },
       "docs": {
-        "summary": "Returns a list of up to 100 submissions, given the provided paging, filtering, and sorting.",
+        "summary": "Creates a query to retrieve a list of submissions. ",
         "description": [
           "",
-          "You can only query submissions from a specified namespace. Use the query filter on the `namespace` field, otherwise you will receive an error.",
+          "The `querySubmissionsByNamespace()` method builds a query to retrieve a list of submissions from the specified namespace and returns a [`SubmissionsQueryBuilder`](#submissionsquerybuilder) object. ",
+          ">**Note:** You can only query submissions from a specified namespace. Use the query filter on the `namespace` field, otherwise you will receive an error.",
           "",
-          "For field support for filters and sorting, see [Form Submissions: Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-forms/form-submissions/sort-and-filter).option",
+          "The returned object contains the query definition, which is typically used to run the query using the [`find()`](#submissionsquerybuilder/find) method. ",
           "",
-          "To learn about working with _Query_ endpoints, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language), [Sorting and Paging](https://dev.wix.com/api/rest/getting-started/pagination), and [Field Projection](https://dev.wix.com/api/rest/getting-started/field-projection).",
+          "You can refine the query by chaining `SubmissionsQueryBuilder` methods onto the query. `SubmissionsQueryBuilder` methods enable you to sort, filter, and control the results that `querySubmissionsByNamespace()` returns. ",
+          "",
+          "The following `SubmissionsQueryBuilder` methods are supported for `querySubmissionsByNamespace()`. For a full description of the Submissions object, see the object returned for the [`items`](#submissionsqueryresult/items) property in [`SubmissionsQueryResult`](#submissionsqueryresult).",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -566,12 +565,16 @@
         ],
         "examples": [
           {
-            "title": "querySubmissionsByNamespace example",
+            "title": "Query a submission by namespace ",
             "body": [
+              "",
+              "",
               "import { submissions } from 'wix-forms.v2';",
               "  ",
               " async function querySubmissionsByNamespace() {",
-              "   const { items } = submissions.querySubmissionsByNamespace().find();",
+              "   const { items } = submissions.querySubmissionsByNamespace()",
+              "   .namespace(\"wix.form_app.form\")",
+              "   .find();",
               " }",
               "  "
             ]
@@ -606,7 +609,7 @@
               "referenceType": "wix-forms-v2.Submissions.UpdateSubmission"
             }
           ],
-          "doc": "",
+          "doc": "Submission to update.",
           "required": true
         }
       ],
@@ -691,13 +694,20 @@
       "name": "BulkMarkSubmissionsAsSeenOptions",
       "members": [
         {
-          "name": "formId",
+          "name": "ids",
           "type": [
             {
-              "nativeType": "string"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "ID of the form to which the submissions belongs."
+          "doc": "Submission IDs to mark as seen."
         }
       ],
       "docs": {
@@ -716,7 +726,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the form to which the submissions belongs."
+          "doc": "ID of the form which the submissions belongs to."
         },
         {
           "name": "ids",
@@ -811,13 +821,20 @@
       "name": "CountSubmissionsOptions",
       "members": [
         {
-          "name": "namespace",
+          "name": "formIds",
           "type": [
             {
-              "nativeType": "string"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "Identifies the app which the form submissions belong to. For example, the namespace for the Wix Forms App is `\"wix.form_app.form\"`. The namespace of a submission can be retrieved using the Get Submission endpoint."
+          "doc": "Form IDs."
         }
       ],
       "docs": {
@@ -1638,7 +1655,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of submissions that haven't been seen."
+          "doc": "Number of submissions that haven't yet been seen by site collaborators with manage submission permissions."
         }
       ],
       "docs": {
@@ -1708,22 +1725,13 @@
       "name": "GetMediaUploadUrlOptions",
       "members": [
         {
-          "name": "filename",
+          "name": "formId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Name of file to upload."
-        },
-        {
-          "name": "mimeType",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "[Mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#) of file to upload.\n\nFor example, `'image/png'`\n"
+          "doc": "Form ID."
         }
       ],
       "docs": {
