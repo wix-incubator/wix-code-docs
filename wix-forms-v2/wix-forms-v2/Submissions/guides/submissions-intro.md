@@ -3,6 +3,7 @@ title: Introduction
 ---
 
 # Introduction
+
 &nbsp;
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
@@ -12,6 +13,7 @@ title: Introduction
 </div>  
 
 &nbsp;
+
 <!--
 > **Note:**
 > This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
@@ -20,10 +22,10 @@ title: Introduction
 The Form Submissions API allows you to create and manage the submissions made on a form. 
 
 With the Form Submissions API, you can:
-- [query](wix-forms-v2/submissions/querysubmissionsbynamespace) and [manage](wix-forms-v2/submissions/createsubmission) a submission.
-- [retrieve](wix-forms-v2/submissions/countsubmission) the total number of submissions per form.
-- [confirm](wix-forms-v2/submissions/confirmsubmission) a submission or [mark](wix-forms-v2/submissions/bulkmarksubmissionsasseen) submissions as seen. 
-- retrieve a [media upload file](wix-forms-v2/submissions/querysubmissionsbynamespace) url to use in a subission for forms that include a field for uploading files. 
+- [Query](wix-forms-v2/submissions/querysubmissionsbynamespace) and [manage](wix-forms-v2/submissions/createsubmission) a submission.
+- [Retrieve](wix-forms-v2/submissions/countsubmission) the total number of submissions per form.
+- [Confirm](wix-forms-v2/submissions/confirmsubmission) a submission or [mark](wix-forms-v2/submissions/bulkmarksubmissionsasseen) submissions as seen. 
+- Retrieve a [media upload file](wix-forms-v2/submissions/querysubmissionsbynamespace) url to use in a subission for forms that include a field for uploading files. 
 
 
 To use the Form Submissions API, import `{ submissions }` from the `wix-forms.v2` module. 
