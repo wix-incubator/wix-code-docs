@@ -7,6 +7,20 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+The new [Form Submissions API](wix-forms-v2/submissions/introduction) allows you to manage form submissions from your site visitors. 
+
+Functionality includes: 
++ [Creating](wix-forms-v2/submissions/create-submission), [updating](wix-forms-v2/submissions/update-submission), or [deleting](wix-forms-v2/submissions/delete-submission) a submission.
++ [Getting](wix-forms-v2/submissions/get-submission) a submission or [querying](wix-forms-v2/submissions/query-submissions-by-namespace) submissions by namespace.
++ [Counting](wix-forms-v2/submissions/count-submissions) the number of submissions for a specific form. 
++ [Marking](wix-forms-v2/submissions/bulk-mark-submissions-as-seen) submissions as seen. 
++ [Confirming](wix-forms-v2/submissions/confirm-submission) a submission has been recorded. 
++ [Geting a media upload URL](wix-forms-v2/submissions/get-media-upload-url) to use when creating a submission with a field for uploading files. 
+
+(August 21, 2023)
+
+
 ### New: Dashboard Builder Elements
 
 `Wix Editor Elements ($w)`
