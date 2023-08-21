@@ -10,6 +10,86 @@
   "properties": [],
   "operations": [
     {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "order",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Order"
+            }
+          ],
+          "doc": "Order info.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "order",
+        "order.billingInfo.address.country",
+        "order.billingInfo.contactDetails",
+        "order.billingInfo.contactDetails.firstName",
+        "order.channelInfo",
+        "order.lineItems",
+        "order.lineItems.catalogReference.appId",
+        "order.lineItems.catalogReference.catalogItemId",
+        "order.lineItems.descriptionLines.name",
+        "order.lineItems.itemType",
+        "order.lineItems.price",
+        "order.lineItems.productName",
+        "order.lineItems.productName.original",
+        "order.lineItems.taxDetails",
+        "order.priceSummary"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Orders.Order"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Newly created order.\n"
+      },
+      "docs": {
+        "summary": "Creates a new order.",
+        "description": [
+          "Some fields are marked as required. Note these further requirements:\n\nThe `order.shippingInfo.logistics.shippingDestination.address` field must be provided, **unless**:\n+ The order is for pickup - `order.shippingInfo.logistics.pickupDetails.address` is defined\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nThe `order.billingInfo.address` field must be provided **unless**:\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nWhen catalog items are added - `order.lineItems.catalogReference` is defined - the following rules apply:\n+ When providing description lines - `order.lineItem.descriptionLines.plainText/colorInfo` must have value\n+ If the product is digital ( `order.lineItems.itemType.preset: DIGITAL` ), then `order.lineItem.digitalFile` must be provided\n\nWhen custom line items are added - `order.lineItems.catalogReference` is **not** defined - the following rules apply:\n+ `order.lineItem.physicalProperties` cannot be set\n+ `order.lineItem.fulfillerId` cannot be set\n+ `order.lineItem.totalDiscount` cannot be set\n+ Applied discounts cannot be set for a custom line item - `order.appliedDiscounts.lineItemIds` cannot contain the custom line item ID."
+        ],
+        "examples": [
+          {
+            "title": "createOrder example",
+            "body": [
+              "import { orders } from 'wix-ecom-backend';",
+              "  ",
+              " async function createOrder(order) {",
+              "   try {",
+              "     const result = await orders.createOrder(order);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "createOrder"
+    },
+    {
       "name": "getOrder",
       "params": [
         {
