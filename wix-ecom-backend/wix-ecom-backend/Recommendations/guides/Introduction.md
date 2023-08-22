@@ -15,8 +15,8 @@ The Recommendations API allows you to promote and recommend items to your custom
 >**Note:** Currently, the Recommendations API is for use with Wix Stores only.
 
 With the Recommendations API, you can:
-* Get a [list of algorithms](#listavailablealgorithms) and  available for use on your site.
-* Get a [list of recommended items](#getrecommendation) from an algorithm.
+* Get a [list of algorithms](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/listavailablealgorithms) and  available for use on your site.
+* Get a [list of recommended items](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/getrecommendation) from an algorithm.
 
 
 
