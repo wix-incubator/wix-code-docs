@@ -29,8 +29,8 @@ For example, Wix Stores provides the following algorithms:
 | Name                         | Description                                                                        | Algorithm Type  |
 |------------------------------|------------------------------------------------------------------------------------|-----------------|
 | “From the same categories”   | Returns items that share the most categories with items in the list provided.      | `RELATED_ITEMS` |
-| “Frequently bought together” | Returns items that are frequently bought together with items in the list provided. | `RELATED_ITEMS` |
-| “Frequently viewed together” | Returns items that are frequently viewed together with items in the list provided. | `RELATED_ITEMS` |
+| “Frequently bought together” | Returns items that are frequently bought together with the first item in the list provided. | `RELATED_ITEMS` |
+| “Frequently viewed together” | Returns items that are frequently viewed together with the first item in the list provided. | `RELATED_ITEMS` |
 | “Best sellers”               | Returns the items from the catalog with the highest number of sales.               | `GLOBAL`        |
 
 
