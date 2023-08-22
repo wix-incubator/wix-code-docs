@@ -25,7 +25,7 @@ With the Form Submissions API, you can:
 - [Query](wix-forms-v2/submissions/querysubmissionsbynamespace) and [manage](wix-forms-v2/submissions/createsubmission) a submission.
 - [Retrieve](wix-forms-v2/submissions/countsubmission) the total number of submissions per form.
 - [Confirm](wix-forms-v2/submissions/confirmsubmission) a submission or [mark](wix-forms-v2/submissions/bulkmarksubmissionsasseen) submissions as seen. 
-- Retrieve a [media upload file](wix-forms-v2/submissions/querysubmissionsbynamespace) url to use in a subission for forms that include a field for uploading files. 
+- Retrieve a [media upload file](wix-forms-v2/submissions/querysubmissionsbynamespace) url to use in a submission for forms that include a field for uploading files. 
 
 
 To use the Form Submissions API, import `{ submissions }` from the `wix-forms.v2` module. 
