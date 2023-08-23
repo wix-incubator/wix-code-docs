@@ -7,6 +7,18 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Web Modules
+
+> This API is only available for Wix Studio sites. Wix Studio is currently in beta and is not yet available to all users.
+
+`wix-web-module`
+
+The Web Modules API allows you to define functions in your backend code that can be called from your site's frontend code. Use the [`webMethod()`](wix-web-module/webmethod) function to define a backend function and the permissions needed to call it.
+
+(August 23, 2023)
+
+
+### New API: Forms Submissions
 
 The new [Form Submissions API](wix-forms-v2/submissions/introduction) allows you to manage form submissions from your site visitors. 
 
