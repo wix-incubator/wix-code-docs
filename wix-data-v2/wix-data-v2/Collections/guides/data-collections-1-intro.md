@@ -26,7 +26,7 @@ You can then store and retrieve data in these collections using [`wix-data`](htt
 **Note:**
 The structure you define for a data collection isn't enforced. This means that if you add or update an item containing a field or data type that doesn't match the collection's structure, your data is stored anyway.
 
-## Permissions
+## Setting Collection Edit Permissions 
 
 Access to a data collection is controlled by its permissions. These permissions are defined in the collection object and they specify which types of user can perform actions on the data contained in the collection.
 
@@ -41,3 +41,11 @@ For each of the 4 basic actions (inserting, updating, removing, and reading cont
 * `update`: `ADMIN`
 * `remove`: `ADMIN`
 * `read`: `SITE_MEMBER`
+
+## Function permissions information
+
+Functions in the Wix Data v2 API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
