@@ -23,21 +23,20 @@
           "required": true
         },
         {
-          "name": "options",
+          "name": "itemDetails",
           "type": [
             {
-              "referenceType": "wix-ecom-backend.BackInStockNotifications.CreateBackInStockNotificationRequestOptions"
+              "referenceType": "wix-ecom-backend.BackInStockNotifications.BackInStockItemDetails"
             }
           ],
-          "doc": "",
+          "doc": "Item details to include in the notification when the item is back in stock.",
           "required": true
         }
       ],
       "requiredFields": [
-        "options",
-        "options.itemDetails",
-        "options.itemDetails.name",
-        "options.itemDetails.price",
+        "itemDetails",
+        "itemDetails.name",
+        "itemDetails.price",
         "request",
         "request.catalogReference",
         "request.catalogReference.appId",
@@ -70,9 +69,9 @@
             "body": [
               "import { backInStockNotifications } from 'wix-ecom-backend';",
               "  ",
-              " async function createBackInStockNotificationRequest(request, options) {",
+              " async function createBackInStockNotificationRequest(request, itemDetails) {",
               "   try {",
-              "     const result = await backInStockNotifications.createBackInStockNotificationRequest(request, options);",
+              "     const result = await backInStockNotifications.createBackInStockNotificationRequest(request, itemDetails);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -327,7 +326,7 @@
       "docs": {
         "summary": "Sets `status` of a back in stock request to `NOTIFICATION_SENT`.",
         "description": [
-          "Use this endpoint if back in stock requests automations are off. If requests automations are on,\nthen `status` updates on its own."
+          "Use this function if the notification is sent manually offline. If the notification is sent automatically or with the [`reportItemsBackInStock()`](#reportitemsbackinstock) function, then `status` updates on its own."
         ],
         "examples": [
           {
@@ -371,15 +370,16 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of notification requests, given the provided paging, filtering, and sorting.",
+        "summary": "Creates a query to retrieve a list of back in stock notification requests.  ",
         "description": [
           "",
-          "For field support for filters and sorting, see [Back In Stock Requests: Supported Filters and Sorting]().",
+          "The `queryBackInStockNotificationRequests()` method builds a query to retrieve a list of back in stock notification requests and returns a [`RequestsQueryBuilder`](#requestsquerybuilder) object.  ",
           "",
-          "To learn about working with _Query_ endpoints, see",
-          "[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language),",
-          "[Sorting and Paging](https://dev.wix.com/api/rest/getting-started/sorting-and-paging),",
-          "and [Field Projection](https://dev.wix.com/api/rest/getting-started/field-projection).",
+          "The returned object contains the query definition, which is typically used to run the query using the [`find()`](#requestsquerybuilder/find) method.  ",
+          "",
+          "You can refine the query by chaining `RequestsQueryBuilder` methods onto the query. `RequestsQueryBuilder` methods enable you to sort, filter, and control the results that `queryBackInStockNotificationRequests()` returns.  ",
+          "",
+          "The following `RequestsQueryBuilder` methods are supported for `queryBackInStockNotificationRequests()`. For a full description of the Requests object, see the object returned for the [`items`](#requestsqueryresult/items) property in [`RequestsQueryResult`](#requestsqueryresult).\"",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -417,20 +417,30 @@
       "name": "reportItemsBackInStock",
       "params": [
         {
+          "name": "itemDetails",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.BackInStockNotifications.BackInStockItemDetails"
+            }
+          ],
+          "doc": "Item details to use in notifications.\n\n`itemDetails` may populate dynamic valyes in the notification template, as follows:\n+ `itemDetails.name` passes to the template as `item.name`\n+ `itemDetails.price` passes to the template as `item.price`\n+ `itemDetails.image.url` passes to the template as `item.image.url`\n\nUse `extraAutomationTemplateParameters` to pass additional dynamic values.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
               "referenceType": "wix-ecom-backend.BackInStockNotifications.ReportItemsBackInStockOptions"
             }
           ],
-          "doc": "",
+          "doc": "Report options.\n",
           "required": false
         }
       ],
       "requiredFields": [
-        "options.itemDetails",
-        "options.itemDetails.name",
-        "options.itemDetails.price"
+        "itemDetails",
+        "itemDetails.name",
+        "itemDetails.price"
       ],
       "ret": {
         "type": [
@@ -458,9 +468,9 @@
             "body": [
               "import { backInStockNotifications } from 'wix-ecom-backend';",
               "  ",
-              " async function reportItemsBackInStock(options) {",
+              " async function reportItemsBackInStock(itemDetails, options) {",
               "   try {",
-              "     const result = await backInStockNotifications.reportItemsBackInStock(options);",
+              "     const result = await backInStockNotifications.reportItemsBackInStock(itemDetails, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -607,7 +617,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether a notification was sent automatically.\n\n`autoNotified` is empty when the notification request is created and is not returned until\nthe field has a value. `autoNotified` receives a value when a notication email is sent for this request object.\n\nIf the notification email is sent automatically, then `autoNotified` sets to `TRUE`.\nIf the notification email is sent with\n[Report Items Back In Stock](/report-items-back-in-stock),\nthen the notification is created manually and `autoNotified` sets to `FALSE`."
+          "doc": "Whether a notification was sent automatically.\n\n`autoNotified` is empty when the notification request is created and is not returned until the field has a value. `autoNotified` receives a value when a notification email is sent for this request object.\n\n`autoNotified` sets to `true` if the notification is sent through the site, either automatically or with the [`reportItemsBackInStock()`](#reportitemsbackinstock) function. If the notification email is sent offline but the `status` is updated with the [`markAsNotificationSent()`](#markasnotificationsent) function, then `autoNotified` sets to `false`."
         },
         {
           "name": "catalogReference",
@@ -628,7 +638,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact ID for the contact with this `email`.\n\nIf a contact does not already exist with this email address then a new contact is created.\nFor more information about contacts, see the [Contacts API](https://dev.wix.com/docs/rest/api-reference/contacts/introduction)."
+          "doc": "Contact ID for the contact with this `email`.\n\nIf a contact does not already exist with the email address submitted when creating this request, then a new contact is created.\nFor more information about contacts, see the [Contacts API](https://www.wix.com/velo/reference/wix-crm-backend/contacts)."
         },
         {
           "name": "email",
@@ -659,7 +669,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Status of the notification.\n\n`status` is set to `RECEIVED` when the notification request is created.\nThe `status` changes once a notification email is sent for this request object:\n+ When a notification email is triggered automatically, the `status` is briefly set to `PROCESSING` and then set to `NOTIFICATION_SENT` if the email is successul, and `FAILED` if it fails.\n+ When a notification email is triggered manually, use [Mark As Notification Sent](/mark-as-notification-sent) to change `status` to `NOTIFICATION_SENT`."
+          "doc": "Status of the notification.\n\n`status` is set to `RECEIVED` when the notification request is created. The `status` changes once a notification email is sent for this request object:\n+ When a notification email is sent through the site, either automatically or with the [`reportItemsBackInStock()`](#reportitemsbackinstock) function, then the `status` is briefly set to `PROCESSING` and then set to `NOTIFICATION_SENT` if the email is successul, and `FAILED` if it fails.\n+ When a notification email is sent offline, use the [`markAsNotificationSent()`](#markasnotificationsent) function to set `status` to `NOTIFICATION_SENT`."
         }
       ],
       "docs": {
@@ -735,25 +745,6 @@
       "docs": {
         "description": [
           "Used for grouping line items and is sent on add to cart"
-        ]
-      }
-    },
-    {
-      "name": "CreateBackInStockNotificationRequestOptions",
-      "members": [
-        {
-          "name": "itemDetails",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.BackInStockNotifications.BackInStockItemDetails"
-            }
-          ],
-          "doc": "Item details to include in the notification when the item is back in stock."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
         ]
       }
     },
@@ -1725,15 +1716,6 @@
             }
           ],
           "doc": "Additional key-value pairs to pass to the back in stock notification template."
-        },
-        {
-          "name": "itemDetails",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.BackInStockNotifications.BackInStockItemDetails"
-            }
-          ],
-          "doc": "Item details to use in notifications.\n\n`itemDetails` may populate dynamic valyes in the notification template, as follows:\n+ `itemDetails.name` passes to the template as `item.name`\n+ `itemDetails.price` passes to the template as `item.price`\n+ `itemDetails.image.url` passes to the template as `item.image.url`\n\nUse `extraAutomationTemplateParameters` to pass additional dynamic values.\n"
         },
         {
           "name": "requestIds",
