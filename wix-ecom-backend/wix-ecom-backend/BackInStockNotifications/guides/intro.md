@@ -33,8 +33,8 @@ import { backInStockNotifications } from `wix-ecom-backend`;
 
 ## Before you begin
 It’s important to note the following points before starting to code:
-+ To start collecting back in stock requests, the `collectionStates` must be set to `true`. Use [`startCollectingRequests()`](https://www.wix.com/velo/reference/wix-ecom-backend/backinstocksettings/startcollectingrequests) to update collection states, or [update in a site’s dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Go%20to%20Back-in-Stock&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https://www.wix.com/dashboard/{{metaSiteId}}/store/back-in-stock).
-+ For emails to send with the [`reportItemsBackInStock()`](https://www.wix.com/velo/reference/wix-ecom-backend/backinstocknotifications/reportitemsbackinstock) function, automations must be [activated in the site’s dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Go%20to%20Back-in-Stock&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https://www.wix.com/dashboard/{{metaSiteId}}/store/back-in-stock) first.
++ To start collecting back in stock requests, the `collectionStates` must be set to `true`. Use [`startCollectingRequests()`](wix-ecom-backend/backinstocksettings/startcollectingrequests) to update collection states, or [update in a site’s dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Go%20to%20Back-in-Stock&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https://www.wix.com/dashboard/{{metaSiteId}}/store/back-in-stock).
++ For emails to send with the [`reportItemsBackInStock()`](wix-ecom-backend/backinstocknotifications/reportitemsbackinstock) function, automations must be [activated in the site’s dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Go%20to%20Back-in-Stock&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https://www.wix.com/dashboard/{{metaSiteId}}/store/back-in-stock) first.
 + [Customize the design of the notification email](https://support.wix.com/en/article/wix-stores-notifying-customers-when-products-are-back-in-stock#customizing-the-notification-email) that will be sent.
 
 ## Terminology
@@ -45,10 +45,10 @@ The following functions in Back In Stock Notifications API are restricted and on
 
 + [`deleteBackInStockNotificationRequest()`](wix-ecom-backend/backinstocknotifications/deleteBackInStockNotificationRequest)
 + [`getBackInStockNotificationRequest()`](wix-ecom-backend/backinstocknotifications/getBackInStockNotificationRequest)
-+ [`getBackInStockNotificationRequestsCountByCatalogReferences()`](/getBackInStockNotificationRequestsCountByCatalogReferences)
-+ [`markAsNotificationSent()`](/markAsNotificationSent)
-+ [`queryBackInStockNotificationRequests()`](/queryBackInStockNotificationRequests)
-+ [`reportItemsBackInStock()`](/reportItemsBackInStock)
++ [`getBackInStockNotificationRequestsCountByCatalogReferences()`](wix-ecom-backend/backinstocknotifications/getBackInStockNotificationRequestsCountByCatalogReferences)
++ [`markAsNotificationSent()`](wix-ecom-backend/backinstocknotifications/markAsNotificationSent)
++ [`queryBackInStockNotificationRequests()`](wix-ecom-backend/backinstocknotifications/queryBackInStockNotificationRequests)
++ [`reportItemsBackInStock()`](wix-ecom-backend/backinstocknotifications/reportItemsBackInStock)
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
