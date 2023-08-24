@@ -23,9 +23,9 @@ With the Recommendations API, you can:
 ## Algorithms
 
 Algorithms are programs that identify and return a set of item recommendations based on a catalog. There are different types of algorithms, identified by their `algorithmType` that calculate different kinds of recommendations. For example, Algorithms with the `RELATED_ITEMS` `algorithmType` also take a list of items as input and use those to calculate recommendations.
-For example, Wix Stores provides the following algorithms:
 
 For example, Wix Stores provides the following algorithms:
+
 | Name                         | Description                                                                        | Algorithm Type  |
 |------------------------------|------------------------------------------------------------------------------------|-----------------|
 | “From the same categories”   | Returns items that share the most categories with items in the list provided.      | `RELATED_ITEMS` |
@@ -38,7 +38,8 @@ For example, Wix Stores provides the following algorithms:
 <blockquote class="tip">
   
 __Tip:__
-If you want to display item recommendations on your site, you can use the Wix Stores “Slider Product Gallery” and “Related Products” elements. These elements use Recommendations API functionality without the need for manual coding. In these elements' settings, you can choose which algorithm to use from among those available on your site.
+If you want to display item recommendations on your site, you can use the Wix Stores [“Slider Product Gallery”](https://support.wix.com/en/article/wix-stores-adding-store-elements#slider-product-gallery) and [“Related Products”](https://support.wix.com/en/article/wix-stores-adding-a-related-products-gallery) elements. These elements use Recommendations API functionality without the need for manual coding. In these elements' settings, you can choose which algorithm to use from among those available on your site.
+
 On your Product, Cart, and Thankyou pages you can use `RELATED_ITEMS` type algorithms to get recommendations related to the product/s shown on the page.
 On other pages, you can get recommendations from `GLOBAL` type algorithms.
 
