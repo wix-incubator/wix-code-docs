@@ -47,7 +47,7 @@ On other pages, you can get recommendations from `GLOBAL` type algorithms.
 
 
 ## Before you begin
-* You must have a Wix app that provides algorithms installed on your site, and you must have a Wix app whose catalogs are supported by those algorithms installed on your site. (For more information see the List Available Algorithms method.) Currently, the only app providing algorithms and their supported catalogs is Wix Stores.
+* You must have a Wix app that provides algorithms installed on your site, and you must have a Wix app whose catalogs are supported by those algorithms installed on your site. For more information see [`listAvailableAlgorithms()`](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/listavailablealgorithms). Currently, the only app providing algorithms and their supported catalogs is Wix Stores.
 * No caching is implemented, so repeat calls take the same time to complete as the first call.
 
 We To use the Recommendations API,
