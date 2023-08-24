@@ -21,9 +21,14 @@ The Back In Stock Settings API allows you to manage whether or not to collect re
 
 Learn more about [back in stock notification settings](https://support.wix.com/en/article/wix-stores-notifying-customers-when-products-are-back-in-stock#collecting-customer-requests).
 
+To use the Back In Stock Settings API, import { backInStockSettings } from the ‘wix-ecom-backend’ module:
+``` javascript 
+import { backInStockSettings } from `wix-ecom-backend`;
+```
+
 ## Before you begin
 It’s important to note the following points before starting to code:
-+ To start collecting back in stock requests, the `collectionStates` must be set to `true`. Use [`startCollectingRequests()`](/startcollectingrequests) to update collection states.
++ To start collecting back in stock requests, the `collectionStates` must be set to `true`. Use [`startCollectingRequests()`](wix-ecom-backend/backinstocksettings/startcollectingrequests) to update collection states.
 + [Customize the design of the notification email](https://support.wix.com/en/article/wix-stores-notifying-customers-when-products-are-back-in-stock#customizing-the-notification-email) that will be sent.
 
 ## Terminology
@@ -32,8 +37,8 @@ It’s important to note the following points before starting to code:
 ## Permissions information
 The following functions in Back In Stock Settings API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
 
-+ [`startCollectingRequests()`](wix-ecom-backend/backinsettings/startcollectingrequests)
-+ [`stopCollectingRequests()`](/stopcollectingrequests)
++ [`startCollectingRequests()`](wix-ecom-backend/backinstocksettings/startcollectingrequests)
++ [`stopCollectingRequests()`](wix-ecom-backend/backinstocksettings/stopcollectingrequests)
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
