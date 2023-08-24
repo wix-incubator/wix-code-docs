@@ -51,7 +51,7 @@ On other pages, you can get recommendations from `GLOBAL` type algorithms.
 * No caching is implemented, so repeat calls take the same time to complete as the first call.
 
 We To use the Recommendations API,
-import `{ recommendations }` `from wix-ecom-backend`:
+import `{ recommendations }` from `wix-ecom-backend`:
 
 ```js
 import { recommendations } from 'wix-ecom-backend';
