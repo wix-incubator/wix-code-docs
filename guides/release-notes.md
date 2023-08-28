@@ -7,6 +7,20 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Update: New fields in Pricing Plans
+
+`wix-pricing-plans.v2`
+
+The [Plans object](wix-pricing-plans-v2/plans) has a new `formId` field, which is the ID of the order form associated with a plan at checkout.
+
+The [Orders object](wix-pricing-plans-v2/orders) has a new `formData` object, which contains the following fields: 
+- `formId`: the ID of the order form associated with a plan at checkout. 
+- `submissionId`: the ID of the plan's order form submitted at checkout. 
+- `submissionData`: the data submitted to the plan's order form at checkout.
+
+(August 28, 2023)  
+
+
 ### New API: Web Modules
 
 > This API is only available for Wix Studio sites. Wix Studio is currently in beta and is not yet available to all users.
