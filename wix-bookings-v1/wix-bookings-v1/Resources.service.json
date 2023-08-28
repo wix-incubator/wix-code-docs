@@ -29,7 +29,7 @@
               "referenceType": "wix-bookings-v1.Resources.CreateResourceOptions"
             }
           ],
-          "doc": "",
+          "doc": "Options for assigning a schedule to a resource.\n",
           "required": false
         }
       ],
@@ -57,7 +57,7 @@
       "docs": {
         "summary": "Creates a resource.",
         "description": [
-          "The `createResource()` function returns a Promise that resolves to the created resource.\nBookings resources are created with a schedule. The schedule and its sessions determine the resource's availability. Note that the schedule must contain a start date in the `availability.start` property. For resources that are available during the business's default hours, add the business's schedule as a linked schedule in the resource's schedule. For resources that have their own hours, create sessions with type `WORKING_HOURS` using the resource's schedule. You can use both individual and recurring sessions to define resource availability. You cannot use availability constraints for resource schedules.\n\n\nWhen creating a resource using `createResource()`, include the resource's schedule information. Set the schedule information as follows:\n- If the resource uses the default business hours, get the business resource's schedule ID and include it in the `scheduleInfo.availability.linkedSchedules` array in the `scheduleInfo` parameter. The default hours can bee found in the Dashboard under **Settings** in the **Bookings** section, on the **Appointment hours** page.\n- If the resource has its own custom working hours, create the resource, then create sessions of type `WORKING_HOURS` using the [`createSession()`](#createsession) function. Use the `scheduleId` returned from `createResource()` when creating the sessions. These session can be single sessions or recurring sessions.\n- You can have both default business hours and custom hours for the same resource schedule by combining the steps above.\n\n\n> **Notes:**\n>- The Wix Bookings app does not show both default business hours and custom hours on the **Staff** page in the dashboard. If you've set up both custom and default business hours, only the default business hours will appear in the app, although both are working.\n>- The Wix Bookings app does not show non-recurring `WORKING_HOURS` sessions in the resource calendar.\n>- You can only add the business resource's schedule as a linked schedule for a resource.\n>- A resource can have one schedule only.\n>- You can have up to 135 active resources and an additional 135 deleted resources.\n\nThis function is not a universal function and runs only on the backend."
+          "The `createResource()` function returns a Promise that resolves to the created resource.\nBookings resources are created with a schedule. The schedule determines the resource's availability by the business's default working hours.\n\nWhen creating a resource using `createResource()`, get the business resource's schedule ID and include it in the `schedules` object. The default hours can bee found in the Dashboard under **Settings** in the **Bookings** section, on the **Appointment hours** page.\n\n\n> **Notes:**\n>- The Wix Bookings app shows default business hours on the **Staff** page in the dashboard.\n>- A resource can have one schedule only.\n>- You can have up to 135 active resources and an additional 135 deleted resources.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
@@ -325,7 +325,7 @@
       "docs": {
         "summary": "Updates a resource's schedule.",
         "description": [
-          "The `updateSchedule()` function returns a Promise that resolves when a resource's schedule has been updated. Use this function to update the bookings resource's schedule. To update other resource details use [`updateResource()`](#updateresource).\n\nThe following schedule properties can be updated:\n\n - `availability.start`\n\n - `availability.linkedSchedules`\n\n\nTo update a resource's schedule to remove business hours and add custom hours:\n- Use [`updateSchedule()`](#updateschedule) to remove the business's scheduleId from the `availability.linkedSchedules` array.\n- Use [`createSession()`](#createsession) to create a set of recurring sessions of type `\"WORKING_HOURS\"` to define the resource's new hours.\n\n\nTo update a resource's schedule to add default business hours, and keep or remove custom hours:\n\n- Use [`updateSchedule()`](#updateschedule) to add the business resource's `scheduleId` to the `availability.linkedSchedules` array.\n\n\n> **Notes:**\n>- The Wix Bookings app does not show both default business hours and custom hours on the **Staff** page in the dashboard. If you've set up both custom and default business hours, only the default business hours will appear in the app, although both are working.\n>- A resource can have one schedule only.\n>- A resource can have both default business hours and custom hours in its schedule.\n>- When updating a resource's schedule you cannot change the system tags used by the Wix Bookings app. Tags used by the app have the values `\"INDIVIDUAL\"`, `\"GROUP\"`, and `\"COURSE\"`.\n\nThis function is not a universal function and runs only on the backend."
+          "The `updateSchedule()` function returns a Promise that resolves when a resource's schedule has been updated. Use this function to update the bookings resource's schedule. To update other resource details use [`updateResource()`](#updateresource).\n\n> **Notes:**\n>- A resource can have one schedule only.\n>- When updating a resource's schedule you cannot change the system tags used by the Wix Bookings app. Tags used by the app have the values `\"INDIVIDUAL\"`, `\"GROUP\"`, and `\"COURSE\"`.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
@@ -1016,56 +1016,6 @@
       "name": "CalendarConference",
       "members": [
         {
-          "name": "_id",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Wix Calendar conference ID."
-        },
-        {
-          "name": "accountOwnerId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the account owner in the video conferencing service."
-        },
-        {
-          "name": "conferenceType",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Conference type.\n<!--ONLY:VELO\nOne of:\n- `\"ONLINE_MEETING_PROVIDER\"` API-generated online meeting.\n- `\"CUSTOM\"` User-defined meeting.\n<!--END:ONLY:VELO-->"
-        },
-        {
-          "name": "description",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Conference description."
-        },
-        {
-          "name": "externalId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Conference meeting ID in the provider's conferencing system."
-        },
-        {
           "name": "guestUrl",
           "optional": true,
           "type": [
@@ -1084,26 +1034,6 @@
             }
           ],
           "doc": "URL used by the host to start the conference."
-        },
-        {
-          "name": "password",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Password to join the conference."
-        },
-        {
-          "name": "providerId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Conference provider ID."
         }
       ],
       "docs": {
@@ -2812,23 +2742,6 @@
           "doc": "List of IDs of schedules owned by this resource."
         },
         {
-          "name": "schedules",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-v1.Resources.Schedule"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Deprecated. Please use scheduleIds. List of the schedules owned by this resource. Min size 1."
-        },
-        {
           "name": "status",
           "readOnly": true,
           "optional": true,
@@ -2838,16 +2751,6 @@
             }
           ],
           "doc": "Resource status.\n<!--ONLY:VELO\nOne of:\n- `\"CREATED\"` Default status.\n- `\"DELETED\"` The resource was deleted.\n- `\"UPDATED\"` The resource was updated.\n<!--END:ONLY:VELO-->"
-        },
-        {
-          "name": "tag",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Deprecated. Please use tags."
         },
         {
           "name": "tags",
@@ -2974,16 +2877,6 @@
           "doc": "Schedule ID."
         },
         {
-          "name": "availability",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v1.Resources.Availability"
-            }
-          ],
-          "doc": "Deprecated and will be removed soon."
-        },
-        {
           "name": "calendarConference",
           "optional": true,
           "type": [
@@ -3004,16 +2897,6 @@
           "doc": "Maximum number of participants that can be added to the schedule's sessions.\nMust be at most `1` for schedule whose availability is affected by another schedule. E.g, appointment schedules of the Wix Bookings app."
         },
         {
-          "name": "conferenceProvider",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v1.Resources.ConferenceProvider"
-            }
-          ],
-          "doc": "Deprecated and will be removed soon."
-        },
-        {
           "name": "created",
           "readOnly": true,
           "optional": true,
@@ -3023,16 +2906,6 @@
             }
           ],
           "doc": "Schedule creation date."
-        },
-        {
-          "name": "externalCalendarOverrides",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v1.Resources.ExternalCalendarOverrides"
-            }
-          ],
-          "doc": "Deprecated and will be removed soon."
         },
         {
           "name": "inheritedFields",
@@ -3051,23 +2924,6 @@
             }
           ],
           "doc": "Fields which were inherited from the Business Info page under Settings in the Dashboard."
-        },
-        {
-          "name": "intervals",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-v1.Resources.RecurringInterval"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Deprecated. Please use the [Sessions API](https://dev.wix.com/api/rest/wix-bookings/schedules-and-sessions/session) instead."
         },
         {
           "name": "location",
@@ -3096,16 +2952,6 @@
             }
           ],
           "doc": "*Partial list** of participants which are registered to sessions in this schedule.\nParticipants who are registered in the schedule are automatically registered to any session that is created for the schedule.\nTo retrieve the full list of schedule participants please use the [Query Extended Bookings API](https://dev.wix.com/api/rest/wix-bookings/bookings-reader-v2/query-extended-bookings)."
-        },
-        {
-          "name": "rate",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v1.Resources.Rate"
-            }
-          ],
-          "doc": "Deprecated. Please use the [Booking Services V2](https://dev.wix.com/api/rest/wix-bookings/services-v2) payment instead."
         },
         {
           "name": "scheduleOwnerId",
@@ -3565,23 +3411,6 @@
           "doc": "List of IDs of schedules owned by this resource."
         },
         {
-          "name": "schedules",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-v1.Resources.Schedule"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Deprecated. Please use scheduleIds. List of the schedules owned by this resource. Min size 1."
-        },
-        {
           "name": "status",
           "readOnly": true,
           "optional": true,
@@ -3591,16 +3420,6 @@
             }
           ],
           "doc": "Resource status.\n<!--ONLY:VELO\nOne of:\n- `\"CREATED\"` Default status.\n- `\"DELETED\"` The resource was deleted.\n- `\"UPDATED\"` The resource was updated.\n<!--END:ONLY:VELO-->"
-        },
-        {
-          "name": "tag",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Deprecated. Please use tags."
         },
         {
           "name": "tags",
