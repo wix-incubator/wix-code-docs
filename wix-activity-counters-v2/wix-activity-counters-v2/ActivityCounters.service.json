@@ -58,7 +58,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -70,42 +70,42 @@
         {
           "id": "maturity-beta"
         }
-      ]
+      ],
+      "syntaxName": "getActivityCounters"
     },
     {
       "name": "queryActivityCounters",
-      "params": [
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-activity-counters-v2.ActivityCounters.QueryActivityCountersOptions"
-            }
-          ],
-          "doc": "Information about the activity counters to retrieve.",
-          "required": false
-        }
-      ],
+      "params": [],
       "requiredFields": [],
       "ret": {
         "type": [
           {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-activity-counters-v2.ActivityCounters.QueryActivityCountersResponse"
-                }
-              ]
-            }
+            "referenceType": "wix-activity-counters-v2.ActivityCounters.ActivityCountersQueryBuilder"
           }
         ],
-        "doc": "Retrieved activity counters.\n"
+        "doc": null
       },
       "docs": {
         "summary": "Returns up to 100 activity counters for the provided filter and paging.",
         "description": [
-          "Service will return only counters that are marked as public, or private counters from apps created by the requesting third party.\n\nSupported fields for filtering:\n- memberId\n\nSupported operations:\nComparison:\n- $eq\n- $ne\n- $in\nLogical:\n- $and\n- $not\n- $or"
+          "",
+          "Service will return only counters that are marked as public, or private counters from apps created by the requesting third party.",
+          "",
+          "Supported fields for filtering:",
+          "- memberId",
+          "",
+          "Supported operations:",
+          "Comparison:",
+          "- $eq",
+          "- $ne",
+          "- $in",
+          "Logical:",
+          "- $and",
+          "- $not",
+          "- $or",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`memberId`|[`eq()`](wix-activity-counters-v2.ActivityCounters.ActivityCountersQueryBuilder#eq),[`ne()`](wix-activity-counters-v2.ActivityCounters.ActivityCountersQueryBuilder#ne),[`in()`](wix-activity-counters-v2.ActivityCounters.ActivityCountersQueryBuilder#in)|"
         ],
         "examples": [
           {
@@ -113,15 +113,8 @@
             "body": [
               "import { activityCounters } from 'wix-activity-counters.v2';",
               "  ",
-              " async function queryActivityCounters(options) {",
-              "   try {",
-              "     const result = await activityCounters.queryActivityCounters(options);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "     }",
+              " async function queryActivityCounters() {",
+              "   const { items } = activityCounters.queryActivityCounters().find();",
               " }",
               "  "
             ]
@@ -133,7 +126,8 @@
         {
           "id": "maturity-beta"
         }
-      ]
+      ],
+      "syntaxName": "queryActivityCounters"
     },
     {
       "name": "setActivityCounters",
@@ -155,7 +149,7 @@
               "referenceType": "wix-activity-counters-v2.ActivityCounters.Counter"
             }
           ],
-          "doc": "Site member ID whose counter will be set.",
+          "doc": "Details of the counter to be set.",
           "required": true
         }
       ],
@@ -197,7 +191,7 @@
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
-              "     }",
+              "   }",
               " }",
               "  "
             ]
@@ -209,10 +203,31 @@
         {
           "id": "maturity-beta"
         }
-      ]
+      ],
+      "syntaxName": "setActivityCounters"
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "ActivityCounter",
       "members": [
@@ -292,6 +307,298 @@
             }
           ],
           "doc": "Whether count is available to all (if `public` is false, the counter is only available to the data owner; the site member, or the third party app that created the counter)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "random GUID so clients can tell if event was already handled"
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The time of the event. Useful if there was a delay in dispatching"
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "extendedFieldsUpdatedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "extendedFieldsUpdatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.ExtendedFieldsUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-activity-counters-v2.ActivityCounters.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ExtendedFieldsUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -496,26 +803,6 @@
             }
           ],
           "doc": "Limit number of results."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "QueryActivityCountersOptions",
-      "members": [
-        {
-          "name": "query",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-activity-counters-v2.ActivityCounters.Query"
-            }
-          ],
-          "doc": "Information about the activity counters to retrieve."
         }
       ],
       "docs": {
