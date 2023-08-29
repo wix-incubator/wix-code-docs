@@ -18,7 +18,7 @@ title: Introduction
 
 The Bookings Resources API provides functionality for creating and managing resources.
 
-A resource is a business asset like a staff member, or equipment needed to provide a service. Each resource owns a schedule. The schedule defines the resource's availability using the business's default working hours. Resources have tags that you can use for grouping. For example, add a "room" tag for classroom resources, and an "equipment" tag for resources like computers and projectors.
+A resource is a business asset like a staff member, or equipment needed to provide a service. Each resource owns a schedule. The schedule defines the resource's availability using the business's default working hours. Resources have tags that you can use for grouping. For example, add a `"room"` tag for classroom resources, and an `"equipment"` tag for resources like computers and projectors.
 
 With the Resources API, you can:
 
@@ -38,8 +38,8 @@ import { resources } from 'wix-bookings.v1';
 It's important to note the following points before starting to code:
 
 - There are 2 tags that are used by the Wix Bookings app:
-    - "staff": Resources with the "staff" tag appear in the Bookings app's **Staff** page.
-    - "business": The Bookings app creates a resource with a name and tag value of "business". This resource owns a schedule that contains the operating hours of the business and cannot be deleted. This schedule is used when creating resources that use the business’s operating hours for the resource's working hours.
+    - `"staff"`: Resources with the `"staff"` tag appear in the Bookings app's **Staff** page.
+    - `"business"`: The Bookings app creates a resource with a name and tag value of `"business"`. This resource owns a schedule that contains the operating hours of the business and cannot be deleted. This schedule is used when creating resources that use the business’s operating hours for the resource's working hours.
 
 - You can have up to 135 active resources and an additional 135 deleted resources.
 - A resource can have one schedule only.
