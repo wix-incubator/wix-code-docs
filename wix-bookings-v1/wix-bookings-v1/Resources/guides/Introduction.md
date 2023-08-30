@@ -45,6 +45,7 @@ It's important to note the following points before starting to code:
 - When updating a resource's schedule you cannot change the system tags used by the Wix Bookings app. Tags used by the app have the values `"INDIVIDUAL"`, `"GROUP"`, and `"COURSE"`.
 
 
+
 ## Terminology
 
 + __Resource:__ Business asset like a staff member, room, or equipment that's needed to provide a service.
