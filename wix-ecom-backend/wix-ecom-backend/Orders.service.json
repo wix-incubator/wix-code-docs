@@ -10,35 +10,31 @@
   "properties": [],
   "operations": [
     {
-      "name": "createOrder",
+      "name": "cancelOrder",
       "params": [
         {
-          "name": "order",
+          "name": "_id",
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.Order"
+              "nativeType": "string"
             }
           ],
-          "doc": "Order info.",
+          "doc": "Order ID.",
           "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CancelOrderOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
         }
       ],
       "requiredFields": [
-        "order",
-        "order.billingInfo.address.country",
-        "order.billingInfo.contactDetails",
-        "order.billingInfo.contactDetails.firstName",
-        "order.channelInfo",
-        "order.lineItems",
-        "order.lineItems.catalogReference.appId",
-        "order.lineItems.catalogReference.catalogItemId",
-        "order.lineItems.descriptionLines.name",
-        "order.lineItems.itemType",
-        "order.lineItems.price",
-        "order.lineItems.productName",
-        "order.lineItems.productName.original",
-        "order.lineItems.taxDetails",
-        "order.priceSummary"
+        "_id"
       ],
       "ret": {
         "type": [
@@ -47,28 +43,26 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-ecom-backend.Orders.Order"
+                  "referenceType": "wix-ecom-backend.Orders.CancelOrderResponse"
                 }
               ]
             }
           }
         ],
-        "doc": "Newly created order.\n"
+        "doc": null
       },
       "docs": {
-        "summary": "Creates a new order.",
-        "description": [
-          "Some fields are marked as required. Note these further requirements:\n\nThe `order.shippingInfo.logistics.shippingDestination.address` field must be provided, **unless**:\n+ The order is for pickup - `order.shippingInfo.logistics.pickupDetails.address` is defined\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nThe `order.billingInfo.address` field must be provided **unless**:\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nWhen catalog items are added - `order.lineItems.catalogReference` is defined - the following rules apply:\n+ When providing description lines - `order.lineItem.descriptionLines.plainText/colorInfo` must have value\n+ If the product is digital ( `order.lineItems.itemType.preset: DIGITAL` ), then `order.lineItem.digitalFile` must be provided\n\nWhen custom line items are added - `order.lineItems.catalogReference` is **not** defined - the following rules apply:\n+ `order.lineItem.physicalProperties` cannot be set\n+ `order.lineItem.fulfillerId` cannot be set\n+ `order.lineItem.totalDiscount` cannot be set\n+ Applied discounts cannot be set for a custom line item - `order.appliedDiscounts.lineItemIds` cannot contain the custom line item ID."
-        ],
+        "summary": "Cancels an order. `order.status` field changes to `CANCELED`.",
+        "description": [],
         "examples": [
           {
-            "title": "createOrder example",
+            "title": "cancelOrder example",
             "body": [
               "import { orders } from 'wix-ecom-backend';",
               "  ",
-              " async function createOrder(order) {",
+              " async function cancelOrder(id, options) {",
               "   try {",
-              "     const result = await orders.createOrder(order);",
+              "     const result = await orders.cancelOrder(id, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -87,7 +81,7 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "createOrder"
+      "syntaxName": "cancelOrder"
     },
     {
       "name": "getOrder",
@@ -474,163 +468,6 @@
       },
       "isVeloEvent": false,
       "syntaxName": "getOrder"
-    },
-    {
-      "name": "getRefundabilityStatus",
-      "params": [
-        {
-          "name": "ecomOrderId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Order ID.",
-          "required": true
-        }
-      ],
-      "requiredFields": [
-        "ecomOrderId"
-      ],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-ecom-backend.Orders.GetRefundabilityStatusResponse"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Checks whether this order can be refunded.",
-        "description": [],
-        "examples": [
-          {
-            "title": "getRefundabilityStatus example",
-            "body": [
-              "import { orders } from 'wix-ecom-backend';",
-              "  ",
-              " async function getRefundabilityStatus(ecomOrderId) {",
-              "   try {",
-              "     const result = await orders.getRefundabilityStatus(ecomOrderId);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "getRefundabilityStatus"
-    },
-    {
-      "name": "triggerRefund",
-      "params": [
-        {
-          "name": "ecomOrderId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The order this refund related to",
-          "required": true
-        },
-        {
-          "name": "payments",
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Orders.PaymentRefund"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Refund operations information",
-          "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.TriggerRefundOptions"
-            }
-          ],
-          "doc": "",
-          "required": false
-        }
-      ],
-      "requiredFields": [
-        "ecomOrderId",
-        "payments",
-        "payments.paymentId"
-      ],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-ecom-backend.Orders.TriggerRefundResponse"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Calls corresponding payment providers and creates refund transactions for requested payments.\nUpdates order transactions based on refund results.\nFor requested payments with `TriggerRefundRequest.payments.external_refund = true` will not call payment providers and\nwill only update order transactions.",
-        "description": [],
-        "examples": [
-          {
-            "title": "triggerRefund example",
-            "body": [
-              "import { orders } from 'wix-ecom-backend';",
-              "  ",
-              " async function triggerRefund(ecomOrderId, payments, options) {",
-              "   try {",
-              "     const result = await orders.triggerRefund(ecomOrderId, payments, options);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "triggerRefund"
     }
   ],
   "messages": [
