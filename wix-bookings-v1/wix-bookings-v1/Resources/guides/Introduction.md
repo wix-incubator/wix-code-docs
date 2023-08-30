@@ -40,10 +40,9 @@ It's important to note the following points before starting to code:
 - There are 2 tags that are used by the Wix Bookings app:
     - `"staff"`: Resources with the `"staff"` tag appear in the Bookings app's **Staff** page.
     - `"business"`: The Bookings app creates a resource with a name and tag value of `"business"`. This resource owns a schedule that contains the operating hours of the business and cannot be deleted. This schedule is used when creating resources that use the business’s operating hours for the resource's working hours.
-
 - You can have up to 135 active resources and an additional 135 deleted resources.
 - A resource can have one schedule only.
-- When updating a resource's schedule you cannot change the system tags used by the Wix Bookings app. Tags used by the app have the values "INDIVIDUAL", "GROUP", and "COURSE".
+- When updating a resource's schedule you cannot change the system tags used by the Wix Bookings app. Tags used by the app have the values `"INDIVIDUAL"`, `"GROUP"`, and `"COURSE"`.
 
 
 ## Terminology
@@ -54,7 +53,7 @@ It's important to note the following points before starting to code:
 
 ## Permissions information
 
-Functions in INSERT_API_NAME API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+Functions in the Bookings Resources API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
 <blockquote class='warning'>
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
