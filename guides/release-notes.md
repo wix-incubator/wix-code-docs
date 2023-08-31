@@ -7,6 +7,42 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Migration of Booking Resources API
+
+We've re-released another legacy API.
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), and [July](#migration-of-notifications-api) 2023 re-releases of
+legacy APIs.
+
+This API is released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is a 
+[universal module](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+`wix-bookings.v1`:
+
+- Resources:
+    - [`updateSchedules`](wix-bookings-v1/resources/updateschedule) replaces `updateResourceSchedule()`.
+    - `queryResourceCatalog()` is not available. 
+
+(August 31, 2023)
+
+### Update: New fields in Pricing Plans
+
+`wix-pricing-plans.v2`
+
+The [Plans object](wix-pricing-plans-v2/plans) has a new `formId` field, which is the ID of the order form associated with a plan at checkout.
+
+The [Orders object](wix-pricing-plans-v2/orders) has a new `formData` object, which contains the following fields: 
+- `formId`: the ID of the order form associated with a plan at checkout. 
+- `submissionId`: the ID of the plan's order form submitted at checkout. 
+- `submissionData`: the data submitted to the plan's order form at checkout.
+
+(August 31, 2023)  
+
+
 ### New API: Web Modules
 
 > This API is only available for Wix Studio sites. Wix Studio is currently in beta and is not yet available to all users.
