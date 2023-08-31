@@ -764,6 +764,56 @@
       },
       "isVeloEvent": true,
       "syntaxName": "wixPricingPlans_onPlanCreated"
+    },
+    {
+      "name": "onPlanUpdated",
+      "params": [
+        {
+          "name": "event",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2PlanPlanUpdated",
+              "displayName": "PlanUpdated"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "nativeType": "void"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "An event that is triggered when a pricing plan is updated.",
+        "description": [],
+        "examples": [
+          {
+            "title": "onPlanUpdated example",
+            "body": [
+              "",
+              "  export function wixPricingPlans_onPlanUpdated(event) {",
+              "    const eventId = event.metadata.id",
+              "    const entityId = event.entity._id;",
+              "  }",
+              "",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": true,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "wixPricingPlans_onPlanUpdated"
     }
   ],
   "messages": [
@@ -1840,17 +1890,6 @@
           "doc": "The time of the event. Useful if there was a delay in dispatching"
         },
         {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2OrderExtendedFieldsUpdatedEvent",
-              "displayName": "ExtendedFieldsUpdatedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "originatedFrom",
           "optional": true,
           "type": [
@@ -1900,7 +1939,6 @@
               "actionEvent",
               "createdEvent",
               "deletedEvent",
-              "extendedFieldsUpdatedEvent",
               "updatedEvent"
             ]
           }
@@ -1944,17 +1982,6 @@
             {
               "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2OrderEntityDeletedEvent",
               "displayName": "EntityDeletedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2OrderExtendedFieldsUpdatedEvent",
-              "displayName": "ExtendedFieldsUpdatedEvent"
             }
           ],
           "doc": ""
@@ -2066,17 +2093,27 @@
       }
     },
     {
-      "name": "pricingPlansV2OrderExtendedFieldsUpdatedEvent",
+      "name": "pricingPlansV2OrderFee",
       "members": [
         {
-          "name": "currentEntityAsJson",
+          "name": "amount",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Amount of fee to be charged"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fee name"
         }
       ],
       "docs": {
@@ -2096,7 +2133,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reference to the form which was used to gather additional data in checkout."
+          "doc": "ID of the order form associated with the plan at checkout.\n\nLearn more about [forms](https://dev.wix.com/docs/rest/api-reference/wix-forms/form-submissions/introduction).\n"
         },
         {
           "name": "submissionData",
@@ -2107,7 +2144,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Data submitted to the form at checkout.\nThis field is only returned when `FieldSet.FULL` is specified when fetching the data"
+          "doc": "Data submitted to the plan's order form at checkout."
         },
         {
           "name": "submissionId",
@@ -2117,7 +2154,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reference to the submission of the form."
+          "doc": "ID of a submission to the plan's order form at checkout. Every time a visitor completes the checkout process for a plan, a new submission is created."
         }
       ],
       "docs": {
@@ -3172,6 +3209,18 @@
             }
           ],
           "doc": "Current end date and time for the ordered plan.\n\n`endDate` may be updated over the course of an order. If the order is [paused](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/pause-order),\nit will have a later `endDate` once it [resumes](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/resume-order). `endDate` may also be [postponed](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/postpone-end-date).\n\nOmitted if the order is valid until canceled and still `ACTIVE`."
+        },
+        {
+          "name": "formData",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2OrderFormData",
+              "displayName": "FormData"
+            }
+          ],
+          "doc": "Information about the form submitted during the plan's checkout."
         },
         {
           "name": "freeTrialDays",
@@ -4304,6 +4353,16 @@
             }
           ],
           "doc": "Total discount applied to the order."
+        },
+        {
+          "name": "proration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price change after billing date was change and price was adjusted. Could be positive and negative values."
         },
         {
           "name": "subtotal",
@@ -5569,6 +5628,67 @@
       }
     },
     {
+      "name": "pricingPlansV2PlanFee",
+      "members": [
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Amount of fee to be charged"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fee name"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "pricingPlansV2PlanFeeConfig",
+      "members": [
+        {
+          "name": "appliedAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The time this fee will be charged"
+        },
+        {
+          "name": "fee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2PlanFee",
+              "displayName": "Fee"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "pricingPlansV2PlanGetPlanRequest",
       "members": [
         {
@@ -6119,6 +6239,16 @@
           "doc": "Plan description."
         },
         {
+          "name": "formId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the form associated with the plan at checkout.\n\nLearn more about [forms](https://support.wix.com/en/article/wix-forms-an-overview).\n"
+        },
+        {
           "name": "hasOrders",
           "readOnly": true,
           "optional": true,
@@ -6502,26 +6632,6 @@
           "doc": "Whether the buyer is allowed to cancel their plan. Defaults to false."
         },
         {
-          "name": "clientData",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "description",
           "optional": true,
           "type": [
@@ -6539,7 +6649,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reference to a form which is shown in checkout to gather additional data"
+          "doc": "ID of the form associated with the plan at checkout.\n\nLearn more about [forms](https://support.wix.com/en/article/wix-forms-an-overview).\n"
         },
         {
           "name": "maxPurchasesPerBuyer",
