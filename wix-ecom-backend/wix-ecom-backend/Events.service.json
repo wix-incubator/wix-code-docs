@@ -3196,7 +3196,7 @@
               "displayName": "CustomerBuy"
             }
           ],
-          "doc": "Information about the items the customer must purchase to activate the discount.\nThis refers to the `X` in `BUY_X_GET_Y`."
+          "doc": "Information about which items must be in the cart (buy X) for the discount to apply (get Y)."
         },
         {
           "name": "customerGets",
@@ -3207,17 +3207,17 @@
               "displayName": "CustomerGet"
             }
           ],
-          "doc": "Information about the items the customer will receive.\nThis refers to the `Y` in `BUY_X_GET_Y`."
+          "doc": "Information about which items will be discounted (get Y)."
         },
         {
-          "name": "usageLimitPerRequest",
+          "name": "limit",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "limit the number of times the discount rule can be applied per request.\nfor example: in a buy 2 x get y rule, limit of 2 means the discount will be applied to all items in a request containing 4 x and 2 y items,\nbut in a request containing 6 x and 3 y items, only 2 y items will be discounted since the discount cannot be applied more than twice."
+          "doc": "The maximum number of times the 'buy X get Y' discount can be applied.\nFor example, when the value of `limit` is `2`, with a \"2+1\" sale on all items, the following logic applies:\n+ Buy 2 get 1, buy 3 get 1.\n+ Buy 4 get 2, buy 6 get 2, buy 9 get 2, and so on."
         }
       ],
       "docs": {
@@ -3468,14 +3468,24 @@
       "name": "ecomDiscountsV1DiscountRuleCustomerBuy",
       "members": [
         {
-          "name": "quantity",
+          "name": "minimumQuantity",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "Minimum number of items the customer must purchase to activate discount."
+          "doc": "Minimum number of items the customer must add to the cart to be eligible for a discount."
+        },
+        {
+          "name": "minimumSpend",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Minimum price the customer must add to the cart to be eligible for a discount."
         },
         {
           "name": "scopes",
@@ -3493,7 +3503,48 @@
               }
             }
           ],
-          "doc": "Scopes of items that are eligible for the discount."
+          "doc": "Scopes of the items that must be added to the cart to enable the discount."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCustomerBuyConditionOneOf",
+            "members": [
+              "minimumQuantity",
+              "minimumSpend"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomDiscountsV1DiscountRuleCustomerBuyConditionOneOf",
+      "members": [
+        {
+          "name": "minimumQuantity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Minimum number of items the customer must add to the cart to be eligible for a discount."
+        },
+        {
+          "name": "minimumSpend",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Minimum price the customer must add to the cart to be eligible for a discount."
         }
       ],
       "docs": {
@@ -3506,14 +3557,14 @@
       "name": "ecomDiscountsV1DiscountRuleCustomerGet",
       "members": [
         {
-          "name": "limit",
+          "name": "quantity",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of items the discount can apply to.\nWhen not specified, the discount will apply to all items that match the `scopes`."
+          "doc": "Exact number of items in the cart that will be discounted.\nIf the cart contains fewer items than the value of quantity, the discount will not apply."
         },
         {
           "name": "scopes",
@@ -3531,7 +3582,7 @@
               }
             }
           ],
-          "doc": "Scopes of items that are eligible for the discount."
+          "doc": "Scopes of the items that will be discounted."
         }
       ],
       "docs": {
@@ -3571,6 +3622,17 @@
     {
       "name": "ecomDiscountsV1DiscountRuleDiscount",
       "members": [
+        {
+          "name": "buyXGetYInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomDiscountsV1DiscountRuleBuyXGetYInfo",
+              "displayName": "BuyXGetYInfo"
+            }
+          ],
+          "doc": "Data related to `BUY_X_GET_Y` target type."
+        },
         {
           "name": "discountType",
           "optional": true,
@@ -5048,6 +5110,16 @@
     {
       "name": "ecomDiscountsV1DiscountRuleSpecificItemsInfo",
       "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "limit number of items the discount can be applied to\nif no limit specified, the discount will be applied to all items in the request that match 'scopes' field"
+        },
         {
           "name": "scopes",
           "optional": true,
@@ -36692,7 +36764,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional target metasite ID value that will be used to derive ecom instance ID for check.\nIf no metasite ID is present, then current Callscope will be examined for ecom instance ID instead."
+          "doc": "Target metasite ID value that will be used to derive ecom instance ID for check."
         }
       ],
       "docs": {
