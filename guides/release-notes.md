@@ -18,7 +18,7 @@ The [Orders object](wix-pricing-plans-v2/orders) has a new `formData` object, wh
 - `submissionId`: the ID of the plan's order form submitted at checkout. 
 - `submissionData`: the data submitted to the plan's order form at checkout.
 
-(August 28, 2023)  
+(August 31, 2023)  
 
 
 ### New API: Web Modules
