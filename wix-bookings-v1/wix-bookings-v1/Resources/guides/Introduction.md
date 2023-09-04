@@ -22,9 +22,9 @@ A resource is a business asset like a staff member, or equipment needed to provi
 
 With the Resources API, you can:
 
-- [Create](wix-bookings.v1/resources/createresource) and [delete](wix-bookings.v1/resources/deleteresource) resources.
-- [Update](wix-bookings.v1/resources/updateresource) a resource. 
-- [Update](wix-bookings.v1/resources/updateschedule) a resource's schedule.
+- [Create](https://www.wix.com/velo/reference/wix-bookings.v1/resources/createresource) and [delete](https://www.wix.com/velo/reference/wix-bookings.v1/resources/deleteresource) resources.
+- [Update](https://www.wix.com/velo/reference/wix-bookings.v1/resources/updateresource) a resource. 
+- [Update](https://www.wix.com/velo/reference/wix-bookings.v1/resources/updateschedule) a resource's schedule.
 
 
 To use the Resources API, import `{ resources }` from the `wix-bookings.v1` module:
