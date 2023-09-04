@@ -39,7 +39,7 @@ so your existing code will continue to work as it does today.
 `wix-bookings.v1`:
 
 - Resources:
-    - [`updateSchedules`](wix-bookings.v1/resources/updateschedule) replaces `updateResourceSchedule()`.
+    - [`updateSchedules`](https://www.wix.com/velo/reference/wix-bookings.v1/resources/updateschedule) replaces `updateResourceSchedule()`.
     - `queryResourceCatalog()` is not available. 
 
 (August 31, 2023)
