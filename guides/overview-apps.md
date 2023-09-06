@@ -18,7 +18,7 @@ For Wix Apps by Wix, app data is returned in many of the API calls. Each solutio
 
  | API | appId |
  | ----------- | ----------- |
- | Wix Stores (soon to be New Wix eCommerce) | `1380b703-ce81-ff05-f115-39571d94dfcd` |
+ | Wix eCommerce | `1380b703-ce81-ff05-f115-39571d94dfcd` |
  | New Wix Stores | `215238eb-22a5-4c36-9e7b-e7c08025e04e` |
  | Wix Bookings | `13d21c63-b5ec-5912-8397-c3a5ddb27a97` |
  | Wix Events | `140603ad-af8d-84a5-2c80-a0f60cb47351` |
