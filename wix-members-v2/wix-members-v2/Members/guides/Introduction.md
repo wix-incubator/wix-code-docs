@@ -33,7 +33,7 @@ import { members } from 'wix-members.v2';
 ## Before you begin
 
 It’s important to note the following points before starting to code:
-- You need to add the Members Area app on your site. 
+- You must add the Members Area app on your site. 
 
 ## Permissions information
 
