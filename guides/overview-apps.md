@@ -1,6 +1,6 @@
 # Wix App APIs
 
-Customize Wix Apps with Velo APIs - including Stores, Bookings, Events, and Pay - to add even more features and functionality to your site. Combine APIs to create a unique app experience for your users. 
+Customize Wix Apps by Wix with Velo APIs - including Stores, Bookings, Events, and Pay - to add even more features and functionality to your site. Combine APIs to create a unique app experience for your users. 
 
 *   **[wix-stores](https://www.wix.com/velo/reference/wix-stores.html)**
 *   **[wix-stores-backend](https://www.wix.com/velo/reference/wix-stores-backend.html)**
