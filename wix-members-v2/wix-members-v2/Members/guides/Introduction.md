@@ -22,7 +22,8 @@ The Members API allows you to create and manage a site's members.
 With the Members API, you can:
 - [Create](wix-members-v2/members/createmember), [update](wix-members-v2/members/updatemember), and [delete](wix-members-v2/members/deletemember) site members.
 - [Retrieve](wix-members-v2/members/querymembers) member's information from your site.
-- [Add](wix-members-v2/members/joincommunity) or [remove](wix-members-v2/members/leavecommunity) the currently logged in member from your site community. 
+- [Add](wix-members-v2/members/joincommunity) the currently logged in member to your site's community, or [remove](wix-members-v2/members/leavecommunity) the member. 
+- [Clear](wix-members-v2/deletememberaddress) a members contact information such as their addresses, phone numbers, and emails. 
 
 To use the Members API, import `{ members }` from the `wix-members.v2` module. 
 
@@ -41,6 +42,14 @@ The following function in Members is restricted and only runs if you elevate per
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 - [createMember](wix-members-v2/members/createmember)
+
+<blockquote class='warning'>
+<p>
+<strong>Warning:</strong>
+Elevating a function allows it to be called by any site visitor.
+Exercise caution to prevent security vulnerabilities.
+</p>
+</blockquote>
 
 
 ## Terminology
