@@ -390,7 +390,7 @@
       "docs": {
         "summary": "Creates a site member.",
         "description": [
-          "<!--ONLY:REST-->\nAfter creation, you can use\n[Send Set Password Email](https://dev.wix.com/api/rest/members/member-authentication/send-set-password-email)\nto email the member with a link to set their password.\nThe member can log in to the site\nwhen they set their password for the first time.\n\n> **Note:**\n> When creating multiple members,\n> set your requests at least 1 second apart to keep below rate limits.\n<!--END:ONLY:REST-->\n\nThis function is not a universal function and runs only on the backend."
+          "After creation, you can use the `sendSetPasswordEmail()` in the Members Authentication API to email the member with a link to set their password.\nThe member can log in to the site once they set their password for the first time.\n\n> **Note:**\n> When creating multiple members, set your requests at least 1 second apart to keep below rate limits.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
@@ -455,37 +455,34 @@
         "doc": null
       },
       "docs": {
-        "summary": "Deletes a member by ID.",
+        "summary": "Deletes a member.",
         "description": [
           "This function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
-            "title": "deleteMember example",
+            "title": "Delete a member by ID ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function deleteMember(id, options) {",
-              "   try {",
-              "     const result = await members.deleteMember(id, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// 'efab296e-2687-4751-9956-ee73200dd4bb'",
+              "",
+              "export function myDeleteMemberFunction(id) {",
+              "",
+              "  return members.deleteMember(id)",
+              "    .then(() => {",
+              "      console.log('Member deleted');",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteMember",
       "isAdminMethod": true
     },
@@ -524,35 +521,63 @@
       "docs": {
         "summary": "Deletes a member's street addresses.",
         "description": [
-          "<!--ONLY:VELO\nThis function returns a Promise that resolves to a member object\nwhen the specified member's addresses are cleared.\nThe `deleteMemberAddresses()` function clears the `addresses` array under the `contact` property.\n<!--END:ONLY:VELO-->"
+          "The `deleteMemberAddresses()` function clears the `addresses` array under the `contact` property.\n"
         ],
         "examples": [
           {
-            "title": "deleteMemberAddresses example",
+            "title": "Delete a member's address ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function deleteMemberAddresses(id) {",
-              "   try {",
-              "     const result = await members.deleteMemberAddresses(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
+              "",
+              "export function myDeleteAddressesFunction(id) {",
+              "  return members.deleteMemberAddresses(id)",
+              "    .then((updatedMember) => {",
+              "      const addresses = updatedMember.contact.addresses;",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteMemberAddresses"
     },
     {
@@ -590,35 +615,71 @@
       "docs": {
         "summary": "Clears a member's email addresses.",
         "description": [
-          "<!--ONLY:VELO\nThis function returns a Promise that resolves to a member object\nwhen the specified member's email addresses are cleared.\n\n`deleteMemberEmails()` clears the `emails` array under the `contact` property.\nOther member\n[`updatedMember()`](.wix-members-backend/members-obj/updatemember)\n\n> **Note:**\n> The member can still log in with their `loginEmail`,\n> which is not cleared when this function is called.\n<!--END:ONLY:VELO-->"
+          "The `deleteMemberEmails()` function clears the `emails` array under the `contact` property.\n\n> **Note:**\n> A member can still log in with their `loginEmail`,\n> which is not cleared when this function is called."
         ],
         "examples": [
           {
-            "title": "deleteMemberEmails example",
+            "title": "Delete a member's email ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function deleteMemberEmails(id) {",
-              "   try {",
-              "     const result = await members.deleteMemberEmails(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
+              "",
+              "export function myDeleteEmailsFunction(id) {",
+              "  return members.deleteMemberEmails(id)",
+              "    .then((updatedMember) => {",
+              "      const emails = updatedMember.contact.emails;",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteMemberEmails"
     },
     {
@@ -656,35 +717,71 @@
       "docs": {
         "summary": "Clears a member's phone numbers.",
         "description": [
-          "<!--ONLY:VELO\nThis function returns a Promise that resolves to a member object\nwhen the specified member's phone numbers are cleared.\n\n`deleteMemberPhones()` clears the `phones` array under the `contact` property.\n<!--END:ONLY:VELO-->"
+          "The `deleteMemberPhones()` function clears the `phones` array under the `contact` property."
         ],
         "examples": [
           {
-            "title": "deleteMemberPhones example",
+            "title": "Delete a member's phone numbers ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function deleteMemberPhones(id) {",
-              "   try {",
-              "     const result = await members.deleteMemberPhones(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
+              "",
+              "export function myDeletePhonesFunction(id) {",
+              "  return members.deleteMemberPhones(id)",
+              "    .then((updatedMember) => {",
+              "      const phones = updatedMember.contact.phones;",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteMemberPhones"
     },
     {
@@ -837,7 +934,7 @@
               "referenceType": "wix-members-v2.Members.GetMemberOptions"
             }
           ],
-          "doc": "",
+          "doc": "Fieldset options.",
           "required": false
         }
       ],
@@ -862,35 +959,80 @@
       "docs": {
         "summary": "Retrieves a member by ID.",
         "description": [
-          "- `PUBLIC` fieldset returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus` and `activityStatus` are returned as `UNKNOWN`.\n- `EXTENDED` fieldset returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object.\n- `FULL` fieldset returns all fields."
+          ">**Note:** The returned Member object contains only the fields that were explicitly added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/site-members-customizing-your-member-profile-fields).\n"
         ],
         "examples": [
           {
-            "title": "getMember example",
+            "title": "Get a member by ID ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function getMember(id, options) {",
-              "   try {",
-              "     const result = await members.getMember(id, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// '60a91ab6-5e30-4af2-9d5e-a205c351ffd7'",
+              "//",
+              "// Sample options value:",
+              "// {",
+              "//   fieldsets: [ 'FULL' ]",
+              "// }",
+              "",
+              "export function myGetMemberFunction(id, options) {",
+              "  return members.getMember(id, options)",
+              "    .then((member) => {",
+              "      const slug = member.profile.slug;",
+              "      const name = `${member.contact.firstName} ${member.contact.lastName}`;",
+              "      const contactId = member.contactId;",
+              "      return member;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              "         * \"_id\": \"e151960c-04a7-43ef-aa17-a134916ded07\",",
+              "         * \"addressLine\": \"9373 Park Avenue\",",
+              "         * \"addressLine2\": \"Berkshire\",",
+              "         * \"city\": \"Ely\",",
+              "         * \"subdivision\": \"GB-ENG\",",
+              "         * \"country\": \"GB\",",
+              "         * \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"claude.morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getMember"
     },
     {
@@ -903,7 +1045,7 @@
               "referenceType": "wix-members-v2.Members.GetMyMemberOptions"
             }
           ],
-          "doc": "",
+          "doc": "Fieldset options.",
           "required": false
         }
       ],
@@ -930,31 +1072,102 @@
         ],
         "examples": [
           {
-            "title": "getMyMember example",
+            "title": "Get the currently logged-in member ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function getMyMember(options) {",
-              "   try {",
-              "     const result = await members.getMyMember(options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample options value:",
+              "// {",
+              "//   fieldsets: [ 'FULL' ]",
+              "// }",
+              "",
+              "export function myGetCurrentMemberFunction(options) {",
+              "  return members.getCurrentMember(options)",
+              "    .then((member) => {",
+              "      const memberId = member._id;",
+              "      const fullName = `${member.contact.firstName} ${member.contact.lastName}`;",
+              "      const memberProfilePage = `https://yoursite.com/profile/${member.profile.slug}/profile`;",
+              "",
+              "      return member;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-04T05:10:21.000Z\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\",",
+              " *     \"profilePhoto\": {",
+              " *       \"url\": \"//static.wixstatic.com/media/a27d24_0dd318~mv2.jpg\",",
+              " *       \"height\": 256,",
+              " *       \"width\": 256,",
+              " *       \"offsetX\": 1,",
+              " *       \"offsetY\": 1",
+              " *     },",
+              " *     \"coverPhoto\": {",
+              " *       \"url\": \"https://example.com/myimage.jpg\",",
+              " *       \"height\": 1080,",
+              " *       \"width\": 1920,",
+              " *       \"offsetX\": 1,",
+              " *       \"offsetY\": 1",
+              " *     },",
+              " *     \"title\": \"Awesome title\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"country\": \"GB\"",
+              " *       },",
+              " *       {",
+              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {",
+              " *       \"custom.pronouns\": {",
+              " *         \"name\": \"Pronouns\",",
+              " *         \"value\": \"they/them\"",
+              " *       },",
+              " *       \"custom.nickname\": {",
+              " *         \"name\": \"Nickname\",",
+              " *         \"value\": \"Cee\"",
+              " *       }",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getMyMember"
     },
     {
@@ -983,31 +1196,66 @@
         ],
         "examples": [
           {
-            "title": "joinCommunity example",
+            "title": "Make the currently logged-in member's profile public ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function joinCommunity() {",
-              "   try {",
-              "     const result = await members.joinCommunity();",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myJoinCommunityFunction() {",
+              "  return members.joinCommunity()",
+              "    .then((updatedMember) => {",
+              "      const newPrivacyStatus = updatedMember.privacyStatus;",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-04T11:02:44.000Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "joinCommunity"
     },
     {
@@ -1036,31 +1284,66 @@
         ],
         "examples": [
           {
-            "title": "leaveCommunity example",
+            "title": "Make the currently logged-in member's profile private ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function leaveCommunity() {",
-              "   try {",
-              "     const result = await members.leaveCommunity();",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export function myLeaveCommunityFunction() {",
+              "  return members.leaveCommunity()",
+              "    .then((updatedMember) => {",
+              "      const newPrivacyStatus = updatedMember.privacyStatus;",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    })",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"lastLoginDate\": \"2021-08-04T11:02:44.000Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"loginEmail\": \"claude.morales@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"status\": \"APPROVED\",",
+              " *   \"privacyStatus\": \"PRIVATE\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claude.morales@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "leaveCommunity"
     },
     {
@@ -1218,32 +1501,25 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of up to 100 members, given the provided filters, fieldsets, sorting and paging.",
+        "summary": "Retrieves a list of up to 100 members, given the provided filters, fieldsets, sorting and paging, and returns a [`MembersQueryBuilder`](#membersquerybuilder) object.",
         "description": [
           "",
-          "- `PUBLIC` fieldset returns `id` and `profile` object. `status`, `privacyStatus` and `activityStatus` are returned as `UNKNOWN`.",
-          "- `FULL` fieldset returns all fields.",
+          "The returned object contains the query definition which is typically used to run the query using the [`find()`](#membersquerybuilder/find) function.",
           "",
-          "Currently supported fields for filtering:",
+          "You can refine the query by chaining `MembersQueryBuilder` functions onto the query. `MembersQueryBuilder` functions enable you to sort, filter, and control the results that `queryMembers()` returns. The functions that are chained to `queryMembers()` are applied in the order they are called. ",
           "",
-          "- `id`",
-          "- `profile.nickname`",
-          "- `profile.slug`",
-          "- `contact.firstName`",
-          "- `contact.lastName`",
-          "- `privacyStatus`",
-          "- `loginEmail`",
-          "- `createdDate`",
-          "- `status`",
-          "- `userId`",
+          "`queryMembers()` runs with the following `MembersQueryBuilder` defaults that you can override:",
+          "- [`skip`](#membersquerybuilder/skip): `0`",
+          "- [`limit`](#membersquerybuilder/limit): `50`",
           "",
-          "Currently supported fields for sorting:",
-          "",
+          "Currently supported fields for sorting: ",
           "- `profile.nickname`",
           "- `contact.firstName`",
           "- `contact.lastName`",
           "- `createdDate`",
           "- `lastLoginDate`",
+          "",
+          "The following `MembersQueryBuilder` functions are supported for the `queryMembers()` function. For a full description of the Locations object, see the returned for the [`items`](#membersqueryresult/items) property in [`MembersQueryResult`](#membersqueryresult). ",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -1391,35 +1667,84 @@
       "docs": {
         "summary": "Updates a member's properties.",
         "description": [
-          "<!--ONLY:REST-->\nTo clear a field's value, set an empty value with an empty string `\"\"`.\n\nTo clear the member's addresses, emails, or phone numbers,\nuse these endpoints:\n\n- To clear `contact.addresses`, use [`Delete Member Addresses`](https://dev.wix.com/api/rest/members/members/delete-member-addresses).\n- To clear `contact.emails`, use [`Delete Member Emails`](https://dev.wix.com/api/rest/members/members/delete-member-emails).\n- To clear `contact.phones`, use [`Delete Member Phones`](https://dev.wix.com/api/rest/members/members/delete-member-phones).\n<!--END:ONLY:REST-->"
+          "Only the requested fields are updated.\nTo clear a field's value, set an empty value with an empty string `\"\"`.\n\n> **Note:** Updating the `contact.addresses`, `contact.emails`, or `contact.phones` array overwrites the entire array, so any existing values you want to retain must be passed in the `updateMember()` call along with the new values to add.\n\n> However, passing an empty array will have no effect, and these functions must be used to clear all data from the respective array:\n\n>- To clear `contact.addresses`, use [`deleteMemberAddresses()`](#deletememberaddresses).\n>- To clear `contact.emails`, use [`deleteMemberEmails()`](#deletememberemails).\n>- To clear `contact.phones`, use [`deleteMemberPhones`](deletememberphones)."
         ],
         "examples": [
           {
-            "title": "updateMember example",
+            "title": "Overwrite a member's email addresses ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function updateMember(id, member) {",
-              "   try {",
-              "     const result = await members.updateMember(id, member);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample id value:",
+              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
+              "//",
+              "// Sample member value:",
+              "// {",
+              "//   contact: {",
+              "//     emails: ['claudes.new.email@example.com']",
+              "//   }",
+              "// }",
+              "",
+              "export function myUpdateMemberFunction(id, member) {",
+              "  return members.updateMember(id, member)",
+              "    .then((member) => {",
+              "      return member;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *   \"activityStatus\": \"UNKNOWN\",",
+              " *   \"privacyStatus\": \"UNKNOWN\",",
+              " *   \"status\": \"UNKNOWN\",",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Claude\",",
+              " *     \"lastName\": \"Morales\",",
+              " *     \"phones\": [",
+              " *       \"0747-769-460\"",
+              " *     ],",
+              " *     \"emails\": [",
+              " *       \"claudes.new.email@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [",
+              " *       {",
+              " *         \"_id\": \"e151960c-04a7-43ef-aa17-a134916ded07\",",
+              " *         \"addressLine\": \"9373 Park Avenue\",",
+              " *         \"addressLine2\": \"Berkshire\",",
+              " *         \"city\": \"Ely\",",
+              " *         \"subdivision\": \"GB-ENG\",",
+              " *         \"country\": \"GB\",",
+              " *         \"postalCode\": \"PD50 8EU\"",
+              " *       },",
+              " *       {",
+              " *         \"_id\": \"88a6f2ed-83d5-435d-ab55-4af1cb1b7861\",",
+              " *         \"country\": \"IE\"",
+              " *       }",
+              " *     ],",
+              " *     \"customFields\": {",
+              " *       \"someKey\": {",
+              " *         \"value\": \"someValue\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Claude Morales\",",
+              " *     \"slug\": \"claudemorales\"",
+              " *   }",
+              " * }",
+              "*/"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateMember"
     },
     {
@@ -1534,31 +1859,74 @@
         "description": [],
         "examples": [
           {
-            "title": "updateMySlug example",
+            "title": "Update the currently logged-in member's slug ",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function updateMySlug(slug) {",
-              "   try {",
-              "     const result = await members.updateMySlug(slug);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "// Sample slug value:",
+              "// 'claude-morales-new-slug'",
+              "",
+              "export function myUpdateSlugFunction(slug) {",
+              "  return members.updateCurrentMemberSlug(slug)",
+              "    .then((updatedMember) => {",
+              "      const updatedSlug = updatedMember.profile.slug;",
+              "      const memberProfilePage = `https://yoursite.com/profile/${updatedSlug}/profile`;",
+              "",
+              "      return updatedMember;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *     \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *     \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
+              " *     \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
+              " *     \"loginEmail\": \"claude.morales@example.com\",",
+              " *     \"status\": \"APPROVED\",",
+              " *     \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
+              " *     \"privacyStatus\": \"PUBLIC\",",
+              " *     \"activityStatus\": \"ACTIVE\",",
+              " *     \"lastLoginDate\": \"2021-08-04T05:10:21.000Z\",",
+              " *     \"loginEmailVerified\": true,",
+              " *     \"contact\": {",
+              " *         \"firstName\": \"Claude\",",
+              " *         \"lastName\": \"Morales\",",
+              " *         \"phones\": [",
+              " *             \"0747-769-460\"",
+              " *         ],",
+              " *         \"emails\": [",
+              " *             \"claude.morales@example.com\"",
+              " *         ],",
+              " *         \"addresses\": [",
+              " *             {",
+              " *                 \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
+              " *                 \"addressLine\": \"9373 Park Avenue\",",
+              " *                 \"addressLine2\": \"Berkshire\",",
+              " *                 \"city\": \"Ely\",",
+              " *                 \"subdivision\": \"GB-ENG\",",
+              " *                 \"country\": \"GB\",",
+              " *                 \"postalCode\": \"PD50 8EU\"",
+              " *             },",
+              " *             {",
+              " *                 \"country\": \"IL\"",
+              " *             }",
+              " *         ],",
+              " *         \"customFields\": {}",
+              " *     },",
+              " *     \"profile\": {",
+              " *         \"nickname\": \"Claude Morales\",",
+              " *         \"slug\": \"claude-morales-new-slug\"",
+              " *     }",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateMySlug"
     }
   ],
@@ -2071,17 +2439,6 @@
           "doc": "Contact's company name."
         },
         {
-          "name": "contactId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact ID.\n\n> **Deprecation notice:**\n> This property has been replaced with `member.contactId`\n> and will be removed on June 11, 2021."
-        },
-        {
           "name": "customFields",
           "optional": true,
           "type": [
@@ -2099,7 +2456,7 @@
               }
             }
           ],
-          "doc": "Custom fields,\nwhere each key is the field key,\nand each value is the field's value for the member."
+          "doc": "Custom fields are structured as key:value pairs where each key is the field `name`, and each value is the field's `value` for the member.\n\n> **Notes:**\n> - Only custom fields added to the member profile in the Dashboard are available through the Members API. Empty fields are not returned.\n> - When updating a member, `name` is ignored.\n"
         },
         {
           "name": "emails",
@@ -2868,16 +3225,6 @@
       "name": "GetMemberOptions",
       "members": [
         {
-          "name": "fieldSet",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Predefined set of fields to return.\n\nDefaults to `PUBLIC`.\n\n__Deprecated.__ Use `fieldsets` instead.\nThis property will be removed on March 31, 2023.\n"
-        },
-        {
           "name": "fieldsets",
           "optional": true,
           "type": [
@@ -2892,7 +3239,7 @@
               }
             }
           ],
-          "doc": "Predefined set of fields to return.\n\nDefaults to `PUBLIC`.\n"
+          "doc": "Predefined set of fields to return. One of:\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus`, and `activityStatus` are returned as `UNKNOWN`.\n- `\"EXTENDED\"`: Returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object.\n\nDefault: `\"PUBLIC\"`.\n"
         }
       ],
       "docs": {
@@ -2914,16 +3261,6 @@
           "doc": "Member ID."
         },
         {
-          "name": "fieldSet",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Predefined set of fields to return.\n\nDefaults to `PUBLIC`.\n\n__Deprecated.__ Use `fieldsets` instead.\nThis property will be removed on March 31, 2023.\n"
-        },
-        {
           "name": "fieldsets",
           "optional": true,
           "type": [
@@ -2938,7 +3275,7 @@
               }
             }
           ],
-          "doc": "Predefined set of fields to return.\n\nDefaults to `PUBLIC`.\n"
+          "doc": "Predefined set of fields to return. One of:\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus`, and `activityStatus` are returned as `UNKNOWN`.\n- `\"EXTENDED\"`: Returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object."
         }
       ],
       "docs": {
@@ -2971,16 +3308,6 @@
       "name": "GetMyMemberOptions",
       "members": [
         {
-          "name": "fieldSet",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Predefined set of fields to return.\n\n<!--ONLY:VELO\nOne of:\n\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `_id` and all fields under `profile`.\n\n> **Note:**\n> When returning the `\"PUBLIC\"` fieldset,\n> `profile.status`, `profile.privacyStatus`, and `profile.activityStatus`\n> are returned as `\"UNKNOWN\"`.\n<!--END:ONLY:VELO-->\n"
-        },
-        {
           "name": "fieldsets",
           "optional": true,
           "type": [
@@ -2995,7 +3322,7 @@
               }
             }
           ],
-          "doc": "Supported values:\n- `'EXTENDED'`\n- `'FULL'`\n- `'PUBLIC'`"
+          "doc": "Predefined set of fields to return. One of:\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus`, and `activityStatus` are returned as `UNKNOWN`.\n- `\"EXTENDED\"`: Returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object.\n\nDefault: `\"PUBLIC\"`.\n"
         }
       ],
       "docs": {
@@ -3052,7 +3379,7 @@
               "referenceType": "wix-members-v2.Members.Member"
             }
           ],
-          "doc": "The requested member."
+          "doc": "The logged-in member."
         }
       ],
       "docs": {
@@ -3347,16 +3674,6 @@
       "name": "ListMembersOptions",
       "members": [
         {
-          "name": "fieldSet",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Predefined sets of fields to return.\n\nDefaults to `PUBLIC`.\n\n__Deprecated.__ Use `fieldsets` instead.\nThis property will be removed on March 31, 2023.\n"
-        },
-        {
           "name": "fieldsets",
           "optional": true,
           "type": [
@@ -3371,7 +3688,7 @@
               }
             }
           ],
-          "doc": "Predefined sets of fields to return.\n\nDefaults to `PUBLIC`.\n"
+          "doc": "Predefined set of fields to return. One of:\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus`, and `activityStatus` are returned as `UNKNOWN`.\n- `\"EXTENDED\"`: Returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object.\n\nDefault: `\"PUBLIC\"`.\n"
         },
         {
           "name": "paging",
@@ -3381,7 +3698,7 @@
               "referenceType": "wix-members-v2.Members.Paging"
             }
           ],
-          "doc": ""
+          "doc": "Paging options."
         },
         {
           "name": "sorting",
@@ -3398,7 +3715,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "Sorting options."
         }
       ],
       "docs": {
@@ -3410,16 +3727,6 @@
     {
       "name": "ListMembersRequest",
       "members": [
-        {
-          "name": "fieldSet",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Predefined sets of fields to return.\n\nDefaults to `PUBLIC`.\n\n__Deprecated.__ Use `fieldsets` instead.\nThis property will be removed on March 31, 2023.\n"
-        },
         {
           "name": "fieldsets",
           "optional": true,
@@ -3435,7 +3742,7 @@
               }
             }
           ],
-          "doc": "Predefined sets of fields to return.\n\nDefaults to `PUBLIC`.\n"
+          "doc": "Predefined set of fields to return. One of:\n- `\"FULL\"`: Returns all fields.\n- `\"PUBLIC\"`: Returns `id`, `contactId`, and the `profile` object. `status`, `privacyStatus`, and `activityStatus` are returned as `UNKNOWN`.\n- `\"EXTENDED\"`: Returns `id`, `loginEmail`, `status`, `contactId`, `privacyStatus`, `activityStatus`, and the `profile` object.\n\nDefault: `\"PUBLIC\"`.\n"
         },
         {
           "name": "paging",
@@ -3563,7 +3870,7 @@
               "referenceType": "wix-members-v2.Members.Contact"
             }
           ],
-          "doc": "Member's contact information. Contact information is stored in the\n[Contact List](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts).\n\n<!--ONLY:REST-->\nThe full set of contact data can be accessed and managed with the\n[Contacts API](https://dev.wix.com/api/rest/contacts/contacts).\n<!--END:ONLY:REST-->\n"
+          "doc": "Member's contact information. Contact information is stored in the\n[Contact List](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts)."
         },
         {
           "name": "contactId",
@@ -5263,7 +5570,7 @@
               "referenceType": "wix-members-v2.Members.Contact"
             }
           ],
-          "doc": "Member's contact information. Contact information is stored in the\n[Contact List](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts).\n\n<!--ONLY:REST-->\nThe full set of contact data can be accessed and managed with the\n[Contacts API](https://dev.wix.com/api/rest/contacts/contacts).\n<!--END:ONLY:REST-->\n"
+          "doc": "Member's contact information. Contact information is stored in the\n[Contact List](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts)."
         },
         {
           "name": "contactId",
