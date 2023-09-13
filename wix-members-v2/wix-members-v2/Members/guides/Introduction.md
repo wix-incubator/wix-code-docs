@@ -42,6 +42,7 @@ The following function in Members is restricted and only runs if you elevate per
 using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
 function:
 - [createMember](wix-members-v2/members/createmember)
+- [deleteMember](wix-members-v2/members/deletemember)
 
 <blockquote class='warning'>
 <p>
