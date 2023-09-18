@@ -30,8 +30,6 @@ The Site Properties API allows you to:
 For more information about managing your site properties,
 see [Adding Your Site's Business Information][kb-adding-business-info].
 
-Introductory content...
-
 To use the Site Properties API,
 import `{ properties }` from wix-business-tools.v2:
 
