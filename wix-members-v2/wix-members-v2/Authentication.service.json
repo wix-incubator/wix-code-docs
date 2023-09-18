@@ -40,9 +40,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Approves a pending member using an email address or approval token.",
+        "summary": "Approves a pending member using an ID, email address or approval token.",
         "description": [
-          "<!--ONLY:VELO:function:approveByEmail\nThe `approveByEmail()` function returns a Promise that resolves to a session token\nwhen the specified member is approved.\n\n> **Note:**\n> This function replaces the deprecated\n> `wix-users-backend.approveByEmail()`.\n> The deprecated function will continue to work, but it will not receive updates.\n> To keep any existing code compatible with future changes, see the\n> [migration instructions](wix-users-backend/approvebyemail#migration-instructions).\n\nA new member's status is `\"PENDING\"`\nwhen the site's membership policy is set to manual approval.\nTo learn more about setting your site's membership approval policy, see\n[Editing Your Member Signup Settings](https://support.wix.com/en/article/editing-your-member-signup-settings-for-the-default-form).\n<!--END:ONLY:VELO-->\n\n<!--ONLY:VELO:function:approveByToken\nThe `approveByToken()` function returns a Promise that resolves to a session token\nwhen the specified member is approved. Tokens must be approved within 30 hours of token creation.\n\n> **Note:**\n> This function replaces the deprecated\n> `wix-users-backend.approveByToken()`.\n> The deprecated function will continue to work, but it will not receive updates.\n> To keep any existing code compatible with future changes, see the\n> [migration instructions](wix-users-backend/approvebytoken#migration-instructions).\n\nA new member's status is `\"PENDING\"`\nwhen the site's membership policy is set to manual approval.\nTo learn more about setting your site's membership approval policy, see\n[Editing Your Member Signup Settings](https://support.wix.com/en/article/editing-your-member-signup-settings-for-the-default-form).\n\nUse the `approvalToken` parameter returned from the\n[`register()`](wix-members-backend/authentication-obj/register)\nfunction when calling `approveByToken()`.\n<!--END:ONLY:VELO-->\n\nThis function is not a universal function and runs only on the backend."
+          "Tokens must be approved within 30 hours of token creation.\nUse the `approvalToken` parameter returned from the\n[`register()`](#register) function when approving a member by `token`.\n\n> **Note:**\n> A new member's status is `\"PENDING\"` when the site's membership policy is set to manual approval.\n> To learn more about setting your site's membership approval policy, see\n> [Editing Your Member Signup Settings](https://support.wix.com/en/article/editing-your-member-signup-settings-for-the-default-form).\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
@@ -105,9 +105,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Blocks a member from logging in to the site.",
+        "summary": "Blocks a member from logging in to the site using an ID or email address.",
         "description": [
-          "<!--ONLY:VELO\nThe `blockByEmail()` function returns a Promise that resolves\nwhen the specified member is blocked.\n\n> **Note:**\n> This function replaces the deprecated\n> `wix-users-backend.blockByEmail()`.\n> The deprecated function will continue to work, but it will not receive updates.\n> To keep any existing code compatible with future changes, see the\n> [migration instructions](wix-users-backend/blockbyemail#migration-instructions).\n\nTo unblock the member and allow them to log in to the site, use\n[`approveByEmail()`](wix-members-backend/authentication-obj/approvebyemail).\n<!--END:ONLY:VELO-->\n\nThis function is not a universal function and runs only on the backend."
+          "To unblock the member and allow them to log in to the site, use the [`approve()`](#approve) function.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
@@ -149,7 +149,17 @@
               "nativeType": "string"
             }
           ],
-          "doc": "unique identifier of the requested member(required)",
+          "doc": "Member ID.",
+          "required": true
+        },
+        {
+          "name": "newEmail",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "New login email address.",
           "required": true
         },
         {
@@ -164,7 +174,8 @@
         }
       ],
       "requiredFields": [
-        "_id"
+        "_id",
+        "newEmail"
       ],
       "ret": {
         "type": [
@@ -192,9 +203,9 @@
             "body": [
               "import { authentication } from 'wix-members.v2';",
               "  ",
-              " async function changeLoginEmail(id, options) {",
+              " async function changeLoginEmail(id, newEmail, options) {",
               "   try {",
-              "     const result = await authentication.changeLoginEmail(id, options);",
+              "     const result = await authentication.changeLoginEmail(id, newEmail, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -220,6 +231,26 @@
       "name": "login",
       "params": [
         {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Login email address.",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member password.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -230,7 +261,10 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "email",
+        "password"
+      ],
       "ret": {
         "type": [
           {
@@ -257,9 +291,9 @@
             "body": [
               "import { authentication } from 'wix-members.v2';",
               "  ",
-              " async function login(options) {",
+              " async function login(email, password, options) {",
               "   try {",
-              "     const result = await authentication.login(options);",
+              "     const result = await authentication.login(email, password, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -285,6 +319,26 @@
       "name": "register",
       "params": [
         {
+          "name": "email",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Login email address for the new site member.",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Password the new site member will use to log in.\n\nMust be 4 to 15 ASCII-printable characters.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -295,7 +349,10 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "email",
+        "password"
+      ],
       "ret": {
         "type": [
           {
@@ -322,9 +379,9 @@
             "body": [
               "import { authentication } from 'wix-members.v2';",
               "  ",
-              " async function register(options) {",
+              " async function register(email, password, options) {",
               "   try {",
-              "     const result = await authentication.register(options);",
+              "     const result = await authentication.register(email, password, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -934,16 +991,6 @@
       "name": "ChangeLoginEmailOptions",
       "members": [
         {
-          "name": "newEmail",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Email to update to"
-        },
-        {
           "name": "revokeCurrentSessions",
           "optional": true,
           "type": [
@@ -951,7 +998,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Should revoke active sessions straight after changing the member's login email"
+          "doc": "Whether to revoke active sessions immediately after changing the member's login email."
         }
       ],
       "docs": {
@@ -970,7 +1017,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "unique identifier of the requested member(required)"
+          "doc": "Member ID."
         },
         {
           "name": "newEmail",
@@ -980,7 +1027,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email to update to"
+          "doc": "New login email address."
         },
         {
           "name": "revokeCurrentSessions",
@@ -990,7 +1037,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Should revoke active sessions straight after changing the member's login email"
+          "doc": "Whether to revoke active sessions immediately after changing the member's login email."
         }
       ],
       "docs": {
@@ -1010,7 +1057,7 @@
               "referenceType": "wix-members-v2.Authentication.Member"
             }
           ],
-          "doc": "Updated member with the new email"
+          "doc": "Member with the updated login email address."
         }
       ],
       "docs": {
@@ -2090,16 +2137,6 @@
       "name": "LoginOptions",
       "members": [
         {
-          "name": "email",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Email address to use when logging the member in."
-        },
-        {
           "name": "emailVerification",
           "optional": true,
           "type": [
@@ -2117,7 +2154,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "invisible recaptcha token"
+          "doc": "Invisible recaptcha token."
         },
         {
           "name": "isMobile",
@@ -2130,16 +2167,6 @@
           "doc": "Whether the login request needs to follow the mobile login flow."
         },
         {
-          "name": "password",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Password to use when logging the member in."
-        },
-        {
           "name": "recaptchaToken",
           "optional": true,
           "type": [
@@ -2147,7 +2174,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "recaptcha token"
+          "doc": "Recaptcha token."
         }
       ],
       "docs": {
@@ -2167,7 +2194,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email address to use when logging the member in."
+          "doc": "Login email address."
         },
         {
           "name": "emailVerification",
@@ -2187,7 +2214,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "invisible recaptcha token"
+          "doc": "Invisible recaptcha token."
         },
         {
           "name": "isMobile",
@@ -2207,7 +2234,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Password to use when logging the member in."
+          "doc": "Member password."
         },
         {
           "name": "recaptchaToken",
@@ -2217,7 +2244,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "recaptcha token"
+          "doc": "Recaptcha token."
         }
       ],
       "docs": {
@@ -2981,16 +3008,6 @@
           "doc": "identification of the app that initiated the register request"
         },
         {
-          "name": "email",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Login email address for the new site member."
-        },
-        {
           "name": "emailVerification",
           "optional": true,
           "type": [
@@ -3029,16 +3046,6 @@
             }
           ],
           "doc": "is registration offline"
-        },
-        {
-          "name": "password",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Password the new site member will use to log in.\n\nMust be 4 to 15 ASCII-printable characters.\n"
         },
         {
           "name": "profilePrivacyStatus",
@@ -3458,7 +3465,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to hide the ignore this email message .\n\nIf `true`, the email tells the member\nthey can safely ignore\nif they did not request the password change.\n\nDefaults to `false`.\n"
+          "doc": "Whether to hide the ignore this email message .\n\nIf `true`, the email tells the member\nthey can safely ignore\nif they did not request the password change.\n\nDefault: `false`.\n"
         }
       ],
       "docs": {
@@ -3487,7 +3494,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to hide the ignore this email message .\n\nIf `true`, the email tells the member\nthey can safely ignore\nif they did not request the password change.\n\nDefaults to `false`.\n"
+          "doc": "Whether to hide the ignore this email message .\n\nIf `true`, the email tells the member\nthey can safely ignore\nif they did not request the password change.\n\nDefault: `false`.\n"
         }
       ],
       "docs": {
