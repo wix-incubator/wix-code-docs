@@ -1,3 +1,3 @@
 # Apps made by Wix
 
-Velo API's enable site owners to customize and combine apps made by Wix to incorporate additional features and functionalities and craft a unique app experience. A site owner can install one or more apps made by Wix to manage specific data on their site. [Learn more](https://dev.wix.com/docs/develop-websites)
+[Apps made by Wix](https://dev.wix.com/docs/develop-websites) offer a range of powerful business solutions that extend the capabilities of existing Wix products and introduce new functionalities. A site owner can install one or more of these solutions on their site and integrate them with Velo API's to ensure accurate data management and enhanced customization. Each app is identified by a unique `appId`.
