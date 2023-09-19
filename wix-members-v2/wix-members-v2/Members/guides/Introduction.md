@@ -22,7 +22,7 @@ The Members API allows you to create and manage a site's members.
 With the Members API, you can:
 - [Create](wix-members-v2/members/createmember), [update](wix-members-v2/members/updatemember), and [delete](wix-members-v2/members/deletemember) site members.
 - [Retrieve](wix-members-v2/members/querymembers) member's information from your site.
-- [Add](wix-members-v2/members/joincommunity) the currently logged in member to your site's community, or [remove](wix-members-v2/members/leavecommunity) the member from your site. 
+- [Add](wix-members-v2/members/joincommunity) the currently logged in member to your site's community, or [remove](wix-members-v2/members/leavecommunity) the member from your site's community. 
 - [Clear](wix-members-v2/deletememberaddress) a members contact information such as their addresses, phone numbers, and emails. 
 
 To use the Members API, import `{ members }` from the `wix-members.v2` module. 
