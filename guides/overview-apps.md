@@ -1,5 +1,2 @@
 # Apps Made by Wix
-
-[Apps made by Wix](https://dev.wix.com/docs/develop-websites) offer a range of powerful business solutions that extend the capabilities of existing Wix products and introduce new functionalities. A site owner can install one or more of these solutions on their site and integrate them with Velo API's for enhanced data management and customization. Each app is identified by a unique `appId`.
-
 Wix offers a range of powerful business solutions that extend the functionalities of its existing products or add new capabilities. Apps made by Wix are web apps created by Wix that site owners can use to enhance their sites. A site owner can install one or more apps made by Wix to manage specific data on their site. Each app is identified by a unique `appId`. See a complete list [here](https://dev.wix.com/docs/develop-websites).
