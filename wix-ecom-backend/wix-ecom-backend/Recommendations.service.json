@@ -1,0 +1,614 @@
+{
+  "name": "Recommendations",
+  "memberOf": "wix-ecom-backend",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-ecom-backend-recommendation",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "getRecommendation",
+      "params": [
+        {
+          "name": "algorithms",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.Algorithm"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of algorithms checked in a specific order determined by their `appID` and their position in the `algorithms` array.\nSee the method description for more information.\n\nIf no algorithm is able to return at least `minimumRecommendedItems` items, an empty array is returned.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Recommendations.GetRecommendationOptions"
+            }
+          ],
+          "doc": "Get recommendation options.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "algorithms",
+        "algorithms._id",
+        "algorithms.appId",
+        "options.items.appId",
+        "options.items.catalogItemId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Recommendations.GetRecommendationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Returns a recommendation object containing a list of items to recommend to the customer.",
+        "description": [
+          "`getRecommendation()` determines which items to recommend based on the given recommendation algorithms.\n\n`getRecommendation()` doesn’t run the algorithms. It calls the installed apps that provide them.\n\nApps may provide algorithms for use with their own catalogs, or for use with catalogs from other apps.\nFor example, Wix Stores provides algorithms that can only be used on its own catalogs.\nTo run an algorithm, the app providing it must be installed, and an app providing a supported catalog must be installed.\nFor more information and to see which algorithms are available on your site or project, call [`listAvailableAlgorithms()`](#listavailablealgorithms).\n\n`getRecommendation()` operates as follows:\n1. `getRecommendation()` receives as input a list of algorithms as an array. These algorithms can be provided by different apps and can apply to different catalogs.\n2. `getRecommendation()` calls the app that corresponds to the `appId` of the first algorithm in the list of algorithms. It passes that algorithm’s ID and the IDs of any subsequent algorithms in the array for the same app.\n3. The app runs the algorithms.\n4. `getRecommendation()` returns items recommendations from the first algorithm (according to its position in the `algorithms` array) that meets the minimum number of recommendations. At that point `getRecommendation()` stops calling other apps.\n5. If none of the algorithms run by the first app meet the minimum recommended items, `getRecommendation()` finds the next algorithm in the array with a new `appId` (an ID of an app that has not yet been called), and repeats the process.\n6. If no algorithms in the `algorithms` array recommend at least the minimum recommended items, `getRecommendation()` returns an empty array."
+        ],
+        "examples": [
+          {
+            "title": "Get recommendation with algorithms and options objects ",
+            "body": [
+              "",
+              "/**************************************",
+              " * Backend code - recommendations.jsw *",
+              " *************************************/",
+              "import { recommendations } from 'wix-ecom-backend';",
+              "  ",
+              "async function getRecommendation(algorithms, options) {",
+              "  try {",
+              "    const result = await recommendations.getRecommendation(algorithms, options);",
+              "",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              " }",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "",
+              "import {getRecommendation} from 'backend/recommendations';",
+              "",
+              "$w.onReady(async function () {",
+              "  let algorithm = {",
+              "    appId: '215238eb-22a5-4c36-9e7b-e7c08025e04e',",
+              "    id: '68ebce04-b96a-4c52-9329-08fc9d8c1253'",
+              "  };",
+              "  let item = {",
+              "\tappId: '215238eb-22a5-4c36-9e7b-e7c08025e04e',",
+              "\tcatalogItemId: '11e2ffb7-2520-3c21-051e-1f05486b9061'",
+              "  };",
+              "  let options = {",
+              "\titems: [item],",
+              "\tminimumRecommendedItems: 1",
+              "  }",
+              "  let recommendations = await getRecommendation([algorithm], options);",
+              "  console.log(recommendations);",
+              "});",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getRecommendation"
+    },
+    {
+      "name": "listAvailableAlgorithms",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Recommendations.ListAvailableAlgorithmsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Returns a list of recommendation algorithms that can be used on your Wix site or project. These algorithms can be used with [`getRecommendation()`](#getRecommendation) to provide item recommendations to the customer.",
+        "description": [
+          "Algorithms are run by the apps that provide them, and can only be used on catalogs they support. Apps may provide algorithms for use with their own catalogs and/or catalogs from other apps.\n\nThe app which provides an algorithm is referenced by that algorithm’s `appId`. The apps whose catalogs are supported by an algorithm are referenced by the IDs in that algorithm’s `catalogAppIds` array.\n\n\nFor an algorithm to be considered “Available” and returned in this method’s response, the algorithm must meet the following conditions:\n1. The algorithm’s `appId` must match the ID of an installed Wix app.\n2. At least 1 of the IDs in `catalogAppIds` must match the ID of an installed Wix app.\n\nWix app IDs are [listed here](https://dev.wix.com/api/rest/getting-started/wix-business-solutions#getting-started_wix-business-solutions_about-wix-business-solutions)."
+        ],
+        "examples": [
+          {
+            "title": "listAvailableAlgorithms example",
+            "body": [
+              "import { recommendations } from 'wix-ecom-backend';",
+              "  ",
+              " async function listAvailableAlgorithms() {",
+              "   try {",
+              "     const result = await recommendations.listAvailableAlgorithms();",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listAvailableAlgorithms"
+    }
+  ],
+  "messages": [
+    {
+      "name": "Algorithm",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Algorithm ID defined by the app providing the algorithm."
+        },
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "App ID of the Wix or 3rd-party app providing the algorithm.\n\nWix app IDs are <a href=\"https://dev.wix.com/api/rest/getting-started/wix-business-solutions#getting-started_wix-business-solutions_about-wix-business-solutions\" target=\"_blank\">listed here</a>.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AlgorithmConfig",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Algorithm ID. This must be unique for a specific app but does not have to be unique across all apps on the site or in the project."
+        },
+        {
+          "name": "additionalInfo",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A supplemental `description`. It can be used to help break up and organize information. You can, for example, display this information as a tooltip or as an additional section that is collapsed by default."
+        },
+        {
+          "name": "algorithmType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Algorithms may have the following types:\n* `RELATED_ITEMS` - This type of algorithm provides recommendations based on 1 or more other provided items. For example, when an item is added to a cart, the algorithm can suggest other items frequently bought together with that item.\n* `GLOBAL` - This type of algorithm provides general recommendations based on site or project statistics. For example, bestsellers or new arrivals."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Algorithm description. This describes how the algorithm works and if it has any limitations regarding site content, number of items in the catalog, site traffic, and so on. This value is not translatable."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Algorithm name. This value is not translatable."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AlgorithmInfo",
+      "members": [
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The app ID of the application providing the algorithm.\n\nWix app IDs are <a href=\"https://dev.wix.com/api/rest/getting-started/wix-business-solutions#getting-started_wix-business-solutions_about-wix-business-solutions\" target=\"_blank\">listed here</a>.\n"
+        },
+        {
+          "name": "catalogAppIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "App IDs of catalogs to which the algorithm can be applied.\n\nWix app IDs are <a href=\"https://dev.wix.com/api/rest/getting-started/wix-business-solutions#getting-started_wix-business-solutions_about-wix-business-solutions\" target=\"_blank\">listed here</a>.\n"
+        },
+        {
+          "name": "config",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Recommendations.AlgorithmConfig"
+            }
+          ],
+          "doc": "How the algorithm is configured."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CatalogReference",
+      "members": [
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app providing the catalog. For items from Wix apps, the following values always apply:\n+ Wix Stores: `\"215238eb-22a5-4c36-9e7b-e7c08025e04e\"`\n+ Wix Bookings: `\"13d21c63-b5ec-5912-8397-c3a5ddb27a97\"`"
+        },
+        {
+          "name": "catalogItemId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the item within its Wix or 3rd-party catalog. For example, `productId` for Wix Stores or `bookingId` for Wix Bookings."
+        },
+        {
+          "name": "options",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Additional info in key:value pairs. For example, to specify Wix Stores product options or variants:\n+ `{\"options\": {\"options\": {\"Size\": \"M\", \"Color\": \"Red\"}}}`\n+ `{\"options\": {\"variantId\": \"<VARIANT_ID>\"}}`"
+        }
+      ],
+      "docs": {
+        "description": [
+          "Used for grouping line items and is sent on add to cart"
+        ]
+      }
+    },
+    {
+      "name": "GetRecommendationOptions",
+      "members": [
+        {
+          "name": "items",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.CatalogReference"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The set of items for which to get recommendations. Required if the `algorithmType` is `RELATED_ITEMS`."
+        },
+        {
+          "name": "minimumRecommendedItems",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The minimum number of items that must be recommended by the algorithm for those items to be returned in the response.\n\nMax: `100`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetRecommendationRequest",
+      "members": [
+        {
+          "name": "algorithms",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.Algorithm"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of algorithms checked in a specific order determined by their `appID` and their position in the `algorithms` array.\nSee the method description for more information.\n\nIf no algorithm is able to return at least `minimumRecommendedItems` items, an empty array is returned.\n"
+        },
+        {
+          "name": "items",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.CatalogReference"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The set of items for which to get recommendations. Required if the `algorithmType` is `RELATED_ITEMS`."
+        },
+        {
+          "name": "minimumRecommendedItems",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The minimum number of items that must be recommended by the algorithm for those items to be returned in the response.\n\nMax: `100`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetRecommendationResponse",
+      "members": [
+        {
+          "name": "recommendation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Recommendations.Recommendation"
+            }
+          ],
+          "doc": "An object containing a list of items recommended by 1 of the specified algorithms. The recommendation is empty if none of the specified algorithms recommended enough items."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ItemAppIdNotSupportedByProvider",
+      "members": [
+        {
+          "name": "algorithms",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.Algorithm"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Algorithms that don't support the requested items."
+        },
+        {
+          "name": "items",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.CatalogReference"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Items with an App ID not supported by the provider. Supported App IDs can be found in the provider config in the Dev Center."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableAlgorithmsRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableAlgorithmsResponse",
+      "members": [
+        {
+          "name": "availableAlgorithms",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.AlgorithmInfo"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Algorithms available for use on your Wix site or project. See the method description for more information."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Recommendation",
+      "members": [
+        {
+          "name": "algorithm",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Recommendations.Algorithm"
+            }
+          ],
+          "doc": "The algorithm used to provide the recommendation."
+        },
+        {
+          "name": "items",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.CatalogReference"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Recommended items."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RecommendationAlgorithmNotSupported",
+      "members": [
+        {
+          "name": "unsupportedAlgorithms",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Recommendations.Algorithm"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Algorithms not supported by the provider."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}
