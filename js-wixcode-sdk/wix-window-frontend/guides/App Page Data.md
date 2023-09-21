@@ -2,7 +2,7 @@
 
 # App Page Data
 
-You can use the [`getAppPageData()`](/wix-window/getapppagedata) function in code for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
+You can use the [`getAppPageData()`](/wix-window-frontend/getapppagedata) function in code for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
 
 ## Booking Service Page
 
