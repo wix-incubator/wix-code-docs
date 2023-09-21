@@ -7,6 +7,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview API: Recommendations
+
+The new [Recommendations API](/wix-ecom-backend/recommendations) allows you to promote and recommend items to your customers using recommendation algorithms. It includes the following endpoints:
+
++ [List](/wix-ecom-backend/recommendations/listavailablealgorithms) available recommendation algorithms.
++ [Get](/wix-ecom-backend/recommendations/getrecommendation) a list of item recommendations from an algorithm.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(September 21, 2023)
 
 ### New Developer Preview API: Back In Stock Notifications
 
@@ -22,6 +32,7 @@ Functionality includes:
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (September 4, 2023)
+
 ### Migration of Booking Resources API
 
 We've re-released another legacy API.
