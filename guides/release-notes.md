@@ -7,7 +7,138 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-  
+### New Developer Preview API: Recommendations
+
+The new [Recommendations API](/wix-ecom-backend/recommendations) allows you to promote and recommend items to your customers using recommendation algorithms. It includes the following endpoints:
+
++ [List](/wix-ecom-backend/recommendations/listavailablealgorithms) available recommendation algorithms.
++ [Get](/wix-ecom-backend/recommendations/getrecommendation) a list of item recommendations from an algorithm.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(September 21, 2023)
+
+### New Developer Preview API: Back In Stock Notifications
+
+The new [Back In Stock Notifications API](/wix-ecom-backend/backinstocknotifications) allows you to manage customer requests to receive back in stock notifications when out-of-stock items become available.  
+
+Functionality includes:
++ [Settings](/wix-ecom-backend/backinstocksettings/introduction) that allow you to [start](/wix-ecom-backend/backinstocksettings/startcollectingrequests) and [stop](/wix-ecom-backend/backinstocksettings/stopcollectingrequests) collecting requests. 
++ [Creating](/wix-ecom-backend/backinstocknotifications/createbackinstocknotificationrequest) or [deleting](/wix-ecom-backend/backinstocknotifications/deletebackinstocknotificationrequest) a back in stock notification request.
++ [Getting](/wix-ecom-backend/backinstocknotifications/getbackinstocknotificationrequest) or [querying](/wix-ecom-backend/backinstocknotifications/querybackinstocknotificationrequests) back in stock notification requests.
++ Manually [reporting](/wix-ecom-backend/backinstocknotifications/reportitemsbackinstock) an item as back in stock, which triggers the requested notification to send.
++ Events when a back in stock notification request is [created](/wix-ecom-backend/events/onbackinstocknotificationrequestcreated), [updated](/wix-ecom-backend/events/onbackinstocknotificationrequestupdated), or [deleted](/wix-ecom-backend/events/onbackinstocknotificationrequestdeleted).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(September 4, 2023)
+
+### Migration of Booking Resources API
+
+We've re-released another legacy API.
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), and [July](#migration-of-notifications-api) 2023 re-releases of
+legacy APIs.
+
+This API is released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is a 
+[universal module](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+`wix-bookings.v1`:
+
+- Resources:
+    - [`updateSchedules`](https://www.wix.com/velo/reference/wix-bookings.v1/resources/updateschedule) replaces `updateResourceSchedule()`.
+    - `queryResourceCatalog()` is not available. 
+
+(August 31, 2023)
+
+### Update: New fields in Pricing Plans
+
+`wix-pricing-plans.v2`
+
+The [Plans object](wix-pricing-plans-v2/plans) has a new `formId` field, which is the ID of the order form associated with a plan at checkout.
+
+The [Orders object](wix-pricing-plans-v2/orders) has a new `formData` object, which contains the following fields: 
+- `formId`: the ID of the order form associated with a plan at checkout. 
+- `submissionId`: the ID of the plan's order form submitted at checkout. 
+- `submissionData`: the data submitted to the plan's order form at checkout.
+
+(August 31, 2023)  
+
+
+### New API: Web Modules
+
+> This API is only available for Wix Studio sites. Wix Studio is currently in beta and is not yet available to all users.
+
+`wix-web-module`
+
+The Web Modules API allows you to define functions in your backend code that can be called from your site's frontend code. Use the [`webMethod()`](wix-web-module/webmethod) function to define a backend function and the permissions needed to call it.
+
+(August 23, 2023)
+
+
+### New API: Forms Submissions
+
+The new [Form Submissions API](wix-forms-v2/submissions/introduction) allows you to manage form submissions from your site visitors. 
+
+Functionality includes: 
++ [Creating](wix-forms-v2/submissions/create-submission), [updating](wix-forms-v2/submissions/update-submission), or [deleting](wix-forms-v2/submissions/delete-submission) a submission.
++ [Getting](wix-forms-v2/submissions/get-submission) a submission or [querying](wix-forms-v2/submissions/query-submissions-by-namespace) submissions by namespace.
++ [Counting](wix-forms-v2/submissions/count-submissions) the number of submissions for a specific form. 
++ [Marking](wix-forms-v2/submissions/bulk-mark-submissions-as-seen) submissions as seen. 
++ [Confirming](wix-forms-v2/submissions/confirm-submission) a submission has been recorded. 
++ [Geting a media upload URL](wix-forms-v2/submissions/get-media-upload-url) to use when creating a submission with a field for uploading files. 
+
+(August 21, 2023)
+
+
+### New: Dashboard Builder Elements
+
+`Wix Editor Elements ($w)`
+
+You can now add these elements to dashboard pages in your Wix site or in Wix Blocks:
+
+* [DashboardButton]($w/dashboardbutton)
+* [DashboardHeading]($w/dashboardheading)
+* [DashboardIconButton]($w/dashboardiconbutton)
+* [DashboardInfoIcon]($w/dashboardinfoicon)
+* [DashboardInput]($w/dashboardinput)
+* [DashboardNumberInput]($w/dashboardnumberinput)
+* [DashboardText]($w/dashboardtext)
+* [DashboardTextButton]($w/dashboardtextbutton)
+* [DashboardToggleSwitch]($w/dashboardtoggleswitch)
+
+(August 13, 2023)
+
+### New API: Accordion
+
+`Wix Editor Elements ($w)`
+
+>**Note:** This feature is currently only available in Wix Studio and Editor X.
+
+The new [Accordion API]($w/accordion) allows you to display multiple, collapsible item elements 
+in a vertical stack, each with different content.
+
+(August 9, 2023)
+
+### New Developer Preview API: Wix Comments v2
+
+The new [Comments API](/wix-comments-v2/comments) allows you to manage a customized commenting program.  
+
+Functionality includes:
++ [Creating](/wix-comments-v2/comments/createcomment), [updating](/wix-comments-v2/comments/updatecomment), or [deleting](/wix-comments-v2/comments/deletecomment) a comment.
++ [Getting](/wix-comments-v2/comments/getcomment) or [querying](/wix-comments-v2/comments/querycomments) comments.
++ [Marking](/wix-comments-v2/comments/markcomment) and [Unmarking](/wix-comments-v2/comments/unmarkcomment) a comment.
++ [Counting](/wix-comments-v2/comments/countcomments) comments.
++ Events when a comment is [created](/wix-comments-v2/events/oncommentcreated), [updated](/wix-comments-v2/events/oncommentupdated), [deleted](/wix-comments-v2/events/oncommentdeleted), [marked](/wix-comments-v2/events/oncommentmarked), or [unmarked](/wix-comments-v2/events/oncommentunmarked).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(August 9, 2023)
+
 ### New SPI: eCommerce Validations
 
 The new eCommerce [Validations SPI](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations) is a [custom extension](https://support.wix.com/en/article/velo-custom-app-extensions-using-spis) that allows you to validate a site visitor's cart and checkout. 
@@ -241,7 +372,6 @@ The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/ser
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (May 22, 2023)
-
 
 ### New Developer Preview API: Wix Data v2
 
