@@ -52,14 +52,24 @@
             "body": [
               "",
               "import {services} from 'wix-bookings.v2';",
+              "import {categories} from 'wix-bookings.v1';",
+              "",
+              "async function getFirstCategory() {",
+              "    const response = await categories.listCategories();",
+              "    return response.categories[0]",
+              "}",
               "",
               "async function createClass() {",
+              "",
+              "    const category = await getFirstCategory();",
+              "",
               "    const serviceToBeCreated = {",
               "        type: services.ServiceType.CLASS,",
               "        name: \"Group Cat Hugging\",",
               "        description: \"Introducing the Purrfect Hug - the ultimate cat cuddling experience! Our team of expert cuddlers will come to your home and provide your furry feline with the warmest and snuggliest hugs around.\",",
               "        tagLine: \"Get some purr therapy with our cat hugging service!\",",
               "        defaultCapacity: 30,",
+              "        category: category,",
               "        payment: {",
               "            rateType: services.RateType.FIXED,",
               "            fixed: {",
@@ -74,7 +84,10 @@
               "                deposit: false,",
               "                pricingPlan: false",
               "            }",
-              "        }",
+              "        },",
+              "        onlineBooking: {",
+              "            enabled: true",
+              "        },",
               "    }",
               "",
               "    const createdService = await services.createService(serviceToBeCreated);",
@@ -90,13 +103,23 @@
             "title": "Create an appointment service ",
             "body": [
               "import {services} from 'wix-bookings.v2';",
+              "import {categories} from 'wix-bookings.v1';",
+              "",
+              "async function getFirstCategory() {",
+              "    const response = await categories.listCategories();",
+              "    return response.categories[0]",
+              "}",
               "",
               "async function createAppointment(staffMemberIds) {",
+              "",
+              "    const category = await getFirstCategory();",
+              "",
               "    const serviceToBeCreated = {",
               "        type: services.ServiceType.APPOINTMENT,",
               "        name: \"Personal Cat Hugging\",",
               "        description: \"Introducing the Purrfect Hug - the ultimate cat cuddling experience! Our team of expert cuddlers will come to your home and provide your furry feline with the warmest and snuggliest hugs around.\",",
               "        tagLine: \"Get some purr therapy with our cat hugging service!\",",
+              "        category: category,",
               "        payment: {",
               "            rateType: services.RateType.FIXED,",
               "            fixed: {",
@@ -128,14 +151,24 @@
             "title": "Create a course service ",
             "body": [
               "import {services} from 'wix-bookings.v2';",
+              "import {categories} from 'wix-bookings.v1';",
+              "",
+              "async function getFirstCategory() {",
+              "    const response = await categories.listCategories();",
+              "    return response.categories[0]",
+              "}",
               "",
               "async function createCourse() {",
+              "",
+              "    const category = await getFirstCategory();",
+              "",
               "    const serviceToBeCreated = {",
               "        type: services.ServiceType.COURSE,",
               "        name: \"Cat Hugging Training\",",
               "        description: \"Introducing the Purrfect Hug - the ultimate cat cuddling experience! Our team of expert cuddlers will train you to become the best cat hugger around.\",",
               "        tagLine: \"Get some purr therapy training with our cat hugging experts\",",
               "        defaultCapacity: 30,",
+              "        category: category,",
               "        payment: {",
               "            rateType: services.RateType.FIXED,",
               "            fixed: {",
@@ -150,6 +183,9 @@
               "                deposit: false,",
               "                pricingPlan: false",
               "            },",
+              "        },",
+              "        onlineBooking: {",
+              "            enabled: true",
               "        },",
               "    }",
               "",
@@ -3282,7 +3318,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -3342,7 +3378,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -3352,7 +3388,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dispatching"
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -3382,7 +3418,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -6254,6 +6290,16 @@
       "name": "ResourceType",
       "members": [
         {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of the resource."
+        },
+        {
           "name": "name",
           "readOnly": true,
           "optional": true,
@@ -6273,16 +6319,6 @@
             }
           ],
           "doc": ""
-        },
-        {
-          "name": "type",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The type of the resource."
         }
       ],
       "docs": {
@@ -7403,6 +7439,16 @@
     {
       "name": "ServiceResource",
       "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The unique identifier for the service resource, if not provided, would default to the resource type id."
+        },
         {
           "name": "requiredResourcesNumber",
           "optional": true,
