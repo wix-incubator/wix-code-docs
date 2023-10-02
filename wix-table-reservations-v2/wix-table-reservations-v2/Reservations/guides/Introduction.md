@@ -6,9 +6,9 @@ title: Introduction
 
 The Reservations API allows you to create and manage reservations at restaurants. 
 
-This API provides all the necessary functionality to move a reservation through the phases of its [lifecycle](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/reservations/reservation-lifecycle), such as from the reservation request until completion.
+This API provides all the necessary functionality to move a reservation through the phases of its [lifecycle](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/the-reservation-lifecycle), such as from the reservation request until completion.
 
-The Reservations API works together with the [Reservation Locations API](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/reservation-locations/introduction), which provides information about the physical location of a restaurant, as well as that restaurant’s availability and reservation conditions. 
+The Reservations API works together with the [Reservation Locations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/introduction), which provides information about the physical location of a restaurant, as well as that restaurant’s availability and reservation conditions. 
 
 The Reservations API also works together with the [Time Slots API](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/time-slots/introduction), which allows you to retrieve availability information about time slots at a restaurant on a specific date and for a specific party size. 
 
