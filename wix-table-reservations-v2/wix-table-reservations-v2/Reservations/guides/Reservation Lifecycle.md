@@ -26,7 +26,7 @@ The following statuses are listed roughly in order of their position in the rese
 ### Create a reservation
 This API provides 2 endpoints for creating reservations.
 
-[`createHeldReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createheldreservation) - This endpoint creates a reservation with the `HELD` status. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error. 
+[`createHeldReservation()`](#createHeldReservation) - This endpoint creates a reservation with the `HELD` status. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error. 
 
 The Reservations pages created by the Table Reservations app on Wix sites use this endpoint to temporarily reserve time slots selected by customers while they enter further details.
 
