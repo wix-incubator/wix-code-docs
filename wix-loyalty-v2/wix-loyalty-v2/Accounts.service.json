@@ -234,6 +234,16 @@
           ],
           "doc": "List of contactIds + points to either insert as new loyalty accounts, or update if contacts already exist as loyalty accounts",
           "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.BulkUpsertAccountsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
         }
       ],
       "requiredFields": [
@@ -265,9 +275,9 @@
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "  ",
-              " async function bulkUpsertAccounts(accounts) {",
+              " async function bulkUpsertAccounts(accounts, options) {",
               "   try {",
-              "     const result = await accounts.bulkUpsertAccounts(accounts);",
+              "     const result = await accounts.bulkUpsertAccounts(accounts, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -2305,6 +2315,46 @@
       }
     },
     {
+      "name": "ApplicationError",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code."
+        },
+        {
+          "name": "data",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Data related to the error."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the error."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "BillingReference",
       "members": [
         {
@@ -2352,6 +2402,96 @@
       }
     },
     {
+      "name": "BulkAccountResult",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+            }
+          ],
+          "doc": "The created/updated account is returned if specified so in request message."
+        },
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ItemMetadata"
+            }
+          ],
+          "doc": "LoyaltyAccount metadata."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkActionMetadata",
+      "members": [
+        {
+          "name": "totalFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that couldn't be processed."
+        },
+        {
+          "name": "totalSuccesses",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were successfully processed."
+        },
+        {
+          "name": "undetailedFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of failures without details because detailed failure threshold was exceeded."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpsertAccountsOptions",
+      "members": [
+        {
+          "name": "returnAccounts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If true, the upserted accounts are returned in response"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "BulkUpsertAccountsRequest",
       "members": [
         {
@@ -2369,6 +2509,16 @@
             }
           ],
           "doc": "List of contactIds + points to either insert as new loyalty accounts, or update if contacts already exist as loyalty accounts"
+        },
+        {
+          "name": "returnAccounts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If true, the upserted accounts are returned in response"
         }
       ],
       "docs": {
@@ -2381,7 +2531,17 @@
       "name": "BulkUpsertAccountsResponse",
       "members": [
         {
-          "name": "account",
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.BulkActionMetadata"
+            }
+          ],
+          "doc": "Numbers of successes and failures"
+        },
+        {
+          "name": "result",
           "optional": true,
           "type": [
             {
@@ -2389,7 +2549,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-loyalty-v2.Accounts.LoyaltyAccount"
+                    "referenceType": "wix-loyalty-v2.Accounts.BulkAccountResult"
                   }
                 ]
               }
@@ -3895,6 +4055,56 @@
             }
           ],
           "doc": "interval unit of measure"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ItemMetadata",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Item ID. Should always be available, unless it's impossible (for example, when failing to create an item)."
+        },
+        {
+          "name": "error",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-v2.Accounts.ApplicationError"
+            }
+          ],
+          "doc": "Details about the error in case of failure."
+        },
+        {
+          "name": "originalIndex",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of the item within the request array. Allows for correlation between request and response items."
+        },
+        {
+          "name": "success",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the requested action was successful for this item. When `false`, the `error` field is populated."
         }
       ],
       "docs": {
