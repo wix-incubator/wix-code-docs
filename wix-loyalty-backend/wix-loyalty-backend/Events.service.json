@@ -1489,6 +1489,46 @@
       }
     },
     {
+      "name": "loyaltyV1AccountApplicationError",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code."
+        },
+        {
+          "name": "data",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Data related to the error."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the error."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "loyaltyV1AccountBackendEventMetadata",
       "members": [
         {
@@ -1582,6 +1622,78 @@
       }
     },
     {
+      "name": "loyaltyV1AccountBulkAccountResult",
+      "members": [
+        {
+          "name": "account",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountLoyaltyAccount",
+              "displayName": "LoyaltyAccount"
+            }
+          ],
+          "doc": "The created/updated account is returned if specified so in request message."
+        },
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountItemMetadata",
+              "displayName": "ItemMetadata"
+            }
+          ],
+          "doc": "LoyaltyAccount metadata."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "loyaltyV1AccountBulkActionMetadata",
+      "members": [
+        {
+          "name": "totalFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that couldn't be processed."
+        },
+        {
+          "name": "totalSuccesses",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were successfully processed."
+        },
+        {
+          "name": "undetailedFailures",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of failures without details because detailed failure threshold was exceeded."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "loyaltyV1AccountBulkUpsertAccountsRequest",
       "members": [
         {
@@ -1600,6 +1712,16 @@
             }
           ],
           "doc": "List of contactIds + points to either insert as new loyalty accounts, or update if contacts already exist as loyalty accounts"
+        },
+        {
+          "name": "returnAccounts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "If true, the upserted accounts are returned in response"
         }
       ],
       "docs": {
@@ -1612,7 +1734,18 @@
       "name": "loyaltyV1AccountBulkUpsertAccountsResponse",
       "members": [
         {
-          "name": "account",
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountBulkActionMetadata",
+              "displayName": "BulkActionMetadata"
+            }
+          ],
+          "doc": "Numbers of successes and failures"
+        },
+        {
+          "name": "result",
           "optional": true,
           "type": [
             {
@@ -1620,8 +1753,8 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountLoyaltyAccount",
-                    "displayName": "LoyaltyAccount"
+                    "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountBulkAccountResult",
+                    "displayName": "BulkAccountResult"
                   }
                 ]
               }
@@ -3031,6 +3164,57 @@
             }
           ],
           "doc": "interval unit of measure"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "loyaltyV1AccountItemMetadata",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Item ID. Should always be available, unless it's impossible (for example, when failing to create an item)."
+        },
+        {
+          "name": "error",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-loyalty-backend.Events.loyaltyV1AccountApplicationError",
+              "displayName": "ApplicationError"
+            }
+          ],
+          "doc": "Details about the error in case of failure."
+        },
+        {
+          "name": "originalIndex",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Index of the item within the request array. Allows for correlation between request and response items."
+        },
+        {
+          "name": "success",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the requested action was successful for this item. When `false`, the `error` field is populated."
         }
       ],
       "docs": {
@@ -7687,7 +7871,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -7750,7 +7934,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -7760,7 +7944,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dispatching"
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -7790,7 +7974,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -7993,6 +8177,36 @@
       }
     },
     {
+      "name": "loyaltyV1ProgramGetLoyaltyProgramPremiumFeaturesRequest",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "loyaltyV1ProgramGetLoyaltyProgramPremiumFeaturesResponse",
+      "members": [
+        {
+          "name": "loyaltyProgram",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true if user has loyalty program feature"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "loyaltyV1ProgramGetLoyaltyProgramRequest",
       "members": [],
       "docs": {
@@ -8046,6 +8260,17 @@
             }
           ],
           "doc": "Date and time the program was updated."
+        },
+        {
+          "name": "isPremium",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to true if user has required plan to activate program"
         },
         {
           "name": "name",
