@@ -6,7 +6,7 @@ title: Introduction
 
 The Reservations Locations API allows you to configure reservation settings for a restaurant location. 
 
-A reservation location represents a physical restaurant and holds an address that corresponds to the on-site location of that restaurant (except when the restaurant has no on-site location). Each reservation location has its own calendar, scheduling rules, table management settings, and other attributes that can be set and modified by the API.
+A reservation location represents a physical restaurant and holds the ID of a `location` object. The location object holds the address that corresponds to the on-site location of that restaurant (except when the restaurant has no on-site location). Each reservation location has its own calendar, scheduling rules, table management settings, and other attributes that can be set and modified by the API.
 
 With the Reservations Locations API, you can:
 * Query or list reservation locations.
@@ -27,7 +27,7 @@ This API requires that the site owner installs the Wix Table Reservations app.
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
 * **Turnover time:** How much time a party needs for the entire reservation - from being seated to leaving the restaurant.
-* **Time slot:** A period of time in a restaurant’s calendar. Restaurants generally split their calendar and reservation life-cycle into time slots of equal lengths.
+* **Time slot:** A period of time in a restaurant’s calendar.
 * **Party:** A group of guests that come to dine together at a restaurant.
 * **Seat:** A chair or place for one person in the restaurant.
 * **Seat pacing:** The maximum number of seats that can be filled by new reservations within a 15-minute period.

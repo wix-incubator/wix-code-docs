@@ -34,9 +34,9 @@ After a customer completes the reservation process, call [`reserveReservation()`
 
 You cannot call [`updateReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/updatereservation) to change a reservation’s status from `HELD`. Trying to do so will return an error.
 
-[`createReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createreservation) - This endpoint creates a reservation with the status of your choice. Generally, a reservation should be created with either the `RESERVED` status or the `REQUESTED` status if manual approval is required for confirmation (see manual approval below).
+[`createReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createreservation) - This endpoint creates a reservation with either the `RESERVED` status or the `REQUESTED` status if manual approval is required for confirmation (see manual approval below).
 
-`Create Reservation` allows you to provide more details than `Create Held Reservation`. It also gives you the option to override your restaurant’s rules regarding online availability and table management.
+If you call `createReservation()` with `TABLE_RESERVATIONS.RESERVATION_CREATE_FORCE` permissions, you can set more properties of the reservation in the request. This allows you to create the reservation with a status of your choice, and gives you the option to override the restaurant’s rules regarding online availability and table management.
 
 ### Requiring manual approval
 To require manual approval for `REQUESTED` reservations at a location before they’re confirmed (`RESERVED`), enable manual approval for online reservations in the [Table Reservations app](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Frestaurants/table-reservations) in your dashboard.

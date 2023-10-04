@@ -27,7 +27,7 @@ This API requires that:
 
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
-* **Time slot:** A period of time in a restaurant’s calendar. Restaurants generally split their calendar and reservation life-cycle into time slots of equal lengths.
+* **Time slot:** A period of time in a restaurant’s calendar.
 * **Party**: A group of guests that come to dine together at a restaurant.
 * **Status:** The status of a reservation represents its position in the reservation lifecycle. For example, `RESERVED`, `CANCELED`, or `FINISHED`.
 * **Reservation location:** A representation of a physical restaurant location at which reservations can be made.
