@@ -21,6 +21,11 @@ This API requires that:
 * You install the Wix Table Reservations app.
 * You have at least 1 location configured in your Dashboard under [Business Info](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fbusiness-info).
 
+To use the Reservations API, import `reservations` from wix-table-reservations.v2:
+
+```js
+import { reservations } from 'wix-table-reservations.v2';
+```
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
 * **Time slot:** A period of time in a restaurant’s calendar.

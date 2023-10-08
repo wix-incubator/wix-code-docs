@@ -20,6 +20,13 @@ Once a reservation location has been configured, you can:
 
 ## Before you begin
 This API requires that you install the Wix Table Reservations app.
+
+To use the Reservation Locations API, import `reservationLocations` from wix-table-reservations.v2:
+
+```js
+import { reservationLocations } from 'wix-table-reservations.v2';
+```
+
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
 * **Turnover time:** How much time a party needs for the entire reservation - from being seated to leaving the restaurant.
