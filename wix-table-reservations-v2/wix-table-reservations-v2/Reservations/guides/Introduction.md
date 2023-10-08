@@ -2,15 +2,13 @@
 title: Introduction
 ---
 
-# Introduction
-
 The Reservations API allows you to create and manage reservations at restaurants. 
 
 This API provides all the necessary functionality to move a reservation through the phases of its [lifecycle](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/the-reservation-lifecycle), such as from the reservation request until completion.
 
-The Reservations API works together with the [Reservation Locations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/introduction), which provides information about the physical location of a restaurant, as well as that restaurant’s availability and reservation conditions. 
+The Reservations API works together with the [Reservation Locations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations), which provides information about the physical location of a restaurant, as well as that restaurant’s availability and reservation conditions. 
 
-The Reservations API also works together with the [Time Slots API](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/time-slots/introduction), which allows you to retrieve availability information about time slots at a restaurant on a specific date and for a specific party size. 
+The Reservations API also works together with the [Time Slots API](https://www.wix.com/velo/reference/wix-table-reservations-v2/timeslots), which allows you to retrieve availability information about time slots at a restaurant on a specific date and for a specific party size. 
 
 With the Reservations API, you can:
 * Create and manage reservations at a restaurant.
@@ -18,12 +16,8 @@ With the Reservations API, you can:
 
 ## Before you begin
 This API requires that:
-* The site owner installs the Wix Table Reservations app.
-* The site owner configures at least 1 location configured in your site’s dashboard under Business Info.
-
-
-## Use Cases
-[Reservation app for restaurants on a Wix site](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/sample-flows#reservation-app-for-restaurants-on-a-wix-site)
+* You install the Wix Table Reservations app.
+* You have at least 1 location configured in your Dashboard under [Business Info](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fbusiness-info).
 
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
