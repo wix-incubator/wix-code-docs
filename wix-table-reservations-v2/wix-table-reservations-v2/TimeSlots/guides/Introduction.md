@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# Introduction
+
 The Time Slots API allows you to retrieve availability information for time slots at a reservation location on and around a given date and for a given party size.
 
 A time slot represents a period of time in a restaurant’s calendar. Time slots can have any duration, and restaurants generally set their durations based on party size.

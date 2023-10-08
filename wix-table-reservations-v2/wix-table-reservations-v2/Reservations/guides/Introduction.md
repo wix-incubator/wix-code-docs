@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# Introduction
+
 The Reservations API allows you to create and manage reservations at restaurants. 
 
 This API provides all the necessary functionality to move a reservation through the phases of its [lifecycle](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/the-reservation-lifecycle), such as from the reservation request until completion.

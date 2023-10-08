@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# Introduction
+
 The Reservations API provides all the functionality required to create and manage restaurant table reservations. 
 
 The Reservations API contains the following APIs:

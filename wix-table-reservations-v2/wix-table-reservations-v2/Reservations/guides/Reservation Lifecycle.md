@@ -2,6 +2,8 @@
 title: The Reservation Lifecycle
 ---
 
+# The Reservation Lifecycle
+
 Reservations progress from creation to completion through a series of phases. Each phase is represented by a status, which is stored as an enum in the `status` field of a `reservation` object. 
 
 This article explains the available statuses, and how a reservation can progress using the Reservations API.

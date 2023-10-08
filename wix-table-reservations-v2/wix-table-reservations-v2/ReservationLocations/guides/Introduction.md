@@ -2,6 +2,8 @@
 title: Introduction
 ---
 
+# Introduction
+
 The Reservations Locations API allows you to configure reservation settings for a restaurant location. 
 
 A reservation location represents a physical restaurant and holds the ID of a [`location`](https://www.wix.com/velo/reference/wix-business-tools-v2/locations/introduction) object. The location object holds the address that corresponds to the on-site location of that restaurant (except when the restaurant has no on-site location). Each reservation location has its own calendar, scheduling rules, table management settings, and other attributes that can be set and modified by the API.
