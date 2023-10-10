@@ -30,7 +30,5 @@ In the first version of the API, modules were mostly divided between frontend an
 From version 2 and up, modules support universal functionality. Universal modules simplify coding by allowing you to import modules directly into any code file on your site. You can identify universal modules by looking for a `.v2` or higher suffix in the module name. If the module name doesn't indicate that it's specifically for frontend or backend code, it's a universal module.
 
 Within universal modules, some functions may still be limited to backend use only. These functions are indicated by the following notation in the API Reference:  
-`
-This function is not a universal function and only runs on the backend.
-`
+![image](https://github.com/wix-incubator/wix-code-docs/assets/89579857/7fbc9a8e-82e5-454e-b3e7-3fcdf30ee584)
 
