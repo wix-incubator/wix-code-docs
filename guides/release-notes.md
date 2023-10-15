@@ -8,9 +8,9 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### New $w() Product Page APIs
+### New $w Product Page APIs
 
-We added the following new $w() Product Page APIs:
+We added the following new $w Product Page APIs:
 
 + [getCustomText()](/$w/productpage/getcustomtext): Gets the values of a product's custom text fields.
 + [getQuantity()](/$w/productpage/getquantity): Gets the quantity of a product in the Product Page.
@@ -24,7 +24,7 @@ We added the following new $w() Product Page APIs:
 + [setBuyNowLabel()](/$w/productpage/setbuynowlabel): Sets the Buy Now button's label.
 + [setQuantity()](/$w/productpage/setquantity): Sets the quantity of a product in the Product Page.
 
-We also added a tutorial that uses some of the new $w() Product Page APIs: [Tutorial: Adding a Request A Quote Option to a Wix Store Product Page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-e-commerce-stores/tutorial-request-a-quote). 
+We also added a tutorial that uses some of the new $w Product Page APIs: [Tutorial: Adding a Request A Quote Option to a Wix Store Product Page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-e-commerce-stores/tutorial-request-a-quote). 
 
 (October 10, 2023)
 
