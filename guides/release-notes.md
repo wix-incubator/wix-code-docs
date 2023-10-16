@@ -10,7 +10,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ### Migration of legacy APIs, batch 3
 
 In the past few weeks, we've re-released some more legacy APIs.
-This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), [July](#migration-of-notifications-api), and [August](#migration-of-bookings-resources-api) 2023 re-releases of
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), [July](#migration-of-notifications-api), and [August](#migration-of-booking-resources-api) 2023 re-releases of
 legacy APIs.
 
 You don't need to take any action at this time.
@@ -40,12 +40,12 @@ as well as any new or removed functionality as compared to the previous release:
 
 - All functions are now in the `SiteProperties` namespace inside the module.
 - Site Properties:
-  - New: [`getSiteProperties()`](/wix-businesstools-v2/siteproperties/getsiteproperties).
+  - New: [`getSiteProperties()`](/wix-business-tools-v2/siteproperties/getsiteproperties).
     This function replaces all functions in the `GeneralInfo` namespace inside the `wix-site-backend`module.
-  - New: [`updateBusinessContact()`](/wix-businesstools-v2/siteproperties/updatebusinesscontact).
-  - New: [`updateBusinessProfile()`](/wix-businesstools-v2/siteproperties/updatebusinessprofile).
-  - New: [`updateBusinessSchedule()`](/wix-businesstools-v2/siteproperties/updatebusinessschedule).
-  - New: [`updateConsentPolicy()`](/wix-businesstools-v2/siteproperties/updateconsentpolicy).
+  - New: [`updateBusinessContact()`](/wix-business-tools-v2/siteproperties/updatebusinesscontact).
+  - New: [`updateBusinessProfile()`](/wix-business-tools-v2/siteproperties/updatebusinessprofile).
+  - New: [`updateBusinessSchedule()`](/wix-business-tools-v2/siteproperties/updatebusinessschedule).
+  - New: [`updateConsentPolicy()`](/wix-business-tools-v2/siteproperties/updateconsentpolicy).
 
 `wix-members.v2`:
 
