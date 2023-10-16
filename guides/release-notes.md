@@ -50,16 +50,16 @@ as well as any new or removed functionality as compared to the previous release:
 
 `wix-members.v2`:
 
-- Functions from the previous `CurrentMember` namespace are now in the `Members`.
+- Functions from the previous `CurrentMember` namespace are now in the `Members` namespace.
 - Members: 
   - [`createMember()`](wix-members-v2/members/createmember).
   - [`listMembers()`](wix-members-v2/members/listmembers).
   - [`queryMembers()`](wix-members-v2/members/querymembers).
-  - [`getCurrentMember()`](wix-members-v2/members/getcurrentmember) replaces `getMember()` from CurrentMember.
-  - [`joinCommunity()`](wix-members-v2/members/joincommunity) replaces `makeProfilePublic()` from CurrentMember.
-  - [`leaveCommunity()`](wix-members-v2/members/leavecommunity) replaces `makeProfilePrivate()` from CurrentMember.
-  - [`updateCurrentMemberSlug()`](wix-members-v2/members/updatecurrentmemberslug) replaces `updateSlug()` from CurrentMember.
-- `getRoles()` from CurrentMember is not available.
+  - [`getCurrentMember()`](wix-members-v2/members/getcurrentmember) replaces `getMember()` from `CurrentMember`.
+  - [`joinCommunity()`](wix-members-v2/members/joincommunity) replaces `makeProfilePublic()` from `CurrentMember`.
+  - [`leaveCommunity()`](wix-members-v2/members/leavecommunity) replaces `makeProfilePrivate()` from `CurrentMember`.
+  - [`updateCurrentMemberSlug()`](wix-members-v2/members/updatecurrentmemberslug) replaces `updateSlug()` from `CurrentMember`.
+- `getRoles()` from `CurrentMember` is not available.
 
 (October 15, 2023)
 
