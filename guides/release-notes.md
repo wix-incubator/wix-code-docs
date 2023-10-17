@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Slideshow Button
+
+`Wix Editor Elements ($w)`
+
+The new [SlideshowButton API]($w/slideshowbutton) allows you to customize the navigation buttons on your slideshow. Similar to the [Button]($w/button) element, you can manage the labels, styles, icons, and visibility settings of a slideshow button. Note that you can't set a link to a slideshow button. 
+
+(October 17, 2023)
+
 ### Migration of legacy APIs, batch 3
 
 In the past few weeks, we've re-released some more legacy APIs.
