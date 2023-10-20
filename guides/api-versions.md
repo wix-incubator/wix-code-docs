@@ -21,7 +21,7 @@ The meanings of module names can change between versions. Use this guide to unde
 | ----------- | --------- | --------- |
 | `wix-{module}`| A module that only works with frontend code. <br/> Exceptions: `wix-data`, `wix-fetch`, `wix-router` | A [universal module](#universal-modules). |
 | `wix-{module}-backend`| A module that only works with backend code. | A module that only works with backend code. |
-| `wix-{module}-frontend`| N/A | A module that only works with frontend code. |
+| `wix-{module}-frontend`| A module that only works with frontend code. | A module that only works with frontend code. |
 
 ## Universal modules 
 
