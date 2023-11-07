@@ -18,15 +18,15 @@ title: Introduction
 The Files API allows you to manage files and generate file urls from your Media Manager. 
 
 With the Files API, you can:
-- [Get](media/files/getfiledescriptor), [list](media/files/listfiles), and [search](media/files/searchfiles) files.
-- [Import](media/files/importfile), [update](media/files/updatefiledescriptor), and [delete](media/files/bulkdeletefiles) files. 
-- [Restore](media/files/bulkrestorefilesfromtrashbin) files from the trash bin.
+- [Get](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor), [list](https://www.wix.com/velo/reference/wix-media-v2/files/listfiles), and [search](media/files/searchfiles) files.
+- [Import](mhttps://www.wix.com/velo/reference/wix-media-v2/files/importfile), [update](https://www.wix.com/velo/reference/wix-media-v2/files/updatefiledescriptor), and [delete](https://www.wix.com/velo/reference/wix-media-v2/files/bulkdeletefiles) files.
+- [Restore](https://www.wix.com/velo/reference/wix-media-v2/files/bulkrestorefilesfromtrashbin) files from the trash bin.
 - Generate URLs for:
-  - [Downloading files](media/files/generatefiledownloadurl).
-  - [Downloading a compressed file](media/files/generatefilesdownloadurl).
-  - [Uploading files](media/files/generatefileuploadurl).
-  - [Uploading files larger than 10MB](media/files/generatefileresumableuploadurl).
-  - [Streaming video files](media/files/generatevideostreamingurl).
+  - [Downloading files](https://www.wix.com/velo/reference/wix-media-v2/files/generatefiledownloadurl).
+  - [Downloading a compressed file](https://www.wix.com/velo/reference/wix-media-v2/files/generatefilesdownloadurl).
+  - [Uploading files](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileuploadurl).
+  - [Uploading files larger than 10MB](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileresumableuploadurl).
+  - [Streaming video files](https://www.wix.com/velo/reference/wix-media-v2/files/generatevideostreamingurl).
 
 
 Learn more [about the Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
