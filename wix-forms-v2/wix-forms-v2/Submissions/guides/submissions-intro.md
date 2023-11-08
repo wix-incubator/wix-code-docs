@@ -36,7 +36,7 @@ import { submissions } from 'wix-forms.v2';
 
 ## Before you begin
 
-It’s important to note the following points before starting to code:
+It’s important to note the following points before you start to code:
 - You must first have a form on your site in order to manage form submissions.  
 
 
