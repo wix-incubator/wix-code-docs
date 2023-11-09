@@ -79,7 +79,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "cancelOrder"
+      "syntaxName": "cancelOrder",
+      "isAdminMethod": true
     },
     {
       "name": "createOfflineOrder",
@@ -102,11 +103,10 @@
             }
           ],
           "doc": "Options for creating an offline order.",
-          "required": true
+          "required": false
         }
       ],
       "requiredFields": [
-        "options",
         "options.memberId",
         "planId"
       ],
@@ -152,7 +152,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "createOfflineOrder"
+      "syntaxName": "createOfflineOrder",
+      "isAdminMethod": true
     },
     {
       "name": "getOfflineOrderPreview",
@@ -175,11 +176,10 @@
             }
           ],
           "doc": "Options for previewing the offline order.",
-          "required": true
+          "required": false
         }
       ],
       "requiredFields": [
-        "options",
         "options.memberId",
         "planId"
       ],
@@ -225,7 +225,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "getOfflineOrderPreview"
+      "syntaxName": "getOfflineOrderPreview",
+      "isAdminMethod": true
     },
     {
       "name": "getPricePreview",
@@ -367,7 +368,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "managementGetOrder"
+      "syntaxName": "managementGetOrder",
+      "isAdminMethod": true
     },
     {
       "name": "managementListOrders",
@@ -426,7 +428,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "managementListOrders"
+      "syntaxName": "managementListOrders",
+      "isAdminMethod": true
     },
     {
       "name": "markAsPaid",
@@ -487,7 +490,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "markAsPaid"
+      "syntaxName": "markAsPaid",
+      "isAdminMethod": true
     },
     {
       "name": "memberGetOrder",
@@ -678,7 +682,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "pauseOrder"
+      "syntaxName": "pauseOrder",
+      "isAdminMethod": true
     },
     {
       "name": "postponeEndDate",
@@ -750,7 +755,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "postponeEndDate"
+      "syntaxName": "postponeEndDate",
+      "isAdminMethod": true
     },
     {
       "name": "requestCancellation",
@@ -883,7 +889,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "resumeOrder"
+      "syntaxName": "resumeOrder",
+      "isAdminMethod": true
     }
   ],
   "messages": [
@@ -2104,16 +2111,6 @@
           "doc": "The time of the event. Useful if there was a delay in dispatching"
         },
         {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-pricing-plans-v2.Orders.ExtendedFieldsUpdatedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "originatedFrom",
           "optional": true,
           "type": [
@@ -2162,7 +2159,6 @@
               "actionEvent",
               "createdEvent",
               "deletedEvent",
-              "extendedFieldsUpdatedEvent",
               "updatedEvent"
             ]
           }
@@ -2203,16 +2199,6 @@
           "type": [
             {
               "referenceType": "wix-pricing-plans-v2.Orders.EntityDeletedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-pricing-plans-v2.Orders.ExtendedFieldsUpdatedEvent"
             }
           ],
           "doc": ""
@@ -2323,17 +2309,27 @@
       }
     },
     {
-      "name": "ExtendedFieldsUpdatedEvent",
+      "name": "Fee",
       "members": [
         {
-          "name": "currentEntityAsJson",
+          "name": "amount",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Amount of fee to be charged"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fee name"
         }
       ],
       "docs": {
@@ -2353,7 +2349,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reference to the form which was used to gather additional data in checkout."
+          "doc": "ID of the form associated with the plan at checkout."
         },
         {
           "name": "submissionData",
@@ -2364,7 +2360,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Data submitted to the form at checkout.\nThis field is only returned when `FieldSet.FULL` is specified when fetching the data"
+          "doc": "Data submitted to the plan's order form at checkout.\n\nThis field is returned when a method's `fieldset` is set to `\"FULL\"`.\n"
         },
         {
           "name": "submissionId",
@@ -2374,7 +2370,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reference to the submission of the form."
+          "doc": "ID of a submission to the plan's order form at checkout. Every time a visitor completes the checkout process for a plan, a new submission is created."
         }
       ],
       "docs": {
@@ -3851,6 +3847,17 @@
           "doc": "Current end date and time for the ordered plan.\n\n`endDate` may be updated over the course of an order. If the order is [paused](#pauseorder),\nit will have a later `endDate` once it [resumes](#resumeorder). `endDate` may also be [postponed](#postponeenddate).\n\nOmitted if the order is valid until canceled and still `ACTIVE`."
         },
         {
+          "name": "formData",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.FormData"
+            }
+          ],
+          "doc": "Information about the form submitted during the plan's checkout."
+        },
+        {
           "name": "freeTrialDays",
           "readOnly": true,
           "optional": true,
@@ -4561,6 +4568,16 @@
             }
           ],
           "doc": "Total discount applied to the order."
+        },
+        {
+          "name": "proration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price change after billing date was change and price was adjusted. Could be positive and negative values."
         },
         {
           "name": "subtotal",
