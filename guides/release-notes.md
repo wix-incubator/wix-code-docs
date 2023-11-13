@@ -7,6 +7,281 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: Slideshow Button
+
+`Wix Editor Elements ($w)`
+
+The new [SlideshowButton API]($w/slideshowbutton) allows you to customize the navigation buttons on your slideshow. Similar to the [Button]($w/button) element, you can manage the labels, styles, icons, and visibility settings of a slideshow button. Note that you can't set a link to a slideshow button. 
+
+(October 17, 2023)
+
+### Migration of legacy APIs, batch 3
+
+In the past few weeks, we've re-released some more legacy APIs.
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), [July](#migration-of-notifications-api), and [August](#migration-of-booking-resources-api) 2023 re-releases of
+legacy APIs.
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+#### What's in this release
+
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
+
+`wix-business-tools.v2`:
+
+- All functions are now in the `SiteProperties` namespace inside the module.
+- Site Properties:
+  - New: [`getSiteProperties()`](/wix-business-tools-v2/siteproperties/getsiteproperties).
+    This function replaces all functions in the `GeneralInfo` namespace inside the `wix-site-backend`module.
+  - New: [`updateBusinessContact()`](/wix-business-tools-v2/siteproperties/updatebusinesscontact).
+  - New: [`updateBusinessProfile()`](/wix-business-tools-v2/siteproperties/updatebusinessprofile).
+  - New: [`updateBusinessSchedule()`](/wix-business-tools-v2/siteproperties/updatebusinessschedule).
+  - New: [`updateConsentPolicy()`](/wix-business-tools-v2/siteproperties/updateconsentpolicy).
+
+`wix-members.v2`:
+
+- Functions from the previous `CurrentMember` namespace are now in the `Members` namespace.
+- Members: 
+  - [`createMember()`](wix-members-v2/members/createmember).
+  - [`listMembers()`](wix-members-v2/members/listmembers).
+  - [`queryMembers()`](wix-members-v2/members/querymembers).
+  - [`getCurrentMember()`](wix-members-v2/members/getcurrentmember) replaces `getMember()` from `CurrentMember`.
+  - [`joinCommunity()`](wix-members-v2/members/joincommunity) replaces `makeProfilePublic()` from `CurrentMember`.
+  - [`leaveCommunity()`](wix-members-v2/members/leavecommunity) replaces `makeProfilePrivate()` from `CurrentMember`.
+  - [`updateCurrentMemberSlug()`](wix-members-v2/members/updatecurrentmemberslug) replaces `updateSlug()` from `CurrentMember`.
+- `getRoles()` from `CurrentMember` is not available.
+
+(October 15, 2023)
+### New $w Product Page APIs
+
+We added the following new $w Product Page APIs:
+
++ [getCustomText()](/$w/productpage/getcustomtext): Gets the values of a product's custom text fields.
++ [getQuantity()](/$w/productpage/getquantity): Gets the quantity of a product in the Product Page.
++ [getSelectedChoices()](/$w/productpage/getselectedchoices): Gets the selected product option choices of a product in the Product Page.
++ [getSelectedVariantId()](/$w/productpage/getselectedvariantid): Gets the variant ID of the selected product variant.
++ [onAddToCart()](/$w/productpage/onaddtocart): Adds an event handler that runs when the **Add To Cart** button in the Product Page is clicked.
++ [onBuyNow()](/$w/productpage/onbuynow): Adds an event handler that runs when the **Buy Now** button in the Product Page is clicked.
++ [onChoiceSelected()](/$w/productpage/onchoiceselected): Adds an event handler that runs when a product option choice is selected.
++ [onQuantityChanged()](/$w/productpage/onquantitychanged): Adds an event handler that runs when a product's quantity is changed.
++ [setAddToCartLabel()](/$w/productpage/setaddtocartlabel): Sets the Add To Cart button's label.
++ [setBuyNowLabel()](/$w/productpage/setbuynowlabel): Sets the Buy Now button's label.
++ [setQuantity()](/$w/productpage/setquantity): Sets the quantity of a product in the Product Page.
+
+We also added a tutorial that uses some of the new $w Product Page APIs: [Tutorial: Adding a Request A Quote Option to a Wix Store Product Page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-e-commerce-stores/tutorial-request-a-quote). 
+
+(October 10, 2023)
+
+### New Developer Preview API: Recommendations
+
+The new [Recommendations API](/wix-ecom-backend/recommendations) allows you to promote and recommend items to your customers using recommendation algorithms. It includes the following endpoints:
+
++ [List](/wix-ecom-backend/recommendations/listavailablealgorithms) available recommendation algorithms.
++ [Get](/wix-ecom-backend/recommendations/getrecommendation) a list of item recommendations from an algorithm.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(September 21, 2023)
+
+### New Developer Preview API: Back In Stock Notifications
+
+The new [Back In Stock Notifications API](/wix-ecom-backend/backinstocknotifications) allows you to manage customer requests to receive back in stock notifications when out-of-stock items become available.  
+
+Functionality includes:
++ [Settings](/wix-ecom-backend/backinstocksettings/introduction) that allow you to [start](/wix-ecom-backend/backinstocksettings/startcollectingrequests) and [stop](/wix-ecom-backend/backinstocksettings/stopcollectingrequests) collecting requests. 
++ [Creating](/wix-ecom-backend/backinstocknotifications/createbackinstocknotificationrequest) or [deleting](/wix-ecom-backend/backinstocknotifications/deletebackinstocknotificationrequest) a back in stock notification request.
++ [Getting](/wix-ecom-backend/backinstocknotifications/getbackinstocknotificationrequest) or [querying](/wix-ecom-backend/backinstocknotifications/querybackinstocknotificationrequests) back in stock notification requests.
++ Manually [reporting](/wix-ecom-backend/backinstocknotifications/reportitemsbackinstock) an item as back in stock, which triggers the requested notification to send.
++ Events when a back in stock notification request is [created](/wix-ecom-backend/events/onbackinstocknotificationrequestcreated), [updated](/wix-ecom-backend/events/onbackinstocknotificationrequestupdated), or [deleted](/wix-ecom-backend/events/onbackinstocknotificationrequestdeleted).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(September 4, 2023)
+
+### Migration of Booking Resources API
+
+We've re-released another legacy API.
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), and [July](#migration-of-notifications-api) 2023 re-releases of
+legacy APIs.
+
+This API is released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is a 
+[universal module](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+`wix-bookings.v1`:
+
+- Resources:
+    - [`updateSchedules`](https://www.wix.com/velo/reference/wix-bookings.v1/resources/updateschedule) replaces `updateResourceSchedule()`.
+    - `queryResourceCatalog()` is not available. 
+
+(August 31, 2023)
+
+### Update: New fields in Pricing Plans
+
+`wix-pricing-plans.v2`
+
+The [Plans object](wix-pricing-plans-v2/plans) has a new `formId` field, which is the ID of the order form associated with a plan at checkout.
+
+The [Orders object](wix-pricing-plans-v2/orders) has a new `formData` object, which contains the following fields: 
+- `formId`: the ID of the order form associated with a plan at checkout. 
+- `submissionId`: the ID of the plan's order form submitted at checkout. 
+- `submissionData`: the data submitted to the plan's order form at checkout.
+
+(August 31, 2023)  
+
+
+### New API: Web Modules
+
+> This API is only available for Wix Studio sites. Wix Studio is currently in beta and is not yet available to all users.
+
+`wix-web-module`
+
+The Web Modules API allows you to define functions in your backend code that can be called from your site's frontend code. Use the [`webMethod()`](wix-web-module/webmethod) function to define a backend function and the permissions needed to call it.
+
+(August 23, 2023)
+
+
+### New API: Forms Submissions
+
+The new [Form Submissions API](wix-forms-v2/submissions/introduction) allows you to manage form submissions from your site visitors. 
+
+Functionality includes: 
++ [Creating](wix-forms-v2/submissions/create-submission), [updating](wix-forms-v2/submissions/update-submission), or [deleting](wix-forms-v2/submissions/delete-submission) a submission.
++ [Getting](wix-forms-v2/submissions/get-submission) a submission or [querying](wix-forms-v2/submissions/query-submissions-by-namespace) submissions by namespace.
++ [Counting](wix-forms-v2/submissions/count-submissions) the number of submissions for a specific form. 
++ [Marking](wix-forms-v2/submissions/bulk-mark-submissions-as-seen) submissions as seen. 
++ [Confirming](wix-forms-v2/submissions/confirm-submission) a submission has been recorded. 
++ [Geting a media upload URL](wix-forms-v2/submissions/get-media-upload-url) to use when creating a submission with a field for uploading files. 
+
+(August 21, 2023)
+
+
+### New: Dashboard Builder Elements
+
+`Wix Editor Elements ($w)`
+
+You can now add these elements to dashboard pages in your Wix site or in Wix Blocks:
+
+* [DashboardButton]($w/dashboardbutton)
+* [DashboardHeading]($w/dashboardheading)
+* [DashboardIconButton]($w/dashboardiconbutton)
+* [DashboardInfoIcon]($w/dashboardinfoicon)
+* [DashboardInput]($w/dashboardinput)
+* [DashboardNumberInput]($w/dashboardnumberinput)
+* [DashboardText]($w/dashboardtext)
+* [DashboardTextButton]($w/dashboardtextbutton)
+* [DashboardToggleSwitch]($w/dashboardtoggleswitch)
+
+(August 13, 2023)
+
+### New API: Accordion
+
+`Wix Editor Elements ($w)`
+
+>**Note:** This feature is currently only available in Wix Studio and Editor X.
+
+The new [Accordion API]($w/accordion) allows you to display multiple, collapsible item elements 
+in a vertical stack, each with different content.
+
+(August 9, 2023)
+
+### New Developer Preview API: Wix Comments v2
+
+The new [Comments API](/wix-comments-v2/comments) allows you to manage a customized commenting program.  
+
+Functionality includes:
++ [Creating](/wix-comments-v2/comments/createcomment), [updating](/wix-comments-v2/comments/updatecomment), or [deleting](/wix-comments-v2/comments/deletecomment) a comment.
++ [Getting](/wix-comments-v2/comments/getcomment) or [querying](/wix-comments-v2/comments/querycomments) comments.
++ [Marking](/wix-comments-v2/comments/markcomment) and [Unmarking](/wix-comments-v2/comments/unmarkcomment) a comment.
++ [Counting](/wix-comments-v2/comments/countcomments) comments.
++ Events when a comment is [created](/wix-comments-v2/events/oncommentcreated), [updated](/wix-comments-v2/events/oncommentupdated), [deleted](/wix-comments-v2/events/oncommentdeleted), [marked](/wix-comments-v2/events/oncommentmarked), or [unmarked](/wix-comments-v2/events/oncommentunmarked).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(August 9, 2023)
+
+### New SPI: eCommerce Validations
+
+The new eCommerce [Validations SPI](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations) is a [custom extension](https://support.wix.com/en/article/velo-custom-app-extensions-using-spis) that allows you to validate a site visitor's cart and checkout. 
+
+The [`GetValidationViolations()`](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations/getvalidationviolations) function validates a site visitor's cart or checkout and returns any validation violations. Site visitors can see the validation violations in their cart and checkout pages.
+
+(July 30, 2023)
+
+### Migration of Notifications API
+
+We've re-released another legacy API.
+This follows the [May](#migration-of-legacy-apis) and [June](#migration-of-legacy-apis-batch-2) 2023 re-releases of
+legacy APIs.
+
+This API is released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is a 
+[universal module](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+`wix-notifications.v2`:
+
+- [notify](wix-notifications-v2/notifications/notify) has moved to the `Notifications` namespace within the module.
+  
+(July 24, 2023)
+
+### New API: Effects
+
+`Wix Editor Elements ($w)`
+
+The new [Effects API]($w/effects) allows you to programmatically change the way supported elements are displayed on your site.
+
+(July 19, 2023)
+
+### CSS Styling and Custom Class List
+
+`Wix Editor Elements ($w)`
+
+>**Note:** This feature is currently in Beta and open to a limited number of users.
+You can now add [CSS]($w/styling-elements-with-css) styling to customize the appearance of your website, 
+from colors and fonts to the sizes and positions of different elements. Apply CSS to available 
+[global classes](https://www.wix.com/velo/reference/$w/styling-elements-with-css#$w_styling-elements-with-css_available-classes) 
+or create your own with the [Custom Class List]($w/customclasslist) element.
+
+(July 19, 2023)
+
+### New Module for Wix Blocks: Wix Application
+
+>**Note:** Wix Blocks is currently in Beta and open to a limited number of users.
+
+This module includes functions to manage and get information about Blocks applications that are installed on a site. 
+
+It includes: 
+* [`getDecodedAppInstance`](https://www.wix.com/velo/reference/wix-application/getdecodedappinstance): Gets an installed Blocks app's instance, including its current pricing plan.
+* [`getAppPageUrl`](https://www.wix.com/velo/reference/wix-application/getapppageurl): Gets the page URL of a Blocks app that was installed as a new page.
+* [`openAppLightbox`](https://www.wix.com/velo/reference/wix-application/openapplightbox): Opens the lightbox of a Blocks app that was installed as a lightbox.
+
+(July 18, 2023)
+
 
 ### Migration of frontend-only APIs
 
@@ -179,7 +454,6 @@ The new [Wix Bookings v2 Service Options and Variants APIs](/wix-bookings-v2/ser
 **Note:** This module is in [Developer Preview](./developer-preview.md).
 
 (May 22, 2023)
-
 
 ### New Developer Preview API: Wix Data v2
 

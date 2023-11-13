@@ -1,15 +1,3 @@
-# Wix App APIs
+# Apps Made by Wix
 
-Customize Wix Apps with Velo APIs - including Stores, Bookings, Events, and Pay - to add even more features and functionality to your site. Combine APIs to create a unique app experience for your users. 
-
-*   **[wix-stores](https://www.wix.com/velo/reference/wix-stores.html)**
-*   **[wix-stores-backend](https://www.wix.com/velo/reference/wix-stores-backend.html)**
-*   **[wix-pay](https://www.wix.com/velo/reference/wix-pay.html)**
-*   **[wix-pay-backend](https://www.wix.com/velo/reference/wix-pay-backend.html)**
-*   **[wix-events](https://www.wix.com/velo/reference/wix-events)**
-*   **[wix-events-backend](https://www.wix.com/velo/reference/wix-events-backend)**
-*   **[wix-bookings](https://www.wix.com/velo/reference/wix-bookings)**
-*   **[wix-bookings-backend](https://www.wix.com/velo/reference/wix-bookings-backend)**
-*   **[wix-paid-plans](https://www.wix.com/velo/reference/wix-paid-plans)**
-*   **[wix-paid-plans-backend](https://www.wix.com/velo/reference/wix-paid-plans-backend)**
-*   **[wix-pricing-plans-backend](https://www.wix.com/velo/reference/wix-pricing-plans-backend)**
+Wix offers a range of powerful business solutions that extend the functionalities of its existing products or add new capabilities. Apps made by Wix are web apps created by Wix that site owners can use to enhance their sites. A site owner can install one or more apps made by Wix to manage specific data on their site. Each app is identified by a unique `appId`. See a complete list [here](https://dev.wix.com/docs/develop-websites/articles/wix-apps/about-apps-made-by-wix).
