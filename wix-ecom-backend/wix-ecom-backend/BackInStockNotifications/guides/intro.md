@@ -16,7 +16,6 @@ title: Introduction
 > Functions in this module can run on both the backend and frontend,
 > unless specified otherwise.  
 
-
 The Back In Stock Notifications API allows you to manage customer requests to receive notifications when out-of-stock items become available. 
 
 With this API, you can:

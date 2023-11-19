@@ -14,8 +14,7 @@ title: Introduction
 > **Note:** This module is
 > [universal](/api-overview/api-versions#universal-modules).
 > Functions in this module can run on both the backend and frontend,
-> unless specified otherwise.  
-
+> unless specified otherwise.
 
 The Back In Stock Settings API allows you to manage whether or not to collect requests from customers to receive back in stock notifications. 
 

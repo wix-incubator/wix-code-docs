@@ -22,7 +22,7 @@ Wix provides a comprehensive platform with integrated database capabilities. You
 
 Wix's database capabilities cover a wide range of use cases for apps that need to store data. However, certain projects have very specific requirements that make it necessary to use an external database. For example, you may need to access existing data that is already stored on an external service, or you may need your data to be stored in a relational database.
 
-Once the connection between an external database and a Wix site is established, you can access the collection using Wix Data APIs, including [`wix-data`](https://www.wix.com/velo/reference/wix-data), in the same way you would with a native collection. You can also access the collection through the Content Manager.
+Once the connection between an external database and a Wix site is established, you can access the collection using Wix Data APIs, including [`wix-data`](https://www.wix.com/velo/reference/wix-data), in the same way you would with a native collection. You can also access the collection through the Content Management System(CMS).
 
 For more information on connecting external databases with a Wix site, see [Integrating External Databases with Your Wix Site](https://support.wix.com/en/article/velo-integrating-external-databases-with-your-wix-site).
 
