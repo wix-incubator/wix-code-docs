@@ -25,7 +25,7 @@ The Site Properties API allows you to:
   region and locale settings, and default consent policy for visitors.
 
 To use the Site Properties API,
-import `{ siteProperties }` from wix-business-tools.v2:
+import `{ siteProperties }` from `wix-business-tools.v2`:
 
 ```js
 import { siteProperties } from 'wix-business-tools.v2';
