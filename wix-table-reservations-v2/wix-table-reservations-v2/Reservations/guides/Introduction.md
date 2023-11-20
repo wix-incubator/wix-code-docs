@@ -31,9 +31,9 @@ import { reservations } from 'wix-table-reservations.v2';
 
 The following functions may require [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) to run depending on which fields are included, or the value of certain fields.
 
-### creteReservation()
+### createReservation()
 
-Calling `creteReservation()` with the following fields requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate):
+Calling `createReservation()` with the following fields requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate):
 
 `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, and `ignoreTableCombinationConflicts`.
 
