@@ -35,7 +35,7 @@ The following functions may require [elevated permissions](https://www.wix.com/v
 
 Calling `createReservation()` with the following fields requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate): `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, and `ignoreTableCombinationConflicts`.
 
-If `source` is not provided, its value will be set depending whether the `creteReservation()` is run with elevated permissions. With elevated permissions, `source` will be set to `UNDEFINED`. Otherwise, `source` will be set to `ONLINE`.
+If `source` is not provided, its value will be set depending whether the `createReservation()` is run with elevated permissions. With elevated permissions, `source` will be set to `UNDEFINED`. Otherwise, `source` will be set to `ONLINE`.
 
 ### getReservation()
 
