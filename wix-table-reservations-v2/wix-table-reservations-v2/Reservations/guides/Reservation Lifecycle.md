@@ -8,8 +8,7 @@ Reservations progress from creation to completion through a series of phases. Ea
 
 This article explains the available statuses, and how a reservation can progress using the Reservations API.
 
-Note:
-Reservations can also be created and progress through phases as a result of actions on your site or dashboard. For more information see the Wix Restaurants [Table Reservations articles](https://support.wix.com/en/table-reservations).
+>>**Note:** Reservations can also be created and progress through phases as a result of actions on your site or dashboard. For more information see the Wix Restaurants [Table Reservations articles](https://support.wix.com/en/table-reservations).
 
 ## Statuses
 The following statuses are listed roughly in order of their position in the reservation lifecycle:
@@ -28,9 +27,9 @@ The following statuses are listed roughly in order of their position in the rese
 ### Create a reservation
 This API provides 2 endpoints for creating reservations.
 
-[`createHeldReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createheldreservation) - This endpoint creates a reservation with the `HELD` status. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error. 
+[`createHeldReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createheldreservation) - This function creates a reservation with the `HELD` status. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error. 
 
-The Reservations page uses this endpoint to temporarily reserve time slots selected by customers while they enter further details.
+The Reservations page creates held reservations to temporarily reserve time slots selected by customers while they enter further details.
 
 After a customer completes the reservation process, call [`reserveReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/reservereservation) to change the reservation’s status to `RESERVED` or `REQUESTED`, depending on whether your site requires manual approval for online reservations.
 
@@ -38,7 +37,7 @@ You cannot call [`updateReservation()`](https://www.wix.com/velo/reference/wix-t
 
 [`createReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/createreservation) - This endpoint creates a reservation with either the `RESERVED` status or the `REQUESTED` status if manual approval is required for confirmation (see manual approval below).
 
-If you call `createReservation()` with `TABLE_RESERVATIONS.RESERVATION_CREATE_FORCE` permissions, you can set more properties of the reservation in the request. This allows you to create the reservation with a status of your choice, and gives you the option to override the restaurant’s rules regarding online availability and table management.
+If you call `createReservation()` with [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate), you can set more properties of the reservation in the request. This allows you to create the reservation with a status of your choice, and gives you the option to override the restaurant’s rules regarding online availability and table management.
 
 ### Requiring manual approval
 To require manual approval for `REQUESTED` reservations at a location before they’re confirmed (`RESERVED`), enable manual approval for online reservations in the [Table Reservations app](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Frestaurants/table-reservations) in your dashboard.

@@ -26,6 +26,23 @@ To use the Reservations API, import `reservations` from wix-table-reservations.v
 ```js
 import { reservations } from 'wix-table-reservations.v2';
 ```
+
+## Permissions information
+
+The following functions may require [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) to run depending on which fields are included, or the value of certain fields.
+
+### creteReservation()
+
+Calling `creteReservation()` with the following fields requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate):
+
+`status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, and `ignoreTableCombinationConflicts`.
+
+If `source` is not provided, its value will be set depending whether the `creteReservation()` is run with elevated permissions. With elevated permissions, `status` will be set to `UNDEFINED`. Otherwise, `status` will be set to `ONLINE`.
+
+### getReservation()
+
+Calling `getReservation()` with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
+
 ## Terminology
 * **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
 * **Time slot:** A period of time in a restaurant’s calendar.
