@@ -2,7 +2,7 @@
 title: Introduction
 ---
 
-# Introduction
+# Introduction 
 
 
 The Draft Posts API gives site members the ability to access and manage draft blog posts.
