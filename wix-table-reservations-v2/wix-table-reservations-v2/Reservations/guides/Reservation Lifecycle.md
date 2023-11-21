@@ -8,7 +8,7 @@ Reservations progress from creation to completion through a series of phases. Ea
 
 This article explains the available statuses, and how a reservation can progress using the Reservations API.
 
->>**Note:** Reservations can also be created and progress through phases as a result of actions on your site or dashboard. For more information see the Wix Restaurants [Table Reservations articles](https://support.wix.com/en/table-reservations).
+>**Note:** Reservations can also be created and progress through phases as a result of actions on your site or dashboard. For more information see the Wix Restaurants [Table Reservations articles](https://support.wix.com/en/table-reservations).
 
 ## Statuses
 The following statuses are listed roughly in order of their position in the reservation lifecycle:
