@@ -16,5 +16,4 @@ To use the Draft Posts API, import `{ draftPosts }` from the `wix-blog-backend` 
 import { draftPosts } from 'wix-blog-backend';
 ```
 
-> **Note:** `translationId` will only be returned in the `draftPost` object if the
-[Multilingual](https://support.wix.com/en/article/wix-multilingual-an-overview) app is installed.
+> **Note:** `translationId` will only be returned in the `draftPost` object if the [Multilingual](https://support.wix.com/en/article/wix-multilingual-an-overview) app is installed.
