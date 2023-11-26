@@ -8,7 +8,7 @@
 
 With the Reviews API you can manage reviews for a site's services, content, or products. The review object holds the content of the review, a rating score, images or video media, and information about the author. Learn more about [Wix Reviews](https://support.wix.com/en/article/wix-stores-adding-and-setting-up-wix-reviews).
 
-The Wix Reviews API allows your app to:
+The Wix Reviews API allows the site to:
 
 - Import reviews from other sites and export reviews to other sites.
 - Retrieve and display positive review data. Use the [Media API](https://www.wix.com/velo/reference/wix-media-v2) to retrieve associated review media.
