@@ -4,7 +4,7 @@ title: Introduction
 
 # Introduction
 
-The Reservations API provides all the functionality required to create and manage restaurant table reservations. 
+The Table Reservations API provides all the functionality required to create and manage restaurant table reservations. 
 
 The Reservations API contains the following APIs:
 * [Reservation Locations](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations) - This API allows you to provide location information and configure reservation settings for individual restaurants. A reservation location represents a physical restaurant, and at least 1 must be configured before using endpoints in the other Reservations APIs.
