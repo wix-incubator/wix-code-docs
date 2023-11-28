@@ -7,6 +7,19 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Wix Inbox v2
+
+`wix-inbox.v2`
+
+We've updated the following function parameters in the `Conversations` and `Messages` namespaces:
+- [`getOrCreateConversation`](/wix-inbox-v2/conversations/getorcreateconversation)
+- [`listMessage`](/wix-inbox-v2/messages/listmessage)
+- [`sendMessage`](/wix-inbox-v2/messages/sendmessage)
+
+**Note**: You must update these function paramaters in your code to prevent breaking changes to your site.
+
+(Novemeber 28, 2023)
+
 ### New Developer Preview API: Reviews
 
 The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
