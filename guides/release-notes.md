@@ -1,3 +1,12 @@
+# Release Notes
+
+We're always adding and updating the Velo APIs, and we want you to have one place to find all of our latest changes and cool additions.
+
+We love hearing your feedback! You can help us improve the docs by reporting any issues that you notice. You can report bugs and other feedback through the following link found at the bottom of each section.
+
+![Was this helpful, yes/no buttons](../media/feedback.png)
+
+---
 ### New Developer Preview API: Reviews
 
 The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
@@ -12,15 +21,6 @@ The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's
 
 (November 28, 2023)
 
-# Release Notes
-
-We're always adding and updating the Velo APIs, and we want you to have one place to find all of our latest changes and cool additions.
-
-We love hearing your feedback! You can help us improve the docs by reporting any issues that you notice. You can report bugs and other feedback through the following link found at the bottom of each section.
-
-![Was this helpful, yes/no buttons](../media/feedback.png)
-
----
 ### New API: TextMask
 
 `Wix Editor Elements ($w)`
