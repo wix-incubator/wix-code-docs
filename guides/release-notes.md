@@ -7,6 +7,20 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview API: Reviews
+
+The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
+
++ [Create](/wix-reviews-v2/reviews/createreview)
++ [Delete](/wix-reviews-v2/reviews/deletereview)
++ [Get](/wix-reviews-v2/reviews/getreview)
++ [Query](/wix-reviews-v2/reviews/queryreviews)
++ [Update](/wix-reviews-v2/reviews/updatereview)
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(November 28, 2023)
+
 ### New API: TextMask
 
 `Wix Editor Elements ($w)`
