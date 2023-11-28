@@ -11,12 +11,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-inbox.v2`
 
-We've updated the following function parameters in the `Conversations` and `Messages` namespaces:
-- [`getOrCreateConversation`](/wix-inbox-v2/conversations/getorcreateconversation)
-- [`listMessage`](/wix-inbox-v2/messages/listmessage)
-- [`sendMessage`](/wix-inbox-v2/messages/sendmessage)
+We've updated several [developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview) functions in the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-v2) module. Make the following changes to these function parameters to correct any breaking changes. 
 
-**Note**: You must update these function paramaters in your code to prevent breaking changes to your site.
+- [`Conversations`](https://www.wix.com/velo/reference/wix-inbox-v2/conversations):
+  - [`getOrCreateConversation()`](/wix-inbox-v2/conversations/getorcreateconversation): `participantId` has been removed from the `options` parameter, and is now the first required parameter.
+- [`Messages`](https://www.wix.com/velo/reference/wix-inbox-v2/messages):
+  - [`listMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
+  - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
 (Novemeber 28, 2023)
 
