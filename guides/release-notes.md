@@ -1,3 +1,17 @@
+### New Developer Preview API: Reviews
+
+The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
+
++ [Create](/wix-reviews-v2/reviews/createreview)
++ [Delete](/wix-reviews-v2/reviews/deletereview)
++ [Get](/wix-reviews-v2/reviews/getreview)
++ [Query](/wix-reviews-v2/reviews/queryreviews)
++ [Update](/wix-reviews-v2/reviews/updatereview)
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(November 28, 2023)
+
 # Release Notes
 
 We're always adding and updating the Velo APIs, and we want you to have one place to find all of our latest changes and cool additions.
