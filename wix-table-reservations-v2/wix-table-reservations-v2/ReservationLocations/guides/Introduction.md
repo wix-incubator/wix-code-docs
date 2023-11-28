@@ -37,3 +37,5 @@ import { reservationLocations } from 'wix-table-reservations.v2';
 * **Party pacing:** The maximum number of party reservations that can start within a 15-minute period.
 * **Business schedule:** An operational timetable of a restaurant represented by an array of weekly recurring time periods when the restaurant is open.
 * **Table combination:** A group of tables that can be reserved together as a single unit when making a reservation.
+* **Business schedule:** An operational timetable of a restaurant represented by an array of weekly recurring time periods when the restaurant is open.
+* **Table combination:** A group of tables that can be reserved together as a single unit when making a reservation.
