@@ -16,7 +16,7 @@ We've updated several [developer preview](https://www.wix.com/velo/reference/api
 - [`Conversations`](https://www.wix.com/velo/reference/wix-inbox-v2/conversations):
   - [`getOrCreateConversation()`](/wix-inbox-v2/conversations/getorcreateconversation): `participantId` has been removed from the `options` parameter, and is now the first required parameter.
 - [`Messages`](https://www.wix.com/velo/reference/wix-inbox-v2/messages):
-  - [`listMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
+  - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
   - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
 (Novemeber 28, 2023)
