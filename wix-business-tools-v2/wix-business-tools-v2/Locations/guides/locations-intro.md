@@ -19,7 +19,7 @@ title: Introduction
 > Functions in this module can run on both the backend and frontend,
 > unless specified otherwise.
 
-With Locations, site owners can define multiple physical locations for their business. Site owners can also set individual opening hours for each location.
+With Locations, you can define multiple physical locations for their business. You can also set individual opening hours for each location.
 
 The Locations API allows you to:
 
@@ -43,7 +43,7 @@ It’s important to note the following points before starting to code:
 + You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](wix-business-tools-v2/locations/archivelocation) function.
 + You can't archive the default location.
 + Archived locations can't be unarchived.
-+ The [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function replaces an existing location with a new location. Currently, you can't partially update a location.
++ You must pass the full location object in the `location` parameter when using the [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function. Currently, you can't partially update a location.
 + `locationType` isn't currently supported.
 + The status `INACTIVE` isn't currently supported.
 

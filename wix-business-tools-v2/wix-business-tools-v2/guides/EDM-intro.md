@@ -35,7 +35,7 @@ import businessTools from 'wix-business-tools.v2';
 
 ## Terminology
 
-+ **Business Schedule:** Describes the location's regular and exceptional opening hours.
++ **Business schedule:** Describes the location's regular and exceptional opening hours.
 + **Period:** Recurring, weekly opening hours of the location.
-+ **Special Hour Period:** Exception to the location's regular hours. The location can be either open or closed during the Special Hour Period.
-+ **Default Location:** Location reflected in the site properties. This location is used on invoices.
++ **Special hour period:** Exception to the location's regular hours. The location can be either open or closed during the special hour period.
++ **Default location:** Location reflected in the site properties. This location is used on invoices.
