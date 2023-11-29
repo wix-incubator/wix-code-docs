@@ -26,28 +26,77 @@
             }
           }
         ],
-        "doc": null
+        "doc": "The requested orders settings.\n"
       },
       "docs": {
-        "summary": "Retrieves order settings.\nThe API automatically retrieves the entity ID linked to your currently installed eCom app ID because there is only one **Orders Settings** entity per app.",
-        "description": [],
+        "summary": "Retrieves orders settings.",
+        "description": [
+          "The `getOrdersSettings()` function returns a Promise that resolves to orders settings. The API automatically retrieves the entity ID linked to your currently installed eCom app ID because there is only one **Orders Settings** entity per app."
+        ],
         "examples": [
           {
-            "title": "getOrdersSettings example",
+            "title": "Get orders settings without elevated permissions ",
             "body": [
               "import { ordersSettings } from 'wix-ecom-backend';",
-              "  ",
-              " async function getOrdersSettings() {",
-              "   try {",
-              "     const result = await ordersSettings.getOrdersSettings();",
+              "import { elevate } from 'wix-auth';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export async function myGetOrdersSettingsFunction() {",
+              "  try {",
+              "    const settings = await ordersSettings.getOrdersSettings(ordersSettings);",
+              "    console.log('Success! OrdersSettings:', settings);",
+              "    return settings;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              "{",
+              "  \"ordersSettings\": {",
+              "    \"inventoryUpdateTrigger\": \"ON_ORDER_PLACED\",",
+              "    \"createInvoice\": false,",
+              "    \"emailNotifications\": {",
+              "      \"orderPlaced\": true,",
+              "      \"orderShipped\": true,",
+              "      \"pickupReady\": true",
+              "    }",
+              "  }",
+              "}",
+              "*/"
+            ]
+          },
+          {
+            "title": "Get orders settings with elevated permissions ",
+            "body": [
+              "import { ordersSettings } from 'wix-ecom-backend';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export async function myGetOrdersSettingsFunction() {",
+              "  try {",
+              "    const elevatedGetOrdersSettings = elevate(ordersSettings.getOrdersSettings);",
+              "    const getOrdersSettings = await elevatedGetOrdersSettings();",
+              "    console.log('Success! Orders settings:', getOrdersSettings);",
+              "    return getOrdersSettings;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*Promise resolves to:",
+              "{",
+              "  \"ordersSettings\": {",
+              "    \"inventoryUpdateTrigger\": \"ON_ORDER_PLACED\",",
+              "    \"createInvoice\": false,",
+              "    \"emailNotifications\": {",
+              "      \"orderPlaced\": true,",
+              "      \"orderShipped\": true,",
+              "      \"pickupReady\": true",
+              "    }",
+              "  }",
+              "}",
+              "*/"
             ]
           }
         ]
@@ -90,28 +139,54 @@
             }
           }
         ],
-        "doc": null
+        "doc": "The updated orders settings.\n"
       },
       "docs": {
-        "summary": "Updates orders settings.\nThe API automatically retrieves the entity ID linked to your currently installed eCom app ID because there is only one **Orders Settings** entity per app.",
-        "description": [],
+        "summary": "Updates orders settings.",
+        "description": [
+          "The `updateOrdersSettings()` function returns a Promise that resolves to the newly updated orders settings.\nThe API automatically retrieves the entity ID linked to your currently installed eCom app ID because there is only one **Orders Settings** entity per app."
+        ],
         "examples": [
           {
-            "title": "updateOrdersSettings example",
+            "title": "Update orders settings ",
             "body": [
               "import { ordersSettings } from 'wix-ecom-backend';",
-              "  ",
-              " async function updateOrdersSettings(ordersSettings, options) {",
-              "   try {",
-              "     const result = await ordersSettings.updateOrdersSettings(ordersSettings, options);",
+              "import { elevate } from 'wix-auth';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample update value:",
+              "{",
+              "    \"ordersSettingsInfo\": {",
+              "        \"createInvoice\": true",
+              "    }",
+              "}",
+              "*/",
+              "",
+              "export async function myUpdateOrdersSettingsFunction(ordersSettingsInfo) {",
+              "  try {",
+              "    const elevatedUpdateOrdersSettings = elevate(ordersSettings.updateOrdersSettings);",
+              "    const settings = await elevatedUpdateOrdersSettings(ordersSettingsInfo);",
+              "    console.log('Success! Updated orders settings:', settings);",
+              "    return settings;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*Promise resolves to:",
+              "{",
+              "  \"ordersSettings\": {",
+              "    \"inventoryUpdateTrigger\": \"ON_ORDER_PLACED\",",
+              "    \"createInvoice\": true,",
+              "    \"emailNotifications\": {",
+              "      \"orderPlaced\": true,",
+              "      \"orderShipped\": true,",
+              "      \"pickupReady\": true",
+              "    }",
+              "  }",
+              "}",
+              "*/",
+              ""
             ]
           }
         ]
@@ -215,7 +290,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to send the notification that you received your customer’s order. <br>\nDefault: `true`"
+          "doc": "Whether to send the notification that you received your customer’s order.\nDefault: `true`"
         },
         {
           "name": "orderShipped",
@@ -225,7 +300,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to send the notification when some or all items of an order are shipped. <br>\nDefault: `true`"
+          "doc": "Whether to send the notification when some or all items of an order are shipped.\n\nDefault: `true`\n"
         },
         {
           "name": "pickupReady",
@@ -235,7 +310,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to send the notifications when some or all items of an order are ready for pickup.\nDefault: `true`"
+          "doc": "Whether to send the notifications when some or all items of an order are ready for pickup.\n\n Default: `true`\n"
         }
       ],
       "docs": {
@@ -304,7 +379,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to automatically create invoices for every new order paid online. <br>\nDefault: `false`"
+          "doc": "Whether to automatically create invoices for every new order paid online.\nDefault: `false`"
         },
         {
           "name": "emailNotifications",
@@ -324,7 +399,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Defines when to update the store inventory. <br>\nDefault: `ON_ORDER_PLACED`"
+          "doc": "Defines when to update the store inventory.\n\nDefault: `ON_ORDER_PLACED`\n"
         }
       ],
       "docs": {
