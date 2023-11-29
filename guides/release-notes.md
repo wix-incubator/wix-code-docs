@@ -19,7 +19,7 @@ We've updated several [developer preview](https://www.wix.com/velo/reference/api
   - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
   - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
-(Novemeber 28, 2023)
+(Novemeber 29, 2023)
 
 ### New Developer Preview API: Reviews
 
