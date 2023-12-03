@@ -26,7 +26,7 @@ The site owner can configure moderation settings in the site's [Dashboard](https
 ## Before you begin
 It’s important to note the following points before starting to code:
 
-- Every review needs a contact. If the author is already listed as a contact, use either [Create Review](#createReview) or [Create Review and Contact](#createReviewAndContact). If the author is not yet a site contact, use [Create Review and Contact](#createReviewAndContact).  
+- Every review needs a contact.
 - A review author is limited to one review per entity. Duplicate reviews receive an error response.
 - Replying to a review is available only in the site owner's [Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Freviews/pending).
 
