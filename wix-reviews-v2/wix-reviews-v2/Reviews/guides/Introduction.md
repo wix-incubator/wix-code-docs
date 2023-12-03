@@ -10,7 +10,7 @@ title: Introduction
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-Read about the [Reviews API](#introduction).
+Read about the [Reviews API](https://www.wix.com/velo/reference/wix-reviews-v2/introduction).
 
 To use the Reviews API, import `{ reviews }` from the `wix-reviews.v2` module:
 
