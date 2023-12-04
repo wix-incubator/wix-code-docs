@@ -16,4 +16,4 @@ It’s important to note the following points before starting to code:
 * You must install the Wix Table Reservations app.
 
 ## Terminology
-For a comprehensive glossary of vertical-name terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
+For a comprehensive glossary of Table Reservations terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
