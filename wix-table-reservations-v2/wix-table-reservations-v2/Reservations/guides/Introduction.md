@@ -17,11 +17,10 @@ With the Reservations API, you can:
 * Get information about existing reservations at a restaurant.
 
 ## Before you begin
-This API requires that:
-* You install the Wix Table Reservations app.
-* You have at least 1 location configured in your Dashboard under [Business Info](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fbusiness-info).
-
-To use the Reservations API, import `reservations` from wix-table-reservations.v2:
+It’s important to note the following points before starting to code:
+* You must install the Wix Table Reservations app.
+* You must have at least 1 location configured in your Dashboard under [Business Info](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fbusiness-info).
+* To use the Reservations API, import `reservations` from wix-table-reservations.v2:
 
 ```js
 import { reservations } from 'wix-table-reservations.v2';
@@ -39,7 +38,7 @@ Calling [`createReservation()`](https://www.wix.com/velo/reference/wix-table-res
 * `reservation.details.tableIds`
 * `reservation.details.endDate`
 * `ignoreReservationLocationConflicts`
-* `ignoreTableCombinationConflicts`.
+* `ignoreTableCombinationConflicts`
 
 If `source` is not provided, the value assigned to it depends on whether `createReservation()` was called with elevated permissions. With elevated permissions, `source` is set to `UNDEFINED`. Otherwise, `source` is set to `ONLINE`.
 
@@ -48,15 +47,4 @@ If `source` is not provided, the value assigned to it depends on whether `create
 Calling [`getReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/getreservation) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
 
 ## Terminology
-* **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
-* **Time slot:** A period of time in a restaurant’s calendar.
-* **Party**: A group of guests that come to dine together at a restaurant.
-* **Status:** The status of a reservation represents its position in the reservation lifecycle. For example, `RESERVED`, `CANCELED`, or `FINISHED`.
-* **Reservation location:** A representation of a physical restaurant location at which reservations can be made.
-* **Manual approval:** Whether or not a reservation made online is automatically accepted, or requires manual approval from a human.
-* **Source:** How the reservation was made. For example, if it was booked online, in person, through an app, and so on.
-* **Table combination conflict:** An attempt to make a reservation that doesn’t comply with the restaurant’s table management or online reservation rules.
-* **Reservation location conflict:** An attempt to make a reservation that doesn’t comply with the restaurant’s party pacing or seat pacing rules.
-* **Seat pacing:** The maximum number of seats that can be filled by new reservations within a 15-minute period.
-* **Party pacing:** The maximum number of party reservations that can start within a 15-minute period.
-* **Reservee:** The person the reservation is made for. Not to be confused with the person making the reservation, although they may be the same.
+For a comprehensive glossary of vertical-name terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
