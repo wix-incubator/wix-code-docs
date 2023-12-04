@@ -13,13 +13,13 @@ title: Introduction
 
 &nbsp;  
 
-With the Orders Settings API, you can update settings for your store orders, such as adding or removing customer email notifications about order status, as well as defining when to update the store inventory and create invoices.    
+With the Orders Settings API, you can retrieve and update settings that apply to a site’s eCommerce orders, such as adding or removing customer email notifications about order status, as well as defining when to update the store inventory and create invoices.    
 
 The default orders settings are provided when you first create a Wix eCommerce site.      
 
 ## Terminology
 
-- **Order**: Customer's request to purchase one or more products or services from a seller. It typically includes details such as the type and quantity of items, shipping address, payment information, and any other relevant transaction details.
+- **Order**: The final stage of the eCommerce purchase flow: cart, checkout, and order. An order represents a customer's request to purchase one or more products or services from a seller. It typically includes details such as the type and quantity of items, shipping address, payment information, and any other relevant transaction details.
 - **eCommerce**: Buying and selling of goods and services over the internet.
 - **Invoice**: Commercial document issued by a seller to a buyer, providing a detailed account of products or services rendered, along with the corresponding costs.
 - **Inventory**: List of goods, products, or materials that a business holds for the purpose of resale or use in its operations.
@@ -34,10 +34,6 @@ It’s important to note the following points before starting to code:
 ```javascript
 import { ordersSettings } from 'wix-ecom-backend';
 ```
-
-- The issued invoice for an order is not a tax invoice and doesn't reflect refunds. You are responsible for ensuring that invoices you issue conform to any relevant legal requirements.
-- If you select to update the store inventory only after an order is paid, stock quantities will update only after the payment is approved.
-- If you select to update the store inventory when an order is placed, stock quantities will update while the payment is being processed. If the payment did not go through, items will restock.
 
 ## Permissions information
 
