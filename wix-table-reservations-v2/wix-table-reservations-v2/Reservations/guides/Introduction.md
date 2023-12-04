@@ -47,4 +47,4 @@ If `source` is not provided, the value assigned to it depends on whether `create
 Calling [`getReservation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/getreservation) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
 
 ## Terminology
-For a comprehensive glossary of vertical-name terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
+For a comprehensive glossary of Table Reservations terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
