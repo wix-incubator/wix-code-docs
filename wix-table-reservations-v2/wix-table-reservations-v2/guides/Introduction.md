@@ -12,9 +12,8 @@ The Reservations API contains the following APIs:
 * [Reservations](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations) - This API allows you to create and manage reservations. A `reservation object` represents the reservation of 1 or more tables for a party of guests at a particular restaurant.
   
 ## Before you begin
-These APIs require that you install the Wix Table Reservations app.
+It’s important to note the following points before starting to code:
+* You must install the Wix Table Reservations app.
+
 ## Terminology
-* **Reservation:** A set of tables and seats reserved for a party at a restaurant for a specific period of time.
-* **Party:** A group of guests that come to dine together at a restaurant.
-* **Time slot:** A period of time in a restaurant’s calendar.
-* **Reservation location:** A representation of a physical restaurant location at which reservations can be made.
+For a comprehensive glossary of Table Reservations terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
