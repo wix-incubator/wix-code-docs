@@ -34,4 +34,4 @@ It’s important to note the following points before starting to code:
 import { timeSlots } from 'wix-table-reservations.v2';
 ```
 ## Terminology
-For a comprehensive glossary of vertical-name terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
+For a comprehensive glossary of Table Reservations terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
