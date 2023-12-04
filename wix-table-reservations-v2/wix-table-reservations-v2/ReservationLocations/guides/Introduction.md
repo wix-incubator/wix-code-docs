@@ -19,21 +19,13 @@ Once a reservation location has been configured, you can:
 * Make reservations for the location using a Wix site, or the [Reservations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations).
 
 ## Before you begin
-This API requires that you install the Wix Table Reservations app.
-
-To use the Reservation Locations API, import `reservationLocations` from wix-table-reservations.v2:
+It’s important to note the following points before starting to code:
+* You must install the Wix Table Reservations app.
+* To use the Reservation Locations API, import `reservationLocations` from `wix-table-reservations.v2`:
 
 ```js
 import { reservationLocations } from 'wix-table-reservations.v2';
 ```
 
 ## Terminology
-* **Reservation:** A specific time period reserved for one or more guests to dine at a particular restaurant.
-* **Turnover time:** How much time a party needs for the entire reservation - from being seated to leaving the restaurant.
-* **Time slot:** A period of time in a restaurant’s calendar.
-* **Party:** A group of guests that come to dine together at a restaurant.
-* **Seat:** A chair or place for one person in the restaurant.
-* **Seat pacing:** The maximum number of seats that can be filled by new reservations within a 15-minute period.
-* **Party pacing:** The maximum number of party reservations that can start within a 15-minute period.
-* **Business schedule:** An operational timetable of a restaurant represented by an array of weekly recurring time periods when the restaurant is open.
-* **Table combination:** A group of tables that can be reserved together as a single unit when making a reservation.
+For a comprehensive glossary of vertical-name terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
