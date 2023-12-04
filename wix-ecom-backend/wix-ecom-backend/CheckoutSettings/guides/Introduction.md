@@ -13,13 +13,13 @@ title: Introduction
 
 &nbsp;  
 
-With the Checkout Settings API, you can update settings for a particular checkout, such as adding or removing eCommerce policies, as well as newsletter subscription and policy agreement checkboxes.    
+With the Checkout Settings API, you can retrieve and update the checkout settings for sites that have installed your app, such as adding or removing eCommerce policies, as well as newsletter subscription and policy agreement checkboxes.    
 
 Policies will appear as clickable links in the footer of your checkout, while checkboxes can be found when selecting the payment method. The policy text can be read in a pop-up window if you click the policy name. The default checkout settings are provided when you first create a Wix eCommerce site.  
 
 ## Terminology
 
-- **Checkout:** The final step in an online shopping process where a customer completes their purchase by providing necessary information such as shipping details, payment method, and any additional required data. 
+- **Checkout:** The second stage of the eCommerce purchase flow: cart, checkout, order. A checkout holds information about items to be purchased, price and tax summaries, shipping and billing info, any applied discounts, and more. 
 - **eCommerce:** Buying and selling of goods and services over the internet. 
 - **Policy:** Set of guidelines, rules, or principles established by an organization or authority to govern behavior, decision-making, and specific actions.
 
