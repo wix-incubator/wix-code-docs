@@ -1,4 +1,8 @@
-# Introduction
+---
+title: Terminology
+---
+
+# Terminology
 The Reservations API provides all the functionality required to create and manage restaurant table reservations. 
 
 This article contains a comprehensive list of the various terms and concepts used in Reservations and its APIs.
