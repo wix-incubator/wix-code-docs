@@ -20,7 +20,7 @@ With the Reservations API, you can:
 It’s important to note the following points before starting to code:
 * You must install the Wix Table Reservations app.
 * You must have at least 1 location configured in your Dashboard under [Business Info](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fbusiness-info).
-* To use the Reservations API, import `reservations` from wix-table-reservations.v2:
+* To use the Reservations API, import `reservations` from `wix-table-reservations.v2`:
 
 ```js
 import { reservations } from 'wix-table-reservations.v2';
