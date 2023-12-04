@@ -140,8 +140,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "throws if there is no availability for the given slot\nreturn all of the available resources for a single time slot in a specific location",
-        "description": [],
+        "summary": "Returns an available time slot that satisfy the requested criteria\npassed as request parameters.\nThrows `SlotNotFound` if there is no such available time slot.\nSupported only for services of type `APPOINTMENT`.",
+        "description": [
+          "Returns all `AvailableResources` with the full available resources list.\n\n+ Notes:\n+ There are edge cases where certain times either do not exist or exist twice for a local time zone.\nRead about [DST Handling](//todo: link to introduction.md)\n+ Returns the first available time slot in the given range, or throws if no such time slot. // todo: refactor"
+        ],
         "examples": [
           {
             "title": "getAvailabilityTimeSlot example",
@@ -229,8 +231,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "throws if there is no availability for the given slot\nreturn all of the available resources for a single multi service time slot",
-        "description": [],
+        "summary": "Returns an available multi service time slot that satisfy the provided criteria\npassed as request parameters.\nThrows `SlotNotFound` if there is no such available time slot.\nSupported only for services of type `APPOINTMENT`.",
+        "description": [
+          "Returns all `AvailableResources` of the `NestedTimeSlots` with the full available resources list.\nIf you are only interested in specific resources you can learn more about [resources filters](//todo: link to supported criteria filters parameters)\nyou can pass in request.\n\n+ Notes:\n+ All nested time slots share the same location.\n+ You can pass up to 8 services.\n+ There are edge cases where certain times either do not exist or exist twice for a local time zone.\nRead about [DST Handling](//todo: link to Introduction.md)"
+        ],
         "examples": [
           {
             "title": "getMultiServiceAvailabilityTimeSlot example",
@@ -292,8 +296,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Return a list of available slots, for rule based services\nsupport only services with tag \"INDIVIDUAL\"\nIn the response, each slot will have a limited number of resources.\nif `has_more_available_resources=true`, the caller can call `GetAvailabilityTimeSlot` to get the full list of the resources.\nTODO: document arguments validations + number of services + locations filter",
-        "description": [],
+        "summary": "Returns a list of time slots that satisfy the provided criteria\npassed as request parameters.\nSupported only for services of type `APPOINTMENT`.",
+        "description": [
+          "`AvailableResources` are not returned in the response unless were requested in the request filters.\nIf your flow requires available resources you can learn more about [resources filters](//todo: link to supported filters).\n\nYou MUST pass either:\n+ `fromLocalDate`, `toLocalDate`, `timeZone`, and `serviceId`.\nor\n+ A valid `cursorPaging` from former response. Learn more about [cursorPaging](//todo: link).\n\n+ Notes:\n+ If you don't pass any locations in request,\nthe time slots will be calculated for all possible locations for the requested service.\n+ The returned time slots in response will have a `localStartDate` within the range of [request.fromLocalDate, request.toLocalDate)\n+ There are edge cases where certain times either do not exist or exist twice for a local time zone.\nRead about [DST Handling](//todo: link to introduction.md)"
+        ],
         "examples": [
           {
             "title": "listAvailabilityTimeSlots example",
@@ -440,7 +446,6 @@
         "doc": null
       },
       "docs": {
-        "summary": "support only services with tag INDIVIDUAL.\nnot supporting multi locations\nTODO: document arguments validations + number of services + locations filter",
         "description": [],
         "examples": [
           {
@@ -486,7 +491,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "relevant only from ListAvailabilityTimeSlots and ListMultiServiceAvailabilityTimeSlots\nfor get EPs, will always be false, since all available resources will be returned.\nIndicates that at this time, more resources are available to provide this slot,\nbut they weren't returned because of size limitations"
+          "doc": "TODO: readOnly is necessary?"
         },
         {
           "name": "resources",
@@ -503,7 +508,7 @@
               }
             }
           ],
-          "doc": "returns from the `list` endpoints as a list of at most 10 resources, that can booked with this slot\nreturns from the `get` endpoints as a list of all possible resources, that can booked with this slot"
+          "doc": "TODO: maxSize = v2.service.serviceResource.resourceIds.values.maxSize = 100\n!= v2.service.staffMembers.maxSize = 220 != v1 = 135 (did not find on proto files), minSize = 0"
         }
       ],
       "docs": {
@@ -949,31 +954,10 @@
     },
     {
       "name": "EventInfo",
-      "members": [
-        {
-          "name": "eventId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "TODO: format - might not be a guid?"
-        },
-        {
-          "name": "waitingList",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v2.TimeSlots.WaitingList"
-            }
-          ],
-          "doc": ""
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
-          "relevant for event based slots, and not for availability based slots"
+          "TODO: Exposure: Class is not supported yet.\nrelevant for event based slots, and not for availability based slots // Class not yet supported"
         ]
       }
     },
@@ -1031,7 +1015,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1103,7 +1087,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1133,7 +1117,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1179,7 +1163,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1241,7 +1225,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1271,7 +1255,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1291,7 +1275,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "TODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
+          "doc": "Whether the slot is available. The availability is determined by checking a\nsession's open slots and policies.\nLocks are not taken into account. // TODO: Aliza's suggestion to consider locks in bookable\nTODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
         },
         {
           "name": "bookingPolicyViolations",
@@ -1338,7 +1322,7 @@
               }
             }
           ],
-          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nIf locationType is `BUSINESS`, must have location_id\nIf an empty list is passed, will use the locations that are defined on the service"
+          "doc": "TODO: maxSize != v2.service.locations.maxSize = 100, minSize = 0"
         },
         {
           "name": "resourceIds",
@@ -1355,7 +1339,7 @@
               }
             }
           ],
-          "doc": "These are the resources for which the time slots are being calculated.\nThe returned time slots will contain up to 10 available resources out of the provided list."
+          "doc": "TODO: maxSize = v2.service.serviceResource.resourceIds.values.maxSize = 100\n!= v2.service.staffMembers.maxSize = 220 != v1 = 135 (did not find on proto files), minSize = 0"
         },
         {
           "name": "serviceId",
@@ -1375,7 +1359,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both available and non-available slots, available slots are returned first.\nNon-available slots are returned according to the specified filters, after all\navailable slots are already included."
+          "doc": "TODO: maxVal = ???, minVal = ???"
         },
         {
           "name": "timeZone",
@@ -1385,7 +1369,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         },
         {
           "name": "toLocalDate",
@@ -1415,7 +1399,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "TODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
+          "doc": "Whether the slot is available. The availability is determined by checking a\nsession's open slots and policies.\nLocks are not taken into account. // TODO: Aliza's suggestion to consider locks in bookable\nTODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
         },
         {
           "name": "bookingPolicyViolations",
@@ -1462,7 +1446,7 @@
               }
             }
           ],
-          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nIf locationType is `BUSINESS`, must have location_id\nIf an empty list is passed, will use the locations that are defined on the service"
+          "doc": "TODO: maxSize != v2.service.locations.maxSize = 100, minSize = 0"
         },
         {
           "name": "resourceIds",
@@ -1479,7 +1463,7 @@
               }
             }
           ],
-          "doc": "These are the resources for which the time slots are being calculated.\nThe returned time slots will contain up to 10 available resources out of the provided list."
+          "doc": "TODO: maxSize = v2.service.serviceResource.resourceIds.values.maxSize = 100\n!= v2.service.staffMembers.maxSize = 220 != v1 = 135 (did not find on proto files), minSize = 0"
         },
         {
           "name": "serviceId",
@@ -1499,7 +1483,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both available and non-available slots, available slots are returned first.\nNon-available slots are returned according to the specified filters, after all\navailable slots are already included."
+          "doc": "TODO: maxVal = ???, minVal = ???"
         },
         {
           "name": "timeZone",
@@ -1509,7 +1493,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         },
         {
           "name": "toLocalDate",
@@ -1556,7 +1540,7 @@
               }
             }
           ],
-          "doc": "Time slots."
+          "doc": "TODO: maxSize = ???, minSize = 0"
         },
         {
           "name": "timeZone",
@@ -1566,7 +1550,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -1891,7 +1875,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the slot is available. The availability is determined by checking a\nsession's open slots and policies.\nLocks are not taken into account. // TODO: Aliza's suggestion to consider locks in bookable"
+          "doc": "TODO: Locks are not taken into account. // Class is not supported yet. (relevant only for classes with waiting list)\nAliza's suggestion to consider locks in bookable"
         },
         {
           "name": "bookingPolicyViolations",
@@ -1901,7 +1885,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.BookingPolicyViolations"
             }
           ],
-          "doc": "each nested field is checked on its own. i.e. if `too_early_to_book` is defined and `too_late_to_book` is not defined\nwe will return slots for which `too_early_to_book` is same as on the request, regardless of `too_late_to_book`."
+          "doc": "TODO: refactor"
         },
         {
           "name": "cursorPaging",
@@ -1921,7 +1905,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Local start date for which the time slots are returned, in ISO-8601 format.\nE.g, \"2024-01-30T13:30:00\".\nRequired, unless `cursorPaging` is provided."
+          "doc": "Local start date for which the time slots are returned, in ISO-8601 format. Optional.\nE.g, \"2024-01-30T13:30:00\".\nRequired, unless `cursorPaging` is provided."
         },
         {
           "name": "location",
@@ -1931,7 +1915,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.Location"
             }
           ],
-          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nmust be set, and must have locationType. If locationType is `BUSINESS`, a location_id must be provided"
+          "doc": "Support filtering by location type, or by locationId. Other fields like `name` are ignored.\nLocation with LocationType is required unless `cursorPaging` is provided.\nIf you passed `BUSINESS` as locationType, you must provide the locationId as well."
         },
         {
           "name": "services",
@@ -1948,7 +1932,7 @@
               }
             }
           ],
-          "doc": "The services for which the time slots are being returned.\nIf `service.resource_ids` is empty, the calculation will include all possible assigned resources of the service.\nSize must be at least 2 and 8 at most."
+          "doc": "The services for which the time slots are being calculated for.\nYou can either pass specific resources to calculate the service availability for.\nIf `service.resource_ids` is empty, the calculation will include all possible assigned resources of the service.\nSize must be at least 2 and 8 at most."
         },
         {
           "name": "timeSlotsPerDay",
@@ -1958,7 +1942,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both available and non-available slots, available slots are returned first.\nNon-available slots are returned according to the specified filters, after all\navailable slots are already included."
+          "doc": "TODO: maxVal = ???, minVal = ???"
         },
         {
           "name": "timeZone",
@@ -1968,7 +1952,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         },
         {
           "name": "toLocalDate",
@@ -1998,7 +1982,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the slot is available. The availability is determined by checking a\nsession's open slots and policies.\nLocks are not taken into account. // TODO: Aliza's suggestion to consider locks in bookable"
+          "doc": "TODO: Locks are not taken into account. // Class is not supported yet. (relevant only for classes with waiting list)\nAliza's suggestion to consider locks in bookable"
         },
         {
           "name": "bookingPolicyViolations",
@@ -2008,7 +1992,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.BookingPolicyViolations"
             }
           ],
-          "doc": "each nested field is checked on its own. i.e. if `too_early_to_book` is defined and `too_late_to_book` is not defined\nwe will return slots for which `too_early_to_book` is same as on the request, regardless of `too_late_to_book`."
+          "doc": "TODO: refactor"
         },
         {
           "name": "cursorPaging",
@@ -2028,7 +2012,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Local start date for which the time slots are returned, in ISO-8601 format.\nE.g, \"2024-01-30T13:30:00\".\nRequired, unless `cursorPaging` is provided."
+          "doc": "Local start date for which the time slots are returned, in ISO-8601 format. Optional.\nE.g, \"2024-01-30T13:30:00\".\nRequired, unless `cursorPaging` is provided."
         },
         {
           "name": "location",
@@ -2038,7 +2022,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.Location"
             }
           ],
-          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nmust be set, and must have locationType. If locationType is `BUSINESS`, a location_id must be provided"
+          "doc": "Support filtering by location type, or by locationId. Other fields like `name` are ignored.\nLocation with LocationType is required unless `cursorPaging` is provided.\nIf you passed `BUSINESS` as locationType, you must provide the locationId as well."
         },
         {
           "name": "services",
@@ -2055,7 +2039,7 @@
               }
             }
           ],
-          "doc": "The services for which the time slots are being returned.\nIf `service.resource_ids` is empty, the calculation will include all possible assigned resources of the service.\nSize must be at least 2 and 8 at most."
+          "doc": "The services for which the time slots are being calculated for.\nYou can either pass specific resources to calculate the service availability for.\nIf `service.resource_ids` is empty, the calculation will include all possible assigned resources of the service.\nSize must be at least 2 and 8 at most."
         },
         {
           "name": "timeSlotsPerDay",
@@ -2065,7 +2049,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\nWhen a day has both available and non-available slots, available slots are returned first.\nNon-available slots are returned according to the specified filters, after all\navailable slots are already included."
+          "doc": "TODO: maxVal = ???, minVal = ???"
         },
         {
           "name": "timeZone",
@@ -2075,7 +2059,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         },
         {
           "name": "toLocalDate",
@@ -2122,7 +2106,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "TODO: maxSize = ???, minSize = 0"
         },
         {
           "name": "timeZone",
@@ -2132,7 +2116,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone, in IANA time zone format."
+          "doc": "TODO: format: maxLength = ???, minLength = ???"
         }
       ],
       "docs": {
@@ -2152,7 +2136,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Business Location ID. Present if the location is a business location."
+          "doc": "Business Location ID. Present if the location is a business location. // todo: link to business location"
         },
         {
           "name": "formattedAddress",
@@ -2162,7 +2146,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "A string containing the full address of this location."
+          "doc": "A string representation for the full address of the location."
         },
         {
           "name": "locationType",
@@ -2181,7 +2165,7 @@
               "nativeType": "'CUSTOMER'"
             }
           ],
-          "doc": "The type of location:\n- `CUSTOM`: The location is specific to this service, and is not derived from the business location.\n- `BUSINESS`: A business location, either the default business address, or locations defined for the business by the Business Info.\n- `CUSTOMER`: Will be determined by the customer."
+          "doc": "The type of location:\n- `CUSTOM`: The location is specific to this service, and is not derived from the business location.\n- `BUSINESS`: A business location, either the default business address, or locations defined for the business by the Business Info. // todo: link to businessInfo\n- `CUSTOMER`: Determined by the customer."
         },
         {
           "name": "name",
@@ -2191,7 +2175,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Location name."
+          "doc": "TODO: maxLength = v2.service.location.name.maxLength = 150 != v1.location.maxLength = NOT_SET. , minLength = NOT_SET"
         }
       ],
       "docs": {
@@ -2218,7 +2202,7 @@
               }
             }
           ],
-          "doc": "The available resources of the nested slot."
+          "doc": "TODO: maxSize = v2.service.serviceResource.maxSize, minSize = 0"
         },
         {
           "name": "localEndDate",
@@ -2248,7 +2232,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The service ID of the nested time slot."
         }
       ],
       "docs": {
@@ -2278,7 +2262,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The resource name."
+          "doc": "TODO: maxLength = v2.resource.maxLength = 40 != v1.resource.maxLength = 1200. , minLength = v2.resource.minLength = 1 != v1.resource.minLength = 0 (none)"
         }
       ],
       "docs": {
@@ -2305,7 +2289,7 @@
               }
             }
           ],
-          "doc": "These are the resources for which the time slots are being calculated.\nThe returned time slots will contain up to 10 available resources out of the provided list."
+          "doc": "TODO: maxSize = v2.service.serviceResource.resourceIds.values.maxSize = 100\n!= v2.service.staffMembers.maxSize = 220 != v1 = 135 (did not find on proto files), minSize = 0"
         },
         {
           "name": "serviceId",
@@ -2315,7 +2299,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service id."
+          "doc": "Service ID."
         }
       ],
       "docs": {
@@ -2342,7 +2326,7 @@
               }
             }
           ],
-          "doc": "will be returned from `ListEventTimeSlots`, `GetMultiServiceAvailabilityTimeSlots`  or `GetAvailabilityTimeSlots`.\nwill be returned from `ListMultiServiceAvailabilityTimeSlots` or `ListAvailabilityTimeSlots` only if request contained at least one of:\nnon empty resourceIds, non empty includeResourceTypeIds, includeAvailableStaffMembers = true.\nIn this case, there will be up to 10 returned AvailableResources, each availableResource.resources will contain up to 10 resources.\nshould be passed to createBooking to indicate which resources were selected\nrepresents the available resources for this slot."
+          "doc": "TODO: maxSize = v2.service.serviceResource.maxSize ??? , minSize = 0"
         },
         {
           "name": "bookable",
@@ -2352,7 +2336,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the slot is available. The availability is determined by checking a\nsession's open slots and policies.\nLocks are not taken into account. // TODO: Aliza's suggestion to consider locks in bookable"
+          "doc": "TODO: Locks are not taken into account. // Class is not supported yet. (relevant only for classes with waiting list)\nAliza's suggestion to consider locks in bookable"
         },
         {
           "name": "bookingPolicyViolations",
@@ -2362,7 +2346,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.BookingPolicyViolations"
             }
           ],
-          "doc": "Each nested field is checked on its own. i.e. if `too_early_to_book` is defined and `too_late_to_book` is not defined\nwe will return slots for which `too_early_to_book` is same as on the request, regardless of `too_late_to_book`."
+          "doc": "Indicators for booking policy violations for the slot.\nWhen returned from `ListMultiServiceAvailabilityTimeSlots`\nindicates that at least one of the nested time slots does not meet with at least one of the booking policies."
         },
         {
           "name": "localEndDate",
@@ -2372,7 +2356,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The local end date of the time slot.\nRepresents the latest endDate amongst all returned nestedSlots for `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`."
+          "doc": "The local end date of the time slot.\nWhen returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`\nrepresents the latest endDate among all returned nested time slots."
         },
         {
           "name": "localStartDate",
@@ -2382,7 +2366,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The local start date of the time slot.\nRepresents the earliest startDate amongst all returned nestedSlots for `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`."
+          "doc": "The local start date of the time slot.\nWhen returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`.\nrepresents the earliest startDate among all returned nested time slots."
         },
         {
           "name": "location",
@@ -2392,7 +2376,7 @@
               "referenceType": "wix-bookings-v2.TimeSlots.Location"
             }
           ],
-          "doc": "TODO | locations service is not considered viewer segment\nTODO | that's a risk since I don't know how to get this for now"
+          "doc": "The geographic location of the slot.\nWhen returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`\nthe geographic location of all nested time slots of this slot.\nIf you wish to use the returned available location to `createBooking`,\nyou MUST map the timeSlot.location.locationType to the [Booking.location.locationType](https://dev.wix.com/docs/rest/api-reference/wix-bookings/time-slots-and-bookings/bookings-v2/bookings-v2-and-confirmation/booking-object)"
         },
         {
           "name": "nestedTimeSlots",
@@ -2409,7 +2393,7 @@
               }
             }
           ],
-          "doc": "Nested time slots, will be returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`."
+          "doc": "TODO: maxSize = max size for bulk operations"
         },
         {
           "name": "remainingCapacity",
@@ -2419,7 +2403,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "TODO: maxSize = v2.service.defaultCapacity.maxSize, minSize = 0"
         },
         {
           "name": "serviceId",
@@ -2429,7 +2413,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Service id.\nNot returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`."
+          "doc": "Service id.\nNot returned from `ListMultiServiceAvailabilityTimeSlots` or `GetMultiServiceAvailabilityTimeSlots`\nInstead, each nested time slot has its own serviceId."
         },
         {
           "name": "totalCapacity",
@@ -2439,12 +2423,12 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots and remaining number of spots for this availability.\nFor example, for a class with total capacity of 10 spots with 3 spots booked, `totalCapacity` is 10, `remainingCapacity` is 7."
+          "doc": "TODO: maxSize = v2.service.defaultCapacity.maxSize, minSize = 1"
         }
       ],
       "docs": {
         "description": [
-          "TODO:\nfix documentation\ncustomize maxsize, timezone formats"
+          ""
         ]
       }
     },
@@ -2459,7 +2443,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of remaining spots for this waitList."
+          "doc": "Number of remaining spots for this wait list.\nFor example, a Yoga event with 10 waitList spots and 3 registered\non the waitList has 10 `total_capacity` and 7 `remaining_capacity`."
         },
         {
           "name": "totalCapacity",
@@ -2469,7 +2453,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of spots and remaining spots for this waitList.\nFor example, a Yoga event with 10 waitList spots and 3 registered\non the waitList has 10 `total_capacity` and 7 `remaining_capacity`."
+          "doc": "Total number of spots in this wait list."
         }
       ],
       "docs": {
