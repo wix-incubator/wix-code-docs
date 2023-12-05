@@ -13,7 +13,7 @@ title: Introduction
 
 &nbsp;  
 
-With the Checkout Settings API, you can retrieve and update the checkout settings for sites that have installed your app, such as adding or removing eCommerce policies, as well as newsletter subscription and policy agreement checkboxes.    
+With the Checkout Settings API, you can retrieve and update the checkout settings for sites that have installed your app. These settings include adding or removing eCommerce policies, and setting checkbox behavior for a checkout.    
 
 Policies will appear as clickable links in the footer of your checkout, while checkboxes can be found when selecting the payment method. The policy text can be read in a pop-up window if you click the policy name. The default checkout settings are provided when you first create a Wix eCommerce site.  
 
