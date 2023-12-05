@@ -1,6 +1,6 @@
 # About Velo
 
-Velo is a full-stack development platform that empowers you to rapidly build, manage and deploy professional web apps. It allows you to develop smarter and deliver faster.
+Velo is a full-stack development platform that empowers you to rapidly build, manage and deploy professional web apps. It allows you to develop smarter and deliver faster. 
 
 This **Getting Started** walks you through many of Velo's core features and gives you a great foundation to build on.
 
