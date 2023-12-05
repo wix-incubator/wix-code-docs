@@ -13,7 +13,7 @@ title: Introduction
 
 &nbsp;  
 
-With the Orders Settings API, you can retrieve and update settings that apply to a site’s eCommerce orders, such as adding or removing customer email notifications about order status, as well as defining when to update the store inventory and create invoices.    
+With the Orders Settings API, you can retrieve and update settings that apply to a site’s eCommerce orders. These settings include adding or removing customer email notifications about order status, defining when to update the store inventory, and creating invoices.    
 
 The default orders settings are provided when you first create a Wix eCommerce site.      
 
