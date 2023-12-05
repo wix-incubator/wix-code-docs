@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "PublicData" Collection Fields
@@ -36,6 +38,9 @@ You cannot change the PublicData collection permissions.
 
 ### Fields 
 
+> **Note:**
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
+
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default. 
 
 #### \[Custom Fields\] 
@@ -49,7 +54,7 @@ Custom fields from your Contacts collection can be added in your site's dashboar
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: No  
-**Can be filtered**: eq, ne, hasSome, contains, lt, gt  
+**Can be filtered**: eq, hasSome, lt, gt, ne  
 **Read-only**: Yes
 
 #### Created Date (\_createdDate) 
@@ -99,7 +104,7 @@ Custom fields from your Contacts collection can be added in your site's dashboar
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: No  
-**Can be filtered**: eq, hasSome, contains  
+**Can be filtered**: eq, hasSome  
 **Read-only**: No
 
 #### Title (title) 

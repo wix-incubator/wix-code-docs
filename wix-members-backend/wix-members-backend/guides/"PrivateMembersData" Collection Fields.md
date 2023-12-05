@@ -38,6 +38,9 @@ You cannot change the PrivateMembersData collection permissions.
 
 ### Fields 
 
+> **Note:**
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
+
 The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default. 
 
 #### ID (\_id) 
@@ -47,7 +50,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes   
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Login Email (loginEmail) 
@@ -57,7 +60,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Name (name) 
@@ -67,7 +70,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### First Name (firstName) 
@@ -77,7 +80,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Last Name (lastName) 
@@ -87,7 +90,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Picture (picture) 
@@ -107,7 +110,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Slug (slug) 
@@ -117,7 +120,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Language (language) 
@@ -127,7 +130,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Status (status) 
@@ -142,7 +145,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: Yes  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, hasSome  
 **Read-only**: Yes
 
 #### Created Date (\_createdDate) 
@@ -152,7 +155,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, gt, lt  
 **Read-only**: Yes
 
 #### Updated Date (\_updatedDate) 
@@ -162,7 +165,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, gt, lt  
 **Read-only**: Yes
 
 #### Last Login Date (lastLogin) 
@@ -172,7 +175,7 @@ The field name is listed as the heading of each section, with the field key list
 **Can connect to data**: Yes  
 **Can use in dynamic page URL**: No  
 **Can be sorted**: Yes  
-**Can be filtered**: Yes  
+**Can be filtered**: eq, ne, gt, lt  
 **Read-only**: Yes
 
 #### Emails (emails) 

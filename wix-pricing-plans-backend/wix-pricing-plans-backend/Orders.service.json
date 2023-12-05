@@ -45,8 +45,8 @@
           " their existing terms and pricing.",
           "",
           " > **Note:**",
-          " > Deprecated [Paid Plans](wix-paid-plans/introduction/) APIs are still available for the following, ",
-          " > but we encourage you to migrate to the [Pricing Plans](wix-pricing-plans/introduction/) APIs instead.",
+          " > Deprecated Paid Plans APIs are still supported for the following, ",
+          " > but we encourage you to migrate to the [Pricing Plans](wix-pricing-plans-frontend/introduction/) APIs instead.",
           "",
           "",
           " ### Orders and subscriptions",
@@ -112,7 +112,7 @@
                 " *************/",
                 "",
                 "import {myCreateOnlineOrderFunction} from 'backend/checkout';",
-                "import wixPay from 'wix-pay';",
+                "import wixPayFrontend from 'wix-pay-frontend';",
                 "",
                 "// ... ",
                 "",
@@ -122,7 +122,7 @@
                 "$w('#submitButton').onClick(async () => {",
                 "  try {",
                 "    const order = await myCreateOnlineOrderFunction(planId, startDate);",
-                "    const result = await wixPay.startPayment(order.wixPayOrderId);",
+                "    const result = await wixPayFrontend.startPayment(order.wixPayOrderId);",
                 "    if (result.status === 'Successful') {",
                 "      console.log('Successfully Ordered');",
                 "      // Handle payment success",
@@ -147,7 +147,8 @@
                 "",
                 "/* Returns a Promise that resolves to  ",
                 " * the created payment. ",
-                " */" ],
+                " */",
+                "" ],
             "extra":
               { "description": "This example demonstrates how you can start an online order with the wix-pricing-plans-backend `createOnlineOrder()`\n function and then send the payment ID (`wixPayOrderId`) to the frontend Wix Pay `startPayment() function to facilitate payment." } },
           { "title": "A full order plan scenario including a collection",
@@ -340,7 +341,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The requested pricing plan order." },
         "locations":
-          [ { "lineno": 405,
+          [ { "lineno": 407,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Gets an order for the currently logged-in member.",
@@ -643,7 +644,7 @@
                         [ "wix-pricing-plans-backend.Orders.Order" ] } ] },
             "doc": "Fulfilled - Pricing plan orders for the current member that match the specified filtering, sorting, and pagination options." },
         "locations":
-          [ { "lineno": 440,
+          [ { "lineno": 442,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Lists orders for the currently logged-in member.",
@@ -727,18 +728,18 @@
         "docs":
           { "summary": "Lists pricing plan orders.",
             "description":
-              [ "The `listOrders()` function returns a Promise that resolves to a list of up to 100 pricing plan orders. ",
+              [ "The `listOrders()` function returns a Promise that resolves to a list of up to 50 pricing plan orders. ",
                 " You can specify options for filtering, sorting, and paginating the results.",
                 "",
                 " This function returns the orders on the site. To list orders for the current member only, see the ",
-                " frontend [`listCurrentMemberOrders`](wix-pricing-plans/listCurrentMemberOrders) function.",
+                " frontend [`listCurrentMemberOrders`](wix-pricing-plans-frontend/listCurrentMemberOrders) function.",
                 "",
                 "",
                 " > **Note**: Only site visitors with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
                 " > can list orders. You can override the permissions by setting the function's `suppressAuth` ",
                 " > option to `true`." ],
             "links":
-              [ "[listCurrentMemberOrders( )](wix-pricing-plans/listCurrentMemberOrders)" ],
+              [ "[listCurrentMemberOrders( )](wix-pricing-plans-frontend/listCurrentMemberOrders)" ],
             "examples":
               [ { "title": "List all orders",
                   "body":
@@ -766,7 +767,7 @@
                       "  ",
                       "export async function myListOrdersWithOptionsFunction(options) {",
                       "  try {",
-                      "    const listedOrders = await orders.listOrders(options);",
+                      "    const listedOrders = await orders.listOrders(null, null, null, options);",
                       "    const firstOrderId = listedOrders.orders[0]._id;",
                       "    const firstOrderStatus = listedOrders.orders[0].status;",
                       "",
@@ -1006,7 +1007,39 @@
                       " * ]",
                       " */" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "Iterate through all pages of orders",
+                  "body":
+                    [ "import { orders } from 'wix-pricing-plans-backend';",
+                      "",
+                      "// Retrieve all orders",
+                      "",
+                      "export async function myListAllOrdersFunction() {",
+                      "  ",
+                      "  const ordersPerPage = 50;",
+                      "",
+                      "  let pageNumber = 0;",
+                      "  let currentOrdersPage = [];",
+                      "  let allOrders = [];",
+                      "",
+                      "  // Use the 'skip' parameter to retrieve sequential pages of 50 orders",
+                      "  // until the retrieved page contains no orders",
+                      "  do {",
+                      "    let ordersToSkip = {skip: pageNumber * ordersPerPage};",
+                      "    try {",
+                      "      currentOrdersPage = await orders.listOrders(null, null, ordersToSkip);",
+                      "    } catch (error) {",
+                      "      console.error(error);",
+                      "    }",
+                      "    allOrders = allOrders.concat(currentOrdersPage);",
+                      "    pageNumber++;",
+                      "  } while (currentOrdersPage.length != 0)",
+                      "",
+                      "  return allOrders;",
+                      "}",
+                      "" ],
+                  "extra":
+                    { "description": "This example demonstrates how to retrieve all orders, bypassing the maximum limit of 50." } } ],
             "extra":
               {  } },
         "extra":
@@ -1029,7 +1062,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is marked as paid." },
         "locations":
-          [ { "lineno": 263,
+          [ { "lineno": 265,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Marks an offline pricing plan order as paid.",
@@ -1124,7 +1157,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is paused." },
         "locations":
-          [ { "lineno": 299,
+          [ { "lineno": 301,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Pauses a pricing plans order.",
@@ -1224,7 +1257,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order's end date has been postponed or made earlier." },
         "locations":
-          [ { "lineno": 337,
+          [ { "lineno": 339,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Extends the duration of a pricing plan order by postponing the order's `endDate`.",
@@ -1318,7 +1351,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the cancellation process is started." },
         "locations":
-          [ { "lineno": 456,
+          [ { "lineno": 458,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Starts the process of cancelling the logged-in member's pricing plan order.",
@@ -1382,7 +1415,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the order is resumed." },
         "locations":
-          [ { "lineno": 370,
+          [ { "lineno": 372,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Resumes a paused pricing plan order.",
@@ -1548,7 +1581,7 @@
         "labels": [] },
       { "name": "CurrentMemberFilterOptions",
         "locations":
-          [ { "lineno": 417,
+          [ { "lineno": 419,
               "filename": "orders.js" } ],
         "docs":
           { "summary": "Fields to filter by when listing orders for the current member.",
@@ -1672,7 +1705,7 @@
               "doc": "ID of the related Wix subscription. \n\nEvery pricing plan order corresponds to a Wix subscription, including orders for single payment plans. You can see all orders from your site's [Subscriptions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsubscriptions%3FreferralInfo%3Dvelo-docs) page in the Dashboard." },
             { "name": "wixPayOrderId",
               "type": "string",
-              "doc": "ID of the associated Wix Pay order. \n\nCreated by the [`createOnlineOrder()`](wix-pricing-plans-backend/checkout/createonlineorder) or [`createfflineOrder()`](wix-pricing-plans-backend/checkout/createofflineorder) function. For online orders, send this value as a parameter to the Wix Pay [`startPayment()`](wix-pay/startPayment) function to enable your buyer to pay for the order. `wixPayOrderId` is omitted if the order is free.",
+              "doc": "ID of the associated Wix Pay order. \n\nCreated by the [`createOnlineOrder()`](wix-pricing-plans-backend/checkout/createonlineorder) or [`createfflineOrder()`](wix-pricing-plans-backend/checkout/createofflineorder) function. For online orders, send this value as a parameter to the Wix Pay [`startPayment()`](wix-pay-frontend/startPayment) function to enable your buyer to pay for the order. `wixPayOrderId` is omitted if the order is free.",
               "optional": true },
             { "name": "buyer",
               "type": "wix-pricing-plans-backend.Orders.Buyer",

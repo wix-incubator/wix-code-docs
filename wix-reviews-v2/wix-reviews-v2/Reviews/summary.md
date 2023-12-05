@@ -1,0 +1,1 @@
+Use the Reviews API to manage your site's reviews.
