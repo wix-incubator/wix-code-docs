@@ -7,7 +7,7 @@ title: Introduction
 Wix Blog allows site owners and collaborators to create and manage blogs. Site owners and collaborators can create and manage posts, categories and tags on their blog site or in the dashboard. Site collaborators must be assigned a blog role. There are 3 types of blog roles: 
 - **Blog Editors** can fully manage the blog, but not other areas of a site.
 - **Blog Writers** can create and publish their own posts on a blog.
-- **Guest Writers** can only create posts. Posts written by guest writers must be reviewed and published by a blog editor. 
+- **Guest Writers** can only create posts. Posts written by guest writers must be reviewed and published by a blog editor.
 
 
 The Wix Blog Backend API provides the functionality for getting and querying posts, categories, and tags from a blog.
