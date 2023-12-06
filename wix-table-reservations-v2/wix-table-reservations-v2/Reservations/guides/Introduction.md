@@ -40,7 +40,7 @@ Calling [`createReservation()`](https://www.wix.com/velo/reference/wix-table-res
 * `ignoreReservationLocationConflicts`
 * `ignoreTableCombinationConflicts`
 
-If `source` is not provided, the value assigned to it depends on whether `createReservation()` was called with elevated permissions. With elevated permissions, `source` is set to `UNDEFINED`. Otherwise, `source` is set to `ONLINE`.
+If you do not provide a `source`, the value assigned to it depends on whether you called `createReservation()` with elevated permissions. With elevated permissions, `source` is set to `UNDEFINED`. Otherwise, `source` is set to `ONLINE`.
 
 ### getReservation()
 
