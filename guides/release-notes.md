@@ -7,6 +7,121 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Wix Inbox v2
+
+`wix-inbox.v2`
+
+We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-v2) module, which is currently released as a developer preview. Note that the changes break existing code that uses the following functions, which requires updates to your code:
+
+- [`Conversations`](https://www.wix.com/velo/reference/wix-inbox-v2/conversations):
+  - [`getOrCreateConversation()`](https://www.wix.com/velo/reference/wix-inbox-v2/conversations/getorcreateconversation): `participantId` has been removed from the `options` parameter, and is now the first required parameter.
+- [`Messages`](https://www.wix.com/velo/reference/wix-inbox-v2/messages):
+  - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
+  - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
+
+(Novemeber 29, 2023)
+
+### New Developer Preview API: Reviews
+
+The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
+
++ [Create](/wix-reviews-v2/reviews/createreview), [delete](/wix-reviews-v2/reviews/deletereview), [get](/wix-reviews-v2/reviews/getreview), or [update](/wix-reviews-v2/reviews/updatereview) a review.
++ [Query](/wix-reviews-v2/reviews/queryreviews) reviews.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(November 28, 2023)
+
+### New API: TextMask
+
+`Wix Editor Elements ($w)`
+
+The new [TextMask API]($w/textmask) allows you to mask images and videos in the background of your text. Use the [`text`]($w/textmask/text) property to set or get the TextMask's plain-text content. Use the [`background.src`]($w/textmask/background) property to set or get the source of the TextMask's background.
+
+(November 27, 2023)
+
+### New API: Slideshow Button
+
+`Wix Editor Elements ($w)`
+
+The new [SlideshowButton API]($w/slideshowbutton) allows you to customize the navigation buttons on your slideshow. Similar to the [Button]($w/button) element, you can manage the labels, styles, icons, and visibility settings of a slideshow button. Note that you can't set a link to a slideshow button. 
+
+(October 17, 2023)
+
+### Migration of legacy APIs, batch 3
+
+In the past few weeks, we've re-released some more legacy APIs.
+This follows the [May](#migration-of-legacy-apis), [June](#migration-of-legacy-apis-batch-2), [July](#migration-of-notifications-api), and [August](#migration-of-booking-resources-api) 2023 re-releases of
+legacy APIs.
+
+You don't need to take any action at this time.
+As always, we'll continue to support the legacy APIs,
+so your existing code will continue to work as it does today.
+
+Behind the scenes, this is part of a large,
+cross-Wix effort to move all of our APIs to a new infrastructure.
+This migration will allow us to release APIs more quickly after they're developed,
+and to align with established design patterns across all of Wix's APIs.
+This means you can get your hands on better, more consistent APIs,
+faster than before.
+
+#### What's in this release
+
+All the new modules are released as a
+[developer preview](https://www.wix.com/velo/reference/api-overview/developer-preview)
+and, unless otherwise mentioned, are
+[universal modules](https://www.wix.com/velo/reference/api-overview/api-versions#api-overview_api-versions_universal-modules).
+
+Most of the APIs contain the same functionality as the previous version.
+In some rare cases, a regression was unavoidable.
+This list outlines the modules (and their respective namespaces) that were released,
+as well as any new or removed functionality as compared to the previous release:
+
+`wix-business-tools.v2`:
+
+- All functions are now in the `SiteProperties` namespace inside the module.
+- Site Properties:
+  - New: [`getSiteProperties()`](/wix-business-tools-v2/siteproperties/getsiteproperties).
+    This function replaces all functions in the `GeneralInfo` namespace inside the `wix-site-backend`module.
+  - New: [`updateBusinessContact()`](/wix-business-tools-v2/siteproperties/updatebusinesscontact).
+  - New: [`updateBusinessProfile()`](/wix-business-tools-v2/siteproperties/updatebusinessprofile).
+  - New: [`updateBusinessSchedule()`](/wix-business-tools-v2/siteproperties/updatebusinessschedule).
+  - New: [`updateConsentPolicy()`](/wix-business-tools-v2/siteproperties/updateconsentpolicy).
+
+`wix-members.v2`:
+
+- Functions from the previous `CurrentMember` namespace are now in the `Members` namespace.
+- Members: 
+  - [`createMember()`](wix-members-v2/members/createmember).
+  - [`listMembers()`](wix-members-v2/members/listmembers).
+  - [`queryMembers()`](wix-members-v2/members/querymembers).
+  - [`getCurrentMember()`](wix-members-v2/members/getcurrentmember) replaces `getMember()` from `CurrentMember`.
+  - [`joinCommunity()`](wix-members-v2/members/joincommunity) replaces `makeProfilePublic()` from `CurrentMember`.
+  - [`leaveCommunity()`](wix-members-v2/members/leavecommunity) replaces `makeProfilePrivate()` from `CurrentMember`.
+  - [`updateCurrentMemberSlug()`](wix-members-v2/members/updatecurrentmemberslug) replaces `updateSlug()` from `CurrentMember`.
+- `getRoles()` from `CurrentMember` is not available.
+
+(October 15, 2023)
+### New $w Product Page APIs
+
+We added the following new $w Product Page APIs:
+
++ [getCustomText()](/$w/productpage/getcustomtext): Gets the values of a product's custom text fields.
++ [getQuantity()](/$w/productpage/getquantity): Gets the quantity of a product in the Product Page.
++ [getSelectedChoices()](/$w/productpage/getselectedchoices): Gets the selected product option choices of a product in the Product Page.
++ [getSelectedVariantId()](/$w/productpage/getselectedvariantid): Gets the variant ID of the selected product variant.
++ [onAddToCart()](/$w/productpage/onaddtocart): Adds an event handler that runs when the **Add To Cart** button in the Product Page is clicked.
++ [onBuyNow()](/$w/productpage/onbuynow): Adds an event handler that runs when the **Buy Now** button in the Product Page is clicked.
++ [onChoiceSelected()](/$w/productpage/onchoiceselected): Adds an event handler that runs when a product option choice is selected.
++ [onQuantityChanged()](/$w/productpage/onquantitychanged): Adds an event handler that runs when a product's quantity is changed.
++ [setAddToCartLabel()](/$w/productpage/setaddtocartlabel): Sets the Add To Cart button's label.
++ [setBuyNowLabel()](/$w/productpage/setbuynowlabel): Sets the Buy Now button's label.
++ [setQuantity()](/$w/productpage/setquantity): Sets the quantity of a product in the Product Page.
+
+We also added a tutorial that uses some of the new $w Product Page APIs: [Tutorial: Adding a Request A Quote Option to a Wix Store Product Page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-e-commerce-stores/tutorial-request-a-quote). 
+
+(October 10, 2023)
+
 ### New Developer Preview API: Recommendations
 
 The new [Recommendations API](/wix-ecom-backend/recommendations) allows you to promote and recommend items to your customers using recommendation algorithms. It includes the following endpoints:
