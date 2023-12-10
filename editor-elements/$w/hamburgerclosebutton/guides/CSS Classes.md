@@ -2,7 +2,7 @@
 
 # Hamburger Menu CSS Classes
 
-> > This feature is only available to Wix Studio users.
+> This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `HamburgerCloseButton` elements with CSS.
