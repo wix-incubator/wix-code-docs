@@ -2,7 +2,7 @@
 
 # Hamburger Menu CSS Classes
 
-> This feature is not yet available to all users.
+> This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `HamburgerOpen` elements with CSS.
@@ -23,7 +23,7 @@ select elements with the documented class names only.
 
 ## `.hamburger-open-button`
 
-Targets hamburgerOpenButton element.
+Targets `hamburgerOpenButton` element.
 For example:
 
 ```css
@@ -36,7 +36,7 @@ For example:
 
 ## `.hamburger-open-button__icon `
 
-Targets hamburgerOpenButton icon.
+Targets `hamburgerOpenButton` icon.
 For example:
 
 ```css
