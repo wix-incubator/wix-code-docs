@@ -2,7 +2,7 @@
 
 # Hamburger Menu CSS Classes
 
-> This feature is not yet available to all users.
+> > This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `HamburgerCloseButton` elements with CSS.
@@ -23,7 +23,7 @@ select elements with the documented class names only.
 
 ## `.hamburger-close-button`
 
-Targets hamburgerCloseButton elements.
+Targets `hamburgerCloseButton` elements.
 For example:
 
 ```css
@@ -36,7 +36,7 @@ For example:
 
 ## `.hamburger-close-button__label`
 
-Targets hamburgerCloseButton [label text]($w/button/label).
+Targets `hamburgerCloseButton` [label text]($w/button/label).
 For example:
 
 ```css
@@ -49,7 +49,7 @@ For example:
 ```
 ## `.hamburger-close-button__icon`
 
-Targets button [icon images]($w/button/icon).
+Targets `hamburgerCloseButton` [icon images]($w/button/icon).
 For example:
 
 ```css
