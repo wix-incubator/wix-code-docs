@@ -2,7 +2,7 @@
 
 # Hamburger Menu CSS Classes
 
-> This feature is not yet available to all users.
+> This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `HamburgerMenuContainer` elements with CSS.
@@ -23,7 +23,7 @@ select elements with the documented class names only.
 
 ## `.hamburger-menu-container`
 
-Targets hamburgerMenuContainer item.
+Targets `hamburgerMenuContainer` item.
 For example:
 
 ```css
