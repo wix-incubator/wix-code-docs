@@ -28,7 +28,6 @@ For example:
 
 ```css
 .hamburger-overlay {
-  width: 90%;
   background-color: #116dff;
 }
 ```
