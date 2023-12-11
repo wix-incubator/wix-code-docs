@@ -1499,6 +1499,106 @@
       "syntaxName": "createCheckout"
     },
     {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Checkout ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Checkout.CreateOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates an order from a specified checkout.",
+        "description": [
+          "The `createOrder()` function returns a Promise that resolves to the new order's ID and `paymentGatewayOrderID` when the order is created.\nPass the `paymentGatewayOrderId` as the `paymentId` param to the [`startPayment()`](https://www.wix.com/velo/reference/wix-pay-frontend/startpayment) function to allow a customer to pay for their order.\n\n> **Note:** The following requirements must be met for an order to be created from a checkout.\n> + A checkout cannot have calculation errors. Pass the `checkout._id` to [Get Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout) and take a look at the `calculationErrors` field.\n> + A checkout must have at least 1 line item.\n> + All of the line Items have an `availability.status` of `\"AVAILABLE\"` or `\"PARTIALLY_AVAILABLE\"`.\n> + If there is a payment to be made, meaning that `priceSummary.total` is greater than 0, the `billingInfo.address` field must be provided.\n> + When a checkout has line items to be shipped, the `shippingInfo.shippingDestination.address` and `shippingInfo.selectedCarrierServiceOption` fields must be provided.\n> + When a checkout has line items for pickup, the `shippingInfo.selectedCarrierServiceOption.logistics.pickupDetails` field must be provided."
+        ],
+        "examples": [
+          {
+            "title": "Create an order from a checkout ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { checkout } from 'wix-ecom-backend';",
+              "",
+              "export async function myCreateOrderFromCheckoutFunction(checkoutId) {",
+              "  try {",
+              "    const createOrderResponse = await checkout.createOrder(checkoutId);",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return createOrderResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myCreateOrderFromCheckoutFunction } from 'backend/my-backend-file';",
+              "",
+              "// Sample checkoutId:",
+              "const checkoutId = '23a7b29a-3c14-4ef1-9353-f4b714b13217';",
+              "",
+              "myCreateOrderFromCheckoutFunction(checkoutId)",
+              "  .then((createOrderResponse) => {",
+              "    const orderId = createOrderResponse.orderId;",
+              "    const paymentGatewayOrderId = createOrderResponse.paymentGatewayOrderId;",
+              "",
+              "    console.log('Success! Created an order from the checkout');",
+              "    return createOrderResponse;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " * {",
+              " *   \"orderId\": \"02843248-495f-45c0-a5d6-e913f647c9f2\",",
+              " *   \"paymentGatewayOrderId\": \"f30440f4-413a-4382-bc38-7280b155a5ed\"",
+              " * }",
+              " *",
+              " */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "createOrder"
+    },
+    {
       "name": "getCheckout",
       "params": [
         {
@@ -5966,6 +6066,16 @@
           "doc": "Is tax applied for this line item"
         },
         {
+          "name": "taxRate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax rate %, as a decimal point >= 0"
+        },
+        {
           "name": "totalPrice",
           "optional": true,
           "type": [
@@ -6892,7 +7002,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of newly created order."
+          "doc": "ID of the newly created order."
         },
         {
           "name": "paymentGatewayOrderId",
@@ -6902,7 +7012,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "`paymentGatewayOrderId` will be returned if money needs to be charged.\nFor online orders, send this value as a parameter to the Wix Pay startPayment() function to enable your buyer to pay for the order.\n\nIn some cases, money should not be charged:\n+ If the total price is 0. For example, in the case of a free item or an item with 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
+          "doc": "Payment gateway order ID.\n\nFor online orders, pass this value as the `paymentId` parameter to the Wix Pay [`startPayment()`](https://www.wix.com/velo/reference/wix-pay-frontend/startpayment) function so your customer can pay for the order.\n\nThis field will be returned if money needs to be charged. In some cases, money cannot be charged:\n+ When the total price (the `priceSummary.total.amount` field in the checkout/order objects) is 0. For example, in the case of a free item or an item with a 100% discount.\n+ If the total price is not 0, but the payment is covered by alternative payment methods, such as a gift card.\n"
         },
         {
           "name": "subscriptionId",
@@ -9449,7 +9559,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Where on the checkout and cart page the violation will be displayed.\nSupported values:\n+ `OTHER_DEFAULT`: The default location on a checkout or cart page where a general (other) violation will be displayed."
+          "doc": "Location on a checkout or a cart page where a general (other) violation will be displayed."
         }
       ],
       "docs": {
@@ -11214,7 +11324,7 @@
               "referenceType": "wix-ecom-backend.Checkout.TargetLineItem"
             }
           ],
-          "doc": "Other violation."
+          "doc": "Specific line item violation."
         },
         {
           "name": "other",
@@ -11224,7 +11334,7 @@
               "referenceType": "wix-ecom-backend.Checkout.Other"
             }
           ],
-          "doc": "Specific line item violation."
+          "doc": "General (other) violation."
         }
       ],
       "extra": {
@@ -11265,7 +11375,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Where on the checkout and cart page the violation belonging to a specific line item will be displayed.\nSupported values:\n+ `LINE_ITEM_DEFAULT`: The default location on a checkout or cart page where a line item violation will be displayed."
+          "doc": "Location on a checkout or a cart page where the specific line item violation will be displayed."
         }
       ],
       "docs": {
@@ -11285,7 +11395,7 @@
               "referenceType": "wix-ecom-backend.Checkout.TargetLineItem"
             }
           ],
-          "doc": "Other violation."
+          "doc": "Specific line item violation."
         },
         {
           "name": "other",
@@ -11295,7 +11405,7 @@
               "referenceType": "wix-ecom-backend.Checkout.Other"
             }
           ],
-          "doc": "Specific line item violation."
+          "doc": "General (other) violation."
         }
       ],
       "docs": {
