@@ -7,6 +7,18 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview API: Table Reservations
+
+The [Table Reservations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/introduction) provides all the functionality required to create and manage restaurant table reservations.
+
+It contains the following APIs:
+
+* [Reservations](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservations/introduction): Creates and manages restaurant table reservations.
+* [Reservation Locations](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/introduction): Provides location information and configures reservation settings for individual restaurants.
+* [Time Slots](https://www.wix.com/velo/reference/wix-table-reservations-v2/timeslots/introduction): Retrieves availability information for time slots at a reservation location.
+
+(December 11, 2023)
+
 ### Updated API: Wix Inbox v2
 
 `wix-inbox.v2`
