@@ -33,17 +33,30 @@ For example:
   background-color: #116dff;
 }
 ```
+## `.hamburger-open-button__label`
+
+Targets `hamburgerOpenButton` [label text]($w/button/label).
+For example:
+
+```css
+.hamburger-open-button__label {
+  font-family: sans-serif;
+  font-weight: 700;
+  text-transform: lowercase;
+  color: black;
+}
+```
 
 ## `.hamburger-open-button__icon `
 
-Targets `hamburgerOpenButton` icon.
+Targets `hamburgerOpenButton` [icon images]($w/button/icon).
 For example:
 
 ```css
 .hamburger-open-button__icon {
-  width: 90%;
-  height: 70%;
-  border: 2px solid blck;
-  border-radius: 32px;
+  width: 20px;
+  height: 40px;
+  border-radius: 20%;
+  box-shadow: 5px 5px 5px;
 }
 ```
