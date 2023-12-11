@@ -28,7 +28,7 @@ For example:
 
 ```css
 .hamburger-menu-container {
-  width: 100%;
+  width: 50%;
   height: 70%;
   background-color: #92f0a0;
 }
