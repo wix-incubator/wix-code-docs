@@ -47,6 +47,7 @@ For example:
   color: black;
 }
 ```
+
 ## `.hamburger-close-button__icon`
 
 Targets `hamburgerCloseButton` [icon images]($w/button/icon).
@@ -59,3 +60,4 @@ For example:
   border-radius: 50%;
   box-shadow: 5px 5px 10px;
 }
+```
