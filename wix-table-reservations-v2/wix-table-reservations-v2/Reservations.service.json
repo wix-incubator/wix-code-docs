@@ -106,7 +106,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.HeldReservationDetails"
             }
           ],
-          "doc": "`HELD` reservation information to update.",
+          "doc": "Held reservation information to update.",
           "required": true
         }
       ],
@@ -132,9 +132,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a new reservation with the `HELD` status.",
+        "summary": "Creates a new temporary reservation and holds it for the customer for 10 minutes.",
         "description": [
-          "Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error.\n\nYou cannot call [`Update Reservation`](#update-reservation) to change a reservation’s status from `HELD`. Trying to do so will return an error."
+          "Creates a new reservation with the `HELD` status. `HELD` reservations are intended to reserve seats and tables for a party in a selected time slot while they enter further reservation details, such as names and contact information. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error.\n\nYou cannot call `updateReservation()` to change a reservation’s status from `HELD`. Trying to do so returns an error. Instead, you should use `reserveReservation()`.\n\nIf you do not wish to have `HELD` reservations in your flow, you can create a reservation with all required details using `createReservation()`.\n"
         ],
         "examples": [
           {
@@ -214,7 +214,7 @@
       "docs": {
         "summary": "Creates a new reservation.",
         "description": [
-          "If a `status` is not provided, the reservation is created with the `RESERVED` status, or the `REQUESTED` status if manual approval is required for confirmation.\n\nIncluding the fields `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, or `ignoreTableCombinationConflicts` in the request requires additional permissions. See this API's Introduction article for more information.\n\nIf `source` is not provided, its value is set depending on the permissions of the user making the call. See this API's Introduction article for more information.\n\nA reservation created with any status other than `WALK_IN` requires the `reservation.reservee.phone` and `reservation.reservee.firstName` fields.\nAttempting to create a reservation without these fields will result in an error."
+          "`createReservation()` accepts and requires different fields depending on the `status` provided and your permissions.\n\n### Status and source\n\nIf a `status` is not provided, it will be set to:\n* `RESERVED` if manual approval is not required for confirmation\n* `REQUESTED` if manual approval is required for confirmation.\n\nIf `source` is not provided, its value is set depending on the permissions of the user making the call. See this API's Introduction article for more information.\n\nA reservation created with any status other than `WALK_IN` requires the `reservation.reservee.phone` and `reservation.reservee.firstName` fields.\nAttempting to create a reservation without these fields will result in an error.\n\n### Permissions\n\nIncluding the fields `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, or `ignoreTableCombinationConflicts` in the request requires additional permissions. See this API's Introduction article for more information.\n\n > **Note:** `createReservation()` requires all details of the reservation upfront. The process of creating a reservation can be broken up using `createHeldReservation`.  `createHeldReservation` creates a temporary reservation that expires automatically unless it is completed with the addition of more details using `reserveReservation()`."
         ],
         "examples": [
           {
@@ -501,9 +501,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Reserves or requests a `HELD` reservation.",
+        "summary": "Reserves or requests a held reservation.",
         "description": [
-          "`Reserve Reservation` changes a reservation's `HELD` status to `RESERVED`, or to `REQUESTED` if the reservation's reservation location requires manual approval."
+          "Held reservations are temporary reservations with the `HELD` status created by `createHeldReservation()`.\n\nThey are intended to reserve seats and tables for a party in a selected time slot while they enter further reservation details, such as names and contact information. Reservations with the `HELD` status are only valid for 10 minutes. Trying to call `Reserve Reservation` with a held reservation older than 10 minutes returns an error.\n\n`Reserve Reservation` changes a reservation's `HELD` status to:\n* `RESERVED` if the reservation's reservation location does not require manual approval.\n* `REQUESTED` if the reservation's reservation location requires manual approval."
         ],
         "examples": [
           {
@@ -544,7 +544,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reservation ID. Read-Only.",
+          "doc": "Reservation ID. Read-only.",
           "required": true
         },
         {
@@ -554,7 +554,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.UpdateReservation"
             }
           ],
-          "doc": "",
+          "doc": "Reservation information to update.",
           "required": true
         },
         {
@@ -591,7 +591,7 @@
       "docs": {
         "summary": "Updates a reservation.",
         "description": [
-          "Each time the reservation is updated, revision increments by 1. The existing revision must be included when updating the reservation. This ensures you're working with the latest reservation information, and it prevents unintended overwrites."
+          "Including the fields `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, and `ignoreTableCombinationConflicts` in the request requires additional permissions. See this API's Introduction article for more information.\n\nEach time the reservation is updated, revision increments by 1. The existing revision must be included when updating the reservation. This ensures you're working with the latest reservation information, and it prevents unintended overwrites."
         ],
         "examples": [
           {
@@ -733,7 +733,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.HeldReservationDetails"
             }
           ],
-          "doc": "`HELD` reservation information to update."
+          "doc": "Held reservation information to update."
         }
       ],
       "docs": {
@@ -773,12 +773,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignore reservation location conflicts. This will ensure that the reservation is created even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
+          "doc": "Ignore reservation location conflicts. This ensures that the reservation is created even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
         },
         {
           "name": "ignoreTableCombinationConflicts",
@@ -788,12 +790,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignore table combination conflicts. This will ensure that the reservation is created even if the required tables are already reserved."
+          "doc": "Ignore table combination conflicts. This ensures that the reservation is created even if the required tables are already reserved."
         }
       ],
       "docs": {
@@ -813,12 +817,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignore reservation location conflicts. This will ensure that the reservation is created even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
+          "doc": "Ignore reservation location conflicts. This ensures that the reservation is created even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
         },
         {
           "name": "ignoreTableCombinationConflicts",
@@ -828,12 +834,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignore table combination conflicts. This will ensure that the reservation is created even if the required tables are already reserved."
+          "doc": "Ignore table combination conflicts. This ensures that the reservation is created even if the required tables are already reserved."
         },
         {
           "name": "reservation",
@@ -1144,7 +1152,7 @@
               }
             }
           ],
-          "doc": "Table IDs of tables used for this reservation."
+          "doc": "IDs of tables used for this reservation."
         }
       ],
       "docs": {
@@ -1415,7 +1423,9 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
@@ -1440,7 +1450,9 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
@@ -1544,7 +1556,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
             }
           ],
-          "doc": "The way how reservations in response should be sorted."
+          "doc": "Defines how reservations in the response are sorted."
         },
         {
           "name": "startDateFrom",
@@ -1554,7 +1566,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start date from."
+          "doc": "Only reservations starting after this date are returned."
         },
         {
           "name": "startDateTo",
@@ -1564,41 +1576,17 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start date to."
+          "doc": "Only reservations starting before this date are returned."
         },
         {
           "name": "status",
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'HELD'"
-            },
-            {
-              "nativeType": "'RESERVED'"
-            },
-            {
-              "nativeType": "'CANCELED'"
-            },
-            {
-              "nativeType": "'FINISHED'"
-            },
-            {
-              "nativeType": "'NO_SHOW'"
-            },
-            {
-              "nativeType": "'SEATED'"
-            },
-            {
-              "nativeType": "'REQUESTED'"
-            },
-            {
-              "nativeType": "'DECLINED'"
+              "nativeType": "string"
             }
           ],
-          "doc": "Only reservations with this status should be returned."
+          "doc": "Only reservations with this status are returned.\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n"
         }
       ],
       "docs": {
@@ -1628,7 +1616,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
             }
           ],
-          "doc": "The way how reservations in response should be sorted."
+          "doc": "Defines how reservations in the response are sorted."
         },
         {
           "name": "startDateFrom",
@@ -1638,7 +1626,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start date from."
+          "doc": "Only reservations starting after this date are returned."
         },
         {
           "name": "startDateTo",
@@ -1648,41 +1636,17 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Start date to."
+          "doc": "Only reservations starting before this date are returned."
         },
         {
           "name": "status",
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'HELD'"
-            },
-            {
-              "nativeType": "'RESERVED'"
-            },
-            {
-              "nativeType": "'CANCELED'"
-            },
-            {
-              "nativeType": "'FINISHED'"
-            },
-            {
-              "nativeType": "'NO_SHOW'"
-            },
-            {
-              "nativeType": "'SEATED'"
-            },
-            {
-              "nativeType": "'REQUESTED'"
-            },
-            {
-              "nativeType": "'DECLINED'"
+              "nativeType": "string"
             }
           ],
-          "doc": "Only reservations with this status should be returned."
+          "doc": "Only reservations with this status are returned.\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n"
         }
       ],
       "docs": {
@@ -1816,7 +1780,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reservation ID. Read-Only."
+          "doc": "Reservation ID. Read-only."
         },
         {
           "name": "_updatedDate",
@@ -1886,53 +1850,20 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'OFFLINE'"
-            },
-            {
-              "nativeType": "'ONLINE'"
-            },
-            {
-              "nativeType": "'WALK_IN'"
+              "nativeType": "string"
             }
           ],
-          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n`ONLINE` indicates that the customer made the reservation through a website or app.\n`OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n`WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
+          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n* `ONLINE` indicates that the customer made the reservation through a website or app.\n* `OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n* `WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
         },
         {
           "name": "status",
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'HELD'"
-            },
-            {
-              "nativeType": "'RESERVED'"
-            },
-            {
-              "nativeType": "'CANCELED'"
-            },
-            {
-              "nativeType": "'FINISHED'"
-            },
-            {
-              "nativeType": "'NO_SHOW'"
-            },
-            {
-              "nativeType": "'SEATED'"
-            },
-            {
-              "nativeType": "'REQUESTED'"
-            },
-            {
-              "nativeType": "'DECLINED'"
+              "nativeType": "string"
             }
           ],
-          "doc": "Status of the reservation.\n\nSee the article for this API titled \"The Reservation Lifecycle\" in the menu on the left for more details on each of the statuses, and an explanation of the reservation lifecycle.\n"
+          "doc": "Status of the reservation.\n\nSupported values:\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n\n\nSee the article for this API titled \"The Reservation Lifecycle\" in the menu on the left for more details on each of the statuses, and an explanation of the reservation lifecycle.\n"
         },
         {
           "name": "teamMessage",
@@ -2053,13 +1984,7 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'PARTY_PACING'"
-            },
-            {
-              "nativeType": "'SEAT_PACING'"
+              "nativeType": "string"
             }
           ],
           "doc": "Reservation location conflict type."
@@ -2191,7 +2116,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Custom fields for the reservee in key-value pairs.\n\nThe key is the custom field's ID, and the value is the custom field's value.\n\nEmpty fields are not returned.\n"
+          "doc": "Custom fields for the reservee in key-value pairs.\n\nThe key is the custom field's ID, and the value is the custom field's value. For example, a custom field for allergies might have the key-value pair `f4283b2d-6340-4cf9-bae7-8769e6b62127 : \"Nuts, Seafood\"`.\n\nEmpty fields are not returned.\n"
         },
         {
           "name": "email",
@@ -2231,7 +2156,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the reserve has given marketing consent."
+          "doc": "Whether the reservee has given marketing consent."
         },
         {
           "name": "phone",
@@ -2241,7 +2166,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Phone number.\n\n(This field should begin with a +, followed by the country code, then the rest of the phone number.)\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`.\n"
+          "doc": "Phone number.\n\nThis property should begin with a +, followed by the country code, and then the rest of the phone number.\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`.\n"
         }
       ],
       "docs": {
@@ -2268,10 +2193,7 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "'ASC'"
-            },
-            {
-              "nativeType": "'DESC'"
+              "nativeType": "string"
             }
           ],
           "doc": "Sort order.\n\nUse `ASC` for ascending order or `DESC` for descending order. Defaults to `ASC`.\n"
@@ -2291,19 +2213,7 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'RESERVED'"
-            },
-            {
-              "nativeType": "'TOO_BIG'"
-            },
-            {
-              "nativeType": "'TOO_SMALL'"
-            },
-            {
-              "nativeType": "'OFFLINE_ONLY'"
+              "nativeType": "string"
             }
           ],
           "doc": "Conflict type."
@@ -2338,7 +2248,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reservation ID. Read-Only."
+          "doc": "Reservation ID. Read-only."
         },
         {
           "name": "_updatedDate",
@@ -2408,50 +2318,17 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'OFFLINE'"
-            },
-            {
-              "nativeType": "'ONLINE'"
-            },
-            {
-              "nativeType": "'WALK_IN'"
+              "nativeType": "string"
             }
           ],
-          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n`ONLINE` indicates that the customer made the reservation through a website or app.\n`OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n`WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
+          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n* `ONLINE` indicates that the customer made the reservation through a website or app.\n* `OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n* `WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
         },
         {
           "name": "status",
           "optional": true,
           "type": [
             {
-              "nativeType": "'UNKNOWN'"
-            },
-            {
-              "nativeType": "'HELD'"
-            },
-            {
-              "nativeType": "'RESERVED'"
-            },
-            {
-              "nativeType": "'CANCELED'"
-            },
-            {
-              "nativeType": "'FINISHED'"
-            },
-            {
-              "nativeType": "'NO_SHOW'"
-            },
-            {
-              "nativeType": "'SEATED'"
-            },
-            {
-              "nativeType": "'REQUESTED'"
-            },
-            {
-              "nativeType": "'DECLINED'"
+              "nativeType": "string"
             }
           ],
           "doc": "Status of the reservation.\n\nSee the article for this API titled \"The Reservation Lifecycle\" in the menu on the left for more details on each of the statuses, and an explanation of the reservation lifecycle.\n"
@@ -2484,12 +2361,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignored reservation location conflicts. This will ensure that the reservation is updated even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
+          "doc": "Ignored reservation location conflicts. This ensures that the reservation is updated even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
         },
         {
           "name": "ignoreTableCombinationConflicts",
@@ -2499,12 +2378,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignored table combination conflicts. This will ensure that the reservation is updated even if the required tables are already reserved."
+          "doc": "Ignored table combination conflicts. This ensures that the reservation is updated even if the required tables are already reserved."
         }
       ],
       "docs": {
@@ -2524,12 +2405,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignored reservation location conflicts. This will ensure that the reservation is updated even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
+          "doc": "Ignored reservation location conflicts. This ensures that the reservation is updated even if the required seats or tables are unavailable according to the reservation location's business schedule or its pacing settings."
         },
         {
           "name": "ignoreTableCombinationConflicts",
@@ -2539,12 +2422,14 @@
               "complexType": {
                 "nativeType": "Array",
                 "typeParams": [
-                  {}
+                  {
+                    "nativeType": "string"
+                  }
                 ]
               }
             }
           ],
-          "doc": "Ignored table combination conflicts. This will ensure that the reservation is updated even if the required tables are already reserved."
+          "doc": "Ignored table combination conflicts. This ensures that the reservation is updated even if the required tables are already reserved."
         },
         {
           "name": "reservation",
