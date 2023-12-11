@@ -7,7 +7,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-### New Developer Preview API: [Table Reservations](https://dev.wix.com/docs/sdk/api-reference/table-reservations/introduction)
+### New Developer Preview API: Table Reservations
 
 The [Table Reservations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/introduction) provides all the functionality required to create and manage restaurant table reservations.
 
