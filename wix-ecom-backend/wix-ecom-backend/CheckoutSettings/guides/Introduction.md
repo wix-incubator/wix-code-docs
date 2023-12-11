@@ -20,7 +20,6 @@ Policies will appear as clickable links in the footer of your checkout, while ch
 ## Terminology
 
 - **Checkout:** The second stage of the eCommerce purchase flow: cart, checkout, order. A checkout holds information about items to be purchased, price and tax summaries, shipping and billing info, any applied discounts, and more. 
-- **eCommerce:** Buying and selling of goods and services over the internet. 
 - **Policy:** Set of guidelines, rules, or principles established by an organization or authority to govern behavior, decision-making, and specific actions.
 
 
