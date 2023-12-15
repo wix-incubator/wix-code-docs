@@ -20,7 +20,7 @@ We've updated the [`pricing-plans-frontend`](https://www.wix.com/velo/reference/
 
 `pricing-plans-backend`:
 - [`Checkout`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout):
-  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder): `couponCode` and `startDate` are taken out of the `options` parameter.
+  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder): `couponCode` and `startDate` have been taken out of the `options` parameter.
 
 ### New Developer Preview API: Table Reservations
 
