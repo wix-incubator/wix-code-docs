@@ -7,6 +7,21 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated APIs: Pricing Plans Frontend and Pricing Plans Backend
+
+`pricing-plans-frontend`, `pricing-plans-backend`
+
+We've updated the [`pricing-plans-frontend`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend) and [`pricing-plans-backend`](https://www.wix.com/velo/reference/wix-pricing-plans-backend) modules to reflect the actual function syntaxes.
+
+`pricing-plans-frontend`:
+- [`Checkout`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout):
+  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout/createonlineorder): `couponCode` has been removed and `startDate` has been taken out of the `options` parameter.
+  - [`startOnlinePurchase()`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout/startonlinepurchase): `couponCode` has been removed and `startDate` has been taken out of the `options` parameter.
+
+`pricing-plans-backend`:
+- [`Checkout`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout):
+  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder): `couponCode` and `startDate` are taken out of the `options` parameter.
+
 ### New Developer Preview API: Table Reservations
 
 The [Table Reservations API](https://www.wix.com/velo/reference/wix-table-reservations-v2/introduction) provides all the functionality required to create and manage restaurant table reservations.
