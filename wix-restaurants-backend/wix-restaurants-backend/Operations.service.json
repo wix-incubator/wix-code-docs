@@ -19,7 +19,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "Operation to be created",
+          "doc": "Operation to create.",
           "required": true
         }
       ],
@@ -39,13 +39,11 @@
             }
           }
         ],
-        "doc": "The created Operation\n"
+        "doc": "The created operation.\n"
       },
       "docs": {
-        "summary": "Creates a new Operation",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
+        "summary": "Creates a new operation.",
+        "description": [],
         "examples": [
           {
             "title": "createOperation example",
@@ -86,18 +84,8 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Operation to delete",
+          "doc": "The ID of the operation to delete.",
           "required": true
-        },
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-restaurants-backend.Operations.DeleteOperationOptions"
-            }
-          ],
-          "doc": "",
-          "required": false
         }
       ],
       "requiredFields": [
@@ -119,19 +107,17 @@
         "doc": null
       },
       "docs": {
-        "summary": "Delete a Operation",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
+        "summary": "Deletes an operation.",
+        "description": [],
         "examples": [
           {
             "title": "deleteOperation example",
             "body": [
               "import { operations } from 'wix-restaurants-backend';",
               "  ",
-              " async function deleteOperation(operationId, options) {",
+              " async function deleteOperation(operationId) {",
               "   try {",
-              "     const result = await operations.deleteOperation(operationId, options);",
+              "     const result = await operations.deleteOperation(operationId);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -197,7 +183,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Return the expected fulfillment selection.",
+        "summary": "Retrieves a list of the fulfillment options that will be available given the provided filters.\nTODO: probably rename, the implementation took a different direction than the name suggests",
         "description": [],
         "examples": [
           {
@@ -238,7 +224,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Operation to retrieve",
+          "doc": "The ID of the operation to retrieve.",
           "required": true
         }
       ],
@@ -258,10 +244,10 @@
             }
           }
         ],
-        "doc": "The retrieved Operation\n"
+        "doc": "The retrieved operation.\n"
       },
       "docs": {
-        "summary": "Get a Operation by id",
+        "summary": "Retrieves an operation.",
         "description": [],
         "examples": [
           {
@@ -293,6 +279,82 @@
       "syntaxName": "getOperation"
     },
     {
+      "name": "listAvailableDatesInRange",
+      "params": [
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.ListAvailableDatesInRangeOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "operationId",
+        "options.from",
+        "options.until"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-restaurants-backend.Operations.ListAvailableDatesInRangeResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of the available dates in a given time range.\nA date is considered available if it has at least one available time slot.",
+        "description": [],
+        "examples": [
+          {
+            "title": "listAvailableDatesInRange example",
+            "body": [
+              "import { operations } from 'wix-restaurants-backend';",
+              "  ",
+              " async function listAvailableDatesInRange(operationId, options) {",
+              "   try {",
+              "     const result = await operations.listAvailableDatesInRange(operationId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listAvailableDatesInRange"
+    },
+    {
       "name": "listAvailableFulfillmentOptions",
       "params": [
         {
@@ -302,7 +364,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The id of the operation. The returned fulfillment options will belong to this operation.",
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation.",
           "required": true
         },
         {
@@ -335,7 +397,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Return the available fulfillment options.\nThe availability of each fulfillment option is defined by the fulfillment's availability and by the\noperation's scheduling configurations.",
+        "summary": "Retrieves a list of available fulfillment options.\nWhat makes a fulfillment option available is whether it's possible to submit an order given the scheduling configurations and the fulfillment method's availability.\nWhen a `delivery_address` is not provided in the input, our system retrieves a list encompassing all types of fulfillment methods.\nConversely, if a `delivery_address` is given, the response may includes non-delivery fulfillment options along with delivery fulfillment methods that are applicable to the given address, ensuring the address falls within the defined delivery area of these methods.",
         "description": [],
         "examples": [
           {
@@ -367,6 +429,158 @@
       "syntaxName": "listAvailableFulfillmentOptions"
     },
     {
+      "name": "listAvailableTimeSlotsForDate",
+      "params": [
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.ListAvailableTimeSlotsForDateOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "operationId",
+        "options.date",
+        "options.date.day",
+        "options.date.month",
+        "options.date.year"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-restaurants-backend.Operations.ListAvailableTimeSlotsForDateResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of the available time slots for a given date.",
+        "description": [],
+        "examples": [
+          {
+            "title": "listAvailableTimeSlotsForDate example",
+            "body": [
+              "import { operations } from 'wix-restaurants-backend';",
+              "  ",
+              " async function listAvailableTimeSlotsForDate(operationId, options) {",
+              "   try {",
+              "     const result = await operations.listAvailableTimeSlotsForDate(operationId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listAvailableTimeSlotsForDate"
+    },
+    {
+      "name": "listFirstAvailableTimeSlotForFulfillmentTypes",
+      "params": [
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.ListFirstAvailableTimeSlotForFulfillmentTypesOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "operationId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-restaurants-backend.Operations.ListFirstAvailableTimeSlotForFulfillmentTypesResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of available time slots for each fulfillment type.\nEach time slot will be the first available time slot for the given fulfillment type.",
+        "description": [],
+        "examples": [
+          {
+            "title": "listFirstAvailableTimeSlotForFulfillmentTypes example",
+            "body": [
+              "import { operations } from 'wix-restaurants-backend';",
+              "  ",
+              " async function listFirstAvailableTimeSlotForFulfillmentTypes(operationId, options) {",
+              "   try {",
+              "     const result = await operations.listFirstAvailableTimeSlotForFulfillmentTypes(operationId, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listFirstAvailableTimeSlotForFulfillmentTypes"
+    },
+    {
       "name": "listOperations",
       "params": [],
       "requiredFields": [],
@@ -386,7 +600,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "List all Operations",
+        "summary": "Retrieves a list of operations.\nUp to 100 operations can be returned per request.\nTODO: support pagination",
         "description": [],
         "examples": [
           {
@@ -430,8 +644,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Query Operations using [WQL - Wix Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language)",
+        "summary": "Retrieves a list of operations by a given query.",
         "description": [
+          "To learn how to query operations, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).",
+          "Up to 100 operations can be returned per request.",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -470,7 +686,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Operation ID",
+          "doc": "The ID of the operation.",
           "required": true
         },
         {
@@ -502,13 +718,11 @@
             }
           }
         ],
-        "doc": "The updated Operation\n"
+        "doc": "The updated operation.\n"
       },
       "docs": {
-        "summary": "Update a Operation, supports partial update except for the Scheduling field.\nPass the latest `revision` for a successful update",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
+        "summary": "Updates an operation.\nPartial updates are supported, except for the scheduling field.\nEach time the operation is updated, the `revision` increments by 1.\nThe existing `revision` must be included in the request when updating the operation.\nThis ensures you're updating the latest version of the operation and it prevents unintended overwrites.",
+        "description": [],
         "examples": [
           {
             "title": "updateOperation example",
@@ -793,7 +1007,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether same-day orders can be pre-ordered."
+          "doc": "An indication of whether it is possible to place an order for a later time on the same day."
         },
         {
           "name": "asapPreorderType",
@@ -803,7 +1017,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The types for the preorder types of asap."
+          "doc": "The type of preorder allowed for the ASAP scheduling."
         },
         {
           "name": "businessDaysPreorderOptions",
@@ -813,7 +1027,7 @@
               "referenceType": "wix-restaurants-backend.Operations.BusinessDaysPreorder"
             }
           ],
-          "doc": "The number of days in advance that the order can be scheduled."
+          "doc": "Data related to the `BUSINESS_DAYS_PREORDER` asap preorder type."
         },
         {
           "name": "maxOptions",
@@ -823,7 +1037,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDuration"
             }
           ],
-          "doc": "Max preparation time option."
+          "doc": "Data related to the `MAX` preparation time type.\nThe preparation time is bounded by a maximum time duration."
         },
         {
           "name": "rangeOptions",
@@ -833,7 +1047,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDurationRange"
             }
           ],
-          "doc": "Range preparation time option."
+          "doc": "Data related to the `RANGE` preparation time type.\nThe preparation time is bounded by a range of time durations."
         },
         {
           "name": "type",
@@ -843,7 +1057,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of the preparation time options."
+          "doc": "The type of the preparation time."
         }
       ],
       "extra": {
@@ -865,7 +1079,7 @@
       },
       "docs": {
         "description": [
-          "Defines the scheduling options for ASAP orders."
+          "Data related to `ASAP` scheduling type."
         ]
       }
     },
@@ -880,7 +1094,7 @@
               "referenceType": "wix-restaurants-backend.Operations.BusinessDaysPreorder"
             }
           ],
-          "doc": "The number of days in advance that the order can be scheduled."
+          "doc": "Data related to the `BUSINESS_DAYS_PREORDER` asap preorder type."
         }
       ],
       "docs": {
@@ -900,7 +1114,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDuration"
             }
           ],
-          "doc": "Max preparation time option."
+          "doc": "Data related to the `MAX` preparation time type.\nThe preparation time is bounded by a maximum time duration."
         },
         {
           "name": "rangeOptions",
@@ -910,7 +1124,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDurationRange"
             }
           ],
-          "doc": "Range preparation time option."
+          "doc": "Data related to the `RANGE` preparation time type.\nThe preparation time is bounded by a range of time durations."
         }
       ],
       "docs": {
@@ -930,7 +1144,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "An indication whether the exception makes the [start_time, end_time] range available"
+          "doc": "An indication whether the exception makes the [`start_time`, `end_time`] range available."
         },
         {
           "name": "endTime",
@@ -940,7 +1154,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end time of the availability exception"
+          "doc": "The end time of the availability exception."
         },
         {
           "name": "reason",
@@ -950,7 +1164,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The reason for the exception, this param is optional"
+          "doc": "The reason for the exception."
         },
         {
           "name": "startTime",
@@ -960,7 +1174,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start time of the availability exception"
+          "doc": "The start time of the availability exception."
         }
       ],
       "docs": {
@@ -980,12 +1194,12 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The number of business days that the order can be scheduled (0 means same day)."
+          "doc": "The maximum number of business days in advance an order can be scheduled.\nWhen the given value is 0, it means that an order can be scheduled until the end of the current business day.\nfor any other value, the order can be scheduled until the end of the given number of business days."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents data related to the `BUSINESS_DAYS_PREORDER` asap preorder type."
         ]
       }
     },
@@ -1242,7 +1456,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "Operation to be created"
+          "doc": "Operation to create."
         }
       ],
       "docs": {
@@ -1262,7 +1476,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "The created Operation"
+          "doc": "The created operation."
         }
       ],
       "docs": {
@@ -1459,7 +1673,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The cutoff day of week"
+          "doc": "The day of week."
         },
         {
           "name": "timeOfDay",
@@ -1469,12 +1683,12 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeOfDay"
             }
           ],
-          "doc": "The cutoff time of day"
+          "doc": "The time of day."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents a day of week and a time of day."
         ]
       }
     },
@@ -1489,7 +1703,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The day of week this availability relates to"
+          "doc": "The day of week this availability relates to."
         },
         {
           "name": "timeRanges",
@@ -1506,27 +1720,7 @@
               }
             }
           ],
-          "doc": "A list of time ranges during which the fulfillment should be available"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "DeleteOperationOptions",
-      "members": [
-        {
-          "name": "revision",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The revision of the Operation"
+          "doc": "A list of time ranges during which the fulfillment should be available."
         }
       ],
       "docs": {
@@ -1545,17 +1739,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Operation to delete"
-        },
-        {
-          "name": "revision",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The revision of the Operation"
+          "doc": "The ID of the operation to delete."
         }
       ],
       "docs": {
@@ -1777,7 +1961,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Maximum duration in minutes, e.g., 20 minutes"
+          "doc": "Maximum duration in minutes."
         },
         {
           "name": "minDuration",
@@ -1787,12 +1971,12 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Minimum duration in minutes, e.g., 10 minutes"
+          "doc": "Minimum duration in minutes."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents a duration range."
         ]
       }
     },
@@ -1865,7 +2049,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment id"
+          "doc": "The ID of the fulfillment option.\nThis is the ID of the fulfillment method."
         },
         {
           "name": "availability",
@@ -1875,7 +2059,7 @@
               "referenceType": "wix-restaurants-backend.Operations.FulfillmentOptionAvailability"
             }
           ],
-          "doc": "An availability that is bounded by a specific time frame.\nThis availability will be used for Preorder (time bounded) operations."
+          "doc": "The availability of this fulfillment option."
         },
         {
           "name": "durationRangeOptions",
@@ -1885,7 +2069,7 @@
               "referenceType": "wix-restaurants-backend.Operations.DurationRange"
             }
           ],
-          "doc": "The duration range in minutes it will take to fulfill the order, e.g., 20 - 30 minutes"
+          "doc": "The fulfillment time is bounded by a duration range."
         },
         {
           "name": "fee",
@@ -1895,7 +2079,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment fee"
+          "doc": "The fee for using this fulfillment option."
         },
         {
           "name": "freeFulfillmentPriceThreshold",
@@ -1905,7 +2089,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The minimum order price for getting the fulfillment for free"
+          "doc": "Threshold for offering free fulfillment.\nIf order price exceeds this threshold, the given `fee` is waived."
         },
         {
           "name": "fulfillmentTimeType",
@@ -1915,7 +2099,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment time type. This field will only be relevant to ASAP operations"
+          "doc": "The fulfillment time type.\nThis field will only be relevant to ASAP operations"
         },
         {
           "name": "fulfillmentTimesDisplayType",
@@ -1925,7 +2109,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment times display type. This field will only be relevant to Preorder operations."
+          "doc": "The fulfillment times display type.\nThis field will only be relevant to Preorder operations."
         },
         {
           "name": "instructions",
@@ -1935,7 +2119,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment instructions"
+          "doc": "The instructions for the fulfillment."
         },
         {
           "name": "maxTimeOptions",
@@ -1945,7 +2129,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The maximum time in minutes it will take to fulfill the order, e.g., 20 minutes"
+          "doc": "The fulfillment time is bounded by a maximum time."
         },
         {
           "name": "minOrderPrice",
@@ -1955,7 +2139,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment minimum order price requirement"
+          "doc": "The minimum order price to qualify for using this fulfillment option."
         },
         {
           "name": "pickupOptions",
@@ -1965,7 +2149,7 @@
               "referenceType": "wix-restaurants-backend.Operations.PickupDetails"
             }
           ],
-          "doc": "The pickup details"
+          "doc": "Data related  to the `PICKUP` fulfillment type."
         },
         {
           "name": "timeWindowsOptions",
@@ -1975,7 +2159,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeWindowDisplayConfig"
             }
           ],
-          "doc": "The fulfillment times display will be in the form of time windows"
+          "doc": "Data related to the `TIME_WINDOWS` fulfillment times display type."
         },
         {
           "name": "type",
@@ -1985,7 +2169,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The fulfillment type"
+          "doc": "The fulfillment option type."
         }
       ],
       "extra": {
@@ -2013,7 +2197,7 @@
       },
       "docs": {
         "description": [
-          ""
+          "Represents a fulfillment method that given its availability and the operation's scheduling configurations, is currently available for fulfilling orders."
         ]
       }
     },
@@ -2028,7 +2212,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "An indication whether it is possible to submit an order for now."
+          "doc": "An indication of whether it is possible to submit an order for as soon as possible handling."
         },
         {
           "name": "availableTimes",
@@ -2045,7 +2229,7 @@
               }
             }
           ],
-          "doc": "The availability times given for the days of the week."
+          "doc": "A list of availability times for the days of the week.\nAll the given times will be within the range defined by [`start_time`, `end_time`]."
         },
         {
           "name": "canSubmitOrderForNow",
@@ -2055,7 +2239,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "An indication whether it is possible to submit an order for now."
+          "doc": "An indication of whether it is possible to submit an order for as soon as possible handling."
         },
         {
           "name": "endTime",
@@ -2065,7 +2249,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end time of the time bounded availability, all the given times will be in the range with end_time as its right boundary."
+          "doc": "Timestamp at which the fulfillment option's availability ends."
         },
         {
           "name": "exceptions",
@@ -2082,7 +2266,7 @@
               }
             }
           ],
-          "doc": "The availability exceptions"
+          "doc": "A list of availability exception.\nAn availability exception is some availability for a specific time, that is different from the usual availability defined in `available_times`.\nThe availability exception overrides the availability defined in `available_times`.\nAll the given times will be within the range defined by [`start_time`, `end_time`]."
         },
         {
           "name": "startTime",
@@ -2092,7 +2276,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start time of the time bounded availability, all the given times will be in the range with start_time as its left boundary."
+          "doc": "Timestamp at which the fulfillment option's availability starts."
         },
         {
           "name": "timeZone",
@@ -2102,12 +2286,12 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The time zone in which the times are given"
+          "doc": "The timezone in which the availability times are given."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents the availability of the fulfillment option."
         ]
       }
     },
@@ -2122,7 +2306,7 @@
               "referenceType": "wix-restaurants-backend.Operations.DurationRange"
             }
           ],
-          "doc": "The duration range in minutes it will take to fulfill the order, e.g., 20 - 30 minutes"
+          "doc": "The fulfillment time is bounded by a duration range."
         },
         {
           "name": "maxTimeOptions",
@@ -2132,7 +2316,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The maximum time in minutes it will take to fulfill the order, e.g., 20 minutes"
+          "doc": "The fulfillment time is bounded by a maximum time."
         }
       ],
       "docs": {
@@ -2152,7 +2336,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeWindowDisplayConfig"
             }
           ],
-          "doc": "The fulfillment times display will be in the form of time windows"
+          "doc": "Data related to the `TIME_WINDOWS` fulfillment times display type."
         }
       ],
       "docs": {
@@ -2172,7 +2356,7 @@
               "referenceType": "wix-restaurants-backend.Operations.PickupDetails"
             }
           ],
-          "doc": "The pickup details"
+          "doc": "Data related  to the `PICKUP` fulfillment type."
         }
       ],
       "docs": {
@@ -2192,7 +2376,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of fulfillment times."
+          "doc": "The type of the fulfillment times."
         },
         {
           "name": "timeWindowsOptions",
@@ -2202,7 +2386,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDuration"
             }
           ],
-          "doc": "fulfillment Time windows option."
+          "doc": "Data related to the `TIME_WINDOWS` fulfillment times type."
         },
         {
           "name": "type",
@@ -2212,7 +2396,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'TIME_WINDOWS'`\n- `'UNKNOWN_TYPE'`"
+          "doc": "The type of the fulfillment times."
         }
       ],
       "extra": {
@@ -2227,7 +2411,7 @@
       },
       "docs": {
         "description": [
-          "Fulfillment times display options, specifying how fulfillment slots will be displayed."
+          "Represents the way by which the fulfillment times should be displayed."
         ]
       }
     },
@@ -2242,7 +2426,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeDuration"
             }
           ],
-          "doc": "fulfillment Time windows option."
+          "doc": "Data related to the `TIME_WINDOWS` fulfillment times type."
         }
       ],
       "docs": {
@@ -2321,7 +2505,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end time of the timeslot"
+          "doc": "The end time of the time slot."
         },
         {
           "name": "timeslotStartTime",
@@ -2331,7 +2515,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start time of the timeslot"
+          "doc": "The start time of the time slot."
         }
       ],
       "docs": {
@@ -2389,7 +2573,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The end time of the timeslot"
+          "doc": "The end time of the time slot."
         },
         {
           "name": "timeslotStartTime",
@@ -2399,7 +2583,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The start time of the timeslot"
+          "doc": "The start time of the time slot."
         }
       ],
       "docs": {
@@ -2445,7 +2629,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Id of the Operation to retrieve"
+          "doc": "The ID of the operation to retrieve."
         }
       ],
       "docs": {
@@ -2465,7 +2649,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "The retrieved Operation"
+          "doc": "The retrieved operation."
         }
       ],
       "docs": {
@@ -2629,6 +2813,118 @@
       }
     },
     {
+      "name": "ListAvailableDatesInRangeOptions",
+      "members": [
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        },
+        {
+          "name": "from",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The start date of the range."
+        },
+        {
+          "name": "until",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The end date of the range."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableDatesInRangeRequest",
+      "members": [
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        },
+        {
+          "name": "from",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The start date of the range."
+        },
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation."
+        },
+        {
+          "name": "until",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The end date of the range."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableDatesInRangeResponse",
+      "members": [
+        {
+          "name": "availableDates",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-restaurants-backend.Operations._Date"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of the available dates in descending order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ListAvailableFulfillmentOptions",
       "members": [
         {
@@ -2668,7 +2964,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The id of the operation. The returned fulfillment options will belong to this operation."
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation."
         }
       ],
       "docs": {
@@ -2688,7 +2984,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "An indication of whether delivery was configured for the operation"
+          "doc": "An indication of whether delivery fulfillment method is configured for the requested operation."
         },
         {
           "name": "fulfillmentOptions",
@@ -2705,7 +3001,7 @@
               }
             }
           ],
-          "doc": "A list of the available fulfillment options"
+          "doc": "A list of the available fulfillment options."
         },
         {
           "name": "pickupConfigured",
@@ -2715,7 +3011,177 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "An indication of whether pickup was configured for the operation"
+          "doc": "An indication of whether pickup fulfillment method is configured for the requested operation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableTimeSlotsForDateOptions",
+      "members": [
+        {
+          "name": "date",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The date to get the available time slots for."
+        },
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableTimeSlotsForDateRequest",
+      "members": [
+        {
+          "name": "date",
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations._Date"
+            }
+          ],
+          "doc": "The date to get the available time slots for."
+        },
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        },
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAvailableTimeSlotsForDateResponse",
+      "members": [
+        {
+          "name": "timeSlots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-restaurants-backend.Operations.TimeSlot"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of the available time slots in the requested date."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFirstAvailableTimeSlotForFulfillmentTypesOptions",
+      "members": [
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFirstAvailableTimeSlotForFulfillmentTypesRequest",
+      "members": [
+        {
+          "name": "deliveryAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.Address"
+            }
+          ],
+          "doc": "A delivery address. This parameter is optional.\nIf provided, the returned delivery fulfillment options will be able to deliver to this address."
+        },
+        {
+          "name": "operationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The ID of the operation.\nThe returned fulfillment options will belong to this operation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFirstAvailableTimeSlotForFulfillmentTypesResponse",
+      "members": [
+        {
+          "name": "timeSlots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-restaurants-backend.Operations.TimeSlot"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of available time slots for each fulfillment type.\nEach time slot will be the first available time slot for the given fulfillment type.\nA fulfillment type of Delivery will only be returned if the delivery address is provided"
         }
       ],
       "docs": {
@@ -2751,7 +3217,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "The retrieved operations."
         }
       ],
       "docs": {
@@ -2838,12 +3304,12 @@
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Timestamp until which online ordering is paused."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Data related to the `PAUSED_UNTIL` status in the `online_ordering_status` field."
         ]
       }
     },
@@ -2859,7 +3325,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Product was created"
+          "doc": "Timestamp at which the operation was created."
         },
         {
           "name": "_id",
@@ -2870,7 +3336,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Operation ID"
+          "doc": "The ID of the operation."
         },
         {
           "name": "_updatedDate",
@@ -2881,7 +3347,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Product was last updated"
+          "doc": "Timestamp at which the operation was last updated."
         },
         {
           "name": "default",
@@ -2891,7 +3357,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Represents if this operation is the default operation"
+          "doc": "An indication of whether this operation is the default one."
         },
         {
           "name": "enabled",
@@ -2901,7 +3367,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Represents whether the operation is currently enabled or not."
+          "doc": "An indication of whether the operation is enabled or not."
         },
         {
           "name": "fulfillmentIds",
@@ -2918,7 +3384,7 @@
               }
             }
           ],
-          "doc": "Fulfillment IDs associated with this operation."
+          "doc": "The ids of the fulfillment methods associated with this operation."
         },
         {
           "name": "name",
@@ -2928,7 +3394,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The operation name."
         },
         {
           "name": "onlineOrderingStatus",
@@ -2938,7 +3404,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Online ordering status"
+          "doc": "The online ordering status of this operation."
         },
         {
           "name": "pausedUntilOptions",
@@ -2948,7 +3414,7 @@
               "referenceType": "wix-restaurants-backend.Operations.OnlineOrderingPausedUntilOptions"
             }
           ],
-          "doc": "Time until online ordering is paused for this operation (UTC)."
+          "doc": "Data related to the `PAUSED_UNTIL` status."
         },
         {
           "name": "profileId",
@@ -2958,7 +3424,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The profile ID associated with this operation.\nTODO add referenced entity"
+          "doc": "The profile ID associated with this operation.\nTODO: talk with the tech writer to understand how best to document this field.."
         },
         {
           "name": "revision",
@@ -2969,7 +3435,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Represents the current state of an item. Each time the item is modified, its `revision` changes by the server. for an update operation to succeed, you MUST pass the latest revision"
+          "doc": "The current state of an item. Each time the item is modified, its `revision` changes by the server. for an update operation to succeed, you MUST pass the latest revision."
         },
         {
           "name": "scheduling",
@@ -2979,7 +3445,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Scheduling"
             }
           ],
-          "doc": "The scheduling information for this operation."
+          "doc": "The scheduling data for this operation.\nScheduling specifies the time-related aspects of order placement."
         },
         {
           "name": "serviceFeeRulesIds",
@@ -2996,7 +3462,7 @@
               }
             }
           ],
-          "doc": "Service fees rules IDs associated with this operation"
+          "doc": "The ids of the service fee rules associated with this operation."
         }
       ],
       "extra": {
@@ -3011,7 +3477,7 @@
       },
       "docs": {
         "description": [
-          "Operation is the main entity of OperationsService that can be used to define when\nnew orders could be placed and to when could UoU schedule them."
+          "`Operation` is the main entity of `OperationsService`.\nIt represents a restaurant operation and encompasses various aspects of its online ordering."
         ]
       }
     },
@@ -3026,7 +3492,7 @@
               "referenceType": "wix-restaurants-backend.Operations.OnlineOrderingPausedUntilOptions"
             }
           ],
-          "doc": "Time until online ordering is paused for this operation (UTC)."
+          "doc": "Data related to the `PAUSED_UNTIL` status."
         }
       ],
       "docs": {
@@ -3076,12 +3542,12 @@
               "referenceType": "wix-restaurants-backend.Operations.Address"
             }
           ],
-          "doc": "The pickup address"
+          "doc": "The pickup address.\nThe address of the restaurant will be used."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents data related to the `PICKUP` fulfillment type."
         ]
       }
     },
@@ -3096,7 +3562,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeBounded"
             }
           ],
-          "doc": "Time bounded option."
+          "doc": "Data related to the `TIME_BOUNDED` method type."
         },
         {
           "name": "type",
@@ -3106,7 +3572,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of preorder method."
+          "doc": "The type of preorder method.\nRepresents the way by which the preorders can be made."
         },
         {
           "name": "weeklyScheduleOptions",
@@ -3116,7 +3582,7 @@
               "referenceType": "wix-restaurants-backend.Operations.WeeklySchedule"
             }
           ],
-          "doc": "Weekly scheduling option."
+          "doc": "Data related to the `WEEKLY_SCHEDULE` method type."
         }
       ],
       "extra": {
@@ -3132,7 +3598,7 @@
       },
       "docs": {
         "description": [
-          "Preorder method configurations."
+          "Represents the preorder method for `PREORDER` scheduling type."
         ]
       }
     },
@@ -3147,7 +3613,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeBounded"
             }
           ],
-          "doc": "Time bounded option."
+          "doc": "Data related to the `TIME_BOUNDED` method type."
         },
         {
           "name": "weeklyScheduleOptions",
@@ -3157,7 +3623,7 @@
               "referenceType": "wix-restaurants-backend.Operations.WeeklySchedule"
             }
           ],
-          "doc": "Weekly scheduling option."
+          "doc": "Data related to the `WEEKLY_SCHEDULE` method type."
         }
       ],
       "docs": {
@@ -3177,7 +3643,7 @@
               "referenceType": "wix-restaurants-backend.Operations.FulfillmentTimesDisplayConfig"
             }
           ],
-          "doc": "The preorder fulfillment times display configurations."
+          "doc": "Configuration of how the fulfillment times should be displayed."
         },
         {
           "name": "fulfillmentTimesDisplayConfig",
@@ -3187,7 +3653,7 @@
               "referenceType": "wix-restaurants-backend.Operations.FulfillmentTimesDisplayConfig"
             }
           ],
-          "doc": "The preorder fulfillment times display configurations."
+          "doc": "Configuration of how the fulfillment times should be displayed."
         },
         {
           "name": "method",
@@ -3197,12 +3663,42 @@
               "referenceType": "wix-restaurants-backend.Operations.PreorderMethod"
             }
           ],
-          "doc": "The preorder method."
+          "doc": "The preorder method is the way by which preorders can be made."
         }
       ],
       "docs": {
         "description": [
-          "Preorder scheduling options."
+          "Data related to `PREORDER` scheduling type."
+        ]
+      }
+    },
+    {
+      "name": "PriceRange",
+      "members": [
+        {
+          "name": "maxPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The maximum price of the range."
+        },
+        {
+          "name": "minPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The minimum price of the range."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -3425,7 +3921,7 @@
               "referenceType": "wix-restaurants-backend.Operations.CursorQuery"
             }
           ],
-          "doc": "WQL expression."
+          "doc": "The query by which to select operations."
         }
       ],
       "docs": {
@@ -3452,7 +3948,7 @@
               }
             }
           ],
-          "doc": "The retrieved Operations"
+          "doc": "The retrieved operations."
         },
         {
           "name": "pagingMetadata",
@@ -3462,7 +3958,7 @@
               "referenceType": "wix-restaurants-backend.Operations.CursorPagingMetadata"
             }
           ],
-          "doc": ""
+          "doc": "The metadata of the paginated results."
         }
       ],
       "docs": {
@@ -3482,7 +3978,7 @@
               "referenceType": "wix-restaurants-backend.Operations.AsapScheduling"
             }
           ],
-          "doc": "The scheduling options for ASAP operations."
+          "doc": "Data related to the `ASAP` scheduling type."
         },
         {
           "name": "preorderOptions",
@@ -3492,7 +3988,7 @@
               "referenceType": "wix-restaurants-backend.Operations.PreorderScheduling"
             }
           ],
-          "doc": "The scheduling options for preorder operations."
+          "doc": "Data related to the `PREORDER` scheduling type."
         },
         {
           "name": "type",
@@ -3502,7 +3998,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of scheduling option."
+          "doc": "The scheduling type."
         }
       ],
       "extra": {
@@ -3518,7 +4014,7 @@
       },
       "docs": {
         "description": [
-          "Represents the scheduling options for an operation."
+          "Represents the time-related aspects of order placement."
         ]
       }
     },
@@ -3533,7 +4029,7 @@
               "referenceType": "wix-restaurants-backend.Operations.AsapScheduling"
             }
           ],
-          "doc": "The scheduling options for ASAP operations."
+          "doc": "Data related to the `ASAP` scheduling type."
         },
         {
           "name": "preorderOptions",
@@ -3543,7 +4039,7 @@
               "referenceType": "wix-restaurants-backend.Operations.PreorderScheduling"
             }
           ],
-          "doc": "The scheduling options for preorder operations."
+          "doc": "Data related to the `PREORDER` scheduling type."
         }
       ],
       "docs": {
@@ -3942,7 +4438,7 @@
       ],
       "docs": {
         "description": [
-          "Time bounded configurations."
+          "Represents data related to `TIME_BOUNDED` preorder method type."
         ]
       }
     },
@@ -3957,7 +4453,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The value of the duration."
+          "doc": "The duration value.\nSpecified in the unit given in the `time_unit` field."
         },
         {
           "name": "timeUnit",
@@ -3967,12 +4463,12 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The unit of time for the duration."
+          "doc": "The time unit for the duration."
         }
       ],
       "docs": {
         "description": [
-          "Time duration for scheduling options."
+          "Represents a time duration."
         ]
       }
     },
@@ -3987,7 +4483,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Ending time value for the scheduling option."
+          "doc": "The maximum duration value for the duration range.\nSpecified in the unit given in the `time_unit` field."
         },
         {
           "name": "minDuration",
@@ -3997,7 +4493,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Starting time value for the scheduling option."
+          "doc": "The minimum duration value for the duration range.\nSpecified in the unit given in the `time_unit` field."
         },
         {
           "name": "rangeMaximumDuration",
@@ -4027,12 +4523,12 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Time unit for the range duration."
+          "doc": "The time unit for the duration range."
         }
       ],
       "docs": {
         "description": [
-          "Range time duration for scheduling options."
+          "Represents a time duration range."
         ]
       }
     },
@@ -4077,7 +4573,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeOfDay"
             }
           ],
-          "doc": "End time as TimeOfDay message"
+          "doc": "The end time in time of day representation."
         },
         {
           "name": "startTime",
@@ -4087,7 +4583,7 @@
               "referenceType": "wix-restaurants-backend.Operations.TimeOfDay"
             }
           ],
-          "doc": "Start time as TimeOfDay message"
+          "doc": "The start time in time of day representation."
         }
       ],
       "docs": {
@@ -4147,6 +4643,204 @@
       }
     },
     {
+      "name": "TimeSlot",
+      "members": [
+        {
+          "name": "durationRangeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.DurationRange"
+            }
+          ],
+          "doc": "The duration range in minutes it will take to fulfill the order, e.g., 20 - 30 minutes."
+        },
+        {
+          "name": "endTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The end time of the time slot."
+        },
+        {
+          "name": "feeType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The fee type of the time slot."
+        },
+        {
+          "name": "fulfillmentTimeType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The fulfillment time type.\nThis field will only be relevant to ASAP operations."
+        },
+        {
+          "name": "fulfilmentType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of the fulfillment."
+        },
+        {
+          "name": "maxTimeOptions",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The maximum time in minutes it will take to fulfill the order, e.g., 20 minutes."
+        },
+        {
+          "name": "minOrderPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The time slot's minimum order price requirement."
+        },
+        {
+          "name": "rangeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.PriceRange"
+            }
+          ],
+          "doc": "A range of fees."
+        },
+        {
+          "name": "startTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "The start time of the time slot."
+        },
+        {
+          "name": "startsNow",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indication of whether the time slot starts now."
+        },
+        {
+          "name": "valueOptions",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A single fee value."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfTimeSlotFeeOptionsOneOf",
+            "members": [
+              "rangeOptions",
+              "valueOptions"
+            ]
+          },
+          {
+            "name": "oneOfTimeSlotFulfillmentTimeOptionsOneOf",
+            "members": [
+              "durationRangeOptions",
+              "maxTimeOptions"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TimeSlotFeeOptionsOneOf",
+      "members": [
+        {
+          "name": "rangeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.PriceRange"
+            }
+          ],
+          "doc": "A range of fees."
+        },
+        {
+          "name": "valueOptions",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A single fee value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TimeSlotFulfillmentTimeOptionsOneOf",
+      "members": [
+        {
+          "name": "durationRangeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-restaurants-backend.Operations.DurationRange"
+            }
+          ],
+          "doc": "The duration range in minutes it will take to fulfill the order, e.g., 20 - 30 minutes."
+        },
+        {
+          "name": "maxTimeOptions",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The maximum time in minutes it will take to fulfill the order, e.g., 20 minutes."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "TimeWindowDisplayConfig",
       "members": [
         {
@@ -4157,12 +4851,12 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The time window duration in minutes"
+          "doc": "The time window duration in minutes."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Represents a time window."
         ]
       }
     },
@@ -4248,7 +4942,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Product was created"
+          "doc": "Timestamp at which the operation was created."
         },
         {
           "name": "_id",
@@ -4259,7 +4953,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Operation ID"
+          "doc": "The ID of the operation."
         },
         {
           "name": "_updatedDate",
@@ -4270,7 +4964,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Represents the time this Product was last updated"
+          "doc": "Timestamp at which the operation was last updated."
         },
         {
           "name": "default",
@@ -4280,7 +4974,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Represents if this operation is the default operation"
+          "doc": "An indication of whether this operation is the default one."
         },
         {
           "name": "enabled",
@@ -4290,7 +4984,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Represents whether the operation is currently enabled or not."
+          "doc": "An indication of whether the operation is enabled or not."
         },
         {
           "name": "fulfillmentIds",
@@ -4307,7 +5001,7 @@
               }
             }
           ],
-          "doc": "Fulfillment IDs associated with this operation."
+          "doc": "The ids of the fulfillment methods associated with this operation."
         },
         {
           "name": "name",
@@ -4317,7 +5011,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "The operation name."
         },
         {
           "name": "onlineOrderingStatus",
@@ -4327,7 +5021,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Online ordering status"
+          "doc": "The online ordering status of this operation."
         },
         {
           "name": "pausedUntilOptions",
@@ -4337,7 +5031,7 @@
               "referenceType": "wix-restaurants-backend.Operations.OnlineOrderingPausedUntilOptions"
             }
           ],
-          "doc": "Time until online ordering is paused for this operation (UTC)."
+          "doc": "Data related to the `PAUSED_UNTIL` status."
         },
         {
           "name": "profileId",
@@ -4347,7 +5041,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The profile ID associated with this operation.\nTODO add referenced entity"
+          "doc": "The profile ID associated with this operation.\nTODO: talk with the tech writer to understand how best to document this field.."
         },
         {
           "name": "revision",
@@ -4358,7 +5052,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Represents the current state of an item. Each time the item is modified, its `revision` changes by the server. for an update operation to succeed, you MUST pass the latest revision"
+          "doc": "The current state of an item. Each time the item is modified, its `revision` changes by the server. for an update operation to succeed, you MUST pass the latest revision."
         },
         {
           "name": "scheduling",
@@ -4368,7 +5062,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Scheduling"
             }
           ],
-          "doc": "The scheduling information for this operation."
+          "doc": "The scheduling data for this operation.\nScheduling specifies the time-related aspects of order placement."
         },
         {
           "name": "serviceFeeRulesIds",
@@ -4385,7 +5079,7 @@
               }
             }
           ],
-          "doc": "Service fees rules IDs associated with this operation"
+          "doc": "The ids of the service fee rules associated with this operation."
         }
       ],
       "docs": {
@@ -4413,7 +5107,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "Operation to be updated, may be partial"
+          "doc": "Operation to update.\nThe operation update may be partial with the use of `field_mask`."
         }
       ],
       "docs": {
@@ -4433,7 +5127,7 @@
               "referenceType": "wix-restaurants-backend.Operations.Operation"
             }
           ],
-          "doc": "The updated Operation"
+          "doc": "The updated operation."
         }
       ],
       "docs": {
@@ -4573,12 +5267,52 @@
               "referenceType": "wix-restaurants-backend.Operations.DayAndTime"
             }
           ],
-          "doc": "The cut off time for weekly scheduling.\nFrom the start of the week to cut of time -> orders will be scheduled for this week.\nFrom the cut of time to the end of the week -> orders will be scheduled for next week."
+          "doc": "The weekly schedule cutoff time.\nOrders placed before the cutoff time will be scheduled for the current week.\nOrders placed after the cutoff time will be scheduled for the next week."
         }
       ],
       "docs": {
         "description": [
-          "Weekly Scheduling configurations."
+          "Represents data related to `WEEKLY_SCHEDULE` preorder method type."
+        ]
+      }
+    },
+    {
+      "name": "_Date",
+      "members": [
+        {
+          "name": "day",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The day of the month."
+        },
+        {
+          "name": "month",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The month of the year."
+        },
+        {
+          "name": "year",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The year of the date."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     }
