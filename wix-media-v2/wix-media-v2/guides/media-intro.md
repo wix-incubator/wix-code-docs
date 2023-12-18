@@ -29,7 +29,7 @@ Learn more about the [Media Manager](https://support.wix.com/en/article/wix-medi
 
 ## Before you begin
 
-To use the wix-media API, import `wixMedia` from the `wix-media.v2` module. 
+To use the wix-media API, import `wixMedia` from the `wix-media.v2` module:
 
 ```javascript
 import wixMedia from 'wix-media.v2';
@@ -45,5 +45,7 @@ import wixMedia from 'wix-media.v2';
 
 * **Root Folders:**
   * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the UI.
+
     >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager. The `MEDIA_ROOT` system folder contains all media in all levels of the 'Site Files' tab in the UI, while the `media-root` folder of the Media Manager only contains the media in the root level of the 'Site Files' tab in the UI.
+    
   * `TRASH_ROOT`: Contains all files and folders in the Media Manager's 'Trash' tab in the UI.
