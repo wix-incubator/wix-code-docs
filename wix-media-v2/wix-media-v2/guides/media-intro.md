@@ -44,8 +44,9 @@ import wixMedia from 'wix-media.v2';
 ## Terminology
 
 * **Root Folders:**
-  * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the UI.
+  * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the Media Manager.
 
-    >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager. The `MEDIA_ROOT` system folder contains all media in all levels of the 'Site Files' tab in the UI, while the `media-root` folder of the Media Manager only contains the media in the root level of the 'Site Files' tab in the UI.
-    
-  * `TRASH_ROOT`: Contains all files and folders in the Media Manager's 'Trash' tab in the UI.
+    >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager.
+    >The `MEDIA_ROOT` system folder contains all media in all levels of the **Site Files** tab in the Media Manager, while the `media-root` folder of the Media Manager contains only the media in the root level of the 'Site Files' tab in the Media Manager.
+
+  * `TRASH_ROOT`: Contains all files and folders in the Media Manager's **Trash** tab in the Media Manager.

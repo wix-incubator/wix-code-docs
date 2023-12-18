@@ -20,10 +20,10 @@ title: Introduction
 The Folders API allows you to manage the folders in your Media Manager. 
 
 With the Folders API, you can:
-- Get, list, and search folders.
-- Create, update, and delete folders. 
-- Restore folders from the trash bin.
-- Generate URLs for downloading folders from the Media Manager. 
+- [Get](wix-media-v2/folders/getfolder), [list](wix-media-v2/folders/listfolders), and [search](wix-media-v2/folders/searchfolders) folders.
+- [Create](wix-media-v2/folders/createfolder), [update](wix-media-v2/folders/updatefolder), and [delete](wix-media-v2/folders/bulkdeletefolders) folders. 
+- [Restore](wix-media-v2/folders/bulkrestorefoldersfromtrashbin) folders from the trash bin.
+- [Generate URLs](wix-media-v2/folders/generatefolderdownloadurl) for downloading folders from the Media Manager. 
 
 Learn more about [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) and how to access it. 
 
@@ -35,34 +35,17 @@ To use the Folders API, import `{ folders }` from the `wix-media.v2` module:
 import { folders } from 'wix-media.v2';
 ```
 
-## Permissions information
-
-The following functions in Folders are restricted and only run if you elevate permissions
-using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate)
-function:
-
-- [`bulkRestoreFoldersFromTrashBin()`](wix-media-v2/folders/bulkrestorefoldersfromtrashbin)
-- [`listDeletedFolders()`](wix-media-v2/folders/listdeletedfolders)
-
-
-<blockquote class='warning'>
-<p>
-<strong>Warning:</strong>
-Elevating a function allows it to be called by any site visitor.
-Exercise caution to prevent security vulnerabilities.
-</p>
-</blockquote>
-
 ## Terminology
 
 * **System folders:** Folders in the Media Manager's file system directory. 
   There are 3 types of system folders:
   * **Root Folders:** Main categories of folders in the Media Manager. 
-    * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the UI.
+    * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the Media Manager.
 
-      >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager. The `MEDIA_ROOT` system folder contains all media in all levels of the 'Site Files' tab in the UI, while the `media-root` folder of the Media Manager only contains the media in the root level of the 'Site Files' tab in the UI.
+      >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager.
+      >The `MEDIA_ROOT` system folder contains all media in all levels of the **Site Files** tab in the Media Manager, while the `media-root` folder of the Media Manager contains only the media in the root level of the 'Site Files' tab in the Media Manager.
 
-    * `TRASH_ROOT`: Contains all files and folders in the Media Manager's 'Trash' tab in the UI.
+    * `TRASH_ROOT`: Contains all files and folders in the Media Manager's **Trash** tab in the Media Manager.
     * `VISITOR_UPLOADS_ROOT`: Contains all files and folders created by site visitors or members.
 
       >**Note:** The `VISITOR_UPLOADS_ROOT` folder is located in the 'Site Files' tab in the UI. However, it is its own root folder and doesn't return when searching in the `MEDIA_ROOT` folder.
