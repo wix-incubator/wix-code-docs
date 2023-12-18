@@ -20,6 +20,14 @@ We added the following new APIs that allow you to customize the [hamburger menu]
 
 (December 18, 2023)
 
+## New Endpoint: [Media API](/wix-media-v2)
+
+The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
+
+- [`bulkImportFile()`](/wix-media-v2/files/bulkimportfile) imports a bulk of files to the Media Manager using external URLs. This replaces [`bulkImportFiles()`](/wix-media-v2/files/bulkimportfiles) which has been deprecated and will be removed on March 31, 2024.
+
+(December 14, 2023)
+
 ### Updated APIs: Pricing Plans Frontend and Pricing Plans Backend
 
 `pricing-plans-frontend`, `pricing-plans-backend`
