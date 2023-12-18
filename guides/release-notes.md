@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+## New Endpoint: [Media API](/wix-media-v2)
+
+The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
+
+- [`bulkImportFile()`](/wix-media-v2/files/bulkimportfile) imports a bulk of files to the Media Manager using external URLs. This replaces [`bulkImportFiles()`](/wix-media-v2/files/bulkimportfiles) which has been deprecated and will be removed on March 31, 2024.
+
+(December 14, 2023)
+
 ### Updated APIs: Pricing Plans Frontend and Pricing Plans Backend
 
 `pricing-plans-frontend`, `pricing-plans-backend`
