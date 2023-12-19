@@ -20,7 +20,9 @@ We added the following new APIs that allow you to customize the [hamburger menu]
 
 (December 18, 2023)
 
-## New Endpoint: [Media API](/wix-media-v2)
+### New Endpoint: [Media API](/wix-media-v2)
+
+`wix-media.v2`
 
 The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
 
