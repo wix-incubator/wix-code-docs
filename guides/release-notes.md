@@ -7,7 +7,9 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-## New Endpoint: [Media API](/wix-media-v2)
+### New Endpoint: [Media API](/wix-media-v2)
+x
+`wix-media.v2`
 
 The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
 
