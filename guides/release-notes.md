@@ -73,6 +73,8 @@ We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-
 
 ### New Developer Preview API: Reviews
 
+`wix-reviews.v2`
+
 The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
 
 + [Create](/wix-reviews-v2/reviews/createreview), [delete](/wix-reviews-v2/reviews/deletereview), [get](/wix-reviews-v2/reviews/getreview), or [update](/wix-reviews-v2/reviews/updatereview) a review.
