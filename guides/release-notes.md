@@ -7,11 +7,11 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-### Deprecation Notice: Workflows API
+### Removed: Workflows v2 API
 
 `wix-workflows.v2`
 
-The [Workflows API](https://www.wix.com/velo/reference/wix-workflows-v2) is being discontinued and will no longer be supported moving forward. As this may impact your existing code, we highly encourage you to explore alternative solutions available within Wix to ensure seamless functionality for your projects. 
+The Workflows [feature](https://support.wix.com/en/article/workflows-getting-started) and [API](https://www.wix.com/velo/reference/wix-workflows-v2) are being discontinued and will no longer be supported moving forward. Please remove any code that uses `workflows.v2`. 
 
 (December 19, 2023)
 
