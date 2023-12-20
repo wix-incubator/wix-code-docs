@@ -35,7 +35,7 @@ Event handler functions are defined using the following pattern:
 export function <wixAppName>_<eventName>(event) {}
 ```
 
-For example, an event handler that handles the creation of a category looks like:
+For example, an event handler that handles the update of a file descriptor looks like:
 ```javascript
-export function wixMedia_onFileDescriptorUpdated(event) {}
+export function wixMediaSiteMedia_onFileDescriptorUpdated(event) {}
 ```
