@@ -7,6 +7,29 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New APIs: Hamburger Menu Element
+
+`Wix Editor Elements ($w)`
+
+We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
+
++ [`HamburgerOpenButton`]($w/hamburgeropenbutton): The icon button that opens the hamburger menu.
++ [`HamburgerCloseButton`]($w/hamburgerclosebutton): The icon button that closes the hamburger menu.
++ [`HamburgerMenuContainer`]($w/hamburgermenucontainer): The hamburger menu container, which holds the items of an expanded hamburger menu.
++ [`HamburgerOverlay`]($w/hamburgeroverlay): The fullscreen overlay that appears when the hamburger menu is open.
+
+(December 18, 2023)
+
+### New Endpoint: [Media API](/wix-media-v2)
+
+`wix-media.v2`
+
+The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
+
+- [`bulkImportFile()`](/wix-media-v2/files/bulkimportfile) imports a bulk of files to the Media Manager using external URLs. This replaces [`bulkImportFiles()`](/wix-media-v2/files/bulkimportfiles) which has been deprecated and will be removed on March 31, 2024.
+
+(December 14, 2023)
+
 ### Updated APIs: Pricing Plans Frontend and Pricing Plans Backend
 
 `pricing-plans-frontend`, `pricing-plans-backend`
@@ -49,6 +72,8 @@ We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-
 (Novemeber 29, 2023)
 
 ### New Developer Preview API: Reviews
+
+`wix-reviews.v2`
 
 The new [Reviews API](/wix-reviews-v2) allows you to manage reviews for a site's services, content, or products. Functionality includes:
 
