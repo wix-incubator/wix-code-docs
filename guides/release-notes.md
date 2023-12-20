@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Removed: Workflows v2 API
+
+`wix-workflows.v2`
+
+The [Workflows v2 API](https://www.wix.com/velo/reference/wix-workflows-v2) is being discontinued and will no longer be supported moving forward. Please remove any code that uses `workflows.v2`. 
+
+(December 19, 2023)
+
 ### New APIs: Hamburger Menu Element
 
 `Wix Editor Elements ($w)`
@@ -32,18 +40,18 @@ The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
 
 ### Updated APIs: Pricing Plans Frontend and Pricing Plans Backend
 
-`pricing-plans-frontend`, `pricing-plans-backend`
+`wix-pricing-plans-frontend`, `wix-pricing-plans-backend`
 
-We've updated the [`pricing-plans-frontend`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend) and [`pricing-plans-backend`](https://www.wix.com/velo/reference/wix-pricing-plans-backend) modules to reflect the actual function syntaxes.
+We've updated the [`wix-pricing-plans-frontend`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend) and [`wix-pricing-plans-backend`](https://www.wix.com/velo/reference/wix-pricing-plans-backend) modules to reflect the actual function syntaxes.
 
-`pricing-plans-frontend`:
+`wix-pricing-plans-frontend`:
 - [`Checkout`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout):
   - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout/createonlineorder): `couponCode` has been removed and `startDate` has been taken out of the `options` parameter.
   - [`startOnlinePurchase()`](https://www.wix.com/velo/reference/wix-pricing-plans-frontend/checkout/startonlinepurchase): `couponCode` has been removed and `startDate` has been taken out of the `options` parameter.
 
-`pricing-plans-backend`:
+`wix-pricing-plans-backend`:
 - [`Checkout`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout):
-  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder): `couponCode` and `startDate` are taken out of the `options` parameter.
+  - [`createOnlineOrder`](https://www.wix.com/velo/reference/wix-pricing-plans-backend/checkout/createonlineorder): `couponCode` and `startDate` have been taken out of the `options` parameter.
 
 ### New Developer Preview API: Table Reservations
 
