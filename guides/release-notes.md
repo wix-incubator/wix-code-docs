@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Removed: Workflows v2 API
+
+`wix-workflows.v2`
+
+The [Workflows v2 API](https://www.wix.com/velo/reference/wix-workflows-v2) is being discontinued and will no longer be supported moving forward. Please remove any code that uses `workflows.v2`. 
+
+(December 19, 2023)
+
 ### New APIs: Hamburger Menu Element
 
 `Wix Editor Elements ($w)`
