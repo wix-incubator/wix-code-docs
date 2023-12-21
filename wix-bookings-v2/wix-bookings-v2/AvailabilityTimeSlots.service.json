@@ -23,6 +23,46 @@
           "required": true
         },
         {
+          "name": "localStartDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local start date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\".",
+          "required": true
+        },
+        {
+          "name": "localEndDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local end date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\".",
+          "required": true
+        },
+        {
+          "name": "timeZone",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time zone, in IANA time zone format.",
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityTimeSlots.Location"
+            }
+          ],
+          "doc": "The location of the time slot.\n\nYou must provide a specific `locationType`.\nIf locationType is `BUSINESS`, you __must__ also provide a `locationId`.\n\n<blockquote class=\"warning\">\n<p>Supports filtering by location type, or by location ID.\nOther fields like <code class=\"grey-background\">name</code> are ignored.</p>\n</blockquote>",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -34,11 +74,11 @@
         }
       ],
       "requiredFields": [
-        "options.localEndDate",
-        "options.localStartDate",
-        "options.location",
-        "options.timeZone",
-        "serviceId"
+        "localEndDate",
+        "localStartDate",
+        "location",
+        "serviceId",
+        "timeZone"
       ],
       "ret": {
         "type": [
@@ -66,9 +106,9 @@
             "body": [
               "import { availabilityTimeSlots } from 'wix-bookings.v2';",
               "  ",
-              " async function getAvailabilityTimeSlot(serviceId, options) {",
+              " async function getAvailabilityTimeSlot(serviceId, localStartDate, localEndDate, timeZone, location, options) {",
               "   try {",
-              "     const result = await availabilityTimeSlots.getAvailabilityTimeSlot(serviceId, options);",
+              "     const result = await availabilityTimeSlots.getAvailabilityTimeSlot(serviceId, localStartDate, localEndDate, timeZone, location, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -93,6 +133,56 @@
       "name": "listAvailabilityTimeSlots",
       "params": [
         {
+          "name": "serviceId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Service ID for which the time slots are being returned for.\nCurrently supported only for services of type `APPOINTMENT`.\n\nRequired, unless `cursorPaging`.`cursor` is provided.",
+          "required": true
+        },
+        {
+          "name": "fromLocalDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Lower boundary for `localStartDate` to include in response, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\".\n\nEach returned `TimeSlot` in response has a `localStartDate`\nwithin the provided `fromLocalDate` and `toLocalDate` exclusive.\n\nRequired, unless `cursorPaging`.`cursor` is provided.",
+          "required": true
+        },
+        {
+          "name": "toLocalDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Upper boundary for `localStartDate` to include in response, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\".\n\nEach returned `TimeSlot` in response has a `localStartDate`\nwithin the provided `fromLocalDate` and `toLocalDate` exclusive.\n\nRequired, unless `cursorPaging`.`cursor` is provided.",
+          "required": true
+        },
+        {
+          "name": "timeZone",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time zone, in IANA time zone format.\n\nRequired, unless `cursorPaging`.`cursor` is provided.",
+          "required": true
+        },
+        {
+          "name": "cursorPaging",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityTimeSlots.CommonCursorPaging"
+            }
+          ],
+          "doc": "CursorPaging.\n\nEnables you to fetch results in smaller, more manageable chunks\nby setting a limit on the number of results returned in response.\nThis is useful in order to enhance efficiency of data retrieval and reduce load on both the client and server.\n\nIf there are more results than the specified limit, the response will contain a `cursorPagingMetaData`\nwith a cursor pointing to next page of results. In order to fetch the next page of results, you should pass the\nreturned cursor to the next call as `cursorPaging`.`cursor`.\n\nFor the first call, you should only specify the `limit` for the results page.\nFor each following call, you should only pass `cursorPaging`.`cursor` with the returned cursor from previous call, and\na `cursorPaging`.`limit`.\nNo need to specify any additional parameters.\n\n<blockquote class=\"important\">\n<p><strong>Important:</strong><br/>\nIf you only provide a <code class=\"grey-background\">cursorPaging</code>. <code class=\"grey-background\">cursor</code>,\nthe response will contain the default size of results which is `1000`.\n</p>\n</blockquote>",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -103,7 +193,13 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "cursorPaging",
+        "fromLocalDate",
+        "serviceId",
+        "timeZone",
+        "toLocalDate"
+      ],
       "ret": {
         "type": [
           {
@@ -130,9 +226,9 @@
             "body": [
               "import { availabilityTimeSlots } from 'wix-bookings.v2';",
               "  ",
-              " async function listAvailabilityTimeSlots(options) {",
+              " async function listAvailabilityTimeSlots(serviceId, fromLocalDate, toLocalDate, timeZone, cursorPaging, options) {",
               "   try {",
-              "     const result = await availabilityTimeSlots.listAvailabilityTimeSlots(options);",
+              "     const result = await availabilityTimeSlots.listAvailabilityTimeSlots(serviceId, fromLocalDate, toLocalDate, timeZone, cursorPaging, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -637,33 +733,6 @@
           "doc": "Resource type IDs to include in response, this is in addition to the requested `resourceIds`.\n\nIf specified in request, the returned `TimeSlot` contains only the `AvailableResources` with `ResourceTypeId`\nout of those specified, each contains all the available resources of this type.\n"
         },
         {
-          "name": "localEndDate",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Local end date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\"."
-        },
-        {
-          "name": "localStartDate",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Local start date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\"."
-        },
-        {
-          "name": "location",
-          "type": [
-            {
-              "referenceType": "wix-bookings-v2.AvailabilityTimeSlots.Location"
-            }
-          ],
-          "doc": "The location of the time slot.\n\nYou must provide a specific `locationType`.\nIf locationType is `BUSINESS`, you __must__ also provide a `locationId`.\n\n<blockquote class=\"warning\">\n<p>Supports filtering by location type, or by location ID.\nOther fields like <code class=\"grey-background\">name</code> are ignored.</p>\n</blockquote>\n"
-        },
-        {
           "name": "resourceIds",
           "optional": true,
           "type": [
@@ -679,15 +748,6 @@
             }
           ],
           "doc": "Resources to include in response.\n\nIf specified,\nthe returned `TimeSlot` contains only the available resources out of provided list.\nOtherwise, the returned `TimeSlot` returned with all possible `AvailableResources`.\n"
-        },
-        {
-          "name": "timeZone",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Time zone, in IANA time zone format."
         }
       ],
       "docs": {
@@ -931,26 +991,6 @@
           "doc": "Indicators for service's booking policy violations for booking the `TimeSlot`.\n\nA bookable time slot must not violate any policy,\ntherefor, this filter is only relevant when `bookable` filter is false.\n\nEach nested field is checked on its own. i.e. if `tooEarlyToBook` is defined and `bookOnlineDisabled` is not defined\nwe return slots for which `tooEarlyToBook` is same as on the request, regardless of `bookOnlineDisabled`.\n"
         },
         {
-          "name": "cursorPaging",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v2.AvailabilityTimeSlots.CommonCursorPaging"
-            }
-          ],
-          "doc": "CursorPaging.\n\nEnables you to fetch results in smaller, more manageable chunks\nby setting a limit on the number of results returned in response.\nThis is useful in order to enhance efficiency of data retrieval and reduce load on both the client and server.\n\nIf there are more results than the specified limit, the response will contain a `cursorPagingMetaData`\nwith a cursor pointing to next page of results. In order to fetch the next page of results, you should pass the\nreturned cursor to the next call as `cursorPaging`.`cursor`.\n\nFor the first call, you should only specify the `limit` for the results page.\nFor each following call, you should only pass `cursorPaging`.`cursor` with the returned cursor from previous call, and\na `cursorPaging`.`limit`.\nNo need to specify any additional parameters.\n\n<blockquote class=\"important\">\n<p><strong>Important:</strong><br/>\nIf you only provide a <code class=\"grey-background\">cursorPaging</code>. <code class=\"grey-background\">cursor</code>,\nthe response will contain the default size of results which is `1000`.\n</p>\n</blockquote>\n"
-        },
-        {
-          "name": "fromLocalDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Lower boundary for `localStartDate` to include in response, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\".\n\nEach returned `TimeSlot` in response has a `localStartDate`\nwithin the provided `fromLocalDate` and `toLocalDate` exclusive.\n\nRequired, unless `cursorPaging`.`cursor` is provided.\n"
-        },
-        {
           "name": "includeResourceTypeIds",
           "optional": true,
           "type": [
@@ -1002,16 +1042,6 @@
           "doc": "Resources to include in response.\n\nIf specified,\nthe returned TimeSlots will contain __up__ to 10 available resources out of the provided list.\nOtherwise, the returned TimeSlots returns with an empty `AvailableResources`.\n"
         },
         {
-          "name": "serviceId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Service ID for which the time slots are being returned for.\nCurrently supported only for services of type `APPOINTMENT`.\n\nRequired, unless `cursorPaging`.`cursor` is provided.\n"
-        },
-        {
           "name": "timeSlotsPerDay",
           "optional": true,
           "type": [
@@ -1020,26 +1050,6 @@
             }
           ],
           "doc": "Maximum number of slots to load for each day. For example, if `timeSlotsPerDay` is set to `3`,\nwe return at most 3 available TimeSlots for each day within the date range specified in request.\n\nBy default,\nif `bookable` filter was not specified,\nand a day has both `bookable` and `un-bookable` slots, `bookable` slots are returned first.\n\nIf the number of `bookable` slots is less than the requested `timeSlotsPerDay`,\n`un-bookable` slots will be returned according to the specified filters.\n"
-        },
-        {
-          "name": "timeZone",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Time zone, in IANA time zone format.\n\nRequired, unless `cursorPaging`.`cursor` is provided.\n"
-        },
-        {
-          "name": "toLocalDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Upper boundary for `localStartDate` to include in response, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\".\n\nEach returned `TimeSlot` in response has a `localStartDate`\nwithin the provided `fromLocalDate` and `toLocalDate` exclusive.\n\nRequired, unless `cursorPaging`.`cursor` is provided.\n"
         }
       ],
       "docs": {
