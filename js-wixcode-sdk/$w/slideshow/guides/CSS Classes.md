@@ -2,7 +2,7 @@
 
 # Slideshow CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `Slideshow` elements with CSS.
@@ -10,8 +10,6 @@ to style your `Slideshow` elements with CSS.
 For more information on styling your elements with CSS, see
 [Styling Elements with CSS]($w/styling-elements-with-css) and the
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
-
-> **Note:** If the component has media background set up in the design panel, for example an image or color, then CSS properties will not apply to it. To apply CSS properties, first remove images from the component and set the opacity in the panel to 0.  
 
 <blockquote class="important">
 
