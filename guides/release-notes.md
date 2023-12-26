@@ -11,15 +11,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-crm.v2`
 
-The [Tasks API](https://www.wix.com/velo/reference/wix-crm-v2) is being temporarily removed in preparation for a new version.
+The Tasks API is being temporarily removed in preparation for replacement by a new version.
 
 (December 25, 2023)
 
-### Removed: Workflows v2 API
+### Removed: Workflows API
 
 `wix-workflows.v2`
 
-The [Workflows v2 API](https://www.wix.com/velo/reference/wix-workflows-v2) is being discontinued and will no longer be supported moving forward. Please remove any code that uses `workflows.v2`. 
+The Workflows v2 API is being discontinued and will no longer be supported moving forward. Please remove any code that uses `workflows.v2`. 
 
 (December 19, 2023)
 
@@ -36,11 +36,11 @@ We added the following new APIs that allow you to customize the [hamburger menu]
 
 (December 18, 2023)
 
-### New Endpoint: [Media API](/wix-media-v2)
+### New Function: [Media API](/wix-media-v2)
 
 `wix-media.v2`
 
-The Media Manager [Files API](/wix-media-v2/files) now includes a new endpoint:
+The Media Manager [Files API](/wix-media-v2/files) now includes a new function:
 
 - [`bulkImportFile()`](/wix-media-v2/files/bulkimportfile) imports a bulk of files to the Media Manager using external URLs. This replaces [`bulkImportFiles()`](/wix-media-v2/files/bulkimportfiles) which has been deprecated and will be removed on March 31, 2024.
 
