@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-crm.v2`
 
-The Tasks API is being temporarily removed in preparation for a new version.
+The Tasks API is being temporarily removed in preparation for replacement by a new version.
 
 (December 25, 2023)
 
