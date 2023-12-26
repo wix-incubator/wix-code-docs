@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Temporarily Removed: Tasks API
+
+`wix-crm.v2`
+
+The [Tasks API](https://www.wix.com/velo/reference/wix-crm-v2) is being temporarily removed in preparation for a new version.
+
+(December 25, 2023)
+
 ### Removed: Workflows v2 API
 
 `wix-workflows.v2`
