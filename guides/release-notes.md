@@ -7,6 +7,19 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview API: Checkout Templates(/wix-ecom-backend/checkouttemplates)
+
+`wix-ecom-backend`
+
+The new [Checkout Templates API](/wix-ecom-backend/checkouttemplates) allows you to create templates that can be shared directly with customers to create checkouts with pre-populated information. Functionality includes:
++ [Creating](/wix-ecom-backend/checkouttemplates/createcheckouttemplate), [updating](/wix-ecom-backend/checkouttemplates/updatecheckouttemplate), or [deleting](/wix-ecom-backend/checkouttemplates/deletecheckouttemplate) a checkout template.
++ [Getting](/wix-ecom-backend/checkouttemplates/getcheckouttemplate) or [querying](/wix-ecom-backend/checkouttemplates/querycheckouttemplates) checkout templates.
++ Creating a checkout from a checkout template, either [with a redirect link](/wix-ecom-backend/checkouttemplates/createandredirecttocheckout) or [without an automatic redirect](/wix-ecom-backend/checkouttemplates/createcheckoutfromtemplate).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(December 27, 2023)
+
 ### Temporarily Removed: Tasks API
 
 `wix-crm.v2`
@@ -85,7 +98,7 @@ We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-
   - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
   - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
-(Novemeber 29, 2023)
+(November 29, 2023)
 
 ### New Developer Preview API: Reviews
 
