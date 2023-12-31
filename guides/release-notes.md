@@ -7,6 +7,21 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview API: Wix Blog Draft Posts
+
+`wix-blog-backend`
+
+The new [Draft Posts API](/wix-blog-backend/draftposts) allows you to manage unpublished blog posts. Functionality includes:
+
++ [Create](/wix-blog-backend/draftposts/createdraftpost), [update](/wix-blog-backend/draftposts/updatedraftpost), or [delete](/wix-blog-backend/draftposts/deletedraftpost) draft posts.
++ [Get](/wix-blog-backend/draftposts/getdraftpost), [list](/wix-blog-backend/draftposts/listdraftposts), or [query](/wix-blog-backend/draftposts/querydraftposts) draft posts.
++ [Get](/wix-blog-backend/draftposts/getdeleteddraftpost) or [list](/wix-blog-backend/draftposts/listdeleteddraftposts) deleted draft posts.
++ [Restore](/wix-blog-backend/draftposts/restorefromtrashbin) or [remove](/wix-blog-backend/draftposts/removefromtrashbin) draft posts from the trash bin.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(December 31, 2023)
+
 ### Temporarily Removed: Tasks API
 
 `wix-crm.v2`
