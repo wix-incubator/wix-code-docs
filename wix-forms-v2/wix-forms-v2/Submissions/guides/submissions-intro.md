@@ -19,6 +19,9 @@ title: Introduction
 > This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
 --> 
 
+> **Note**:
+> The Submissions API is only available in the Wix Studio editor.
+
 The Form Submissions API allows you to create and manage the submissions made on a form. 
 
 With the Form Submissions API, you can:
