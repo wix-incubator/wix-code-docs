@@ -61,11 +61,11 @@
       "docs": {
         "summary": "Deletes the specified files from the Media Manager.",
         "description": [
-          "The deleted files are moved to the Media Manager's trash bin (`TRASH-ROOT` folder) unless permanently deleted. To permanently delete files, pass the `permanent` parameter with the value `true`. Permanently deleting files isn't reversible, so make sure that these files aren't being used in a site or in any other way as the files will no longer be accessible.\n\n>**Notes:**\n> - The specified files can be from different folders.\n> - Moving multiple files at once is an asynchronous action, and may take time for the changes to appear in the Media Manager.\n> - Attempting to delete files that are already in the trash bin doesn't result in an error.\n> - If your site contains deleted media files, the deleted media files still appear on your site as the files are still in the Media Manager (in the trash bin).\n> - You can use `bulkRestoreFilesFromTrashBin()` to restore files from the Media Manager's trash bin."
+          "The `bulkDeleteFiles()` function returns a Promise that resolves when the files are deleted.\n\nThe deleted files are moved to the Media Manager's trash bin (`TRASH_ROOT` folder) unless permanently deleted. To permanently delete files, pass the `permanent` parameter with the value `true`. Permanently deleting files isn't reversible, so make sure that these files aren't being used in a site or in any other way as the files will no longer be accessible.\n\n>**Notes:**\n> - The specified files can be from different folders.\n> - Moving multiple files at once is an asynchronous action, and may take time for the changes to appear in the Media Manager.\n> - Attempting to delete files that are already in the trash bin doesn't result in an error.\n> - If your site contains deleted media files, the deleted media files still appear on your site as the files are still in the Media Manager (in the trash bin).\n> - You can use `bulkRestoreFilesFromTrashBin()` to restore files from the Media Manager's trash bin."
         ],
         "examples": [
           {
-            "title": "Bulk delete files ",
+            "title": "Bulk delete files",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -84,11 +84,11 @@
               "",
               "async function myBulkDeleteFilesFunction(fileIds, options) {",
               "  try {",
-              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles)",
+              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles);",
               "    await elevatedBulkDeleteFiles(fileIds, options);",
               "",
               "    console.log('Permanently deleted files.');",
-              "    return true;",
+              "    return;",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
@@ -96,13 +96,10 @@
               "}",
               "",
               "/* Promise resolves to void */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Bulk Delete Files ",
+            "title": "Bulk delete all files found in a chosen folder ",
             "body": [
               "/****************************************",
               " * Backend code - bulk-delete-files.jsw *",
@@ -123,17 +120,17 @@
               "  }",
               "}",
               "",
-              "export async function searchFilesIds (parentFolderId) {",
+              "export async function searchFileIds (parentFolderId) {",
               "  try {",
               "    const options = { parentFolder: parentFolderId}",
               "    const elevatedSearchFiles = elevate(files.searchFiles)    ",
               "    const returnedFiles = await elevatedSearchFiles(options);  ",
               "",
-              "    const filesIds = returnedFiles.map((file) => {",
+              "    const fileIds = returnedFiles.map((file) => {",
               "      return file._id",
               "    });",
               "",
-              "    return filesIds;",
+              "    return fileIds;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
@@ -144,7 +141,7 @@
               " * Page code *",
               " ************/",
               "",
-              "import { deleteFiles, searchFilesIds } from 'backend/bulk-delete-files';",
+              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files';",
               "",
               "$w.onReady(() => {",
               "  $w('#delete').onClick(async () => {",
@@ -152,7 +149,7 @@
               "    const options = {permanent: isDeletePermanently};",
               "",
               "    const parentFolder = $w('#parentFolder').value;",
-              "    const fileIds = await searchFilesIds(parentFolder);",
+              "    const fileIds = await searchFileIds(parentFolder);",
               "",
               "    await deleteFiles(fileIds, options);",
               "    $w('#successMessage').show();",
@@ -160,7 +157,7 @@
               "});"
             ],
             "extra": {
-              "description": "This code shows a page where the user chooses a folder through typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only users with permission to manage the site's media would have access to this page."
+              "description": "This code shows a page where the visitor chooses a folder by typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only visitors with permission to manage the site's media would have access to this page."
             }
           }
         ]
@@ -201,7 +198,7 @@
               "referenceType": "wix-media-v2.Files.BulkImportFileOptions"
             }
           ],
-          "doc": "",
+          "doc": "Options to include the file descriptor in the response.",
           "required": false
         }
       ],
@@ -225,9 +222,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Imports a bulk of files to the Media Manager using external urls. <br/>",
+        "summary": "Imports a bulk of files to the Media Manager using external urls.",
         "description": [
-          "Returns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported to.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import files, you need to provide one of the following:\n1. Pass each file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request.  For example, 'image/png'.\n2. Pass each file's name and extension. For example, 'my-image.png'.\n3. If you don't know a file's extension or MIME type, pass its media type in the `mediaType` parameter of the request. For example, 'IMAGE'. Note that this option only works if the server hosting the media allows a 'HEAD' request.\n\n>**Note:** The `media` property isn't returned in the `files` response object."
+          "The `bulkImportFile()` function returns a Promise that resolves to an object containing bulk import metadata and an array of imported files' descriptors and metadata.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request."
         ],
         "examples": [
           {
@@ -253,8 +250,8 @@
               " *   },",
               " *   {",
               " *     displayName: 'video1',",
-              " *     mediaType: 'VIDEO'",
-              " *     url: 'https://cdn.pixabay.com/example-video.mp4',",
+              " *     mediaType: 'VIDEO',",
+              " *     url: 'https://cdn.pixabay.com/example-video.mp4'",
               " *   }",
               " * ]",
               " */",
@@ -274,80 +271,193 @@
               "",
               "/* Promise resolves to: ",
               " * {",
-              " *  \"files\": [",
-              " *    {",
-              " *      \"_createdDate\": \"2023-07-23T12:15:49.000Z\",",
-              " *      \"_id\": \"w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\",",
-              " *      \"_updatedDate\": \"2023-07-23T12:15:49.000Z\",",
-              " *      \"displayName\": \"image1.jpg\",",
-              " *      \"hash\": \"\",",
-              " *      \"internalTags\": [],",
-              " *      \"labels\": [],",
-              " *      \"mediaType\": \"IMAGE\",",
-              " *      \"operationStatus\": \"PENDING\",",
-              " *      \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
-              " *      \"private\": false,",
-              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
-              " *      \"sizeInBytes\": \"-1\",",
-              " *      \"sourceUrl\": \"https://www.site1.com/example.jpg\",",
-              " *      \"state\": \"OK\",",
-              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\",",
-              " *      \"url\": \"https://static.wixstatic.com/media/w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\"",
-              " *    },",
-              " *    {",
-              " *      \"_createdDate\": \"2023-07-23T12:15:50.000Z\",",
-              " *      \"_id\": \"w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\",",
-              " *      \"_updatedDate\": \"2023-07-23T12:15:50.000Z\",",
-              " *      \"displayName\": \"vectorArt1.webp.svg\",",
-              " *      \"hash\": \"\",",
-              " *      \"internalTags\": [],",
-              " *      \"labels\": [",
-              " *        \"label1\", ",
-              " *        \"label2\"",
-              " *      ],",
-              " *      \"mediaType\": \"VECTOR\",",
-              " *      \"operationStatus\": \"PENDING\",",
-              " *      \"parentFolderId\": \"media-root\",",
-              " *      \"private\": false,",
-              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
-              " *      \"sizeInBytes\": \"20532\",",
-              " *      \"sourceUrl\": \"https://cdn.vectorstock.com/example-vector-art.webp\",",
-              " *      \"state\": \"OK\",",
-              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/shapes/w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\",",
-              " *      \"url\": \"https://static.wixstatic.com/shapes/w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\"",
-              " *    },",
-              " *    {",
-              " *      \"_createdDate\": \"2023-07-23T12:15:50.000Z\",",
-              " *      \"_id\": \"w8ide0_f6e8f09e5055432286db483917ba923e\",",
-              " *      \"_updatedDate\": \"2023-07-23T12:15:50.000Z\",",
-              " *      \"displayName\": \"video1.mp4\",",
-              " *      \"hash\": \"\",",
-              " *      \"internalTags\": [],",
-              " *      \"labels\": [],",
-              " *      \"mediaType\": \"VIDEO\",",
-              " *      \"operationStatus\": \"PENDING\",",
-              " *      \"parentFolderId\": \"media-root\",",
-              " *      \"private\": false,",
-              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
-              " *      \"sizeInBytes\": \"-1\",",
-              " *      \"sourceUrl\": \"https://cdn.pixabay.com/example-video.mp4\",",
-              " *      \"state\": \"OK\",",
-              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/media/yibv80byru0wei9ficri8fd8o1rghueu.png\",",
-              " *      \"url\": \"https://video.wixstatic.com/video/w8ide0_f6e8f09e5055432286db483917ba923e/file\"",
-              " *    }",
-              " *  ]",
+              " *   \"bulkActionMetadata\": {",
+              " *     \"totalFailures\": 0,",
+              " *     \"totalSuccesses\": 3,",
+              " *     \"undetailedFailures\": 0",
+              " *   },",
+              " *   \"results\": [",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"image1.jpg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"IMAGE\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://www.site1.com/example.jpg\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"url\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"originalIndex\": 0,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"vectorArt1.webp.svg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [\"label1\", \"label2\"],",
+              " *         \"mediaType\": \"VECTOR\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.vectorstock.com/example-vector-art.webp\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"url\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"originalIndex\": 1,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"video1.mp4\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"VIDEO\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.pixabay.com/example-video.mp4\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/54ece48fa04e492fa46bd79980105f0d.png\",",
+              " *         \"url\": \"https://video.wixstatic.com/video/a8a52b_fec67a695b474a729e3a31010afbb0af/file\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
+              " *         \"originalIndex\": 2,",
+              " *         \"success\": true",
+              " *       }",
+              " *     }",
+              " *   ]",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Bulk import file ",
+            "title": "Bulk import file with options",
+            "body": [
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample importFileRequests value:",
+              " * [",
+              " *   {",
+              " *     displayName: 'image1',",
+              " *     mediaType: 'IMAGE',",
+              " *     mimeType: 'image/jpeg',",
+              " *     parentFolderId: 'igje5u22nij3qkltzsnol37j3dnthvvh',",
+              " *     url: 'https://www.site1.com/example.jpg'",
+              " *   }, ",
+              " *   {",
+              " *     displayName: 'vectorArt1',",
+              " *     mediaType: 'VECTOR',",
+              " *     labels : ['label1', 'label2'],",
+              " *     url: 'https://cdn.vectorstock.com/example-vector-art.webp'",
+              " *   },",
+              " *   {",
+              " *     displayName: 'video1',",
+              " *     mediaType: 'VIDEO',",
+              " *     url: 'https://cdn.pixabay.com/example-video.mp4'",
+              " *   }",
+              " * ]",
+              " * Sample options value:",
+              " * {",
+              " *  returnEntity: false",
+              " * }",
+              " */",
+              "",
+              "async function mybulkImportFileFunction(importFileRequests, options) {",
+              "  try {",
+              "    const elevatedbulkImportFile = elevate(files.bulkImportFile)",
+              "    const importedFiles = await elevatedbulkImportFile(importFileRequests, options);",
+              "",
+              "    console.log(\"Imported files:\", importedFiles);",
+              "    return importedFiles;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"bulkActionMetadata\": {",
+              " *     \"totalSuccesses\": 3,",
+              " *     \"totalFailures\": 0,",
+              " *     \"undetailedFailures\": 0",
+              " *   },",
+              " *   \"results\": [",
+              " *     {",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_f8388ed2a42440c6a649e6b68194f18f~mv2.jpg\",",
+              " *         \"originalIndex\": 0,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_21186dbad3154343a379786e9b6cd6c4-tmp.svg\",",
+              " *         \"originalIndex\": 1,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_722acdc3e90c4d509a656ea93d531dc6\",",
+              " *         \"originalIndex\": 2,",
+              " *         \"success\": true",
+              " *       }",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk import files from visitor input into a form ",
             "body": [
               "/****************************************",
-              " * Backend code - bulk-import-file.jsw *",
+              " * Backend code - bulk-import-files.jsw *",
               " ***************************************/",
               "",
               "import { files } from 'wix-media.v2';",
@@ -355,8 +465,8 @@
               "",
               "export async function importFiles(importFileRequests) {",
               "  try {",
-              "    const elevatedbulkImportFile = elevate(files.bulkImportFile)",
-              "    const importedFiles = await elevatedbulkImportFile(importFileRequests);",
+              "    const elevatedBulkImportFile = elevate(files.bulkImportFile)",
+              "    const importedFiles = await elevatedBulkImportFile(importFileRequests);",
               "",
               "    console.log(\"Imported files:\", importedFiles);",
               "    return importedFiles;",
@@ -394,7 +504,7 @@
               "  });",
               "",
               "  $w('#uploadMedia').onClick(async () => {",
-              "    if (!newMedia.length) {",
+              "    if (newMedia.length === 0) {",
               "      // if no media has been added then",
               "      // show message to add media",
               "      $w('#addMediaMsg').show()",
@@ -410,7 +520,7 @@
               "});"
             ],
             "extra": {
-              "description": " This code shows a page where the user adds basic media file data to a form and then adds it to the `newMedia` array. When the user clicks the upload button, all added media files are uploaded using the `bulkImportFile()` function."
+              "description": "This code shows a page where the visitor adds basic media file data to a form and then adds it to the `newMedia` array. When the visitor clicks the upload button, all added media files are uploaded using the `bulkImportFile()` function."
             }
           }
         ]
@@ -467,7 +577,7 @@
       "docs": {
         "summary": "> **Deprecated.**\n> This function has been replaced with `bulkImportFile()`, and will be removed on March 31, 2024.",
         "description": [
-          "Imports a bulk of files to the Media Manager using external urls.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import files, you need to provide one of the following:\n1. Pass each file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n2. Pass each file's name and extension. For example, `'my-image.png'`.\n3. If you don't know a file's extension or MIME type, pass its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request.\n\n>**Note:** The `media` property isn't returned in the `files` response object."
+          "The `bulkImportFiles()` function returns a Promise that resolves to an array of the imported files' descriptors.\n\nImports a bulk of files to the Media Manager using external urls.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request.\n\n>**Note:** The `media` property isn't returned in the `files` response object."
         ],
         "examples": [
           {
@@ -578,13 +688,10 @@
               " *  ]",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Bulk Delete Files ",
+            "title": "Bulk import files from visitor input into a form ",
             "body": [
               "/****************************************",
               " * Backend code - bulk-import-files.jsw *",
@@ -634,7 +741,7 @@
               "  });",
               "",
               "  $w('#uploadMedia').onClick(async () => {",
-              "    if (!newMedia.length) {",
+              "    if (newMedia.length === 0) {",
               "      // if no media has been added then",
               "      // show message to add media",
               "      $w('#addMediaMsg').show()",
@@ -650,7 +757,7 @@
               "});"
             ],
             "extra": {
-              "description": "This code shows a page where the user adds basic media file data to a form and then adds it to the `newMedia` array. When the user clicks the upload button, all added media files are uploaded using the `bulkImportFiles()` function."
+              "description": "This code shows a page where the visitor adds basic media file data to a form and then adds it to the `newMedia` array. When the visitor clicks the upload button, all added media files are uploaded using the `bulkImportFiles()` function."
             }
           }
         ]
@@ -705,15 +812,17 @@
       },
       "docs": {
         "summary": "Restores the specified files from the Media Manager's trash bin, and moves them to their original locations in the Media Manager.",
-        "description": [],
+        "description": [
+          "The `bulkRestoreFilesFromTrashBin()` function returns a Promise that resolves when the files have been restored."
+        ],
         "examples": [
           {
-            "title": "Bulk restores deleted files by ID ",
+            "title": "Bulk restore deleted files by IDs",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "/* Sample fileIDs value:",
+              "/* Sample fileIds value:",
               " * [",
               " *   'd4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg',",
               " *   'd4dde1_32288e20a5aa4213a52b15426fb27c9f~mv2.png',",
@@ -734,13 +843,10 @@
               "}",
               "",
               "/* Promise resolves to void */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Bulk restores all non-permanently deleted images ",
+            "title": "Bulk restores all non-permanently deleted files of chosen types ",
             "body": [
               "/*****************************************",
               " * Backend code - bulk-restore-files.jsw *",
@@ -749,6 +855,7 @@
               "import { elevate } from 'wix-auth';",
               "",
               "async function restoreFiles(mediaTypes) {",
+              "  let idList = []",
               "  try {",
               "    const options = {",
               "        mediaTypes: mediaTypes",
@@ -756,10 +863,14 @@
               "    const elevatedListDeletedFiles = elevate(files.listDeletedFiles)",
               "    const deletedFiles = await elevatedListDeletedFiles(options);",
               "",
-              "    const idList = deletedFiles.files.map((file) => {",
+              "    idList = deletedFiles.files.map((file) => {",
               "     return file._id",
               "    });",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
               "",
+              "  try {",
               "    const elevatedBulkRestoreFilesFromTrashBin = elevate(files.bulkRestoreFilesFromTrashBin);",
               "    const restoredFiles = await elevatedBulkRestoreFilesFromTrashBin(idList);",
               "",
@@ -811,7 +922,7 @@
               "});"
             ],
             "extra": {
-              "description": "This code is an example of a page on which a user chooses a media type (or types). All files of that type/those types in which have been (non-permanently) deleted are restored."
+              "description": "This code is an example of a page on which a visitor chooses a media type (or types). All files of that type/those types in which have been (non-permanently) deleted are restored."
             }
           }
         ]
@@ -870,11 +981,11 @@
       "docs": {
         "summary": "Generates one or more temporary URLs for downloading a specific file in the Media Manager.",
         "description": [
-          "To download different assets of the file, use the `assetKeys` parameter which generates a download URL for each asset.\nIf no `assetKey` is specified, it defaults to `src`, which generates one download URL in the original file's format and quality.\n\nUse this endpoint to grant external clients access to a private media file. Use the `expirationInMinutes` parameter to set the URL expiration time, and the `expirationRedirectUrl` parameter to add a redirect url when the URL expires."
+          "The `generateFileDownloadUrl()` function returns a Promise that resolves to an array containing download URLs for the assets specified in the options parameter.\n\nTo download different assets of the file, use the `assetKeys` parameter which generates a download URL for each asset.\nIf no asset key is specified, it defaults to `src`, which generates one download URL in the original file's format and quality.\n\nUse this endpoint to grant external clients access to a private media file. Use the `expirationInMinutes` parameter to set the URL expiration time, and the `expirationRedirectUrl` parameter to add a redirect URL when the URL expires."
         ],
         "examples": [
           {
-            "title": "Generate a file download url ",
+            "title": "Generate a file download URL ",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -886,8 +997,7 @@
               "    const elevatedGenerateFileDonwloadUrl = elevate(files.generateFileDownloadUrl)",
               "    const result = await elevatedGenerateFileDonwloadUrl(fileId);",
               "",
-              "    const url = result.downloadUrls[0].url;",
-              "    return url;",
+              "    return result;",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
@@ -904,13 +1014,10 @@
               " *   ]",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Generate a file download url with options ",
+            "title": "Generate a file download URL with options ",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -922,7 +1029,7 @@
               " *   assetKeys: ['320kbs.mp3'],",
               " *   downloadFileName: 'MyAudio.mp3',",
               " *   expirationInMinutes: '60',",
-              " *   expirationRedirectUrl: 'www.mysite.com/store'",
+              " *   expirationRedirectUrl: 'www.example.com/store'",
               " * }",
               " */",
               "",
@@ -949,10 +1056,7 @@
               " *   ]",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           }
         ]
       },
@@ -1003,9 +1107,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Generates a resumable upload URL to allow external clients to easily upload large files over 10MB to the Media Manager.",
+        "summary": "Generates a resumable upload URL to allow external clients to upload large files over 10MB to the Media Manager.",
         "description": [
-          "With the resumable upload URL, any interruptions in the upload process pauses the file upload, and resumes the file upload process after the interruption. The resumable upload URL is also helpful when network connection is poor.\n\nTo learn how external clients can use the generated upload URL in the response to upload large files to the Media Manager, see the Resumable Upload API article."
+          "The `generateFileResumableUploadUrl()` function returns a Promise that resolves to an upload URL, token, and protocol.\n\nWhen using the resumable upload URL, any interruptions will pause the file upload process, which automatically resumes once the interruption is resolved. The resumable upload URL is also helpful when network connection is poor.\n\nTo learn how external clients can use the generated upload URL in the response to upload large files to the Media Manager, see the Resumable Upload API article."
         ],
         "examples": [
           {
@@ -1015,6 +1119,7 @@
               "import { elevate } from 'wix-auth';",
               "",
               "/* Sample mimeType value: 'image/jpeg'",
+              " *",
               " * Sample options value:",
               " * {",
               " *   fileName: 'image1.jpeg',",
@@ -1028,8 +1133,7 @@
               "    const elevatedGenerateFileResumableUploadUrl = elevate(files.generateFileResumableUploadUrl);",
               "    const result = await elevatedGenerateFileResumableUploadUrl(mimeType, options);",
               "  ",
-              "    const url = result.uploadUrl;",
-              "    return url;",
+              "    return result;",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
@@ -1038,15 +1142,12 @@
               "  ",
               "/* Promise resolves to:",
               " * {",
-              " *   \"uploadProtocol\": \"TUS\",",
-              " *   \"uploadToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMWIwNTkxYi0wMTQyLTRkOTctYjg2My1lOTQwN2ZiZjdhMDEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE3MDIzNjM0NTIsImlhdCI6MTcwMTc1ODY0MiwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvYThhNTJiXzFhYTNkZDQzMTY4OTQxYjhiMDE0M2M0ZTA5MDY1M2U1fm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UY3dNVGMxT0RZME1pd2laWGh3SWpveE56QXhPREF4T0RReUxDSnFkR2tpT2lJME5EbGxNakE0WkdZNE5XRWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWhPR0UxTW1KZk1XRmhNMlJrTkRNeE5qZzVOREZpT0dJd01UUXpZelJsTURrd05qVXpaVFYtYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdllUaGhOVEppWHpGaFlUTmtaRFF6TVRZNE9UUXhZamhpTURFME0yTTBaVEE1TURZMU0yVTFmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJFNFlUVXlZbDh4WVdFelpHUTBNekUyT0RrME1XSTRZakF4TkROak5HVXdPVEEyTlRObE5YNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozU2taTVVqUk9UbTlJZDA1bGVsSlBTVnB2YmtWV2FUUlNaSE5OZDB0dVMzRTNOMUUwUW5GT1RUUnBaV1YwYWs1RFYzSmxjMnRRUXkwMVVsQllSbVp6YlVad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6UlJRVFpSU1MxQk5IUTJVVm94T0dSWlRVbEJjMDlxTkZNdFgyZHhTakYzTmxCb2NYSmhUR1pGWDNabWFrZDROMDlKUjJWSVFuZzBYMU51T1UxeGNteExRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMlZXa3pWMHMyY2xvdFNYbHhlRFZMU1ZFNFdFaDBjakkxYm1sU1p6VlNVMkYzUzFWS01FWlhNall4VDAxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5GcEZTbUZPVFZSYVdHeHVSM2xxY2tkWWFFWTRiMVI0VTJjMFJUUlFlVFJSV1V4NVRrbGhaREkzY21zOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5nN1FFMDduUk9CNTZ6MlljQ0ZLazdRUkZJaDJ6c0FnNUlXODlsSmJCejRnIiwiYWNsIjoicHVibGljIiwicHJvdG9jb2wiOiJ0dXMiLCJtaW1lVHlwZSI6ImltYWdlL2pwZWciLCJzZXNzaW9uVVJMIjoiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vdXBsb2FkL3N0b3JhZ2UvdjEvYi91cGxvYWQtdG1wLXdpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS9vP3ByZWRlZmluZWRBY2w9cHVibGljUmVhZFx1MDAyNnByb2plY3Rpb249ZnVsbFx1MDAyNnVwbG9hZFR5cGU9cmVzdW1hYmxlXHUwMDI2dXBsb2FkX2lkPUFCUHRjUHJ6QkVoaHRaTm1yM0ViZG5pOXcwUy1DVmdZZnFmYVgyUXZPT29yNEt2bFBhVUtRdGlwMkNwXzdYTndxblRWSmRaWkxOYlE3TU90M1NlTmx6R3pLOGpZRXZMNHA5QUFtbi1RTE96LThxQWQifQ.hHvZwmkHImDu4khcqyWx44TgWT_d26wIhcAbRUH37oI\",",
-              " *   \"uploadUrl\": \"https://upload.wixmp.com/upload/tus\"",
+              " *  \"uploadProtocol\": \"TUS\",",
+              " *  \"uploadToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMWIwNTkxYi0wMTQyLTRkOTctYjg2My1lOTQwN2ZiZjdhMDEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE3MDIzNjM0NTIsImlhdCI6MTcwMTc1ODY0MiwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvYThhNTJiXzFhYTNkZDQzMTY4OTQxYjhiMDE0M2M0ZTA5MDY1M2U1fm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UY3dNVGMxT0RZME1pd2laWGh3SWpveE56QXhPREF4T0RReUxDSnFkR2tpT2lJME5EbGxNakE0WkdZNE5XRWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWhPR0UxTW1KZk1XRmhNMlJrTkRNeE5qZzVOREZpT0dJd01UUXpZelJsTURrd05qVXpaVFYtYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdllUaGhOVEppWHpGaFlUTmtaRFF6TVRZNE9UUXhZamhpTURFME0yTTBaVEE1TURZMU0yVTFmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJFNFlUVXlZbDh4WVdFelpHUTBNekUyT0RrME1XSTRZakF4TkROak5HVXdPVEEyTlRObE5YNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozU2taTVVqUk9UbTlJZDA1bGVsSlBTVnB2YmtWV2FUUlNaSE5OZDB0dVMzRTNOMUUwUW5GT1RUUnBaV1YwYWs1RFYzSmxjMnRRUXkwMVVsQllSbVp6YlVad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6UlJRVFpSU1MxQk5IUTJVVm94T0dSWlRVbEJjMDlxTkZNdFgyZHhTakYzTmxCb2NYSmhUR1pGWDNabWFrZDROMDlKUjJWSVFuZzBYMU51T1UxeGNteExRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMlZXa3pWMHMyY2xvdFNYbHhlRFZMU1ZFNFdFaDBjakkxYm1sU1p6VlNVMkYzUzFWS01FWlhNall4VDAxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5GcEZTbUZPVFZSYVdHeHVSM2xxY2tkWWFFWTRiMVI0VTJjMFJUUlFlVFJSV1V4NVRrbGhaREkzY21zOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5nN1FFMDduUk9CNTZ6MlljQ0ZLazdRUkZJaDJ6c0FnNUlXODlsSmJCejRnIiwiYWNsIjoicHVibGljIiwicHJvdG9jb2wiOiJ0dXMiLCJtaW1lVHlwZSI6ImltYWdlL2pwZWciLCJzZXNzaW9uVVJMIjoiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vdXBsb2FkL3N0b3JhZ2UvdjEvYi91cGxvYWQtdG1wLXdpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS9vP3ByZWRlZmluZWRBY2w9cHVibGljUmVhZFx1MDAyNnByb2plY3Rpb249ZnVsbFx1MDAyNnVwbG9hZFR5cGU9cmVzdW1hYmxlXHUwMDI2dXBsb2FkX2lkPUFCUHRjUHJ6QkVoaHRaTm1yM0ViZG5pOXcwUy1DVmdZZnFmYVgyUXZPT29yNEt2bFBhVUtRdGlwMkNwXzdYTndxblRWSmRaWkxOYlE3TU90M1NlTmx6R3pLOGpZRXZMNHA5QUFtbi1RTE96LThxQWQifQ.hHvZwmkHImDu4khcqyWx44TgWT_d26wIhcAbRUH37oI\",",
+              " *  \"uploadUrl\": \"https://upload.wixmp.com/upload/tus\"",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "Use a file upload url in an external node.js application",
@@ -1132,7 +1233,7 @@
       "docs": {
         "summary": "Generates an upload URL to allow external clients to upload a file to the Media Manager.",
         "description": [
-          "To learn how external clients can use the generated upload URL in the response to upload a file to the Media Manager, see the Upload API article.\n\n> **Note:** Any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use the generateFileResumableUploadUrl() instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption."
+          "The `generateFileUploadUrl()` function returns a Promise that resolves to an upload URL.\n\nTo learn how external clients can use the generated upload URL in the response to upload a file to the Media Manager, see the Upload API article.\n\n> **Note:** Any interruption in the upload process stops the file upload. For files larger than 10MB, or when network connection is poor, use `generateFileResumableUploadUrl()` instead. With the resumable upload URL, any interruption in the upload process pauses the file upload, and resumes the file upload process after the interruption."
         ],
         "examples": [
           {
@@ -1168,10 +1269,7 @@
               " *   \"uploadUrl\": \"https://upload.wixmp.com/upload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYTk0N2E5Ni01ZmFiLTQ0NjAtODVkNS1hNTIxNWRjNzRiMjEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE2OTM5MTk3MjksImlhdCI6MTY5MzgzMzMxOSwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvZDRkZGUxXzE4Nzk3M2ZhYWRmNjQ3MGM4OTRhN2JjNmMyNjA2Yjkzfm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UWTVNemd6TXpNeE9Td2laWGh3SWpveE5qa3pPRGMyTlRFNUxDSnFkR2tpT2lJeU9ERXpaR013T1dJNU9EQWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWtOR1JrWlRGZk1UZzNPVGN6Wm1GaFpHWTJORGN3WXpnNU5HRTNZbU0yWXpJMk1EWmlPVE4tYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdlpEUmtaR1V4WHpFNE56azNNMlpoWVdSbU5qUTNNR000T1RSaE4ySmpObU15TmpBMllqa3pmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJRMFpHUmxNVjh4T0RjNU56Tm1ZV0ZrWmpZME56QmpPRGswWVRkaVl6WmpNall3Tm1JNU0zNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozTm14R00xcFNRVkZST0RKWVpXRktRMmRWU1U1bFNHeFlkVTlzZWtNelVtSTFUQzFoTWtKRlVsQlpSRlpXWVRReWJEWTBiMnhzZUVKMk5qZG9lRjloU2tad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6ZG1ZWEV4VlhOaFpsSnZVRWx5UzBwVWEydE5NREZOUkMwNFUzVTFVR1l4WWpWTWVsRXhNV0ZpYWt4M1pVWXdVMnRmV2xKZldHSTVja3Q1U0hadWRVSkxRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMllXTnVjbTlRWDA5MGFTMUdOamRrU2tWelpWZFJhM0I2VW5WUGNIQkpTa1ZUUTJkMVpERkZRa2xOYlUxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5FRnFhSGRpWlZSemRVbEVSRGxFT1dWWGVtaG5VVGhQZUV3MWVHdElORXN3UTFOWE5qSkRRazlQUlVrOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5iRWJSTzdnYkQxaXR0TW9Hb29QUTBsbDZrbW5jSEdfc05pRjRXZzFZWTc0IiwiYWNsIjoicHVibGljIiwibWltZVR5cGUiOiJpbWFnZS9qcGVnIn0.pd9ZssMw0NOTIxmNm0gm3r5WP6ySCy4vBxlT8ufU_Vw\"",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "Use a file upload url in an external node.js application",
@@ -1254,7 +1352,7 @@
       "docs": {
         "summary": "Generates a URL for downloading a compressed file containing specific files in the Media Manager.",
         "description": [
-          "The compressed file can contain up to 1000 files."
+          "The `generateFilesDownloadUrl()` function returns a Promise that resolves to a download URL.\n\nThe compressed file can contain up to 1000 files."
         ],
         "examples": [
           {
@@ -1289,10 +1387,7 @@
               " *   \"downloadUrl\": \"https://archive.wixmp.com/archive/wix/38f69e35c283495187e85be0c8c06caf\"",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "Generate a download url for all images in media ",
@@ -1413,7 +1508,9 @@
       },
       "docs": {
         "summary": "Generates a URL for streaming a specific video file in the Media Manager.",
-        "description": [],
+        "description": [
+          "The `generateVideoStreamingUrl()` function returns a Promise that resolves to a download URL and its asset key.\n\nTo stream different assets of the file, use the `assetKeys` parameter which generates a video streaming URL for each asset. If no asset key is specified, it defaults to `src`, which generates one video streaming URL in the original file's format and quality."
+        ],
         "examples": [
           {
             "title": "Generate a video streaming url ",
@@ -1449,10 +1546,7 @@
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           }
         ]
       },
@@ -1499,7 +1593,9 @@
       },
       "docs": {
         "summary": "Gets information about the specified file in the Media Manager.",
-        "description": [],
+        "description": [
+          "The `getFileDescriptor()` function returns a Promise that resolves to the specified file's descriptor.\n\nUse `getFileDescriptors()` to get multiple file descriptors at once."
+        ],
         "examples": [
           {
             "title": "Get a file descriptor ",
@@ -1549,10 +1645,7 @@
               " *  \"url\": \"https://static.wixstatic.com/media/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\"",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           }
         ]
       },
@@ -1606,10 +1699,12 @@
       },
       "docs": {
         "summary": "Gets information about the specified files in the Media Manager.",
-        "description": [],
+        "description": [
+          "The `getFileDescriptors()` function returns a Promise that resolves to an array containing the specified files' descriptors.\n\nUse `getFileDescriptor()` to get a single file descriptor."
+        ],
         "examples": [
           {
-            "title": "Get  file descriptors ",
+            "title": "Get file descriptors ",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -1716,10 +1811,7 @@
               " *   ]",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           }
         ]
       },
@@ -1775,9 +1867,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Imports a file to the Media Manager using an external url.",
+        "summary": "Imports a file to the Media Manager using an external URL.",
         "description": [
-          "This function returns information about the imported file.\nUse the `parentFolderId` parameter to specify which folder you want the file to be imported to.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to provide one of the following:\n1. Pass the file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n2. Pass the file's name and extension. For example, `'my-image.png'`.\n3. If you don't know the file's extension or MIME type, pass its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request.\n\n>**Note:** The `media` property isn't returned in the `files` response object.\n"
+          "The `importFile()` function returns a Promise that resolves to the imported file's descriptor.\n\nThis function returns information about the imported file. Importing a file is the method through which you can add files to the Media Manager.\nUse the `parentFolderId` parameter to specify which folder you want the file to be imported to.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request."
         ],
         "examples": [
           {
@@ -1825,18 +1917,15 @@
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Import a file ",
+            "title": "Import a file with options",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "/* Sample url value: 'https://example.org/filename.jpg'",
+              "/* Sample url value: 'https://example.org/myfilename.jpg'",
               " * ",
               " * Sample importOptions value:",
               " * {",
@@ -1876,17 +1965,14 @@
               " *     \"private\": false,",
               " *     \"sizeInBytes\": \"47177\",",
               " *     \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
-              " *     \"sourceUrl\": \"https://example.org/filename.jpg\",",
+              " *     \"sourceUrl\": \"https://example.org/myfilename.jpg\",",
               " *     \"state\": \"OK\",",
               " *     \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_dvddpfvztq1dkhjqn4xz6e429vpk3oc1~mv2.jpg\",",
               " *     \"url\": \"https://static.wixstatic.com/media/w8ide0_dvddpfvztq1dkhjqn4xz6e429vpk3oc1~mv2.jpg\"",
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           }
         ]
       },
@@ -1932,7 +2018,7 @@
       "docs": {
         "summary": "Retrieves a list of files in the Media Manager's trash bin.",
         "description": [
-          ">**Note:** The Media Manager's trash bin (`TRASH-ROOT` folder) only contains temporarily deleted files, not permanently deleted files."
+          "The `listDeletedFiles()` function returns a Promise that resolves to an array of the specified deleted files' descriptors and cursor information.\n\n>**Note:** The Media Manager's trash bin (`TRASH_ROOT` folder) only contains temporarily deleted files, not permanently deleted files.\n\nTo retrieve a list of non-deleted files, use the `listFiles()` function."
         ],
         "examples": [
           {
@@ -2099,10 +2185,7 @@
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "List deleted files with options ",
@@ -2280,13 +2363,10 @@
               " * }",
               " */",
               ""
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Bulk restores all non-permanently deleted images ",
+            "title": "Bulk restores all non-permanently deleted files of chosen types ",
             "body": [
               "/*****************************************",
               " * Backend code - bulk-restore-files.jsw *",
@@ -2295,6 +2375,7 @@
               "import { elevate } from 'wix-auth';",
               "",
               "async function restoreFiles(mediaTypes) {",
+              "  let idList = []",
               "  try {",
               "    const options = {",
               "        mediaTypes: mediaTypes",
@@ -2302,10 +2383,14 @@
               "    const elevatedListDeletedFiles = elevate(files.listDeletedFiles)",
               "    const deletedFiles = await elevatedListDeletedFiles(options);",
               "",
-              "    const idList = deletedFiles.files.map((file) => {",
+              "    idList = deletedFiles.files.map((file) => {",
               "     return file._id",
               "    });",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
               "",
+              "  try {",
               "    const elevatedBulkRestoreFilesFromTrashBin = elevate(files.bulkRestoreFilesFromTrashBin);",
               "    const restoredFiles = await elevatedBulkRestoreFilesFromTrashBin(idList);",
               "",
@@ -2357,7 +2442,7 @@
               "});"
             ],
             "extra": {
-              "description": "This code is an example of a page on which a user chooses a media type (or types). All files of that type/those types in which have been (non-permanently) deleted are restored."
+              "description": "This code is an example of a page on which a visitor chooses a media type (or types). All files of that type/those types in which have been (non-permanently) deleted are restored."
             }
           }
         ]
@@ -2404,7 +2489,7 @@
       "docs": {
         "summary": "Retrieves a list of files in the Media Manager.",
         "description": [
-          "To retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the endpoint retrieves only the list of files in the root folder of the Media Manager."
+          "The `listFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nTo retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the endpoint retrieves only the list of files in the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted files, use the `listDeletedFiles()` function."
         ],
         "examples": [
           {
@@ -2490,10 +2575,7 @@
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "Generate a download url for all images in media ",
@@ -2560,7 +2642,7 @@
             }
           },
           {
-            "title": "Update a file's display name ",
+            "title": "Update a file's display name from visitor input ",
             "body": [
               "/**********************************",
               " * Backend code - update-file.jsw *",
@@ -2632,7 +2714,7 @@
               ""
             ],
             "extra": {
-              "description": "This code uses the user's input on the page to update the display name of an image which they choose from a dropdown list on the page."
+              "description": "This code uses the visitor's input on the page to update the display name of an image which they choose from a dropdown list on the page."
             }
           }
         ]
@@ -2679,7 +2761,7 @@
       "docs": {
         "summary": "Searches all folders in the Media Manager and returns a list of files that match the terms specified in the optional parameters.",
         "description": [
-          "If no parameters are specified, the endpoint returns all files in the `MEDIA_ROOT` folder."
+          "The `searchFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nIf no parameters are specified, the function returns all files in the `MEDIA_ROOT` folder."
         ],
         "examples": [
           {
@@ -2964,11 +3046,11 @@
               " */"
             ],
             "extra": {
-              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder. \\n<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
+              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder."
             }
           },
           {
-            "title": "Search files ",
+            "title": "Search files with options ",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -3147,11 +3229,11 @@
               " */"
             ],
             "extra": {
-              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder. \\n<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
+              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder."
             }
           },
           {
-            "title": "Bulk Delete Files ",
+            "title": "Bulk delete all files found in a chosen folder ",
             "body": [
               "/****************************************",
               " * Backend code - bulk-delete-files.jsw *",
@@ -3172,17 +3254,17 @@
               "  }",
               "}",
               "",
-              "export async function searchFilesIds (parentFolderId) {",
+              "export async function searchFileIds (parentFolderId) {",
               "  try {",
               "    const options = { parentFolder: parentFolderId}",
               "    const elevatedSearchFiles = elevate(files.searchFiles)    ",
               "    const returnedFiles = await elevatedSearchFiles(options);  ",
               "",
-              "    const filesIds = returnedFiles.map((file) => {",
+              "    const fileIds = returnedFiles.map((file) => {",
               "      return file._id",
               "    });",
               "",
-              "    return filesIds;",
+              "    return fileIds;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
@@ -3193,7 +3275,7 @@
               " * Page code *",
               " ************/",
               "",
-              "import { deleteFiles, searchFilesIds } from 'backend/bulk-delete-files';",
+              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files';",
               "",
               "$w.onReady(() => {",
               "  $w('#delete').onClick(async () => {",
@@ -3201,7 +3283,7 @@
               "    const options = {permanent: isDeletePermanently};",
               "",
               "    const parentFolder = $w('#parentFolder').value;",
-              "    const fileIds = await searchFilesIds(parentFolder);",
+              "    const fileIds = await searchFileIds(parentFolder);",
               "",
               "    await deleteFiles(fileIds, options);",
               "    $w('#successMessage').show();",
@@ -3209,7 +3291,7 @@
               "});"
             ],
             "extra": {
-              "description": "This code shows a page where the user chooses a folder through typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only users with permission to manage the site's media would have access to this page."
+              "description": "This code shows a page where the visitor chooses a folder by typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only visitors with permission to manage the site's media would have access to this page."
             }
           }
         ]
@@ -3267,13 +3349,13 @@
         "doc": "Information about the updated file.\n"
       },
       "docs": {
-        "summary": "Updates a file. <br />",
+        "summary": "Updates a file.",
         "description": [
-          "You can use the `parentFolderId` parameter to move a file from its current folder to a different folder."
+          "The `updateFileDescriptor()` function returns a Promise that resolves to the updated file's descriptor.\n\nYou can use the `parentFolderId` parameter to move a file from its current folder to a different folder."
         ],
         "examples": [
           {
-            "title": "Update a file's parent folder ",
+            "title": "Update a file's location",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -3303,7 +3385,7 @@
               " * {",
               " *   \"_createdDate\": \"2023-08-09T08:45:50.000Z\",",
               " *   \"_id\": \"d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\",",
-              " *   \"_updatedDate\": \"2023-08-09T08:45:50.000Z\",",
+              " *   \"_updatedDate\": \"2023-09-10T09:53:50.000Z\",",
               " *   \"displayName\": \"river.jpg\",",
               " *   \"hash\": \"2f2a61275002b90e6e8fa1be4674c4a7\",",
               " *   \"internalTags\": [",
@@ -3429,10 +3511,7 @@
               " *   \"url\": \"https://static.wixstatic.com/media/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\"",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
             "title": "Update a file's display name and labels ",
@@ -3576,13 +3655,10 @@
               " * }",
               " */",
               ""
-            ],
-            "extra": {
-              "description": "<blockquote class=\"warning\">This example uses <a href=\"https://www.wix.com/velo/reference/wix-auth/elevate\"><code>elevate()</code></a>, which enables site visitors to call functions without the required permissions. Exercise caution when using <code>elevate()</code> to prevent security vulnerabilities.</blockquote>"
-            }
+            ]
           },
           {
-            "title": "Update a file's display name ",
+            "title": "Update a file's display name from visitor input ",
             "body": [
               "/**********************************",
               " * Backend code - update-file.jsw *",
@@ -3654,7 +3730,7 @@
               ""
             ],
             "extra": {
-              "description": "This code uses the user's input on the page to update the display name of an image which they choose from a dropdown list on the page."
+              "description": "This code uses the visitor's input on the page to update the display name of an image which they choose from a dropdown list on the page."
             }
           }
         ]
@@ -4373,7 +4449,7 @@
               }
             }
           ],
-          "doc": "External IDs to pass in the [File Ready](https://dev.wix.com/api/rest/media/media-manager/files/file-ready-domain-event) or [File Failed](https://dev.wix.com/api/rest/media/media-manager/files/file-failed-domain-event) events."
+          "doc": "External IDs to pass in the File Ready or File Failed events."
         },
         {
           "name": "origin",
@@ -4383,7 +4459,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "External information to pass in the [File Ready](https://dev.wix.com/api/rest/media/media-manager/files/file-ready-domain-event) or [File Failed](https://dev.wix.com/api/rest/media/media-manager/files/file-failed-domain-event) events."
+          "doc": "External information to pass in the File Ready or File Failed events."
         }
       ],
       "docs": {
@@ -6135,7 +6211,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
@@ -6202,7 +6278,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
@@ -6306,7 +6382,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
@@ -6373,7 +6449,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
@@ -6612,7 +6688,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the link to the imported file is public or private."
+          "doc": "Whether the link to the imported file is public or private.\n\nDefault: `false`.\n"
         },
         {
           "name": "rootFolder",
@@ -6642,7 +6718,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
@@ -6719,7 +6795,7 @@
               "referenceType": "wix-media-v2.Files.Sorting"
             }
           ],
-          "doc": "Field name and order to sort by. One of: <br />\n* `displayName`\n* `updatedDate`\n* `sizeInBytes`\nDefault: `updatedDate` in `desc` order."
+          "doc": "Field name and order to sort by. One of:\n\n- `displayName`\n- `_updatedDate`\n- `sizeInBytes`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
         }
       ],
       "docs": {
