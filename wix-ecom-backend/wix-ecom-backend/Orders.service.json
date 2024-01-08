@@ -1069,8 +1069,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Cancels an order. The `order.status` field changes to `CANCELED`.",
-        "description": [],
+        "summary": "Cancels an order.",
+        "description": [
+          "The `cancelOrder()` function returns a Promise that resolves when the specified order is canceled and the `order.status` field changes to `CANCELED`."
+        ],
         "examples": [
           {
             "title": "cancelOrder example",
@@ -1317,9 +1319,9 @@
         "doc": "Newly created order.\n"
       },
       "docs": {
-        "summary": "Creates a new order.",
+        "summary": "Creates an order.",
         "description": [
-          "Some fields are marked as required. Note these further requirements:\n\nThe `order.shippingInfo.logistics.shippingDestination.address` field must be provided, **unless**:\n+ The order is for pickup - `order.shippingInfo.logistics.pickupDetails.address` is defined\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nThe `order.billingInfo.address` field must be provided **unless**:\n+ There are no shippable items in the order - `order.lineItems[n].physicalProperties.shippable` boolean is `false`\n+ This is a POS (point of sale) order - `order.channelInfo.type` value is `POS`\n\nWhen catalog items are added - `order.lineItems.catalogReference` is defined - the following rules apply:\n+ When providing description lines - `order.lineItem.descriptionLines.plainText/colorInfo` must have value\n+ If the product is digital ( `order.lineItems.itemType.preset: DIGITAL` ), then `order.lineItem.digitalFile` must be provided\n\nWhen custom line items are added - `order.lineItems.catalogReference` is **not** defined - the following rules apply:\n+ `order.lineItem.physicalProperties` cannot be set\n+ `order.lineItem.fulfillerId` cannot be set\n+ `order.lineItem.totalDiscount` cannot be set\n+ Applied discounts cannot be set for a custom line item - `order.appliedDiscounts.lineItemIds` cannot contain the custom line item ID."
+          "The `createOrder()` function returns a Promise that resolves when the order is created.\n\n> **Notes:**\n> + If an item is digital - `lineItems[i].itemType.preset: DIGITAL` - then `lineItems[i].digitalFile` must be provided.\n> + If `lineItems[i].id` is passed, it must be either a valid GUID, or empty."
         ],
         "examples": [
           {
@@ -3670,15 +3672,23 @@
         "doc": null
       },
       "docs": {
-        "summary": "<!--ONLY:REST-->",
+        "summary": "> **Note:** Use SearchOrders instead",
         "description": [
-          "Returns a list of up to 300 orders, given the provided paging, filtering and sorting.",
+          "Retrieves a list of orders, given the provided paging, filtering, and sorting.",
           "",
-          "To learn how to query orders, see",
-          "[API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).",
-          "For a detailed list of supported filters and sorting options,",
-          "see [Field Support for Filtering and Sorting](https://bo.wix.com/wix-docs/rest/ecommerce/orders/filter-and-sort#ecommerce_orders_filter-and-sort_field-support-for-filtering-and-sorting).",
-          "<!--END:ONLY:REST-->",
+          "",
+          "Query Orders runs with these defaults, which you can override:",
+          "",
+          "- `createdDate` is sorted in `DESC` order",
+          "- `paging.limit` is `100`",
+          "- `paging.offset` is `0`",
+          "- `filter: {\"status\": {\"$ne\": \"INITIALIZED\"}}` - other order statuses can be queried, but orders with `status: \"INITIALIZED\"` are never returned",
+          "",
+          "For field support for filters and sorting, see [Orders: Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/orders/filter-and-sort).",
+          "",
+          "To learn about working with _Query_ endpoints, see",
+          "[API Query Language](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language), and",
+          "[Sorting and Paging](https://dev.wix.com/docs/rest/articles/getting-started/sorting-and-paging).",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -3908,7 +3918,10 @@
         "doc": null
       },
       "docs": {
-        "description": [],
+        "summary": "Retrieves a list of orders, given the provided paging, filtering, and sorting.",
+        "description": [
+          "Query Orders runs with these defaults, which you can override:\n\n- `createdDate` is sorted in `DESC` order\n- `cursorPaging.limit` is `100`\n- `filter: {\"status\": {\"$ne\": \"INITIALIZED\"}}` - other order statuses can be queried, but orders with `status: \"INITIALIZED\"` are never returned\n\nFor field support for filters and sorting, see [Orders: Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/orders/filter-and-sort).\n\nTo learn about working with _Search_ endpoints, see\n[API Query Language](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language), and\n[Sorting and Paging](https://dev.wix.com/docs/rest/articles/getting-started/sorting-and-paging)."
+        ],
         "examples": [
           {
             "title": "searchOrders example",
@@ -5057,9 +5070,9 @@
         "doc": "Newly created order.\n"
       },
       "docs": {
-        "summary": "Updates an order's properties.",
+        "summary": "Updates an order.",
         "description": [
-          "To update a field's value, include the new value in the `order` field in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Removing contact and buyer info is not allowed."
+          "The `updateOrder()` function returns a Promise that resolves when the specified order's information is updated.\n\nCurrently, the following fields can be updated:\n+ `order.buyerInfo.email`\n+ `order.recipientInfo.address`\n+ `order.recipientInfo.contactDetails`\n+ `order.shippingInfo.logistics.shippingDestination.address`\n+ `order.shippingInfo.logistics.shippingDestination.contactDetails`\n\nTo update a field's value, include the new value in the `order` object in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Removing `buyerInfo` or `contactDetails` fields results in an error."
         ],
         "examples": [
           {
@@ -8666,7 +8679,7 @@
               "referenceType": "wix-ecom-backend.Orders.CursorPaging"
             }
           ],
-          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+          "doc": "Cursor pointing to page of results. `cursorPaging.cursor` cannot be used with 'filter' or 'sort'."
         },
         {
           "name": "filter",
@@ -8676,7 +8689,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "A filter object. See documentation [here](https://bo.wix.com/wix-docs/rnd/platformization-guidelines/api-query-language#platformization-guidelines_api-query-language_defining-in-protobuf)"
+          "doc": "Filter object.\n\nFor example, the following `filter` object will only return orders with payment statuses of paid and/or partially paid:\n`\"filter\": {\"paymentStatus\": {\"$in\": [\"PAID\", \"PARTIALLY_PAID\"]}}`\n\nLearn more about the filter format [here](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language#the-filter-section).\n"
         },
         {
           "name": "sort",
@@ -8693,7 +8706,7 @@
               }
             }
           ],
-          "doc": "Sort object in the form [{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]"
+          "doc": "Array of sort objects that specify the order in which results should be sorted.\n\nFor example, the following `sort` array will sort by `createdDate` in descending order:\n`\"sort\": [{\"fieldName\": \"createdDate\", \"order\":\"DESC\"}]`.\n\nLearn more about the sort format [here](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language#the-sort-section).\n"
         }
       ],
       "extra": {
@@ -8723,7 +8736,7 @@
               "referenceType": "wix-ecom-backend.Orders.CursorPaging"
             }
           ],
-          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+          "doc": "Cursor pointing to page of results. `cursorPaging.cursor` cannot be used with 'filter' or 'sort'."
         }
       ],
       "docs": {
