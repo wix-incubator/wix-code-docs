@@ -1,0 +1,1 @@
+The Draft Posts API provides functionality for managing unpublished blog posts, including creating, deleting, updating, querying, and publishing draft posts.
