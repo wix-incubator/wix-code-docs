@@ -35,7 +35,11 @@ The following functions may require [elevated permissions](https://www.wix.com/v
 
 Calling [`getReservationLocation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/getreservationlocation) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
 
+### listReservationLocations()
+
 Calling [`listReservationLocations()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/listreservationlocations) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
+
+### queryReservationLocations()
 
 Calling [`queryReservationLocations()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/queryreservationlocations) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
 
