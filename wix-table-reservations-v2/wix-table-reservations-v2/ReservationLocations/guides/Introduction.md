@@ -26,7 +26,6 @@ It’s important to note the following points before starting to code:
 ```js
 import { reservationLocations } from 'wix-table-reservations.v2';
 ```
-
 ## Permissions information
 
 The following functions may require [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) to run depending on which fields are included, or the value of certain fields.
