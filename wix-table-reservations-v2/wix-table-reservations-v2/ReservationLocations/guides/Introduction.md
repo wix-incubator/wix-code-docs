@@ -26,6 +26,21 @@ It’s important to note the following points before starting to code:
 ```js
 import { reservationLocations } from 'wix-table-reservations.v2';
 ```
+## Permissions information
+
+The following functions may require [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) to run depending on which fields are included, or the value of certain fields.
+
+### getReservationLocation()
+
+Calling [`getReservationLocation()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/getreservationlocation) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
+
+### listReservationLocations()
+
+Calling [`listReservationLocations()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/listreservationlocations) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
+
+### queryReservationLocations()
+
+Calling [`queryReservationLocations()`](https://www.wix.com/velo/reference/wix-table-reservations-v2/reservationlocations/queryreservationlocations) with `fieldsets` set to `FULL` requires [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate).
 
 ## Terminology
 For a comprehensive glossary of Table Reservations terms, see [Terminology](https://www.wix.com/velo/reference/wix-table-reservations-v2/terminology).
