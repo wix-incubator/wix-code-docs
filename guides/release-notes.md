@@ -11,8 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-We added the following new Editor Element that allows you to display rich content created 
-using the [Rich Content Editor](https://support.wix.com/en/article/cms-formerly-content-manager-working-with-rich-content-and-adding-it-to-a-dynamic-page) in the CMS (Content Management System). The [`content`]($w/richcontentviewer/content) property is an object used to set and get the content of the Rich Content Viewer element.
+We added the new Rich Content Viewer Editor Element that allows you to display rich content created using the [Rich Content Editor](https://support.wix.com/en/article/cms-formerly-content-manager-working-with-rich-content-and-adding-it-to-a-dynamic-page) in the CMS (Content Management System). The [`content`]($w/richcontentviewer/content) property is an object used to set and get the content of the Rich Content Viewer element.
 
 (January 11, 2024)
 
