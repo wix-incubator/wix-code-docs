@@ -3,9 +3,17 @@ title: Introduction
 ---
 # Introduction
 
-The eCommerce Orders API provides functionality for [retrieving](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder) orders.
+The eCommerce Orders API allows apps or site owners to customize management of the order lifecycle, including viewing, updating, and canceling. In the dashboard, business staff can create new orders, view and edit existing orders, track fulfillment, and manage the payments cycle.
 
-The order is the last phase of an eCommerce purchase flow, coming after cart and checkout. An order holds information about purchased items, price and tax summaries, shipping and billing info, any applied discounts, payment and fulfillment statuses, and more.
+An order holds information about purchased items, price and tax summaries, shipping and billing information, any applied discounts, and the status of payment and fulfillment.
+
+With the eCommerce Orders API you can:
+
+* [Get](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder) and [search](https://www.wix.com/velo/reference/wix-ecom-backend/orders/searchorder) for orders.
+* [Update](https://www.wix.com/velo/reference/wix-ecom-backend/orders/updateorder) and [cancel](https://www.wix.com/velo/reference/wix-ecom-backend/orders/cancelorder) an order.
+* [Create](https://www.wix.com/velo/reference/wix-ecom-backend/orders/createorder) an order for your records.
+* Listen to events when an order is [approved](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved), [updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderupdated), or [canceled](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled).
+* Listen to events when an order's [transactions are updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated). This event is part of the [Order Transactions API](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions).
 
 To use the Wix eCommerce Orders API, import `{ orders }` from the `wix-ecom-backend` module:
 
