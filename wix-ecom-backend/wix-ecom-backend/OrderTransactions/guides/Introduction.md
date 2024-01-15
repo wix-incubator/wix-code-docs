@@ -6,13 +6,13 @@
  <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div> 
 
-The Order Transactions API concentrates records and details of payments and refunds associated with eCommerce orders.
+The Order Transactions API allows you to manage records and details of payments and refunds associated with your orders.
 
 With the Order Transactions API you can:
 
-* Retrieve transactions related to a [single](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/listtransactionsforsingleorder) or [multiple](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/listtransactionsformultipleorders) orders.
-* [Add payment records](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/addpayments) to an order.
-* Listen to events when an order's [transactions are updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated).
+* Retrieve transactions related to one or more orders.
+* Add payment records to an order.
+* Listen to events when an [order's transactions are updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated).
 
 ## Terminology
 
