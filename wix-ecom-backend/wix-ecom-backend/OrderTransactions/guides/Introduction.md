@@ -24,3 +24,4 @@ To use the Order Transactions API, import `{ orderTransactions }` from the `wix-
 
 ```javascript
 import { orderTransactions } from 'wix-ecom-backend';
+```
