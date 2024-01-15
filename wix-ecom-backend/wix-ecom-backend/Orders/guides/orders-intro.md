@@ -12,8 +12,8 @@ With the Orders API you can:
 * Get and search for orders.
 * Update and cancel an order.
 * Create an order for your records.
-* Listen to events when an order is approved(https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved), updated(https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderupdated), or canceled(https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled).
-* Listen to events when an order's transactions are updated(https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated). This event is part of the Order Transactions API(https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions).
+* Listen to events when an order is [approved](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved), [updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderupdated), or [canceled](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled).
+* Listen to events when an order's transactions are [updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated). This event is part of the [Order Transactions API](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions).
 
 To use the Orders API, import `{ orders }` from the `wix-ecom-backend` module:
 
