@@ -1,3 +1,6 @@
+---
+title: Introduction
+---
 # Introduction
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
@@ -25,3 +28,11 @@ To use the Order Transactions API, import `{ orderTransactions }` from the `wix-
 ```javascript
 import { orderTransactions } from 'wix-ecom-backend';
 ```
+
+## Permissions information
+
+Functions in the Order Transactions API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
