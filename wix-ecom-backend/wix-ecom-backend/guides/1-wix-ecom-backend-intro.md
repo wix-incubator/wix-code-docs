@@ -28,16 +28,31 @@ The `wix-ecom-backend` Velo APIs are constantly being expanded with new capabili
 
 ## Before you begin
 
-The main difference between the Wix eCommerce and Wix Stores APIs is that while **Wix eCommerce manages the cart, checkout, and order** phases of the online store experience, **Wix Stores continues to manage product catalogs, inventories and collections**. The following table outlines the differences between the two APIs:
+The main difference between the Wix eCommerce and Wix Stores APIs is that while **Wix eCommerce manages the cart, checkout, and order** phases of the online store experience, **Wix Stores continues to manage product catalogs, inventories and collections**.
 
-| Service         | Previous Location                                                           | Current Location            |
-| ----------------|-----------------------------------------------------------------------------|-----------------------------|
-| Cart            | [Wix Stores](https://www.wix.com/velo/reference/wix-stores)                 | [Wix eCommerce Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart) and [Current Cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/introduction).
-| Checkout        | -                                                                           | [Wix eCommerce Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout).
-| Order           | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | [Wix eCommerce Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders).
-| Catalog         | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change.
-| Inventory       | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change.
-| Collections     | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change.
+We strongly recommend you migrate your code to the new `wix-ecom-backend` APIs and events, as the Wix Stores Cart and Orders APIs will be deprecated soon. The following tables outline the differences and required migrations between the two APIs:
+
+### API Migration
+
+| Service     | Previous Location                                                           | Current Location            |
+| ------------|-----------------------------------------------------------------------------|-----------------------------|
+| Cart       | [Wix Stores](https://www.wix.com/velo/reference/wix-stores) (Deprecated)     | [Wix eCommerce Cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart/introduction) and [Current Cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/introduction)
+| Checkout    | -                                                                           | [Wix eCommerce Checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout)
+| Orders      | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) (Deprecated) | [Wix eCommerce Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders)
+| Catalog     | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change
+| Inventory   | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change
+| Collections | [Wix Stores Backend](https://www.wix.com/velo/reference/wix-stores-backend) | Wix Stores - no change
+
+### API Event Migration
+
+The table below shows [Wix Stores events](https://www.wix.com/velo/reference/wix-stores-backend/events/introduction) and their equivalent [Wix eCommerce events](https://www.wix.com/velo/reference/wix-ecom-backend/events/introduction) that are triggered at the same time.
+
+| `wix-stores-backend` Order Events                                                                   | `wix-ecom-backend` Order Events                                                     |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [`onNewOrder()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onneworder)           | [`onOrderApproved()`](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved)  |
+| [`onOrderCanceled()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onordercanceled) | [`onOrderCanceled()`](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled) |
+| [`onOrderPaid()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onorderpaid)         | [`onOrderTransactionsUpdated()`](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated)  |
+| [`onOrderRefunded()`](https://www.wix.com/velo/reference/wix-stores-backend/events/onorderrefunded) | [`onOrderTransactionsUpdated()`](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdatedd) |
 
 ## Terminology
 
