@@ -19,7 +19,7 @@ title: Introduction
 > unless specified otherwise. -->
 
 
-The Labels API provides functionality for managing labels for your contacts. Labels allow site admins to segment or categorize the contacts in their Contact List. Using Labels enchances the CRM by allowing site admins to customize their data organization according to their needs. 
+The Labels API provides functionality for managing labels for your site. Labels allow site admins to segment or categorize the contacts in their Contact List. Using Labels enchances the CRM by allowing site admins to customize their data organization according to their needs. 
 You can use labels to target specific audiences for email campaigns or bulk actions. Learn more about [labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list).
  
 With the Labels API, you can:
