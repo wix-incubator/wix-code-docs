@@ -15,7 +15,7 @@ title: Introduction
 &nbsp;
 
 
-With [Tasks](wix-crm-v2/tasks), site admins can efficiently create and manage tasks and reminders on a site. This enables site admins to organize and prioritize their daily activies enhancing their customer relationship management. 
+With [Tasks](wix-crm-v2/tasks), site admins can efficiently create and manage tasks on a site. This enables site admins to organize and prioritize their daily activies enhancing their customer relationship management. Tasks include activities such as follow up calls or emails, scheduling meetings with clients, tracking steps for customer onboarding, and more. 
 
 The Tasks API allows you to:
 
@@ -32,6 +32,10 @@ import `tasks` from wix-crm.v2:
 ```js
 import { tasks } from 'wix-crm.v2';
 ```
+
+## Terminology
+
+- **Tasks**: A specific activity, action, or assignment that needs to be completed by a site admin. 
 
 ## Permissions information
 
