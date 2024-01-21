@@ -14,6 +14,29 @@ title: Introduction
 
 &nbsp;
 
+
+With [Tasks](wix-crm-v2/tasks), site admins can efficiently create and manage tasks on a site. This enables site admins to organize and prioritize their daily activies enhancing their customer relationship management. Tasks include activities such as follow up calls or emails, scheduling meetings with clients, tracking steps for customer onboarding, and more. 
+
+The Tasks API allows you to:
+
+- [Create](wix-crm-v2/tasks/createtask) and [update](wix-crm-v2/tasks/updatetask) a task with the option to set a due date or link the task to a contact.
+- [Count](wix-crm-v2/tasks/counttasks) the total number of tasks you have, or count the number of tasks based on specied filters. For example, you can count the number of tasks that are linked to a specifc contact. 
+- [Retrieve](wix-crm-v2/tasks/querytasks) tasks. 
+- [Prioritize](wix-crm-v2/tasks/movetaskafter) your tasks by adjusting their display order.
+- [Delete](wix-crm-v2/tasks/deletetask) tasks you no longer need. 
+
+
+To use the Tasks API,
+import `tasks` from wix-crm.v2:
+
+```js
+import { tasks } from 'wix-crm.v2';
+```
+
+## Terminology
+
+- **Tasks**: A specific activity, action, or assignment that needs to be completed by a site admin. 
+
 ## Permissions information
 
 Functions in the Tasks API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
@@ -22,11 +45,3 @@ Functions in the Tasks API are restricted and only run if you elevate permission
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
-This service allows you to manage a site's tasks. Use [tasks](https://support.wix.com/en/article/about-tasks-reminders) to organize and prioritize your work with [Ascend by Wix](https://support.wix.com/en/article/about-ascend-by-wix).
-
-To use the Tasks API,
-import `tasks` from wix-crm.v2:
-
-```js
-import { tasks } from 'wix-crm.v2';
-```
