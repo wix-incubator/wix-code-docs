@@ -33,9 +33,6 @@ import `tasks` from wix-crm.v2:
 import { tasks } from 'wix-crm.v2';
 ```
 
-## Terminology
-
-- **Tasks**: A specific activity, action, or assignment that needs to be completed by a site admin. 
 
 ## Permissions information
 
@@ -45,3 +42,7 @@ Functions in the Tasks API are restricted and only run if you elevate permission
 <p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
 </blockquote>
 
+
+## Terminology
+
+- **Tasks**: A specific activity, action, or assignment that needs to be completed by a site admin. 
