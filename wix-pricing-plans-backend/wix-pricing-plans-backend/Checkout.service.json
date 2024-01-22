@@ -1,7 +1,8 @@
 { "name": "Checkout",
   "memberOf": "wix-pricing-plans-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "checkout.js" },
@@ -44,7 +45,7 @@
           "",
           " Members can order pricing plans in 2 ways:",
           " + **Online**. Members order and pay for their plans",
-          "   on your site without manual intervention. This can also be done in [page code](wix-pricing-plans/checkout/createOnlineOrder).",
+          "   on your site without manual intervention. This can also be done in [page code](wix-pricing-plans-frontend/checkout/createOnlineOrder).",
           " + **Offline**. Members place their order by phone, text, or email. You manually record each stage of the transaction.",
           "",
           " ### Drafts",
@@ -112,7 +113,7 @@
                   [ "wix-pricing-plans-backend.Checkout.ApplyCoupon" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 410,
+          [ { "lineno": 406,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Applies a coupon to a draft order.",
@@ -220,7 +221,7 @@
                       "/*****************",
                       " * Frontend code *",
                       " *****************/",
-                      "import { checkout } from 'wix-pricing-plans';",
+                      "import { checkout } from 'wix-pricing-plans-frontend';",
                       "import { myApplyCouponFunction } from 'backend/orders-checkout';",
                       "",
                       "$w.onReady(function () {",
@@ -337,7 +338,8 @@
                       " *     \"_createdDate\": \"2022-09-12T22:33:21.094Z\",",
                       " *     \"_updatedDate\": \"2022-09-12T22:33:23.686Z\"",
                       " * }",
-                      " */" ],
+                      " */",
+                      "" ],
                   "extra":
                     { "description": "This example applies a $50-off coupon to an order that was created in the frontend." } } ],
             "extra":
@@ -487,7 +489,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The order of the plan." },
         "locations":
-          [ { "lineno": 170,
+          [ { "lineno": 159,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Creates an order for a buyer who purchased the plan with an offline transaction.",
@@ -747,9 +749,13 @@
           [ { "name": "planId",
               "type": "string",
               "doc": "ID of the plan being ordered." },
-            { "name": "options",
-              "type": "wix-pricing-plans-backend.Checkout.CreateOnlineOrderOptions",
-              "doc": "Additional options for creating the online order.",
+            { "name": "startDate",
+              "type": "Date",
+              "doc": "Start date and time for the ordered plan.",
+              "optional": true },
+            { "name": "couponCode",
+              "type": "string",
+              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [`applyCoupon()`](wix-pricing-plans-backend/checkout/applycoupon).",
               "optional": true } ],
         "ret":
           { "type":
@@ -758,7 +764,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The order of the plan." },
         "locations":
-          [ { "lineno": 221,
+          [ { "lineno": 210,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Creates an order online for currently logged-in member.",
@@ -775,11 +781,11 @@
                 "",
                 " Purchasing a plan:",
                 " 1. Starts with creating an order. ",
-                " 1. For non-free plans, calling the Wix Pay [`startPayment()`](wix-pay/startPayment) ",
+                " 1. For non-free plans, calling the Wix Pay [`startPayment()`](wix-pay-frontend/startPayment) ",
                 "    function with the `wixPayOrderId` value as the `paymentId` parameter to enable your buyer to pay for the order. ",
                 "    (Do not  call the Wix Pay `createPayment()` function to create the payment ID because this",
                 "    `createOnlineOrder()` function does that for you.)",
-                " 1.  If the order is free, do not call the Wix Pay [`startPayment()`](wix-pay/startPayment) ",
+                " 1.  If the order is free, do not call the Wix Pay [`startPayment()`](wix-pay-frontend/startPayment) ",
                 "     function after `createOnlineOrder()`. The order is created and considered paid for.",
                 "",
                 " Once an online order is paid for, the `status` of the order is no longer `\"DRAFT\"` and at this point, its `startDate` cannot be changed.",
@@ -787,7 +793,11 @@
                 " Creating an online order causes: ",
                 " + The order status to be set to `\"PENDING\"` if the start date is in the future. Otherwise, the `status` is set to `\"ACTIVE\"`.",
                 "",
-                " The [`onOrderCreated()`](wix-pricing-plans-backend/events/onOrderCreated) event handler runs when an online order is created." ],
+                " The [`onOrderCreated()`](wix-pricing-plans-backend/events/onOrderCreated) event handler runs when an online order is created.",
+                "",
+                " > **Note:**",
+                " > If `startDate` is not used in the function, the missing parameter has to be passed as",
+                " > `undefined`, for example: `function createOnlineOrder(planId, undefined, couponCode)`" ],
             "links":
               [ "[createOfflineOrder( )](#createOfflineOrder)",
                 "[previewOnlineOrder( )](#previewOnlineOrder)",
@@ -911,7 +921,7 @@
                       " *************/",
                       "",
                       "import {myCreateOnlineOrderFunction} from 'backend/checkout';",
-                      "import wixPay from 'wix-pay';",
+                      "import wixPayFrontend from 'wix-pay-frontend';",
                       "",
                       "// ... ",
                       "",
@@ -921,7 +931,7 @@
                       "$w('#submitButton').onClick(async () => {",
                       "  try {",
                       "    const order = await myCreateOnlineOrderFunction(planId, startDate);",
-                      "    const result = await wixPay.startPayment(order.wixPayOrderId);",
+                      "    const result = await wixPayFrontend.startPayment(order.wixPayOrderId);",
                       "    if (result.status === 'Successful') {",
                       "      console.log('Successfully Ordered');",
                       "      // Handle payment success",
@@ -946,7 +956,8 @@
                       "",
                       "/* Returns a Promise that resolves to  ",
                       " * the created payment. ",
-                      " */" ],
+                      " */",
+                      "" ],
                   "extra":
                     { "description": "This example demonstrates how you can start an online order with the wix-pricing-plans-backend createOnlineOrder()\n function and then send the payment ID (wixPayOrderId) to the frontend Wix Pay startPayment() function to facilitate payment." } },
                 { "title": "A full order plan scenario including a collection",
@@ -1036,7 +1047,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 302,
+          [ { "lineno": 298,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an offline order as if it was purchased.",
@@ -1168,7 +1179,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 339,
+          [ { "lineno": 335,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an online order as if it was purchased.",
@@ -1308,7 +1319,7 @@
                   [ "wix-pricing-plans-backend.Checkout.PricePreview" ] },
             "doc": "Fulfilled - A preview of the pricing for the order." },
         "locations":
-          [ { "lineno": 380,
+          [ { "lineno": 376,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an order's pricing as if was purchased.",
@@ -1396,7 +1407,7 @@
   "messages":
     [ { "name": "ApplyCoupon",
         "locations":
-          [ { "lineno": 404,
+          [ { "lineno": 400,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1487,10 +1498,11 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "removed" ] },
       { "name": "OrderPreview",
         "locations":
-          [ { "lineno": 292,
+          [ { "lineno": 288,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1510,7 +1522,7 @@
         "labels": [] },
       { "name": "PreviewOfflineOrderOptions",
         "locations":
-          [ { "lineno": 151,
+          [ { "lineno": 140,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1535,7 +1547,7 @@
         "labels": [] },
       { "name": "PreviewOnlineOrderOptions",
         "locations":
-          [ { "lineno": 161,
+          [ { "lineno": 150,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1553,10 +1565,11 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "new" ] },
       { "name": "PricePreview",
         "locations":
-          [ { "lineno": 373,
+          [ { "lineno": 369,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
