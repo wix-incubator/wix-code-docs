@@ -3,16 +3,16 @@ title: Introduction
 ---
 # Introduction
 
-The `wix-ecom-backend` Velo APIs are a comprehensive suite of services that address standard and specialized needs in online selling.
+The Wix eCommerce API is a comprehensive suite of services that address standard and specialized needs in online selling.
 
 The APIs serve as a foundational layer for Wix's own business solutions, such as [Stores](https://support.wix.com/en/article/wix-stores-about-wix-stores), [Bookings](https://support.wix.com/en/article/wix-bookings-about-wix-bookings), and [Restaurants Orders](https://www.wix.com/app-market/restaurants-orders-app).
 
-The `wix-ecom-backend` Velo APIs provide developers with a comprehensive set of services for customizing eCommerce functionality on Wix sites. The APIs empower developers to extend functionality, create features, and build robust eCommerce solutions that meet the specific needs of their users.
+The Wix eCommerce API provides developers with a comprehensive set of services for customizing eCommerce functionality on Wix sites. The API empowers developers to extend functionality, create features, and build robust eCommerce solutions that meet the specific needs of their users.
 
-With the `wix-ecom-backend` Velo APIs, you can do the following and more:
+With the Wix eCommerce API, you can do the following and more:
 
-+ Access, manage, and create a site visitor's [cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart/introduction). The same functionality also applies, without the use of a cart ID, to a site visitor's [current cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/introduction).
-+ Access, manage, and create a site visitor's [checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/introduction), and listen to an event when a checkout is [abandoned](https://www.wix.com/velo/reference/wix-ecom-backend/events/onabandonedcheckoutcreated) or [recovered](https://www.wix.com/velo/reference/wix-ecom-backend/events/onabandonedcheckoutrecovered).
++ Access, manage, and create any customer's [cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart/introduction), including a site visitor's [current cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/introduction).
++ Access, manage, and create a site visitor's [checkout](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/introduction), and handle events when a checkout is [abandoned](https://www.wix.com/velo/reference/wix-ecom-backend/events/onabandonedcheckoutcreated), or an abandoned checkout is [recovered](https://www.wix.com/velo/reference/wix-ecom-backend/events/onabandonedcheckoutrecovered).
 + Create and manage [discount rules](https://www.wix.com/velo/reference/wix-ecom-backend/discountrules/introduction).
 + [Promote and recommend](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/introduction) items to customers.
 + Create, access, and manage [orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders), and retrieve information about order-related [transactions](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/introduction).
@@ -20,17 +20,27 @@ With the `wix-ecom-backend` Velo APIs, you can do the following and more:
 
 The Wix eCommerce platform also incorporates SPIs for greater customization. Use the SPIs to:
 
++ Integrate your own [custom catalog](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-catalog/introduction) of sellable items.
 + Incorporate custom [additional fees](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-additional-fees/introduction).
 + Integrate [shipping rates](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-shipping-rates/introduction).
 + [Validate](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations/introduction) a site visitor's cart and checkout.
 
-The `wix-ecom-backend` Velo APIs are constantly being expanded with new capabilities. Check the API reference regularly to stay up to date with new functionality.
+The Wix eCommerce API is constantly being expanded with new capabilities. Check the API reference regularly to stay up to date with new functionality.
+
+To use the wix-ecom-backend API, import `wixEcomBackend` from the `wix-ecom-backend` module:
+
+```javascript
+import wixEcomBackend from 'wix-ecom-backend';
+```
 
 ## Before you begin
 
-The main difference between the Wix eCommerce and Wix Stores APIs is that while **Wix eCommerce manages the cart, checkout, and order** phases of the online store experience, **Wix Stores continues to manage product catalogs, inventories and collections**.
+Wix eCommerce and Wix Stores handle different parts of the eCommerce flow for an online store:
 
-We strongly recommend you migrate your code to the new `wix-ecom-backend` APIs and events, as the Wix Stores Cart and Orders APIs will be deprecated soon. The following tables outline the differences and required migrations between the two APIs:
++ **Wix eCommerce:** Carts, checkouts, and order.
++ **Wix Stores:** Product catalogs, inventories, and collections.
+
+If your code still uses the legacy Wix Stores Cart and Orders APIs, we recommend you migrate them to the new Wix eCommerce APIs as soon as possible. The following tables outline the differences and required migrations:
 
 ### API Migration
 
@@ -61,11 +71,3 @@ The table below shows [Wix Stores events](https://www.wix.com/velo/reference/wix
 + **Current Cart:** The [Current Cart API](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/introduction) automatically interacts with the site visitor's cart that is currently being used. This means you can use the same functionality as the Cart API, but without the need for a cart ID.
 + **Checkout:** Checkout is the page where a buyer finalizes a purchase. Each checkout holds information about the items to be purchased, price and tax summaries, shipping and billing information, any applied discounts, and more. Developers can access and manage checkout details and trigger checkout-related events with the [Checkout API](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/introduction).
 + **Order:** Once a customer has committed to a purchase, an order is created. An order holds information about purchased items, price and tax summaries, shipping and billing information, any applied discounts, and the status of payment and fulfillment. In the dashboard, business staff can create new orders, view and edit existing orders, track fulfillment, and manage the payments cycle. The [Orders API](https://www.wix.com/velo/reference/wix-ecom-backend/orders/introduction) enables apps or site owners to customize management of the order lifecycle, including viewing, editing, approving, canceling, and charging.
-
-## Import Statement
-
-To use the wix-ecom-backend API, import `wixEcomBackend` from the `wix-ecom-backend` module:
-
-```javascript
-import wixEcomBackend from 'wix-ecom-backend';
-```
