@@ -30,16 +30,18 @@ With the Labels API, you can:
 - [Query](wix-crm-v2/labels/querylabels) labels.
 
 
-To use the Labels API, import `{ labels }` from the `wix-crm.v2` module. 
-
-```javascript
-import { labels } from 'wix-crm.v2';
-```
 ## Before you begin
 
 It is important to note the following points before you begin to code:
 - When you delete a label from your site, you also remove that label from all contacts it applies to.
 - Label keys can't be changed once created. 
+
+
+To use the Labels API, import `{ labels }` from the `wix-crm.v2` module. 
+
+```javascript
+import { labels } from 'wix-crm.v2';
+```
 
 ## Permissions information
 

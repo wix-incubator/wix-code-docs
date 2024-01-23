@@ -33,14 +33,8 @@ With the Contacts API, you can:
 + [Create](wix-crm-v2/contacts/createcontact), [update](wix-crm-v2/contacts/updatecontact), and [remove](wix-crm-v2/contacts/deletecontact) contacts.
 + [Retrieve](wix-crm-v2/contacts/getcontact) contacts to access their contact information. 
 + [Merge](wix-crm-v2/contacts/mergecontacts) duplicate contacts.
-+ [Label](wix-crm-v2/contacts/labelcontact) and [unlabel](wix-crm-v2/contacts/unlabelcontacts) contacts for categorization purposes. 
++ [Label](wix-crm-v2/contacts/labelcontact) and [unlabel](wix-crm-v2/contacts/unlabelcontact) contacts for categorization purposes. 
 
-
-To use the Contacts API, import `{ contacts }` from the `wix-crm.v2` module. 
-
-```javascript
-import { contacts } from 'wix-crm.v2';
-```
 
 ## Before you begin
 
@@ -48,6 +42,13 @@ It is important to note the following points before you begin to code:
 - You can't label or unlabel a contact if the label does not yet exist. To create a label, use the [Labels API](wix-crm-v2/labels/introduction).
 - Merging a contact is irreversible. 
 - Site members and collaborators can only be used as the target contact when merging contacts.
+
+
+To use the Contacts API, import `{ contacts }` from the `wix-crm.v2` module. 
+
+```javascript
+import { contacts } from 'wix-crm.v2';
+```
 
 
 ## Permissions information
