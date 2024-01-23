@@ -10,6 +10,81 @@
   "properties": [],
   "operations": [
     {
+      "name": "cancelOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CancelOrderOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Orders.CancelOrderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Cancels an order. The `order.status` field changes to `CANCELED`.",
+        "description": [],
+        "examples": [
+          {
+            "title": "cancelOrder example",
+            "body": [
+              "import { orders } from 'wix-ecom-backend';",
+              "  ",
+              " async function cancelOrder(id, options) {",
+              "   try {",
+              "     const result = await orders.cancelOrder(id, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "cancelOrder",
+      "isAdminMethod": true
+    },
+    {
       "name": "getOrder",
       "params": [
         {
@@ -393,7 +468,8 @@
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "getOrder"
+      "syntaxName": "getOrder",
+      "isAdminMethod": true
     }
   ],
   "messages": [
@@ -491,7 +567,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Activity type."
+          "doc": "  Activity type.\n\n  Supported values: `\"ORDER_REFUNDED\"`, `\"ORDER_PLACED\"`, `\"ORDER_PAID\"`, `\"ORDER_FULFILLED\"`, `\"ORDER_NOT_FULFILLED\"`, `\"ORDER_CANCELED\"`,\n  `\"DOWNLOAD_LINK_SENT\"`, `\"TRACKING_NUMBER_ADDED\"`, `\"TRACKING_NUMBER_EDITED\"`, `\"TRACKING_LINK_ADDED\"`, `\"SHIPPING_CONFIRMATION_EMAIL_SENT\"`,\n  `\"INVOICE_ADDED\"`, `\"INVOICE_REMOVED\"`, `\"INVOICE_SENT\"`, `\"FULFILLER_EMAIL_SENT\"`, `\"SHIPPING_ADDRESS_EDITED\"`, `\"EMAIL_EDITED\"`,\n  `\"PICKUP_READY_EMAIL_SENT\"`, `\"CUSTOM_ACTIVITY\"`, `\"MERCHANT_COMMENT\"`, `\"ORDER_PARTIALLY_PAID\"`, `\"DRAFT_ORDER_CHANGES_APPLIED\"`.\n"
         }
       ],
       "extra": {
@@ -500,6 +576,7 @@
             "name": "oneOfActivityContentOneOf",
             "members": [
               "customActivity",
+              "draftOrderChangesApplied",
               "merchantComment",
               "newExchangeOrderCreated",
               "orderCreatedFromExchange",
@@ -692,6 +769,23 @@
             }
           ],
           "doc": "Additional fee's unique code for future processing."
+        },
+        {
+          "name": "lineItemIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Optional - Line items associated with this additional fee.\nIf no `lineItemIds` are provided, the fee will be associated with the whole cart/checkout/order."
         },
         {
           "name": "name",
@@ -1473,46 +1567,6 @@
       }
     },
     {
-      "name": "BiEvent",
-      "members": [
-        {
-          "name": "eventType",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "key",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "payload",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": ""
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "BigDecimalWrapper",
       "members": [
         {
@@ -2023,7 +2077,7 @@
       "name": "BulkMarkOrdersAsPaidRequest",
       "members": [
         {
-          "name": "ids",
+          "name": "ecomOrderIds",
           "type": [
             {
               "complexType": {
@@ -2729,7 +2783,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to restock all items in the order."
+          "doc": "Whether to restock all items in the order. This will only apply to products in the Wix Stores inventory."
         },
         {
           "name": "sendOrderCanceledEmail",
@@ -2778,7 +2832,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to restock all items in the order."
+          "doc": "Whether to restock all items in the order. This will only apply to products in the Wix Stores inventory."
         },
         {
           "name": "sendOrderCanceledEmail",
@@ -3079,6 +3133,16 @@
             }
           ],
           "doc": "Draft order Id representing this change.\nUse this ID to get this specific draft content. call .../v1/draft-orders/{draft_order_id}/get"
+        },
+        {
+          "name": "reason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason for edit, given by user (optional)."
         }
       ],
       "docs": {
@@ -3127,6 +3191,16 @@
             }
           ],
           "doc": "Draft order Id representing this change.\nUse this ID to get this specific draft content. call .../v1/draft-orders/{draft_order_id}/get"
+        },
+        {
+          "name": "reason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason for edit, given by user (optional)."
         }
       ],
       "docs": {
@@ -3147,6 +3221,128 @@
             }
           ],
           "doc": "Order after deltas are applied"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CommittedDiffs",
+      "members": [
+        {
+          "name": "additionalFees",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.AdditionalFeeDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed additional fee."
+        },
+        {
+          "name": "appliedDiscounts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.AppliedDiscountDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed discounts.\ntodo: set (.wix.api.maxSize). need to find it. existing : merchant can have 100 + 1 coupon + ? due to automatic discounts"
+        },
+        {
+          "name": "changedShippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ShippingInformation"
+            }
+          ],
+          "doc": "Shipping info and selected shipping option details."
+        },
+        {
+          "name": "lineItems",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.LineItemDelta"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Added/updated/removed order line items."
+        },
+        {
+          "name": "shippingInfoRemoved",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Remove existing shipping info."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCommittedDiffsShippingUpdateInfoOneOf",
+            "members": [
+              "changedShippingInfo",
+              "shippingInfoRemoved"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CommittedDiffsShippingUpdateInfoOneOf",
+      "members": [
+        {
+          "name": "changedShippingInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ShippingInformation"
+            }
+          ],
+          "doc": "Shipping info and selected shipping option details."
+        },
+        {
+          "name": "shippingInfoRemoved",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Remove existing shipping info."
         }
       ],
       "docs": {
@@ -3458,13 +3654,23 @@
       "name": "CreatePaymentGatewayOrderRequest",
       "members": [
         {
+          "name": "chargedBy",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ChargedBy"
+            }
+          ],
+          "doc": "Information about the user who initiated the payment."
+        },
+        {
           "name": "ecomOrderId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "eCom Order ID"
+          "doc": "Ecom order ID."
         }
       ],
       "docs": {
@@ -3617,7 +3823,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -3627,7 +3833,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -3657,7 +3863,7 @@
               "referenceType": "wix-ecom-backend.Orders.Cursors"
             }
           ],
-          "doc": "Offset that was requested."
+          "doc": "Cursor strings that point to the next page, previous page, or both."
         },
         {
           "name": "hasNext",
@@ -3667,7 +3873,84 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates if there are more results after the current page.\nIf `true`, another page of results can be retrieved.\nIf `false`, this is the last page."
+          "doc": "Whether there are more pages to retrieve following the current page.\n\n+ `true`: Another page of results can be retrieved.\n+ `false`: This is the last page.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearch",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "A filter object. See documentation [here](https://bo.wix.com/wix-docs/rnd/platformization-guidelines/api-query-language#platformization-guidelines_api-query-language_defining-in-protobuf)"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the form [{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCursorSearchPagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearchPagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
         }
       ],
       "docs": {
@@ -3687,7 +3970,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -3697,7 +3980,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -4219,6 +4502,16 @@
           "doc": "Expected delivery time in free text. For example, `\"3-5 business days\"`."
         },
         {
+          "name": "deliveryTimeSlot",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.DeliveryTimeSlot"
+            }
+          ],
+          "doc": "Expected delivery time."
+        },
+        {
           "name": "instructions",
           "optional": true,
           "type": [
@@ -4307,7 +4600,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "starting time of the delivery time slot"
+          "doc": "Delivery slot starting time."
         },
         {
           "name": "to",
@@ -4317,7 +4610,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "ending time of the delivery time slot"
+          "doc": "Delivery slot ending time."
         }
       ],
       "docs": {
@@ -4744,7 +5037,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -4804,7 +5097,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -4814,17 +5107,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dispatching"
-        },
-        {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.ExtendedFieldsUpdatedEvent"
-            }
-          ],
-          "doc": ""
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -4854,7 +5137,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -4875,7 +5158,6 @@
               "actionEvent",
               "createdEvent",
               "deletedEvent",
-              "extendedFieldsUpdatedEvent",
               "updatedEvent"
             ]
           }
@@ -4921,16 +5203,6 @@
           "doc": ""
         },
         {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.ExtendedFieldsUpdatedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "updatedEvent",
           "optional": true,
           "type": [
@@ -4953,6 +5225,53 @@
       "docs": {
         "description": [
           "A download link was sent (relevant for orders with digital line items)"
+        ]
+      }
+    },
+    {
+      "name": "DraftOrderChangesApplied",
+      "members": [
+        {
+          "name": "changes",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.OrderChange"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Changes applied to order."
+        },
+        {
+          "name": "draftOrderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Draft order id."
+        },
+        {
+          "name": "reason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reason for edit, given by user (optional)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -5079,7 +5398,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Orders.LineItemDelta"
+                    "referenceType": "wix-ecom-backend.Orders.V1LineItemDelta"
                   }
                 ]
               }
@@ -5293,27 +5612,7 @@
               }
             }
           ],
-          "doc": "Extended field data as key:object pairs. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were created.\n\nYou can only access fields for which you have the appropriate permissions.\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ExtendedFieldsUpdatedEvent",
-      "members": [
-        {
-          "name": "currentEntityAsJson",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": ""
+          "doc": "Extended field data. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were configured.\n\nYou can only access fields for which you have the appropriate permissions.\n"
         }
       ],
       "docs": {
@@ -5867,16 +6166,6 @@
           "doc": "ID of the app that created the gift card."
         },
         {
-          "name": "giftCardId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Gift card ID."
-        },
-        {
           "name": "giftCardPaymentId",
           "optional": true,
           "type": [
@@ -6108,6 +6397,16 @@
           "doc": "Download link was sent (relevant for orders with digital line items)."
         },
         {
+          "name": "draftOrderChangesApplied",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.DraftOrderChangesApplied"
+            }
+          ],
+          "doc": "Draft order changes applied"
+        },
+        {
           "name": "emailEdited",
           "optional": true,
           "type": [
@@ -6304,6 +6603,7 @@
             "name": "oneOfInternalActivityContentOneOf",
             "members": [
               "downloadLinkSent",
+              "draftOrderChangesApplied",
               "emailEdited",
               "fulfillerEmailSent",
               "invoiceAdded",
@@ -6345,6 +6645,16 @@
             }
           ],
           "doc": "Download link was sent (relevant for orders with digital line items)."
+        },
+        {
+          "name": "draftOrderChangesApplied",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.DraftOrderChangesApplied"
+            }
+          ],
+          "doc": "Draft order changes applied"
         },
         {
           "name": "emailEdited",
@@ -7114,6 +7424,116 @@
       }
     },
     {
+      "name": "InvoicesPayment",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "document"
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.BigDecimalWrapper"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "date",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The orderId of the order in cashier associated with the payment.\nThis field is populated for external payments that are charged by invoices via AddPayment endpoint."
+        },
+        {
+          "name": "transactionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The transactionId corresponding to the orderId of the payment which are returned by cashier.\nThis field is populated for external payments that are charged by invoices via AddPayment endpoint as well."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ItemChangedDetails",
+      "members": [
+        {
+          "name": "priceBeforeChange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "The price before the change."
+        },
+        {
+          "name": "priceDescriptionBeforeChange",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.PriceDescription"
+            }
+          ],
+          "doc": "The price description before the change"
+        },
+        {
+          "name": "quantityBeforeChange",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The quantity before the change."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ItemMetadata",
       "members": [
         {
@@ -7412,6 +7832,96 @@
       }
     },
     {
+      "name": "LineItemAmount",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order line item id"
+        },
+        {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Amount associated with this item. (Discount amount for item / additional fee amount for item)"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ProductName"
+            }
+          ],
+          "doc": "Item name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LineItemChanges",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Line item ID."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ProductName"
+            }
+          ],
+          "doc": "Item name."
+        },
+        {
+          "name": "price",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.LineItemPriceChange"
+            }
+          ],
+          "doc": "Item price change."
+        },
+        {
+          "name": "quantity",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.LineItemQuantityChange"
+            }
+          ],
+          "doc": "Item quantity change."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "LineItemDelta",
       "members": [
         {
@@ -7419,10 +7929,20 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.OrderLineItemChangedDetails"
+              "referenceType": "wix-ecom-backend.Orders.ItemChangedDetails"
             }
           ],
-          "doc": "Update supports quantity and price related fields - tax, discount, price, etc."
+          "doc": ""
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
         },
         {
           "name": "lineItemId",
@@ -7439,7 +7959,7 @@
           "optional": true,
           "type": [
             {
-              "nativeType": "boolean"
+              "referenceType": "wix-ecom-backend.Orders.OrderLineItemChangedDetails"
             }
           ],
           "doc": ""
@@ -7451,6 +7971,7 @@
             "name": "oneOfLineItemDeltaDeltaOneOf",
             "members": [
               "changedDetails",
+              "lineItemAdded",
               "lineItemRemoved"
             ]
           }
@@ -7470,17 +7991,27 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.OrderLineItemChangedDetails"
+              "referenceType": "wix-ecom-backend.Orders.ItemChangedDetails"
             }
           ],
-          "doc": "Update supports quantity and price related fields - tax, discount, price, etc."
+          "doc": ""
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
         },
         {
           "name": "lineItemRemoved",
           "optional": true,
           "type": [
             {
-              "nativeType": "boolean"
+              "referenceType": "wix-ecom-backend.Orders.OrderLineItemChangedDetails"
             }
           ],
           "doc": ""
@@ -7544,6 +8075,86 @@
             }
           ],
           "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LineItemPriceChange",
+      "members": [
+        {
+          "name": "newPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Item price after update."
+        },
+        {
+          "name": "originalPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Item price before update."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "LineItemQuantityChange",
+      "members": [
+        {
+          "name": "deltaType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of quantity change: increase or decrease."
+        },
+        {
+          "name": "diff",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Difference between original and new quantity. Absolute value."
+        },
+        {
+          "name": "newQuantity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Item quantity after update."
+        },
+        {
+          "name": "originalQuantity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Item quantity before update."
         }
       ],
       "docs": {
@@ -7970,6 +8581,200 @@
       }
     },
     {
+      "name": "LocationAndQuantity",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location id in the associated owner app."
+        },
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location owner app, if not provided then the site business info locations will be used."
+        },
+        {
+          "name": "quantity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Quantity for specific location."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagedAdditionalFee",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Additional fee id."
+        },
+        {
+          "name": "affectedLineItems",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.LineItemAmount"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Line items additional fee applies to."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TranslatedValue"
+            }
+          ],
+          "doc": "Additional fee name."
+        },
+        {
+          "name": "totalAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Additional fee amount."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagedDiscount",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Discount id."
+        },
+        {
+          "name": "affectedLineItems",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.LineItemAmount"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Line items discount applies to."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TranslatedValue"
+            }
+          ],
+          "doc": "Discount name: coupon name / discount rule name / merchant discount description."
+        },
+        {
+          "name": "totalAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Discount amount."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ManagedLineItem",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Line item ID."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ProductName"
+            }
+          ],
+          "doc": "Item name."
+        },
+        {
+          "name": "quantity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Added or removed item quantity."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "MarkAsFulfilledRequest",
       "members": [
         {
@@ -8051,13 +8856,13 @@
       "name": "MarkOrderAsPaidRequest",
       "members": [
         {
-          "name": "_id",
+          "name": "ecomOrderId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Order ID."
+          "doc": "Ecom order ID."
         }
       ],
       "docs": {
@@ -8256,7 +9061,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The transaction id under the membership system. Can be used to void it"
+          "doc": "The transaction ID in the membership system. Can be used to void the transaction."
         },
         {
           "name": "lineItemId",
@@ -8276,7 +9081,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The membership id"
+          "doc": "Membership ID."
         },
         {
           "name": "name",
@@ -8286,7 +9091,7 @@
               "referenceType": "wix-ecom-backend.Orders.MembershipName"
             }
           ],
-          "doc": "Membership name"
+          "doc": "Membership name."
         },
         {
           "name": "providerAppId",
@@ -8296,7 +9101,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the application providing this payment option"
+          "doc": "ID of the application providing this payment option."
         },
         {
           "name": "status",
@@ -8306,7 +9111,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Payment status"
+          "doc": "Payment status."
         },
         {
           "name": "voided",
@@ -9049,7 +9854,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order number displayed in the site owner's business manager (auto-generated)."
+          "doc": "Order number displayed in the site owner's dashboard (auto-generated)."
         },
         {
           "name": "paymentStatus",
@@ -9059,7 +9864,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\n+ `PARTIALLY_PAID` -  At least one payment was received and approved, covering less than total price amount."
+          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/order-transactions/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/order-transactions/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\n+ `PARTIALLY_PAID` -  At least one payment was received and approved, covering less than total price amount."
         },
         {
           "name": "priceSummary",
@@ -9073,6 +9878,16 @@
           "doc": "Order price summary."
         },
         {
+          "name": "purchaseFlowId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Persistent ID that correlates between the various eCommerce elements: cart, checkout, and order."
+        },
+        {
           "name": "seenByAHuman",
           "readOnly": true,
           "optional": true,
@@ -9081,7 +9896,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether a human has seen the order. Set when an order is clicked on in the Business Manager."
+          "doc": "Whether a human has seen the order. Set when an order is clicked on in the dashboard."
         },
         {
           "name": "shippingInfo",
@@ -9112,7 +9927,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order status.\n+ `INITIALIZED` - Order was created, but not yet approved or declined.\n+ `APPROVED` - Order was approved. This happens when either the online payment succeeded or the order is an offline order.\n+ Once an order is approved, many side effects are triggered. For example, holding of stock in the inventory and sending of notification emails.\n+ `CANCELED` - Order was canceled by the user."
+          "doc": "Order status.\n+ `INITIALIZED` - Order was created, but not yet approved or declined.\n+ `APPROVED` - Order was approved. This happens when either the online payment succeeded or the order is an offline order. Once an order is approved, many side effects are triggered. For example, holding of stock in the inventory and sending of notification emails.\n+ `CANCELED` - Order was canceled by the user."
         },
         {
           "name": "taxIncludedInPrices",
@@ -9231,6 +10046,203 @@
       }
     },
     {
+      "name": "OrderChange",
+      "members": [
+        {
+          "name": "additionalFeeAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedAdditionalFee"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "additionalFeeRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedAdditionalFee"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "discountAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedDiscount"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "discountRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedDiscount"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedLineItem"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemChanged",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.LineItemChanges"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedLineItem"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "totalPriceChanged",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TotalPriceChange"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfOrderChangeValueOneOf",
+            "members": [
+              "additionalFeeAdded",
+              "additionalFeeRemoved",
+              "discountAdded",
+              "discountRemoved",
+              "lineItemAdded",
+              "lineItemChanged",
+              "lineItemRemoved",
+              "totalPriceChanged"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderChangeValueOneOf",
+      "members": [
+        {
+          "name": "additionalFeeAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedAdditionalFee"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "additionalFeeRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedAdditionalFee"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "discountAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedDiscount"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "discountRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedDiscount"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedLineItem"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemChanged",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.LineItemChanges"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemRemoved",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ManagedLineItem"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "totalPriceChanged",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TotalPriceChange"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "OrderCreatedFromExchange",
       "members": [
         {
@@ -9258,10 +10270,21 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Orders.DraftOrderDiffs"
+              "referenceType": "wix-ecom-backend.Orders.CommittedDiffs"
             }
           ],
           "doc": "Applied changes."
+        },
+        {
+          "name": "commitDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time when order deltas were committed."
         },
         {
           "name": "commitSettings",
@@ -9331,7 +10354,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Orders.RestockItem"
+                    "referenceType": "wix-ecom-backend.Orders.V1RestockItem"
                   }
                 ]
               }
@@ -9351,7 +10374,6 @@
       "members": [
         {
           "name": "_id",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -9379,7 +10401,7 @@
               "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": "Item's price amount to be charged during checkout, relevant for items with payment option DEPOSIT_ONLINE"
+          "doc": "Item's price amount to be charged during checkout. Relevant for items with a `paymentOption` value of `\"DEPOSIT_ONLINE\"`."
         },
         {
           "name": "descriptionLines",
@@ -9406,7 +10428,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\nTo get fulfillment information, pass this order's ID to [List Fulfillments For Single Order](https://bo.wix.com/wix-docs/rest/ecommerce/order-fulfillments/list-fulfillments-for-single-order)."
+          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\n\nTo get fulfillment information, pass the order ID to [List Fulfillments For Single Order](https://www.wix.com/velo/reference/wix-ecom-backend/orderfulfillments/listfulfillmentsforsingleorder).\n"
         },
         {
           "name": "image",
@@ -9608,7 +10630,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\nTo get fulfillment information, pass this order's ID to [List Fulfillments For Single Order](https://bo.wix.com/wix-docs/rest/ecommerce/order-fulfillments/list-fulfillments-for-single-order)."
+          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\n\nTo get fulfillment information, pass the order ID to [List Fulfillments For Single Order](https://www.wix.com/velo/reference/wix-ecom-backend/orderfulfillments/listfulfillmentsforsingleorder).\n"
         },
         {
           "name": "image",
@@ -9814,6 +10836,36 @@
       }
     },
     {
+      "name": "OrderReindexRequest",
+      "members": [
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "OrderTransactions",
       "members": [
         {
@@ -9835,13 +10887,13 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Orders.V1Payment"
+                    "referenceType": "wix-ecom-backend.Orders.Payment"
                   }
                 ]
               }
             }
           ],
-          "doc": "Payments to the merchant."
+          "doc": "Record of payments made to the merchant."
         },
         {
           "name": "refunds",
@@ -9858,7 +10910,7 @@
               }
             }
           ],
-          "doc": "Refunds to the buyer."
+          "doc": "Record of refunds made to the buyer."
         }
       ],
       "docs": {
@@ -9931,66 +10983,90 @@
       "name": "Payment",
       "members": [
         {
-          "name": "_id",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "document"
-        },
-        {
-          "name": "amount",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.BigDecimalWrapper"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "date",
+          "name": "_createdDate",
           "optional": true,
           "type": [
             {
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Date and time the payment was created in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. Defaults to current time when not provided."
         },
         {
-          "name": "orderId",
+          "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "The orderId of the order in cashier associated with the payment.\nThis field is populated for external payments that are charged by invoices via AddPayment endpoint."
+          "doc": "Payment ID."
         },
         {
-          "name": "transactionId",
+          "name": "_updatedDate",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "nativeType": "Date"
             }
           ],
-          "doc": "The transactionId corresponding to the orderId of the payment which are returned by cashier.\nThis field is populated for external payments that are charged by invoices via AddPayment endpoint as well."
+          "doc": "Date and time the payment was last updated in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format."
         },
         {
-          "name": "type",
+          "name": "amount",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": ""
+          "doc": "Payment amount."
+        },
+        {
+          "name": "giftcardPaymentDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.GiftCardPaymentDetails"
+            }
+          ],
+          "doc": "Gift card payment details."
+        },
+        {
+          "name": "refundDisabled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether refunds for this payment are disabled.\n+ `true`: This payment is not refundable.\n+ `false`: This payment may be refunded. However, this ultimately depends on the payment provider."
+        },
+        {
+          "name": "regularPaymentDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.RegularPaymentDetails"
+            }
+          ],
+          "doc": "Regular payment details."
         }
       ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfPaymentPaymentDetailsOneOf",
+            "members": [
+              "giftcardPaymentDetails",
+              "membershipPaymentDetails",
+              "regularPaymentDetails"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -10009,6 +11085,36 @@
             }
           ],
           "doc": "Information about the user who initiated the payment."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PaymentPaymentDetailsOneOf",
+      "members": [
+        {
+          "name": "giftcardPaymentDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.GiftCardPaymentDetails"
+            }
+          ],
+          "doc": "Gift card payment details."
+        },
+        {
+          "name": "regularPaymentDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.RegularPaymentDetails"
+            }
+          ],
+          "doc": "Regular payment details."
         }
       ],
       "docs": {
@@ -10099,7 +11205,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Orders.Payment"
+                    "referenceType": "wix-ecom-backend.Orders.InvoicesPayment"
                   }
                 ]
               }
@@ -11210,7 +12316,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 80 characters"
+          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 200 characters"
         },
         {
           "name": "translated",
@@ -11220,7 +12326,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 200 characters"
+          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 400 characters"
         }
       ],
       "docs": {
@@ -11562,7 +12668,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Refund creation date and time in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. Defaults to current time when not provided."
+          "doc": "Date and time the refund was created in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. Defaults to current time when not provided."
         },
         {
           "name": "_id",
@@ -11573,7 +12679,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Refund ID (auto-generated upon refund creation)."
+          "doc": "Refund ID."
         },
         {
           "name": "details",
@@ -11583,7 +12689,7 @@
               "referenceType": "wix-ecom-backend.Orders.RefundDetails"
             }
           ],
-          "doc": "Business details."
+          "doc": "Refund business details."
         },
         {
           "name": "transactions",
@@ -11600,7 +12706,7 @@
               }
             }
           ],
-          "doc": "Transaction refund details."
+          "doc": "List of transactions."
         }
       ],
       "docs": {
@@ -11620,7 +12726,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Personal note added to the email"
+          "doc": "Custom message added to the refund confirmation email."
         },
         {
           "name": "orderTransactions",
@@ -11667,7 +12773,7 @@
               "referenceType": "wix-ecom-backend.Orders.RestockInfo"
             }
           ],
-          "doc": "How to restock items as part of this refund."
+          "doc": "Inventory restock details as part of this refund.."
         },
         {
           "name": "sendOrderRefundedEmail",
@@ -11677,7 +12783,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Should send a confirmation mail to the customer"
+          "doc": "Whether to send a refund confirmation email to the customer."
         }
       ],
       "docs": {
@@ -11704,7 +12810,7 @@
               }
             }
           ],
-          "doc": "Refunded line items and quantities."
+          "doc": "Order line item IDs and quantities that were refunded."
         },
         {
           "name": "reason",
@@ -11714,7 +12820,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reason for refund, given by user (optional)."
+          "doc": "Reason for the refund, provided by customer (optional)."
         },
         {
           "name": "shippingIncluded",
@@ -11724,7 +12830,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether shipping rate is also refunded."
+          "doc": "Whether the shipping fee was also refunded."
         }
       ],
       "docs": {
@@ -11744,7 +12850,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the line item being refunded."
+          "doc": "Line item ID the refunded line item."
         },
         {
           "name": "quantity",
@@ -11754,7 +12860,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Line item quantity being refunded."
+          "doc": "Line item quantity refunded."
         }
       ],
       "docs": {
@@ -11774,7 +12880,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Personal note added to the email"
+          "doc": "Custom message added to the refund confirmation email."
         },
         {
           "name": "restockInfo",
@@ -11784,7 +12890,7 @@
               "referenceType": "wix-ecom-backend.Orders.RestockInfo"
             }
           ],
-          "doc": "How to restock items as part of this refund"
+          "doc": "Inventory restock details as part of this refund."
         },
         {
           "name": "sendOrderRefundedEmail",
@@ -11794,7 +12900,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Should send a confirmation mail to the customer"
+          "doc": "Whether to send a refund confirmation email to the customer."
         }
       ],
       "docs": {
@@ -11824,7 +12930,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether refund was made externally and manually (on the payment provider's side)."
+          "doc": "Whether refund was made externally and manually on the payment provider's side."
         },
         {
           "name": "gatewayRefundId",
@@ -11834,7 +12940,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the payment gateway refund."
+          "doc": "Payment gateway's refund ID. This ID can be used with the Wix Payments [Transactions API](https://dev.wix.com/docs/rest/api-reference/wix-payments/transactions/introduction).\nThis field is only returned when the value of `external_refund` is `false`."
         },
         {
           "name": "paymentId",
@@ -11854,7 +12960,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the refund in the payment provider's system."
+          "doc": "ID of the refund in the payment provider's system. For example, at PayPal, Square, Stripe, etc. Not returned for external refunds."
         },
         {
           "name": "refundStatus",
@@ -11985,7 +13091,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Transaction ID from payment gateway (e.g., Wix Payments, chargeId), what we used to call payment_gateway_transaction_id"
+          "doc": "Payment gateway's transaction ID. This ID can be used with the Wix Payments [Transactions API](https://dev.wix.com/docs/rest/api-reference/wix-payments/transactions/introduction).\nThis field is only returned when the value of `offline_payment` is `false`."
         },
         {
           "name": "offlinePayment",
@@ -11995,7 +13101,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the payment is/was made offline. For example, when using cash or when marked as paid in the Business Manager."
+          "doc": "Whether the payment was made offline. For example, when using cash or when marked as paid in the Business Manager."
         },
         {
           "name": "paymentMethod",
@@ -12005,7 +13111,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Payment method. Non-exhaustive list of supported values:\nCreditCard, Alipay, AstropayCash, AstropayDBT, AstropayMBT, Bitcoin, BitPay, Cash, ConvenienceStore, EPay, Fake, Giropay, IDeal, InPerson,\nKlarna, MercadoPago, Netpay, NordeaSolo, Offline, PagSeguro, PayEasy, PayPal, Paysafecard, Paysafecash, PointOfSale, Poli,\nPrivat24, Przelewy24, RapidTransfer, Sepa, Skrill, Sofort, Trustly,Neteller, Unionpay, UniPay, Yandex."
+          "doc": "Payment method. Non-exhaustive list of supported values:\n+ `CreditCard`, `Alipay`, `AstropayCash`, `AstropayDBT`, `AstropayMBT`, `Bitcoin`, `BitPay`, `Cash`, `ConvenienceStore`, `EPay`, `Fake`, `Giropay`, `IDeal`, `InPerson`, `Klarna`, `MercadoPago`, `Netpay`, `NordeaSolo`, `Offline`, `PagSeguro`, `PayEasy`, `PayPal`, `Paysafecard`, `Paysafecash`, `PointOfSale`, `Poli`, `Privat24`, `Przelewy24`, `RapidTransfer`, `Sepa`, `Skrill`, `Sofort`, `Trustly`, `Neteller`, `Unionpay`, `UniPay`, `Yandex`"
         },
         {
           "name": "paymentOrderId",
@@ -12015,7 +13121,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Wix Payment's order id"
+          "doc": "Wix Payments order ID."
         },
         {
           "name": "providerTransactionId",
@@ -12025,7 +13131,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Transaction ID in the payment provider's system (for example, PayPal, Square, Stripe). Does not exist for offline payments."
+          "doc": "Transaction ID in the payment provider's system. For example, at PayPal, Square, Stripe, etc. Not returned for offline payments."
         },
         {
           "name": "status",
@@ -12086,13 +13192,13 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Orders.V1RestockItem"
+                    "referenceType": "wix-ecom-backend.Orders.RestockItem"
                   }
                 ]
               }
             }
           ],
-          "doc": "Restocked line items and quantities, only relevant for `SOME_ITEMS` type."
+          "doc": "Restocked line items and quantities. Only relevant for `{\"type\": \"SOME_ITEMS\"}`."
         },
         {
           "name": "type",
@@ -12102,7 +13208,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Restock policy type."
+          "doc": "Restock type."
         }
       ],
       "docs": {
@@ -12133,6 +13239,83 @@
             }
           ],
           "doc": "Line item quantity being restocked."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchOrdersOptions",
+      "members": [
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorSearch"
+            }
+          ],
+          "doc": "Search options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchOrdersRequest",
+      "members": [
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorSearch"
+            }
+          ],
+          "doc": "Search options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchOrdersResponse",
+      "members": [
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Details on the paged set of results returned."
+        },
+        {
+          "name": "orders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.Order"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of orders."
         }
       ],
       "docs": {
@@ -13176,6 +14359,36 @@
       }
     },
     {
+      "name": "TotalPriceChange",
+      "members": [
+        {
+          "name": "newTotal",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Order’s total price after discounts and tax. After update"
+        },
+        {
+          "name": "originalTotal",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Order’s total price after discounts and tax. Before update"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "TrackingLinkAdded",
       "members": [],
       "docs": {
@@ -13199,6 +14412,36 @@
       "docs": {
         "description": [
           "Shipping tracking number was edited"
+        ]
+      }
+    },
+    {
+      "name": "TranslatedValue",
+      "members": [
+        {
+          "name": "original",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Value in site default language."
+        },
+        {
+          "name": "translated",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Translated value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -13400,6 +14643,46 @@
     {
       "name": "TriggerReindexResponse",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TriggerReindexWithConsistencyRequest",
+      "members": [
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "metasiteId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "orderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -13632,6 +14915,76 @@
             }
           ],
           "doc": "Updated order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateBuyerEmailOptions",
+      "members": [
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateBuyerEmailRequest",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateBuyerEmailResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Order"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -14248,7 +15601,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order number displayed in the site owner's business manager (auto-generated)."
+          "doc": "Order number displayed in the site owner's dashboard (auto-generated)."
         },
         {
           "name": "paymentStatus",
@@ -14258,7 +15611,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://bo.wix.com/wix-docs/rest/ecommerce/order-payments/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\n+ `PARTIALLY_PAID` -  At least one payment was received and approved, covering less than total price amount."
+          "doc": "Order payment status.\n+ `NOT_PAID` - This can be an order made online, but not yet paid. In such cases `order.status` will be `INITIALIZED`.\n+ This status also applies when an offline order needs to be manually marked as paid. In such cases `order.status` will be `APPROVED`.\n+ `PAID` - All payments associated with this order are paid. For online payments: [`payment.regularPaymentDetails.status: APPROVED`](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/order-transactions/order-transactions-object). For gift cards: [`payment.giftCardPaymentDetails.voided: false`](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/order-transactions/order-transactions-object).\n+ `PARTIALLY_REFUNDED` - Order was refunded, but refund amount is less than order total price.\n+ `FULLY_REFUNDED` - Order fully refunded. Refund amount equals total price.\n+ `PENDING` - Payments received but not yet confirmed by the payment provider.\n+ `PARTIALLY_PAID` -  At least one payment was received and approved, covering less than total price amount."
         },
         {
           "name": "priceSummary",
@@ -14272,6 +15625,16 @@
           "doc": "Order price summary."
         },
         {
+          "name": "purchaseFlowId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Persistent ID that correlates between the various eCommerce elements: cart, checkout, and order."
+        },
+        {
           "name": "seenByAHuman",
           "readOnly": true,
           "optional": true,
@@ -14280,7 +15643,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether a human has seen the order. Set when an order is clicked on in the Business Manager."
+          "doc": "Whether a human has seen the order. Set when an order is clicked on in the dashboard."
         },
         {
           "name": "shippingInfo",
@@ -14311,7 +15674,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Order status.\n+ `INITIALIZED` - Order was created, but not yet approved or declined.\n+ `APPROVED` - Order was approved. This happens when either the online payment succeeded or the order is an offline order.\n+ Once an order is approved, many side effects are triggered. For example, holding of stock in the inventory and sending of notification emails.\n+ `CANCELED` - Order was canceled by the user."
+          "doc": "Order status.\n+ `INITIALIZED` - Order was created, but not yet approved or declined.\n+ `APPROVED` - Order was approved. This happens when either the online payment succeeded or the order is an offline order. Once an order is approved, many side effects are triggered. For example, holding of stock in the inventory and sending of notification emails.\n+ `CANCELED` - Order was canceled by the user."
         },
         {
           "name": "taxIncludedInPrices",
@@ -14355,7 +15718,6 @@
       "members": [
         {
           "name": "_id",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -14383,7 +15745,7 @@
               "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": "Item's price amount to be charged during checkout, relevant for items with payment option DEPOSIT_ONLINE"
+          "doc": "Item's price amount to be charged during checkout. Relevant for items with a `paymentOption` value of `\"DEPOSIT_ONLINE\"`."
         },
         {
           "name": "descriptionLines",
@@ -14410,7 +15772,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\nTo get fulfillment information, pass this order's ID to [List Fulfillments For Single Order](https://bo.wix.com/wix-docs/rest/ecommerce/order-fulfillments/list-fulfillments-for-single-order)."
+          "doc": "Fulfiller ID. Field is empty when the line item is self-fulfilled.\n\nTo get fulfillment information, pass the order ID to [List Fulfillments For Single Order](https://www.wix.com/velo/reference/wix-ecom-backend/orderfulfillments/listfulfillmentsforsingleorder).\n"
         },
         {
           "name": "image",
@@ -14588,7 +15950,6 @@
         },
         {
           "name": "lineItemId",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -14830,7 +16191,7 @@
       "name": "V1BulkMarkOrdersAsPaidRequest",
       "members": [
         {
-          "name": "ecomOrderIds",
+          "name": "ids",
           "type": [
             {
               "complexType": {
@@ -14893,23 +16254,13 @@
       "name": "V1CreatePaymentGatewayOrderRequest",
       "members": [
         {
-          "name": "chargedBy",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.ChargedBy"
-            }
-          ],
-          "doc": "Information about the user who initiated the payment."
-        },
-        {
           "name": "ecomOrderId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Ecom order ID."
+          "doc": "eCom Order ID"
         }
       ],
       "docs": {
@@ -14939,16 +16290,128 @@
       }
     },
     {
-      "name": "V1MarkOrderAsPaidRequest",
+      "name": "V1LineItemDelta",
       "members": [
         {
-          "name": "ecomOrderId",
+          "name": "changedDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ItemChangedDetails"
+            }
+          ],
+          "doc": "The line item was modified."
+        },
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderLineItemChangedDetails"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The line item was added."
+        },
+        {
+          "name": "lineItemId",
+          "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Ecom order ID."
+          "doc": "Line item ID."
+        },
+        {
+          "name": "lineItemRemoved",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The line item was added."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfV1LineItemDeltaDeltaOneOf",
+            "members": [
+              "changedDetails",
+              "lineItemAdded",
+              "lineItemRemoved"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "V1LineItemDeltaDeltaOneOf",
+      "members": [
+        {
+          "name": "changedDetails",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ItemChangedDetails"
+            }
+          ],
+          "doc": "The line item was modified."
+        },
+        {
+          "name": "lineItemAdded",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The line item was added."
+        },
+        {
+          "name": "lineItemRemoved",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "The line item was added."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "V1MarkOrderAsPaidRequest",
+      "members": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID."
         }
       ],
       "docs": {
@@ -14969,130 +16432,6 @@
             }
           ],
           "doc": "Updated order."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "V1Payment",
-      "members": [
-        {
-          "name": "_createdDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Payment creation date and time in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. Defaults to current time when not provided."
-        },
-        {
-          "name": "_id",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Payment ID (auto-generated upon payment creation)."
-        },
-        {
-          "name": "_updatedDate",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Payment modification date and time."
-        },
-        {
-          "name": "amount",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.Price"
-            }
-          ],
-          "doc": "Payment amount."
-        },
-        {
-          "name": "giftcardPaymentDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.GiftCardPaymentDetails"
-            }
-          ],
-          "doc": "Gift card payment details."
-        },
-        {
-          "name": "refundDisabled",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Whether refunds are explicitly disabled.\nTrue means this payment is not refundable.\nFalse means this payment might be refunded (depending on the payment provider)."
-        },
-        {
-          "name": "regularPaymentDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.RegularPaymentDetails"
-            }
-          ],
-          "doc": "Regular payment details."
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfV1PaymentPaymentDetailsOneOf",
-            "members": [
-              "giftcardPaymentDetails",
-              "membershipPaymentDetails",
-              "regularPaymentDetails"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "V1PaymentPaymentDetailsOneOf",
-      "members": [
-        {
-          "name": "giftcardPaymentDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.GiftCardPaymentDetails"
-            }
-          ],
-          "doc": "Gift card payment details."
-        },
-        {
-          "name": "regularPaymentDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.RegularPaymentDetails"
-            }
-          ],
-          "doc": "Regular payment details."
         }
       ],
       "docs": {
