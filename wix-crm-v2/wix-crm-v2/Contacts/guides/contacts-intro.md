@@ -42,6 +42,14 @@ To use the Contacts API, import `{ contacts }` from the `wix-crm.v2` module.
 import { contacts } from 'wix-crm.v2';
 ```
 
+## Before you begin
+
+It is important to note the following points before you begin to code:
+- You can't label or unlabel a contact if the label does not yet exist. To create a label, use the [Labels API](wix-crm-v2/labels/introduction).
+- Merging a contact is irreversible. 
+- Site members and collaborators can only be used as the target contact when merging contacts.
+
+
 ## Permissions information
 
 Functions in the Labels API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
@@ -55,3 +63,5 @@ Functions in the Labels API are restricted and only run if you elevate permissio
 
 - **Labels:** Tags that enable site admins to organize and group contacts. 
 - **Extended fields:** Additional properties that store contact information.
+- **Source contact:** A contact you intend to merge into a target contact. These contacts get deleted after being merged. 
+- **Target contact:** A contact that receives merged data from source contacts. 
