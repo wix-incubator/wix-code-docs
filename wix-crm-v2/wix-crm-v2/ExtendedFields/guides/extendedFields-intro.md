@@ -22,7 +22,7 @@ title: Introduction
 The Extended Fields API provides functionality for creating and managing extended field definitions. Extended fields enable you to retrieve and store specific information relevant to your site. Basic fields, such as name, email, and phone, are stored in the contact's default properties. Additional custom contact properties are stored in extended fields. 
 
 With the Extended Fields API, you can:
-+ [Create](wix-crm-v2/extendedfields/findorcreateextendedfield) a new label.
++ [Create](wix-crm-v2/extendedfields/findorcreateextendedfield) a new extended field.
 + [Delete](wix-crm-v2/extendedfields/deleteextendedfield) an extended field.
 + [Update](wix-crm-v2/extendedfields/renameextendedfield) an extended field by renaming its display name.
 + [Query](wix-crm-v2/extendedfields/queryextendedfields) extended fields.
@@ -36,7 +36,7 @@ It is important to note the following points before you begin to code:
     - number
     - date
     - url
-- Extended fields are represented as key-value pairs in the contact's object in `info.extendedfields`. To manage the extended fields of individual contact, use the [Contacts API](wix-crm-v2/contacts). 
+- Extended fields are represented as key-value pairs in the contact's object in `info.extendedfields`. To manage the extended fields of an individual contact, use the [Contacts API](wix-crm-v2/contacts). 
 
 
 To use the Labels API, import `{ extendedFields }` from the `wix-crm.v2` module. 
@@ -56,6 +56,6 @@ Functions in the Extended Fields API are restricted and only run if you elevate 
 
 ## Terminology
 
-- **Extended Fields**: Customized fields that can store additional information for a contact. A contact’s extended field data is available in the `contact` object under `info.extendedFields`. There are 2 types of extended fields:
+- **Extended fields**: Customized fields that can store additional information for a contact. A contact’s extended field data is available in the `contact` object under `info.extendedFields`. There are 2 types of extended fields:
     - **System fields**: Extended fields added by Wix apps. System fields often enrich contacts with data from Wix apps, such as Wix Stores or Wix Members. System fields cannot be renamed and are typically read-only.
     - **Custom fields**: Extended fields added by site admins or 3rd-party apps. Custom fields can be renamed, and their data can be written by any site admin or 3rd-party app.
