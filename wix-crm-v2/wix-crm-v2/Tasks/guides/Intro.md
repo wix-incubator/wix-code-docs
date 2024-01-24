@@ -25,6 +25,12 @@ The Tasks API allows you to:
 - [Prioritize](wix-crm-v2/tasks/movetaskafter) your tasks by adjusting their display order.
 - [Delete](wix-crm-v2/tasks/deletetask) tasks you no longer need. 
 
+## Before you begin
+
+It is important to note the following before you start to code:
+- The `dueDate` field only accepts dates formatted as a JS Date object. This field doesn't 
+work with functional testing as JSON doesn't accept Date objects. 
+
 
 To use the Tasks API,
 import `tasks` from wix-crm.v2:
