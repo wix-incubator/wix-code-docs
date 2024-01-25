@@ -646,7 +646,7 @@
       "docs": {
         "summary": "Triggered when an order is updated.",
         "description": [
-          "This is a general webhook that is triggered when any update is made to an order. More specific webhooks are also triggered for the same originating events.\n| Order event                         | Also triggered                            |\n| ----------------------------------- | ------------------------------------------|\n| Order is paid for.                  | [Order Purchased Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-purchased-webhook) |\n| Free or offline order is created.   | [Order Purchased Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-purchased-webhook) |\n| Order reaches its `startDate`.      | [Order Started Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-started-webhook) |\n| Order reaches its `endDate`.        | [Order Ended Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-ended-webhook) |\n| New payment cycle of an order starts.  | [Order Cycle Started Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-cycle-started-webhook) |\n| Offline order is marked as paid.        | [Order Marked As Paid Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-marked-as-paid-webhook) |\n| `endDate` of the order is postponed.    | [Order End Date Postponed Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-end-date-postponed-webhook) |\n| Order is paused.        | [Order Paused Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-paused-webhook) |\n| Paused order is resumed.        | [Order Resumed Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-resumed-webhook) |\n| Order is canceled. | [Order Canceled Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-canceled-webhook) |\n| Order is canceled and `effectiveAt` is set to `NEXT_PAYMENT_DATE`. | [Order Auto Renew Canceled Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-auto-renew-canceled-webhook) |"
+          "Order Updated Webhook is triggered when any of the following happens:\n+ Order is paid for. [Order Purchased Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-purchased-webhook) is also triggered.\n+ Order reaches its start date or end date. [Order Started Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-started-webhook) and [Order Ended Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-ended-webhook), respectively, are also triggered.\n+ New payment cycle of an order starts. [Order Cycle Started Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-cycle-started-webhook) is also triggered.\n+ Offline order is marked as paid. [Order Marked As Paid Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-marked-as-paid-webhook) is also triggered.\n+ End date of the order is postponed. [Order End Date Postponed Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-end-date-postponed-webhook) is also triggered\n+ Order is paused, or a paused order is resumed. [Order Paused Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-paused-webhook)\nand [Order Resumed Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-resumed-webhook), respectively, are also triggered.\n+ Order is canceled, either immediately or at the end of the payment cycle. [Order Canceled Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-canceled-webhook)\nand [Order Auto Renew Canceled Webhook](https://dev.wix.com/api/rest/wix-pricing-plans/pricing-plans/orders/order-auto-renew-canceled-webhook) are also triggered."
         ],
         "examples": [
           {
@@ -811,7 +811,12 @@
         ]
       },
       "isVeloEvent": true,
-      "syntaxName": "wixPricingPlans_onPlanArchived"
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "wixPricingPlans_onPlanBuyerCanCancelUpdated"
     },
     {
       "name": "onPlanCreated",
@@ -1630,7 +1635,57 @@
         ]
       }
     },
+    {
+      "name": "pricingPlansV2OrderCreateExternalOrderRequest",
+      "members": [
         {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "pricingPlansV2OrderCreateExternalOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2OrderOrder",
+              "displayName": "Order"
+            }
+          ],
+          "doc": "Created order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "pricingPlansV2OrderCreateGuestOnlineOrderRequest",
       "members": [
         {
@@ -2001,7 +2056,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -2064,7 +2119,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -2074,7 +2129,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dispatching"
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -2104,7 +2159,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -3560,7 +3615,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "How the order was processed. One of:\n+ `ONLINE`: The buyer purchased the plan using the site.\n+ `OFFLINE`: The buyer made a manual, offline purchase without using the site."
+          "doc": "How the order was processed. One of:\n+ `ONLINE`: The buyer purchased the plan using the site.\n+ `OFFLINE`: The buyer made a manual, offline purchase without using the site.\n+ `EXTERNAL`: The buyer made a purchase through an external payment provider."
         },
         {
           "name": "wixPayOrderId",
@@ -5765,7 +5820,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -5775,7 +5830,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -6588,7 +6643,37 @@
         ]
       }
     },
+    {
+      "name": "pricingPlansV2PlanPlanBuyerCanCancelUpdated",
+      "members": [
         {
+          "name": "data",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2PlanBuyerCanCancelUpdated",
+              "displayName": "BuyerCanCancelUpdated"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "metadata",
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Events.pricingPlansV2PlanBackendEventMetadata",
+              "displayName": "BackendEventMetadata"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "pricingPlansV2PlanPlanCreated",
       "members": [
         {
