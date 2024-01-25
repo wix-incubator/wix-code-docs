@@ -1,0 +1,44 @@
+name : build_dev_preview
+
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  build-dev-preview:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3        
+        with:
+          ref: master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Build Dev Preview List
+        run : |
+          npm install get-all-files
+          npm install node-fetch
+          git config user.email "adamfri@wix.com"
+          git config user.name "Adam Friedmann"
+          git checkout -b auto-dev-preview-update-${{github.head_ref}}
+          node scripts/buildDevPreviewList.mjs
+          git add guides/developer-preview.md
+          DIFF=$(git status --porcelain)
+          if [[ "$DIFF" == *"developer-preview.md"* ]]; then
+            git commit -m "New Dev Preview List"
+            git push --set-upstream origin auto-dev-preview-update-${{github.head_ref}} --force
+            echo "changes_pushed=yes" >> $GITHUB_ENV
+            echo "branch_name=auto-dev-preview-update-${{github.head_ref}}" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: slackapi/slack-github-action@v1.23.0
+        if: ${{ env.changes_pushed == 'yes' }}
+        with:
+          payload: |
+            {
+              "branch_name" : "${{ env.branch_name }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "PaidPlans/Plans" Collection Fields
@@ -33,7 +35,10 @@ You cannot change the Plans collection's permissions. 
 
 ### Fields 
 
-The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
+> **Note:**
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
+
+The field name is listed as the heading of each section, with the field ID listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
 #### ID (\_id) 
 

@@ -30,7 +30,7 @@ The code to retrieve the text of the quote looks like this:
 import { fetch } from 'wix-fetch';
 
 export async function getQuote() {
-   const response = await fetch('https://api.kanye.rest');
+   const response = await fetch('https://somequotesapi');
    const json = await response.json();
 
    return json.quote;
@@ -54,7 +54,7 @@ export async function getQuote() {
 Inside the exported function, we call `fetch()` and pass the URL of the endpoint we want to reach.
 
 ```javascript
-const response = await fetch('https://api.kanye.rest');
+const response = await fetch('https://somequotesapi');
 ```
 
 The `fetch()` function returns a Promise that resolves to an HTTP response object. The API we use in this example returns a JSON payload. To get the JSON data we need to call the `json()` function which also returns a Promise.
@@ -79,7 +79,7 @@ So the same API call we made above can be simplified to:
 import { getJSON } from 'wix-fetch';
 
 export async function getQuote() {
-    const json = await getJSON('https://api.kanye.rest');
+    const json = await getJSON('https://somequotesapi');
     return json.quote;
 }
 ```
