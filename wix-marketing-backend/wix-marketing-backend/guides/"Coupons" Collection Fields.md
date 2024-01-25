@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # "Coupons" Collection Fields
@@ -33,10 +35,10 @@ You cannot change the Coupons collection's permissions. 
 
 ### Fields 
 
-The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
-
 > **Note:**
-> In addition to the filters listed below for each field, 
+> This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
+
+The field name is listed as the heading of each section, with the field ID listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
 #### ID (\_id) 
 
@@ -178,7 +180,6 @@ The following table lists the available options for Namespace and Group:
 | bookings | service |
 | events | event |
 |  | ticket |
-| pricingPlans | plan |
 
 You can define the scope for a coupon as an entire namespace, a group within a namespace, or an item within a group. See the examples below.
 
