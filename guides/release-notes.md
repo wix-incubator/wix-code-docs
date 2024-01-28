@@ -12,12 +12,12 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-bookings.v2`
 
-We added new APIs in the [Wix Bookings Services V2 module](/wix-bookings-v2/services) that: 
+We added new APIs in the [Wix Bookings Services V2](/wix-bookings-v2/services) module that: 
 
 + [Create a service](/wix-bookings-v2/services/createservice)
 + [Update a service](/wix-bookings-v2/services/updateservice)
 + [Delete a service](/wix-bookings-v2/services/deleteservice)
-+ Trigger events when a service is [created](/wix-bookings-v2/events/onservicecreated), [updated](/wix-bookings-v2/events/onserviceupdated), and [deleted](/wix-bookings-v2/events/onservicedeleted).
++ Trigger events when a service is [created](/wix-bookings-v2/events/onservicecreated), [updated](/wix-bookings-v2/events/onserviceupdated), and [deleted](/wix-bookings-v2/events/onservicedeleted)
 
 
 (January 29, 2024)
