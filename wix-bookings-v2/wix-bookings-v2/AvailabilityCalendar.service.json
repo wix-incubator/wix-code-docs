@@ -29,7 +29,7 @@
               "referenceType": "wix-bookings-v2.AvailabilityCalendar.QueryAvailabilityOptions"
             }
           ],
-          "doc": "Additional options for performing the query.\n",
+          "doc": "Additional options for performing the query.",
           "required": false
         }
       ],
@@ -55,7 +55,7 @@
       "docs": {
         "summary": "Retrieves the availability for sessions\nthat match the provided query criteria (paging, filtering, and sorting).",
         "description": [
-          "The Availability Calendar APIs calculate the availability of sessions for\nappointments and classes, but not\nfor courses.\n\nThe entire list of slots is returned in case you want to display both\navailable and non-available slots in the calendar for your customers.\nUsing the `bookable` property, you can limit the display to available\nslots only.\n\nWhen querying, you must enter a start date and an end date. This avoids very large\nresults that can impact performance.\n\n#### Calculating availability\n\nThe availability is determined\nby checking:\n+ **The sessions' open slots**. A slot is considered open if the session's\ncapacity is greater than number of participants.\n+ **Booking policies**. Policies that affect whether a slot is considered\navailable include `tooEarlyToBook`, `tooLateToBook`, and `bookOnlineDisabled`.\n\nLocked sessions do not impact session availability and `bookable` can\nbe `true` even if `locked` is `true`. For example, if a session has a waitlist and a\nplace frees up, the slot is offered to the customers on the waitlist, one by one. The\nsession remains locked because there is still a waitlist, but for a period of time\nthere is availability, until a customer on the waitlist takes the slot. Locking\nprevents customers who are not yet on the waitlist from grabbing the slot.\n\n#### Handling Daylight Savings Time (DST) for local time zones\n\nBecause of DST, there are cases where certain times either do not exist\nor exist twice for a local time zone.\nFor example, the tine `00:05` on September 5th 2021 might not exist in Santiago, Chile,\nbecause at `00:00` the clock moved\n1 hour forward to `01:00`.\n\nIn this case, the Availability Calendar APIs take this\ninto account and mediate the time gaps automatically. The non-existent local time is\nautomatically moved forward 1 hour to match local DST. Local times that exist do not change.\nSo if the `queryAvailability()` function is called with a `startDate` of `2021-09-05T00:00:01.000`\nand an `endDate` of `2021-09-06T00:00:02.000`, `2021-09-05T01:00:01.000` is used in the query\ninstead. The start time shifts one hour forward and the end time remains the same.\n\nThis function is not a universal function and runs only on the backend."
+          "The Availability Calendar APIs calculate the availability of sessions for\nappointments and classes, but not\nfor courses.\n\nThe entire list of slots is returned in case you want to display both\navailable and non-available slots in the calendar for your customers.\nUsing the `bookable` property, you can limit the display to available\nslots only.\n\nWhen querying, you must enter a start date and an end date. This avoids very large\nresults that can impact performance.\n\n#### Calculating availability\n\nThe availability is determined\nby checking:\n+ **The sessions' open slots**. A slot is considered open if the session's\ncapacity is greater than number of participants.\n+ **Booking policies**. Policies that affect whether a slot is considered\navailable include `tooEarlyToBook`, `tooLateToBook`, and `bookOnlineDisabled`.\n\nLocked sessions do not impact session availability and `bookable` can\nbe `true` even if `locked` is `true`. For example, if a session has a waitlist and a\nplace frees up, the slot is offered to the customers on the waitlist, one by one. The\nsession remains locked because there is still a waitlist, but for a period of time\nthere is availability, until a customer on the waitlist takes the slot. Locking\nprevents customers who are not yet on the waitlist from grabbing the slot.\n\n#### Handling Daylight Savings Time (DST) for local time zones\n\nBecause of DST, there are cases where certain times either do not exist\nor exist twice for a local time zone.\nFor example, the tine `00:05` on September 5th 2021 might not exist in Santiago, Chile,\nbecause at `00:00` the clock moved\n1 hour forward to `01:00`.\n\nIn this case, the Availability Calendar APIs take this\ninto account and mediate the time gaps automatically. The non-existent local time is\nautomatically moved forward 1 hour to match local DST. Local times that exist do not change.\nSo if the `queryAvailability()` function is called with a `startDate` of `2021-09-05T00:00:01.000`\nand an `endDate` of `2021-09-06T00:00:02.000`, `2021-09-05T01:00:01.000` is used in the query\ninstead. The start time shifts one hour forward and the end time remains the same."
         ],
         "examples": [
           {
@@ -150,6 +150,257 @@
       }
     },
     {
+      "name": "CalculateMultiSlotAvailabilityOptions",
+      "members": [
+        {
+          "name": "bookable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "TODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
+        },
+        {
+          "name": "bookingPolicyViolations",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.BookingPolicyViolations"
+            }
+          ],
+          "doc": "each nested field is checked on its own. i.e. if `too_early_to_book` is defined and `too_late_to_book` is not defined\nwe will return slots for which `too_early_to_book` is same as on the request, regardless of `too_late_to_book`."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.CursorPaging"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Location"
+            }
+          ],
+          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nmust be set, and must have locationType. If locationType is `OWNER_BUSINESS`, must have location_id"
+        },
+        {
+          "name": "slots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.RuleBasedConstraints"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "slotsPerDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\n\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included.\n"
+        },
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CalculateMultiSlotAvailabilityRequest",
+      "members": [
+        {
+          "name": "bookable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "TODO good definition of what bookable means https://github.com/wix-private/scheduler/pull/18267/files?file-filters%5B%5D=.proto&show-viewed-files=true#r1199809006"
+        },
+        {
+          "name": "bookingPolicyViolations",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.BookingPolicyViolations"
+            }
+          ],
+          "doc": "each nested field is checked on its own. i.e. if `too_early_to_book` is defined and `too_late_to_book` is not defined\nwe will return slots for which `too_early_to_book` is same as on the request, regardless of `too_late_to_book`."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.CursorPaging"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Location"
+            }
+          ],
+          "doc": "support filtering by location type, or by locationId. Other fields like `name` are ignored\nmust be set, and must have locationType. If locationType is `OWNER_BUSINESS`, must have location_id"
+        },
+        {
+          "name": "slots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.RuleBasedConstraints"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "slotsPerDay",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of slots to load for each date. For example, if `slots_per_day` is set to `3`,\nat most 3 available slots are returned for each day in the date range specified in the query's\n`filter`.\n\nWhen a day has both bookable and non-bookable slots, bookable slots are returned first.\nNon-bookable slots are returned according to the specified filters, after all\nbookable slots are already included.\n"
+        },
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CalculateMultiSlotAvailabilityResponse",
+      "members": [
+        {
+          "name": "cursorPagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.CursorPagingMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "slots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.SlotAvailability"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "CursorPaging",
       "members": [
         {
@@ -160,7 +411,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -170,7 +421,47 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Cursors"
+            }
+          ],
+          "doc": "Cursor strings that point to the next page, previous page, or both."
+        },
+        {
+          "name": "hasNext",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether there are more pages to retrieve following the current page.\n\n+ `true`: Another page of results can be retrieved.\n+ `false`: This is the last page.\n"
         }
       ],
       "docs": {
@@ -190,7 +481,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -200,7 +491,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -408,6 +699,66 @@
       }
     },
     {
+      "name": "NestedTimeSlot",
+      "members": [
+        {
+          "name": "end",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "resource",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.SlotResource"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scheduleId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Schedule ID."
+        },
+        {
+          "name": "serviceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "start",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "PagingMetadataV2",
       "members": [
         {
@@ -567,23 +918,6 @@
       "name": "QueryV2",
       "members": [
         {
-          "name": "fields",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of projected fields to return. All fields are supported."
-        },
-        {
           "name": "filter",
           "optional": true,
           "type": [
@@ -630,6 +964,63 @@
     {
       "name": "QueryV2PagingMethodOneOf",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ResourcesFilter",
+      "members": [
+        {
+          "name": "resourceIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RuleBasedConstraints",
+      "members": [
+        {
+          "name": "resourcesFilter",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.ResourcesFilter"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "serviceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -788,6 +1179,16 @@
             }
           ],
           "doc": "Booking policy violations for the slot."
+        },
+        {
+          "name": "isFromV2",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
         },
         {
           "name": "locked",

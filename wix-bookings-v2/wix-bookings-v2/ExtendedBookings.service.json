@@ -418,13 +418,14 @@
         },
         {
           "name": "title",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Session title at the time of booking."
+          "doc": "Session title at the time of booking.\nIf session doesn't exist at the time of the booking, service name is used."
         }
       ],
       "extra": {
@@ -496,6 +497,16 @@
             }
           ],
           "doc": "Resource's email at the time of booking."
+        },
+        {
+          "name": "explicitlyRequested",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates whether the resource was specifically requested or should be auto selected by the Server.\nThe value will be true if the resource was explicitly given in the request, otherwise false."
         },
         {
           "name": "name",
@@ -611,6 +622,16 @@
           "doc": "The end time of this slot in [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339)\nformat."
         },
         {
+          "name": "eventId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Calendar 3 event ID\nIf not empty, on all write flows (create / update) gets priority over session_id.\nso if both session_id and event_id are provided, the session_id that will be set on the booking will be based on the event_id.\nOtherwise, if event_id is empty on write flow,"
+        },
+        {
           "name": "location",
           "optional": true,
           "type": [
@@ -628,7 +649,7 @@
               "referenceType": "wix-bookings-v2.ExtendedBookings.BookedResource"
             }
           ],
-          "doc": "The resource assigned to the slot."
+          "doc": "The enriched resource assigned to the slot, can be either the requested resource or the resource chosen by the system.\nWhen populated, the given resource will be booked according to it's availability.\nWhen empty, If `skip_availability_validation` is `false`, a random available resource will be assigned to the slot upon confirmation,\notherwise one of the service resources will be assigned to the slot randomly upon confirmation."
         },
         {
           "name": "scheduleId",
@@ -801,7 +822,7 @@
               "referenceType": "wix-bookings-v2.ExtendedBookings.ExtendedFields"
             }
           ],
-          "doc": "Additional custom fields. This includes fields managed by Wix, by 3rd-party apps, and by the site.\n\nEmpty fields are not returned.\n"
+          "doc": "Custom field data for this object. Extended fields must be configured in the Wix Dev Center before they can be accessed with API calls."
         },
         {
           "name": "externalUserId",
@@ -1214,7 +1235,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -1224,7 +1245,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -1244,7 +1265,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -1254,7 +1275,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -1375,7 +1396,7 @@
               }
             }
           ],
-          "doc": "Data Extensions extended fields\nKey: Namespace\nValue: extended fields data in Struct format"
+          "doc": "Extended field data. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were configured.\n\nYou can only access fields for which you have the appropriate permissions.\n\nLearn more about [extended fields](https://dev.wix.com/docs/rest/articles/getting-started/extended-fields).\n"
         }
       ],
       "docs": {
@@ -1599,6 +1620,37 @@
             }
           ],
           "doc": "Location name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MultiServiceBookingInfo",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Multi service booking ID."
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Multi service booking type."
         }
       ],
       "docs": {
