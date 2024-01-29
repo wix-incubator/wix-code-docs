@@ -28,12 +28,11 @@ The Tasks API allows you to:
 ## Before you begin
 
 It is important to note the following before you start to code:
-- The `dueDate` field only accepts dates formatted as a JS Date object. This field doesn't 
-work with functional testing as JSON doesn't accept Date objects. 
+- The `dueDate` field only accepts dates formatted as a JS Date object. This field doesn't work with functional testing as JSON doesn't accept Date objects. 
 
 
 To use the Tasks API,
-import `tasks` from wix-crm.v2:
+import `tasks` from `wix-crm.v2`:
 
 ```js
 import { tasks } from 'wix-crm.v2';
