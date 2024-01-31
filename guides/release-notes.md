@@ -7,6 +7,30 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+### New APIs: Wix Bookings V2 Services Functions and Events
+
+`wix-bookings.v2`
+
+We added new APIs in the [Wix Bookings Services V2](/wix-bookings-v2/services) module that: 
+
++ [Create a service](/wix-bookings-v2/services/createservice)
++ [Update a service](/wix-bookings-v2/services/updateservice)
++ [Delete a service](/wix-bookings-v2/services/deleteservice)
++ Trigger events when a service is [created](/wix-bookings-v2/events/onservicecreated), [updated](/wix-bookings-v2/events/onserviceupdated), and [deleted](/wix-bookings-v2/events/onservicedeleted)
+
+
+(January 29, 2024)
+
+
+### New API: Rich Content Viewer Element
+
+`Wix Editor Elements ($w)`
+
+We added the new Rich Content Viewer Editor Element that allows you to display rich content created using the [Rich Content Editor](https://support.wix.com/en/article/cms-formerly-content-manager-working-with-rich-content-and-adding-it-to-a-dynamic-page) in the CMS (Content Management System). The [`content`]($w/richcontentviewer/content) property is an object used to set and get the content of the Rich Content Viewer element.
+
+(January 11, 2024) 
+
 ### New Developer Preview API: Wix Blog Draft Posts
 
 `wix-blog-backend`
@@ -40,9 +64,9 @@ The Workflows v2 API is being discontinued and will no longer be supported movin
 
 ### New APIs: Hamburger Menu Element
 
+We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 `Wix Editor Elements ($w)`
 
-We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 
 + [`HamburgerOpenButton`]($w/hamburgeropenbutton): The icon button that opens the hamburger menu.
 + [`HamburgerCloseButton`]($w/hamburgerclosebutton): The icon button that closes the hamburger menu.
