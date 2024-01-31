@@ -8,6 +8,21 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: Checkout Templates
+
+`wix-ecom-backend`
+
+The new [Checkout Templates API](/wix-ecom-backend/checkouttemplates) allows you to manage templates to share pre-populated checkouts with customers. When customers then create checkouts from these templates, the new checkouts already include information such as predefined line items, coupons, or other customizations. Functionality includes:
+
++ [Creating](/wix-ecom-backend/checkouttemplates/createcheckouttemplate), [updating](/wix-ecom-backend/checkouttemplates/updatecheckouttemplate), or [deleting](/wix-ecom-backend/checkouttemplates/deletecheckouttemplate) checkout templates.
++ [Creating a new checkout](/wix-ecom-backend/checkouttemplates/createcheckoutfromtemplate) from a checkout template.
++ [Getting](/wix-ecom-backend/checkouttemplates/getcheckouttemplate) or [querying](/wix-ecom-backend/checkouttemplates/querycheckouttemplates) checkout templates.
++ Events that trigger when a template is [created](/wix-ecom-backend/events/oncheckouttemplatecreated), [updated](/wix-ecom-backend/events/oncheckouttemplateupdated), [deleted](/wix-ecom-backend/events/oncheckouttemplatedeleted), or when a [template is used to create a checkout](/wix-ecom-backend/events/oncheckouttemplateused).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 31, 2024)
+
 ### New APIs: Wix Bookings V2 Services Functions and Events
 
 `wix-bookings.v2`
@@ -64,9 +79,9 @@ The Workflows v2 API is being discontinued and will no longer be supported movin
 
 ### New APIs: Hamburger Menu Element
 
-We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 `Wix Editor Elements ($w)`
 
+We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 
 + [`HamburgerOpenButton`]($w/hamburgeropenbutton): The icon button that opens the hamburger menu.
 + [`HamburgerCloseButton`]($w/hamburgerclosebutton): The icon button that closes the hamburger menu.
@@ -124,7 +139,7 @@ We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-
   - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
   - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
-(Novemeber 29, 2023)
+(November 29, 2023)
 
 ### New Developer Preview API: Reviews
 
