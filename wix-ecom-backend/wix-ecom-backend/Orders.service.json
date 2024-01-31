@@ -52,8 +52,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Cancels an order. The `order.status` field changes to `CANCELED`.",
-        "description": [],
+        "summary": "Cancels an order.",
+        "description": [
+          "The `cancelOrder()` function returns a Promise that resolves when the specified order is canceled and the `order.status` field changes to `CANCELED`."
+        ],
         "examples": [
           {
             "title": "cancelOrder example",
@@ -82,6 +84,86 @@
         }
       ],
       "syntaxName": "cancelOrder",
+      "isAdminMethod": true
+    },
+    {
+      "name": "createOrder",
+      "params": [
+        {
+          "name": "order",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Order"
+            }
+          ],
+          "doc": "Order info.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "order",
+        "order.billingInfo.contactDetails",
+        "order.billingInfo.contactDetails.firstName",
+        "order.channelInfo",
+        "order.lineItems",
+        "order.lineItems.catalogReference.appId",
+        "order.lineItems.catalogReference.catalogItemId",
+        "order.lineItems.descriptionLines.name",
+        "order.lineItems.itemType",
+        "order.lineItems.price",
+        "order.lineItems.productName",
+        "order.lineItems.productName.original",
+        "order.lineItems.taxDetails",
+        "order.priceSummary"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Orders.Order"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Newly created order.\n"
+      },
+      "docs": {
+        "summary": "Creates an order.",
+        "description": [
+          "The `createOrder()` function returns a Promise that resolves when the order is created.\n\n> **Notes:**\n> + If an item is digital - `lineItems[i].itemType.preset: DIGITAL` - then `lineItems[i].digitalFile` must be provided.\n> + If `lineItems[i].id` is passed, it must be either a valid GUID, or empty."
+        ],
+        "examples": [
+          {
+            "title": "createOrder example",
+            "body": [
+              "import { orders } from 'wix-ecom-backend';",
+              "  ",
+              " async function createOrder(order) {",
+              "   try {",
+              "     const result = await orders.createOrder(order);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "createOrder",
       "isAdminMethod": true
     },
     {
@@ -418,7 +500,6 @@
               " *   \"checkoutId\": \"62d01935-e0d3-4063-9e78-da099462e90c\",",
               " *   \"customFields\": [],",
               " *   \"cartId\": \"52fec024-4379-4a96-9237-9660030be6fe\",",
-              " *   \"isInternalOrderCreate\": false,",
               " *   \"payNow\": {",
               " *     \"subtotal\": {",
               " *       \"amount\": \"48.75\",",
@@ -469,6 +550,149 @@
       },
       "isVeloEvent": false,
       "syntaxName": "getOrder",
+      "isAdminMethod": true
+    },
+    {
+      "name": "searchOrders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.SearchOrdersOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Orders.SearchOrdersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of orders, given the provided paging, filtering, and sorting.",
+        "description": [
+          "Search Orders runs with these defaults, which you can override:\n\n- `createdDate` is sorted in `DESC` order\n- `cursorPaging.limit` is `100`\n- `filter: {\"status\": {\"$ne\": \"INITIALIZED\"}}` - other order statuses can be queried, but orders with `status: \"INITIALIZED\"` are never returned\n\nFor field support for filters and sorting, see [Orders: Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-e-commerce/orders/supported-filters-and-sorting).\n\nTo learn about working with _Search_ endpoints, see\n[API Query Language](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language), and\n[Sorting and Paging](https://dev.wix.com/docs/rest/articles/getting-started/sorting-and-paging)."
+        ],
+        "examples": [
+          {
+            "title": "searchOrders example",
+            "body": [
+              "import { orders } from 'wix-ecom-backend';",
+              "  ",
+              " async function searchOrders(options) {",
+              "   try {",
+              "     const result = await orders.searchOrders(options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "searchOrders",
+      "isAdminMethod": true
+    },
+    {
+      "name": "updateOrder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID.",
+          "required": true
+        },
+        {
+          "name": "order",
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.UpdateOrder"
+            }
+          ],
+          "doc": "",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "order"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-ecom-backend.Orders.Order"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Newly created order.\n"
+      },
+      "docs": {
+        "summary": "Updates an order.",
+        "description": [
+          "The `updateOrder()` function returns a Promise that resolves when the specified order's information is updated.\n\nCurrently, the following fields can be updated:\n+ `order.buyerInfo.email`\n+ `order.recipientInfo.address`\n+ `order.recipientInfo.contactDetails`\n+ `order.shippingInfo.logistics.shippingDestination.address`\n+ `order.shippingInfo.logistics.shippingDestination.contactDetails`\n\nTo update a field's value, include the new value in the `order` object in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Removing `buyerInfo` or `contactDetails` fields results in an error."
+        ],
+        "examples": [
+          {
+            "title": "updateOrder example",
+            "body": [
+              "import { orders } from 'wix-ecom-backend';",
+              "  ",
+              " async function updateOrder(id, order, options) {",
+              "   try {",
+              "     const result = await orders.updateOrder(id, order, options);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "updateOrder",
       "isAdminMethod": true
     }
   ],
@@ -2907,7 +3131,7 @@
       ],
       "docs": {
         "description": [
-          "Used for grouping line items and is sent on add to cart"
+          "Used for grouping line items. Sent when an item is added to a cart, checkout, or order."
         ]
       }
     },
@@ -3083,7 +3307,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description line color name in site's default language."
+          "doc": "Description line color name in the site's default language."
         },
         {
           "name": "translated",
@@ -3093,7 +3317,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated description line color name according to buyer language. Defaults to `original` when not provided."
+          "doc": "Description line color name translated into the buyer's language.\n\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -3893,7 +4117,7 @@
               "referenceType": "wix-ecom-backend.Orders.CursorPaging"
             }
           ],
-          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+          "doc": "Cursor pointing to page of results. `cursorPaging.cursor` cannot be used with 'filter' or 'sort'."
         },
         {
           "name": "filter",
@@ -3903,7 +4127,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "A filter object. See documentation [here](https://bo.wix.com/wix-docs/rnd/platformization-guidelines/api-query-language#platformization-guidelines_api-query-language_defining-in-protobuf)"
+          "doc": "Filter object.\n\nFor example, the following `filter` object will only return orders with payment statuses of paid and/or partially paid:\n`\"filter\": {\"paymentStatus\": {\"$in\": [\"PAID\", \"PARTIALLY_PAID\"]}}`\n\nLearn more about the filter format [here](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language#the-filter-section).\n"
         },
         {
           "name": "sort",
@@ -3920,7 +4144,7 @@
               }
             }
           ],
-          "doc": "Sort object in the form [{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]"
+          "doc": "Array of sort objects that specify the order in which results should be sorted.\n\nFor example, the following `sort` array will sort by `createdDate` in descending order:\n`\"sort\": [{\"fieldName\": \"createdDate\", \"order\":\"DESC\"}]`.\n\nLearn more about the sort format [here](https://dev.wix.com/docs/rest/articles/getting-started/api-query-language#the-sort-section).\n"
         }
       ],
       "extra": {
@@ -3950,7 +4174,7 @@
               "referenceType": "wix-ecom-backend.Orders.CursorPaging"
             }
           ],
-          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+          "doc": "Cursor pointing to page of results. `cursorPaging.cursor` cannot be used with 'filter' or 'sort'."
         }
       ],
       "docs": {
@@ -4738,7 +4962,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description line name in site's default language."
+          "doc": "Description line name in the site's default language."
         },
         {
           "name": "translated",
@@ -4748,7 +4972,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated description line item according to buyer language. Defaults to `original` when not provided."
+          "doc": "Description line name translated into the buyer's language.\n\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -5544,7 +5768,18 @@
     },
     {
       "name": "EntityDeletedEvent",
-      "members": [],
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -5612,7 +5847,7 @@
               }
             }
           ],
-          "doc": "Extended field data. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were configured.\n\nYou can only access fields for which you have the appropriate permissions.\n"
+          "doc": "Extended field data. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were configured.\n\nYou can only access fields for which you have the appropriate permissions.\n\nLearn more about [extended fields](https://dev.wix.com/docs/rest/articles/getting-started/extended-fields).\n"
         }
       ],
       "docs": {
@@ -7373,6 +7608,48 @@
       }
     },
     {
+      "name": "InvoicePaidEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.IdAndVersion"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "data",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.InvoiceFields"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'Deleted'`\n- `'Draft'`\n- `'Overdue'`\n- `'Paid'`\n- `'PartialAndOverdue'`\n- `'PartiallyPaid'`\n- `'Processing'`\n- `'Sent'`\n- `'Void'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "InvoiceSent",
       "members": [],
       "docs": {
@@ -7634,7 +7911,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom item type."
+          "doc": "Custom item type. When none of the preset types are suitable, specifies the custom type."
         },
         {
           "name": "preset",
@@ -7675,7 +7952,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom item type."
+          "doc": "Custom item type. When none of the preset types are suitable, specifies the custom type."
         },
         {
           "name": "preset",
@@ -8931,6 +9208,26 @@
       }
     },
     {
+      "name": "MaskedOrderLineItem",
+      "members": [
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.OrderLineItem"
+            }
+          ],
+          "doc": "Order line item to update"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "MembershipChargeItem",
       "members": [
         {
@@ -9830,6 +10127,7 @@
         },
         {
           "name": "lineItems",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -10583,7 +10881,7 @@
               "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Total price after discounts, and before tax."
         }
       ],
       "docs": {
@@ -10751,6 +11049,16 @@
             }
           ],
           "doc": "Total price after all discounts and tax."
+        },
+        {
+          "name": "totalPriceBeforeTax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Total price after all discounts excluding tax."
         }
       ],
       "docs": {
@@ -11271,7 +11579,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Line item weight. Measurement unit (KG or LB) is taken from `order.weightUnit`."
+          "doc": "Line item weight. Measurement unit matches the weight unit specified in `weightUnit` in the request."
         }
       ],
       "docs": {
@@ -11410,7 +11718,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Description line plain text value in site's default language."
+          "doc": "Description line plain text value in the site's default language."
         },
         {
           "name": "translated",
@@ -11420,7 +11728,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated description line plain text value according to buyer language. Defaults to `original` when not provided."
+          "doc": "Description line plain text value translated into the buyer's language.\n\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -12206,7 +12514,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Required.** Original price description in site's default language."
+          "doc": "__Required.__ Price description in the site's default language."
         },
         {
           "name": "translated",
@@ -12216,7 +12524,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated price description according to buyer language. Defaults to `original` when not provided."
+          "doc": "Price description translated into the buyer's language.\n\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -12316,7 +12624,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "__Required.__ Original item name in site's default language.\nMin: 1 character\nMax: 200 characters"
+          "doc": "__Required.__ Item name in the site's default language.\n\nMin: 1 character.\nMax: 200 characters.\n"
         },
         {
           "name": "translated",
@@ -12326,7 +12634,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Optional. Translated item name according to buyer language. Defaults to `original` when not provided.\nMin: 1 character\nMax: 400 characters"
+          "doc": "Item name translated into the buyer's language.\n\nMin: 1 character.\nMax: 400 characters.\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -13656,7 +13964,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The number of people participating in this service. For example, the number of people attending the class or the number of people per hotel room."
+          "doc": "The number of people participating in the service. For example, the number of people attending a class or the number of people per hotel room."
         },
         {
           "name": "scheduledDate",
@@ -13666,7 +13974,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "Date and time the service is supposed to be provided in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format. For example, the time of the class."
+          "doc": "Date and time the service is to be provided, in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) format.\nFor example, the start time of a class."
         }
       ],
       "docs": {
@@ -13817,7 +14125,7 @@
               "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Total price of shipping after discounts (when relevant), and before tax."
         }
       ],
       "docs": {
@@ -15577,6 +15885,7 @@
         },
         {
           "name": "lineItems",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -15927,7 +16236,7 @@
               "referenceType": "wix-ecom-backend.Orders.Price"
             }
           ],
-          "doc": "Deprecated - use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Total price after discounts, and before tax."
         }
       ],
       "docs": {
@@ -16004,6 +16313,61 @@
     },
     {
       "name": "UpdateOrderLineItemResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Order"
+            }
+          ],
+          "doc": "Updated order data"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateOrderLineItemsRequest",
+      "members": [
+        {
+          "name": "lineItems",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.MaskedOrderLineItem"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Order line items to update"
+        },
+        {
+          "name": "orderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Order ID"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateOrderLineItemsResponse",
       "members": [
         {
           "name": "order",
