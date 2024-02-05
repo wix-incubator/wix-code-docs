@@ -8,6 +8,25 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+## New Release: More eCommerce APIs
+
+`wix-ecom-backend`
+
+[Wix eCommerce](https://www.wix.com/velo/reference/wix-ecom-backend/introduction) introduces new functionality to the [Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders/introduction), [Order Transactions](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/introduction), and [Order Invoices](https://www.wix.com/velo/reference/wix-ecom-backend/orderinvoices/introduction) APIs that provide developers with a growing set of services for customizing eCommerce functionality on Wix sites. The APIs include the following endpoints and webhooks:
+
++ [Get](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder), [create](https://www.wix.com/velo/reference/wix-ecom-backend/orders/createorder), and [update](https://www.wix.com/velo/reference/wix-ecom-backend/orders/updateorder) orders.
++ [Add payment](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/addpayments) records to an order.
++ [Update a payment status](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/updatepaymentstatus) or [bulk update multiple payment statuses](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/bulkupdatepaymentstatuses).
++ [List invoices for multiple orders](https://www.wix.com/velo/reference/wix-ecom-backend/orderinvoices/listinvoicesformultipleorders).
++ Events that trigger when an order is [created](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercreated), [updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderupdated), [approved](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved), or [canceled](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled).
++ Events that trigger when [payment or refund details are added to an order](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated), or when an order's [payment status is updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderpaymentstatusupdated).
+
+As part of this release, several [wix-stores-backend](https://www.wix.com/velo/reference/wix-stores-backend) functions and events have been deprecated and will be removed on June 30, 2024.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(February 4, 2024)
+
 ### New API: Checkout Templates
 
 `wix-ecom-backend`
