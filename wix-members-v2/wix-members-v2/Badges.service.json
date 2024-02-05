@@ -62,13 +62,12 @@
       "docs": {
         "summary": "Assigns a badge to site members.",
         "description": [
-          "The `assignBadge()` function returns a Promise that resolves when the specified badge is assigned to the specified members.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend"
+          "The `assignBadge()` function returns a Promise that resolves when the specified badge is assigned to the specified members.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset."
         ],
         "examples": [
           {
             "title": "Assign a badge.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -146,13 +145,12 @@
       "docs": {
         "summary": "Creates a badge.",
         "description": [
-          "The `createBadge()` function returns a Promise that resolves to the newly created badge.\n\nNew badges do not have any badge permissions by default. You can set [badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge) from the Badges page in the Dashboard.\n\nIf `backgroundColor` or `textColor` are not specified, they default to `\"#796EFF\"` (purple) and `\"#FFFFFF\"` (white) respectively.\n\nThis function is not a universal function and runs only on the backend"
+          "The `createBadge()` function returns a Promise that resolves to the newly created badge.\n\nNew badges do not have any badge permissions by default. You can set [badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge) from the Badges page in the Dashboard.\n\nIf `backgroundColor` or `textColor` are not specified, they default to `\"#796EFF\"` (purple) and `\"#FFFFFF\"` (white) respectively."
         ],
         "examples": [
           {
             "title": "Create a new badge.",
             "body": [
-              "",
               "import { badges } from 'wix-members-backend';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -183,7 +181,7 @@
               "/* Promise resolves to:",
               " * {",
               " *  \"_createdDate\": \"2024-01-18T13:08:22.116Z\",",
-              " *  \"_id\": \"8416dce6-4dbf-4415-bc03-109412742b4b\",",
+              " *  \"_id\": \"b025f7a8-9c3e-4f5d-a2e7-8dc1bf3ca0f1\",",
               " *  \"_updatedDate\": \"2024-01-18T13:08:22.116Z\",",
               " *  \"backgroundColor\": \"#796EFF\",",
               " *  \"description\": \"Recognized Contributor\",",
@@ -195,6 +193,81 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Create an expert contributor badge. ",
+            "body": [
+              "import { badges } from 'wix-members-backend';",
+              "import { elevate } from 'wix-auth';",
+              "import wixData from 'wix-data';",
+              "",
+              "/* Sample badge value:",
+              " * {",
+              " *     backgroundColor: \"#42A5F5\",",
+              " *     description: \"Expert Contributor Badge\",",
+              " *     icon: \"http://example.com/expert-badge-icon.svg\",",
+              " *     permissionsEnabled: true,",
+              " *     textColor: \"#FFFFFF\",",
+              " *     title: \"Expert Contributor Badge\"",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export async function createExpertContributorBadge(memberId) {",
+              "  const EXPERT_THRESHOLD = 5; // Minimum number of blog posts to be considered an expert contributor",
+              "  const SUBJECT_KEYWORD = 'velo'; // Subject keyword for blog posts",
+              "",
+              "  // Count the number of blog posts created by the member with the given ID on the subject of 'velo'",
+              "  const blogPostsCount = await wixData.query('BlogPosts')",
+              "    .eq('author', memberId)",
+              "    .contains('tags', SUBJECT_KEYWORD)",
+              "    .count();",
+              "",
+              "  // Count if the member meets the criteria to be an expert contributor",
+              "  if (blogPostsCount >= EXPERT_THRESHOLD) {",
+              "    const expertBadge = {",
+              "      backgroundColor: \"#42A5F5\",",
+              "      description: \"Expert Contributor Badge\",",
+              "      icon: \"http://example.com/expert-badge-icon.svg\",",
+              "      permissionsEnabled: true,",
+              "      textColor: \"#FFFFFF\",",
+              "      title: \"Expert Contributor Badge\"",
+              "    };",
+              "",
+              "    try {",
+              "      const elevatedCreateBadge = elevate(badges.createBadge);",
+              "      const newExpertBadge = await elevatedCreateBadge(expertBadge);",
+              "",
+              "      console.log('Expert badge created for member ', memberId, ': ', newExpertBadge);",
+              "      return newExpertBadge;",
+              "    } catch (error) {",
+              "        console.error('Error creating expert badge:', error);",
+              "        // Handle the error",
+              "    }",
+              "  } else {",
+              "      console.log('Member with ID ', memberId, ' does not meet the criteria for the expert badge.');",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *  \"_createdDate\": \"2024-02-02T12:00:00.000Z\",",
+              " *  \"_id\": \"unique-id-for-expert-badge-1\",",
+              " *  \"_updatedDate\": \"2024-02-02T12:00:00.000Z\",",
+              " *  \"backgroundColor\": \"#42A5F5\",",
+              " *  \"description\": \"Expert Contributor Badge\",",
+              " *  \"icon\": \"http://example.com/expert-badge-icon.svg\",",
+              " *  \"permissionsEnabled\": true,",
+              " *  \"slug\": \"expert-contributor-badge-1\",",
+              " *  \"textColor\": \"#FFFFFF\",",
+              " *  \"title\": \"Expert Contributor Badge\"",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This code automates the creation of an \"Expert Contributor Badge\" for users with a specific number of blog posts on the subject 'velo'."
+            }
           }
         ]
       },
@@ -237,13 +310,12 @@
       "docs": {
         "summary": "Deletes a badge.",
         "description": [
-          "The `deleteBadge()` function returns a Promise that resolves when the specified badge is deleted.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend"
+          "The `deleteBadge()` function returns a Promise that resolves when the specified badge is deleted.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset."
         ],
         "examples": [
           {
             "title": "Delete existing badge.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -257,7 +329,7 @@
               "    console.log(\"Badge deleted: \", deletedBadge);",
               "    return deletedBadge;",
               "  } catch (error) {",
-              "      console.error(error);",
+              "    console.error(error);",
               "    // Handle the error",
               "",
               "  }",
@@ -308,13 +380,12 @@
       "docs": {
         "summary": "Retrieves information about a badge.",
         "description": [
-          "The `getBadge` function returns a Promise that resolves when the badge information is retrieved."
+          "The `getBadge` function returns a Promise that resolves when the badge information is retrieved.\n\nThe `_id` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
             "title": "Get badge details.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -382,13 +453,12 @@
       "docs": {
         "summary": "Retrieves member count per badge.",
         "description": [
-          "The `getMemberCountsPerBadge` function returns a Promise that resolves when the member counts of each badge are retrieved."
+          "The `getMemberCountsPerBadge` function returns a Promise that resolves when the member counts of each badge are retrieved.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
             "title": "Get member count for badge.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -471,13 +541,12 @@
       "docs": {
         "summary": "Lists the badges.",
         "description": [
-          "The `listBadges` function returns a Promise that resolves when the badges are retrieved. Retrieves up to 1000 badges, given the requested paging. Default paging.limit is 100, paging.offset - 0."
+          "The `listBadges` function returns a Promise that resolves when the badges are retrieved. Retrieves up to 1000 badges, given the requested paging. Default paging.limit is 100, paging.offset - 0.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
             "title": "Lists all badges.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -600,13 +669,12 @@
       "docs": {
         "summary": "Lists the badges assigned to each of the specified site members.",
         "description": [
-          "The `listBadgesPerMember()` function returns a Promise that resolves to a list of badge IDs associated with each of the specified members."
+          "The `listBadgesPerMember()` function returns a Promise that resolves to a list of badge IDs associated with each of the specified members.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
             "title": "List badges assigned to specified members.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -695,13 +763,12 @@
       "docs": {
         "summary": "Lists the IDs of all members assigned to a badge.",
         "description": [
-          "The `listMembersByBadge()` function returns a Promise that resolves to a list of member IDs assigned to the specified badge.\n\nRetrieves up to 1000 site members who have a specified badge. Default `paging.limit` is 100, `paging.offset` - 0."
+          "The `listMembersByBadge()` function returns a Promise that resolves to a list of member IDs assigned to the specified badge.\n\nRetrieves up to 1000 site members who have a specified badge. Default `paging.limit` is 100, `paging.offset` - 0.\n\nThe `_id` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend."
         ],
         "examples": [
           {
             "title": "List member IDs with assigned badges.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -802,13 +869,12 @@
       "docs": {
         "summary": "Removes site members from an assigned badge.",
         "description": [
-          "The `unassignBadge()` function returns a Promise that resolves when the specified members are removed as holders of the specified badge.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend"
+          "The `unassignBadge()` function returns a Promise that resolves when the specified members are removed as holders of the specified badge.\n\nThe `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset."
         ],
         "examples": [
           {
             "title": "Remove assigned badge from member.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -891,13 +957,12 @@
       "docs": {
         "summary": "Updates a badge.",
         "description": [
-          "The `updateBadge()` function returns a Promise that resolves to the updated badge.\n\nOnly the properties passed in the `BadgeInfo` object will be updated. All other properties will remain the same.\n\nBecause the badge `slug` is based on the badge `title`, if you change `title`, `slug` is updated accordingly.\n\n`badgeId` must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend"
+          "The `updateBadge()` function returns a Promise that resolves to the updated badge.\n\nOnly the properties passed in the `BadgeInfo` object will be updated. All other properties will remain the same.\n\nBecause the badge `slug` is based on the badge `title`, if you change `title`, `slug` is updated accordingly.\n\n`badgeId` must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset."
         ],
         "examples": [
           {
             "title": "Update existing badge.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -932,13 +997,13 @@
               " *  \"_createdDate\": \"2024-01-18T10:27:14.878Z\",",
               " *  \"_id\": \"215be5d9-4b32-4861-9eb5-2152930dd0b4\",",
               " *  \"_updatedDate\": \"2024-01-18T14:50:36.174Z\",",
-              " *  \"backgroundColor\": \"#42A5F5\",",
-              " *  \"description\": \"Outstanding Contributor Badge\",",
-              " *  \"icon\": \"https://example.com/custom-badge-icon.svg\",",
+              " *  \"backgroundColor\": \"#FED8B1\",",
+              " *  \"description\": \"Contributed 5 posts this month\",",
+              " *  \"icon\": \"https://static.wixstatic.com/shapes/132b9a3d51884000acaf705eeeb0e296.svg\",",
               " *  \"permissionsEnabled\": true,",
               " *  \"slug\": \"super-contributor\",",
-              " *  \"textColor\": \"#FFFF00\",",
-              " *  \"title\": \"Super Contributor\"",
+              " *  \"textColor\": \"#000000\",",
+              " *  \"title\": \"Rising Star\"",
               " * }",
               " */"
             ]
@@ -991,13 +1056,12 @@
       "docs": {
         "summary": "Updates badges' display order.",
         "description": [
-          "This function is not a universal function and runs only on the backend"
+          "The `badgeId` parameter must be an ID from your site's `Members/Badges` collection. Typically, you retrieve the ID from the collection using a query or through a dataset.\n\nThis function is not a universal function and runs only on the backend"
         ],
         "examples": [
           {
             "title": "Updates badge display order.",
             "body": [
-              "",
               "import { badges } from 'wix-members.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -1039,7 +1103,7 @@
               " *    },",
               " *    {",
               " *      \"_createdDate\": \"2024-01-18T13:53:11.659Z\",",
-              " *      \"_id\": \"b657b857-774a-4dde-9b0e-f364d61092ea\",",
+              " *      \"_id\": \"aedd9a3d-1efa-45ce-85d6-df09a167e37e\",",
               " *      \"_updatedDate\": \"2024-01-18T13:53:11.659Z\",",
               " *      \"backgroundColor\": \"#796EFF\",",
               " *      \"description\": \"Completed challenging tasks and achieved milestones.\",",
@@ -1277,7 +1341,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the badge has special permissions\nto access specific members-only pages.\nWhen `true`, members with the badge receive special permissions,\nand site contributors can\n[manage badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge)\nin the site dashboard.\nWhen `false`, members with the badge receive no special permissions."
+          "doc": "Whether the badge has special permissions\nto access specific members-only pages.\nWhen `true`, members with the badge receive special permissions,\nand site contributors can\n[manage badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge)\nin the Dashboard.\nWhen `false`, members with the badge receive no special permissions."
         },
         {
           "name": "slug",
@@ -2201,7 +2265,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the badge has special permissions\nto access specific members-only pages.\nWhen `true`, members with the badge receive special permissions,\nand site contributors can\n[manage badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge)\nin the site dashboard.\nWhen `false`, members with the badge receive no special permissions."
+          "doc": "Whether the badge has special permissions\nto access specific members-only pages.\nWhen `true`, members with the badge receive special permissions,\nand site contributors can\n[manage badge permissions](https://support.wix.com/en/article/setting-permissions-for-a-member-badge)\nin the Dashboard.\nWhen `false`, members with the badge receive no special permissions."
         },
         {
           "name": "slug",
