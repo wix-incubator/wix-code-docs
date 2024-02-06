@@ -8,7 +8,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
-### Updated API: Pricing Plans V2
+### Updated API: Pricing Plans v2
 
 `wix-pricing-plans.v2`
 
@@ -17,6 +17,8 @@ We've updated the [`wix-pricing-plans.v2`](https://www.wix.com/velo/reference/wi
 - [`Orders`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders):
   - [`createOfflineOrder()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/createofflineorder): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
   - [`getOfflineOrderPreview()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/getofflineorderpreview): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
+
+  (February 6, 2024)
 
 ## New Release: More eCommerce APIs
 
