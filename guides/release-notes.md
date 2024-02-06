@@ -7,6 +7,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Deprecated: Workflows API
+
+`wix-crm-backend`
+
+The Workflows API is being discontinued and will stop working on June 30, 2024. 
+There will not be a replacement for this API.
+
+(February 6, 2023)
+
 ### New API: Rich Content Viewer Element
 
 `Wix Editor Elements ($w)`
