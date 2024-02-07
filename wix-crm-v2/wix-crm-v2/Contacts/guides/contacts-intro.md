@@ -62,7 +62,7 @@ Functions in the Labels API are restricted and only run if you elevate permissio
 
 ## Terminology
 
-- **Labels:** Tags that enable site admins to organize and group contacts. 
-- **Extended fields:** Additional properties that store contact information.
+- **Label:** A tag that enables site admins to organize and group contacts. 
+- **Extended field:** An additional property that store contact information.
 - **Source contact:** A contact you intend to merge into a target contact. These contacts get deleted after being merged. 
 - **Target contact:** A contact that receives merged data from source contacts. 

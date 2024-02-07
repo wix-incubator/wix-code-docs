@@ -19,10 +19,10 @@ With [Tasks](wix-crm-v2/tasks), site admins can efficiently create and manage ta
 
 The Tasks API allows you to:
 
-- [Create](wix-crm-v2/tasks/createtask) and [update](wix-crm-v2/tasks/updatetask) a task with the option to set a due date or link the task to a contact.
-- [Count](wix-crm-v2/tasks/counttasks) the total number of tasks you have, or count the number of tasks based on specied filters. For example, you can count the number of tasks that are linked to a specifc contact. 
+- [Create](wix-crm-v2/tasks/createtask) and [update](wix-crm-v2/tasks/updatetask) tasks with the option to set a due date or link the task to a contact.
+- [Count](wix-crm-v2/tasks/counttasks) the total number of tasks you have, or count the number of tasks based on provided filters. For example, you can count the number of tasks that are linked to a specific contact. 
 - [Retrieve](wix-crm-v2/tasks/querytasks) tasks. 
-- [Prioritize](wix-crm-v2/tasks/movetaskafter) your tasks by adjusting their display order.
+- [Prioritize](wix-crm-v2/tasks/movetaskafter) your tasks by adjusting the display order.
 - [Delete](wix-crm-v2/tasks/deletetask) tasks you no longer need. 
 
 ## Before you begin
@@ -50,4 +50,5 @@ Functions in the Tasks API are restricted and only run if you elevate permission
 
 ## Terminology
 
-- **Tasks**: A specific activity, action, or assignment that needs to be completed by a site admin. 
+- **Task**: A specific activity, action, or assignment that needs to be completed by a site admin. 
+- **Reminder notification**: A notification that gets sent if the task has a due date. The reminder is sent the day before the due date and on the due date. 

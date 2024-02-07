@@ -20,8 +20,7 @@ title: Introduction
 
 
 The Labels API provides functionality for managing labels for your site. Labels allow site admins to segment or categorize the contacts in their Contact List. Using Labels enchances the CRM by allowing site admins to customize data organization according to their needs. 
-
-You can use labels to target specific audiences for email campaigns or bulk actions. Learn more about [labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list).
+For example, you can use labels to target specific audiences for email campaigns or bulk actions. Learn more about [labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list).
  
 With the Labels API, you can:
 - [Create](wix-crm-v2/labels/findorcreatelabel) a new label.
@@ -54,6 +53,6 @@ Functions in the Labels API are restricted and only run if you elevate permissio
 
 ## Terminology
 
-- **Labels**: Tags that are applied to contacts to help site admins organzie and group contacts with shared characteristics. Labels can be user-defined or system-defined. 
-    - **User-defined labels**: Labels that are custom created by site admins.
-    - **System-defined labels**: Labels that are pre-defined in your site and cannot be deleted from the CRM.
+- **Label**: A tag that is applied to contacts to help site admins organzie and group contacts with shared characteristics. Labels can be user-defined or system-defined. 
+    - **User-defined label**: A label that is custom created by site admins.
+    - **System-defined label**: A label that is pre-defined in your site and cannot be deleted from the CRM.
