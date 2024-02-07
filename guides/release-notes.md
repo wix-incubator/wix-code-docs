@@ -7,6 +7,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
+### New API: WixFormsV2 Element
+
+`Wix Editor Elements ($w)`
+
+The new WixFormsV2 Element displays customizable forms, collects all the info that a site visitor entered into the form fields, and lets you track all form submissions in the dashboard.
+
+(February 7, 2024) 
+
 ### Deprecated: Workflows API
 
 `wix-crm-backend` 
