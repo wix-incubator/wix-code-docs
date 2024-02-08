@@ -96,6 +96,16 @@
           "required": true
         },
         {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the member ordering the plan.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -107,7 +117,7 @@
         }
       ],
       "requiredFields": [
-        "options.memberId",
+        "memberId",
         "planId"
       ],
       "ret": {
@@ -136,9 +146,9 @@
             "body": [
               "import { orders } from 'wix-pricing-plans.v2';",
               "  ",
-              " async function createOfflineOrder(planId, options) {",
+              " async function createOfflineOrder(planId, memberId, options) {",
               "   try {",
-              "     const result = await orders.createOfflineOrder(planId, options);",
+              "     const result = await orders.createOfflineOrder(planId, memberId, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -169,6 +179,16 @@
           "required": true
         },
         {
+          "name": "memberId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID of the buyer the previewed order is for.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -180,7 +200,7 @@
         }
       ],
       "requiredFields": [
-        "options.memberId",
+        "memberId",
         "planId"
       ],
       "ret": {
@@ -209,9 +229,9 @@
             "body": [
               "import { orders } from 'wix-pricing-plans.v2';",
               "  ",
-              " async function getOfflineOrderPreview(planId, options) {",
+              " async function getOfflineOrderPreview(planId, memberId, options) {",
               "   try {",
-              "     const result = await orders.getOfflineOrderPreview(planId, options);",
+              "     const result = await orders.getOfflineOrderPreview(planId, memberId, options);",
               "",
               "     return result;",
               "   } catch (error) {",
@@ -319,7 +339,7 @@
               "referenceType": "wix-pricing-plans-v2.Orders.ManagementGetOrderOptions"
             }
           ],
-          "doc": "Options to use when getting an order.\n",
+          "doc": "Options to use when getting an order.",
           "required": false
         }
       ],
@@ -381,7 +401,7 @@
               "referenceType": "wix-pricing-plans-v2.Orders.ManagementListOrdersOptions"
             }
           ],
-          "doc": "Filtering, sorting, and pagination options.\n",
+          "doc": "Filtering, sorting, and pagination options.",
           "required": false
         }
       ],
@@ -1507,6 +1527,75 @@
       }
     },
     {
+      "name": "CreateExternalOrderOptions",
+      "members": [
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateExternalOrderRequest",
+      "members": [
+        {
+          "name": "planId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Plan ID."
+        },
+        {
+          "name": "submissionId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Form submission id that was submitted together with the order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateExternalOrderResponse",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Orders.Order"
+            }
+          ],
+          "doc": "Created order"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "CreateGuestOnlineOrderOptions",
       "members": [
         {
@@ -1663,15 +1752,6 @@
             }
           ],
           "doc": "Coupon code to apply."
-        },
-        {
-          "name": "memberId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the member ordering the plan.\nThis field is required when creating an offline order."
         },
         {
           "name": "paid",
@@ -1978,7 +2058,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -1988,7 +2068,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -2008,7 +2088,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -2018,7 +2098,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -2038,7 +2118,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -2098,7 +2178,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -2108,7 +2188,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dispatching"
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -2138,7 +2218,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -2281,7 +2361,18 @@
     },
     {
       "name": "EntityDeletedEvent",
-      "members": [],
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -2567,15 +2658,6 @@
             }
           ],
           "doc": "Coupon code to apply."
-        },
-        {
-          "name": "memberId",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Member ID for the buyer who might order the plan offline.\nThis field is required to get an offline order preview."
         },
         {
           "name": "startDate",
@@ -3686,26 +3768,6 @@
             }
           ],
           "doc": "Object containing paging-related data (number of orders returned, offset)."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "MemberQueryOrdersOptions",
-      "members": [
-        {
-          "name": "query",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-pricing-plans-v2.Orders.QueryV2"
-            }
-          ],
-          "doc": ""
         }
       ],
       "docs": {
