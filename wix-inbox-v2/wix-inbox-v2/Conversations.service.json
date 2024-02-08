@@ -33,18 +33,18 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-inbox-v2.Conversations.GetConversationResponse"
+                  "referenceType": "wix-inbox-v2.Conversations.Conversation"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "Retrieved conversation.\n"
       },
       "docs": {
         "summary": "Retrieves a conversation by conversation ID.",
         "description": [
-          "If you don't have the conversation ID,\nuse [`getOrCreateConversation()`](#get-or-create-conversation)\nto retrieve the conversation with the visitor, contact, or member ID.\n"
+          "If you don't have the conversation ID,\nuse [`getOrCreateConversation()`](#getorcreateconversation)\nto retrieve the conversation with the visitor, contact, or member ID.\n"
         ],
         "examples": [
           {
@@ -143,7 +143,6 @@
           {
             "title": "Get or create a new conversation with a member ",
             "body": [
-              "",
               "/****************************",
               " * Backend code - inbox.jsw *",
               " ****************************/",
@@ -234,7 +233,8 @@
               "    const formData = await sendFormData(dataToInsert);",
               "    console.log(`The form data is ${formData}`);",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "The page code passes input values submitted by a logged-in member to the backend `sendFormData` function. This function retrieves the logged-in member ID, gets an existing or creates a new converation object and uses the conversation ID to send a form message to the site owner's inbox dashboard."
@@ -533,6 +533,26 @@
   ],
   "messages": [
     {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "AddConversationChannelsOptions",
       "members": [
         {
@@ -722,7 +742,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'CHAT'`\n- `'EMAIL'`\n- `'FACEBOOK'`\n- `'INSTAGRAM'`\n- `'SMS'`\n- `'UNKNOWN_CHANNEL_TYPE'`\n- `'WHATSAPP'`"
+          "doc": "Supported values:\n- `'AI_ASSISTANT'`\n- `'CHAT'`\n- `'EMAIL'`\n- `'FACEBOOK'`\n- `'INSTAGRAM'`\n- `'SMS'`\n- `'UNKNOWN_CHANNEL_TYPE'`\n- `'WHATSAPP'`"
         },
         {
           "name": "recipients",
@@ -828,7 +848,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -838,7 +858,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -858,7 +878,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -868,7 +888,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -906,8 +926,261 @@
       }
     },
     {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Empty",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
       "docs": {
         "description": [
           ""
