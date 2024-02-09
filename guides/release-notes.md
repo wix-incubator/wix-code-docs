@@ -8,6 +8,35 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### New API: WixFormsV2 Element
+
+`Wix Editor Elements ($w)`
+
+The new WixFormsV2 Element displays customizable forms, collects all the info that a site visitor entered into the form fields, and lets you track all form submissions in the dashboard.
+
+(February 7, 2024) 
+
+### Deprecated: Workflows API
+
+`wix-crm-backend` 
+
+The Workflows API is being discontinued and will stop working on June 30, 2024. 
+There will not be a replacement for this API.
+
+(February 6, 2024)
+
+### Updated API: Pricing Plans v2
+
+`wix-pricing-plans.v2`
+
+We've updated the [`wix-pricing-plans.v2`](https://www.wix.com/velo/reference/wix-pricing-plans-v2) module, which is currently released as a developer preview. Note that the changes break existing code that uses the following functions, which requires updates to your code:
+
+- [`Orders`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders):
+  - [`createOfflineOrder()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/createofflineorder): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
+  - [`getOfflineOrderPreview()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/getofflineorderpreview): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
+
+  (February 6, 2024)
+
 ## New Release: More eCommerce APIs
 
 `wix-ecom-backend`
