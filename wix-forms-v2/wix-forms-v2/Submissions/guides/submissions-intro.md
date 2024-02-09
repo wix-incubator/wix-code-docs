@@ -22,25 +22,23 @@ title: Introduction
 > **Note**:
 > The Submissions API is only available in the Wix Studio editor.
 
-The Form Submissions API allows you to create and manage the submissions made on a form. 
+The Submissions API allows you to create and manage the submissions made on a form. 
 
-With the Form Submissions API, you can:
+With the Submissions API, you can:
 - [Query](wix-forms-v2/submissions/querysubmissionsbynamespace) and [manage](wix-forms-v2/submissions/createsubmission) a submission.
 - [Retrieve](wix-forms-v2/submissions/countsubmission) the total number of submissions per form.
 - [Confirm](wix-forms-v2/submissions/confirmsubmission) a submission or [mark](wix-forms-v2/submissions/bulkmarksubmissionsasseen) submissions as seen. 
 - Retrieve a [media upload file](wix-forms-v2/submissions/getmediauploadurl) URL to use in a submission for forms that include a field for uploading files. 
 
+## Before you begin
 
-To use the Form Submissions API, import `{ submissions }` from the `wix-forms.v2` module. 
+It’s important to note the following points before starting to code:
+- You must first have a form on your site in order to manage Submissions.  
+- To use the Submissions API, import `{ submissions }` from the `wix-forms.v2` module. 
 
 ```javascript
 import { submissions } from 'wix-forms.v2';
 ```
-
-## Before you begin
-
-It’s important to note the following points before starting to code:
-- You must first have a form on your site in order to manage form submissions.  
 
 
 ## Terminology
