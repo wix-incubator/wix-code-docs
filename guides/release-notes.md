@@ -7,6 +7,18 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Tasks V2
+
+`wix-crm-v2`
+
+The updated Tasks API allows you to create and manage tasks on your site. Functionality includes:
+- [Create](/wix-crm-v2/tasks/createtask), [update](/wix-crm-v2/tasks/updatetask), and [delete](/wix-crm-v2/tasks/deletetask) tasks.
+- [Get](/wix-crm-v2/tasks/gettask) and [query](/wix-crm-v2/tasks/querytasks) tasks.
+- [Count](/wix-crm-v2/tasks/counttasks) tasks.
+- [Move](/wix-crm-v2/tasks/movetaskafter) a task's position in the display. 
+
+(February 12, 2024)
+
 
 ### New API: WixFormsV2 Element
 
@@ -37,7 +49,7 @@ We've updated the [`wix-pricing-plans.v2`](https://www.wix.com/velo/reference/wi
 
   (February 6, 2024)
 
-## New Release: More eCommerce APIs
+### New Release: More eCommerce APIs
 
 `wix-ecom-backend`
 
