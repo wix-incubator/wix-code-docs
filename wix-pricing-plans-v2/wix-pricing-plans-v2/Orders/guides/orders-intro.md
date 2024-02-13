@@ -15,7 +15,7 @@ title: Introduction
 
 
 
-The Pricing Plans Orders API allows you to manage orders for your pricing plans. 
+The Orders API allows you to manage orders for your pricing plans. 
 
 With the Pricing Plans Orders API, you can:
 - [Get](wix-pricing-plans-v2/orders/managementgetorder) and [list](wix-pricing-plans-v2/orders/managementlistorders) orders.

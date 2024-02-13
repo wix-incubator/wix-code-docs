@@ -189,7 +189,7 @@ Every pricing plan order corresponds to a Wix subscription, including orders for
 
 > **Notes**: 
 >
-> + Wix pricing plans are 1 of several Wix subscriptions available from the Subscriptions page. For example, the Subscriptions page also includes Wix Stores subscriptions and Wix invoice subscriptions.
+> + Wix pricing plans are 1 of several Wix subscriptions available from the [Subscriptions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsubscriptions%3FreferralInfo%3Dvelo-docs) page. For example, the Subscriptions page also includes Wix Stores subscriptions and Wix invoice subscriptions.
 >
 > + Pricing plans can be 1 of 3 different pricing models: `singlePaymentForDuration`, `singlePaymentUnlimited`, or `subscription`. Orders for all pricing plan models are displayed on the Subscriptions page, not just `subscription` type models. See [Pricing Models](wix-pricing-plans-v2/introduction#pricing-models) to learn more.  
 
