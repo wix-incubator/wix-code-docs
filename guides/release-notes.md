@@ -7,6 +7,23 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New APIs: Dashboard
+
+The [Dashboard API](https://www.wix.com/velo/reference/wix-dashboard) has two new functions:
++ [`observeState()`](https://www.wix.com/velo/reference/wix-dashboard/observestate) allows you to react to changes in a dashboard page's environment.
++ [`getPageUrl()`](https://www.wix.com/velo/reference/wix-dashboard/getpageurl) allows you to retrieve the full URL for any dashboard page.
+
+(February 12, 2024)
+
+
+### New API: WixFormsV2 Element
+
+`Wix Editor Elements ($w)`
+
+The new WixFormsV2 Element displays customizable forms, collects all the info that a site visitor entered into the form fields, and lets you track all form submissions in the dashboard.
+
+(February 7, 2024) 
+
 ### Deprecated: Workflows API
 
 `wix-crm-backend` 
