@@ -8,13 +8,14 @@
   "docs":
     { "summary": "The wix-dashboard module contains functionality for interacting with your site's dashboard in the code for dashboard pages.",
       "description":
-        [ "The Wix Dashboard API allows the code in [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages) to interact with the Wix dashboard enviroment.",
+        [ "The Wix Dashboard API allows the code for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages) to interact with the Wix dashboard environment.",
+          "",
           "",
           "Using the module you can:",
           "- Navigate users to other pages in the dashboard.",
           "- Display toast notifications at the top of the dashboard.  ",
           "  ![Toast notification](/images/toast_example.png \"Toast notification\")",
-          "<!-- Retrieve data about changes to the dashboard's state and use it to update your page in real time. -->",
+          "- Retrieve data about changes to the dashboard's state and use it to update your page in real time.",
           "",
           "To use the Wix Dashboard API, import the applicable function from `wix-dashboard`:",
           "",
@@ -29,24 +30,59 @@
         {  } },
   "properties": [],
   "operations":
-    [ { "name": "navigate",
+    [ { "name": "getPageUrl",
         "labels": [],
         "nameParams": [],
         "params":
-          [ { "name": "pageId",
-              "type": "string",
-              "doc": "ID of the page to navigate to. Use the [Dashboard Page IDs](#dashboard-page-ids) table to find the appropriate ID." } ],
+          [ { "name": "destination",
+              "type": "wix-dashboard.Destination",
+              "doc": "URL destination details." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "string" ] },
+            "doc": "Fulfilled - The URL of the dashboard page." },
+        "locations":
+          [ { "lineno": 15,
+              "filename": "navigation.js" } ],
+        "docs":
+          { "summary": "Gets the full URL for a dashboard page.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Get the URL of the dashboard home page",
+                  "body":
+                    [ "import { getPageUrl } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "console.log('Home page url is:', await getPageUrl({pageId: 'home'}));" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "navigate",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "destination",
+              "type": "wix-dashboard.Destination",
+              "doc": "Destination to navigate to." } ],
         "ret":
           { "type": "void" },
         "locations":
           [ { "lineno": 1,
-              "filename": "navigate.js" } ],
+              "filename": "navigation.js" } ],
         "docs":
           { "summary": "Navigates the user to another page in the dashboard.",
             "description":
-              [ "> This function can only be used in page code files for [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages).",
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
-                "If an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard." ],
+                "If a `destination` object with an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard." ],
             "links": [],
             "examples":
               [ { "title": "Navigate to the dashboard home page",
@@ -55,7 +91,46 @@
                       "",
                       "// ...",
                       "",
-                      "navigate('home');" ],
+                      "navigate({pageId: 'home'});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "observeState",
+        "labels":
+          [ "changed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "observer",
+              "type": "wix-dashboard.observeStateCallback",
+              "doc": "Callback function for receiving state data." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "summary": "Defines a callback function that receives changes to the state of a dashboard page's environment.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "Use the data passed to `observeState()`'s  callback function to dynamically update a dashboard page's content.",
+                "",
+                "The callback function passed to `observeState()` is triggered when the dashboard page is initialized and every time it's updated." ],
+            "links": [],
+            "examples":
+              [ { "title": "Receive state data and log it to the console",
+                  "body":
+                    [ "import { observeState } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "observeState((pageParams, environmentState) => {",
+                      "  console.log('custom param', pageParams.customParam);",
+                      "  console.log('locale', environmentState.locale);",
+                      "});" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -63,8 +138,7 @@
         "extra":
           {  } },
       { "name": "showToast",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "config",
@@ -78,7 +152,7 @@
         "docs":
           { "summary": "Displays a toast notification at the top of a dashboard page.\n\n![Toast notification](/images/toast_example.png \"Toast notification\")",
             "description":
-              [ "> This function can only be used in page code files for [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages).",
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
                 "The `showToast()` function returns an object containing a key called `remove`. ",
                 "The value of `remove` is a function that removes the toast from the page.",
@@ -89,7 +163,7 @@
                 "* Create a clickable call-to-action that displays in the toast.",
                 "",
                 "When showing multiple toasts, requests to display toasts may be queued and the toast may not be displayed immediately. Toasts with a higher",
-                "priority level are displayed first. A toasts priority is defined using the `config.priority` parameter. Toasts with the same priority level are displayed in the order",
+                "priority level are displayed first. A toast's priority is defined using the `config.priority` parameter. Toasts with the same priority level are displayed in the order",
                 "they're requested. ",
                 "",
                 "> **Note:** When the timeout parameter is set to `\"none\"` the toast is rendered into the page layout and pushes the rest of the page down. When timeout is set to `\"normal\"`, the toast appears on top of other content on the page." ],
@@ -173,9 +247,101 @@
               {  } },
         "extra":
           {  } } ],
-  "callbacks": [],
+  "callbacks":
+    [ { "name": "observeStateCallback",
+        "labels":
+          [ "changed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "pageParams",
+              "type": "Object",
+              "doc": "Custom parameters passed to the dashboard page." },
+            { "name": "environmentState",
+              "type": "wix-dashboard.EnvironmentState",
+              "doc": "Data about the dashboard's environment." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 18,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
   "messages":
-    [ { "name": "ToastAction",
+    [ { "name": "Destination",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "navigation.js" } ],
+        "docs":
+          { "summary": "Destination Object",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "pageId",
+              "type": "string",
+              "doc": "ID of the page to link to. Use the [Dashboard Page IDs](#dashboard-page-ids) table to find the appropriate ID." },
+            { "name": "relativeUrl",
+              "type": "string",
+              "doc": "URL segment to append to the base URL of the selected page. Can include path segments, a query string, and a fragment identifier.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "EnvironmentState",
+        "locations":
+          [ { "lineno": 24,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "locale",
+              "type": "string",
+              "doc": "User's locale." },
+            { "name": "pageLocation",
+              "type": "wix-dashboard.PageLocation",
+              "doc": "Information about the currently rendered page location." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PageLocation",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "summary": "PageLocation Object",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "pageId",
+              "type": "string",
+              "doc": "ID of the rendered page." },
+            { "name": "pathname",
+              "type": "string",
+              "doc": "Any parts of the current URL path appended to the page's full URL." },
+            { "name": "search",
+              "type": "string",
+              "doc": "The current URL's query string.",
+              "optional": true },
+            { "name": "hash",
+              "type": "string",
+              "doc": "The current URL's fragment.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels":
+          [ "changed" ] },
+      { "name": "ToastAction",
         "locations":
           [ { "lineno": 65,
               "filename": "toast.js" } ],
@@ -219,7 +385,7 @@
               "doc": "Text that appears in the toast." },
             { "name": "timeout",
               "type": "string",
-              "doc": "Whether the toast removes itself or not. \n\nOptions:  \n- `\"normal\"`: The toast removes itself after 6 seconds.\n- `\"none\"`: The toast doesn't remove itself.\n\nDefault: `\"normal\"`",
+              "doc": "Whether the toast removes itself. \n\nOptions:  \n- `\"normal\"`: The toast removes itself after 6 seconds.\n- `\"none\"`: The toast doesn't remove itself.\n\nDefault: `\"normal\"`",
               "optional": true },
             { "name": "type",
               "type": "string",
