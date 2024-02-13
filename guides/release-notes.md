@@ -19,6 +19,13 @@ The updated Tasks API allows you to create and manage tasks on your site. Functi
 
 (February 12, 2024)
 
+### New APIs: Dashboard
+
+The [Dashboard API](https://www.wix.com/velo/reference/wix-dashboard) has two new functions:
++ [`observeState()`](https://www.wix.com/velo/reference/wix-dashboard/observestate) allows you to react to changes in a dashboard page's environment.
++ [`getPageUrl()`](https://www.wix.com/velo/reference/wix-dashboard/getpageurl) allows you to retrieve the full URL for any dashboard page.
+
+(February 12, 2024)
 
 ### New API: WixFormsV2 Element
 
@@ -32,7 +39,7 @@ The new WixFormsV2 Element displays customizable forms, collects all the info th
 
 `wix-crm-backend` 
 
-The Workflows API is being discontinued and will stop working on June 30, 2024. 
+The Workflows API and product are being discontinued and will stop working on June 30, 2024. 
 There will not be a replacement for this API.
 
 (February 6, 2024)
