@@ -7,6 +7,11 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New SPI: Velo Action
+
+The new [Velo Action SPI](https://www.wix.com/velo/reference/spis/wix-automations) lets you create your own custom action to use in your site's automations. You can create and test code directly in your site dashboard when creating or editing an automation.
+
+(February 14, 2024)
 
 ### Updated API: Tasks V2
 
