@@ -101,7 +101,7 @@
               }
             }
           ],
-          "doc": "Submission IDs to mark as seen.",
+          "doc": "IDs of submissions to mark as seen.",
           "required": true
         },
         {
@@ -111,7 +111,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the form which the submissions belongs to.",
+          "doc": "ID of the form which the submissions belong to.",
           "required": true
         }
       ],
@@ -135,9 +135,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Marks form submissions as **seen**.\n> **Note**:\n> The Submissions API is only available in Wix Studio.",
+        "summary": "Marks form submissions as \"seen\".\n> **Note**:\n> The Submissions API is only available in Wix Studio.",
         "description": [
-          "Only site collaborators with **Manage Submission** permissions can mark submissions."
+          "This function marks the submissions as if they were seen by the site owner. Only site collaborators with the **[Manage Submission](https://support.wix.com/en/article/roles-permissions-accessing-roles-permissions)** permissions can mark submissions."
         ],
         "examples": [
           {
@@ -292,7 +292,7 @@
         ],
         "examples": [
           {
-            "title": "Confirm submission ",
+            "title": "Confirm a submission ",
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "import { elevate } from 'wix-auth';",
@@ -461,7 +461,7 @@
               }
             }
           ],
-          "doc": "Form IDs.",
+          "doc": "Form IDs which submissions should be counted.",
           "required": true
         },
         {
@@ -471,7 +471,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Identifies the app which the form submissions belong to. For example, the namespace for the Wix Forms App is `\"wix.form_app.form\"`. The namespace of a submission can be retrieved using the Get Submission endpoint.",
+          "doc": "The app which the form submissions belong to. For example, the namespace for the Wix Forms app is `wix.form_app.form`. Call `getSubmission()` to retrieve the namespace.",
           "required": true
         },
         {
@@ -506,7 +506,9 @@
       },
       "docs": {
         "summary": "Counts the number of submissions belonging to the specified forms.\n> **Note**:\n> The Submissions API is only available in Wix Studio.",
-        "description": [],
+        "description": [
+          "The `countSubmissions()` function is useful for analytics and tracking purposes. For example, if you have a contact form on your website, you can use this function to track how many submissions it receives daily, weekly, or monthly."
+        ],
         "examples": [
           {
             "title": "Count submissions ",
@@ -571,7 +573,7 @@
               "referenceType": "wix-forms-v2.Submissions.CreateSubmissionOptions"
             }
           ],
-          "doc": "",
+          "doc": "Optional fields.\n",
           "required": false
         }
       ],
@@ -599,7 +601,7 @@
         "description": [],
         "examples": [
           {
-            "title": "Create Submission ",
+            "title": "Create a submission ",
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "import { elevate } from 'wix-auth';",
@@ -653,6 +655,83 @@
               "}",
               "*/"
             ]
+          },
+          {
+            "title": "Create a submission with a media file ",
+            "body": [
+              "/**************************************",
+              " * Backend code - my-backend-file.jsw *",
+              " *************************************/",
+              "",
+              "import { submissions } from 'wix-forms.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// Get a URL for uploading a media file",
+              "",
+              "export async function myGetMediaUploadUrlFunction(formId, filename, mimeType) {",
+              "  try {",
+              "    const elevatedGetMediaUploadUrl = elevate(submissions.getMediaUploadUrl);",
+              "    const uploadUrl = await elevatedGetMediaUploadUrl(formId, filename, mimeType);",
+              "    return uploadUrl;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "// Create a submission",
+              "",
+              "export async function myCreateSubmissionFunction(submission, options) {",
+              "  try {",
+              "    const elevatedCreateSubmission = elevate(submissions.createSubmission);",
+              "    const createdSubmission = await elevatedCreateSubmission(submission, options);",
+              "    return createdSubmission;",
+              "  } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { myCreateSubmissionFunction, myGetMediaUploadUrlFunction} from 'backend/my-backend-file'",
+              "",
+              "const submission = {",
+              "  \"formId\": \"21bcb6c7-02b3-4ed1-b6db-7856094fac03\",",
+              "  \"seen\": false,",
+              "  \"revision\": \"6\",",
+              "  \"submissions\": {",
+              "    \"first_name\": \"Jane\",",
+              "    \"last_name\": \"McBride\",",
+              "    \"file_upload_7a7f\": \"\"",
+              "  }",
+              "}",
+              "",
+              "const formId = \"21bcb6c7-02b3-4ed1-b6db-7856094fac03\"",
+              "",
+              "const filename = \"photo.jpg\"",
+              "",
+              "const mimeType = \"image/jpg\"",
+              "",
+              "$w.onReady(() => {",
+              "",
+              "  myGetMediaUploadUrlFunction(formId, filename, mimeType).then((result) => {",
+              "    submission.submissions.file_upload_7a7f = result.uploadUrl // push the URL into the submissions object",
+              "  }); ",
+              "",
+              "  /* ",
+              "     Upload a media file to the generated URL by following the  ",
+              "     information written in the Upload API (https://www.wix.com/velo/reference/wix-media-v2/upload-api) article. ",
+              "  */",
+              "  ",
+              "  myCreateSubmissionFunction(submission).then((result) => {",
+              "    console.log('Success! Created submission:', result);",
+              "  });",
+              "",
+              "});"
+            ]
           }
         ]
       },
@@ -684,7 +763,7 @@
               "referenceType": "wix-forms-v2.Submissions.DeleteSubmissionOptions"
             }
           ],
-          "doc": "",
+          "doc": "Optional fields.",
           "required": false
         }
       ],
@@ -708,10 +787,12 @@
       },
       "docs": {
         "summary": "Deletes a submission.\n> **Note:**\n> The Submissions API is only available in Wix Studio.",
-        "description": [],
+        "description": [
+          "This function moves the form submission into the trash bin. To delete the submission permanently, change the default `permanent` field value to `true.`"
+        ],
         "examples": [
           {
-            "title": "Delete submission ",
+            "title": "Delete a submission ",
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "import { elevate } from 'wix-auth';",
@@ -866,8 +947,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a URL generated by the Media Manager to use when creating a submission that includes a field for uploading files.\n> **Note:**\n> The Submissions API is only available in Wix Studio.",
-        "description": [],
+        "summary": "Retrieves a URL generated by the [Media Manager](https://www.wix.com/velo/reference/wix-media-v2/files/generatefileuploadurl) to use when creating a submission that includes a field for uploading files.\n> **Notes:**\n> - The Submissions API is only available in Wix Studio.\n> - You need at least a [Standard Premium](https://support.wix.com/en/article/choosing-a-premium-plan) plan for your site to upload files.",
+        "description": [
+          "To learn how external clients can use the generated upload URL to upload a file to the Media Manager, see [Upload API](https://www.wix.com/velo/reference/wix-media-v2/files/upload-api)."
+        ],
         "examples": [
           {
             "title": "Get media upload URL ",
@@ -948,7 +1031,7 @@
         "description": [],
         "examples": [
           {
-            "title": "Get submission ",
+            "title": "Get a submission ",
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "import { elevate } from 'wix-auth';",
@@ -1083,6 +1166,16 @@
       "name": "querySubmissionsByNamespace",
       "params": [
         {
+          "name": "query",
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorQuery"
+            }
+          ],
+          "doc": "Query options.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -1093,41 +1186,28 @@
           "required": false
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "query"
+      ],
       "ret": {
         "type": [
           {
-            "referenceType": "wix-forms-v2.Submissions.SubmissionsQueryBuilder"
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-forms-v2.Submissions.QuerySubmissionsByNamespaceResponse"
+                }
+              ]
+            }
           }
         ],
         "doc": null
       },
       "docs": {
-        "summary": "Creates a query to retrieve a list of submissions.",
+        "summary": "Creates a query to retrieve a list of submissions.\n> **Note:**\n> The Submissions API is only available in Wix Studio.",
         "description": [
-          "> **Note:**",
-          "> The Submissions API is only available in Wix Studio.",
-          "",
-          "",
-          "The `querySubmissionsByNamespace()` method builds a query to retrieve a list of submissions from the specified namespace and returns a [`SubmissionsQueryBuilder`](#submissionsquerybuilder) object. ",
-          ">**Note:** You can only query submissions from a specified namespace. Use the query filter on the `namespace` field, otherwise you will receive an error.",
-          "",
-          "The returned object contains the query definition, which is typically used to run the query using the [`find()`](#submissionsquerybuilder/find) method. ",
-          "",
-          "You can refine the query by chaining `SubmissionsQueryBuilder` methods onto the query. `SubmissionsQueryBuilder` methods enable you to sort, filter, and control the results that `querySubmissionsByNamespace()` returns. ",
-          "",
-          "The following `SubmissionsQueryBuilder` methods are supported for `querySubmissionsByNamespace()`. For a full description of the Submissions object, see the object returned for the [`items`](#submissionsqueryresult/items) property in [`SubmissionsQueryResult`](#submissionsqueryresult).",
-          "",
-          "",
-          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
-          "|:---:|:---:|",
-          "|`_id`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`formId`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`namespace`|[`eq()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#eq),[`in()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#in),[`ne()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ne),[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`status`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`_createdDate`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`_updatedDate`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|",
-          "|`seen`|[`ascending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#ascending),[`descending()`](wix-forms-v2.Submissions.SubmissionsQueryBuilder#descending)|"
+          "The `querySubmissionsByNamespace()` method builds a query to retrieve a list of submissions from the specified namespace and returns a [`SubmissionsQueryBuilder`](#submissionsquerybuilder) object.\n>**Note:** You can only query submissions from a specified namespace. Use the query filter on the `namespace` field, otherwise you will receive an error.\n\nThe returned object contains the query definition, which is typically used to run the query using the [`find()`](#submissionsquerybuilder/find) method.\n\nYou can refine the query by chaining `SubmissionsQueryBuilder` methods onto the query. `SubmissionsQueryBuilder` methods enable you to sort, filter, and control the results that `querySubmissionsByNamespace()` returns.\n\nThe following `SubmissionsQueryBuilder` methods are supported for `querySubmissionsByNamespace()`. For a full description of the Submissions object, see the object returned for the [`items`](#submissionsqueryresult/items) property in [`SubmissionsQueryResult`](#submissionsqueryresult)."
         ],
         "examples": [
           {
@@ -1387,7 +1467,7 @@
         ],
         "examples": [
           {
-            "title": "Update submission ",
+            "title": "Update a submission ",
             "body": [
               "import { submissions } from 'wix-forms.v2';",
               "import { elevate } from 'wix-auth';",
@@ -2853,7 +2933,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the form which the submissions belongs to."
+          "doc": "ID of the form which the submissions belong to."
         },
         {
           "name": "ids",
@@ -3565,7 +3645,7 @@
               }
             }
           ],
-          "doc": "List of statuses of submissions which should be taken into count\nDefault: CONFIRMED, PAYMENT_WAITING, PAYMENT_CANCELED"
+          "doc": "Status of the submission.\n- `PENDING`: A submission is created, but has not yet been recorded in the Wix Forms collection.\n- `PAYMENT_WAITING`: A form submission requiring payment is created.\n- `PAYMENT_CANCELED`: An order of a form submission is canceled.\n- `CONFIRMED`: A submission is recorded in the Wix Forms collection."
         }
       ],
       "docs": {
@@ -3591,7 +3671,7 @@
               }
             }
           ],
-          "doc": "Form IDs."
+          "doc": "Form IDs which submissions should be counted."
         },
         {
           "name": "namespace",
@@ -3600,7 +3680,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Identifies the app which the form submissions belong to. For example, the namespace for the Wix Forms App is `\"wix.form_app.form\"`. The namespace of a submission can be retrieved using the Get Submission endpoint."
+          "doc": "The app which the form submissions belong to. For example, the namespace for the Wix Forms app is `wix.form_app.form`. Call `getSubmission()` to retrieve the namespace."
         },
         {
           "name": "statuses",
@@ -3617,7 +3697,7 @@
               }
             }
           ],
-          "doc": "List of statuses of submissions which should be taken into count\nDefault: CONFIRMED, PAYMENT_WAITING, PAYMENT_CANCELED"
+          "doc": "Status of the submission.\n- `PENDING`: A submission is created, but has not yet been recorded in the Wix Forms collection.\n- `PAYMENT_WAITING`: A form submission requiring payment is created.\n- `PAYMENT_CANCELED`: An order of a form submission is canceled.\n- `CONFIRMED`: A submission is recorded in the Wix Forms collection."
         }
       ],
       "docs": {
@@ -4620,7 +4700,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Delete submission bypassing trash-bin\nDefault: false"
+          "doc": "Delete the submission, bypassing the trash bin. This means that the submission is permanently delete and cannot be restored.\n\nDefault: `false`\n"
         }
       ],
       "docs": {
@@ -4640,7 +4720,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Delete submission bypassing trash-bin\nDefault: false"
+          "doc": "Delete the submission, bypassing the trash bin. This means that the submission is permanently deleted and cannot be restored.\n\nDefault: `false`\n"
         },
         {
           "name": "submissionId",
@@ -6716,7 +6796,7 @@
               "referenceType": "wix-forms-v2.Submissions.OrderDetails"
             }
           ],
-          "doc": "Order details.\n*Note**: This object is only applicable when submittng a form in the Wix Payments app."
+          "doc": "Order details. <br>\n*Note**: This object is only applicable when submittng a form in the Wix Payments app."
         },
         {
           "name": "revision",
@@ -6838,7 +6918,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of submissions that haven't yet been seen by site Extensions with manage submission permissions."
+          "doc": "Number of submissions that the site owner hasn't seen yet."
         }
       ],
       "docs": {
@@ -12178,6 +12258,62 @@
       }
     },
     {
+      "name": "QuerySubmissionsByNamespaceForExportRequest",
+      "members": [
+        {
+          "name": "query",
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorQuery"
+            }
+          ],
+          "doc": "Query options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QuerySubmissionsByNamespaceForExportResponse",
+      "members": [
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata."
+        },
+        {
+          "name": "submissions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-forms-v2.Submissions.FormSubmission"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The retrieved Submissions."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "QuerySubmissionsByNamespaceOptions",
       "members": [
         {
@@ -14025,7 +14161,7 @@
               "referenceType": "wix-forms-v2.Submissions.OrderDetails"
             }
           ],
-          "doc": "Order details.\n*Note**: This object is only applicable when submittng a form in the Wix Payments app."
+          "doc": "Order details. <br>\n*Note**: This object is only applicable when submittng a form in the Wix Payments app."
         },
         {
           "name": "revision",
