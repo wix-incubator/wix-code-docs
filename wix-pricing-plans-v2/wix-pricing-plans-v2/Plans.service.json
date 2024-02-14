@@ -184,6 +184,65 @@
               "/* Promise resolves to void */",
               ""
             ]
+          },
+          {
+            "title": "Sort plans alphabetically ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedArrangePlans = elevate(plans.arrangePlans);",
+              "",
+              "export async function sortPlansBySlug(direction) {",
+              "  let publicPlansQuery = plans.queryPublicPlans();",
+              "",
+              "  if (direction === 'ascending') {",
+              "    publicPlansQuery = publicPlansQuery.ascending('slug');",
+              "  } else {",
+              "    publicPlansQuery = publicPlansQuery.descending('slug');",
+              "  }",
+              "",
+              "  const sortedPlans = await publicPlansQuery.find();",
+              "  const planIds = sortedPlans.items.map(item => item._id);",
+              "",
+              "  return await elevatedArrangePlans(planIds);",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { sortPlansBySlug } from 'backend/plan-functions';",
+              "import wixLocationFrontend from 'wix-location-frontend';",
+              "",
+              "$w.onReady(function () {",
+              "  $w('#dropdownSort').options =",
+              "    [",
+              "      {",
+              "        label: 'Ascending',",
+              "        value: 'ascending'",
+              "      },",
+              "      {",
+              "        label: 'Decending',",
+              "        value: 'descending'",
+              "      }",
+              "    ];",
+              "",
+              "  $w('#dropdownSort').onChange(async () => {",
+              "    const direction = $w('#dropdownSort').value;",
+              "    sortPlansBySlug(direction);",
+              "    const url = wixLocationFrontend.url;",
+              "    wixLocationFrontend.to(url);",
+              "  })",
+              "});"
+            ],
+            "extra": {
+              "description": "Select a sorting option to arranage plans in ascending or descending order by plan slug.    "
+            }
           }
         ]
       },
@@ -440,6 +499,101 @@
               " */ ",
               ""
             ]
+          },
+          {
+            "title": "Duplicate a plan ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListPlans = elevate(plans.listPlans);",
+              "const elevatedGetPlan = elevate(plans.getPlan);",
+              "const elevatedCreatePlan = elevate(plans.createPlan);",
+              "",
+              "export async function listPlans() {",
+              "  try {",
+              "    const response = await elevatedListPlans();",
+              "    const allPlans = response.plans;",
+              "",
+              "    return allPlans;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function getPlan(planId) {",
+              "  try {",
+              "    const selectedPlan = await elevatedGetPlan(planId);",
+              "",
+              "    return selectedPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function createPlan(plan) {",
+              "  try {",
+              "    const newPlan = await elevatedCreatePlan(plan);",
+              "",
+              "    return newPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { listPlans, getPlan, createPlan } from 'backend/plan-functions';",
+              "$w.onReady(async function () {",
+              "  $w('#plansDropdown').disable();",
+              "  $w('#clonePlanBtn').disable();",
+              "  populatePlansDropdown();",
+              "",
+              "  let selectedPlan;",
+              "",
+              "  $w('#plansDropdown').onChange(async () => {",
+              "    const planId = $w('#plansDropdown').value;",
+              "    selectedPlan = await getPlan(planId);",
+              "",
+              "    // Set default value for the new plan name",
+              "    $w('#planName').value = `${selectedPlan.name}-duplicate`",
+              "    $w('#clonePlanBtn').enable();",
+              "  });",
+              "  ",
+              "  $w('#clonePlanBtn').onClick(async () => {",
+              "    const newPlan = selectedPlan;",
+              "    // Use inputs to set the new plan name and price",
+              "    newPlan.name = $w('#planName').value;",
+              "    newPlan.pricing.price.value = $w('#price').value;",
+              "",
+              "    await createPlan(newPlan);",
+              "  });",
+              "});",
+              "",
+              "async function populatePlansDropdown() {",
+              "  const plans = await listPlans();",
+              "  $w('#plansDropdown').options = plans.map((plan) => {",
+              "    return {",
+              "      label: plan.name,",
+              "      value: plan._id",
+              "    }",
+              "  });",
+              "  $w('#plansDropdown').enable();",
+              "}"
+            ],
+            "extra": {
+              "description": "The `populatePlansDropdown` function retrieves all plans and then populates them into the `#plansDropdown`. The `#plansDropdown` and `#clonePlanBtn` are set to `disabled` by default.     "
+            }
           }
         ]
       },
@@ -545,6 +699,101 @@
               " * } ",
               " */"
             ]
+          },
+          {
+            "title": "Duplicate a plan ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListPlans = elevate(plans.listPlans);",
+              "const elevatedGetPlan = elevate(plans.getPlan);",
+              "const elevatedCreatePlan = elevate(plans.createPlan);",
+              "",
+              "export async function listPlans() {",
+              "  try {",
+              "    const response = await elevatedListPlans();",
+              "    const allPlans = response.plans;",
+              "",
+              "    return allPlans;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function getPlan(planId) {",
+              "  try {",
+              "    const selectedPlan = await elevatedGetPlan(planId);",
+              "",
+              "    return selectedPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function createPlan(plan) {",
+              "  try {",
+              "    const newPlan = await elevatedCreatePlan(plan);",
+              "",
+              "    return newPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { listPlans, getPlan, createPlan } from 'backend/plan-functions';",
+              "$w.onReady(async function () {",
+              "  $w('#plansDropdown').disable();",
+              "  $w('#clonePlanBtn').disable();",
+              "  populatePlansDropdown();",
+              "",
+              "  let selectedPlan;",
+              "",
+              "  $w('#plansDropdown').onChange(async () => {",
+              "    const planId = $w('#plansDropdown').value;",
+              "    selectedPlan = await getPlan(planId);",
+              "",
+              "    // Set default value for the new plan name",
+              "    $w('#planName').value = `${selectedPlan.name}-duplicate`",
+              "    $w('#clonePlanBtn').enable();",
+              "  });",
+              "  ",
+              "  $w('#clonePlanBtn').onClick(async () => {",
+              "    const newPlan = selectedPlan;",
+              "    // Use inputs to set the new plan name and price",
+              "    newPlan.name = $w('#planName').value;",
+              "    newPlan.pricing.price.value = $w('#price').value;",
+              "",
+              "    await createPlan(newPlan);",
+              "  });",
+              "});",
+              "",
+              "async function populatePlansDropdown() {",
+              "  const plans = await listPlans();",
+              "  $w('#plansDropdown').options = plans.map((plan) => {",
+              "    return {",
+              "      label: plan.name,",
+              "      value: plan._id",
+              "    }",
+              "  });",
+              "  $w('#plansDropdown').enable();",
+              "}"
+            ],
+            "extra": {
+              "description": "The `populatePlansDropdown` function retrieves all plans and then populates them into the `#plansDropdown`. The `#plansDropdown` and `#clonePlanBtn` are set to `disabled` by default.     "
+            }
           }
         ]
       },
@@ -943,6 +1192,101 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Duplicate a plan ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListPlans = elevate(plans.listPlans);",
+              "const elevatedGetPlan = elevate(plans.getPlan);",
+              "const elevatedCreatePlan = elevate(plans.createPlan);",
+              "",
+              "export async function listPlans() {",
+              "  try {",
+              "    const response = await elevatedListPlans();",
+              "    const allPlans = response.plans;",
+              "",
+              "    return allPlans;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function getPlan(planId) {",
+              "  try {",
+              "    const selectedPlan = await elevatedGetPlan(planId);",
+              "",
+              "    return selectedPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function createPlan(plan) {",
+              "  try {",
+              "    const newPlan = await elevatedCreatePlan(plan);",
+              "",
+              "    return newPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { listPlans, getPlan, createPlan } from 'backend/plan-functions';",
+              "$w.onReady(async function () {",
+              "  $w('#plansDropdown').disable();",
+              "  $w('#clonePlanBtn').disable();",
+              "  populatePlansDropdown();",
+              "",
+              "  let selectedPlan;",
+              "",
+              "  $w('#plansDropdown').onChange(async () => {",
+              "    const planId = $w('#plansDropdown').value;",
+              "    selectedPlan = await getPlan(planId);",
+              "",
+              "    // Set default value for the new plan name",
+              "    $w('#planName').value = `${selectedPlan.name}-duplicate`",
+              "    $w('#clonePlanBtn').enable();",
+              "  });",
+              "  ",
+              "  $w('#clonePlanBtn').onClick(async () => {",
+              "    const newPlan = selectedPlan;",
+              "    // Use inputs to set the new plan name and price",
+              "    newPlan.name = $w('#planName').value;",
+              "    newPlan.pricing.price.value = $w('#price').value;",
+              "",
+              "    await createPlan(newPlan);",
+              "  });",
+              "});",
+              "",
+              "async function populatePlansDropdown() {",
+              "  const plans = await listPlans();",
+              "  $w('#plansDropdown').options = plans.map((plan) => {",
+              "    return {",
+              "      label: plan.name,",
+              "      value: plan._id",
+              "    }",
+              "  });",
+              "  $w('#plansDropdown').enable();",
+              "}"
+            ],
+            "extra": {
+              "description": "The `populatePlansDropdown` function retrieves all plans and then populates them into the `#plansDropdown`. The `#plansDropdown` and `#clonePlanBtn` are set to `disabled` by default.     "
+            }
           }
         ]
       },
@@ -1338,6 +1682,70 @@
               " */ ",
               ""
             ]
+          },
+          {
+            "title": "Make a plan primary  ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListPublicPlans = elevate(plans.listPublicPlans);",
+              "const elevatedMakePlanPrimary = elevate(plans.makePlanPrimary);",
+              "",
+              "export async function listPublicPlans() {",
+              "  try {",
+              "    const response = await elevatedListPublicPlans();",
+              "    const plansList = response.plans;",
+              "",
+              "    return plansList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function makePlanPrimaryFunction(_id) {",
+              "  try {",
+              "    const primaryPlan = await elevatedMakePlanPrimary(_id);",
+              "",
+              "    return primaryPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import planFunctions from 'backend/plan-functions';",
+              "",
+              "$w.onReady(function () {",
+              "  populateDropdown();",
+              "  $w('#plansList').onChange(async () => {",
+              "    await planFunctions.makePlanPrimaryFunction(",
+              "      $w('#plansList').value",
+              "    )",
+              "  });",
+              "});",
+              "",
+              "async function populateDropdown() {",
+              "  const plans = await planFunctions.listPublicPlans();",
+              "  $w('#plansList').options = plans.map(item => ({",
+              "    label: item.name,",
+              "    value: item._id",
+              "  })",
+              "  )",
+              "}"
+            ],
+            "extra": {
+              "description": "Select a public plan from the dropdown to make it appear as a primary plan on the business site. "
+            }
           }
         ]
       },
@@ -1435,6 +1843,70 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Make a plan primary  ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListPublicPlans = elevate(plans.listPublicPlans);",
+              "const elevatedMakePlanPrimary = elevate(plans.makePlanPrimary);",
+              "",
+              "export async function listPublicPlans() {",
+              "  try {",
+              "    const response = await elevatedListPublicPlans();",
+              "    const plansList = response.plans;",
+              "",
+              "    return plansList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "export async function makePlanPrimaryFunction(_id) {",
+              "  try {",
+              "    const primaryPlan = await elevatedMakePlanPrimary(_id);",
+              "",
+              "    return primaryPlan;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import planFunctions from 'backend/plan-functions';",
+              "",
+              "$w.onReady(function () {",
+              "  populateDropdown();",
+              "  $w('#plansList').onChange(async () => {",
+              "    await planFunctions.makePlanPrimaryFunction(",
+              "      $w('#plansList').value",
+              "    )",
+              "  });",
+              "});",
+              "",
+              "async function populateDropdown() {",
+              "  const plans = await planFunctions.listPublicPlans();",
+              "  $w('#plansList').options = plans.map(item => ({",
+              "    label: item.name,",
+              "    value: item._id",
+              "  })",
+              "  )",
+              "}"
+            ],
+            "extra": {
+              "description": "Select a public plan from the dropdown to make it appear as a primary plan on the business site. "
+            }
           }
         ]
       },
@@ -1764,6 +2236,65 @@
               "",
               "/* Returned item: '7a3375ce-18a9-42cb-8e39-47918ade45ec' */"
             ]
+          },
+          {
+            "title": "Sort plans alphabetically ",
+            "body": [
+              "/*************************************",
+              " * Backend code - plan-functions.jsw *",
+              " *************************************/",
+              "",
+              "import { plans } from 'wix-pricing-plans.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedArrangePlans = elevate(plans.arrangePlans);",
+              "",
+              "export async function sortPlansBySlug(direction) {",
+              "  let publicPlansQuery = plans.queryPublicPlans();",
+              "",
+              "  if (direction === 'ascending') {",
+              "    publicPlansQuery = publicPlansQuery.ascending('slug');",
+              "  } else {",
+              "    publicPlansQuery = publicPlansQuery.descending('slug');",
+              "  }",
+              "",
+              "  const sortedPlans = await publicPlansQuery.find();",
+              "  const planIds = sortedPlans.items.map(item => item._id);",
+              "",
+              "  return await elevatedArrangePlans(planIds);",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { sortPlansBySlug } from 'backend/plan-functions';",
+              "import wixLocationFrontend from 'wix-location-frontend';",
+              "",
+              "$w.onReady(function () {",
+              "  $w('#dropdownSort').options =",
+              "    [",
+              "      {",
+              "        label: 'Ascending',",
+              "        value: 'ascending'",
+              "      },",
+              "      {",
+              "        label: 'Decending',",
+              "        value: 'descending'",
+              "      }",
+              "    ];",
+              "",
+              "  $w('#dropdownSort').onChange(async () => {",
+              "    const direction = $w('#dropdownSort').value;",
+              "    sortPlansBySlug(direction);",
+              "    const url = wixLocationFrontend.url;",
+              "    wixLocationFrontend.to(url);",
+              "  })",
+              "});"
+            ],
+            "extra": {
+              "description": "Select a sorting option to arranage plans in ascending or descending order by plan slug.    "
+            }
           }
         ]
       },
@@ -2470,7 +3001,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
         },
         {
           "name": "prev",
@@ -2480,7 +3011,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to previous page in the list of results."
+          "doc": "Cursor pointing to the previous page in the list of results."
         }
       ],
       "docs": {
@@ -2519,7 +3050,67 @@
         ]
       }
     },
+    {
+      "name": "Fee",
+      "members": [
         {
+          "name": "amount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Amount of fee to be charged"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Fee name"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "FeeConfig",
+      "members": [
+        {
+          "name": "appliedAt",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The time this fee will be charged"
+        },
+        {
+          "name": "fee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-pricing-plans-v2.Plans.Fee"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "GetPlanRequest",
       "members": [
         {

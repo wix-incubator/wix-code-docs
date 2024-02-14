@@ -8,6 +8,90 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 ---
 
+### Updated API: Tasks V2
+
+`wix-crm-v2`
+
+We've updated the [Tasks API](/wix-crm-v2/tasks), which allows you to create and manage tasks on your site. Functionality includes:
+- [Create](/wix-crm-v2/tasks/createtask), [update](/wix-crm-v2/tasks/updatetask), and [delete](/wix-crm-v2/tasks/deletetask) tasks.
+- [Get](/wix-crm-v2/tasks/gettask) and [query](/wix-crm-v2/tasks/querytasks) tasks.
+- [Count](/wix-crm-v2/tasks/counttasks) tasks.
+- [Move](/wix-crm-v2/tasks/movetaskafter) a task's position in the display. 
+
+(February 13, 2024)
+
+### New APIs: Dashboard
+
+The [Dashboard API](https://www.wix.com/velo/reference/wix-dashboard) has two new functions:
++ [`observeState()`](https://www.wix.com/velo/reference/wix-dashboard/observestate) allows you to react to changes in a dashboard page's environment.
++ [`getPageUrl()`](https://www.wix.com/velo/reference/wix-dashboard/getpageurl) allows you to retrieve the full URL for any dashboard page.
+
+(February 12, 2024)
+
+
+### New API: WixFormsV2 Element
+
+`Wix Editor Elements ($w)`
+
+The new WixFormsV2 Element displays customizable forms, collects all the info that a site visitor entered into the form fields, and lets you track all form submissions in the dashboard.
+
+(February 7, 2024) 
+
+### Deprecated: Workflows API
+
+`wix-crm-backend` 
+
+The Workflows API and product is being discontinued and will stop working on June 30, 2024. 
+There will not be a replacement for this API.
+
+(February 6, 2024)
+
+### Updated API: Pricing Plans v2
+
+`wix-pricing-plans.v2`
+
+We've updated the [`wix-pricing-plans.v2`](https://www.wix.com/velo/reference/wix-pricing-plans-v2) module, which is currently released as a developer preview. Note that the changes break existing code that uses the following functions, which requires updates to your code:
+
+- [`Orders`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders):
+  - [`createOfflineOrder()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/createofflineorder): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
+  - [`getOfflineOrderPreview()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/orders/getofflineorderpreview): `memberId` has been taken out of the `options` parameter, and is now the second required parameter after `planId`.
+
+  (February 6, 2024)
+
+## New Release: More eCommerce APIs
+
+`wix-ecom-backend`
+
+[Wix eCommerce](https://www.wix.com/velo/reference/wix-ecom-backend/introduction) introduces new functionality to the [Orders](https://www.wix.com/velo/reference/wix-ecom-backend/orders/introduction), [Order Transactions](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/introduction), and [Order Invoices](https://www.wix.com/velo/reference/wix-ecom-backend/orderinvoices/introduction) APIs that provide developers with a growing set of services for customizing eCommerce functionality on Wix sites. The APIs include the following endpoints and webhooks:
+
++ [Get](https://www.wix.com/velo/reference/wix-ecom-backend/orders/getorder), [create](https://www.wix.com/velo/reference/wix-ecom-backend/orders/createorder), and [update](https://www.wix.com/velo/reference/wix-ecom-backend/orders/updateorder) orders.
++ [Add payment](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/addpayments) records to an order.
++ [Update a payment status](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/updatepaymentstatus) or [bulk update multiple payment statuses](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/bulkupdatepaymentstatuses).
++ [List invoices for multiple orders](https://www.wix.com/velo/reference/wix-ecom-backend/orderinvoices/listinvoicesformultipleorders).
++ Events that trigger when an order is [created](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercreated), [updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderupdated), [approved](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderapproved), or [canceled](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordercanceled).
++ Events that trigger when [payment or refund details are added to an order](https://www.wix.com/velo/reference/wix-ecom-backend/events/onordertransactionsupdated), or when an order's [payment status is updated](https://www.wix.com/velo/reference/wix-ecom-backend/events/onorderpaymentstatusupdated).
+
+As part of this release, several [wix-stores-backend](https://www.wix.com/velo/reference/wix-stores-backend) functions and events have been deprecated and will be removed on June 30, 2024.
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(February 4, 2024)
+
+### New API: Checkout Templates
+
+`wix-ecom-backend`
+
+The new [Checkout Templates API](/wix-ecom-backend/checkouttemplates) allows you to manage templates to share pre-populated checkouts with customers. When customers then create checkouts from these templates, the new checkouts already include information such as predefined line items, coupons, or other customizations. Functionality includes:
+
++ [Creating](/wix-ecom-backend/checkouttemplates/createcheckouttemplate), [updating](/wix-ecom-backend/checkouttemplates/updatecheckouttemplate), or [deleting](/wix-ecom-backend/checkouttemplates/deletecheckouttemplate) checkout templates.
++ [Creating a new checkout](/wix-ecom-backend/checkouttemplates/createcheckoutfromtemplate) from a checkout template.
++ [Getting](/wix-ecom-backend/checkouttemplates/getcheckouttemplate) or [querying](/wix-ecom-backend/checkouttemplates/querycheckouttemplates) checkout templates.
++ Events that trigger when a template is [created](/wix-ecom-backend/events/oncheckouttemplatecreated), [updated](/wix-ecom-backend/events/oncheckouttemplateupdated), [deleted](/wix-ecom-backend/events/oncheckouttemplatedeleted), or when a [template is used to create a checkout](/wix-ecom-backend/events/oncheckouttemplateused).
+
+**Note:** This module is in [Developer Preview](./developer-preview.md).
+
+(January 31, 2024)
+
 ### New APIs: Wix Bookings V2 Services Functions and Events
 
 `wix-bookings.v2`
@@ -64,9 +148,9 @@ The Workflows v2 API is being discontinued and will no longer be supported movin
 
 ### New APIs: Hamburger Menu Element
 
-We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 `Wix Editor Elements ($w)`
 
+We added the following new APIs that allow you to customize the [hamburger menu](https://support.wix.com/en/article/editor-x-using-hamburger-menus) element:
 
 + [`HamburgerOpenButton`]($w/hamburgeropenbutton): The icon button that opens the hamburger menu.
 + [`HamburgerCloseButton`]($w/hamburgerclosebutton): The icon button that closes the hamburger menu.
@@ -124,7 +208,7 @@ We've updated the [`wix-inbox.v2`](https://www.wix.com/velo/reference/wix-inbox-
   - [`listMessages()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/listmessages): `visibility` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
   - [`sendMessage()`](https://www.wix.com/velo/reference/wix-inbox-v2/messages/sendmessage): `message` has been removed from the `options` parameter and is now the required second parameter after `conversationId`.
 
-(Novemeber 29, 2023)
+(November 29, 2023)
 
 ### New Developer Preview API: Reviews
 
