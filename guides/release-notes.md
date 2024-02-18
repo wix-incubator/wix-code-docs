@@ -46,8 +46,7 @@ The new WixFormsV2 Element displays customizable forms, collects all the info th
 
 `wix-crm-backend` 
 
-The Workflows API and product is being discontinued and will stop working on June 30, 2024. 
-There will not be a replacement for this API.
+The Workflows product line, including all APIs, is being discontinued and will stop working on June 30, 2024. There will not be a direct replacement for this API, however our team is working to provide creative alternatives in the coming days. We understand that this change may pose challenges, and we sincerely appreciate your patience and understanding during this time.
 
 (February 6, 2024)
 
