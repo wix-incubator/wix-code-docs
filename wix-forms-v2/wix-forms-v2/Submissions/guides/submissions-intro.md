@@ -29,8 +29,18 @@ With the Submissions API, you can:
 
 ## Submission lifecycle
 
-When a site visitor submits a form:
+When submitting a form:
 
+1. Call the [`createSubmission()`](https://www.wix.com/velo/reference/wix-forms-v2/submissions/createsubmission) function and pass the form field values of a particular form.
+1. `createSubmission()` forwards the form field values to the server.
+1. The server proceeds to validate the submission:
+    If the validation is successful:
+    1. `createSubmission()` submits the form.
+    1. Records the submission into the WixForms collection.
+    If the validation fails:
+    1. The server throws an error, which is then passed to the API.
+    1. The submission process is aborted.
+ 
 ## Before you begin
 
 It’s important to note the following points before starting to code:
