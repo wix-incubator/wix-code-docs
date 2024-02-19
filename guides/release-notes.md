@@ -7,6 +7,24 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New SPI: Velo Action
+
+The new [Velo Action SPI](https://www.wix.com/velo/reference/spis/wix-automations) lets you create your own custom action to use in your site's automations. You can create and test code directly in your site dashboard when creating or editing an automation.
+
+(February 14, 2024)
+
+### Updated API: Tasks V2
+
+`wix-crm-v2`
+
+We've updated the [Tasks API](/wix-crm-v2/tasks), which allows you to create and manage tasks on your site. Functionality includes:
+- [Create](/wix-crm-v2/tasks/createtask), [update](/wix-crm-v2/tasks/updatetask), and [delete](/wix-crm-v2/tasks/deletetask) tasks.
+- [Get](/wix-crm-v2/tasks/gettask) and [query](/wix-crm-v2/tasks/querytasks) tasks.
+- [Count](/wix-crm-v2/tasks/counttasks) tasks.
+- [Move](/wix-crm-v2/tasks/movetaskafter) a task's position in the display. 
+
+(February 13, 2024)
+
 ### New APIs: Dashboard
 
 The [Dashboard API](https://www.wix.com/velo/reference/wix-dashboard) has two new functions:
@@ -28,8 +46,7 @@ The new WixFormsV2 Element displays customizable forms, collects all the info th
 
 `wix-crm-backend` 
 
-The Workflows API is being discontinued and will stop working on June 30, 2024. 
-There will not be a replacement for this API.
+The Workflows product and APIs are being discontinued and will stop working on June 30, 2024. There will not be a direct replacement for this API. However, our team is working to provide alternatives. We understand that this change may pose challenges, and we appreciate your patience and understanding.
 
 (February 6, 2024)
 
