@@ -26,7 +26,7 @@ A folder's ID must be retrieved programmatically. It can't be retrieved through 
 * [`updateFolder()`](/folders/updatefolder)
 
 ## Parent Folder ID
-A file's or folder's parent folder ID tells us in which folder it is located. Usually, a parent folder ID will be a string of random letters and number, e.g. `'7984b3c5454e4371aqbd4f4eedde96bc'`, but there are 3 parent folders whose IDs look different:
+A file's or folder's parent folder ID tells us in which folder it is located. Usually, a parent folder ID will be a string of random letters and number, for example `'7984b3c5454e4371aqbd4f4eedde96bc'`. However, there are 3 parent folders whose IDs look different (these are their IDs):
 * `'media-root'` - this folder contains all files and folders in the root level of the **Site Files** tab in the media manager.
 * `'visitor-uploads'` - this folder contains all files and folders in the root level of the **Visitor Uploads** tab in the media manager.
 * `'trash-root'` - this folder contains all files and folders in the root level of the **Trash** tab in the media manager.
