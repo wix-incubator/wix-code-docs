@@ -12,7 +12,7 @@ title: Introduction
 
 &nbsp;  
 
-Wix Comments events are fired in your site's backend when certain events occur with plans. You can write event handlers that react to these events. Event handler functions receive data that corresponds to the event that has occurred. Use event handlers to create custom responses to pricing plan events.
+Wix Comments events are triggered when certain events occur with comments in your site's backend. You can write event handlers that react to these events. Event handler functions receive data that corresponds to the event that has occurred. Use event handlers to create custom responses to comments events.
 
 > **Note:** Backend events don't work when previewing your site.
 
