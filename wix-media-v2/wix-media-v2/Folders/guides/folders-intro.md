@@ -33,27 +33,4 @@ To use the Folders API, import `{ folders }` from the `wix-media.v2` module:
 
 ```javascript
 import { folders } from 'wix-media.v2';
-```
-
-## Terminology
-
-* **System folders:** Folders in the Media Manager's file system directory. 
-  There are 3 types of system folders:
-  * **Root Folders:** Main categories of folders in the Media Manager. 
-    * `MEDIA_ROOT`: Contains all files and folders in the Media Manager's 'Site Files' tab in the Media Manager.
-
-      >**Note:** The `MEDIA_ROOT` system folder is different from the `media-root` folder of the Media Manager.
-      >The `MEDIA_ROOT` system folder contains all media in all levels of the **Site Files** tab in the Media Manager, while the `media-root` folder of the Media Manager contains only the media in the root level of the 'Site Files' tab in the Media Manager.
-
-    * `TRASH_ROOT`: Contains all files and folders in the Media Manager's **Trash** tab in the Media Manager.
-    * `VISITOR_UPLOADS_ROOT`: Contains all files and folders created by site visitors or members.
-
-      >**Note:** The `VISITOR_UPLOADS_ROOT` folder is located in the 'Site Files' tab in the UI. However, it is its own root folder and doesn't return when searching in the `MEDIA_ROOT` folder.
-
-  * **Virtual Folders:** Special categories of folders in the Media Manager that are hidden from the UI and can't be deleted.
-    * `MOBILE_UPLOADS`: Contains all media uploaded using mobile devices. 
-    * `PURCHASED_ITEMS`: Contains all media imported using a purchase flow.
-
-
-  * **Other Folders:** 
-    * `VIDEO_MAKER`: Contains all videos created using Wix Video Maker. Located in the 'Site Files' tab in the UI.                    
+```              
