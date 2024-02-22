@@ -56,9 +56,9 @@ export async function listCustomFieldKeys() {
 }
 ```
 
-
 ## Set a custom field for a new site member
-You can set the value of a custom field for a new site member in the `contactInfo` object using the [`authentication.register()`](https://www.wix.com/velo/reference/wix-members-backend/authentication/register) function.
+You can set the value of a custom field for a new site member in the `contactInfo` 
+object using the [`authentication.register()`](https://www.wix.com/velo/reference/wix-members-backend/authentication/register) function.
 Use a key:value pair in the top level level of the `contactInfo` object, like this:
 
 ```js
