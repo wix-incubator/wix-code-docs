@@ -3859,7 +3859,7 @@
               "displayName": "OrdersSettingsUpdated"
             }
           ],
-          "doc": "",
+          "doc": "Information about the orders settings that were updated and event metadata.\n",
           "required": false
         }
       ],
@@ -3873,8 +3873,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Triggered when orders settings are updated.",
-        "description": [],
+        "summary": "Triggered when order settings are updated.",
+        "description": [
+          "The `onOrdersSettingsUpdated()` event handler runs when order settings are updated. The received `OrdersSettingsUpdated` object contains information about the order settings that were updated and event metadata.\n\n>**Note:** Backend events don't work when previewing your site."
+        ],
         "examples": [
           {
             "title": "onOrdersSettingsUpdated example",
@@ -60121,6 +60123,26 @@
       }
     },
     {
+      "name": "ecomV1OrdersSettingsActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ecomV1OrdersSettingsBackendEventMetadata",
       "members": [
         {
@@ -60185,17 +60207,70 @@
       }
     },
     {
-      "name": "ecomV1OrdersSettingsDiffmatokyPayload",
+      "name": "ecomV1OrdersSettingsDomainEvent",
       "members": [
         {
-          "name": "compareChannel",
+          "name": "_id",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
           "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
         },
         {
           "name": "entityId",
@@ -60205,52 +60280,122 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "ID of the entity associated with the event."
         },
         {
-          "name": "errorInformation",
+          "name": "eventTime",
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsErrorInformation",
-              "displayName": "ErrorInformation"
+              "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "Event timestamp."
         },
         {
-          "name": "left",
+          "name": "originatedFrom",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "If present, indicates the action that triggered the event."
         },
         {
-          "name": "right",
+          "name": "slug",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
         },
         {
-          "name": "tags",
+          "name": "triggeredByAnonymizeRequest",
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrdersSettingsDomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Events.ecomV1OrdersSettingsEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
             }
           ],
           "doc": ""
@@ -60263,10 +60408,10 @@
       }
     },
     {
-      "name": "ecomV1OrdersSettingsErrorInformation",
+      "name": "ecomV1OrdersSettingsEntityCreatedEvent",
       "members": [
         {
-          "name": "stackTrace",
+          "name": "entityAsJson",
           "optional": true,
           "type": [
             {
@@ -60274,6 +60419,46 @@
             }
           ],
           "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrdersSettingsEntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ecomV1OrdersSettingsEntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -60353,7 +60538,7 @@
               "displayName": "OrdersSettings"
             }
           ],
-          "doc": ""
+          "doc": "Updated orders settings."
         },
         {
           "name": "metadata",
@@ -60363,7 +60548,7 @@
               "displayName": "BackendEventMetadata"
             }
           ],
-          "doc": ""
+          "doc": "Event metadata."
         }
       ],
       "docs": {
