@@ -1,4 +1,8 @@
- # Pricing models
+---
+title: Pricing Models
+--- 
+ 
+# Pricing models
 Pricing models contain the [pricing and duration options](https://support.wix.com/en/article/pricing-plans-creating-a-plan#step-3-setting-the-price-and-duration-of-your-plan) for a plan.
 
 Plans are based on a pricing model, which is defined with the plan's `pricing` property. A pricing model can be one of the following:

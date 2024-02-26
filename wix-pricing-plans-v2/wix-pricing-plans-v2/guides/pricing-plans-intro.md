@@ -33,6 +33,10 @@ Make sure to set up your site to:
  
 When setting up your site to accept pricing plans, define the plans you want to offer [using the Dashboard](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans) or [using the Pricing Plans' Plans APIs](wix-pricing-plans-v2/plans).
          
+### Creating plans
+In order to build user presence and generate revenue on your site, Wix provides you with the ability to offer a robust selection of different pricing plans. You can customize your plans by price, expiration, terms, included services, and more in accordance with each plans unique [pricing models](../Plans/guides/pricing-models.md). 
+
+The [Plans API](https://www.wix.com/velo/reference/wix-pricing-plans-v2/plans) exposes the ability to create, edit, and manage your plans, in code, allowing you to customize and enhance your site for user and administrative experience.
 
 ### Managing orders
          
@@ -45,7 +49,7 @@ Members can order pricing plans in 2 ways:
          
 ### Orders and subscriptions
           
-Actions related to basic pricing plan management are available from the [Pricing Plans](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembership%3FreferralInfo%3Dvelo-docs) page in the Dashboard. These actions correspond to the functions available in the [Plans APIs](wix-pricing-plans-v2/plans/introduction).
+Actions related to basic pricing plan management are available from the [Pricing Plans](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembership%3FreferralInfo%3Dvelo-docs) page in the Dashboard. These actions correspond to the functions available in the [Plans API](wix-pricing-plans-v2/plans/introduction).
          
 
 Every pricing plan order corresponds to a Wix subscription, including orders for single payment plans. You can see all orders from your site's [Subscriptions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsubscriptions%3FreferralInfo%3Dvelo-docs) page in the Dashboard. Actions available on this page correspond to the functions available in the [Orders APIs](wix-pricing-plans-v2/orders/introduction). 
