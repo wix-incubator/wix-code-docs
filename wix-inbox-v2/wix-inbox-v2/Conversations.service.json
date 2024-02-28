@@ -189,15 +189,13 @@
             "title": "Get a conversation (dashboard page code)",
             "body": [
               "import { conversations } from 'wix-inbox.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample conversationID value: '092d1135-99cf-3ca9-a0bf-378e1df4539b' */",
               "",
               "export async function myGetConversationFunction(conversationId) {",
               "  ",
               "  try {",
-              "    const elevatedGetConversation = elevate(conversations.getConversation);",
-              "    const conversationObject = await elevatedGetConversation(conversationId);",
+              "    const conversationObject = await conversations.getConversation(conversationId);",
               "    const channels = conversationObject.conversation.channels;",
               "    const firstChannel = conversationObject.conversation.channels[0];",
               "    const businessName = conversationObject.conversation.businessDisplayData.name;",
@@ -482,16 +480,15 @@
             "title": "Get or create a conversation with a contact ",
             "body": [
               "/****************************",
-              " * Backend code - events.web.js *",
+              " * Backend code - events.js *",
               " ****************************/",
               "",
-              "import { Permissions, webMethod } from 'wix-web-module';",
-              "import { sendThankYou } from 'backend/inbox.web';",
+              "import { sendThankYou } from 'backend/inbox';",
               "",
-              "export const wixCrm_onContactCreated = webMethod(Permissions.Anyone, (event) => {",
+              "export function wixCrm_onContactCreated(event) {",
               "  const contactId = event.metadata.entityId;",
               "  sendThankYou(contactId);",
-              "});",
+              "}",
               "",
               "/****************************",
               " * Backend code - inbox.web.js *",
@@ -533,7 +530,8 @@
               "    console.error(error);",
               "    //Handle the error",
               "  }",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code registers an event listener in the `events.js` file that triggers when a new contact is created. The event handler calls `getOrCreateConversation()` to generate or retrieve a conversation. It then sends a thank-you message in the `wix-chat` widget."
@@ -647,17 +645,16 @@
             "title": "Get or create a conversation from a site visitor ",
             "body": [
               "/****************************",
-              " * Backend code - events.web.js *",
+              " * Backend code - events.js *",
               " ****************************/",
               "",
-              "import { Permissions, webMethod } from 'wix-web-module';",
-              "import { sendMinimalMessage } from 'backend/inbox.web';",
+              "import { sendMinimalMessage } from 'backend/inbox';",
               "",
-              "export const wixBlog_onPostLiked = webMethod(Permissions.Anyone, (event) => {",
-              "  console.log(`New post liked with ID ${event.data.postId}`);",
+              "export function wixBlog_onPostLiked(event) {",
+              "  console.log(`New post liked with ID ${event.data.postId}`);  ",
               "  const anonymousVisitorId = event.data.anonymousVisitorId;",
               "  sendMinimalMessage(anonymousVisitorId);",
-              "});",
+              "}",
               "",
               "/****************************",
               " * Backend code - inbox.web.js *",
@@ -708,7 +705,8 @@
               "    console.error(error);",
               "    //Handle the error",
               "  }",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code detects a when a site visitor likes a blog post by registering the `onPostLiked` event listener in the `events.js` file. This event triggers an event object containing the `anonymousVisitorId`, which is  passed as an argument to `getOrCreateConversationIdFromVisitor`. The conversationId is returned and passed as a parameter to `sendMinimal`, which sends a minimal message to the site owner's inbox dashboard."
@@ -999,7 +997,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'AI_ASSISTANT'`\n- `'CHAT'`\n- `'EMAIL'`\n- `'FACEBOOK'`\n- `'INSTAGRAM'`\n- `'SMS'`\n- `'UNKNOWN_CHANNEL_TYPE'`\n- `'WHATSAPP'`"
+          "doc": "Supported values:\n- `'AI_ASSISTANT'`\n- `'CHAT'`\n- `'EMAIL'`\n- `'FACEBOOK'`\n- `'INSTAGRAM'`\n- `'PHONE'`\n- `'SMS'`\n- `'UNKNOWN_CHANNEL_TYPE'`\n- `'WHATSAPP'`"
         },
         {
           "name": "recipients",
