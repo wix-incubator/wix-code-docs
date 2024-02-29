@@ -13,25 +13,33 @@ title: Introduction
 
 &nbsp;
 
-> **Note:** This module is
+<!-- > **Note:** This module is
 > [universal](/api-overview/api-versions#universal-modules).
 > Functions in this module can run on both the backend and frontend,
-> unless specified otherwise.
+> unless specified otherwise. -->
 
 
-The Labels API provides functionality for managing labels for your contacts. Labels allow site collaborators to segment contacts in their Contact List. Contact labels are useful for targeting specific audiences for email campaigns or bulk actions. Learn more about [labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list).
+The Labels API provides functionality for managing labels for your site. Labels allow site admins to segment or categorize the contacts in their Contact List. Using Labels enchances the CRM by allowing site admins to customize data organization according to their needs. 
+For example, you can use labels to target specific audiences for email campaigns or bulk actions. Learn more about [labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list).
  
 With the Labels API, you can:
-+ [Find or create ](wix-crm-v2/labels/findorcreatelabel) a label. 
-+ [Delete](wix-crm-v2/labels/deletelabel) a label.
-+ [Rename](wix-crm-v2/labels/renamelabel) a label.
-+ [Query](wix-crm-v2/labels/querylabels) labels.
+- [Create](wix-crm-v2/labels/findorcreatelabel) a new label.
+- [Update](wix-crm-v2/labels/renamelabel) a label by renaming its display name.
+- [Delete](wix-crm-v2/labels/deletelabel) a label.
+- [Query](wix-crm-v2/labels/querylabels) labels.
+
+
+## Before you begin
+
+It is important to note the following points before you begin to code:
+- When you delete a label from your site, you also remove that label from all contacts it applies to.
+- Label keys can't be changed once created. 
 
 
 To use the Labels API, import `{ labels }` from the `wix-crm.v2` module. 
 
 ```javascript
-import { labels } from ‘wix-crm.v2’;
+import { labels } from 'wix-crm.v2';
 ```
 
 ## Permissions information
@@ -45,4 +53,6 @@ Functions in the Labels API are restricted and only run if you elevate permissio
 
 ## Terminology
 
-- **Labels**: Tags that help site collaborators categorize and organzie their contacts. Labels can be system-defined or user-defined. A contact’s assigned labels are available in the contact object under `info.labelKeys`.
+- **Label**: A tag that is applied to contacts to help site admins organzie and group contacts with shared characteristics. Labels can be user-defined or system-defined. 
+    - **User-defined label**: A label that is custom created by site admins.
+    - **System-defined label**: A label that is pre-defined in your site and cannot be deleted from the CRM.
