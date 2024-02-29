@@ -36,7 +36,7 @@ This document describes the permissions and fields in your FullData collection.
 
 The FullData collection has the following [permissions](https://support.wix.com/en/article/about-collection-permissions):
 
--   **Read:** Anyone
+-   **Read:** Admin
 -   **Create:** None
 -   **Update:** None
 -   **Delete:** None
