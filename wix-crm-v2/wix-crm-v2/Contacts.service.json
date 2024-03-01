@@ -395,7 +395,86 @@
               " * }",
               " */"
             ]
-          
+          },
+          {
+            "title": "Create a new contact with all custom labels ",
+            "body": [
+              "/*******************************",
+              " * Backend code - contacts.web.js *",
+              " *******************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts, labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "export const createContactWithLabels = webMethod(Permissions.Anyone, async (contactInfo) => {",
+              "",
+              "try {  ",
+              "  const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "  const myLabels = await elevatedQueryLabels()",
+              "   .eq('labelType', \"USER_DEFINED\")",
+              "   .find();",
+              "  ",
+              "  const items = myLabels.items;",
+              "  const labelKeys = items.map(label => {",
+              "    return label.key",
+              "  })",
+              "  ",
+              "  contactInfo.labelKeys.items = labelKeys;",
+              "  ",
+              "  const elevatedContact = elevate(contacts.createContact);",
+              "  const newContact = await elevatedContact(contactInfo);",
+              "  ",
+              "  return newContact;",
+              "  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { createContactWithLabels } from 'backend/contacts.web'",
+              "",
+              "// Retrieve contact info on submit button click",
+              "export async function submitButton_click(event) {",
+              "",
+              "  try {",
+              "    const contactInfo = {",
+              "      name: {",
+              "        first: $w('#firstNameInput').value,",
+              "        last: $w('#lastNameInput').value,",
+              "      },",
+              "      emails: {",
+              "        items: [",
+              "          {",
+              "            email: $w('#emailInput').value,",
+              "          }",
+              "        ]",
+              "      },",
+              "      labelKeys: {",
+              "        items: []",
+              "      }",
+              "    }",
+              "",
+              "  // Call backend function to create a contact with labels",
+              "  const newContact = await createContactWithLabels(contactInfo)",
+              "  console.log('Contact created successfully:', newContact);",
+              "",
+              "    return contactInfo;",
+              "  } catch (error) {",
+              "    console.error('Error creating contact:', error);",
+              "    // Handle the error",
+              "  }",
+              "}"
+            ],
+            "extra": {
+              "description": "This function creates a new contact with all user-defined labels retrieved by a query."
+            }
           }
         ]
       },
@@ -765,7 +844,122 @@
               " * }",
               " */"
             ]
-
+          },
+          {
+            "title": "Get a contact with specified returned fields ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " *",
+              " * Sample options value: ",
+              " * {",
+              " *   fields: ['createdDate'],",
+              " *   fieldsets: ['BASIC']",
+              " * }",
+              " */",
+              "",
+              "export const myGetContactFunction = webMethod(Permissions.Anyone, async (id) => {",
+              "  try {",
+              "    const elevatedGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevatedGetContact(id);    ",
+              "    const contactId = contact._id;",
+              "    const contactName = contact.info.name.first;",
+              " ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.049Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/*******************************",
+              " * Backend code - contacts.web.js *",
+              " *******************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision }",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Doe\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`)",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This code example always retrieves the latest revision before updating a contact. "
+            }
           }
         ]
       },
@@ -2037,11 +2231,11 @@
               " * }",
               " */",
               "",
-              "export const myUpdateContactFunction = webMethod(Permissions.Anyone, async (contactId, info, revision, options) => {",
+              "export const myUpdateContactFunction = webMethod(Permissions.Anyone, async (contactId, info, options) => {",
               "  ",
               "  try {",
               "    const elevatedUpdateContact = elevate(contacts.updateContact);",
-              "    const updatedContact = await elevatedUpdateContact(contactId, info, revision, options);    ",
+              "    const updatedContact = await elevatedUpdateContact(contactId, info, options);    ",
               "    console.log('Successfully updated contact:', updatedContact)",
               " ",
               "    return updatedContact;  ",
@@ -2152,7 +2346,71 @@
               " */",
               ""
             ]
-          
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/*******************************",
+              " * Backend code - contacts.web.js *",
+              " *******************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision }",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Doe\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`)",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "The page code passes a contact ID and updated contact information to the backend `overwriteContactInfo()` function. The `overwriteContactInfo()` function retrieves the contact, extracts the revision number, then passes it to `contacts.updateContact()`. This allows the contact to be updated without needing to specify the revision. "
+            }
           }
         ]
       },
@@ -2167,6 +2425,56 @@
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ActivityIcon",
+      "members": [
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Icon name"
+        },
+        {
+          "name": "url",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Icon url"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "Address",
       "members": [
