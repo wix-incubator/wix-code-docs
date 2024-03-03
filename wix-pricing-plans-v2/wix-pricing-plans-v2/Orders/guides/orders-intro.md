@@ -15,14 +15,14 @@ title: Introduction
 
 
 
-The Pricing Plans Orders API allows you to manage orders for your pricing plans. 
+The Orders API allows you to manage orders for your pricing plans. 
 
 With the Pricing Plans Orders API, you can:
 - [Get](wix-pricing-plans-v2/orders/managementgetorder) and [list](wix-pricing-plans-v2/orders/managementlistorders) orders.
 - [Create](wix-pricing-plans-v2/orders/createofflineorder) offline orders.
 - [Mark](wix-pricing-plans-v2/orders/markaspaid) offline orders as paid. 
 - [Preview](wix-pricing-plans-v2/orders/getpricepreview) the pricing details of an order.
-- [Pause](wix-pricing-plans-v2/orders/pauseorder), [resume](wix-pricing-plans-v2/orders/resumeorder), or [cancel](requestcancellation) orders.
+- [Pause](wix-pricing-plans-v2/orders/pauseorder), [resume](wix-pricing-plans-v2/orders/resumeorder), or [cancel](wix-pricing-plans-v2/orders/cancelorder) orders.
 - [Extend the duration](wix-pricing-plans-v2/orders/postponeenddate) of orders. 
 
 
