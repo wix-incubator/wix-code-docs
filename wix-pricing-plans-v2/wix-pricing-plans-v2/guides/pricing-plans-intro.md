@@ -34,7 +34,7 @@ Make sure to set up your site to:
 When setting up your site to accept pricing plans, define the plans you want to offer [using the Dashboard](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans) or [using the Pricing Plans' Plans APIs](wix-pricing-plans-v2/plans).
          
 ### Creating plans
-In order to build user presence and generate revenue on your site, Wix provides you with the ability to offer a robust selection of different pricing plans. You can customize your plans by price, expiration, terms, included services, and more in accordance with each plan's unique [pricing models](../Plans/guides/pricing-models.md). 
+In order to build user presence and generate revenue on your site, Wix provides you with the ability to offer a robust selection of different pricing plans. You can customize your plans by price, expiration, terms, included services, and more in accordance with each plan's unique [pricing model](/Plans/guides/pricing-models). 
 
 The [Plans API](https://www.wix.com/velo/reference/wix-pricing-plans-v2/plans) exposes the ability to create, edit, and manage your plans, in code, allowing you to customize and enhance your site for user and administrative experience.
 
