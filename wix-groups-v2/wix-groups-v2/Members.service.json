@@ -66,7 +66,7 @@
         ],
         "examples": [
           {
-            "title": "Add site members to a group",
+            "title": "Add site members to a group (dashboard page code)",
             "body": [
               "import { members } from 'wix-groups.v2';",
               "",
@@ -100,6 +100,39 @@
               " *  ]  ",
               " */",
               "  "
+            ]
+          },
+          {
+            "title": "Add site members to a group (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { members } from 'wix-groups.v2';",
+              "",
+              "export const addGroupMembers = webMethod(Permissions.Anyone, async (groupId, memberIds) => {",
+              "  try {",
+              "    const result = await members.addGroupMembers(groupId, memberIds);",
+              "",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " *  members: [",
+              " *    { ",
+              " *      \"joinedDate\": \"Sun Aug 01 2021 12:32:35 GMT+0300\"",
+              " *      \"memberId\": \"437cd3db-e9be-4980-93c1-a6d767a11050\"",
+              " *      \"role\": {\"value\": \"ADMIN\"}",
+              " *    },",
+              " *    {",
+              " *      \"joinedDate\": \"Tues Jun 30 2019 10:09:33 GMT+0300\"",
+              " *      \"memberId\": \"7fe8e9e1-d050-4c86-9684-e7f231600a34\"",
+              " *      \"role\": {\"value\": \"MEMBER\"}",
+              " *    }",
+              " *  ]  ",
+              " */"
             ]
           }
         ]
@@ -157,7 +190,7 @@
         ],
         "examples": [
           {
-            "title": "List all site members in a group",
+            "title": "List all site members in a group (dashboard page code)",
             "body": [
               "",
               "import { members } from 'wix-groups.v2';",
@@ -203,28 +236,20 @@
             ]
           },
           {
-            "title": "List some of the site members in a group using paging options",
+            "title": "List all site members in a group (export from backend code)",
             "body": [
-              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { members } from 'wix-groups.v2';",
-              "  ",
-              "// Sample groupId value: '0261a737-2361-4468-a3b1-5ec2b0667836'",
-              "//",
-              "// Sample options value:",
-              "// {",
-              "//   limit: 2",
-              "//   offset: 1   ",
-              "// }",
               "",
-              " async function listGroupMembers(groupId, options) {",
-              "   try {",
-              "     const result = await members.listGroupMembers(groupId, options);",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
+              "export const listGroupMembers = webMethod(Permissions.Anyone, async (groupId) => {",
+              "  try {",
+              "    const result = await members.listGroupMembers(groupId);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
               "",
               "/* Promise resolves to:",
               " * members: [",
@@ -237,16 +262,22 @@
               " *     \"joinedDate\": \"Tues Jun 30 2019 10:09:33 GMT+0300\"",
               " *     \"memberId\": \"7fe8e9e1-d050-4c86-9684-e7f231600a34\"",
               " *     \"role\": {\"value\": \"MEMBER\"}",
+              " *   },",
+              " *   {",
+              " *     \"joinedDate\": \"Wed Jul 01 2019 11:29:43 GMT+0300\"",
+              " *     \"memberId\": \"6de7e9e1-f242-3a12-5231-f8e1242c8912\"",
+              " *     \"role\": {\"value\": \"MEMBER\"}",
               " *   }",
               " * ],",
               " * metadata: ",
               " *   {",
-              " *     \"count\": 2",
-              " *     \"offset\": 1",
+              " *     \"count\": 3",
+              " *     \"offset\": 0",
               " *     \"tooManyToCount\": false",
-              " *     \"total\": 5",
+              " *     \"total\": 3",
               " *   } ",
-              " */"
+              " */",
+              ""
             ]
           }
         ]
@@ -304,7 +335,7 @@
         ],
         "examples": [
           {
-            "title": "List all group memberships of a site member",
+            "title": "List all group memberships of a site member (dashboard page code)",
             "body": [
               " ",
               "import { members } from 'wix-groups.v2';",
@@ -351,28 +382,66 @@
             ]
           },
           {
+            "title": "List all group memberships of a site member (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { members } from 'wix-groups.v2';",
+              "",
+              "export const myListMembershipsFunction = webMethod(Permissions.Anyone, (memberId) => {",
+              "  return members.listMemberships(memberId)",
+              "    .then((groupMembershipsResults) => {",
+              "      const groupMembershipsRole = groupMembershipsResults.memberships[0].role;",
+              "      return groupMembershipsResults;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * memberships: [",
+              " *   { ",
+              " *     \"groupId\": \"937cd3db-e9be-4980-93c1-a6d767a11050\"",
+              " *     \"role\": {\"value\": \"ADMIN\"}",
+              " *     \"status\": \"JOINED\"",
+              " *   },",
+              " *   {",
+              " *     \"groupId\": \"7fe8e9e1-d050-4c86-9684-e7f231600a34\"",
+              " *     \"role\": {\"value\": \"MEMBER\"}",
+              " *     \"status\": \"PENDING\"",
+              " *   },",
+              " *   {",
+              " *     \"groupId\": \"6de7e9e1-f242-3a12-5231-f8e1242c8912\"",
+              " *     \"role\": {\"value\": \"MEMBER\"}",
+              " *     \"status\": \"PENDING\"",
+              " *   }",
+              " * ],",
+              " * metadata: ",
+              " *   {",
+              " *     \"count\": 3",
+              " *     \"offset\": 0",
+              " *     \"tooManyToCount\": false",
+              " *     \"total\": 3",
+              " *   } ",
+              " */",
+              ""
+            ]
+          },
+          {
             "title": "List some of the group memberships of a site member using paging options",
             "body": [
-              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { members } from 'wix-groups.v2';",
-              "  ",
-              "// Sample groupId value: '6355cf94-bd3a-466d-9d61-980bcb7458ea'",
-              "//",
-              "// Sample options value:",
-              "// {",
-              "//   limit: 2",
-              "//   offset: 1   ",
-              "// }",
               "",
-              "async function listMemberships(memberId, options) {",
-              "    try {",
-              "      const result = await members.listMemberships(memberId, options);",
-              "      return result;",
-              "    } catch (error) {",
-              "      console.error(error);",
-              "      // Handle the error",
-              "    }",
+              "export const listMemberships = webMethod(Permissions.Anyone, async (memberId, options) => {",
+              "  try {",
+              "    const result = await members.listMemberships(memberId, options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
               "  }",
+              "});",
               "",
               "/* Promise resolves to:",
               " * members: [",
@@ -394,7 +463,8 @@
               " *     \"tooManyToCount\": false",
               " *     \"total\": 5",
               " *   } ",
-              " */"
+              " */",
+              ""
             ]
           }
         ]
@@ -462,7 +532,7 @@
         ],
         "examples": [
           {
-            "title": "Query members of a group ",
+            "title": "Query members of a group (dashboard page code)",
             "body": [
               "",
               "import { members } from 'wix-groups-v2';",
@@ -504,6 +574,52 @@
               " *   }",
               " * ]",
               " */"
+            ]
+          },
+          {
+            "title": "Query members of a group (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { members } from 'wix-groups-v2';",
+              "",
+              "export const myQueryGroupMembersFunction = webMethod(Permissions.Anyone, () => {",
+              "  return members.queryGroupMembers()",
+              "    .find()",
+              "    .then((queryResults) => {",
+              "      const items = queryResults.items;",
+              "      const firstItem = items[0];",
+              "      const pageSize = queryResults.pageSize;",
+              "      const totalPages = queryResults.totalPages;",
+              "      const totalCount = queryResults.totalCount;",
+              "      const currentPage = queryResults.currentPage();",
+              "      const next = queryResults.next();",
+              "      const previous = queryResults.prev();",
+              "      const hasNext = queryResults.hasNext();",
+              "      const hasPrev = queryResults.hasPrev();",
+              "      const length = queryResults.length;",
+              "",
+              "      return items;",
+              "    })",
+              "    .catch((error) => {",
+              "      console.error(error);",
+              "    });",
+              "});",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *  { ",
+              " *     \"joinedDate\": \"Sun Aug 01 2021 12:32:35 GMT+0300\"",
+              " *     \"memberId\": \"437cd3db-e9be-4980-93c1-a6d767a11050\"",
+              " *     \"role\": {\"value\": \"ADMIN\"}",
+              " *   },",
+              " *   {",
+              " *     \"joinedDate\": \"Tues Jun 30 2019 10:09:33 GMT+0300\"",
+              " *     \"memberId\": \"7fe8e9e1-d050-4c86-9684-e7f231600a34\"",
+              " *     \"role\": {\"value\": \"MEMBER\"}",
+              " *   }",
+              " * ]",
+              " */",
+              ""
             ]
           }
         ]
@@ -641,7 +757,7 @@
         ],
         "examples": [
           {
-            "title": "Remove a site member from a group",
+            "title": "Remove a site member from a group (dashboard page code)",
             "body": [
               "",
               "// Sample groupId: '0261a737-2361-4468-a3b1-5ec2b0667836'",
@@ -662,6 +778,28 @@
               "   }",
               " }",
               ""
+            ]
+          },
+          {
+            "title": "Remove a site member from a group (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { members } from 'wix-groups.v2';",
+              "",
+              "export const removeGroupMembers = webMethod(Permissions.Anyone, async (groupId, memberIds, options) => {",
+              "  try {",
+              "    const result = await members.removeGroupMembers(groupId, memberIds);",
+              "",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "// Sample groupId: '0261a737-2361-4468-a3b1-5ec2b0667836'",
+              "//",
+              "// Sample  memberIds: ['937cd3db-e9be-4980-93c1-a6d767a11050', '7fe8e9e1-d050-4c86-9684-e7f231600a34']"
             ]
           }
         ]
