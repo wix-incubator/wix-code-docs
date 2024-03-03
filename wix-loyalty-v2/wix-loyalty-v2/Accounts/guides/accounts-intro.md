@@ -40,7 +40,7 @@ It’s important to note the following points before starting to code:
 - **Account ID:** Every loyalty account gets a new account ID which is different from that customer's contact ID and member ID.
 - **Transaction:** A loyalty transaction includes any activity that changes a loyalty account point balance, such as adjusting, earning, or redeeming loyalty points.
 
-## Override permissions
+## Permissions information
 Functions in the Loyalty Accounts API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
 
 <blockquote class='warning'>

@@ -1,7 +1,8 @@
 { "name": "Events",
   "memberOf": "wix-pricing-plans-backend",
   "mixes": [],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "events.js" },
@@ -83,7 +84,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 794,
+          [ { "lineno": 792,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is canceled with `effectiveAt` as `NEXT_PAYMENT_DATE`.",
@@ -203,7 +204,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 611,
+          [ { "lineno": 609,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is canceled.",
@@ -309,7 +310,8 @@
         "extra":
           {  } },
       { "name": "onOrderCreated",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "event",
@@ -318,7 +320,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 717,
+          [ { "lineno": 715,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is created.",
@@ -430,53 +432,54 @@
                       "",
                       "import { checkout } from 'wix-pricing-plans-backend';",
                       "",
-                      "export function myCreateOnlineOrderFunction(planId) {",
+                      "export const myCreateOnlineOrderFunction = webMethod(Permissions.Anyone, (planId) => {",
                       "  return checkout.createOnlineOrder(planId);",
-                      "}",
+                      "});",
                       "",
                       "/*******************************",
                       " * Backend code - events.js    *",
                       " *******************************/",
                       "",
-                      " import { myInsertNewOrderFunction } from 'backend/process-orders'",
+                      "import { myInsertNewOrderFunction } from 'backend/process-orders.web';",
                       "",
-                      " export function wixPricingPlans_onOrderCreated(event) {",
+                      "export function wixPricingPlans_onOrderCreated(event) {",
                       "  myInsertNewOrderFunction(event.entity);",
                       "}",
                       "",
                       "/*************************************",
-                      " * Backend code - process-orders.jsw *",
+                      " * Backend code - process-orders.web.js *",
                       " *************************************/",
-                      " import wixData from 'wix-data';",
-                      " ",
-                      " export async function myInsertOrderFunction(order) {",
+                      "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import wixData from 'wix-data';",
                       "",
-                      "     const member = await getMember(order.buyer.memberId);",
-                      "     const data = ({",
-                      "         _id: order.id,",
-                      "         planId: order.planId,",
-                      "         planName: order.planName,",
-                      "         status: order.status,",
-                      "         nickname: member.nickname",
-                      "     });",
+                      "export const myInsertOrderFunction = webMethod(Permissions.Anyone, async (order) => {",
                       "",
-                      "     wixData.insert('Orders', data)",
-                      "       .then(() => {",
-                      "          console.log('Inserted successfully', data);",
-                      "       })",
-                      "       .catch(() => {",
-                      "          console.error('Failed to insert', data);",
-                      "       });",
-                      " }",
+                      "    const member = await getMember(order.buyer.memberId);",
+                      "    const data = ({",
+                      "        _id: order.id,",
+                      "        planId: order.planId,",
+                      "        planName: order.planName,",
+                      "        status: order.status,",
+                      "        nickname: member.nickname",
+                      "    });",
                       "",
-                      " // Gets member details to associate with the order ",
-                      " async function getMember(memberId) {",
-                      "  try {",
-                      "    return wixData.get('Members/PublicData', memberId)",
-                      "  } catch (error) {",
-                      "    console.error('Failed to fetch member by ID', memberId, error);",
-                      "  };",
-                      " }" ],
+                      "    wixData.insert('Orders', data)",
+                      "      .then(() => {",
+                      "         console.log('Inserted successfully', data);",
+                      "      })",
+                      "      .catch(() => {",
+                      "         console.error('Failed to insert', data);",
+                      "      });",
+                      "});",
+                      "",
+                      "// Gets member details to associate with the order ",
+                      "async function getMember(memberId) {",
+                      " try {",
+                      "   return wixData.get('Members/PublicData', memberId)",
+                      " } catch (error) {",
+                      "   console.error('Failed to fetch member by ID', memberId, error);",
+                      " };",
+                      "}" ],
                   "extra":
                     { "description": "This example demonstrates how to create an order and save its details in a collection after an event fires. \n\n The code assumes: \n\n + An `Orders` collection with the following fields: `_id`, `planId`, `planName`, `nickname`, and `status`\n + The `Members` app is installed on the site, including the `Members/PublicData` collection\n + The `Pricing Plans` app is installed on the site, including the `PaidPlans/Plans` collection\n + A backend code file exists called `process-orders.jsw`\n + A backend events file exists called `events.js`\n\n The `OrderCreated` event is fired in response to an order being created. The initial order creation might be\n initiated in several ways, such as by a button click on the page or by an external event request sent by \n an HTTP function call. The order creation is routed to backend code.  \n\n In this example, when the `OrderCreated` event is fired:  \n\n + The `myInsertOrderFunction()` function is called, with the `order` object extracted from the event object\n + The `myInsertOrderFunction()` function calls a `getMember()` function to gets details about the member \n   ordering the plan\n + The `myInsertOrderFunction()` function calls the Wix Data `insert()` function to add order and member details\n   into the `Orders` collection" } } ],
             "extra":
@@ -493,7 +496,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 775,
+          [ { "lineno": 773,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers at the start of each payment cycle for online orders.",
@@ -612,7 +615,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 630,
+          [ { "lineno": 628,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when the `endDate` of an order is postponed or made earlier.",
@@ -717,7 +720,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 683,
+          [ { "lineno": 681,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order expires or is canceled immediately.",
@@ -830,7 +833,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 593,
+          [ { "lineno": 591,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an offline order is marked as paid.",
@@ -932,7 +935,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 666,
+          [ { "lineno": 664,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is paused.",
@@ -1049,7 +1052,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 552,
+          [ { "lineno": 550,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is purchased.",
@@ -1168,7 +1171,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 648,
+          [ { "lineno": 646,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order resumes.",
@@ -1285,7 +1288,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 701,
+          [ { "lineno": 699,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when the start date of an order is changed.",
@@ -1392,7 +1395,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 574,
+          [ { "lineno": 572,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when the start date of a purchased or free order is reached.",
@@ -1507,7 +1510,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 523,
+          [ { "lineno": 521,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when an order is changed.",
@@ -1619,7 +1622,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 483,
+          [ { "lineno": 481,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when a pricing plan is archived.",
@@ -1703,7 +1706,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 450,
+          [ { "lineno": 448,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when a pricing plan is created.",
@@ -1778,7 +1781,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 501,
+          [ { "lineno": 499,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when a member purchases a plan.",
@@ -1909,7 +1912,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 467,
+          [ { "lineno": 465,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An event that triggers when a pricing plan is changed.",
@@ -1978,7 +1981,7 @@
   "messages":
     [ { "name": "EventData",
         "locations":
-          [ { "lineno": 263,
+          [ { "lineno": 261,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Event data.",
@@ -2053,7 +2056,7 @@
         "labels": [] },
       { "name": "EventMetadata",
         "locations":
-          [ { "lineno": 273,
+          [ { "lineno": 271,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Event metadata.",
@@ -2414,7 +2417,7 @@
         "labels": [] },
       { "name": "OrderAutoRenewCanceledEvent",
         "locations":
-          [ { "lineno": 439,
+          [ { "lineno": 437,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the event fired when the order auto-renewal is canceled.",
@@ -2525,7 +2528,7 @@
         "labels": [] },
       { "name": "OrderCanceledEvent",
         "locations":
-          [ { "lineno": 347,
+          [ { "lineno": 345,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order cancellation event.",
@@ -2632,7 +2635,7 @@
         "labels": [] },
       { "name": "OrderCreatedEvent",
         "locations":
-          [ { "lineno": 409,
+          [ { "lineno": 407,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order's creation event.",
@@ -2737,7 +2740,7 @@
         "labels": [] },
       { "name": "OrderCycleStartedEvent",
         "locations":
-          [ { "lineno": 429,
+          [ { "lineno": 427,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the event fired when the order's payment cycle is triggered. This means the next payment date has arrived.",
@@ -2847,9 +2850,9 @@
         "labels": [] },
       { "name": "OrderCycleStartedEventData",
         "locations":
-          [ { "lineno": 210,
+          [ { "lineno": 209,
               "filename": "events.js" },
-            { "lineno": 210,
+            { "lineno": 209,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Event data.",
@@ -2937,16 +2940,13 @@
               "doc": "Order information." },
             { "name": "cycleNumber",
               "type": "number",
-              "doc": "Number of the payment cycle. Zero for unlimited plan orders and orders whose plans are valid until canceled." },
-            { "name": "transactionId",
-              "type": "string",
-              "doc": "Wix Pay transaction ID." } ],
+              "doc": "Number of the payment cycle. Zero for unlimited plan orders and orders whose plans are valid until canceled." } ],
         "extra":
           {  },
         "labels": [] },
       { "name": "OrderEndDatePostponedEvent",
         "locations":
-          [ { "lineno": 357,
+          [ { "lineno": 355,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order postponed event.",
@@ -3045,7 +3045,7 @@
         "labels": [] },
       { "name": "OrderEndedEvent",
         "locations":
-          [ { "lineno": 388,
+          [ { "lineno": 386,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order end event.",
@@ -3243,7 +3243,7 @@
         "labels": [] },
       { "name": "OrderEventMetadata",
         "locations":
-          [ { "lineno": 221,
+          [ { "lineno": 219,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Event metadata.",
@@ -3344,7 +3344,7 @@
         "labels": [] },
       { "name": "OrderMarkedAsPaidEvent",
         "locations":
-          [ { "lineno": 336,
+          [ { "lineno": 334,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the offline order \"marked as paid\" event.",
@@ -3440,7 +3440,7 @@
         "labels": [] },
       { "name": "OrderPausedEvent",
         "locations":
-          [ { "lineno": 378,
+          [ { "lineno": 376,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order pause event.",
@@ -3551,7 +3551,7 @@
         "labels": [] },
       { "name": "OrderPurchasedEvent",
         "locations":
-          [ { "lineno": 325,
+          [ { "lineno": 323,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order purchase event.",
@@ -3659,7 +3659,7 @@
         "labels": [] },
       { "name": "OrderResumedEvent",
         "locations":
-          [ { "lineno": 367,
+          [ { "lineno": 365,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order resumption event.",
@@ -3770,7 +3770,7 @@
         "labels": [] },
       { "name": "OrderStartDateChangedEvent",
         "locations":
-          [ { "lineno": 399,
+          [ { "lineno": 397,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order's start date change event.",
@@ -3871,7 +3871,7 @@
         "labels": [] },
       { "name": "OrderUpdatedEvent",
         "locations":
-          [ { "lineno": 234,
+          [ { "lineno": 232,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the order update event.",
@@ -4091,7 +4091,7 @@
         "labels": [] },
       { "name": "PlanArchivedEvent",
         "locations":
-          [ { "lineno": 287,
+          [ { "lineno": 285,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the plan archive event.",
@@ -4169,7 +4169,7 @@
         "labels": [] },
       { "name": "PlanCreatedEvent",
         "locations":
-          [ { "lineno": 244,
+          [ { "lineno": 242,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the create plan event.",
@@ -4238,7 +4238,7 @@
         "labels": [] },
       { "name": "PlanPurchasedEvent",
         "locations":
-          [ { "lineno": 298,
+          [ { "lineno": 296,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing a new pricing plan purchase.",
@@ -4361,7 +4361,7 @@
         "labels": [] },
       { "name": "PlanUpdatedEvent",
         "locations":
-          [ { "lineno": 254,
+          [ { "lineno": 252,
               "filename": "events.js" } ],
         "docs":
           { "summary": "Information about the plan update event.",

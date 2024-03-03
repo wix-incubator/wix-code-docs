@@ -15,7 +15,7 @@ The JoinGroupRequests API provides functionality for managing requests to join a
 + This module is only relevant for private groups. 
 + When a group's `privacyStatus` is updated from `PRIVATE` to `PUBLIC`, all pending join requests for that group are automatically approved.
 + When a group's `privacyStatus` is updated from `PRIVATE` to `SECRET`, all pending join requests for that group are automatically rejected. 
-+ A site member can only join a group if they have a [public profile]("https://support.wix.com/en/article/wix-groups-member-privacy-settings-for-groups").
++ A site member can only join a group if they have a [public profile](https://support.wix.com/en/article/wix-groups-member-privacy-settings-for-groups).
   
 ## Settings for a typical use case
 + Group members with group admin permissions determine who can join their group by setting their group [privacy level](https://support.wix.com/en/article/wix-groups-about-groups#your-groups-privacy-permissions).
