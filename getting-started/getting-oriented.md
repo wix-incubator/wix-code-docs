@@ -1,5 +1,8 @@
 # Getting Oriented
 
+>**Note:** 
+> These guides are based on a Wix Editor site. You can adapt the procedures for a Wix Studio site by using the equivalent [Wix Studio features](https://dev.wix.com/docs/develop-websites/articles/coding-with-wix-studio/coding-with-wix-studio-for-velo-developers#finding-your-way).
+
 Let's begin by getting familiar with the Velo development environment. The environment contains the tools you need to develop a Velo app.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rzReCvkI4gg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
