@@ -7,6 +7,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New: Blocks Panel Builder Elements
+
+>**Note:** Wix Blocks is currently a Beta version, open to a limited number of users.
+
+The following elements can be added to [Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
+
+* [PanelColorPicker]($w/panelcolorpicker)
+* [PanelFontAndColorPicker]($w/panelfontandcolorpicker)
+
 ### New SPI: Velo Action
 
 The new [Velo Action SPI](https://www.wix.com/velo/reference/spis/wix-automations) lets you create your own custom action to use in your site's automations. You can create and test code directly in your site dashboard when creating or editing an automation.
