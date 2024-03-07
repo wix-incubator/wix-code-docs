@@ -11,7 +11,7 @@ With Velo you can:
 
 + **Manage database collections**: Programmatically interact with your site's database collections using the [Wix Data API](https://www.wix.com/velo/reference/wix-data).
 
-+ **Create Custom eCommerce Solutions**: The [Wix eCommerce API](https://www.wix.com/velo/reference/wix-ecom-backend) allows you to manage your products, orders, fulfillment, and more.
++ **Create custom eCommerce solutions**: The [Wix eCommerce API](https://www.wix.com/velo/reference/wix-ecom-backend) allows you to manage customers' carts, checkouts, orders, and more.
 
 >**New to Velo?** Check out our [getting started guide](https://dev.wix.com/docs/develop-websites/articles/getting-started/getting-started-with-code) to get you quickly up and running with code.
 
