@@ -9,7 +9,7 @@ With Velo you can:
 
 + **Access site elements**: Use the [Wix Editor Elements($w) API](https://www.wix.com/velo/reference/$w) to work with your site's elements and handle site visitor interactions.
 
-+ **Manage Database Collections**: Programmatically interact with your site's database collections using the [Data API](https://www.wix.com/velo/reference/wix-data).
++ **Manage database collections**: Programmatically interact with your site's database collections using the [Wix Data API](https://www.wix.com/velo/reference/wix-data).
 
 + **Create Custom eCommerce Solutions**: The [Wix eCommerce API](https://www.wix.com/velo/reference/wix-ecom-backend) allows you to manage your products, orders, fulfillment, and more.
 
