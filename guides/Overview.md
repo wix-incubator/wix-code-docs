@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to Wix's Velo API Reference. This reference is your comprehensive guide to using Velo, Wix's powerful JavaScript-based development platform, to create dynamic and interactive web experiences. Velo empowers you to fully customize your site, from frontend design to backend functionality.
+Welcome to Wix's Velo API Reference. This reference is your comprehensive guide to using Velo, Wix's powerful JavaScript-based development platform, to create dynamic and interactive web experiences. Velo empowers you to take full control of your site, from frontend design to backend functionality.
 
 The API reference provides detailed documentation and code examples for all functions, event handlers, and properties that you can use to interact with various aspects of your site. To use the APIs, you’ll need a working knowledge of JavaScript, including ES2020 features. 
 
