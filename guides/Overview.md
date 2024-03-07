@@ -7,7 +7,7 @@ The API reference provides detailed documentation and code examples for all APIs
 With Velo you can:
 
 
-+ **Access Site Elements**: Use the [Wix Editor Elements($w)](https://www.wix.com/velo/reference/$w) API to work with your site's elements and handle user interactions.
++ **Access site elements**: Use the [Wix Editor Elements($w) API](https://www.wix.com/velo/reference/$w) to work with your site's elements and handle site visitor interactions.
 
 + **Manage Database Collections**: Programmatically interact with your site's database collections using the [Data API](https://www.wix.com/velo/reference/wix-data).
 
