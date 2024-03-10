@@ -47,14 +47,13 @@
       "docs": {
         "summary": "Creates a policy.",
         "description": [
-          "<!--\n>  Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `createPolicy()` function returns a Promise that resolves to the newly-created policy.\n\nYou can create up to 3 policies per event. If you try to create more than 3, you'll get the \"Maximum number of policies for the event has been reached\" error.\n\nThis function is not a universal function and runs only on the backend."
+          "<!--\n>  Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `createPolicy()` function returns a Promise that resolves to the newly-created policy.\n\nYou can create up to 3 policies per event. If you try to create more than 3, you'll get the \"Maximum number of policies for the event has been reached\" error."
         ],
         "examples": [
           {
-            "title": "Create Policy ",
+            "title": "Create Policy (dashboard page code)",
             "body": [
               "import { policies } from 'wix-events.v2';",
-              "import * as wixAuth from 'wix-auth';",
               "",
               "//define policy object",
               "const policy = {",
@@ -64,10 +63,9 @@
               "};",
               "",
               "//create policy",
-              "async function elevatedCreatePolicyFunction(){",
-              "  const elevatedCreatePolicy = wixAuth.elevate(policies.createPolicy);",
+              "async function myCreatePolicyFunction(){",
               "   try {",
-              "     const result = await elevatedCreatePolicy(policy);",
+              "     const result = await policies.createPolicy(policy);",
               "     return result;",
               "   } ",
               "   catch (error) {",
@@ -87,17 +85,53 @@
               "  \"body\": \"Tickets to this Event are issued on behalf of the Organiser and are subject to the following terms and conditions.\",",
               "  \"eventId\": \"9d720f99-1b5a-4141-9877-d32985391e18\"",
               "}",
-              "*/"
+              "*/",
+              ""
+            ]
+          },
+          {
+            "title": "Create Policy (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "//define policy object",
+              "const policy = {",
+              "  body: 'Tickets to this Event are issued on behalf of the Organiser and are subject to the following terms and conditions.',",
+              "  eventId: '9d720f99-1b5a-4141-9877-d32985391e18',",
+              "  name: 'Terms and Conditions Event 1'",
+              "};",
+              "",
+              "//create policy",
+              "export const elevatedCreatePolicyFunction = webMethod(Permissions.Anyone, async () => {",
+              "  const elevatedCreatePolicy = elevate(policies.createPolicy);",
+              "   try {",
+              "     const result = await elevatedCreatePolicy(policy);",
+              "     return result;",
+              "   } ",
+              "   catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " });",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"_id\": \"0907cf78-5177-4482-a627-b17ef06badec\",",
+              " *   \"revision\": \"1\",",
+              " *   \"_createdDate\": \"2023-03-07T12:48:25.917Z\",",
+              " *   \"_updatedDate\": \"2023-03-07T12:48:25.917Z\",",
+              " *   \"name\": \"Terms and Conditions Event 1\",",
+              " *   \"body\": \"Tickets to this Event are issued on behalf of the Organiser and are subject to the following terms and conditions.\",",
+              " *   \"eventId\": \"9d720f99-1b5a-4141-9877-d32985391e18\"",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "createPolicy",
       "isAdminMethod": true
     },
@@ -136,23 +170,21 @@
       "docs": {
         "summary": "Permanently deletes a policy.",
         "description": [
-          "<!--\n> Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `deletePolicy()` function returns a Promise that resolves when the specified policy is deleted.\n\nDeleted policies are not returned by the `getPolicy()` or `queryPolicies()` functions.\n\nThis function is not a universal function and runs only on the backend."
+          "<!--\n> Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `deletePolicy()` function returns a Promise that resolves when the specified policy is deleted.\n\nDeleted policies are not returned by the `getPolicy()` or `queryPolicies()` functions."
         ],
         "examples": [
           {
-            "title": "Delete Policy ",
+            "title": "Delete Policy (dashboard page code)",
             "body": [
               "import { policies } from 'wix-events.v2';",
-              "import * as wixAuth from 'wix-auth';",
               "",
               "//define policy ID",
               "const policyId = '0907cf78-5177-4482-a627-b17ef06badec';",
               "",
               "//delete policy",
-              "function elevatedDeletePolicyFunction(){",
-              "  const elevatedDeletePolicy = wixAuth.elevate(policies.deletePolicy);",
+              "function myDeletePolicyFunction(){",
               "   try {",
-              "     return elevatedDeletePolicy(policyId);",
+              "     return policies.deletePolicy(policyId);",
               "   } ",
               "   catch (error) {",
               "     console.error(error);",
@@ -160,17 +192,37 @@
               "   }",
               " };",
               "",
-              "// Returns void"
+              "// Returns void",
+              ""
+            ]
+          },
+          {
+            "title": "Delete Policy (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "import * as wixAuth from 'wix-auth';",
+              "",
+              "//define policy ID",
+              "const policyId = '0907cf78-5177-4482-a627-b17ef06badec';",
+              "",
+              "export const elevatedDeletePolicyFunction = webMethod(Permissions.Anyone, () => {",
+              "  const elevatedDeletePolicy = wixAuth.elevate(policies.deletePolicy);",
+              "  try {",
+              "    return elevatedDeletePolicy(policyId);",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deletePolicy",
       "isAdminMethod": true
     },
@@ -213,7 +265,7 @@
         ],
         "examples": [
           {
-            "title": "Get Policy ",
+            "title": "Get Policy",
             "body": [
               "import { policies } from 'wix-events.v2';",
               "",
@@ -245,15 +297,44 @@
               "}",
               "*/"
             ]
+          },
+          {
+            "title": "Get Policy (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "",
+              "// define policy ID",
+              "const policyId = '6933ddf1-26c7-46c3-9924-e78c833d6cca';",
+              "",
+              "export const getPolicy = webMethod(Permissions.Anyone, async () => {",
+              "   try {",
+              "     const result = await policies.getPolicy(policyId);",
+              "     return result;",
+              "   } ",
+              "    catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " });",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"_id\": \"6933ddf1-26c7-46c3-9924-e78c833d6cca\",",
+              " *   \"revision\": \"1\",",
+              " *   \"_createdDate\": \"2023-03-07T13:18:09.185Z\",",
+              " *   \"_updatedDate\": \"2023-03-07T13:18:09.185Z\",",
+              " *   \"name\": \"Terms and Conditions Event 2\",",
+              " *   \"body\": \"<p>Nobody will be allowed admission to the Event without a valid ticket or pass.</p>\",",
+              " *   \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getPolicy"
     },
     {
@@ -293,15 +374,15 @@
           "|:---:|:---:|",
           "|`_id`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
           "|`revision`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`lt()`](wix-events-v2.Policies.PoliciesQueryBuilder#lt),[`le()`](wix-events-v2.Policies.PoliciesQueryBuilder#le),[`gt()`](wix-events-v2.Policies.PoliciesQueryBuilder#gt),[`ge()`](wix-events-v2.Policies.PoliciesQueryBuilder#ge),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
-          "|`_createdDate`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`lt()`](wix-events-v2.Policies.PoliciesQueryBuilder#lt),[`le()`](wix-events-v2.Policies.PoliciesQueryBuilder#le),[`gt()`](wix-events-v2.Policies.PoliciesQueryBuilder#gt),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
-          "|`_updatedDate`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`lt()`](wix-events-v2.Policies.PoliciesQueryBuilder#lt),[`le()`](wix-events-v2.Policies.PoliciesQueryBuilder#le),[`gt()`](wix-events-v2.Policies.PoliciesQueryBuilder#gt),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
+          "|`_createdDate`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`lt()`](wix-events-v2.Policies.PoliciesQueryBuilder#lt),[`le()`](wix-events-v2.Policies.PoliciesQueryBuilder#le),[`gt()`](wix-events-v2.Policies.PoliciesQueryBuilder#gt),[`ge()`](wix-events-v2.Policies.PoliciesQueryBuilder#ge),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
+          "|`_updatedDate`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`lt()`](wix-events-v2.Policies.PoliciesQueryBuilder#lt),[`le()`](wix-events-v2.Policies.PoliciesQueryBuilder#le),[`gt()`](wix-events-v2.Policies.PoliciesQueryBuilder#gt),[`ge()`](wix-events-v2.Policies.PoliciesQueryBuilder#ge),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
           "|`name`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
           "|`body`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|",
           "|`eventId`|[`eq()`](wix-events-v2.Policies.PoliciesQueryBuilder#eq),[`ne()`](wix-events-v2.Policies.PoliciesQueryBuilder#ne),[`in()`](wix-events-v2.Policies.PoliciesQueryBuilder#in),[`exists()`](wix-events-v2.Policies.PoliciesQueryBuilder#exists),[`ascending()`](wix-events-v2.Policies.PoliciesQueryBuilder#ascending),[`descending()`](wix-events-v2.Policies.PoliciesQueryBuilder#descending)|"
         ],
         "examples": [
           {
-            "title": "Query Policies by name and sort by _createdDate in descending order ",
+            "title": "Query Policies by name and sort by _createdDate in descending order",
             "body": [
               "import { policies } from 'wix-events.v2';",
               "",
@@ -375,15 +456,86 @@
               "}",
               "*/"
             ]
+          },
+          {
+            "title": "Query Policies by name and sort by _createdDate in descending order (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "",
+              "export const queryPolicies = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const items = await policies.queryPolicies()",
+              "      .eq('eventId', '3d3d5c04-ece0-45a8-85f0-11a58edaa192')",
+              "      .ascending('_createdDate')",
+              "      .find();",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_items\": [",
+              " *     {",
+              " *       \"_id\": \"96b39980-e4e1-44e3-9ef0-9bec41d1cc10\",",
+              " *       \"revision\": \"6\",",
+              " *       \"_createdDate\": \"2023-03-08T13:55:18.057Z\",",
+              " *       \"_updatedDate\": \"2023-03-15T13:43:11.794Z\",",
+              " *       \"name\": \"Terms and Conditions Event 2\",",
+              " *       \"body\": \"<p>Nobody will be allowed admission to the Event without a valid ticket or pass.</p>\",",
+              " *       \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"850beadf-f367-4197-a0c8-6624cb3bcef9\",",
+              " *       \"revision\": \"1\",",
+              " *       \"_createdDate\": \"2023-03-15T13:49:27.023Z\",",
+              " *       \"_updatedDate\": \"2023-03-15T13:49:27.023Z\",",
+              " *       \"name\": \"Terms and Conditions Event 1\",",
+              " *       \"body\": \"<p>Tickets to this Event are issued on behalf of the Organiser and are subject to the following terms and conditions.</p>\",",
+              " *       \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *     }",
+              " *   ],",
+              " *   \"_originQuery\": {",
+              " *     \"filterTree\": {",
+              " *       \"$and\": [",
+              " *         {",
+              " *           \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"invalidArguments\": [],",
+              " *     \"encoder\": {},",
+              " *     \"transformationPaths\": {},",
+              " *     \"sort\": [",
+              " *       {",
+              " *         \"fieldName\": \"createdDate\",",
+              " *         \"order\": \"ASC\"",
+              " *       }",
+              " *     ],",
+              " *     \"paging\": {},",
+              " *     \"pagingMethod\": \"CURSOR\",",
+              " *     \"builderOptions\": {",
+              " *       \"cursorWithEmptyFilterAndSort\": true",
+              " *     }",
+              " *   },",
+              " *   \"_limit\": 50,",
+              " *   \"_nextCursor\": \"\",",
+              " *   \"_prevCursor\": \"\",",
+              " *   \"cursors\": {",
+              " *     \"next\": \"\",",
+              " *     \"prev\": \"\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "queryPolicies"
     },
     {
@@ -442,11 +594,11 @@
       "docs": {
         "summary": "Changes policy order in an event dashboard and agreement checkbox on the checkout form.\nFor example, if we have 3 policies in the list, after using this function the 3rd policy will become the 1st, and other policies will move by 1 position. By default, the policies are arranged by the created date in descending order.",
         "description": [
-          ">  **Note**: it is possible to use both `beforePolicyId` and `afterPolicyId` at the same time but only the last one defined will be executed.\n\n<!--\n>  Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `reorderEventPolicies()` function returns a Promise that resolves to the newly-reordered policy.\n\nThis function is not a universal function and runs only on the backend."
+          ">  **Note**: it is possible to use both `beforePolicyId` and `afterPolicyId` at the same time but only the last one defined will be executed.\n\n<!--\n>  Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `reorderEventPolicies()` function returns a Promise that resolves to the newly-reordered policy."
         ],
         "examples": [
           {
-            "title": "Reorder Policies ",
+            "title": "Reorder Policies (dashboard page code)",
             "body": [
               "import { policies } from 'wix-events.v2';",
               "",
@@ -505,15 +657,72 @@
               "}",
               "*/"
             ]
+          },
+          {
+            "title": "Reorder Policies (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// define event ID and policies to reorder",
+              "const eventId = '3d3d5c04-ece0-45a8-85f0-11a58edaa192';",
+              "const options = {",
+              "  policyId: '52f15c5c-ea06-44f4-866a-b1cfa6f4f790',",
+              "  beforePolicyId: '6933ddf1-26c7-46c3-9924-e78c833d6cca'",
+              "};",
+              "",
+              "export const elevatedReorderPoliciesFunction = webMethod(Permissions.Anyone, async () => {",
+              "  const elevatedReorderPolicies = elevate(policies.reorderEventPolicies);",
+              "   try {",
+              "     const result = await elevatedReorderPolicies(eventId, options);",
+              "     return result;",
+              "   } ",
+              "   catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " });",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"policies\": [",
+              " *     {",
+              " *       \"_id\": \"52f15c5c-ea06-44f4-866a-b1cfa6f4f790\",",
+              " *       \"revision\": \"2\",",
+              " *       \"_createdDate\": \"2023-03-07T14:15:44.312Z\",",
+              " *       \"_updatedDate\": \"2023-03-07T14:33:00.876Z\",",
+              " *       \"name\": \"Terms and Conditions Event 1\",",
+              " *       \"body\": \"<p><code>Tickets to this Event are issued on behalf of the Organiser and are subject to the following terms and conditions.</code></p>\",",
+              " *       \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"6933ddf1-26c7-46c3-9924-e78c833d6cca\",",
+              " *       \"revision\": \"2\",",
+              " *       \"_createdDate\": \"2023-03-07T13:18:09.185Z\",",
+              " *       \"_updatedDate\": \"2023-03-07T14:33:01.072Z\",",
+              " *       \"name\": \"Terms and Conditions Event 2\",",
+              " *       \"body\": \"<p><code>Nobody will be allowed admission to the Event without a valid ticket or pass.</code></p>\",",
+              " *       \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"b9d5f876-f961-497a-9f30-9edae95d8f87\",",
+              " *       \"revision\": \"1\",",
+              " *       \"_createdDate\": \"2023-03-07T14:16:25.452Z\",",
+              " *       \"_updatedDate\": \"2023-03-07T14:16:25.452Z\",",
+              " *       \"name\": \"Terms and Conditions Event 3\",",
+              " *       \"body\": \"<p><code>All tickets or passes should be checked on purchase, as mistakes cannot always be rectified.</code></p>\",",
+              " *       \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "reorderEventPolicies",
       "isAdminMethod": true
     },
@@ -567,11 +776,11 @@
       "docs": {
         "summary": "Updates a policy.",
         "description": [
-          "<!--\n> Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `updatePolicy()` function returns a Promise that resolves to the newly-updated policy.\n\nEach time the policy is updated, `revision` increments by 1. The existing `revision` must be included when updating the policy. This ensures you're working with the latest policy and prevents unintended overwrites.\n\nThis function is not a universal function and runs only on the backend."
+          "<!--\n> Note: This function is restricted and only runs if you elevate permissions using the [wix-auth.elevate()](https://www.wix.com/velo/reference/wix-auth/elevate) function.\n-->\n\nThe `updatePolicy()` function returns a Promise that resolves to the newly-updated policy.\n\nEach time the policy is updated, `revision` increments by 1. The existing `revision` must be included when updating the policy. This ensures you're working with the latest policy and prevents unintended overwrites."
         ],
         "examples": [
           {
-            "title": "Update Policy ",
+            "title": "Update Policy (dashboard page code)",
             "body": [
               "import { policies } from 'wix-events.v2';",
               "",
@@ -610,20 +819,78 @@
               "}",
               "*/"
             ]
+          },
+          {
+            "title": "Update Policy (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { policies } from 'wix-events.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// define policy ID and policy object to update",
+              "const id = '52f15c5c-ea06-44f4-866a-b1cfa6f4f790';",
+              "const policy = {",
+              "   name: 'Terms and Conditions Event 1',",
+              "   body: 'If the Event is rescheduled, changed, moved or cancelled the Organiser cannot be held responsible for any resulting costs you may incur for travel, accommodation and other related goods, services or compensation.',",
+              "   revision: '2',",
+              "   eventId: '3d3d5c04-ece0-45a8-85f0-11a58edaa192'",
+              " };",
+              "",
+              "// update policy",
+              "export const elevatedUpdatePolicyFunction = webMethod(Permissions.Anyone, async () => {",
+              "  const elevatedUpdatePolicy = elevate(policies.updatePolicy);",
+              "   try {",
+              "     const result = await elevatedUpdatePolicy(id, policy);",
+              "     return result;",
+              "   } ",
+              "   catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_id\": \"52f15c5c-ea06-44f4-866a-b1cfa6f4f790\",",
+              " *   \"revision\": \"3\",",
+              " *   \"_createdDate\": \"2023-03-07T14:15:44.312Z\",",
+              " *   \"_updatedDate\": \"2023-03-07T14:51:52.994Z\",",
+              " *   \"name\": \"Terms and Conditions Event 1\",",
+              " *   \"body\": \"If the Event is rescheduled, changed, moved or cancelled the Organiser cannot be held responsible for any resulting costs you may incur for travel, accommodation and other related goods, services or compensation.\",",
+              " *   \"eventId\": \"3d3d5c04-ece0-45a8-85f0-11a58edaa192\"",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updatePolicy",
       "isAdminMethod": true
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "Address",
       "members": [
@@ -756,7 +1023,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "address latitude coordinates"
         },
         {
           "name": "longitude",
@@ -766,7 +1033,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": ""
+          "doc": "address longitude coordinates"
         }
       ],
       "docs": {
@@ -1151,8 +1418,261 @@
       }
     },
     {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Empty",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -1271,6 +1791,46 @@
             }
           ],
           "doc": "Event creator user ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetPolicyFromTrashBinRequest",
+      "members": [
+        {
+          "name": "policyId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Policy ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetPolicyFromTrashBinResponse",
+      "members": [
+        {
+          "name": "policy",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-events-v2.Policies.Policy"
+            }
+          ],
+          "doc": "The requested policy."
         }
       ],
       "docs": {
