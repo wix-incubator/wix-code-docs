@@ -1,4 +1,4 @@
-# Integration with `wix-ecom-backend`
+# Integration with wix-ecom-backend
 
 Passing product details from the Stores catalog to a `wix-ecom-backend` cart, checkout, or order, must follow the structure of the `catalogReference` object.
 
