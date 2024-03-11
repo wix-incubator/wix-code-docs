@@ -388,7 +388,7 @@
         ],
         "examples": [
           {
-            "title": "Create a new member",
+            "title": "Create a new member with required parameter values",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
@@ -443,7 +443,7 @@
             ]
           },
           {
-            "title": "Create a new member",
+            "title": "Create a new member with full parameter options",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
@@ -607,6 +607,91 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Create member from site",
+            "body": [
+              "/*****************************************",
+              " * Backend code - createMemberScenario.web.js *",
+              " ****************************************/",
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedCreateMember = elevate(members.createMember);",
+              "",
+              "export const myCreateMemberFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (memberArray) => {",
+              "    const results = []; // To store the results (successes and failures)",
+              "",
+              "    for (const member of memberArray) {",
+              "      try {",
+              "        const newMember = await elevatedCreateMember({",
+              "          loginEmail: member.loginEmail,",
+              "          privacyStatus: member.privacyStatus,",
+              "          // Include additional member properties here as needed.",
+              "        });",
+              "        console.log('Created new member:', newMember);",
+              "        results.push({ success: true, member: newMember });",
+              "      } catch (error) {",
+              "        console.error(error);",
+              "        // Handle the error, for example, by adding error details to the results array",
+              "        results.push({ success: false, error: error.message, member: member });",
+              "      }",
+              "    }",
+              "",
+              "    return results; // Return the results array containing the outcome for each member creation attempt",
+              "  }",
+              ");",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "import { myCreateMemberFunction } from \"backend/createMemberScenario.web.js\"",
+              "",
+              "$w.onReady(function () {",
+              "",
+              "  let memberArray = [];",
+              "",
+              "  // Function to add members to the Array and then send to backend",
+              "  $w(\"#addMemberBtn\").onClick(() => {",
+              "    const loginEmail = $w('#emailInput').value;",
+              "    const privacyStatus = $w('#privacyDropdown').value;",
+              "",
+              "    // Add member details to array",
+              "    memberArray.push({ loginEmail, privacyStatus });",
+              "",
+              "    // Optionally clear the input fields here",
+              "    $w(\"#emailInput\").value = \"\";",
+              "    // If you also want to reset the privacy dropdown, you can do it here",
+              "    // Example: $w(\"#privacyDropdown\").selectedIndex = 0; or $w(\"#privacyDropdown\").value = 'defaultValue';",
+              "",
+              "    console.log(\"Member added. Current member count: \", memberArray.length);",
+              "",
+              "    // Using a loop to print each element",
+              "    for (let i = 0; i < memberArray.length; i++) {",
+              "      console.log(memberArray[i]);",
+              "    }",
+              "",
+              "    // Check if array has members before sending to backend",
+              "    if (memberArray.length > 0) {",
+              "      myCreateMemberFunction(memberArray)",
+              "        .then(response => {",
+              "          console.log(\"Member created successfully\", response);",
+              "          memberArray = []; // Reset the array after sending to backend",
+              "        })",
+              "        .catch(err => {",
+              "          console.error(\"Failed to create members\", err);",
+              "        });",
+              "    } else {",
+              "      console.error(\"No members to submit.\");",
+              "    }",
+              "",
+              "  });",
+              "",
+              "});"
+            ]
           }
         ]
       },
@@ -654,7 +739,7 @@
       "docs": {
         "summary": "Deletes a member.",
         "description": [
-          ">**Note:** This function permanently deletes a member. Once deleted, a member cannot be restored."
+          "The `deleteMember()` function returns a Promise that resolves to a member object when the specified member is deleted.\n\n>**Note:** This function permanently deletes a member. Once deleted, a member cannot be restored."
         ],
         "examples": [
           {
@@ -724,7 +809,8 @@
               "  }",
               ");",
               "",
-              "/* Promise resolves to void */"
+              "/* Promise resolves to void */",
+              ""
             ]
           }
         ]
@@ -831,16 +917,17 @@
               "// Sample id value:",
               "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
               "",
-              "export const myDeleteAddressesFunction = webMethod(Permissions.Anyone, (id) => {",
-              "  return members.deleteMemberAddresses(id)",
-              "    .then((updatedMember) => {",
-              "      const addresses = updatedMember.contact.addresses;",
-              "      return updatedMember;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    })",
-              "});",
+              "export const myDeleteAddressesFunction = webMethod(",
+              "  Permissions.Anyone, (id) => {",
+              "      return members.deleteMemberAddresses(id)",
+              "          .then((updatedMember) => {",
+              "              const addresses = updatedMember.contact.addresses;",
+              "              return updatedMember;",
+              "          })",
+              "          .catch((error) => {",
+              "              console.error(error);",
+              "          })",
+              "  });",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -884,7 +971,7 @@
               "",
               "const elevatedDeleteMemberAddresses = elevate(members.deleteMemberAddresses);",
               "",
-              "/* Sample _id value: '20aca292-e791-45b4-902f-7e7e22c96dd5' */",
+              "/* Sample id value: '20aca292-e791-45b4-902f-7e7e22c96dd5' */",
               "",
               "export const myDeleteMemberAddressesFunction = webMethod(",
               "  Permissions.Anyone,",
@@ -977,66 +1064,7 @@
         ],
         "examples": [
           {
-            "title": "Delete a member's email",
-            "body": [
-              "import { members } from 'wix-members.v2';",
-              "",
-              "// Sample id value:",
-              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
-              "",
-              "export function myDeleteEmailsFunction(id) {",
-              "  return members.deleteMemberEmails(id)",
-              "    .then((updatedMember) => {",
-              "      const emails = updatedMember.contact.emails;",
-              "      return updatedMember;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    })",
-              "}",
-              "",
-              "/* Promise resolves to:",
-              " * {",
-              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
-              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
-              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
-              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"loginEmail\": \"claude.morales@example.com\",",
-              " *   \"loginEmailVerified\": true,",
-              " *   \"status\": \"APPROVED\",",
-              " *   \"activityStatus\": \"ACTIVE\",",
-              " *   \"privacyStatus\": \"PUBLIC\",",
-              " *   \"contact\": {",
-              " *     \"firstName\": \"Claude\",",
-              " *     \"lastName\": \"Morales\",",
-              " *     \"phones\": [",
-              " *       \"0747-769-460\"",
-              " *     ],",
-              " *     \"emails\": [],",
-              " *     \"addresses\": [",
-              " *       {",
-              " *         \"_id\": \"f0f4d905-488d-44db-9080-fc29078cfad5\",",
-              " *         \"addressLine\": \"9373 Park Avenue\",",
-              " *         \"addressLine2\": \"Berkshire\",",
-              " *         \"city\": \"Ely\",",
-              " *         \"subdivision\": \"GB-ENG\",",
-              " *         \"country\": \"GB\",",
-              " *         \"postalCode\": \"PD50 8EU\"",
-              " *       }",
-              " *     ],",
-              " *     \"customFields\": {}",
-              " *   },",
-              " *   \"profile\": {",
-              " *     \"nickname\": \"Claude Morales\",",
-              " *     \"slug\": \"claudemorales\"",
-              " *   }",
-              " * }",
-              " */"
-            ]
-          },
-          {
-            "title": "Delete a member's email (export from backend code)",
+            "title": "Delete a member's email (export from backend code) ",
             "body": [
               "import { Permissions, webMethod } from 'wix-web-module';",
               "import { members } from 'wix-members.v2';",
@@ -1097,7 +1125,7 @@
             ]
           },
           {
-            "title": "Delete a member's email ",
+            "title": "Delete a member's email",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
@@ -1105,7 +1133,7 @@
               "",
               "const elevatedDeleteMemberEmails = elevate(members.deleteMemberEmails);",
               "",
-              "/* Sample _id value: '20aca292-e791-45b4-902f-7e7e22c96dd5' */",
+              "/* Sample id value: '20aca292-e791-45b4-902f-7e7e22c96dd5' */",
               "",
               "export const myDeleteMemberEmailsFunction = webMethod(",
               "  Permissions.Anyone,",
@@ -1316,6 +1344,63 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Delete a member's phone numbers",
+            "body": [
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedDeleteMemberPhones = elevate(members.deleteMemberPhones);",
+              "",
+              "/* Sample id value: '20aca292-e791-45b4-902f-7e7e22c96dd5' */",
+              "",
+              "export const myDeleteMemberPhones = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (_id) => {",
+              "    try {",
+              "      const member = await elevatedDeleteMemberPhones(_id);",
+              "      console.log('Deleted members phone: ', member);",
+              "",
+              "      return member;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " *  {",
+              " *   \"_createdDate\": \"2024-02-28T10:42:31.000Z\",",
+              " *   \"_id\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
+              " *   \"_updatedDate\": \"2024-02-28T10:42:30.891Z\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"contact\": {",
+              " *     \"contactId\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
+              " *     \"firstName\": \"John\",",
+              " *     \"lastName\": \"Jonas\",",
+              " *     \"phones\": [],",
+              " *     \"emails\": [],",
+              " *     \"addresses\": [],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"contactId\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
+              " *   \"lastLoginDate\": \"2024-02-28T10:42:31.000Z\",",
+              " *   \"loginEmail\": \"johnjonas@gmail.com\",",
+              " *   \"loginEmailVerified\": false,",
+              " *   \"privacyStatus\": \"PRIVATE\",",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"johnjonas\",",
+              " *     \"slug\": \"johnjonas\"",
+              " *   },",
+              " *   \"status\": \"APPROVED\"",
+              " * }",
+              " * ",
+              " */"
+            ]
           }
         ]
       },
@@ -1486,21 +1571,49 @@
         "description": [],
         "examples": [
           {
-            "title": "getCurrentMember example",
+            "title": "Get currently logged in member",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function getCurrentMember(options) {",
-              "   try {",
-              "     const result = await members.getCurrentMember(options);",
+              "import { webMethod, Permissions } from 'wix-web-module';  ",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "export const myGetCurrentMemberFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async () => {",
+              "    try {",
+              "      const member = await members.getCurrentMember();",
+              "      console.log('Retrieved currently logged in member:', member);",
+              "",
+              "      return member;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "/* Promise resolves to:",
+              " *",
+              " *  {",
+              " *  \"_createdDate\": \"2024-02-22T13:52:00.000Z\",",
+              " *  \"_id\": \"7d368843-6f0c-4037-8d0e-b7e36a8a0c32\",",
+              " *   \"_updatedDate\": \"2024-02-22T13:52:00.674Z\",",
+              " *  \"activityStatus\": \"UNKNOWN\",",
+              " *   \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *   \"privacyStatus\": \"UNKNOWN\",",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"Maverick\",",
+              " *     \"slug\": \"maverick123\",",
+              " *     \"photo\": {",
+              " *       \"url\": \"https://example.com/photo.jpg\",",
+              " *       \"height\": 0,",
+              " *       \"width\": 0,",
+              " *       \"_id\": \"\"",
+              " *     }",
+              " *   },",
+              " *   \"status\": \"UNKNOWN\"",
+              " * }",
+              " *",
+              " */"
             ]
           }
         ]
@@ -1561,74 +1674,6 @@
           ">**Note:** The returned Member object contains only the fields that were explicitly added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/site-members-customizing-your-member-profile-fields).\n"
         ],
         "examples": [
-          {
-            "title": "Get a member by ID",
-            "body": [
-              "import { members } from 'wix-members.v2';",
-              "",
-              "// Sample id value:",
-              "// '60a91ab6-5e30-4af2-9d5e-a205c351ffd7'",
-              "//",
-              "// Sample options value:",
-              "// {",
-              "//   fieldsets: [ 'FULL' ]",
-              "// }",
-              "",
-              "export function myGetMemberFunction(id, options) {",
-              "  return members.getMember(id, options)",
-              "    .then((member) => {",
-              "      const slug = member.profile.slug;",
-              "      const name = `${member.contact.firstName} ${member.contact.lastName}`;",
-              "      const contactId = member.contactId;",
-              "      return member;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}",
-              "",
-              "/* Promise resolves to:",
-              " * {",
-              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
-              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
-              " *   \"lastLoginDate\": \"2021-08-02T23:17:29.000Z\",",
-              " *   \"loginEmail\": \"claude.morales@example.com\",",
-              " *   \"loginEmailVerified\": true,",
-              " *   \"status\": \"APPROVED\",",
-              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"privacyStatus\": \"PUBLIC\",",
-              " *   \"activityStatus\": \"ACTIVE\",",
-              " *   \"contact\": {",
-              " *     \"firstName\": \"Claude\",",
-              " *     \"lastName\": \"Morales\",",
-              " *     \"phones\": [",
-              " *       \"0747-769-460\"",
-              " *     ],",
-              " *     \"emails\": [",
-              " *       \"claude.morales@example.com\"",
-              " *     ],",
-              " *     \"addresses\": [",
-              " *       {",
-              "         * \"_id\": \"e151960c-04a7-43ef-aa17-a134916ded07\",",
-              "         * \"addressLine\": \"9373 Park Avenue\",",
-              "         * \"addressLine2\": \"Berkshire\",",
-              "         * \"city\": \"Ely\",",
-              "         * \"subdivision\": \"GB-ENG\",",
-              "         * \"country\": \"GB\",",
-              "         * \"postalCode\": \"PD50 8EU\"",
-              " *       }",
-              " *     ],",
-              " *     \"customFields\": {}",
-              " *   },",
-              " *   \"profile\": {",
-              " *     \"nickname\": \"claude.morales\",",
-              " *     \"slug\": \"claudemorales\"",
-              " *   }",
-              " * }",
-              " */"
-            ]
-          },
           {
             "title": "Get a member by ID (export from backend code)",
             "body": [
@@ -1700,13 +1745,13 @@
             ]
           },
           {
-            "title": "Get a member by ID",
+            "title": "Get a member by ID with minimum parameters",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
               "import { elevate } from 'wix-auth';",
               "",
-              "/* Sample _id value: '60a91ab6-5e30-4af2-9d5e-a205c351ffd7' */",
+              "/* Sample id value: '60a91ab6-5e30-4af2-9d5e-a205c351ffd7' */",
               "",
               "const elevatedgetMember = elevate(members.getMember);          ",
               "",
@@ -1743,15 +1788,14 @@
             ]
           },
           {
-            "title": "Get a member by ID ",
+            "title": "Get a member by ID",
             "body": [
-              "// @title: Get a member by ID",
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
               "import { elevate } from 'wix-auth';",
               "",
               "/*",
-              " * Sample _id value: '60a91ab6-5e30-4af2-9d5e-a205c351ffd7'",
+              " * Sample id value: '60a91ab6-5e30-4af2-9d5e-a205c351ffd7'",
               " *",
               " * Sample options value:",
               " * {",
@@ -1790,7 +1834,8 @@
               " *   },",
               " *   \"status\": \"UNKNOWN\"",
               " * }",
-              " */"
+              " */",
+              ""
             ]
           }
         ]
@@ -1940,6 +1985,65 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Make currently logged-in member's profile public",
+            "body": [
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';  ",
+              "",
+              "export const myJoinCommunityFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async () => {",
+              "    try {",
+              "      const member = await members.joinCommunity();",
+              "      console.log('Joined site community:', member);",
+              "",
+              "      return member;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"member\": {",
+              " *     \"createdDate\": \"2024-02-22T13:52:00Z\",",
+              " *     \"id\": \"7d368843-6f0c-4037-8d0e-b7e36a8a0c32\",",
+              " *     \"updatedDate\": \"2024-02-22T13:52:00.674Z\",",
+              " *     \"activityStatus\": \"ACTIVE\",",
+              " *     \"contact\": {",
+              " *       \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *       \"firstName\": \"John\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"phones\": [],",
+              " *       \"emails\": [],",
+              " *       \"addresses\": [],",
+              " *       \"customFields\": {}",
+              " *     },",
+              " *     \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *     \"lastLoginDate\": \"2024-02-29T11:40:21Z\",",
+              " *     \"loginEmail\": \"johndoe@example.com\",",
+              " *     \"loginEmailVerified\": true,",
+              " *     \"privacyStatus\": \"PUBLIC\",",
+              " *     \"profile\": {",
+              " *       \"nickname\": \"John Doe\",",
+              " *       \"slug\": \"johndoe\",",
+              " *       \"photo\": {",
+              " *         \"id\": \"\",",
+              " *         \"url\": \"https://example.com/newphoto.jpg\",",
+              " *         \"height\": 0,",
+              " *         \"width\": 0",
+              " *       }",
+              " *     },",
+              " *     \"status\": \"APPROVED\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
           }
         ]
       },
@@ -2088,6 +2192,64 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Make the currently logged-in member's profile private",
+            "body": [
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "",
+              "export const myLeaveCommunityFunction = webMethod(",
+              "  Permissions.SiteMember,",
+              "  async () => {",
+              "    try {",
+              "      const member =  await members.joinCommunity();",
+              "      console.log('Member removed from site community:', member);",
+              "",
+              "      return member;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"member\": {",
+              " *     \"createdDate\": \"2024-02-22T13:52:00Z\",",
+              " *     \"id\": \"7d368843-6f0c-4037-8d0e-b7e36a8a0c32\",",
+              " *     \"updatedDate\": \"2024-02-22T13:52:00.674Z\",",
+              " *     \"activityStatus\": \"ACTIVE\",",
+              " *     \"contact\": {",
+              " *       \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *       \"firstName\": \"John\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"phones\": [],",
+              " *       \"emails\": [],",
+              " *       \"addresses\": [],",
+              " *       \"customFields\": {}",
+              " *     },",
+              " *     \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *     \"lastLoginDate\": \"2024-02-29T11:40:21Z\",",
+              " *     \"loginEmail\": \"johndoe@example.com\",",
+              " *     \"loginEmailVerified\": true,",
+              " *     \"privacyStatus\": \"PUBLIC\",",
+              " *     \"profile\": {",
+              " *       \"nickname\": \"John Doe\",",
+              " *       \"slug\": \"johndoe\",",
+              " *       \"photo\": {",
+              " *         \"id\": \"\",",
+              " *         \"url\": \"https://example.com/newphoto.jpg\",",
+              " *         \"height\": 0,",
+              " *         \"width\": 0",
+              " *       }",
+              " *     },",
+              " *     \"status\": \"APPROVED\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
           }
         ]
       },
@@ -2131,29 +2293,124 @@
         ],
         "examples": [
           {
-            "title": "List site members",
+            "title": "List all site member's with full parameters",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
               "",
-              "/* Sample values:",
+              "/* Sample parameter values:",
               " *",
               " * {",
-              " *     \"options\": {",
-              " *         \"fieldsets\": [\"EXTENDED\"],",
-              " *         \"paging\": {",
-              " *             \"limit\": 20,",
-              " *             \"offset\": 0",
-              " *         },",
-              " *         \"sorting\": [",
-              " *             {",
-              " *                 \"fieldName\": \"lastName\",",
-              " *                 \"order\": \"ASC\"",
-              " *             }",
-              " *         ]",
-              " *     }",
+              " *   \"options\": {",
+              " *       \"fieldsets\": [\"EXTENDED\"],",
+              " *       \"paging\": {",
+              " *           \"limit\": 20,",
+              " *           \"offset\": 0",
+              " *       },",
+              " *       \"sorting\": [",
+              " *           {",
+              " *               \"fieldName\": \"lastName\",",
+              " *               \"order\": \"ASC\"",
+              " *           }",
+              " *       ]",
+              " *   }",
               " * }",
+              " */ ",
+              "",
+              "export const myListMemberFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (options) => {",
+              "    try {",
+              "      const memberList = await members.listMembers(options);",
+              "      console.log('Site members:', memberList);",
+              "",
+              "      return memberList;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "/* Promise resolves to:",
               " *",
+              " * {",
+              " *   \"members\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed52\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123456\",",
+              " *       \"profile\": {",
+              " *         \"nickname\": \"member1\",",
+              " *         \"slug\": \"member1_1234\"",
+              " *       },",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed53\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123457\",",
+              " *       \"profile\": {",
+              " *         \"nickname\": \"member2\",",
+              " *         \"slug\": \"member2_5678\"",
+              " *       },",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed54\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123458\",",
+              " *       \"profile\": {",
+              " *         \"nickname\": \"member3\",",
+              " *         \"slug\": \"member3_9012\"",
+              " *       },",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed55\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123459\",",
+              " *       \"profile\": {",
+              " *         \"nickname\": \"member4\",",
+              " *         \"slug\": \"member4_3456\"",
+              " *       },",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
+              " *     }",
+              " *   ],",
+              " *   \"metadata\": {",
+              " *     \"count\": 4,",
+              " *     \"offset\": 0,",
+              " *     \"total\": 4,",
+              " *     \"tooManyToCount\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "List site member's with no options",
+            "body": [
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "",
+              "",
+              "/* Sample options value",
+              " *",
+              " * {",
+              " *   \"options\": null",
+              " * }",
               " */",
               "",
               "export const myListMemberFunction = webMethod(",
@@ -2179,59 +2436,53 @@
               " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
               " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed52\",",
               " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
-              " *       \"activityStatus\": \"UNKNOWN\",",
-              " *       \"contactId\": \"29ae2752-73d2-4a07-8cba-677e1928ed52\",",
-              " *       \"privacyStatus\": \"UNKNOWN\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123456\",",
               " *       \"profile\": {",
-              " *         \"nickname\": \"examplemember\",",
-              " *         \"slug\": \"examplemember8045\"",
+              " *         \"nickname\": \"member1\",",
+              " *         \"slug\": \"member1_1234\"",
               " *       },",
-              " *       \"status\": \"UNKNOWN\"",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
               " *     },",
               " *     {",
-              " *       \"_createdDate\": \"2024-02-28T10:42:31.000Z\",",
-              " *       \"_id\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *       \"_updatedDate\": \"2024-02-28T10:42:30.891Z\",",
-              " *       \"activityStatus\": \"UNKNOWN\",",
-              " *       \"contactId\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *       \"privacyStatus\": \"UNKNOWN\",",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed53\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123457\",",
               " *       \"profile\": {",
-              " *         \"nickname\": \"johnjonas\",",
-              " *         \"slug\": \"johnjonas\"",
+              " *         \"nickname\": \"member2\",",
+              " *         \"slug\": \"member2_5678\"",
               " *       },",
-              " *       \"status\": \"UNKNOWN\"",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
               " *     },",
               " *     {",
-              " *       \"_createdDate\": \"2024-02-22T13:52:00.000Z\",",
-              " *       \"_id\": \"7d368843-6f0c-4037-8d0e-b7e36a8a0c32\",",
-              " *       \"_updatedDate\": \"2024-02-22T13:52:00.674Z\",",
-              " *       \"activityStatus\": \"UNKNOWN\",",
-              " *       \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
-              " *       \"privacyStatus\": \"UNKNOWN\",",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed54\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123458\",",
               " *       \"profile\": {",
-              " *         \"nickname\": \"Domantas Sniezka\",",
-              " *         \"slug\": \"domantassn\",",
-              " *         \"photo\": {",
-              " *           \"url\": \"https://lh3.googleusercontent.com/a/ACg8ocJNAYeJT0Fwb9Ii1c3QDbj3IxqKgbs6fPVCyrKIDS4nXQ%3Ds96-c\",",
-              " *           \"height\": 0,",
-              " *           \"width\": 0,",
-              " *           \"_id\": \"\"",
-              " *         }",
+              " *         \"nickname\": \"member3\",",
+              " *         \"slug\": \"member3_9012\"",
               " *       },",
-              " *       \"status\": \"UNKNOWN\"",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
               " *     },",
               " *     {",
-              " *       \"_createdDate\": \"2024-02-28T10:40:23.000Z\",",
-              " *       \"_id\": \"cce66608-4ec0-4397-b5c5-80ada2111e61\",",
-              " *       \"_updatedDate\": \"2024-02-28T10:40:23.482Z\",",
-              " *       \"activityStatus\": \"UNKNOWN\",",
-              " *       \"contactId\": \"cce66608-4ec0-4397-b5c5-80ada2111e61\",",
-              " *       \"privacyStatus\": \"UNKNOWN\",",
+              " *       \"_createdDate\": \"2024-02-29T11:12:57.000Z\",",
+              " *       \"_id\": \"29ae2752-73d2-4a07-8cba-677e1928ed55\",",
+              " *       \"_updatedDate\": \"2024-02-29T11:12:57.474Z\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"contactId\": \"a2b3c4d5-1234-5678-9876-abcdef123459\",",
               " *       \"profile\": {",
-              " *         \"nickname\": \"domsniezka\",",
-              " *         \"slug\": \"domsniezka\"",
+              " *         \"nickname\": \"member4\",",
+              " *         \"slug\": \"member4_3456\"",
               " *       },",
-              " *       \"status\": \"UNKNOWN\"",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"status\": \"VERIFIED\"",
               " *     }",
               " *   ],",
               " *   \"metadata\": {",
@@ -2241,7 +2492,6 @@
               " *     \"tooManyToCount\": false",
               " *   }",
               " * }",
-              " *",
               " */"
             ]
           }
@@ -2379,39 +2629,38 @@
         ],
         "examples": [
           {
-            "title": "Query members",
+            "title": "Query member's with full option values",
             "body": [
               "import { members } from 'wix-members.v2';",
               "import { webMethod, Permissions } from 'wix-web-module';",
               "",
-              "/* Sample paramter values:",
-              " *",
+              "/* Sample parameter values",
               " * {",
-              " *     \"options\": {",
-              " *         \"fieldsets\": [\"EXTENDED\"],",
-              " *         \"search\": {",
-              " *             \"expression\": \"John Doe\"",
-              " *         },",
-              " *         \"fields\": [",
-              " *             \"loginEmail\",",
-              " *             \"contact.firstName\",",
-              " *             \"contact.lastName\",",
-              " *             \"profile.title\",",
-              " *             \"profile.nickname\",",
-              " *             \"profile.slug\"",
-              " *         ]",
-              " *     }",
+              " *   \"options\": {",
+              " *       \"fieldsets\": [\"EXTENDED\"],",
+              " *       \"search\": {",
+              " *           \"expression\": \"John Doe\"",
+              " *       },",
+              " *       \"fields\": [",
+              " *           \"loginEmail\",",
+              " *           \"contact.firstName\",",
+              " *           \"contact.lastName\",",
+              " *           \"profile.title\",",
+              " *           \"profile.nickname\",",
+              " *           \"profile.slug\"",
+              " *       ]",
+              " *   }",
               " * }",
-              " */",
+              " */ ",
               "",
               "export const myQueryMembersFunction = webMethod(",
               "  Permissions.Anyone,",
               "  async (options) => {",
               "    try {",
-              "      const member = await members.queryMembers(options);",
-              "      console.log('Retrieved members:', member);",
+              "      const siteMembers = await members.queryMembers(options).find();",
+              "      console.log('Retrieved members:', siteMembers);",
               "",
-              "      return member;",
+              "      return siteMembers;",
               "    } catch (error) {",
               "      console.error(error);",
               "      // Handle the error",
@@ -2420,10 +2669,34 @@
               ");",
               "",
               "/* Promise resolves to:",
-              " *",
               " * {",
+              " *   \"_items\": [",
+              " *     {",
+              " *       \"loginEmail\": \"newmember1@example.com\",",
+              " *       \"loginEmailVerified\": false,",
+              " *       \"status\": \"APPROVED\",",
+              " *       \"contactId\": \"bbfa3373-9bc0-4479-9766-40e9ff4b6661\",",
+              " *       \"contact\": {",
+              " *         \"contactId\": \"bbfa3373-9bc0-4479-9766-40e9ff4b6661\",",
+              " *         \"phones\": [],",
+              " *         \"emails\": [],",
+              " *         \"addresses\": [],",
+              " *         \"customFields\": {}",
+              " *       },",
+              " *       \"profile\": {",
+              " *         \"nickname\": \"John Doe\",",
+              " *         \"slug\": \"newmember1\"",
+              " *       },",
+              " *       \"privacyStatus\": \"PUBLIC\",",
+              " *       \"activityStatus\": \"ACTIVE\",",
+              " *       \"_id\": \"bbfa3373-9bc0-4479-9766-40e9ff4b6661\",",
+              " *       \"_createdDate\": \"2024-03-01T13:12:43.000Z\",",
+              " *       \"_updatedDate\": \"2024-03-01T13:12:43.459Z\"",
+              " *     }",
+              " *   ],",
+              " *   \"_originQuery\": {",
               " *     \"filterTree\": {",
-              " *         \"$and\": []",
+              " *       \"$and\": []",
               " *     },",
               " *     \"invalidArguments\": [],",
               " *     \"encoder\": {},",
@@ -2432,10 +2705,77 @@
               " *     \"paging\": {},",
               " *     \"pagingMethod\": \"OFFSET\",",
               " *     \"builderOptions\": {",
-              " *         \"cursorWithEmptyFilterAndSort\": true",
+              " *       \"cursorWithEmptyFilterAndSort\": true",
               " *     }",
+              " *   },",
+              " *   \"_limit\": 50,",
+              " *   \"_totalCount\": 1,",
+              " *   \"_offset\": 0,",
+              " *   \"_tooManyToCount\": false",
               " * }",
-              " */"
+              " */ "
+            ]
+          },
+          {
+            "title": "Query member's with no option values",
+            "body": [
+              "import { members } from 'wix-members.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "",
+              "/* Sample parameter values:",
+              " *",
+              " * {",
+              " *   \"options\": null",
+              " * }",
+              " * ",
+              " */",
+              "",
+              "export const myQueryMembersFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (options) => {",
+              "    try {",
+              "      const siteMembers = await members.queryMembers(options);",
+              "      console.log('Retrieved members:', siteMembers);",
+              "",
+              "      return siteMembers;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "/* Promise resolves to:",
+              " * [",
+              " *   {",
+              " *     \"status\": \"UNKNOWN\",",
+              " *     \"contactId\": \"6575e92c-1a50-485b-a701-c1a2c9f5c232\",",
+              " *     \"profile\": {",
+              " *       \"nickname\": \"JohnDoe\",",
+              " *       \"slug\": \"JohnDoe\"",
+              " *     },",
+              " *     \"privacyStatus\": \"UNKNOWN\",",
+              " *     \"activityStatus\": \"UNKNOWN\",",
+              " *     \"_id\": \"6575e92c-1a50-485b-a701-c1a2c9f5c232\",",
+              " *     \"_createdDate\": \"2024-03-07T07:45:33.000Z\",",
+              " *     \"_updatedDate\": \"2024-03-07T07:45:33.092Z\"",
+              " *   },",
+              " *   {",
+              " *     \"status\": \"UNKNOWN\",",
+              " *     \"contactId\": \"07a2d0c1-cbae-45f6-bc9b-659fde52cbc9\",",
+              " *     \"profile\": {",
+              " *       \"nickname\": \"JaneDoe\",",
+              " *       \"slug\": \"JaneDoe\"",
+              " *     },",
+              " *     \"privacyStatus\": \"UNKNOWN\",",
+              " *     \"activityStatus\": \"UNKNOWN\",",
+              " *     \"_id\": \"07a2d0c1-cbae-45f6-bc9b-659fde52cbc9\",",
+              " *     \"_createdDate\": \"2024-03-01T12:52:05.000Z\",",
+              " *     \"_updatedDate\": \"2024-03-01T12:52:05.511Z\"",
+              " *   }",
+              " * ]",
+              " */ ",
+              ""
             ]
           }
         ]
@@ -2554,21 +2894,72 @@
         ],
         "examples": [
           {
-            "title": "updateCurrentMemberSlug example",
+            "title": "Update the currently logged-in member's slug",
             "body": [
               "import { members } from 'wix-members.v2';",
-              "  ",
-              " async function updateCurrentMemberSlug(slug) {",
-              "   try {",
-              "     const result = await members.updateCurrentMemberSlug(slug);",
+              "import { webMethod, Permissions } from 'wix-web-module';",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "const updateCurrentMemberSlug = members.updateCurrentMemberSlug;",
+              "",
+              "/* Sample slug value:",
+              " * {",
+              " *    \"slug\": \"This is a new member slug\"",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateCurrentMemberSlugFunction = webMethod(",
+              "  // Use appropriate permission level based on your use case",
+              "  Permissions.SiteMember,",
+              "  async (slug) => {",
+              "    try {",
+              "      const member = await updateCurrentMemberSlug(slug);",
+              "      const memberID = members._id;",
+              "      console.log('Updated slug:', member);",
+              "",
+              "      return member;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "",
+              "/* Promise resolves",
+              " * {",
+              " *   \"_createdDate\": \"2024-02-22T13:52:00.000Z\",",
+              " *   \"_id\": \"7d368843-6f0c-4037-8d0e-b7e36a8a0c32\",",
+              " *   \"_updatedDate\": \"2024-02-22T13:52:00.674Z\",",
+              " *   \"activityStatus\": \"ACTIVE\",",
+              " *   \"contact\": {",
+              " *     \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *     \"firstName\": \"John\",",
+              " *     \"lastName\": \"Doe\",",
+              " *     \"phones\": [],",
+              " *     \"emails\": [",
+              " *       \"john.doe@example.com\"",
+              " *     ],",
+              " *     \"addresses\": [],",
+              " *     \"customFields\": {}",
+              " *   },",
+              " *   \"contactId\": \"ff20c02e-3d13-4412-9529-d628aa0abc12\",",
+              " *   \"lastLoginDate\": \"2024-02-29T11:40:21.000Z\",",
+              " *   \"loginEmail\": \"john.doe@example.com\",",
+              " *   \"loginEmailVerified\": true,",
+              " *   \"privacyStatus\": \"PUBLIC\",",
+              " *   \"profile\": {",
+              " *     \"nickname\": \"JohnD\",",
+              " *     \"slug\": \"This is a new member slug\",",
+              " *     \"photo\": {",
+              " *       \"url\": \"https://example.com/new_photo.jpg\",",
+              " *       \"height\": 0,",
+              " *       \"width\": 0,",
+              " *       \"_id\": \"\"",
+              " *     }",
+              " *   },",
+              " *   \"status\": \"APPROVED\"",
+              " * }",
+              " */ "
             ]
           }
         ]
@@ -2627,83 +3018,11 @@
       "docs": {
         "summary": "Updates a member's properties.",
         "description": [
-          "Only the requested fields are updated.\nTo clear a field's value, set an empty value with an empty string `\"\"`.\n\n> **Notes:**\n> Updating the `contact.addresses`, `contact.emails`, or `contact.phones` array overwrites the entire array, so any existing values you want to retain must be passed in the `updateMember()` call along with the new values to add.\n> However, passing an empty array will have no effect, and these functions must be used to clear all data from the respective array:\n>- To clear `contact.addresses`, use `deleteMemberAddresses()`.\n>- To clear `contact.emails`, use `deleteMemberEmails()`.\n>- To clear `contact.phones`, use `deleteMemberPhones()`.\n\n> **Note:**\n> Only logged-in members can call this function without elevated permissions.\n> To call this function as a different identity, [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) are required."
+          "Only the requested fields are updated.\nTo clear a field's value, set an empty value with an empty string `\"\"`.\n\n> **Note:**\n> Updating the `contact.addresses`, `contact.emails`, or `contact.phones` array overwrites the entire array, so any existing values you want to retain must be passed in the `updateMember()` call along with the new values to add.\n> However, passing an empty array will have no effect, and these functions must be used to clear all data from the respective array:\n>- To clear `contact.addresses`, use `deleteMemberAddresses()`.\n>- To clear `contact.emails`, use `deleteMemberEmails()`.\n>- To clear `contact.phones`, use `deleteMemberPhones()`.\n\n> **Note:**\n> Only logged-in members can call this function without elevated permissions.\n> To call this function as a different identity, [elevated permissions](https://www.wix.com/velo/reference/wix-auth/elevate) are required."
         ],
         "examples": [
           {
-            "title": "Overwrite a member's email addresses",
-            "body": [
-              "import { members } from 'wix-members.v2';",
-              "",
-              "// Sample id value:",
-              "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
-              "//",
-              "// Sample member value:",
-              "// {",
-              "//   contact: {",
-              "//     emails: ['claudes.new.email@example.com']",
-              "//   }",
-              "// }",
-              "",
-              "export function myUpdateMemberFunction(id, member) {",
-              "  return members.updateMember(id, member)",
-              "    .then((member) => {",
-              "      return member;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}",
-              "",
-              "/* Promise resolves to:",
-              " * {",
-              " *   \"_id\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"_createdDate\": \"2021-08-02T23:14:42.000Z\",",
-              " *   \"_updatedDate\": \"2021-08-02T23:14:58.345Z\",",
-              " *   \"contactId\": \"f32cbc51-a331-442b-86c2-2c664613e8b9\",",
-              " *   \"activityStatus\": \"UNKNOWN\",",
-              " *   \"privacyStatus\": \"UNKNOWN\",",
-              " *   \"status\": \"UNKNOWN\",",
-              " *   \"contact\": {",
-              " *     \"firstName\": \"Claude\",",
-              " *     \"lastName\": \"Morales\",",
-              " *     \"phones\": [",
-              " *       \"0747-769-460\"",
-              " *     ],",
-              " *     \"emails\": [",
-              " *       \"claudes.new.email@example.com\"",
-              " *     ],",
-              " *     \"addresses\": [",
-              " *       {",
-              " *         \"_id\": \"e151960c-04a7-43ef-aa17-a134916ded07\",",
-              " *         \"addressLine\": \"9373 Park Avenue\",",
-              " *         \"addressLine2\": \"Berkshire\",",
-              " *         \"city\": \"Ely\",",
-              " *         \"subdivision\": \"GB-ENG\",",
-              " *         \"country\": \"GB\",",
-              " *         \"postalCode\": \"PD50 8EU\"",
-              " *       },",
-              " *       {",
-              " *         \"_id\": \"88a6f2ed-83d5-435d-ab55-4af1cb1b7861\",",
-              " *         \"country\": \"IE\"",
-              " *       }",
-              " *     ],",
-              " *     \"customFields\": {",
-              " *       \"someKey\": {",
-              " *         \"value\": \"someValue\"",
-              " *       }",
-              " *     }",
-              " *   },",
-              " *   \"profile\": {",
-              " *     \"nickname\": \"Claude Morales\",",
-              " *     \"slug\": \"claudemorales\"",
-              " *   }",
-              " * }",
-              "*/"
-            ]
-          },
-          {
-            "title": "Overwrite a member's email addresses (export from backend code)",
+            "title": "update a member's email addresses (export from backend code)",
             "body": [
               "import { Permissions, webMethod } from 'wix-web-module';",
               "import { members } from 'wix-members.v2';",
@@ -2774,73 +3093,6 @@
               " * }",
               "*/",
               ""
-            ]
-          },
-          {
-            "title": "Update a member by ID.",
-            "body": [
-              "import { members } from 'wix-members.v2';",
-              "import { webMethod, Permissions } from 'wix-web-module';",
-              "import { elevate } from 'wix-auth';",
-              "",
-              "const elevatedUpdateMember = elevate(members.updateMember);",
-              "",
-              "/* Sample parameter values:",
-              " *",
-              " * {",
-              " *     \"_id\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *     \"members\": {",
-              " *         \"loginEmail\": \"updatedEmail@wix.com\",",
-              " *         \"privacyStatus\": \"PUBLIC\"",
-              " *     }",
-              " * }",
-              " *",
-              " */",
-              "",
-              "export const myUpdateMemberFunction = webMethod(",
-              "  Permissions.Anyone,",
-              "  async (_id, members) => {",
-              "    try {",
-              "      const member = await elevatedUpdateMember(_id, members);",
-              "      console.log('Updated member', member);",
-              "",
-              "      return member;",
-              "    } catch (error) {",
-              "      console.error(error);",
-              "      // Handle the error",
-              "    }",
-              "  }",
-              ");",
-              "",
-              "/* Promise resolves to:",
-              " *",
-              " * {",
-              " *   \"_createdDate\": \"2024-02-28T10:42:31.154Z\",",
-              " *   \"_id\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *   \"_updatedDate\": \"2024-03-02T22:27:57.728Z\",",
-              " *   \"activityStatus\": \"ACTIVE\",",
-              " *   \"contact\": {",
-              " *     \"contactId\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *     \"firstName\": \"John\",",
-              " *     \"lastName\": \"Jonas\",",
-              " *     \"phones\": [],",
-              " *     \"emails\": [],",
-              " *     \"addresses\": [],",
-              " *     \"customFields\": {}",
-              " *   },",
-              " *   \"contactId\": \"20aca292-e791-45b4-902f-7e7e22c96dd5\",",
-              " *   \"lastLoginDate\": \"2024-02-28T10:42:31.000Z\",",
-              " *   \"loginEmail\": \"johnjonas@gmail.com\",",
-              " *   \"loginEmailVerified\": false,",
-              " *   \"privacyStatus\": \"PUBLIC\",",
-              " *   \"profile\": {",
-              " *     \"nickname\": \"johnjonas\",",
-              " *     \"slug\": \"johnjonas\"",
-              " *   },",
-              " *   \"status\": \"APPROVED\"",
-              " * }",
-              " *",
-              " */"
             ]
           }
         ]
@@ -3177,7 +3429,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "An application definition id (app_id in dev-center). For legacy reasons may be UUID or a string (from Java Enum)."
         },
         {
           "name": "instanceId",
@@ -3187,7 +3439,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "An instance id."
         },
         {
           "name": "state",
@@ -3197,7 +3449,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DEMO'`\n- `'DISABLED'`\n- `'ENABLED'`\n- `'PENDING'`\n- `'UNKNOWN'`"
+          "doc": "An application state."
         }
       ],
       "docs": {
@@ -3673,7 +3925,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": ""
+          "doc": "When the meta site was deleted."
         },
         {
           "name": "deleteOrigin",
@@ -3683,7 +3935,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A reason (flow)."
         },
         {
           "name": "deleteStatus",
@@ -3693,7 +3945,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DELETED'`\n- `'PENDING_PURGE'`\n- `'TRASH'`\n- `'UNKNOWN'`"
+          "doc": "A status."
         },
         {
           "name": "initiatorId",
@@ -3703,7 +3955,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A service that deleted it."
         }
       ],
       "docs": {
@@ -5202,7 +5454,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "A list of \"assets\" (applications). The same as MetaSiteContext."
         },
         {
           "name": "hardDeleted",
@@ -5212,7 +5464,7 @@
               "referenceType": "wix-members-v2.Members.SiteHardDeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site was permanently deleted."
         },
         {
           "name": "metaSiteId",
@@ -5222,7 +5474,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A meta site id."
         },
         {
           "name": "namespaceChanged",
@@ -5232,7 +5484,7 @@
               "referenceType": "wix-members-v2.Members.NamespaceChanged"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a namespace change."
         },
         {
           "name": "serviceProvisioned",
@@ -5242,7 +5494,7 @@
               "referenceType": "wix-members-v2.Members.ServiceProvisioned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when an application is provisioned (installed)."
         },
         {
           "name": "serviceRemoved",
@@ -5252,7 +5504,7 @@
               "referenceType": "wix-members-v2.Members.ServiceRemoved"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when an application is removed (uninstalled)."
         },
         {
           "name": "siteCreated",
@@ -5262,7 +5514,7 @@
               "referenceType": "wix-members-v2.Members.SiteCreated"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site creation."
         },
         {
           "name": "siteDeleted",
@@ -5272,7 +5524,7 @@
               "referenceType": "wix-members-v2.Members.SiteDeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site deletion."
         },
         {
           "name": "siteMarkedAsTemplate",
@@ -5282,7 +5534,7 @@
               "referenceType": "wix-members-v2.Members.SiteMarkedAsTemplate"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site is marked as template."
         },
         {
           "name": "siteMarkedAsWixSite",
@@ -5292,7 +5544,7 @@
               "referenceType": "wix-members-v2.Members.SiteMarkedAsWixSite"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site is marked as a WixSite."
         },
         {
           "name": "sitePublished",
@@ -5302,7 +5554,7 @@
               "referenceType": "wix-members-v2.Members.SitePublished"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on the first* publish of the meta site (* switching from unpublished to published state)."
         },
         {
           "name": "siteRenamedPayload",
@@ -5312,7 +5564,7 @@
               "referenceType": "wix-members-v2.Members.SiteRenamed"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site name (URL slug) is changed."
         },
         {
           "name": "siteTransferred",
@@ -5322,7 +5574,7 @@
               "referenceType": "wix-members-v2.Members.SiteTransferred"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site transfer completion."
         },
         {
           "name": "siteUndeleted",
@@ -5332,7 +5584,7 @@
               "referenceType": "wix-members-v2.Members.SiteUndeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site restoration."
         },
         {
           "name": "siteUnpublished",
@@ -5342,7 +5594,7 @@
               "referenceType": "wix-members-v2.Members.SiteUnpublished"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site unpublish."
         },
         {
           "name": "studioAssigned",
@@ -5352,7 +5604,7 @@
               "referenceType": "wix-members-v2.Members.StudioAssigned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when Studio is attached."
         },
         {
           "name": "studioUnassigned",
@@ -5362,7 +5614,7 @@
               "referenceType": "wix-members-v2.Members.StudioUnassigned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when Studio is detached."
         },
         {
           "name": "timestamp",
@@ -5372,7 +5624,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A timestamp of the event."
         },
         {
           "name": "version",
@@ -5382,7 +5634,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A meta site version. Monotonically increasing."
         }
       ],
       "extra": {
@@ -5426,7 +5678,7 @@
               "referenceType": "wix-members-v2.Members.SiteHardDeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site was permanently deleted."
         },
         {
           "name": "namespaceChanged",
@@ -5436,7 +5688,7 @@
               "referenceType": "wix-members-v2.Members.NamespaceChanged"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a namespace change."
         },
         {
           "name": "serviceProvisioned",
@@ -5446,7 +5698,7 @@
               "referenceType": "wix-members-v2.Members.ServiceProvisioned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when an application is provisioned (installed)."
         },
         {
           "name": "serviceRemoved",
@@ -5456,7 +5708,7 @@
               "referenceType": "wix-members-v2.Members.ServiceRemoved"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when an application is removed (uninstalled)."
         },
         {
           "name": "siteCreated",
@@ -5466,7 +5718,7 @@
               "referenceType": "wix-members-v2.Members.SiteCreated"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site creation."
         },
         {
           "name": "siteDeleted",
@@ -5476,7 +5728,7 @@
               "referenceType": "wix-members-v2.Members.SiteDeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site deletion."
         },
         {
           "name": "siteMarkedAsTemplate",
@@ -5486,7 +5738,7 @@
               "referenceType": "wix-members-v2.Members.SiteMarkedAsTemplate"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site is marked as template."
         },
         {
           "name": "siteMarkedAsWixSite",
@@ -5496,7 +5748,7 @@
               "referenceType": "wix-members-v2.Members.SiteMarkedAsWixSite"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site is marked as a WixSite."
         },
         {
           "name": "sitePublished",
@@ -5506,7 +5758,7 @@
               "referenceType": "wix-members-v2.Members.SitePublished"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on the first* publish of the meta site (* switching from unpublished to published state)."
         },
         {
           "name": "siteRenamedPayload",
@@ -5516,7 +5768,7 @@
               "referenceType": "wix-members-v2.Members.SiteRenamed"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when meta site name (URL slug) is changed."
         },
         {
           "name": "siteTransferred",
@@ -5526,7 +5778,7 @@
               "referenceType": "wix-members-v2.Members.SiteTransferred"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site transfer completion."
         },
         {
           "name": "siteUndeleted",
@@ -5536,7 +5788,7 @@
               "referenceType": "wix-members-v2.Members.SiteUndeleted"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site restoration."
         },
         {
           "name": "siteUnpublished",
@@ -5546,7 +5798,7 @@
               "referenceType": "wix-members-v2.Members.SiteUnpublished"
             }
           ],
-          "doc": ""
+          "doc": "Emitted on a meta site unpublish."
         },
         {
           "name": "studioAssigned",
@@ -5556,7 +5808,7 @@
               "referenceType": "wix-members-v2.Members.StudioAssigned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when Studio is attached."
         },
         {
           "name": "studioUnassigned",
@@ -5566,7 +5818,7 @@
               "referenceType": "wix-members-v2.Members.StudioUnassigned"
             }
           ],
-          "doc": ""
+          "doc": "Emitted when Studio is detached."
         }
       ],
       "docs": {
@@ -5625,7 +5877,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'ACCOUNT_MASTER_CMS'`\n- `'ALBUMS'`\n- `'ANYWHERE'`\n- `'BRANDED_FIRST'`\n- `'CLUBS'`\n- `'CREATOR_ECONOMY'`\n- `'DASHBOARD_FIRST'`\n- `'DEV_CENTER_COMPANY'`\n- `'DEV_SITE'`\n- `'HEADLESS'`\n- `'HOTELS'`\n- `'HTML_DRAFT'`\n- `'LOGOS'`\n- `'ONBOARDING_DRAFT'`\n- `'PARTNER_DASHBOARD'`\n- `'RISE'`\n- `'SHOUT_OUT'`\n- `'SITELESS_BUSINESS'`\n- `'UNKNOWN_NAMESPACE'`\n- `'VIDEO_MAKER'`\n- `'WIX'`\n- `'WIX_STORES_TEST_DRIVE'`"
+          "doc": "A new namespace."
         },
         {
           "name": "oldNamespace",
@@ -5635,7 +5887,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'ACCOUNT_MASTER_CMS'`\n- `'ALBUMS'`\n- `'ANYWHERE'`\n- `'BRANDED_FIRST'`\n- `'CLUBS'`\n- `'CREATOR_ECONOMY'`\n- `'DASHBOARD_FIRST'`\n- `'DEV_CENTER_COMPANY'`\n- `'DEV_SITE'`\n- `'HEADLESS'`\n- `'HOTELS'`\n- `'HTML_DRAFT'`\n- `'LOGOS'`\n- `'ONBOARDING_DRAFT'`\n- `'PARTNER_DASHBOARD'`\n- `'RISE'`\n- `'SHOUT_OUT'`\n- `'SITELESS_BUSINESS'`\n- `'UNKNOWN_NAMESPACE'`\n- `'VIDEO_MAKER'`\n- `'WIX'`\n- `'WIX_STORES_TEST_DRIVE'`"
+          "doc": "A previous namespace."
         }
       ],
       "docs": {
@@ -6071,7 +6323,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "An instance id from which this instance is originated."
         },
         {
           "name": "version",
@@ -6081,7 +6333,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A version."
         }
       ],
       "docs": {
@@ -6101,7 +6353,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Either UUID or EmbeddedServiceType."
         },
         {
           "name": "instanceId",
@@ -6111,7 +6363,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Not only UUID. Something here could be something weird."
         },
         {
           "name": "version",
@@ -6121,7 +6373,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A version."
         }
       ],
       "docs": {
@@ -6141,7 +6393,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'DUPLICATE'`\n- `'DUPLICATE_BY_SITE_TRANSFER'`\n- `'FLASH'`\n- `'FROM_TEMPLATE'`\n- `'OLD_SITE_TRANSFER'`\n- `'OTHER'`"
+          "doc": "A context in which meta site was created."
         },
         {
           "name": "namespace",
@@ -6151,7 +6403,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Supported values:\n- `'ACCOUNT_MASTER_CMS'`\n- `'ALBUMS'`\n- `'ANYWHERE'`\n- `'BRANDED_FIRST'`\n- `'CLUBS'`\n- `'CREATOR_ECONOMY'`\n- `'DASHBOARD_FIRST'`\n- `'DEV_CENTER_COMPANY'`\n- `'DEV_SITE'`\n- `'HEADLESS'`\n- `'HOTELS'`\n- `'HTML_DRAFT'`\n- `'LOGOS'`\n- `'ONBOARDING_DRAFT'`\n- `'PARTNER_DASHBOARD'`\n- `'RISE'`\n- `'SHOUT_OUT'`\n- `'SITELESS_BUSINESS'`\n- `'UNKNOWN_NAMESPACE'`\n- `'VIDEO_MAKER'`\n- `'WIX'`\n- `'WIX_STORES_TEST_DRIVE'`"
+          "doc": "A namespace."
         },
         {
           "name": "originMetaSiteId",
@@ -6171,7 +6423,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A template identifier (empty if not created from a template)."
         },
         {
           "name": "ownerId",
@@ -6181,7 +6433,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "An account id of the owner."
         },
         {
           "name": "siteName",
@@ -6191,7 +6443,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A meta site name (URL slug)."
         }
       ],
       "docs": {
@@ -6211,7 +6463,7 @@
               "referenceType": "wix-members-v2.Members.DeleteContext"
             }
           ],
-          "doc": ""
+          "doc": "A deletion context."
         }
       ],
       "docs": {
@@ -6231,7 +6483,7 @@
               "referenceType": "wix-members-v2.Members.DeleteContext"
             }
           ],
-          "doc": ""
+          "doc": "A deletion context."
         }
       ],
       "docs": {
@@ -6278,7 +6530,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A new meta site name (URL slug)."
         },
         {
           "name": "oldSiteName",
@@ -6288,7 +6540,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A previous meta site name (URL slug)."
         }
       ],
       "docs": {
@@ -6354,7 +6606,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "A list of URLs previously associated with the meta site."
         }
       ],
       "docs": {
