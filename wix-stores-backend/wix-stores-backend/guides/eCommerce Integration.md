@@ -6,11 +6,11 @@ Passing product details from the Stores catalog to a `wix-ecom-backend` cart, ch
 * `appId` - The Stores app ID. When passing products from the Wix Stores catalog, this must always be `"215238eb-22a5-4c36-9e7b-e7c08025e04e"`.
 * `options` - This field can hold different key:value pairs, depending on variant management and whether the product/variant has custom text fields.
 
-Refer to the following `catalogReference` object examples for more detail:
+Refer to the following `catalogReference` object examples for more details:
 
 ## Managed Variants
 
-When the inventory of a product's variants is managed (`product.manageVariants: true`), the `options` object should contain the variant's `variantId`. In the following example, the variant also has `customTextFields`:
+When the inventory of a product's variants is managed (`product.manageVariants: true`), the `catalogReference.options` field should contain the `variantId`. In the following example, the variant also has `customTextFields`:
 
 ```json
 {
@@ -29,7 +29,7 @@ When the inventory of a product's variants is managed (`product.manageVariants: 
 
 ## Non-Managed Variants
 
-When the inventory of a product's variants is not managed (`product.manageVariants: false`), the `options` object should contain the variant's options and choices
+When the inventory of a product's variants is not managed (`product.manageVariants: false`), the `catalogReference.options` field should contain the variant's options and choices:
 
 ```json
 {
@@ -43,5 +43,54 @@ When the inventory of a product's variants is not managed (`product.manageVarian
       }
     }
   }
+}
+```
+
+## Velo Code Example
+
+The following example uses frontend code on the Stores Product Page to dynamically populate the `catalogReference.options` field:
+
+```js
+import { currentCart } from 'wix-ecom-backend';
+
+export async function customAddToCart_click(event) {
+
+    // Get info for the currently displayed product
+    const product = await $w('#productPage1').getProduct();
+
+    let itemOptions = {
+        variantId: undefined,
+        options: undefined,
+    };
+
+    // Populate itemOptions with variant ID or product choice, depending on whether product has managed variants
+    if (product.manageVariants) {
+        itemOptions.variantId = await $w('#productPage1').getSelectedVariantId();
+    } else {
+        itemOptions.options = await $w('#productPage1').getSelectedChoices();
+    }
+
+    // Populate addToCurrentCart payload 
+    let data = {
+        lineItems: [{
+            catalogReference: {
+                appId: "215238eb-22a5-4c36-9e7b-e7c08025e04e",
+                catalogItemId: product._id,
+                options: itemOptions
+            },
+            // gut current selected quantity
+            quantity: await $w('#productPage1').getQuantity()
+        }]
+    };
+    
+    currentCart.addToCurrentCart(data)
+        .then((updatedCurrentCart) => {
+            console.log('Success! Updated cart:', updatedCurrentCart);
+            return updatedCurrentCart;
+        })
+        .catch((error) => {
+            console.error(error);
+            // Handle the error
+        });
 }
 ```
