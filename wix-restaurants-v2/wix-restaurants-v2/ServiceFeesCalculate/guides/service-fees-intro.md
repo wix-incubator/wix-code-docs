@@ -14,9 +14,9 @@ title: Introduction
 
 &nbsp;
 
-The Wix Restaurants API allows you to manage your service fees rules and apply them to orders.
+The Service Fees API allows you to manage your service fees rules and apply them to orders.
 
-With the Wix Restaurants API, you can:
+With the Service Fees API, you can:
 * Create and manage rules for service fees on Wix sites.
 * Implement custom pricing and fee structures for restaurant orders on Wix sites.
 * Adjust service fees automatically based on certain rules or conditions.
