@@ -51,7 +51,7 @@ When the inventory of a product's variants is not managed (`product.manageVarian
 The example below uses frontend code on the Stores Product Page and performs the following actions:
 + Gets the info of the product currently displayed in the Product Page
 + Checks whether the product has managed variants
-+ Populates the `catalogReference` object, depending on whether the product has managed variants
++ Dynamically populates the `catalogReference` object based on the selected choice and quantity
 + Adds the specific product/variant to the current cart
 
 ```js
