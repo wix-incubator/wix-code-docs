@@ -458,8 +458,7 @@
           {
             "title": "Create a held reservation with a given time, location, and party size. ",
             "body": [
-              "",
-              "/* Requires the following elements:",
+              "/* This example requires the following elements:",
               " * A dropdown element named `locationDropdown`.",
               " * A dropdown element named `partySizeDropdown`.",
               " * A dropdown element named `timeSlotDropdown`.",
@@ -618,7 +617,8 @@
               "      $w('#heldReservationNotification').show();",
               "    }",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This scenario sets up an interface that allows a site owner to select a reservation location and a party size, then select a time slot to reserve. Once a time slot is selected, the site owner can click a confirm button to create a held reservation at that time."
@@ -718,9 +718,8 @@
         ],
         "examples": [
           {
-            "title": "createReservation example 1",
+            "title": "Create a basic reservation (page code) ",
             "body": [
-              " // @title: Create a basic reservation (page code) @description: ",
               "import { reservations } from 'wix-table-reservations.v2';",
               "",
               "/* Sample reservation value:",
@@ -875,7 +874,7 @@
               "referenceType": "wix-table-reservations-v2.Reservations.GetReservationOptions"
             }
           ],
-          "doc": "Options for getting the reservation.",
+          "doc": "",
           "required": false
         }
       ],
@@ -904,22 +903,98 @@
         ],
         "examples": [
           {
-            "title": "getReservation example",
+            "title": "Get a reservation (page code) ",
             "body": [
               "import { reservations } from 'wix-table-reservations.v2';",
-              "  ",
-              " async function getReservation(reservationId, options) {",
-              "   try {",
-              "     const result = await reservations.getReservation(reservationId, options);",
               "",
+              "// Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              "",
+              "reservations.getReservation(reservationId)",
+              "  .then((retrievedReservation) => {",
+              "    const startDate = retrievedReservation.details.startDate;",
+              "    const partySize = retrievedReservation.details.partySize;",
+              "",
+              "    console.log('Success! Retrieved reservation:', retrievedReservation);",
+              "    return retrievedReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"UNKNOWN\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [],",
+              " *     \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"revision\": \"1\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get a reservation with options (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              " *",
+              " * Sample options value: ",
+              " * { ",
+              " *   \"fieldsets\": [\"FULL\"]",
+              " * }",
+              " */",
+              "",
+              "export const myGetReservationFunction = webMethod(Permissions.Anyone, async (reservationId, options) => {",
+              "  const elevatedGetReservation = elevate(reservations.getReservation);",
+              "",
+              "  try {",
+              "     const result = await elevatedGetReservation(reservationId, options);",
               "     return result;",
               "   } catch (error) {",
               "     console.error(error);",
               "     // Handle the error",
               "   }",
-              " }",
-              "  "
-            ]
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"ONLINE\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [",
+              " *       \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *     ],",
+              " *     \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"revision\": \"1\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *   \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This example demonstrates how to request the `FULL` fieldset in options using elevation to get the necessary permissions."
+            }
           }
         ]
       },
