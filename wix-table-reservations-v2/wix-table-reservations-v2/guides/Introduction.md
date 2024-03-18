@@ -20,11 +20,11 @@ It’s important to note the following points before starting to code:
 
 ## Use cases
 
-Possible business usages for this API include:
+Using this API include, you could:
 
-* Closing a restaurant and canceling all reservations on a given day.
-* Updating the minimum required notice for reservations at all locations.
-* Creating a held reservation with a given time, location, and party size.
+* Update the minimum required notice for reservations at all locations.
+* Create a held reservation with a given time, location, and party size.
+* Close a restaurant and cancel all reservations on a given day.
 
 ## Terminology
 
