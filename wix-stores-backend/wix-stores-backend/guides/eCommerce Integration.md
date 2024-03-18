@@ -48,11 +48,11 @@ When the inventory of a product's variants is not managed (`product.manageVarian
 
 ## Velo Code Example
 
-The example below uses frontend code on the Stores Product Page and performs the following actions:
-+ Gets the info of the product currently displayed in the Product Page
-+ Checks whether the product has managed variants
-+ Dynamically populates the `catalogReference` object based on the selected choice and quantity
-+ Adds the specific product/variant to the current cart
+In this example, we add the following code in the Stores Product page that:
++ Gets the details of the product currently displayed in the Product Page.
++ Checks whether the product has managed variants.
++ Dynamically populates the `catalogReference` object based on the selected choice and quantity.
++ Adds the specific product/variant to the current cart.
 
 ```js
 import { currentCart } from 'wix-ecom-backend';
@@ -82,7 +82,7 @@ export async function customAddToCart_click(event) {
                 catalogItemId: product._id,
                 options: itemOptions
             },
-            // gut current selected quantity
+            // Get current selected quantity
             quantity: await $w('#productPage1').getQuantity()
         }]
     };
