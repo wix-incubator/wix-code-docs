@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Wix Window Frontend
+
+`wix-window-frontend`
+
+We've updated the [`wix-window-frontend`](https://www.wix.com/velo/reference/wix-window-frontend) module, which contains functionality pertaining to the current browser window:
+- Added, a new value, `"Editor"`, to the [`viewMode`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) property. 
+
+(March 18, 2024)
 ### New: Wix Blocks Panel Builder Elements
 
 The following elements can be added to [Wix Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Wix Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
