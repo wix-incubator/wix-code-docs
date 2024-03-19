@@ -4,7 +4,7 @@ title: Constructing a Rule
 
 # Constructing a Rule
 
-A rule has two main parts: conditions and a fee. When [`/calculateServiceFees()`](/calculateservicefees) is called, it assesses each rule in relation to the specified order. When a rule is assessed, if the conditions are met, the fee is included in the API's response.
+A rule has two main parts: conditions and a fee. When [`calculateServiceFees()`](/calculateservicefees) is called, it assesses each rule in relation to the specified order. When a rule is assessed, if the conditions are met, the fee is included in the API's response.
 
 ## Conditions
 
@@ -46,4 +46,4 @@ In this case, the conditions are not met, because even though the delivery type 
 
 A fee is either a fixed amount or a percentage of the order's subtotal. It can also include tax.
 
-If the conditions are met, the fee is calculated and applied when Calculate Service Fees is called.
+If the conditions are met, the fee is calculated and applied when `calculateServiceFees()` is called.
