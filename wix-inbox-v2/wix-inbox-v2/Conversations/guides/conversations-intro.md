@@ -32,6 +32,14 @@ Conversations can be with one of the following types of participants:
 A conversation's ID changes when the type of participant changes, such as when an anonymous visitor becomes a member. [Learn more about Conversation IDs](/wix-inbox-v2/conversations/conversation-id).
 
 
+
+To use the Conversations API, import `{ conversations }` from the `wix-inbox.v2` module:
+
+```javascript
+import { conversations } from 'wix-inbox.v2';
+```
+
+
 ## Terminology
 
 - **Conversation:** A collection of messages exchanges between a business and a participant. Conversations are displayed in your site's [Inbox][inbox-deeplink]. 

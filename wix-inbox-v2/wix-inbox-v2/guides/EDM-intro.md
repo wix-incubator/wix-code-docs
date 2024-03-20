@@ -35,6 +35,15 @@ With the Inbox APIs, you can:
 
 [Learn more about how site collaborators work with Wix Inbox][kb-inbox].
 
+
+
+To use the Wix Inbox API, import `wixInbox` from the `wix-inbox.v2` module:
+
+```javascript
+import wixInbox from 'wix-inbox.v2';
+```
+
+
 ## Terminology
 
 - **Message:** A communication sent from the business to the visitor or from the visitor to the business.

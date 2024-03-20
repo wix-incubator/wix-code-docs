@@ -46,6 +46,13 @@ Messages can be sent in one of the following types:
 
 [Learn more about message types](wix-inbox-v2/messages/message-types) and how to structure messages in the `message` object.
 
+
+To use the Messages API, import `{ messages }` from the `wix-inbox.v2` module:
+
+```javascript
+import { messages } from 'wix-inbox.v2';
+```
+
 ## Terminology
 - **Message:** A message exchanged between the business and the participant. 
 - **Business:** Your Wix site.
