@@ -24,8 +24,8 @@ With Wix Inbox v2, site collaborators can communicate with the site's visitors, 
 through various channels such as Wix Chat, SMS, a Facebook business page, and more.
 
 The Inbox APIs expose functionality for working with a site's inbox.
-With the Inbox APIs, you can:
 
+With the Inbox APIs, you can:
 - [Send messages](messages/sendmessage)
   on behalf of the business or a visitor.
 - [Retrieve conversations](conversations/getorcreateconversation)
@@ -50,6 +50,7 @@ import wixInbox from 'wix-inbox.v2';
   Messages can be of various types, including `basic`, `minimal`, `template`, `form`, or `system` messages.
   [Learn more about message types.](messages/message-types)
 - **Conversation:**  A collection of messages that takes place between businesses and participants. Conversations are displayed in the site's [Inbox][inbox-deeplink]. There can only be one conversation per site visitor, contact, or member.
+- **Business:** Your Wix site.
 - **Participant:** A site visitor, contact, or member. [Learn more about types of participants.](conversations/conversation-id)
 
 [kb-inbox]: https://support.wix.com/en/article/wix-inbox-getting-started

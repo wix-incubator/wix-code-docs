@@ -27,16 +27,10 @@ With the Messages API, you can:
 
 ## Before you begin
 
-To send a message you must specify the message's direction, visibility, and the message type. 
+When an intial message is sent, it creates a [conversation](/wix-inbox-v2/conversations/introduction)
+To send a message you must specify the message's type, visibility, and direction. 
 
-Messages can be sent in 1 of 2 directions:
-- **Business to participant:** Messages sent from your site to your site visitors. 
-- **Participant to Business:** Messages sent from your site visitors to your site. 
-
-You can control who sees the messages being sent by setting the `visibility` field in the `message` object to one of the following:
-- `BUSINESS_AND_PARTICIPANT`
-- `BUSINESS`
-
+#### Message type
 Messages can be sent in one of the following types:
 - Basic
 - Template
@@ -46,6 +40,16 @@ Messages can be sent in one of the following types:
 
 [Learn more about message types](wix-inbox-v2/messages/message-types) and how to structure messages in the `message` object.
 
+#### Visibility
+You can control who sees the messages being sent by setting the `visibility` field in the `message` object to one of the following:
+- `BUSINESS_AND_PARTICIPANT`: Messages are displayed to the business and partipicant in the channel of communication, for example a chat box widget. 
+- `BUSINESS`: Messages are hidden from the participant and displayed only to the business on the dashboard's Inbox page. 
+
+#### Direction
+Messages can be sent in of the following directions:
+- **Business to participant:** Messages sent from your site to your site visitors. 
+- **Participant to Business:** Messages sent from your site visitors to your site. 
+
 
 To use the Messages API, import `{ messages }` from the `wix-inbox.v2` module:
 
@@ -54,6 +58,7 @@ import { messages } from 'wix-inbox.v2';
 ```
 
 ## Terminology
-- **Message:** A message exchanged between the business and the participant. 
+- **Message:** A communication between the business and the participant. Messages can be of various types, including `basic`, `minimal`, `template`, `form`, or `system` messages.
+- **Conversation:**  A collection of messages that takes place between businesses and participants. Conversations are displayed in the site's Inbox.
 - **Business:** Your Wix site.
-- **Participant:** The site visitor. 
+- **Participant:** An anonymous visitor, contact, or site member.

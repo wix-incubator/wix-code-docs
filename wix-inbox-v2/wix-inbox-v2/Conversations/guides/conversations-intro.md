@@ -20,17 +20,19 @@ title: Introduction
 > unless specified otherwise. -->
 
 The Conversations API provides functionality for managing conversations with visitors on your site. 
+
 With the Conversations API you can: 
 - [Retrieve](/wix-inbox-v2/conversations/getconversation) exisiting conversations. 
-- [Create](/wix-inbox-v2/conversations/gerorcreateconversation) a new conversation. 
+- [Create](/wix-inbox-v2/conversations/gerorcreateconversation) a new conversation in your site's inbox. 
 
-Conversations can be with one of the following types of participants: 
+## Before you begin
+
+Conversations are held between the business and one of the following types of participants: 
 - **Anonymous visitor**
-- **Contact**
-- **Member**
+- [**Contact**](https://support.wix.com/en/article/understanding-the-differences-between-contacts-members-and-subscribers#contacts)
+- [**Member**](https://support.wix.com/en/article/understanding-the-differences-between-contacts-members-and-subscribers#members)
 
-A conversation's ID changes when the type of participant changes, such as when an anonymous visitor becomes a member. [Learn more about Conversation IDs](/wix-inbox-v2/conversations/conversation-id).
-
+> **Note:** A conversation's ID changes when the type of participant changes, such as when an anonymous visitor becomes a member. [Learn more about Conversation IDs](/wix-inbox-v2/conversations/conversation-id).
 
 
 To use the Conversations API, import `{ conversations }` from the `wix-inbox.v2` module:
@@ -42,9 +44,10 @@ import { conversations } from 'wix-inbox.v2';
 
 ## Terminology
 
-- **Conversation:** A collection of messages exchanges between a business and a participant. Conversations are displayed in your site's [Inbox][inbox-deeplink]. 
-- **Participant:** An anonymous visiter, contact, or site member. 
-- **Channel:** A communication channel, such as email or chat boxes, in which a visitor, contact, or member can receive messages.
+- **Conversation:** A collection of message exchanges between a business and a participant. Conversations are displayed in your site's [Inbox][inbox-deeplink]. 
+- **Channel:** A communication channel, such as email or chat boxes in which a visitor, contact, or member can receive messages.
+- **Business:** Your Wix site.
+- **Participant:** An anonymous visitor, contact, or site member. 
 
 
 
