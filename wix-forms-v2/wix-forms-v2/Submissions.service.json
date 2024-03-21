@@ -2159,6 +2159,73 @@
       "isAdminMethod": true
     },
     {
+      "name": "searchSubmissionsByNamespace",
+      "params": [
+        {
+          "name": "search",
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorSearch"
+            }
+          ],
+          "doc": "Query options.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "search"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-forms-v2.Submissions.SearchSubmissionsByNamespaceResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "> **Notes:** <br>\n> - The Form Submission API is only available in Wix Studio and Editor X.\n> - The Form Submission API only works with the Wix Forms app. Call [GetAppInstance](https://dev.wix.com/docs/rest/api-reference/app-management/apps/app-instance/get-app-instance) to confirm that the app named `wix_forms` is installed on the site.\n<br>",
+        "description": [
+          "Returns a list of up to 100 submissions, given the provided paging, filtering, and sorting.\n\nYou can only query submissions from a specified namespace. Use the query filter on the `namespace` field, otherwise you will receive an error.\n\nFor field support for filters and sorting, see [Form Submissions: Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-forms/form-submissions/sort-and-filter).option\n\nTo learn about working with _Query_ endpoints, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language), [Sorting and Paging](https://dev.wix.com/api/rest/getting-started/pagination), and [Field Projection](https://dev.wix.com/api/rest/getting-started/field-projection)."
+        ],
+        "examples": [
+          {
+            "title": "searchSubmissionsByNamespace example",
+            "body": [
+              "import { submissions } from 'wix-forms.v2';",
+              "  ",
+              " async function searchSubmissionsByNamespace(search) {",
+              "   try {",
+              "     const result = await submissions.searchSubmissionsByNamespace(search);",
+              "",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              " }",
+              "  "
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "searchSubmissionsByNamespace",
+      "isAdminMethod": true
+    },
+    {
       "name": "updateSubmission",
       "params": [
         {
@@ -4948,7 +5015,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Filter object.\n\nSee [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language) for more information.\n"
+          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
         },
         {
           "name": "sort",
@@ -4965,7 +5032,7 @@
               }
             }
           ],
-          "doc": "Sort object."
+          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
         }
       ],
       "extra": {
@@ -4996,6 +5063,93 @@
             }
           ],
           "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearch",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results.\nWhen requesting 'cursor_paging.cursor', no `filter`, `sort` or `search` can be provided."
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "A filter object. See documentation [here](https://bo.wix.com/wix-docs/rnd/platformization-guidelines/api-query-language#platformization-guidelines_api-query-language_defining-in-protobuf)"
+        },
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.SearchDetails"
+            }
+          ],
+          "doc": "Free text to match in searchable fields"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-forms-v2.Submissions.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the form [{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCursorSearchPagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearchPagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results.\nWhen requesting 'cursor_paging.cursor', no `filter`, `sort` or `search` can be provided."
         }
       ],
       "docs": {
@@ -13634,6 +13788,102 @@
             }
           ],
           "doc": "Content of the rich text field"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchDetails",
+      "members": [
+        {
+          "name": "expression",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Search term or expression"
+        },
+        {
+          "name": "fuzzy",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag if should use auto fuzzy search (allowing typos by a managed proximity algorithm)"
+        },
+        {
+          "name": "mode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Defines how separate search terms in `expression` are combined"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchSubmissionsByNamespaceRequest",
+      "members": [
+        {
+          "name": "search",
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorSearch"
+            }
+          ],
+          "doc": "Query options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchSubmissionsByNamespaceResponse",
+      "members": [
+        {
+          "name": "metadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-forms-v2.Submissions.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata."
+        },
+        {
+          "name": "submissions",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-forms-v2.Submissions.FormSubmission"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The retrieved Submissions."
         }
       ],
       "docs": {
