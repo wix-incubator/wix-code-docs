@@ -27,9 +27,10 @@ The Inbox APIs expose functionality for working with a site's inbox.
 
 With the Inbox APIs, you can:
 - [Send messages](messages/sendmessage)
-  on behalf of the business or a visitor.
+  on behalf of the business or a participant.
+- [List the messages](messages/listmessages) exchanged between the businiess and participant.
 - [Retrieve conversations](conversations/getorcreateconversation)
-  between a visitor and the business.
+  between a participant and the business.
 
 <!-- - Handle webhooks when messages are sent to [a visitor](https://dev.wix.com/api/rest/inbox/messages/message-sent-to-participant-webhook) or [the business](https://dev.wix.com/api/rest/inbox/messages/message-sent-to-business-webhook), when a [message button is clicked](https://dev.wix.com/api/rest/inbox/messages/button-interacted-webhook), or when [conversations are merged](https://dev.wix.com/api/rest/inbox/conversations/conversations-merged-webhook). -->
 
