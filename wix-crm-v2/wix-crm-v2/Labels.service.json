@@ -289,20 +289,20 @@
               "    const elevatedLabelContact = elevate(contacts.labelContact);",
               "    const newLabel = await elevatedCreateLabel(displayName);",
               "    const labelKeys = [newLabel.label.key];",
-              "    // Extract label key from new label",
+              "    // Retrieve the new label's key",
               "    if (newLabel.newLabel) {",
               "      // Label contact",
               "      const contact = await elevatedLabelContact(contactId, labelKeys);",
-              "      const contactLabels = contact.contact.info.labelKeys.items",
+              "      const contactLabels = contact.contact.info.labelKeys.items;",
               "",
-              "      return contactLabels",
+              "      return contactLabels;",
               "    }",
               "    else {",
-              "      return \"Label was not added to contact.\"",
+              "      return \"Label was not added to contact.\";",
               "    }",
               "  } catch (error) {",
-              "    console.log(error);",
               "    // Handle the error",
+              "    console.log(error);",
               "  }",
               "});",
               "",
@@ -314,7 +314,7 @@
               " */"
             ],
             "extra": {
-              "description": "This function creates a new label, extracts the label key, and then labels a contact."
+              "description": "This function creates a new label, gets the label's key, and then adds the label to the contact."
             }
           }
         ]
@@ -921,20 +921,21 @@
             ]
           },
           {
-            "title": "Populate checkboxes with label display names ",
+            "title": " Add labels to a contact form as checkbox options  ",
             "body": [
-              "/*******************************",
+              "/**********************************",
               " * Backend code - contacts.web.js *",
-              " *******************************/",
+              " **********************************/",
               "",
               "import { Permissions, webMethod } from 'wix-web-module';",
               "import { labels } from 'wix-crm.v2';",
               "import { elevate } from 'wix-auth';",
               "",
               "",
-              "export const populateFormLabelCheckboxes = webMethod(Permissions.Anyone, async () => {",
+              "export const addLabelsAsCheckboxOptions = webMethod(Permissions.Anyone, async () => {",
               "",
               "  try {",
+              "    // Query specific labels to use as checkbox options",
               "    const elevatedQueryLabels = elevate(labels.queryLabels);",
               "    const myLabels = await elevatedQueryLabels()",
               "    .startsWith('displayName', \"Contact by\")",
@@ -943,8 +944,8 @@
               "    return myLabels.items",
               "",
               "  } catch (error) {",
-              "      console.log(error);",
-              "        // Handle the error",
+              "    // Handle the error",
+              "    console.log(error);",
               "  }",
               "});",
               "",
@@ -952,22 +953,23 @@
               " * Page code *",
               " *************/",
               "",
-              "import { populateFormLabelCheckboxes } from 'backend/labelsBackend.web';",
+              "import { addLabelsAsCheckboxOptions } from 'backend/labelsBackend.web';",
               "",
-              "// Trigger on input click",
+              "// Trigger when the email input field on a contact form is clicked",
               "export async function inputEmail_click_1(event) {",
               "",
               "  try {",
-              "    let checkboxGroupLabelOptions = [];",
-              "    const labels = await populateFormLabelCheckboxes();",
+              "    let checkboxLabelOptions = [];",
+              "    const labels = await addLabelsAsCheckboxOptions();",
               "",
-              "    // Add labels to array of checkbox group label options",
+              "    // Add label display names to the array used to hold the checkbox options",
               "    labels.forEach(item => {",
-              "      checkboxGroupLabelOptions.push({label: item.displayName, value: item.key});",
+              "      checkboxLabelOptions.push({label: item.displayName, value: item.key});",
               "    });",
               "",
-              "    // populate and display checkboxes",
-              "    $w('#checkboxGroup2').options = checkboxGroupLabelOptions;",
+              "    // Set the checkbox group options as the label display names",
+              "    $w('#checkboxGroup2').options = checkboxLabelOptions;",
+              "    // Display the checkbox group element on the form",
               "    $w('#checkboxGroup2').show();",
               "  } catch (error) {",
               "    console.log(error)",
@@ -975,7 +977,7 @@
               "}"
             ],
             "extra": {
-              "description": "This function retrieves specific labels and populates an array of options, which is then used to fill checkboxes on a contact form with the display names of the labels. "
+              "description": "This function uses `queryLabels()` to retrieve specific labels and then uses those label's display names as checkbox options for a checkbox group element on a contact form. "
             }
           }
         ]
