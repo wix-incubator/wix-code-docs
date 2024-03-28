@@ -19,12 +19,9 @@ The Wix Events v2 API allows you to:
 The main defining characteristics for events are:
 
 - **Registration types**. These registration types define what type of event they are registering for:
-    - **Ticketing**: Customers register by buying tickets.  
-    You can create and sell tickets, set currency, handle taxes. For more information, see the [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction) API.
-    - **RSVP**: Customers register by responding with an RSVP without buying tickets. Invitees can RSVP whether they're going to an event.  
-    If the guest limit is reached, you can open a waitlist. Additionally, user can set whether guests can see other guests attending the event.
-    - **External**: Customers register by either buying tickets or RSVPing on an external platform.
-    You can display events on your site, while enabling ticket sales or RSVP management through an external platform.
+    - **Ticketing**: Customers register by buying tickets. You can create and sell tickets, set currency, handle taxes. For more information, see the [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction) API.
+    - **RSVP**: Customers register by responding with an RSVP without buying tickets. Invitees can RSVP whether they're going to an event. If the guest limit is reached, you can open a waitlist. Additionally, user can set whether guests can see other guests attending the event.
+    - **External**: Customers register by either buying tickets or RSVPing on an external platform. You can display events on your site, while enabling ticket sales or RSVP management through an external platform.
     - **No registration**: Customers do not register. This is for displaying events only.
 
 - **Date and time**. When defining an event, the event must have a date and time. The event can be either single, or recurring:
