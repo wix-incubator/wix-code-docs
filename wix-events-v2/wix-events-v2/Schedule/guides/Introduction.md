@@ -3,7 +3,7 @@ title: Introduction
 ---
 # Introduction
 
-With the Schedule API you can share the lineup of the event and show what's on. Guests can make a personalized agenda with their chosen items.    
+With the Schedule API you can share the lineup of the event and show what's on. Guests can make a personalized agenda with their chosen items by [bookmarking them](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks/introduction). The created schedule will appear on your Event Details page.    
 
 With the Schedule API you can:
 
