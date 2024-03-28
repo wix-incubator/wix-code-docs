@@ -31,6 +31,7 @@ It’s important to note the following points before starting to code:
 ```javascript
 import { orders } from 'wix-events.v2';
 ```
+- If a site visitor closes a tab after placing an order, or the reservation time (20 minutes) runs out, the order is automatically cancelled after 2 hours.
 
 ## Terminology
 
