@@ -25,6 +25,7 @@ It’s important to note the following points before starting to code:
 ```javascript
 import { rsvp } from 'wix-events.v2';
 ```
+- Once you create an RSVP event, it cannot be updated to a ticketed event.
 
 ## Terminology
 
