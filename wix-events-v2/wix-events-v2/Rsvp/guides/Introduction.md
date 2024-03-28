@@ -12,7 +12,7 @@ If you limit the number of guests, the registration will close once the guest li
 With the RSVP API you can:
 
 - Create, delete, update RSVP.
-- Check-in a guest.
+- Check-in guests.
 - Get the information about RSVP.
 
 ## Before you begin
