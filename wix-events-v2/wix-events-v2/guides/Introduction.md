@@ -20,6 +20,8 @@ The Wix Events include the following APIs:
 
 ## Before you begin: 
 
+It’s important to note the following points before starting to code:  
+
 - Install the **Wix Events & Tickets** app from [Wix App Market](https://www.wix.com/app-market/wix-events?referral=category&appIndex=5&referralTag=booking--events).
 - To use the **wix-events.v2** API, import the `wix-events.v2` module.
 
