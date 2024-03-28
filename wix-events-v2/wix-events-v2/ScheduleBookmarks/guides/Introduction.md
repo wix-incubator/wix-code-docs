@@ -3,6 +3,8 @@ title: Introduction
 ---
 # Introduction
 
+> **Note**: This module is [universal](/api-overview/api-versions#universal-modules). Functions in this module can run on both the backend and frontend, unless specified otherwise.
+
 With the Schedule Bookmarks API you can allow members to mark their favorite [schedule items](https://www.wix.com/velo/reference/wix-events-v2/schedule/introduction) to curate their own personalized agenda for your event.    
 
 With the Schedule Bookmarks API you can:
