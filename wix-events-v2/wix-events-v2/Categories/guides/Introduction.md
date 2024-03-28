@@ -16,6 +16,7 @@ The Categories API allows you to:
 
 It’s important to note the following points before starting to code:  
 
+- Install the **Wix Events & Tickets** app from [Wix App Market](https://www.wix.com/app-market/wix-events?referral=category&appIndex=5&referralTag=booking--events).
 - To use the Categories API, import `{ categories }` from the `wix-events.v2` module:
 
 ```javascript
