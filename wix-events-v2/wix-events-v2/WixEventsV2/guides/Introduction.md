@@ -19,18 +19,18 @@ The Wix Events v2 API allows you to:
 The main defining characteristics for events are:
 
 - **Registration types**. These registration types define what type of event they are registering for:
-  - **Ticketing**: Customers register by buying tickets. You can create and sell tickets, set currency, handle taxes. For more information, see the [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction) API.
-  - **RSVP**: Customers register by responding with an RSVP without buying tickets. Invitees can RSVP whether they're going to an event. If the guest limit is reached, you can open a waitlist. Additionally, user can set whether guests can see other guests attending the event.
-  - **External**: Customers register by either buying tickets or RSVPing on an external platform. You can display events on your site, while enabling ticket sales or RSVP management through an external platform.
-  - **No registration**: Customers do not register. This is for displaying events only.
+    - **Ticketing**: Customers register by buying tickets. You can create and sell tickets, set currency, handle taxes. For more information, see the [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction) API.
+    - **RSVP**: Customers register by responding with an RSVP without buying tickets. Invitees can RSVP whether they're going to an event. If the guest limit is reached, you can open a waitlist. Additionally, user can set whether guests can see other guests attending the event.
+    - **External**: Customers register by either buying tickets or RSVPing on an external platform. You can display events on your site, while enabling ticket sales or RSVP management through an external platform.
+    - **No registration**: Customers do not register. This is for displaying events only.
 
 - **Date and time**. When defining an event, the event must have a date and time. The event can be either single, or recurring:
-  - **Single event**: Happens once and can last multiple days, like a 3-day conference.
-  - **Recurring event**: A series of events that repeat, like a workshop that happens once a week. Once you publish the recurring event, you can manage the dates for each individual separately.
+    - **Single event**: Happens once and can last multiple days, like a 3-day conference.
+    - **Recurring event**: A series of events that repeat, like a workshop that happens once a week. Once you publish the recurring event, you can manage the dates for each individual separately.
 
 - **Location**. The event can happen in:
-  - **Physical location**: The event happens in a specific venue or physical space, like a conference hall or concert venue.
-  - **Online**: The event happens online through a video conference.
+    - **Physical location**: The event happens in a specific venue or physical space, like a conference hall or concert venue.
+    - **Online**: The event happens online through a video conference.
 
 ## When defining event registration:
 
