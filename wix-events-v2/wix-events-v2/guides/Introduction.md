@@ -42,4 +42,4 @@ import * from 'wix-events.v2';
 - **Guest list**: A summary of all guests who have been invited to the event.
 - **Organizer**: The person or entity responsible for planning and hosting the event.
 - **Event Dashboard**: Control center, which allows you to manage their site events settings and features.
-- **Checkout form**: the final step in the ticket purchasing process where the customer fills in personal info, reads policies, and pays.
+- **Checkout form**: The final step in the ticket purchasing process where the customer fills in personal info, reads policies, and pays.
