@@ -7,6 +7,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Wix Billing Backend
+
+`wix-billing-backend`
+
+We updated the following function in the [Invoices](https://www.wix.com/velo/reference/wix-billing-backend/invoices) API, of the[`wix-billing-backend`](https://www.wix.com/velo/reference/wix-billing-backend/events) module.
+  + [`createInvoice()`](https://www.wix.com/velo/reference/wix-billing-backend/invoices/createinvoice):
+   We added a new field, `locale` to the `invoiceFields` parameter, which allows the custom selection of languages you want displayed on your customer invoices.  
+
+(April 1, 2024)
+
 ### Updated API: Wix Window Frontend
 
 `wix-window-frontend`
