@@ -11,9 +11,11 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-billing-backend`
 
-We updated the following function in the [Invoices](https://www.wix.com/velo/reference/wix-billing-backend/invoices) API, of the[`wix-billing-backend`](https://www.wix.com/velo/reference/wix-billing-backend/events) module.
+We updated the following functions in the [Invoices](https://www.wix.com/velo/reference/wix-billing-backend/invoices) API, of the[`wix-billing-backend`](https://www.wix.com/velo/reference/wix-billing-backend/events) module.
   + [`createInvoice()`](https://www.wix.com/velo/reference/wix-billing-backend/invoices/createinvoice):
-   We added a new field, `locale` to the `invoiceFields` parameter, which allows the custom selection of languages you want displayed on your customer invoices.  
+   We added a new field, `locale` to the `invoiceFields` parameter, which allows the custom selection of languages you want displayed on your customer invoices.
+  + [`getInvoice()`](https://www.wix.com/velo/reference/wix-billing-backend/invoices/getinvoice):
+   We updated the list of supported IETF language subtags in the `locale` field of the Invoice response object.    
 
 (April 1, 2024)
 
