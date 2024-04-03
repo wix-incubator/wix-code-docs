@@ -32,11 +32,11 @@ We added the following new mobile APIs and mixins:
 + [`MobileImage`]($w/mobileimage): An image element on a mobile app.
 + [`MobilePicker`]($w/mobilepicker): A picker for selecting items on a mobile app.
 + [`MobilePressableMixin`]($w/mobilepressablemixin): A mixin that provides functionality for elements on a mobile app that can be pressed.
-+ [`MobilePressEvent`]($w/mobilepressevent): Event that is fired when an element on a mobile app is pressed.
 + [`MobileRepeater`]($w/mobilerepeater): A repeater mobile element used for creating repeating layouts on a mobile app widget.
 + [`MobileSwitch`]($w/mobileswitch): A switch used for a single binary choice on a mobile app.
 + [`MobileText`]($w/mobiletext): A text element on a mobile app.
 + [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
++ [`MobileValueMixin`]($w/mobilevaluemixin): A mixin that provides functionality for elements on a mobile app that have values.
 
 (April 1, 2024)
 
