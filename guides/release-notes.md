@@ -7,6 +7,81 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview APIs: Mobile Elements
+
+`Wix Editor Elements ($w)`
+
+<blockquote class="important">
+
+__Important:__
++ These APIs are only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ These APIs are in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and are subject to change. 
+
+</blockquote>
+
+We added the following new mobile APIs and mixins:
+
++ [`MobileButton`]($w/mobilebutton): A button element on a mobile app.
++ [`MobileContainer`]($w/mobilecontainer): A container element for repeater items on a mobile app.
++ [`MobileDisabledMixin`]($w/mobiledisabledmixin): A mixin that provides functionality for mobile elements that can be disabled.
++ [`MobileElement`]($w/mobileelement): Provides basic functionality for mobile elements.
++ [`MobileFormElementMixin`]($w/mobileformelementmixin): A mixin that provides functionality for input elements on mobile apps.
++ [`MobileHiddenCollapsedMixin`]($w/mobilehiddencollapsedmixin): A mixin that Provides functionality for all mobile elements that can be hidden or collapsed.
++ [`MobileHiddenMixin`]($w/mobilehiddenmixin): A mixin that provides functionality for mobile elements that can be hidden.
++ [`MobileImage`]($w/mobileimage): An image element on a mobile app.
++ [`MobilePicker`]($w/mobilepicker): A picker for selecting items on a mobile app.
++ [`MobilePressableMixin`]($w/mobilepressablemixin): A mixin that provides functionality for elements on a mobile app that can be pressed.
++ [`MobilePressEvent`]($w/mobilepressevent): Event that is fired when an element on a mobile app is pressed.
++ [`MobileRepeater`]($w/mobilerepeater): A repeater mobile element used for creating repeating layouts on a mobile app widget.
++ [`MobileSwitch`]($w/mobileswitch): A switch used for a single binary choice on a mobile app.
++ [`MobileText`]($w/mobiletext): A text element on a mobile app.
++ [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
+
+(April 1, 2024)
+
+### New Developer Preview API: Wix Mobile 
+
+`wix-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Mobile API](https://www.wix.com/velo/reference/wix-mobile/introduction) provides the functionality required to work with your mobile app.
+
+It contains the following API:
+
+* [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert): Creates and opens an alert modal on your mobile app.
+
+(April 1, 2024)
+
+### New Developer Preview API: Wix Navigate Mobile 
+
+`wix-navigate-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Navigate Mobile API](https://www.wix.com/velo/reference/wix-navigate-mobile/introduction) provides the functionality required to navigate through your mobile app.
+
+It contains the following API:
+
+* [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl): Directs the mobile app to open the specified URL in the device's browser.
+
+(April 1, 2024)
+
 ### Updated API: Wix Window Frontend
 
 `wix-window-frontend`
