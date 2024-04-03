@@ -38,7 +38,7 @@ We added the following new mobile APIs and mixins:
 + [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
 + [`MobileValueMixin`]($w/mobilevaluemixin): A mixin that provides functionality for elements on a mobile app that have values.
 
-(April 1, 2024)
+(April 3, 2024)
 
 ### New Developer Preview API: Wix Mobile 
 
@@ -59,7 +59,7 @@ It contains the following API:
 
 * [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert): Creates and opens an alert modal on your mobile app.
 
-(April 1, 2024)
+(April 3, 2024)
 
 ### New Developer Preview API: Wix Navigate Mobile 
 
@@ -80,7 +80,7 @@ It contains the following API:
 
 * [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl): Directs the mobile app to open the specified URL in the device's browser.
 
-(April 1, 2024)
+(April 3, 2024)
 
 ### Updated API: Wix Window Frontend
 
