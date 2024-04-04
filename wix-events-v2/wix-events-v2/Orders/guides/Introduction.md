@@ -3,7 +3,7 @@ title: Introduction
 ---
 # Introduction
 
-With the Orders API you can manage and track ticket orders, create/cancel tickets reservation, and checkout the reserved tickets.    
+With the Orders API you can manage and track ticket orders, create/cancel tickets reservations, and check out the reserved tickets.    
 
 To get yourself comfortable with creating ticket reservation and checkout flows, you can check out these Velo example sites:
 
@@ -26,12 +26,12 @@ With the Orders API you can:
 It’s important to note the following points before starting to code:  
 
 - Install the **Wix Events & Tickets** app from [Wix App Market](https://www.wix.com/app-market/wix-events?referral=category&appIndex=5&referralTag=booking--events).
+- If a site visitor closes a tab after placing an order, or the reservation time (20 minutes) runs out, the order is automatically cancelled after 2 hours.
 - To use the Orders API, import `{ orders }` from the `wix-events.v2` module:
 
 ```javascript
 import { orders } from 'wix-events.v2';
 ```
-- If a site visitor closes a tab after placing an order, or the reservation time (20 minutes) runs out, the order is automatically cancelled after 2 hours.
 
 ## Terminology
 
