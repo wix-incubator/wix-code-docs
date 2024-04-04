@@ -3,12 +3,12 @@ title: Introduction
 ---
 # Introduction
 
-With the Categories API, you can create and assign various categories to their events. This API is great for displaying similar events on different site pages and sorting events in your dashboard. For example, you can create separate pages for jazz, blues, and folk events, but also pages for different venues. The same jazz event can be displayed on your jazz page and also on your downtown location page.    
+With the Categories API, you can create and assign various categories to their events. You can use this API to display similar events on different site pages and sorting events in your dashboard. For example, you can create separate pages for jazz, blues, and folk events, but also pages for different venues. The same jazz event can be displayed on your jazz page and also on your downtown location page.    
 
 The Categories API allows you to:  
 
 * Assign/unassign events to a category or multiple categories.
-* Create, delete, update categories.
+* Create, delete, and update categories.
 * [Reorder events that are assigned to the same category on the Events widget](https://support.wix.com/en/article/creating-and-displaying-event-categories).
 * Get the details about all categories.
 

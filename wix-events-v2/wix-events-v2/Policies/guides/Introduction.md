@@ -11,9 +11,9 @@ A policy agreement checkbox will be added to the RSVP or checkout form. The poli
 
 ## Terminology
 
-- **Policy**: text that defines terms & conditions, as relevant.
-- **Event Dashboard**: controls center which allows users to manage their site events settings and features.
-- **Checkout form**: the final step in the ticket purchasing process where the customer fills in personal info, reads policies and pays money.
+- **Policy**: Text that defines terms & conditions.
+- **Event Dashboard**: Control center which allows users to manage their site events settings, and features.
+- **Checkout form**: The final step in the ticket purchasing process where the customer fills in personal info, reads policies and pays money.
 
 
 ## Before you begin
@@ -26,19 +26,3 @@ It’s important to note the following points before starting to code:
 import { policies } from 'wix-events.v2';
 ```
 
-## Permissions information
-
-The following functions in the Policies API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function:
-
-- `createPolicy()`
-- `deletePolicy()`
-- `reorderEventPolicies`
-- `updatePolicy()`
-
-<blockquote class='warning'>
-<p>
-<strong>Warning:</strong>
-Elevating a function allows it to be called by any site visitor.
-Exercise caution to prevent security vulnerabilities.
-</p>
-</blockquote>
