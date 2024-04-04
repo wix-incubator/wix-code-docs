@@ -20,23 +20,17 @@ __Important:__
 
 </blockquote>
 
-We added the following new mobile APIs and mixins:
+We added the following mobile APIs:
 
 + [`MobileButton`]($w/mobilebutton): A button element on a mobile app.
 + [`MobileContainer`]($w/mobilecontainer): A container element for repeater items on a mobile app.
-+ [`MobileDisabledMixin`]($w/mobiledisabledmixin): A mixin that provides functionality for mobile elements that can be disabled.
 + [`MobileElement`]($w/mobileelement): Provides basic functionality for mobile elements.
-+ [`MobileFormElementMixin`]($w/mobileformelementmixin): A mixin that provides functionality for input elements on mobile apps.
-+ [`MobileHiddenCollapsedMixin`]($w/mobilehiddencollapsedmixin): A mixin that Provides functionality for all mobile elements that can be hidden or collapsed.
-+ [`MobileHiddenMixin`]($w/mobilehiddenmixin): A mixin that provides functionality for mobile elements that can be hidden.
 + [`MobileImage`]($w/mobileimage): An image element on a mobile app.
 + [`MobilePicker`]($w/mobilepicker): A picker for selecting items on a mobile app.
-+ [`MobilePressableMixin`]($w/mobilepressablemixin): A mixin that provides functionality for elements on a mobile app that can be pressed.
 + [`MobileRepeater`]($w/mobilerepeater): A repeater mobile element used for creating repeating layouts on a mobile app widget.
 + [`MobileSwitch`]($w/mobileswitch): A switch used for a single binary choice on a mobile app.
 + [`MobileText`]($w/mobiletext): A text element on a mobile app.
 + [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
-+ [`MobileValueMixin`]($w/mobilevaluemixin): A mixin that provides functionality for elements on a mobile app that have values.
 
 (April 3, 2024)
 
@@ -55,9 +49,7 @@ __Important:__
 
 The [Wix Mobile API](https://www.wix.com/velo/reference/wix-mobile/introduction) provides the functionality required to work with your mobile app.
 
-It contains the following API:
-
-* [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert): Creates and opens an alert modal on your mobile app.
+It contains the [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert) API that creates and opens an alert modal on your mobile app.
 
 (April 3, 2024)
 
@@ -76,9 +68,7 @@ __Important:__
 
 The [Wix Navigate Mobile API](https://www.wix.com/velo/reference/wix-navigate-mobile/introduction) provides the functionality required to navigate through your mobile app.
 
-It contains the following API:
-
-* [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl): Directs the mobile app to open the specified URL in the device's browser.
+It contains the [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl) API that directs your mobile app to open the specified URL in the device's browser.
 
 (April 3, 2024)
 
