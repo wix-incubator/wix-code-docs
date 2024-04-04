@@ -7,6 +7,22 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New release: More Wix Events APIs
+
+`wix-events.v2`
+
+[Wix Events](https://www.wix.com/velo/reference/wix-events-v2/introduction) introduces new APIs that provide developers with a growing set of services for customizing Events functionality on Wix sites:
+
+- [Categories](https://www.wix.com/velo/reference/wix-events-v2/categories/introduction): Create and assign various categories to their events.
+- [Forms](https://www.wix.com/velo/reference/wix-events-v2/forms/introduction): Customize a registration form for site visitors to fill out with their contact details and other relevant information.
+- [Orders](https://www.wix.com/velo/reference/wix-events-v2/orders/introduction): The **Checkout** module is now merged with **Orders**.
+- [RSVP](https://www.wix.com/velo/reference/wix-events-v2/rsvp/introduction): Access the information on guests who have RSVP'ed to an event.
+- [Schedule](https://www.wix.com/velo/reference/wix-events-v2/schedule/introduction): Share the lineup of an event’s activities, presentations, performances, or sessions.
+- [Schedule Bookmarks](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks/introduction): Allow members to mark their favorite schedule items to curate their own personalized agenda for your event.
+- [Wix Events v2](https://www.wix.com/velo/reference/wix-events-v2/wixeventsv2/introduction): The updated [Wix Events](https://www.wix.com/velo/reference/wix-events-backend/wixevents/introduction) API where you can create and manage events on your site.
+
+(April 4, 2024)
+
 ### New Developer Preview APIs: Mobile Elements
 
 `Wix Editor Elements ($w)`
