@@ -1,0 +1,5666 @@
+{
+  "name": "Reservations",
+  "memberOf": "wix-table-reservations-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-table-reservations.v2-reservation",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "cancelReservation",
+      "params": [
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID.",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number.\n\nInclude the existing `revision` to prevent conflicting updates to reservations.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CancelReservationOptions"
+            }
+          ],
+          "doc": "Options for canceling the reservation.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "reservationId",
+        "revision"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.CancelReservationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Cancels a reservation.",
+        "description": [
+          "Sets the reservation status to `CANCELED`."
+        ],
+        "examples": [
+          {
+            "title": "Cancel a `WALK_IN` reservation that has no phone number (page code) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample reservationId value: \"36b144c4-9cb5-4c92-96c1-5027301cac05\"",
+              " * Sample revision value: 1",
+              " */",
+              "",
+              "reservations.cancelReservation(reservationId, revision)",
+              "  .then((canceledReservation) => {",
+              "    const updatedRevision = canceledReservation.revision;",
+              "    const status = canceledReservation.status;",
+              "",
+              "    console.log('Success! Canceled the reservation:', canceledReservation);",
+              "    return canceledReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservation\": {",
+              " *     \"status\": \"CANCELED\",",
+              " *     \"source\": \"UNKNOWN\",",
+              " *     \"details\": {",
+              " *       \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *       \"tableIds\": [],",
+              " *       \"startDate\": \"2024-12-06T14:30:00.000Z\",",
+              " *       \"endDate\": \"2024-12-06T16:00:00.000Z\",",
+              " *       \"partySize\": 2",
+              " *     },",
+              " *     \"revision\": \"2\",",
+              " *     \"migrationNotes\": [],",
+              " *     \"tablesWithReservationConflicts\": [],",
+              " *     \"_id\": \"36b144c4-9cb5-4c92-96c1-5027301cac05\",",
+              " *     \"_createdDate\": \"2024-01-22T11:20:02.781Z\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Cancel an `ONLINE` reservation with a phone number (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample reservationId value: \"26cdab39-9fb5-45b8-867e-5f6d85541468\"",
+              " * Sample revision value: 1",
+              " * Sample phone value: \"+972555555555\"",
+              " */",
+              "",
+              "export const myCancelReservationFunction = webMethod(Permissions.Anyone, async (reservationId, revision, phone) => {",
+              "  try {",
+              "    const canceledReservation = await reservations.cancelReservation(reservationId, revision, phone);",
+              "",
+              "    const updatedRevision = canceledReservation.revision;",
+              "    const status = canceledReservation.status;",
+              "",
+              "    console.log('Success! Canceled the reservation:', canceledReservation);",
+              "    return canceledReservation;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservation\": {",
+              " *     \"status\": \"CANCELED\",",
+              " *     \"source\": \"UNKNOWN\",",
+              " *     \"details\": {",
+              " *       \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *       \"tableIds\": [],",
+              " *       \"startDate\": \"2024-12-06T14:30:00.000Z\",",
+              " *       \"endDate\": \"2024-12-06T16:00:00.000Z\",",
+              " *       \"partySize\": 2",
+              " *     },",
+              " *     \"revision\": \"2\",",
+              " *     \"migrationNotes\": [],",
+              " *     \"tablesWithReservationConflicts\": [],",
+              " *     \"_id\": \"26cdab39-9fb5-45b8-867e-5f6d85541468\",",
+              " *     \"_createdDate\": \"2024-01-22T11:24:56.658Z\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Close a restaurant and cancel all reservations on a given day ",
+            "body": [
+              "/* This example requires the following elements:",
+              " * A dropdown element named `locationDropdown`.",
+              " * A date picker element named 'datePicker`.",
+              " * A button named `confirmButton`.",
+              " * A text element named `cancellationNotice`.",
+              " */",
+              "",
+              "/**********************************************",
+              " * Backend code - reservationLocations.web.js *",
+              " **********************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { locations } from 'wix-business-tools.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const getRestaurantLocation = webMethod(Permissions.Anyone, async (location_id) => {",
+              "  const elevatedGetLocation = elevate(locations.getLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedGetLocation(location_id);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const getRestautantDetails = webMethod(Permissions.Anyone, async (reservationLocationId, options) => {",
+              "  const elevatedGetReservationLocations = elevate(reservationLocations.getReservationLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedGetReservationLocations(reservationLocationId, options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const updateRestaurantDetails = webMethod(Permissions.Anyone, async (reservationLocationId, reservationLocationObject) => {",
+              "  const elevatedUpdateReservationLocation = elevate(reservationLocations.updateReservationLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedUpdateReservationLocation(reservationLocationId, reservationLocationObject);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/**************************************",
+              " * Backend code - reservations.web.js *",
+              " *************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const queryReservationsInDateRange = webMethod(Permissions.Anyone, async (startDate, endDate) => {",
+              "  const elevatedQueryReservations = elevate(reservations.queryReservations);",
+              "",
+              "  try {",
+              "    const result = await elevatedQueryReservations()",
+              "      .ge('details.startDate', startDate)",
+              "      .lt('details.startDate', endDate)",
+              "      .find();",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "import { getRestaurantLocation } from 'backend/reservationLocations.web';",
+              "import { getRestautantDetails } from 'backend/reservationLocations.web';",
+              "import { updateRestaurantDetails } from 'backend/reservationLocations.web';",
+              "import { queryReservationsInDateRange } from 'backend/reservations.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  $w('#datePicker').hide();",
+              "  $w('#confirmButton').hide();",
+              "  $w('#cancellationNotice').hide();",
+              "",
+              "  // Set the earliest selectable date to the day after the current date",
+              "  var tomorrowsDate = new Date();",
+              "  tomorrowsDate.setDate(tomorrowsDate.getDate() + 1);",
+              "  $w('#datePicker').minDate = tomorrowsDate;",
+              "  $w('#datePicker').value = tomorrowsDate;",
+              "",
+              "  //Get the list of reservation locations",
+              "  const myReservationLocationList = await (async () => {",
+              "    try {",
+              "      let fullListObject = await reservationLocations.listReservationLocations();",
+              "      return fullListObject.reservationLocations;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  })();",
+              "",
+              "  //Create an array to hold names and values for our dropdown list",
+              "  let dropdownOptions = [];",
+              "  for (const object in myReservationLocationList) {",
+              "    //Use the _id stored in the reservation location's location object to get the location's name from the `locations` service",
+              "    const locationObject = await getRestaurantLocation(myReservationLocationList[object].location._id);",
+              "    dropdownOptions.push({",
+              "      \"label\": locationObject.name,",
+              "      \"value\": myReservationLocationList[object]._id",
+              "    })",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#locationDropdown\").options = dropdownOptions;",
+              "",
+              "  $w('#locationDropdown').onChange((event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#datePicker').show();",
+              "      $w('#confirmButton').show();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#confirmButton').onClick(async (event) => {",
+              "    const options = {",
+              "      \"fieldsets\": \"FULL\"",
+              "    }",
+              "    const selectedLocation = await getRestautantDetails($w('#locationDropdown').value, options)",
+              "",
+              "    //Create a new special hour period to push to the list in our reservation location's business schedule",
+              "    const selectedDate = $w('#datePicker').value;",
+              "    const dayAfterSelectedDate = new Date(selectedDate);",
+              "    dayAfterSelectedDate.setDate(selectedDate.getDate() + 1);",
+              "    const mySpecialHourPeriod = {",
+              "      \"startDate\": selectedDate,",
+              "      \"endDate\": dayAfterSelectedDate,",
+              "      \"isClosed\": true",
+              "    }",
+              "",
+              "    if (!(\"businessSchedule\" in selectedLocation.configuration.onlineReservations)) {",
+              "      //Handle business schedule configuration",
+              "    }",
+              "    selectedLocation.configuration.onlineReservations.businessSchedule.specialHourPeriod.push(mySpecialHourPeriod);",
+              "",
+              "    await updateRestaurantDetails(selectedLocation._id, selectedLocation);",
+              "",
+              "    //Create a variable to hold of names and phone numbers of canceled reservations.",
+              "    let canceledReservationsNote = \"Notify of cancellation:\\n\";",
+              "",
+              "    //Query for reservations on the selected date and cancel any at our selected reservation location",
+              "    let reservationsOnSelectedDate = await queryReservationsInDateRange(selectedDate, dayAfterSelectedDate);",
+              "    for (let reservation in reservationsOnSelectedDate._items) {",
+              "      if (reservationsOnSelectedDate._items[reservation].details.reservationLocationId == selectedLocation._id) {",
+              "        let options = {",
+              "          \"phone\": reservationsOnSelectedDate._items[reservation].reservee.phone",
+              "        }",
+              "",
+              "        const canceledReservation = await (async () => {",
+              "          try {",
+              "            return reservations.cancelReservation(reservationsOnSelectedDate._items[reservation]._id, reservationsOnSelectedDate._items[reservation].revision, options)",
+              "          } catch (error) {",
+              "            console.error(error);",
+              "            // Handle the error",
+              "            return false;",
+              "          }",
+              "        })();",
+              "",
+              "        if (canceledReservation) {",
+              "          canceledReservationsNote += \"First name: \" + reservationsOnSelectedDate._items[reservation].reservee.firstName +",
+              "            \". Last name: \" + reservationsOnSelectedDate._items[reservation].reservee.lastName +",
+              "            \". Phone: \" + reservationsOnSelectedDate._items[reservation].reservee.phone + \"\\n\";",
+              "        }",
+              "      }",
+              "    }",
+              "",
+              "    $w('#cancellationNotice').text = canceledReservationsNote;",
+              "    $w('#cancellationNotice').show();",
+              "  });",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This scenario sets up an interface that allows a site owner to select a reservation location and a date, and then close the restaurant on that date. We start by creating a day-long special hour period during which reservations can't be made. We then cancel all reservations on that date."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "cancelReservation"
+    },
+    {
+      "name": "createHeldReservation",
+      "params": [
+        {
+          "name": "reservationDetails",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.HeldReservationDetails"
+            }
+          ],
+          "doc": "Held reservation information to update.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "reservationDetails",
+        "reservationDetails.partySize",
+        "reservationDetails.reservationLocationId",
+        "reservationDetails.startDate"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.CreateHeldReservationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a new temporary reservation and holds it for the customer for 10 minutes.",
+        "description": [
+          "Creates a new reservation with the `HELD` status. `HELD` reservations are intended to reserve seats and tables for a party in a selected time slot while they enter further reservation details, such as names and contact information. Reservations with the `HELD` status are only valid for 10 minutes. Trying to change a `HELD` reservation’s status after 10 minutes returns an error.\n\nYou cannot call `updateReservation()` to change a reservation’s status from `HELD`. Trying to do so returns an error. Instead, you should use `reserveReservation()`.\n\nIf you do not wish to have `HELD` reservations in your flow, you can create a reservation with all required details using `createReservation()`.\n"
+        ],
+        "examples": [
+          {
+            "title": "Create a held reservation (page code) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample reservationDetails value:",
+              " * {",
+              " *   \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *   \"startDate\": new Date(\"2024-12-14T15:30:00Z\"),",
+              " *   \"partySize\": 2",
+              " * }",
+              " */",
+              "",
+              "reservations.createHeldReservation(reservationDetails)",
+              "  .then((createdHeldReservation) => {",
+              "    const id = createdHeldReservation._id;",
+              "    const status = createdHeldReservation.status;",
+              "",
+              "    console.log('Success! Created a held reservation:', createdHeldReservation);",
+              "    return createdHeldReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservation\": {",
+              " *     \"status\": \"HELD\",",
+              " *     \"source\": \"UNKNOWN\",",
+              " *     \"details\": {",
+              " *       \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *       \"tableIds\": [],",
+              " *       \"startDate\": \"2024-12-14T15:30:00.000Z\",",
+              " *       \"endDate\": \"2024-12-14T17:00:00.000Z\",",
+              " *       \"partySize\": 2",
+              " *     },",
+              " *     \"revision\": \"1\",",
+              " *     \"migrationNotes\": [],",
+              " *     \"tablesWithReservationConflicts\": [],",
+              " *     \"_id\": \"26bf7609-8bf4-45ac-aef0-dbb3e54f69ad\",",
+              " *     \"_createdDate\": \"2024-01-17T10:07:56.966Z\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create a held reservation with a given time, location, and party size. ",
+            "body": [
+              "/* This example requires the following elements:",
+              " * A dropdown element named `locationDropdown`.",
+              " * A dropdown element named `partySizeDropdown`.",
+              " * A dropdown element named `timeSlotDropdown`.",
+              " * A button named `confirmButton`.",
+              " * A text element named `heldReservationNotification`.",
+              " */",
+              "",
+              "/**********************************************",
+              " * Backend code - reservationLocations.web.js *",
+              " **********************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { locations } from 'wix-business-tools.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const getRestaurantLocation = webMethod(Permissions.Anyone, async (location_id) => {",
+              "  const elevatedGetLocation = elevate(locations.getLocation);",
+              "",
+              "  try {",
+              "     const result = await elevatedGetLocation(location_id);",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { timeSlots } from 'wix-table-reservations.v2';",
+              "",
+              "import { getRestaurantLocation } from 'backend/reservationLocations.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  $w('#timeSlotDropdown').hide();",
+              "  $w('#partySizeDropdown').hide();",
+              "  $w('#confirmButton').hide();",
+              "  $w('#heldReservationNotification').hide();",
+              "",
+              "  //Get the list of reservation locations",
+              "  const myReservationLocationList = await (async () => {",
+              "    try {",
+              "      let fullListObject = await reservationLocations.listReservationLocations();",
+              "      return fullListObject.reservationLocations;",
+              "    } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "  })();",
+              "",
+              "  //Create an array to hold names and values for our locations dropdown list",
+              "  let locationDropdownOptions = [];",
+              "  for (const object in myReservationLocationList){",
+              "    //Use the _id stored in the reservation location's location object to get the location's name from the `locations` service",
+              "    const locationObject = await getRestaurantLocation(myReservationLocationList[object].location._id);",
+              "    locationDropdownOptions.push({",
+              "      \"label\": locationObject.name, ",
+              "      \"value\": myReservationLocationList[object]._id",
+              "    })\t",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#locationDropdown\").options = locationDropdownOptions;",
+              "",
+              "  //Create an array to hold numbers and values for our party size dropdown list",
+              "  let partySizeDropdownOptions = [];",
+              "  for (let i = 1; i<10; i++){",
+              "    partySizeDropdownOptions.push({",
+              "      \"label\": String(i), ",
+              "      \"value\": String(i)",
+              "    })\t",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#partySizeDropdown\").options = partySizeDropdownOptions;",
+              "",
+              "  $w('#locationDropdown').onChange( (event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#partySizeDropdown').show();",
+              "      $w('#timeSlotDropdown').hide()",
+              "      $w('#confirmButton').hide();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#partySizeDropdown').onChange( async (event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#timeSlotDropdown').show()",
+              "      $w('#confirmButton').hide();",
+              "",
+              "      const timeSlotDetails = {",
+              "        \"reservationLocationId\": $w('#locationDropdown').value, ",
+              "        \"date\": new Date(),",
+              "        \"partySize\": parseInt($w('#partySizeDropdown').value)",
+              "      };",
+              "",
+              "      const timeSlotOptions = {",
+              "        \"duration\": 30,",
+              "\t\"slotsAfter\": 8,",
+              "\t\"slotsBefore\": 0",
+              "      };",
+              "",
+              "      //Get the list of time slots according to the details and options above",
+              "      const availableTimeSlots = await (async () => {",
+              "        try {",
+              "          let fullListObject = await timeSlots.getTimeSlots(timeSlotDetails.reservationLocationId, timeSlotDetails.date, timeSlotDetails.partySize, timeSlotOptions);",
+              "          return fullListObject.timeSlots;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "      })();",
+              "",
+              "      //Create an array to hold numbers and values for our time slot dropdown list",
+              "      let timeSlotDropdownOptions = [];",
+              "      for (const timeSlot in availableTimeSlots){",
+              "        if(availableTimeSlots[timeSlot].status == \"AVAILABLE\"){",
+              "          timeSlotDropdownOptions.push({",
+              "            \"label\": String(availableTimeSlots[timeSlot].startDate), ",
+              "            \"value\": String(availableTimeSlots[timeSlot].startDate)",
+              "          })",
+              "        }\t",
+              "      }",
+              "      //Populate our dropdown list with the array",
+              "      $w(\"#timeSlotDropdown\").options = timeSlotDropdownOptions;",
+              "    }",
+              "  });",
+              "",
+              "  $w('#timeSlotDropdown').onChange( async (event) => {",
+              "    if ($w('#timeSlotDropdown').value) {",
+              "      $w('#confirmButton').show();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#confirmButton').onClick( async (event) => {",
+              "    //Get the list of time slots according to the details and options above",
+              "    ",
+              "    const createdHeldReservation = await (async () => {",
+              "      try {",
+              "        const reservationDetails = {",
+              "          \"reservationLocationId\": $w('#locationDropdown').value, ",
+              "          \"startDate\": new Date($w(\"#timeSlotDropdown\").value),",
+              "          \"partySize\": parseInt($w('#partySizeDropdown').value)",
+              "        };",
+              "",
+              "        return await reservations.createHeldReservation(reservationDetails);",
+              "      } catch (error) {",
+              "        console.error(error);",
+              "        // Handle the error",
+              "      }",
+              "    })();",
+              "",
+              "    if(createdHeldReservation){",
+              "      $w('#heldReservationNotification').text = \"Held reservation created successfully.\"",
+              "      $w('#heldReservationNotification').show();",
+              "    }",
+              "  });",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This scenario sets up an interface that allows a site owner to select a reservation location and a party size, then select a time slot to reserve. Once a time slot is selected, the site owner can click a confirm button to create a held reservation at that time."
+            }
+          },
+          {
+            "title": "Create a held reservation (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample reservationDetails value:",
+              " * {",
+              " *   \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *   \"startDate\": new Date(\"2024-12-14T15:30:00Z\"),",
+              " *   \"partySize\": 2",
+              " * }",
+              " */",
+              "",
+              "export const myCreateContactFunction = webMethod(Permissions.Anyone, async (reservationDetails) => {",
+              "  try {",
+              "    const createdHeldReservation = await reservations.createHeldReservation(reservationDetails);",
+              "",
+              "    const id = createdHeldReservation._id;",
+              "    const status = createdHeldReservation.status;",
+              "",
+              "    console.log('Success! Created a held reservation:', createdHeldReservation);",
+              "    return createdHeldReservation;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "",
+              "});"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "createHeldReservation"
+    },
+    {
+      "name": "createReservation",
+      "params": [
+        {
+          "name": "reservation",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation details.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CreateReservationOptions"
+            }
+          ],
+          "doc": "Options for creating the reservation.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "reservation",
+        "reservation.details",
+        "reservation.details.partySize",
+        "reservation.details.reservationLocationId",
+        "reservation.details.startDate"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Reservation.\n"
+      },
+      "docs": {
+        "summary": "Creates a new reservation.",
+        "description": [
+          "`createReservation()` accepts and requires different fields depending on the `status` provided and your permissions.\n\n**Status and source**\n\nIf a `status` is not provided, it will be set to:\n* `RESERVED` if manual approval is not required for confirmation\n* `REQUESTED` if manual approval is required for confirmation.\n\nA reservation created with any `source` other than `WALK_IN` requires the `reservation.reservee.phone` and `reservation.reservee.firstName` fields.\nAttempting to create a reservation without these fields will result in an error.\n\n**Permissions**\n\nIncluding the fields `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, or `ignoreTableCombinationConflicts` in the request requires additional permissions. See this API's Introduction article for more information.\n\nIf `source` is not provided, its value is set depending on the permissions of the user making the call. See this API's Introduction article for more information.\n\n\n > **Note:** `createReservation()` requires all details of the reservation upfront. The process of creating a reservation can be broken up using `createHeldReservation`.  `createHeldReservation` creates a temporary reservation that expires automatically unless it is completed with the addition of more details using `reserveReservation()`."
+        ],
+        "examples": [
+          {
+            "title": "Create a basic reservation (page code) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample reservation value:",
+              " * {",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *     \"startDate\": new Date(\"2024-12-18T15:30:00Z\"),",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"reservee\":{",
+              " *     \"phone\":\"+972555555555\",",
+              " *     \"firstName\": \"John\"",
+              " *   },",
+              " * }",
+              " */",
+              "",
+              "reservations.createReservation(reservation)",
+              "  .then((createdReservation) => {",
+              "    const id = createdReservation._id;",
+              "    const status = createdReservation.status;",
+              "",
+              "    console.log('Success! Created a reservation:', createdReservation);",
+              "    return createdReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservation\": {",
+              " *     \"status\": \"RESERVED\",",
+              " *     \"source\": \"UNKNOWN\",",
+              " *     \"details\": {",
+              " *       \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *       \"tableIds\": [],",
+              " *       \"startDate\": \"2024-12-16T15:30:00.000Z\",",
+              " *       \"endDate\": \"2024-12-16T17:00:00.000Z\",",
+              " *       \"partySize\": 2",
+              " *     },",
+              " *     \"revision\": \"1\",",
+              " *     \"migrationNotes\": [],",
+              " *     \"tablesWithReservationConflicts\": [],",
+              " *     \"_id\": \"d9f15462-a46a-45df-8b0f-2ef557f94ca9\",",
+              " *     \"_createdDate\": \"2024-01-17T07:58:17.339Z\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create a reservation with options (backend) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "",
+              "/* Sample reservation value:",
+              " * {",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *     \"startDate\": new Date(\"2024-12-15T10:30:00Z\"),",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"reservee\":{",
+              " *     \"phone\":\"+972555555555\",",
+              " *     \"firstName\": \"John\"",
+              " *   },",
+              " *   \"teamMessage\": \"Make sure the table has bottled water\"",
+              " * }",
+              " *",
+              " * Sample options value: ",
+              " * {",
+              " *   \"ignoreTableCombinationConflicts\":[\"RESERVED\", \"TOO_BIG\"],",
+              " *   \"ignoreReservationLocationConflicts\":[\"PARTY_PACING\"]",
+              " * }",
+              " */",
+              "",
+              "export const myCreateReservationFunction = webMethod(Permissions.Anyone, async (reservation, options) => {",
+              "  const elevatedCreateReservation = elevate(reservations.createReservation);",
+              "",
+              "  try {",
+              "     const result = await elevatedCreateReservation(reservation, options);",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"UNKNOWN\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [",
+              " *       \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *     ],",
+              " *     \"startDate\": \"2024-12-15T10:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-15T12:00:00.000Z\",",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"reservee\": {",
+              " *     \"firstName\": \"John\",",
+              " *     \"phone\": \"+972555555555\",",
+              " *     \"contactId\": \"e8396cd4-1398-4886-a0ca-82647ff0ccaf\"",
+              " *   },",
+              " *   \"teamMessage\": \"make sure the table has bottled water\",",
+              " *   \"revision\": \"1\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [],",
+              " *   \"_id\": \"586db492-986e-4849-9ef9-100f0ffa4321\",",
+              " *   \"_createdDate\": \"2024-01-17T09:46:43.844Z\",",
+              " *   \"_updatedDate\": \"2024-01-17T09:46:43.844Z\"",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This function call requires elevation to get the necessary permissions."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "createReservation"
+    },
+    {
+      "name": "getReservation",
+      "params": [
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.GetReservationOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "reservationId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Reservation.\n"
+      },
+      "docs": {
+        "summary": "Retrieves a reservation.",
+        "description": [
+          "Calling this method with `fieldsets` set to `FULL` requires additional permissions. See this API's Introduction article for more information."
+        ],
+        "examples": [
+          {
+            "title": "Get a reservation (page code) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "// Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              "",
+              "reservations.getReservation(reservationId)",
+              "  .then((retrievedReservation) => {",
+              "    const startDate = retrievedReservation.details.startDate;",
+              "    const partySize = retrievedReservation.details.partySize;",
+              "",
+              "    console.log('Success! Retrieved reservation:', retrievedReservation);",
+              "    return retrievedReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"UNKNOWN\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [],",
+              " *     \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"revision\": \"1\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get a reservation with options (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              " *",
+              " * Sample options value: ",
+              " * { ",
+              " *   \"fieldsets\": [\"FULL\"]",
+              " * }",
+              " */",
+              "",
+              "export const myGetReservationFunction = webMethod(Permissions.Anyone, async (reservationId, options) => {",
+              "  const elevatedGetReservation = elevate(reservations.getReservation);",
+              "",
+              "  try {",
+              "     const result = await elevatedGetReservation(reservationId, options);",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"ONLINE\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [",
+              " *       \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *     ],",
+              " *     \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *     \"partySize\": 2",
+              " *   },",
+              " *   \"revision\": \"1\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *   \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This example demonstrates how to request the `FULL` fieldset in options using elevation to get the necessary permissions."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getReservation"
+    },
+    {
+      "name": "listReservations",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ListReservationsOptions"
+            }
+          ],
+          "doc": "Options for listing the reservations.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.ListReservationsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of up to 100 reservations.",
+        "description": [],
+        "examples": [
+          {
+            "title": "List reservations with options (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   \"startDateFrom\" : new Date(\"2024-12-04T10:30:00Z\"),",
+              " *   \"startDateTo\" : new Date(\"2024-12-04T17:30:00Z\"),",
+              " *   \"status\" : \"RESERVED\"",
+              " * }",
+              " */",
+              "",
+              "export const myListReservationsFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "  const elevatedListReservations = elevate(reservations.listReservations);",
+              "",
+              "  try {",
+              "    const retrievedReservations = await elevatedListReservations(options);",
+              "",
+              "    const createdDate = retrievedReservations.reservations[0]._createdDate;",
+              "    const status = retrievedReservations.reservations[0].status;",
+              "",
+              "     return retrievedReservations;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservations\": [",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *       \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T14:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T16:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"3e09e2fb-0cc8-476e-9874-f134b3add055\",",
+              " *       \"_createdDate\": \"2024-01-22T07:33:10.651Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:33:10.651Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T10:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T12:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"98100e83-76cc-4791-87c6-4c6dd4fe9e22\",",
+              " *       \"_createdDate\": \"2024-01-22T07:32:31.548Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:32:31.548Z\"",
+              " *     }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"cursors\": {},",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This function call requires elevation to get the necessary permissions."
+            }
+          },
+          {
+            "title": "List reservations with options (dashboard page) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   \"startDateFrom\" : new Date(\"2024-12-04T10:30:00Z\"),",
+              " *   \"startDateTo\" : new Date(\"2024-12-04T17:30:00Z\"),",
+              " *   \"status\" : \"RESERVED\"",
+              " * }",
+              " */",
+              "",
+              "reservations.listReservations(options)",
+              "  .then((retrievedReservations) => {",
+              "",
+              "    const createdDate = retrievedReservations.reservations[0]._createdDate;",
+              "    const status = retrievedReservations.reservations[0].status;",
+              "",
+              "    console.log('Success! Retrieved reservations:', retrievedReservations);",
+              "    return retrievedReservations;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "  /* Promise resolves to:",
+              " * {",
+              " *   \"reservations\": [",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *       \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T14:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T16:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"3e09e2fb-0cc8-476e-9874-f134b3add055\",",
+              " *       \"_createdDate\": \"2024-01-22T07:33:10.651Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:33:10.651Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T10:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T12:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"98100e83-76cc-4791-87c6-4c6dd4fe9e22\",",
+              " *       \"_createdDate\": \"2024-01-22T07:32:31.548Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:32:31.548Z\"",
+              " *     }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"cursors\": {},",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function requires additional permissions and can only be called without elevation from a dashboard page "
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listReservations",
+      "isAdminMethod": true
+    },
+    {
+      "name": "queryReservations",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "referenceType": "wix-table-reservations-v2.Reservations.ReservationsQueryBuilder"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a query to retrieve a list of reservations.",
+        "description": [
+          "",
+          "The `queryReservations()` function builds a query to retrieve a list of reservations and returns a [`ReservationsQueryBuilder`](#ReservationsQueryBuilder) object.",
+          "",
+          "The returned object contains the query definition, which is used to run the query using the [find()](#ReservationsQueryBuilder/find) function.",
+          "",
+          "You can refine the query by chaining `ReservationsQueryBuilder` functions onto the query. `ReservationsQueryBuilder` functions enable you to filter, sort, and control the results that `queryReservations()` returns.",
+          "",
+          "`queryReservations()` runs with the following `ReservationsQueryBuilder` defaults, which you can override:",
+          "",
+          "* [`skip(0)`](#ReservationsQueryBuilder/skip)",
+          "* [`limit(50)`](#ReservationsQueryBuilder/limit)",
+          "* [`descending('_createdDate')`](#ReservationsQueryBuilder/descending)",
+          "",
+          "The following `ReservationsQueryBuilder` functions are supported for `queryReservations()`. For a full description of the reservation object, see the object returned for the [`items`](#ReservationsQueryResult/items) property in [`ReservationsQueryResult`](#ReservationsQueryResult).",
+          "",
+          "",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`_id`|[`eq()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#eq),[`ne()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#ne),[`in()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#in)|",
+          "|`status`|[`eq()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#eq),[`ne()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#ne),[`in()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#in)|",
+          "|`details.startDate`|[`eq()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#eq),[`ne()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#ne),[`in()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#in),[`lt()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#lt),[`gt()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#gt),[`le()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#le),[`ge()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#ge),[`ascending()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#ascending),[`descending()`](wix-table-reservations-v2.Reservations.ReservationsQueryBuilder#descending)|"
+        ],
+        "examples": [
+          {
+            "title": "Query reservations within a date range (backend) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "",
+              "export const myQueryReservationsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  const elevatedQueryReservations = elevate(reservations.queryReservations);",
+              "",
+              "  try {",
+              "    const retrievedReservations = await elevatedQueryReservations()",
+              "      .gt('details.startDate', new Date(\"2024-12-04T10:30:00Z\"))",
+              "      .lt('details.startDate', new Date(\"2024-12-04T17:30:00Z\"))",
+              "      .find();",
+              "",
+              "    const nextCursor = retrievedReservations._nextCursor;",
+              "    const status = retrievedReservations._items[0].status;",
+              "",
+              "     return retrievedReservations;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_items\": [",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *       \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T14:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T16:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"3e09e2fb-0cc8-476e-9874-f134b3add055\",",
+              " *       \"_createdDate\": \"2024-01-22T07:33:10.651Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:33:10.651Z\"",
+              " *     }",
+              " *   ],",
+              " *   \"_originQuery\": {",
+              " *     \"filterTree\": {",
+              " *       \"$and\": [",
+              " *         {",
+              " *           \"details.startDate\": {",
+              " *             \"$gt\": \"2024-12-04T10:30:00.000Z\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"details.startDate\": {",
+              " *             \"$lt\": \"2024-12-04T17:30:00.000Z\"",
+              " *           }",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"invalidArguments\": [],",
+              " *     \"encoder\": {},",
+              " *     \"transformationPaths\": {},",
+              " *     \"sort\": [],",
+              " *     \"paging\": {},",
+              " *     \"pagingMethod\": \"CURSOR\",",
+              " *     \"builderOptions\": {",
+              " *       \"cursorWithEmptyFilterAndSort\": true",
+              " *     }",
+              " *   },",
+              " *   \"_limit\": 50,",
+              " *   \"_nextCursor\": \"\",",
+              " *   \"_prevCursor\": \"\",",
+              " *   \"cursors\": {",
+              " *     \"next\": \"\",",
+              " *     \"prev\": \"\"",
+              " *   }",
+              " * }",
+              " */"
+            ],
+            "extra": {
+              "description": "This function call requires elevation to get the necessary permissions."
+            }
+          },
+          {
+            "title": "Query reservations in a date range (dashboard page) ",
+            "body": [
+              "import { myQueryReservationsFunction } from 'backend/reservations.jsw';",
+              " ",
+              "myQueryReservationsFunction()",
+              "  .then((retrievedReservations) => {",
+              "    const nextCursor = retrievedReservations._nextCursor;",
+              "    const status = retrievedReservations._items[0].status;",
+              "",
+              "    console.log('Success! Retrieved reservations:', retrievedReservations);",
+              "    return retrievedReservations;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_items\": [",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T12:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T14:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *       \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:25:51.008Z\"",
+              " *     },",
+              " *     {",
+              " *       \"status\": \"RESERVED\",",
+              " *       \"source\": \"ONLINE\",",
+              " *       \"details\": {",
+              " *         \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *         \"tableIds\": [",
+              " *           \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *         ],",
+              " *         \"startDate\": \"2024-12-04T14:30:00.000Z\",",
+              " *         \"endDate\": \"2024-12-04T16:00:00.000Z\",",
+              " *         \"partySize\": 2",
+              " *       },",
+              " *       \"revision\": \"1\",",
+              " *       \"migrationNotes\": [],",
+              " *       \"tablesWithReservationConflicts\": [],",
+              " *       \"_id\": \"3e09e2fb-0cc8-476e-9874-f134b3add055\",",
+              " *       \"_createdDate\": \"2024-01-22T07:33:10.651Z\",",
+              " *       \"_updatedDate\": \"2024-01-22T07:33:10.651Z\"",
+              " *     }",
+              " *   ],",
+              " *   \"_originQuery\": {",
+              " *     \"filterTree\": {",
+              " *       \"$and\": [",
+              " *         {",
+              " *           \"details.startDate\": {",
+              " *             \"$gt\": \"2024-12-04T10:30:00.000Z\"",
+              " *           }",
+              " *         },",
+              " *         {",
+              " *           \"details.startDate\": {",
+              " *             \"$lt\": \"2024-12-04T17:30:00.000Z\"",
+              " *           }",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"invalidArguments\": [],",
+              " *     \"encoder\": {},",
+              " *     \"transformationPaths\": {},",
+              " *     \"sort\": [],",
+              " *     \"paging\": {},",
+              " *     \"pagingMethod\": \"CURSOR\",",
+              " *     \"builderOptions\": {",
+              " *       \"cursorWithEmptyFilterAndSort\": true",
+              " *     }",
+              " *   },",
+              " *   \"_limit\": 50,",
+              " *   \"_nextCursor\": \"\",",
+              " *   \"_prevCursor\": \"\",",
+              " *   \"cursors\": {",
+              " *     \"next\": \"\",",
+              " *     \"prev\": \"\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function call requires additional permissions and can only be called without elevation from a dashboard page."
+            }
+          },
+          {
+            "title": "Close a restaurant and cancel all reservations on a given day ",
+            "body": [
+              "/* This example requires the following elements:",
+              " * A dropdown element named `locationDropdown`.",
+              " * A date picker element named 'datePicker`.",
+              " * A button named `confirmButton`.",
+              " * A text element named `cancellationNotice`.",
+              " */",
+              "",
+              "/**********************************************",
+              " * Backend code - reservationLocations.web.js *",
+              " **********************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { locations } from 'wix-business-tools.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const getRestaurantLocation = webMethod(Permissions.Anyone, async (location_id) => {",
+              "  const elevatedGetLocation = elevate(locations.getLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedGetLocation(location_id);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const getRestautantDetails = webMethod(Permissions.Anyone, async (reservationLocationId, options) => {",
+              "  const elevatedGetReservationLocations = elevate(reservationLocations.getReservationLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedGetReservationLocations(reservationLocationId, options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const updateRestaurantDetails = webMethod(Permissions.Anyone, async (reservationLocationId, reservationLocationObject) => {",
+              "  const elevatedUpdateReservationLocation = elevate(reservationLocations.updateReservationLocation);",
+              "",
+              "  try {",
+              "    const result = await elevatedUpdateReservationLocation(reservationLocationId, reservationLocationObject);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/**************************************",
+              " * Backend code - reservations.web.js *",
+              " *************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const queryReservationsInDateRange = webMethod(Permissions.Anyone, async (startDate, endDate) => {",
+              "  const elevatedQueryReservations = elevate(reservations.queryReservations);",
+              "",
+              "  try {",
+              "    const result = await elevatedQueryReservations()",
+              "      .ge('details.startDate', startDate)",
+              "      .lt('details.startDate', endDate)",
+              "      .find();",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "",
+              "import { getRestaurantLocation } from 'backend/reservationLocations.web';",
+              "import { getRestautantDetails } from 'backend/reservationLocations.web';",
+              "import { updateRestaurantDetails } from 'backend/reservationLocations.web';",
+              "import { queryReservationsInDateRange } from 'backend/reservations.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  $w('#datePicker').hide();",
+              "  $w('#confirmButton').hide();",
+              "  $w('#cancellationNotice').hide();",
+              "",
+              "  // Set the earliest selectable date to the day after the current date",
+              "  var tomorrowsDate = new Date();",
+              "  tomorrowsDate.setDate(tomorrowsDate.getDate() + 1);",
+              "  $w('#datePicker').minDate = tomorrowsDate;",
+              "  $w('#datePicker').value = tomorrowsDate;",
+              "",
+              "  //Get the list of reservation locations",
+              "  const myReservationLocationList = await (async () => {",
+              "    try {",
+              "      let fullListObject = await reservationLocations.listReservationLocations();",
+              "      return fullListObject.reservationLocations;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  })();",
+              "",
+              "  //Create an array to hold names and values for our dropdown list",
+              "  let dropdownOptions = [];",
+              "  for (const object in myReservationLocationList) {",
+              "    //Use the _id stored in the reservation location's location object to get the location's name from the `locations` service",
+              "    const locationObject = await getRestaurantLocation(myReservationLocationList[object].location._id);",
+              "    dropdownOptions.push({",
+              "      \"label\": locationObject.name,",
+              "      \"value\": myReservationLocationList[object]._id",
+              "    })",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#locationDropdown\").options = dropdownOptions;",
+              "",
+              "  $w('#locationDropdown').onChange((event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#datePicker').show();",
+              "      $w('#confirmButton').show();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#confirmButton').onClick(async (event) => {",
+              "    const options = {",
+              "      \"fieldsets\": \"FULL\"",
+              "    }",
+              "    const selectedLocation = await getRestautantDetails($w('#locationDropdown').value, options)",
+              "",
+              "    //Create a new special hour period to push to the list in our reservation location's business schedule",
+              "    const selectedDate = $w('#datePicker').value;",
+              "    const dayAfterSelectedDate = new Date(selectedDate);",
+              "    dayAfterSelectedDate.setDate(selectedDate.getDate() + 1);",
+              "    const mySpecialHourPeriod = {",
+              "      \"startDate\": selectedDate,",
+              "      \"endDate\": dayAfterSelectedDate,",
+              "      \"isClosed\": true",
+              "    }",
+              "",
+              "    if (!(\"businessSchedule\" in selectedLocation.configuration.onlineReservations)) {",
+              "      //Handle business schedule configuration",
+              "    }",
+              "    selectedLocation.configuration.onlineReservations.businessSchedule.specialHourPeriod.push(mySpecialHourPeriod);",
+              "",
+              "    await updateRestaurantDetails(selectedLocation._id, selectedLocation);",
+              "",
+              "    //Create a variable to hold of names and phone numbers of canceled reservations.",
+              "    let canceledReservationsNote = \"Notify of cancellation:\\n\";",
+              "",
+              "    //Query for reservations on the selected date and cancel any at our selected reservation location",
+              "    let reservationsOnSelectedDate = await queryReservationsInDateRange(selectedDate, dayAfterSelectedDate);",
+              "    for (let reservation in reservationsOnSelectedDate._items) {",
+              "      if (reservationsOnSelectedDate._items[reservation].details.reservationLocationId == selectedLocation._id) {",
+              "        let options = {",
+              "          \"phone\": reservationsOnSelectedDate._items[reservation].reservee.phone",
+              "        }",
+              "",
+              "        const canceledReservation = await (async () => {",
+              "          try {",
+              "            return reservations.cancelReservation(reservationsOnSelectedDate._items[reservation]._id, reservationsOnSelectedDate._items[reservation].revision, options)",
+              "          } catch (error) {",
+              "            console.error(error);",
+              "            // Handle the error",
+              "            return false;",
+              "          }",
+              "        })();",
+              "",
+              "        if (canceledReservation) {",
+              "          canceledReservationsNote += \"First name: \" + reservationsOnSelectedDate._items[reservation].reservee.firstName +",
+              "            \". Last name: \" + reservationsOnSelectedDate._items[reservation].reservee.lastName +",
+              "            \". Phone: \" + reservationsOnSelectedDate._items[reservation].reservee.phone + \"\\n\";",
+              "        }",
+              "      }",
+              "    }",
+              "",
+              "    $w('#cancellationNotice').text = canceledReservationsNote;",
+              "    $w('#cancellationNotice').show();",
+              "  });",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This scenario sets up an interface that allows a site owner to select a reservation location and a date, and then close the restaurant on that date. We start by creating a day-long special hour period during which reservations can't be made. We then cancel all reservations on that date."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "queryReservations",
+      "isAdminMethod": true
+    },
+    {
+      "name": "reserveReservation",
+      "params": [
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID.",
+          "required": true
+        },
+        {
+          "name": "reservee",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservee"
+            }
+          ],
+          "doc": "Reservee details.",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number.\n\nInclude the existing `revision` to prevent conflicting updates to reservations.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "reservationId",
+        "reservee",
+        "reservee.firstName",
+        "reservee.phone",
+        "revision"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.ReserveReservationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Reserves or requests a held reservation.",
+        "description": [
+          "Held reservations are temporary reservations with the `HELD` status created by `createHeldReservation()`.\n\nThey are intended to reserve seats and tables for a party in a selected time slot while they enter further reservation details, such as names and contact information. Reservations with the `HELD` status are only valid for 10 minutes. Trying to call `Reserve Reservation` with a held reservation older than 10 minutes returns an error.\n\n`Reserve Reservation` changes a reservation's `HELD` status to:\n* `RESERVED` if the reservation's reservation location does not require manual approval.\n* `REQUESTED` if the reservation's reservation location requires manual approval."
+        ],
+        "examples": [
+          {
+            "title": "Reserve a held reservation (frontend) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations-v2';",
+              "",
+              "/* Sample reservationId value: \"1631633f-ab4b-4302-ab7a-26427bee4d37\"",
+              " *",
+              " * Sample reservee value: {",
+              " *   \"firstName\": \"John\",",
+              " *   \"phone\": \"+972555555555\",",
+              " *   \"contactId\": \"e8396cd4-1398-4886-a0ca-82647ff0ccaf\"",
+              " * };",
+              " * ",
+              " * Sample revision value: 2",
+              " */",
+              "",
+              "reservations.reserveReservation(reservationId, reservee, revision)",
+              "  .then((reservedReservation) => {",
+              "    const id = reservedReservation._id;",
+              "    const status = reservedReservation.status;",
+              "",
+              "    console.log('Success! Reserved a held reservation:', reservedReservation);",
+              "    return reservedReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"reservation\": {",
+              " *     \"status\": \"RESERVED\",",
+              " *     \"source\": \"UNKNOWN\",",
+              " *     \"details\": {",
+              " *       \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *       \"tableIds\": [],",
+              " *       \"startDate\": \"2024-12-09T15:30:00.000Z\",",
+              " *       \"endDate\": \"2024-12-09T17:00:00.000Z\",",
+              " *       \"partySize\": 2",
+              " *     },",
+              " *     \"revision\": \"2\",",
+              " *     \"migrationNotes\": [],",
+              " *     \"tablesWithReservationConflicts\": [],",
+              " *     \"_id\": \"1631633f-ab4b-4302-ab7a-26427bee4d37\",",
+              " *     \"_createdDate\": \"2024-01-17T10:20:09.332Z\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "reserveReservation"
+    },
+    {
+      "name": "updateReservation",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID.",
+          "required": true
+        },
+        {
+          "name": "reservation",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.UpdateReservation"
+            }
+          ],
+          "doc": "Reservation information to update.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.UpdateReservationOptions"
+            }
+          ],
+          "doc": "Options for updating the reservation.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "reservation",
+        "reservation.revision"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Reservation.\n"
+      },
+      "docs": {
+        "summary": "Updates a reservation.",
+        "description": [
+          "Including the fields `status`, `source`, `reservation.details.tableIds`, `reservation.details.endDate`, `ignoreReservationLocationConflicts`, and `ignoreTableCombinationConflicts` in the request requires additional permissions. See this API's Introduction article for more information.\n\nEach time the reservation is updated, revision increments by 1. The existing revision must be included when updating the reservation. This ensures you're working with the latest reservation information, and it prevents unintended overwrites."
+        ],
+        "examples": [
+          {
+            "title": "Update a reservation (backend) ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              " *",
+              " * Sample reservationObject value: ",
+              " * {",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *     \"startDate\": new Date(\"2024-12-18T15:30:00Z\"),",
+              " *     \"endDate\": new Date(\"2024-12-18T16:30:00Z\"),",
+              " *     \"partySize\": 3",
+              " *   },",
+              " *   \"reservee\":{",
+              " *     \"phone\":\"+972555555555\",",
+              " *     \"firstName\":\"John\"",
+              " *   },",
+              " *   \"revision\": \"23\"",
+              " * }",
+              " * ",
+              " * Sample options value: ",
+              " * {",
+              " *   \"ignoreTableCombinationConflicts\":[\"RESERVED\", \"TOO_BIG\"],",
+              " *   \"ignoreReservationLocationConflicts\":[\"PARTY_PACING\"]",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateReservationFunction = webMethod(Permissions.Anyone, async (reservationId, reservation, options) => {",
+              "  const elevatedUpdateReservation = elevate(reservations.updateReservation);",
+              "",
+              "  try {",
+              "     const result = await elevatedUpdateReservation(reservationId, reservation, options);",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"ONLINE\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [",
+              " *       \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *     ],",
+              " *     \"startDate\": \"2024-12-18T15:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-18T16:30:00.000Z\",",
+              " *     \"partySize\": 3",
+              " *   },",
+              " *   \"reservee\": {",
+              " *     \"firstName\": \"John\",",
+              " *     \"email\": \"pedro.doe@mail.com\",",
+              " *     \"phone\": \"+972555555555\"",
+              " *   },",
+              " *   \"revision\": \"24\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [",
+              " *     {",
+              " *       \"tableId\": \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\",",
+              " *       \"reservationIds\": [",
+              " *         \"1c98f3af-f5e1-47b8-b935-1426345652d8\"",
+              " *       ]",
+              " *     }",
+              " *   ],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *   \"_updatedDate\": \"2024-02-07T08:46:57.544Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Update a reservation (dashboard page) ",
+            "body": [
+              "import { reservations } from 'wix-table-reservations-v2';",
+              "import { myUpdateReservationFunction } from 'backend/reservations.jsw';",
+              "",
+              "/* Sample reservationId value: \"1e3db995-5614-4748-8903-cbe7c74c5753\"",
+              " *",
+              " * Sample reservationObject value: ",
+              " * {",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\", ",
+              " *     \"startDate\": new Date(\"2024-12-18T15:30:00Z\"),",
+              " *     \"endDate\": new Date(\"2024-12-18T16:30:00Z\"),",
+              " *     \"partySize\": 3",
+              " *   },",
+              " *   \"reservee\":{",
+              " *     \"phone\":\"+972555555555\",",
+              " *     \"firstName\":\"John\"",
+              " *   },",
+              " *   \"revision\": \"23\"",
+              " * }",
+              " * ",
+              " * Sample options value: ",
+              " * {",
+              " *   \"ignoreTableCombinationConflicts\":[\"RESERVED\", \"TOO_BIG\"],",
+              " *   \"ignoreReservationLocationConflicts\":[\"PARTY_PACING\"]",
+              " * }",
+              " */",
+              " ",
+              "myUpdateReservationFunction(reservationId, reservation, options)",
+              "  .then((updatedReservation) => {",
+              "    const startDate = updatedReservation.details.startDate;",
+              "    const partySize = updatedReservation.details.partySize;",
+              "",
+              "    console.log('Success! Updated reservations:', updatedReservation);",
+              "    return updatedReservation;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"status\": \"RESERVED\",",
+              " *   \"source\": \"ONLINE\",",
+              " *   \"details\": {",
+              " *     \"reservationLocationId\": \"fab8cc1f-31cf-462f-b5bb-392594624bf2\",",
+              " *     \"tableIds\": [",
+              " *       \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *     ],",
+              " *     \"startDate\": \"2024-12-18T15:30:00.000Z\",",
+              " *     \"endDate\": \"2024-12-18T16:30:00.000Z\",",
+              " *     \"partySize\": 3",
+              " *   },",
+              " *   \"reservee\": {",
+              " *     \"firstName\": \"John\",",
+              " *     \"email\": \"pedro.doe@mail.com\",",
+              " *     \"phone\": \"+972555555555\"",
+              " *   },",
+              " *   \"revision\": \"24\",",
+              " *   \"migrationNotes\": [],",
+              " *   \"tablesWithReservationConflicts\": [",
+              " *     {",
+              " *       \"tableId\": \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\",",
+              " *       \"reservationIds\": [",
+              " *         \"1c98f3af-f5e1-47b8-b935-1426345652d8\"",
+              " *       ]",
+              " *     }",
+              " *   ],",
+              " *   \"_id\": \"1e3db995-5614-4748-8903-cbe7c74c5753\",",
+              " *   \"_createdDate\": \"2024-01-22T07:25:51.008Z\",",
+              " *   \"_updatedDate\": \"2024-02-07T08:46:57.544Z\"",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function call requires additional permissions and can only be called without elevation from a dashboard page."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "updateReservation",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Aggregation",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "fieldPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "groupBy",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.GroupByAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "nested",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'DATE_HISTOGRAM'`\n- `'NESTED'`\n- `'RANGE'`\n- `'SCALAR'`\n- `'UNKNOWN_AGGREGATION_TYPE'`\n- `'VALUE'`"
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAggregationKindOneOf",
+            "members": [
+              "dateHistogram",
+              "nested",
+              "range",
+              "scalar",
+              "value"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AggregationData",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.AggregationResults"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "key = aggregation name (as derived from search request)"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AggregationKindOneOf",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "nested",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AggregationResults",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "fieldPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "groupedByValue",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.GroupByValueResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "nested",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "ranges",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'DATE_HISTOGRAM'`\n- `'NESTED'`\n- `'RANGE'`\n- `'SCALAR'`\n- `'UNKNOWN_AGGREGATION_TYPE'`\n- `'VALUE'`"
+        },
+        {
+          "name": "values",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResults"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfAggregationResultsResultOneOf",
+            "members": [
+              "dateHistogram",
+              "groupedByValue",
+              "nested",
+              "ranges",
+              "scalar",
+              "values"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AggregationResultsResultOneOf",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "groupedByValue",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.GroupByValueResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "nested",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "ranges",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "values",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResults"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancelReservationOptions",
+      "members": [
+        {
+          "name": "phone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The phone number that was provided when the reservation was created.\n\nThis is required for reservations with any `source` other than `WALK_IN`.\n\nThis requirement provides additional security by ensuring that the canceling party knows both the reservation's `reservationId` and the reservee's `phone`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancelReservationRequest",
+      "members": [
+        {
+          "name": "phone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The phone number that was provided when the reservation was created.\n\nThis is required for reservations with any `source` other than `WALK_IN`.\n\nThis requirement provides additional security by ensuring that the canceling party knows both the reservation's `reservationId` and the reservee's `phone`.\n"
+        },
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number.\n\nInclude the existing `revision` to prevent conflicting updates to reservations.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CancelReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateHeldReservationRequest",
+      "members": [
+        {
+          "name": "reservationDetails",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.HeldReservationDetails"
+            }
+          ],
+          "doc": "Held reservation information to update."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateHeldReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateReservationOptions",
+      "members": [
+        {
+          "name": "ignoreReservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignored reservation location conflicts of the types included in the array. This ensures that the reservation is created even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"PARTY_PACING\"`: The restaurant cannot accommodate a party of the given size according to party pacing settings.\n* `\"SEAT_PACING\"`: The required number of seats are unavailable according to seat pacing settings.\n"
+        },
+        {
+          "name": "ignoreTableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignore table combination conflicts of the types included in the array. This ensures that the reservation is created even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"RESERVED\"`: One or more of the chosen tables are already reserved.\n* `\"TOO_BIG\"`: The party is too big for the selected table.\n* `\"TOO_SMALL\"`: The party is too small for the selected table.\n* `\"OFFLINE_ONLY\"`: The restaurant does not allow online reservations.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateReservationRequest",
+      "members": [
+        {
+          "name": "ignoreReservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignored reservation location conflicts of the types included in the array. This ensures that the reservation is created even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"PARTY_PACING\"`: The restaurant cannot accommodate a party of the given size according to party pacing settings.\n* `\"SEAT_PACING\"`: The required number of seats are unavailable according to seat pacing settings.\n"
+        },
+        {
+          "name": "ignoreTableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignore table combination conflicts of the types included in the array. This ensures that the reservation is created even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"RESERVED\"`: One or more of the chosen tables are already reserved.\n* `\"TOO_BIG\"`: The party is too big for the selected table.\n* `\"TOO_SMALL\"`: The party is too small for the selected table.\n* `\"OFFLINE_ONLY\"`: The restaurant does not allow online reservations.\n"
+        },
+        {
+          "name": "reservation",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation details."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Cursors"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "hasNext",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates if there are more results after the current page.\nIf `true`, another page of results can be retrieved.\nIf `false`, this is the last page."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorQuery",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\n\nFor a detailed list of supported operations, see the [Supported Filters and Sorting](https://dev.wix.com/docs/rest/api-reference/wix-restaurants/reservations/reservations/sorting-and-filtering) article.\nTo learn how to query reservations, see [API Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language).\n"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCursorQueryPagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorQueryPagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearch",
+      "members": [
+        {
+          "name": "aggregations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Aggregation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Aggregations | Faceted search: refers to a way to explore large amounts of data by displaying summaries about various partitions of the data and later allowing to narrow the navigation to a specific partition."
+        },
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "A filter object. See the filter section [here](https://dev.wix.com/docs/rnd-general/articles/p13n-guidelines-aips/guidance-aips/wix-api-basics/1011-wql-wix-query-language)"
+        },
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.SearchDetails"
+            }
+          ],
+          "doc": "free text to match in searchable fields"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the form [{\"fieldName\":\"sortField1\"},{\"fieldName\":\"sortField2\",\"direction\":\"DESC\"}]"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCursorSearchPagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorSearchPagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor pointing to page of results. Can't be used together with 'paging'. 'cursor_paging.cursor' can not be used together with 'filter' or 'sort'"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        },
+        {
+          "name": "prev",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to previous page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DateHistogramAggregation",
+      "members": [
+        {
+          "name": "interval",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'DAY'`\n- `'HOUR'`\n- `'MINUTE'`\n- `'MONTH'`\n- `'SECOND'`\n- `'UNKNOWN_INTERVAL'`\n- `'WEEK'`\n- `'YEAR'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DateHistogramResult",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DateHistogramResults",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteReservationRequest",
+      "members": [
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteReservationResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Details",
+      "members": [
+        {
+          "name": "endDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "End date and time of the reservation."
+        },
+        {
+          "name": "partySize",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Party size."
+        },
+        {
+          "name": "reservationLocationId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the reservation location at which this reservation will be made."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time of the reservation."
+        },
+        {
+          "name": "tableIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of tables used for this reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Reservation details."
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityCreatedEvent"
+            }
+          ],
+          "doc": "Information about the reservation that was created and event metadata."
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityUpdatedEvent"
+            }
+          ],
+          "doc": "Information about the reservation that was updated and event metadata."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Information about the reservation that was created in JSON format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetReservationOptions",
+      "members": [
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Array of named, predefined sets of projected fields to be returned.\n\nSupported values: `PUBLIC`, `FULL`.\n\nCalling this method with `fieldsets` set to `FULL` requires additional permissions. See this API's Introduction article for more information.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetReservationRequest",
+      "members": [
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Array of named, predefined sets of projected fields to be returned.\n\nSupported values: `PUBLIC`, `FULL`.\n\nCalling this method with `fieldsets` set to `FULL` requires additional permissions. See this API's Introduction article for more information.\n"
+        },
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GroupByAggregation",
+      "members": [
+        {
+          "name": "fieldPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfGroupByAggregationKindOneOf",
+            "members": [
+              "value"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GroupByAggregationKindOneOf",
+      "members": [
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GroupByValueResults",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.NestedValueAggregationResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "HeldReservationDetails",
+      "members": [
+        {
+          "name": "partySize",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Party size."
+        },
+        {
+          "name": "reservationLocationId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the reservation location where the reservation is made."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time of the reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Reservation details when create reservation in status HELD."
+        ]
+      }
+    },
+    {
+      "name": "IncludeMissingValuesOptions",
+      "members": [
+        {
+          "name": "addToBucket",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "can specify custom bucket name. Defaults are [string -> \"N/A\"], [int -> \"0\"], [bool -> \"false\"] ..."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListReservationsOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
+            }
+          ],
+          "doc": "Defines how reservations in the response are sorted."
+        },
+        {
+          "name": "startDateFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Only reservations starting after this date are returned."
+        },
+        {
+          "name": "startDateTo",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Only reservations starting before this date are returned."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Only reservations with this status are returned.\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListReservationsRequest",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Sorting"
+            }
+          ],
+          "doc": "Defines how reservations in the response are sorted."
+        },
+        {
+          "name": "startDateFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Only reservations starting after this date are returned."
+        },
+        {
+          "name": "startDateTo",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Only reservations starting before this date are returned."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Only reservations with this status are returned.\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListReservationsResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Metadata for the paginated results."
+        },
+        {
+          "name": "reservations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of reservations."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MigrationNote",
+      "members": [],
+      "docs": {
+        "description": [
+          "Migration note."
+        ]
+      }
+    },
+    {
+      "name": "NestedAggregation",
+      "members": [
+        {
+          "name": "nestedAggregations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.NestedAggregationItem"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedAggregationItem",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "fieldPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'DATE_HISTOGRAM'`\n- `'RANGE'`\n- `'SCALAR'`\n- `'UNKNOWN_AGGREGATION_TYPE'`\n- `'VALUE'`"
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfNestedAggregationItemKindOneOf",
+            "members": [
+              "dateHistogram",
+              "range",
+              "scalar",
+              "value"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedAggregationItemKindOneOf",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.DateHistogramAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarAggregation"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregation"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedAggregationResults",
+      "members": [
+        {
+          "name": "fieldPath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "ranges",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'DATE_HISTOGRAM'`\n- `'NESTED'`\n- `'RANGE'`\n- `'SCALAR'`\n- `'UNKNOWN_AGGREGATION_TYPE'`\n- `'VALUE'`"
+        },
+        {
+          "name": "values",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResults"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfNestedAggregationResultsResultOneOf",
+            "members": [
+              "ranges",
+              "scalar",
+              "values"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedAggregationResultsResultOneOf",
+      "members": [
+        {
+          "name": "ranges",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "values",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResults"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedResultValue",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedResultsScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResult"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfNestedResultValueResultOneOf",
+            "members": [
+              "dateHistogram",
+              "range",
+              "scalar",
+              "value"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedResultValueResultOneOf",
+      "members": [
+        {
+          "name": "dateHistogram",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "range",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.RangeResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "scalar",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedResultsScalarResult"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ValueResult"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedResults",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Results"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedResultsScalarResult",
+      "members": [
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "NestedValueAggregationResult",
+      "members": [
+        {
+          "name": "nestedResults",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.NestedAggregationResults"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryReservationsRequest",
+      "members": [
+        {
+          "name": "query",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorQuery"
+            }
+          ],
+          "doc": "Query to select reservations."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryReservationsResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Metadata for the paginated results."
+        },
+        {
+          "name": "reservations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of reservations."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RangeAggregation",
+      "members": [
+        {
+          "name": "buckets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.RangeBucket"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RangeAggregationResult",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RangeBucket",
+      "members": [
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Inclusive lower bound of the range. Required if to is not given."
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Exclusive upper bound of the range. Required if from is not given."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RangeResult",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RangeResults",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.RangeAggregationResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Reservation",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the reservation was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the reservation was changed."
+        },
+        {
+          "name": "declineReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The reason the reservation was declined."
+        },
+        {
+          "name": "details",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Details"
+            }
+          ],
+          "doc": "Reservation details."
+        },
+        {
+          "name": "reservedBy",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ReservedBy"
+            }
+          ],
+          "doc": "Information about the person making the reservation.\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`."
+        },
+        {
+          "name": "reservee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservee"
+            }
+          ],
+          "doc": "Information about the person the reservation is being made for.\n\nA reservation created with any `source` other than `WALK_IN` requires the `reservation.reservee.phone` and `reservation.reservee.firstName` fields.\nAttempting to create a reservation without these fields results in an error.\n"
+        },
+        {
+          "name": "revision",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the reservation is updated.\nTo prevent conflicting changes, the current revision must be passed when updating the reservation.\n\nIgnored when creating a reservation."
+        },
+        {
+          "name": "source",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n* `ONLINE` indicates that the customer made the reservation through a website or app.\n* `OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n* `WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the reservation.\n\nSupported values:\n\n* `HELD`: The reservation is temporary and will expire in 10 minutes if its status isn’t changed. This phase temporarily reserves the required number of seats and tables for a given party size at a chosen time while a customer enters details and/or confirms their reservation request.\n* `REQUESTED`: A customer finished requesting this reservation, meaning they have added all necessary details and confirmed the request. Restaurant staff can now either approve or decline the reservation request.\n* `DECLINED`: The restaurant’s owner or staff declined the customer’s request to make the reservation.\n* `RESERVED`: The reservation is confirmed.\n* `SEATED`: The customer is currently occupying the table.\n* `CANCELED`: The reservation is canceled.\n* `NO_SHOW`: The customer didn't show up for their reservation.\n* `FINISHED`: The reservation completed successfully.\n\n\nSee the article for this API titled \"The Reservation Lifecycle\" in the menu on the left for more details on each of the statuses, and an explanation of the reservation lifecycle.\n"
+        },
+        {
+          "name": "teamMessage",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Team message.\n\nA message for the restaurant staff containing any additional information regarding the reservation, such as special requirements for the guests.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "The reservation domain object."
+        ]
+      }
+    },
+    {
+      "name": "ReservationCanceled",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reserved reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservationDataUpdated",
+      "members": [
+        {
+          "name": "oldReservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Old reservation."
+        },
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reserved reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservationDetailsConflicts",
+      "members": [
+        {
+          "name": "reservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.ReservationLocationConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Reservation location conflicts."
+        },
+        {
+          "name": "tableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.TableCombinationConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Table combinations conflicts."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservationLocationConflict",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation location conflict type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservationReserved",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reserved reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReserveReservationRequest",
+      "members": [
+        {
+          "name": "reservationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        },
+        {
+          "name": "reservee",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservee"
+            }
+          ],
+          "doc": "Reservee details."
+        },
+        {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number.\n\nInclude the existing `revision` to prevent conflicting updates to reservations.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReserveReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservedBy",
+      "members": [
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID for the person who made the reservation. If a contact with this ID does not exist on the site, one will be created."
+        }
+      ],
+      "docs": {
+        "description": [
+          "A person making reservation."
+        ]
+      }
+    },
+    {
+      "name": "Reservee",
+      "members": [
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID. If a contact with this ID does not exist on the site, one will be created."
+        },
+        {
+          "name": "customFields",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Custom fields for the reservee in key-value pairs.\n\nThe key is the custom field's ID, and the value is the custom field's value. For example, a custom field for allergies might have the key-value pair `f4283b2d-6340-4cf9-bae7-8769e6b62127 : \"Nuts, Seafood\"`.\n\nEmpty fields are not returned.\n"
+        },
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Email address."
+        },
+        {
+          "name": "firstName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "First name.\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`.\n"
+        },
+        {
+          "name": "lastName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Last name."
+        },
+        {
+          "name": "marketingConsent",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the reservee has given marketing consent."
+        },
+        {
+          "name": "phone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Phone number.\n\nThis property should begin with a +, followed by the country code, and then the rest of the phone number. For example, `\"+972555555555\"`.\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "The person the reservation is being made for."
+        ]
+      }
+    },
+    {
+      "name": "Results",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.NestedResultValue"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScalarAggregation",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'AVG'`\n- `'COUNT_DISTINCT'`\n- `'MAX'`\n- `'MIN'`\n- `'SUM'`\n- `'UNKNOWN_SCALAR_TYPE'`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ScalarResult",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'AVG'`\n- `'COUNT_DISTINCT'`\n- `'MAX'`\n- `'MIN'`\n- `'SUM'`\n- `'UNKNOWN_SCALAR_TYPE'`"
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchDetails",
+      "members": [
+        {
+          "name": "expression",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "search term or expression"
+        },
+        {
+          "name": "fields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "fields to search in. if empty - server will search in own default fields"
+        },
+        {
+          "name": "fuzzy",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "flag if should use auto fuzzy search (allowing typos by a managed proximity algorithm)"
+        },
+        {
+          "name": "mode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "boolean search mode"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchReservationsRequest",
+      "members": [
+        {
+          "name": "search",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorSearch"
+            }
+          ],
+          "doc": "Search query."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchReservationsResponse",
+      "members": [
+        {
+          "name": "aggregationData",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.AggregationData"
+            }
+          ],
+          "doc": "Aggregation data."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Cursor paging metadata."
+        },
+        {
+          "name": "reservations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of Reservations."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Sorting",
+      "members": [
+        {
+          "name": "fieldName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the field to sort by."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order.\n\nUse `ASC` for ascending order or `DESC` for descending order. Defaults to `ASC`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableCombinationConflict",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conflict type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableWithReservationConflicts",
+      "members": [
+        {
+          "name": "reservationIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of reservation ids."
+        },
+        {
+          "name": "tableId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Table id."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Table with reservation conflicts."
+        ]
+      }
+    },
+    {
+      "name": "UpdateReservation",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the reservation was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the reservation was changed."
+        },
+        {
+          "name": "declineReason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The reason the reservation was declined."
+        },
+        {
+          "name": "details",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Details"
+            }
+          ],
+          "doc": "Reservation details."
+        },
+        {
+          "name": "reservedBy",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.ReservedBy"
+            }
+          ],
+          "doc": "Information about the person making the reservation.\n\nThis field is required if the reservation's `status` is anything other than `WALK_IN`."
+        },
+        {
+          "name": "reservee",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservee"
+            }
+          ],
+          "doc": "Information about the person the reservation is being made for.\n\nA reservation created with any `source` other than `WALK_IN` requires the `reservation.reservee.phone` and `reservation.reservee.firstName` fields.\nAttempting to create a reservation without these fields results in an error.\n"
+        },
+        {
+          "name": "revision",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the reservation is updated.\nTo prevent conflicting changes, the current revision must be passed when updating the reservation.\n\nIgnored when creating a reservation."
+        },
+        {
+          "name": "source",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation source.\n\nThis indicates how the reservation was made.\n* `ONLINE` indicates that the customer made the reservation through a website or app.\n* `OFFLINE` indicates that the reservation was made by a restaurant employee, for example when a customer calls to make a reservation.\n* `WALK-IN` indicates that the customer did not make a reservation beforehand, and the reservation was entered into the system by a restaurant employee when the customer arrived at the restaurant.\n"
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the reservation.\n\nSee the article for this API titled \"The Reservation Lifecycle\" in the menu on the left for more details on each of the statuses, and an explanation of the reservation lifecycle.\n"
+        },
+        {
+          "name": "teamMessage",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Team message.\n\nA message for the restaurant staff containing any additional information regarding the reservation, such as special requirements for the guests.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateReservationOptions",
+      "members": [
+        {
+          "name": "ignoreReservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignored reservation location conflicts of the types included in the array. This ensures that the reservation is updated even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"PARTY_PACING\"`: The restaurant cannot accommodate a party of the given size according to party pacing settings.\n* `\"SEAT_PACING\"`: The required number of seats are unavailable according to seat pacing settings.\n"
+        },
+        {
+          "name": "ignoreTableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignore table combination conflicts of the types included in the array. This ensures that the reservation is updated even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"RESERVED\"`: One or more of the chosen tables are already reserved.\n* `\"TOO_BIG\"`: The party is too big for the selected table.\n* `\"TOO_SMALL\"`: The party is too small for the selected table.\n* `\"OFFLINE_ONLY\"`: The restaurant does not allow online reservations.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateReservationRequest",
+      "members": [
+        {
+          "name": "ignoreReservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignored reservation location conflicts of the types included in the array. This ensures that the reservation is updated even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"PARTY_PACING\"`: The restaurant cannot accommodate a party of the given size according to party pacing settings.\n* `\"SEAT_PACING\"`: The required number of seats are unavailable according to seat pacing settings.\n"
+        },
+        {
+          "name": "ignoreTableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ignore table combination conflicts of the types included in the array. This ensures that the reservation is updated even if the given conflicts would normally prevent it.\n\nPossible values:\n* `\"RESERVED\"`: One or more of the chosen tables are already reserved.\n* `\"TOO_BIG\"`: The party is too big for the selected table.\n* `\"TOO_SMALL\"`: The party is too small for the selected table.\n* `\"OFFLINE_ONLY\"`: The restaurant does not allow online reservations.\n"
+        },
+        {
+          "name": "reservation",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation information to update."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateReservationResponse",
+      "members": [
+        {
+          "name": "reservation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.Reservation"
+            }
+          ],
+          "doc": "Reservation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ValueAggregation",
+      "members": [
+        {
+          "name": "includeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.IncludeMissingValuesOptions"
+            }
+          ],
+          "doc": "options for including missing values"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "How many aggregations would you like to return? Can be between 1 and 250. 10 is the default."
+        },
+        {
+          "name": "missingValues",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "should missing values be included or excluded from the aggregation results. Default is EXCLUDE"
+        },
+        {
+          "name": "sortDirection",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'ASC'`\n- `'DESC'`"
+        },
+        {
+          "name": "sortType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'COUNT'`\n- `'VALUE'`"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfValueAggregationOptionsOneOf",
+            "members": [
+              "includeOptions"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ValueAggregationOptionsOneOf",
+      "members": [
+        {
+          "name": "includeOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.Reservations.IncludeMissingValuesOptions"
+            }
+          ],
+          "doc": "options for including missing values"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ValueAggregationResult",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ValueResult",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ValueResults",
+      "members": [
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.Reservations.ValueAggregationResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}

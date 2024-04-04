@@ -1,3 +1,5 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 
 
 # About Mixins
@@ -44,6 +46,8 @@ The table below presents each mixin. Click its link to see its functions and pro
 | [CollapsedMixin](/$w/collapsedmixin) | Provides functionality for elements that can be collapsed. |
 | [ContainableMixin](/$w/containablemixin) | Provides functionality for elements that can contain other elements. |
 | [DisabledMixin](/$w/disabledmixin) | Provides functionality for elements that can be disabled. |
+| [Effects](/$w/effects) | Provides functionality for displaying an element's defined effects. |
+| [EffectsMixin](/$w/effectsmixin) | Provides functionality for elements with defined effects. |
 | [Element](/$w/element) | Provides basic functionality for elements. |
 | [Event](/$w/event) | Provides properties for events that are fired when certain actions occur to elements. |
 | [FocusMixin](/$w/focusmixin) | Provides functionality for elements that can set and lose focus. |

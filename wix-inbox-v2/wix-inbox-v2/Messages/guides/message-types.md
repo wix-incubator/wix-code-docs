@@ -141,7 +141,7 @@ It produces this output in Inbox:
 Buttons can be either `ACTION` or `POSTBACK` type.
 Action buttons open a specified `url` in the visitor's browser,
 and postback buttons pass a `buttonPayload` to the
-[Button Interacted Webhook](https://dev.wix.com/api/rest/drafts/inbox/button-interacted-webhook).
+[Message Button Interacted](https://www.wix.com/velo/reference/wix-inbox-v2/events/onmessagebuttoninteracted).
 
 This example tells the visitor their spa appointment has been booked
 and offers two buttons.

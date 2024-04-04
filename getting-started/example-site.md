@@ -18,7 +18,7 @@ We used Velo in conjunction with the [Content Manager](https://learn.wix.com/en/
 
 -   Search and filter: Visitors can find giveaways by keywords and by category and then get a giveaway.
 -   Member generated content: Members can upload giveaways and can see and edit all the giveaways they've uploaded.
--   Integration with a 3rd-party service: Integration with a (fictitious) delivery service to delivery giveaways from the giver to the taker.
+-   Integration with a 3rd-party service: Integration with a (fictitious) delivery service to deliver giveaways from the giver to the taker.
 
 As we discuss Velo topics, we'll point out how they are used to build the functionality of the site.
 

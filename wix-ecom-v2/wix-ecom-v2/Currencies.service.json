@@ -64,11 +64,11 @@
       "docs": {
         "summary": "Returns an array of amounts converted from the original (`from`) currency to the target (`to`) currency and the timestamp for the conversion rate used.",
         "description": [
-          "Use the `convertCurrency()` function to convert an array of one or more amounts between two currencies. The `convertCurrency()` function returns an array of converted amounts and the timestamp for the conversion rate used.\n\n> **Note**:  The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](#listcurrencies) function.\n\n\nThis function is not a universal function and runs only on the backend"
+          "Use the `convertCurrency()` function to convert an array of one or more amounts between two currencies. The `convertCurrency()` function returns an array of converted amounts and the timestamp for the conversion rate used.\n\n> **Note**:  The currency codes used must exist in the array of supported currencies returned by the [`listCurrencies()`](#listcurrencies) function.\n"
         ],
         "examples": [
           {
-            "title": "Convert an array of amounts from one currency to another ",
+            "title": "Convert an array of amounts from one currency to another (dashboard page code)",
             "body": [
               "import { currencies } from 'wix-ecom.v2';",
               "",
@@ -110,16 +110,71 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Convert an array of amounts from one currency to another (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { currencies } from 'wix-ecom.v2';",
+              "",
+              "export const convertCurrency = webMethod(Permissions.Anyone, async (identifiers, amounts) => {",
+              "  try {",
+              "    const convertedAmounts = await currencies.convertCurrency(identifiers, amounts);",
+              "    const firstConvertedAmount = convertedAmounts.amounts[0];",
+              "    const timestamp = convertedAmounts.rateTimestamp;",
+              "",
+              "    return convertedAmounts;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "const identifiers = {",
+              "  'from': 'USD',",
+              "  'to': 'GBP'",
+              "};",
+              "",
+              "const amounts =\t[ ",
+              "  {",
+              "    'decimalPlaces': 2,",
+              "    'value': '1000'",
+              "  },",
+              "  {",
+              "    'decimalPlaces': 2,",
+              "    'value': '20324'",
+              "  } ",
+              "];",
+              "",
+              "convertCurrency(identifiers, amounts)",
+              "  .then((convertedAmounts) => {",
+              "    const firstConvertedAmount = convertedAmounts.amounts[0];",
+              "    const timestamp = convertedAmounts.rateTimestamp;",
+              "  });",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"amounts\": [",
+              " *     {",
+              " *       \"decimalPlaces\": 2,",
+              " *       \"value\": \"795\"",
+              " *     },",
+              " *     {",
+              " *       \"decimalPlaces\": 2,",
+              " *       \"value\": \"1616287\"",
+              " *     } ",
+              " *   ],",
+              " *   \"rateTimestamp\": \"2023-04-30T21:00:00.277Z\"",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "convertCurrency"
+      "syntaxName": "convertCurrency",
+      "isAdminMethod": true
     },
     {
       "name": "getConversionRate",
@@ -131,7 +186,7 @@
               "referenceType": "wix-ecom-v2.Currencies.GetConversionRateIdentifiers"
             }
           ],
-          "doc": "Identifying details needed to get the conversion rate. The combination of the `from` and `to` properties together comprise the unique ID.\n",
+          "doc": "Identifying details needed to get the conversion rate. The combination of the `from` and `to` properties together comprise the unique ID.",
           "required": true
         }
       ],
@@ -157,12 +212,10 @@
       },
       "docs": {
         "summary": "Returns the conversion rate between 2 currencies.",
-        "description": [
-          "This function is not a universal function and runs only on the backend"
-        ],
+        "description": [],
         "examples": [
           {
-            "title": "Return the conversion rate and timestamp ",
+            "title": "Return the conversion rate and timestamp (dashboard page code)",
             "body": [
               "import { currencies } from 'wix-ecom.v2';",
               "  ",
@@ -182,16 +235,49 @@
               " *  }",
               " */"
             ]
+          },
+          {
+            "title": "Return the conversion rate and timestamp (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { currencies } from 'wix-ecom.v2';",
+              "",
+              "export const getConversionRate = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const conversionRate = await currencies.getConversionRate('USD', 'GBP');",
+              "    const rate = conversionRate.rate;",
+              "    const timestamp = conversionRate.rateTimestamp;",
+              "",
+              "    return conversionRate;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "getConversionRate()",
+              "  .then((conversionRate) => {",
+              "    const rate = conversionRate.rate;",
+              "    const timestamp = conversionRate.rateTimestamp;",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " *  {",
+              " *    \"rate\": {",
+              " *       value: \"20\",",
+              " *       decimalPlaces: 2",
+              " *    },",
+              " *    \"rateTimestamp\": \"2020-03-15T20:00:00.181Z\"",
+              " *  }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "getConversionRate"
+      "syntaxName": "getConversionRate",
+      "isAdminMethod": true
     },
     {
       "name": "listCurrencies",
@@ -214,12 +300,10 @@
       },
       "docs": {
         "summary": "Returns an array of currencies. The array lists all currencies for which Wix supports conversion and their symbols.",
-        "description": [
-          "This function is not a universal function and runs only on the backend"
-        ],
+        "description": [],
         "examples": [
           {
-            "title": "Get all supported currencies ",
+            "title": "Get all supported currencies (dashboard page code)",
             "body": [
               "import { currencies } from 'wix-ecom.v2';",
               "",
@@ -240,16 +324,50 @@
               " *  }",
               " */"
             ]
+          },
+          {
+            "title": "Get all supported currencies (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { currencies } from 'wix-ecom.v2';",
+              "",
+              "export const listCurrencies = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const listOfAllCurrencies = await currencies.listCurrencies();",
+              "    const firstCurrencyCode = listOfAllCurrencies[0].code;",
+              "    const firstCurrencyCSymbol = listOfAllCurrencies[0].symbol;",
+              "",
+              "    return listOfAllCurrencies;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "listCurrencies()",
+              "  .then((listOfAllCurrencies) => {",
+              "    const firstCurrencyCode = listOfAllCurrencies[0].code;",
+              "    const firstCurrencyCSymbol = listOfAllCurrencies[0].symbol;",
+              "  });",
+              "",
+              "/*",
+              " *  Promise resolves to:",
+              " *  {",
+              " *    \"currencies\": [",
+              " *      {\"code\": \"BIF\", \"symbol\": \"FBu\"},",
+              " *      {\"code\": \"CVE\", \"symbol\": \"$\"},",
+              " *      {\"code\": \"KMF\", \"symbol\": \"CF\"}",
+              " *    ]",
+              " *  }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "listCurrencies"
+      "syntaxName": "listCurrencies",
+      "isAdminMethod": true
     }
   ],
   "messages": [
