@@ -19,10 +19,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 - [RSVP](https://www.wix.com/velo/reference/wix-events-v2/rsvp/introduction): Access the information on guests who have RSVP'ed to an event.
 - [Schedule](https://www.wix.com/velo/reference/wix-events-v2/schedule/introduction): Share the lineup of an event’s activities, presentations, performances, or sessions.
 - [Schedule Bookmarks](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks/introduction): Allow members to mark their favorite schedule items to curate their own personalized agenda for your event.
-- [Ticket Definitions v2](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction): The updated [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions/introduction) API where you can define tickets for your event.
 - [Wix Events v2](https://www.wix.com/velo/reference/wix-events-v2/wixeventsv2/introduction): The updated [Wix Events](https://www.wix.com/velo/reference/wix-events-backend/wixevents/introduction) API where you can create and manage events on your site.
-
-As part of this release, [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions/introduction) has been deprecated and will be removed on October 4, 2024.
 
 (April 4, 2024)
 
