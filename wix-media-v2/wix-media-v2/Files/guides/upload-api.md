@@ -68,8 +68,9 @@ async function uploadMyFile(uploadUrl, fileContent) {
     "private": false,
     "mediaType": "IMAGE",
     "media": {
-      "image": "wix:image://v1/0abec0_b291a9349a0b4da59067f76287e386fb~mv2.jpg/leon.jpg#originWidth=3024&originHeight=4032",
-      "faces": []
+      "image": {
+        "image": "wix:image://v1/0abec0_b291a9349a0b4da59067f76287e386fb~mv2.jpg/leon.jpg#originWidth=3024&originHeight=4032",
+        "faces": []
       }
     },
     "operationStatus": "READY",
