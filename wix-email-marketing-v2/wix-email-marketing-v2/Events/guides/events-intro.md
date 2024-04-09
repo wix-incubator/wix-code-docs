@@ -4,7 +4,7 @@ title: Introduction
 
 # Introduction
 
-Wix Email Marketing events are triggered when certain events occur with email marketing in your site's backend. You can write event handlers that react to these events. Event handler functions receive data that correspond to the backend event that has occurred. Use event handlers to create custom responses to email marketing events.
+Wix Email Marketing events are triggered when certain events occur with email marketing in your site's backend. You can write event handlers that react to these events. Event handler functions receive data that corresponds to the backend event that has occurred. Use event handlers to create custom responses to email marketing events.
 
 >**Note:** Backend events aren't triggered when previewing your site. 
 
@@ -18,7 +18,7 @@ Event handler functions are defined using the following pattern:
 export function <wixAppName>_<eventName>(event) { }
 ```
 
-For example, an event handler that handles the creation of a site member looks like this:
+For example, an event handler that handles the activity update of an email campaign looks like this:
 
 ```js
 export function wixEmailMarketing_onCampaignEmailActivityUpdated(event) { }
