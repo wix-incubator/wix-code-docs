@@ -46,8 +46,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "The main function of the Tax Service API is to calculate tax for a given set of line items and addresses.\nTax is returned in granularity of line items, and can be calculated for multiple addresses.\nThe tax calculation is done by a tax calculator app, which is installed on the site.",
-        "description": [],
+        "summary": "Calculates tax for the provided line items.",
+        "description": [
+          "Tax is calculated for each line item based on the [tax region](https://dev.wix.com/docs/rest/business-management/payments/tax/tax-regions)\nthat corresponds to the address provided in `lineItems.addressIndex` and the tax group in `taxGroupId`. If no tax region is found for\nthe line item's address then no tax will be calculated for this line item. If no tax group with that `taxGroupId` is found then the\n[default tax group](https://dev.wix.com/docs/rest/business-management/payments/tax/tax-groups/list-default-tax-groups) is used to calculate tax.\n\nThe tax is calculated by a tax calculator app installed on the site.\nUse [List Tax Calculators](https://dev.wix.com/docs/rest/business-management/payments/tax/tax-calculation/list-tax-calculators)\nto see which tax calculators are available. To provide your own tax calculations, use the [Tax Calculation Integration SPI](https://dev.wix.com/docs/rest/business-management/payments/tax/tax-calculation-integration-spi).\n\nThe breakdown of calculated tax returned, includes:\n+ `taxSummary`: The overall total tax calculated.\n+ `taxSummary.aggregatedTaxBreakdown`: The total tax calculated for each jurisdiction.\n+ `lineItemTaxDetails.taxSummary`: The total tax calculated for each line item.\n+ `lineItemTaxDetails.taxBreakdown`: The tax calculated for each line item in each jurisdiction."
+        ],
         "examples": [
           {
             "title": "calculateTax example",
@@ -97,8 +99,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "List all the tax calculators that are installed on the site.\nThe list will include the appDefID, display name, and supported countries for each calculator.",
-        "description": [],
+        "summary": "Retrieves a list of installed tax calculators.",
+        "description": [
+          "Wix uses these calculators to [calculate tax](https://dev.wix.com/docs/rest/business-management/payments/tax/tax-calculation/calculate-tax)."
+        ],
         "examples": [
           {
             "title": "listTaxCalculators example",
@@ -152,7 +156,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Free text providing more detailed address info. Usually contains Apt, Suite, and Floor."
+          "doc": "Free text providing more detailed address information, such as apartment, suite, or floor."
         },
         {
           "name": "city",
@@ -172,7 +176,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Country code - 2 letters ISO-3166-1."
+          "doc": "2-letter country code in [ISO-3166 alpha-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format."
         },
         {
           "name": "postalCode",
@@ -182,7 +186,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Zip/postal code."
+          "doc": "Postal or zip code."
         },
         {
           "name": "subdivision",
@@ -192,7 +196,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Subdivision. Usually a state, region, prefecture, or province code, according to [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)."
+          "doc": "Subdivision (such as state, prefecture, or province) in [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-2) format."
         }
       ],
       "docs": {
@@ -212,7 +216,7 @@
               "referenceType": "wix-billing-v2.TaxCalculation.MultipleAddresses"
             }
           ],
-          "doc": "this is used for example for tax calculation of items shipped from store warehouse to a shipping address."
+          "doc": "Multiple addresses to use for a sale. For example, if the items are shipped from a warehouse to a shipping address."
         },
         {
           "name": "singleAddress",
@@ -222,7 +226,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "single address is used for example for tax calculation of a store location.\nIt is a zero-based index of the transaction location in the addresses_info list."
+          "doc": "Single address to use for a sale location. The index is zero-based."
         }
       ],
       "extra": {
@@ -238,7 +242,7 @@
       },
       "docs": {
         "description": [
-          "AddressIndex represents the addresses used for tax calculation of a specific line item. Indices are Zero-based."
+          "Index of the address from `addresses` to use to calculate tax for this specific line item. The index is zero-based."
         ]
       }
     },
@@ -253,7 +257,7 @@
               "referenceType": "wix-billing-v2.TaxCalculation.MultipleAddresses"
             }
           ],
-          "doc": "this is used for example for tax calculation of items shipped from store warehouse to a shipping address."
+          "doc": "Multiple addresses to use for a sale. For example, if the items are shipped from a warehouse to a shipping address."
         },
         {
           "name": "singleAddress",
@@ -263,7 +267,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "single address is used for example for tax calculation of a store location.\nIt is a zero-based index of the transaction location in the addresses_info list."
+          "doc": "Single address to use for a sale location. The index is zero-based."
         }
       ],
       "docs": {
@@ -283,7 +287,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The sum of all the tax amounts that were calculated for this tax details (tax name, tax type, jurisdiction, jurisdiction type, rate)."
+          "doc": "Total amount of this tax for this jurisdiction."
         },
         {
           "name": "jurisdiction",
@@ -293,7 +297,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the jurisdiction in which this tax detail applies."
+          "doc": "Jurisdiction that taxes were calculated for."
         },
         {
           "name": "jurisdictionType",
@@ -303,7 +307,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of the jurisdiction in which this tax detail applies (e.g. Country,State,County,City,Special)."
+          "doc": "Type of jurisdiction that taxes were calculated for."
         },
         {
           "name": "rate",
@@ -313,7 +317,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The rate at which this tax detail was calculated, e.g 0.1000 signifies 10% tax and 2.000 signifies 200% tax. (Decimal value)"
+          "doc": "Tax rate used for this jurisdiction, as a decimal. For example, 10% tax is `\"0.1000\"` and 200% tax is `\"2.0000\"`."
         },
         {
           "name": "taxName",
@@ -323,7 +327,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the tax against which this tax amount was calculated."
+          "doc": "Name of the tax that was calculated."
         },
         {
           "name": "taxType",
@@ -333,7 +337,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of tax that was calculated. Depends on the company's nexus settings as well as the jurisdiction's tax laws."
+          "doc": "Type of tax that was calculated."
         }
       ],
       "docs": {
@@ -399,7 +403,7 @@
               }
             }
           ],
-          "doc": "All the relevant addresses for this calculation should be listed here. Line items will hold only reference to them."
+          "doc": "Array of addresses. Each line item can individually reference the address to apply with `lineItems.addressIndex`."
         },
         {
           "name": "currency",
@@ -409,7 +413,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The tax calculation three-character ISO 4217 currency code that was used for payment for this transaction.\nThe currency fraction size is specified in ISO 4217 and affects the way we will format the tax amount,\nbut not affect the rate value that is always 4 as its 0.0000 to 1.0000 value.\ne.g. when using USD the required fraction size is 2 - so for 25.544$ we will show 25.55$. (round up)"
+          "doc": "Three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "externalId",
@@ -419,7 +423,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "An optional identifier of the entity that you are calculating tax for. For example, cart ID or checkout ID."
+          "doc": "Optional ID of the entity that tax is being calculated for. For example, a cart ID."
         },
         {
           "name": "lineItems",
@@ -435,7 +439,7 @@
               }
             }
           ],
-          "doc": "A list of line items to be taxed."
+          "doc": "Line items to calculate tax for."
         }
       ],
       "docs": {
@@ -461,7 +465,7 @@
               }
             }
           ],
-          "doc": "All the relevant addresses for this calculation should be listed here. Line items will hold only reference to them."
+          "doc": "Array of addresses. Each line item can individually reference the address to apply with `lineItems.addressIndex`."
         },
         {
           "name": "currency",
@@ -471,7 +475,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The tax calculation three-character ISO 4217 currency code that was used for payment for this transaction.\nThe currency fraction size is specified in ISO 4217 and affects the way we will format the tax amount,\nbut not affect the rate value that is always 4 as its 0.0000 to 1.0000 value.\ne.g. when using USD the required fraction size is 2 - so for 25.544$ we will show 25.55$. (round up)"
+          "doc": "Three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "externalId",
@@ -481,7 +485,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "An optional identifier of the entity that you are calculating tax for. For example, cart ID or checkout ID."
+          "doc": "Optional ID of the entity that tax is being calculated for. For example, a cart ID."
         },
         {
           "name": "lineItems",
@@ -497,7 +501,7 @@
               }
             }
           ],
-          "doc": "A list of line items to be taxed."
+          "doc": "Line items to calculate tax for."
         }
       ],
       "docs": {
@@ -524,7 +528,7 @@
               }
             }
           ],
-          "doc": "All the relevant addresses for this calculation should be listed here. Line items will hold only reference to them."
+          "doc": "Array of addresses. Each line item can individually reference the address to apply with `lineItems.addressIndex`."
         },
         {
           "name": "currency",
@@ -534,7 +538,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The tax estimation three-character ISO 4217 currency code that was used for payment for this transaction."
+          "doc": "Three-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format."
         },
         {
           "name": "errors",
@@ -551,7 +555,7 @@
               }
             }
           ],
-          "doc": "The errors that occurred during the tax calculation."
+          "doc": "Errors that occurred during the tax calculation."
         },
         {
           "name": "externalId",
@@ -561,7 +565,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "An optional identifier of the entity that you are calculating tax for. For example, cart ID or checkout ID."
+          "doc": "Optional ID of the entity that tax is being calculated for. For example, a cart ID."
         },
         {
           "name": "lineItemTaxDetails",
@@ -578,7 +582,7 @@
               }
             }
           ],
-          "doc": "The calculated tax for each line."
+          "doc": "Details of each tax applied to each line item."
         },
         {
           "name": "taxSummary",
@@ -588,7 +592,7 @@
               "referenceType": "wix-billing-v2.TaxCalculation.TaxSummary"
             }
           ],
-          "doc": "Summary of the tax calculation."
+          "doc": "Summary of the tax calculated."
         }
       ],
       "docs": {
@@ -608,7 +612,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the line item."
+          "doc": "Line item ID."
         },
         {
           "name": "addressIndex",
@@ -618,7 +622,7 @@
               "referenceType": "wix-billing-v2.TaxCalculation.AddressIndex"
             }
           ],
-          "doc": "The address of this line, which can be either from and to locations, or a single location."
+          "doc": "Index of the address from `addresses` to use to calculate tax for this specific line item. The index is zero-based."
         },
         {
           "name": "appId",
@@ -628,7 +632,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The app ID this item is related to."
+          "doc": "ID of the app providing the catalog for this line item.\n\nYou can get your app's ID from its page in the [Wix Dev Center](https://dev.wix.com/apps).\n\nFor items from Wix catalogs, the following values always apply:\n+ Wix Stores: `\"215238eb-22a5-4c36-9e7b-e7c08025e04e\"`\n+ Wix Bookings: `\"13d21c63-b5ec-5912-8397-c3a5ddb27a97\"`\n+ Wix Restaurants: `\"9a5d83fd-8570-482e-81ab-cfa88942ee60\"`\n"
         },
         {
           "name": "itemCode",
@@ -638,7 +642,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The known SKU (item code) for this line item."
+          "doc": "Stock keeping unit for this line item. Learn more about [SKUs](https://www.wix.com/encyclopedia/definition/stock-keeping-unit-sku)."
         },
         {
           "name": "itemName",
@@ -648,7 +652,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Free text description for this line item."
+          "doc": "Line item name to display."
         },
         {
           "name": "price",
@@ -658,7 +662,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The price of the line. This is the price of all items in the line together."
+          "doc": "Line item price."
         },
         {
           "name": "quantity",
@@ -668,7 +672,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The number of items."
+          "doc": "Line item quantity."
         },
         {
           "name": "taxGroupId",
@@ -678,7 +682,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The tax group ID this item is related to. If not provided, the default tax rate will be applied."
+          "doc": "Tax group ID for this line item. If not provided, the default tax group applies."
         },
         {
           "name": "taxIncludedInPrice",
@@ -688,12 +692,12 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether the price already includes tax."
+          "doc": "Whether tax is included in the price."
         }
       ],
       "docs": {
         "description": [
-          "LineItem represents information about a line item."
+          "Line items to calculate tax for."
         ]
       }
     },
@@ -708,7 +712,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The ID of the line item."
+          "doc": "Line item ID."
         },
         {
           "name": "addressIndex",
@@ -718,7 +722,7 @@
               "referenceType": "wix-billing-v2.TaxCalculation.AddressIndex"
             }
           ],
-          "doc": "The address index of this line. Points to the relevant addresses in the addresses list."
+          "doc": "Index of the address from `addresses` to use to calculate tax for this specific line item. The index is zero-based."
         },
         {
           "name": "itemName",
@@ -728,7 +732,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Item description."
+          "doc": "Line item name to display."
         },
         {
           "name": "quantity",
@@ -738,7 +742,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The number of items."
+          "doc": "Line item quantity."
         },
         {
           "name": "taxBreakdown",
@@ -755,7 +759,7 @@
               }
             }
           ],
-          "doc": "A detailed description of all the tax authorities applied on this item."
+          "doc": "Array of each tax applied, grouped by `jurisdiction`."
         },
         {
           "name": "taxIncludedInPrice",
@@ -765,7 +769,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether the price already includes tax."
+          "doc": "Whether tax is included in the price."
         },
         {
           "name": "taxSummary",
@@ -775,12 +779,12 @@
               "referenceType": "wix-billing-v2.TaxCalculation.LineItemTaxSummary"
             }
           ],
-          "doc": "Summary of the tax calculation for this line."
+          "doc": "Summary of this line item's total price and tax."
         }
       ],
       "docs": {
         "description": [
-          "lineItemTaxDetails represents all the relevant tax details for a specific line item."
+          "Tax details for a specific line item."
         ]
       }
     },
@@ -795,7 +799,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The app id of the calculator that calculated this line tax."
+          "doc": "ID of the calculator app that calculated tax for this line item."
         },
         {
           "name": "fullPrice",
@@ -805,7 +809,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The full price of the line, total price for all items.\nTo determine the individual item price, divide this by quantity."
+          "doc": "Total price for this line item.\nTo determine the price for each individual unit of this line item, divide by `quantity`."
         },
         {
           "name": "taxAmount",
@@ -815,7 +819,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The total amount of tax calculated for all lines in this estimate. This is the sum of all the tax amounts in the line items."
+          "doc": "Total amount of tax calculated for this line item."
         },
         {
           "name": "taxableAmount",
@@ -825,7 +829,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The portion of the total amount of this estimate that was taxable."
+          "doc": "Total taxable amount for this line item."
         }
       ],
       "docs": {
@@ -861,7 +865,7 @@
               }
             }
           ],
-          "doc": "details of the installed tax calculators - including the appDefID, display name, and supported countries"
+          "doc": "Retrieved tax calculators."
         }
       ],
       "docs": {
@@ -881,7 +885,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The index of the destination address, where the specific line item is sent to."
+          "doc": "Index of the destination address."
         },
         {
           "name": "origin",
@@ -891,7 +895,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "The index of the origin address, where the specific line item came from."
+          "doc": "Index of the origin address."
         }
       ],
       "docs": {
@@ -911,7 +915,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the jurisdiction to which this tax detail applies. For example, \"New York\" or \"Quebec\"."
+          "doc": "Jurisdiction that taxes were calculated for."
         },
         {
           "name": "jurisdictionType",
@@ -921,7 +925,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of the jurisdiction in which this tax detail applies."
+          "doc": "Type of jurisdiction that taxes were calculated for. For example, `\"State\"`, `\"Çounty\"`, `\"City\"`, `\"Special\"`, etc."
         },
         {
           "name": "nonTaxableAmount",
@@ -931,7 +935,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The amount of this line item price that was considered nontaxable. (Decimal value)"
+          "doc": "Non-taxable amount of the price."
         },
         {
           "name": "rate",
@@ -941,7 +945,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The rate at which this tax detail was calculated, e.g 0.1000 signifies 10% tax and 2.000 signifies 200% tax. (Decimal value)"
+          "doc": "Tax rate used for this jurisdiction, as a decimal. For example, 10% tax is `\"0.1000\"` and 200% tax is `\"2.0000\"`."
         },
         {
           "name": "taxAmount",
@@ -951,7 +955,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The amount of tax estimated for this line item. (Decimal value)"
+          "doc": "Amount of this tax calculated for this jurisdiction."
         },
         {
           "name": "taxName",
@@ -961,7 +965,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The name of the tax against which this tax amount was calculated. For example, \"NY State Sales Tax\", \"Quebec GST\", etc.\nThis name should be explicit enough to allow the merchant to understand what tax was calculated."
+          "doc": "Name of the tax that was calculated. For example, `\"NY State Sales Tax\"`, `\"Quebec GST\"`, etc."
         },
         {
           "name": "taxType",
@@ -971,7 +975,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The type of tax that was calculated. Depends on the jurisdiction's tax laws. For example, \"Sales Tax\", \"Income Tax\", \"Value Added Tax\", etc."
+          "doc": "Type of tax that was calculated. For example, `\"Sales Tax\"`, `\"Income Tax\"`, `\"Value Added Tax\"`, etc."
         },
         {
           "name": "taxableAmount",
@@ -981,12 +985,12 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The taxable amount of this line item. (Decimal value)"
+          "doc": "Taxable amount of the price."
         }
       ],
       "docs": {
         "description": [
-          "TaxBreakdown represents tax information for a line item.\nIt holds the tax amount and the tax rate for each tax authority that apply on the line item."
+          "A detailed description of all the tax authorities applied on this item."
         ]
       }
     },
@@ -1021,7 +1025,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The calculator appDefID"
+          "doc": "ID of the tax calculator."
         },
         {
           "name": "displayName",
@@ -1031,7 +1035,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Tax calculator name used for display purposes."
+          "doc": "Display name of the tax calculator."
         },
         {
           "name": "unsupportedCountries",
@@ -1048,7 +1052,7 @@
               }
             }
           ],
-          "doc": "List of countries that the implementer does not support"
+          "doc": "List of countries, in [ISO-3166 alpha-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format, that the calculator does not support."
         }
       ],
       "docs": {
@@ -1075,7 +1079,7 @@
               }
             }
           ],
-          "doc": "The summary of the tax breakdown for all the line items. It will hold for each tax name, the aggregated tax amount paid for it and the tax rate."
+          "doc": "Array of each tax applied, grouped by `\"jurisdiction\"`, `\"jurisdiction_type\"`, `\"tax_type\"`, `\"tax_name\"` and `\"tax_rate\"`."
         },
         {
           "name": "totalAmount",
@@ -1085,7 +1089,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The total amount of money for all the lines in this calculation."
+          "doc": "Total price for all line items."
         },
         {
           "name": "totalTax",
@@ -1095,7 +1099,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The total amount of tax calculated for all lines in this calculation.\nThis is the sum of all the tax amounts in the line items.\nBecause of rounding, this may not be equal to the sum of the tax amounts in the line items."
+          "doc": "Total amount of tax calculated for all line items.\nNote that due to rounding, `totalTax` may not equal the sum of `lineItemTaxDetails.taxSummary.taxAmount`."
         },
         {
           "name": "totalTaxIncludedInPrice",
@@ -1105,7 +1109,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The sum of the tax_amount for all the line items with tax included in price set to true.\nThe total tax that is not included in price is calculated by subtracting this value from totalTax"
+          "doc": "Total amount of `totalTax` that is included in price. Applies to line items with `taxIncludedInPrice` set to `true`."
         },
         {
           "name": "totalTaxableAmount",
@@ -1115,7 +1119,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "The portion of the total amount of this calculation that was taxable. totalTaxable <= totalAmount."
+          "doc": "Total taxable amount for all line items."
         }
       ],
       "docs": {
