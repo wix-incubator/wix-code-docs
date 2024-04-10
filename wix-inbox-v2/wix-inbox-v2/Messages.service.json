@@ -65,7 +65,7 @@
       "docs": {
         "summary": "Retrieves messages between the business and participant.",
         "description": [
-          "Up to 30 messages are returned per request.\nIf the number of messages is larger than the returned page,\n`pagingMetadata.cursors` is returned in the response,\nindicating that another page of results is available.\nTo retrieve the next page,\npass the `next` cursor value\nin the next request's `paging.cursor` parameter.\n\nTo ensure you'll always retrieve the next record,\nuse the same visibility and sorting\nin the first request and all subsequent requests.\n\nBy default,\n30 messages are retrieved,\nsorted by `sequence` in descending order\n(the most recent messages are first in the list)."
+          "Up to 30 messages are returned per request. If the number of messages in a conversation is larger than 30,\n`pagingMetadata.cursors` is returned in the response, indicating that another page of results is available.\nTo retrieve the next page of messages, pass the `next` cursor value\nin the next request's `paging.cursor` parameter.\n\nTo ensure you'll always retrieve the next record,\nuse the same visibility and sorting\nin the first request and all subsequent requests.\n\nBy default,\n30 messages are retrieved and sorted by `sequence` in descending order\n(the most recent messages are first in the list)."
         ],
         "examples": [
           {
@@ -577,7 +577,7 @@
               "",
               "/*******************************",
               " * Backend code - inbox.web.js *",
-              " ******************************/",
+              " *******************************/",
               "",
               "import { Permissions, webMethod } from 'wix-web-module';",
               "import { conversations, messages } from 'wix-inbox.v2';",
@@ -635,7 +635,7 @@
             "body": [
               "/*******************************",
               " * Backend code - inbox.web.js *",
-              " ******************************/",
+              " *******************************/",
               "",
               "import { Permissions, webMethod } from 'wix-web-module';",
               "import { conversations, messages } from 'wix-inbox.v2';",
@@ -1061,7 +1061,7 @@
               "referenceType": "wix-inbox-v2.Messages.PostbackProperties"
             }
           ],
-          "doc": "Properties to pass to the\n[Button Interacted webhook](https://dev.wix.com/api/rest/inbox/messages/button-interacted-webhook)\nwhen the button is clicked."
+          "doc": "Properties to pass to the `onMessageButtonInteracted()` event when the button is clicked."
         }
       ],
       "docs": {
@@ -2115,7 +2115,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the application that sent the message.\n\nOmitted if the message was sent with the Chat widget."
+          "doc": "For internal use. ID of the application that sent the message.Omitted if the message was sent with the Chat widget."
         },
         {
           "name": "badges",
@@ -2132,7 +2132,7 @@
               }
             }
           ],
-          "doc": "Optional icon and short text\nthat give an additional detail about the message,\nsuch as the app the message was sent from\nor whether the message was an automated response.\n\nCurrently only 1 badge is supported.\n"
+          "doc": "Optional icon and short text providing additional details about the message,\nsuch as the app from which the message was sent, or whether the message was an automated response.\n\nCurrently only 1 badge is supported.\n"
         },
         {
           "name": "content",
@@ -2163,7 +2163,7 @@
               "referenceType": "wix-inbox-v2.Messages.IdentificationData"
             }
           ],
-          "doc": "ID of the message sender.\n\nDefaults to the caller's ID\nusing the property that matches their identity type.\nFor 3rd-party apps, defaults to using the app's `appId`.\n\nYou can override the default behavior when calling\n[`sendMessage()`](#sendmessage)\nby using the `sendAs` option.\n"
+          "doc": "ID of the message sender.\n\nDefaults to the caller's ID using the property that matches their identity type.\n\nYou can override the default behavior when calling\n`sendMessage()` by using the `sendAs` field from the `options` object.\n"
         },
         {
           "name": "sequence",
@@ -2174,7 +2174,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sequential ordering of the message.\nEnsures more accurate sorting than `createdDate`\nif two messages are sent at the same time."
+          "doc": "Sequential ordering of the message.\n\nEnsures more accurate sorting than `createdDate`\nif two messages are sent at the same time."
         },
         {
           "name": "sourceChannel",
@@ -2184,7 +2184,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Communication channel the message is sent from."
+          "doc": "Communication channel the message is sent from.\n\nSupported values: `\"CHAT\"`, `\"EMAIL\"`, `\"SMS\"`, `\"FACEBOOK\"`, `\"INSTAGRAM\"`, `\"WHATSAPP\"`.\n"
         },
         {
           "name": "targetChannels",
@@ -2201,7 +2201,7 @@
               }
             }
           ],
-          "doc": "Communication channel to send the message to.\n\nCurrently messages can be sent to 1 channel only.\n"
+          "doc": "Communication channel to send the message to.\n\nCurrently messages can be sent to 1 channel only.\n\nSupported values: `\"CHAT\"`, `\"EMAIL\"`, `\"SMS\"`, `\"FACEBOOK\"`, `\"INSTAGRAM\"`, `\"WHATSAPP\"`.\n"
         },
         {
           "name": "visibility",
@@ -2211,7 +2211,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "__Required.__\nControls who can see the message.\n\n- `BUSINESS_AND_PARTICIPANT`: Visible to the participant and site contributors.\n- `BUSINESS`: Visible to site contributors only.\n"
+          "doc": "__Required.__\nControls who can see the message.\n\n- `BUSINESS_AND_PARTICIPANT`: Visible to the participant and site collaborators.\n- `BUSINESS`: Visible to site collaborators only.\n"
         }
       ],
       "docs": {
@@ -2618,7 +2618,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "[Your app's](https://dev.wix.com/dc3/my-apps) App ID."
+          "doc": "For internal use."
         },
         {
           "name": "interactionId",
@@ -2648,7 +2648,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Controls which identity to use in the message's `sender` property.\n\n- `CALLER`: Uses the identity included in the request header.\n- `PARTICIPANT`: Uses the `anonymousVisitorId`, `contactId`, or `memberId` of the conversation's participant.\n- `BUSINESS_USER`: For internal use. Uses the `wixUserId` of the person sending messages on behalf of the business.\n\nDefaults to `CALLER`.\nFor 3rd-party apps, the app is the caller.\n"
+          "doc": "Controls which identity to use in the message's `sender` property.\n\n- `CALLER`: Uses the identity of the initiator of the sent message.\n- `PARTICIPANT`: Uses the `anonymousVisitorId`, `contactId`, or `memberId` of the conversation's participant.\n- `BUSINESS_USER`: For internal use. Uses the `wixUserId` of the person sending messages on behalf of the business.\n\nDefault: `CALLER`.\n\n"
         },
         {
           "name": "sendNotifications",
@@ -2658,7 +2658,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the message triggers notifications when it's received.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the message triggers notifications when it's received.\n\nDefault: `false`.\n"
         },
         {
           "name": "silent",
@@ -2668,7 +2668,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the unread count and conversation summary\nare updated in the\n[Message List](https://support.wix.com/en/article/wix-inbox-getting-started#view-your-messages).\n\nIf `true`, unread count and conversation summary are not updated.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the unread count and conversation summary\nare updated in the\n[Message List](https://support.wix.com/en/article/wix-inbox-getting-started#view-your-messages).\n\nIf `true`, unread count and conversation summary are not updated.\n\nDefault: `false`.\n"
         }
       ],
       "docs": {
@@ -2706,7 +2706,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Controls which identity to use in the message's `sender` property.\n\n- `CALLER`: Uses the identity included in the request header.\n- `PARTICIPANT`: Uses the `anonymousVisitorId`, `contactId`, or `memberId` of the conversation's participant.\n- `BUSINESS_USER`: For internal use. Uses the `wixUserId` of the person sending messages on behalf of the business.\n\nDefaults to `CALLER`.\nFor 3rd-party apps, the app is the caller.\n"
+          "doc": "Controls which identity to use in the message's `sender` property.\n\n- `CALLER`: Uses the identity included in the request header.\n- `PARTICIPANT`: Uses the `anonymousVisitorId`, `contactId`, or `memberId` of the conversation's participant.\n- `BUSINESS_USER`: For internal use. Uses the `wixUserId` of the person sending messages on behalf of the business.\n\nDefault: `CALLER`.\nFor 3rd-party apps, the app is the caller.\n"
         },
         {
           "name": "sendNotifications",
@@ -2716,7 +2716,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the message triggers notifications when it's received.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the message triggers notifications when it's received.\n\nDefault: `false`.\n"
         },
         {
           "name": "silent",
@@ -2726,7 +2726,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the unread count and conversation summary\nare updated in the\n[Message List](https://support.wix.com/en/article/wix-inbox-getting-started#view-your-messages).\n\nIf `true`, unread count and conversation summary are not updated.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the unread count and conversation summary\nare updated in the\n[Message List](https://support.wix.com/en/article/wix-inbox-getting-started#view-your-messages).\n\nIf `true`, unread count and conversation summary are not updated.\n\nDefault: `false`.\n"
         }
       ],
       "docs": {
@@ -2803,7 +2803,7 @@
               }
             }
           ],
-          "doc": "List of buttons to display with the message.\nButtons can either open a URL or pass interaction details to the\n[Button Interacted Webhook](https://dev.wix.com/api/rest/all-apis/inbox/button-interacted-webhook).\n\nMaximum: 10 buttons.\n"
+          "doc": "List of buttons to display with the message.\nButtons can either open a URL or pass interaction details to the\n`onMessageButtonInteracted()` event.\n\nMaximum: 10 buttons.\n"
         },
         {
           "name": "imageUrl",
@@ -2850,7 +2850,7 @@
               }
             }
           ],
-          "doc": "List of buttons to display with the message.\nButtons can either open a URL or pass interaction details to the\n[Button Interacted Webhook](https://dev.wix.com/api/rest/all-apis/inbox/button-interacted-webhook).\n\nMaximum: 10 buttons.\n"
+          "doc": "List of buttons to display with the message.\nButtons can either open a URL or pass interaction details to the\n`onMessageButtonInteracted()` event.\n\nMax: 10 buttons.\n"
         },
         {
           "name": "imageUrl",
@@ -2870,7 +2870,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Controls whether the message is displayed in portrait or landscape layout.\n\nDefaults to `PORTRAIT`.\n"
+          "doc": "Controls whether the message is displayed in portrait or landscape layout.\n\nSupported values: `\"PORTRAIT\"`, `\"LANDSCAPE\"`.\n\nDefault: `PORTRAIT`.\n"
         },
         {
           "name": "textLines",
@@ -2887,7 +2887,7 @@
               }
             }
           ],
-          "doc": "List of lines of text. Each item in the array is displayed on a new line.\n\nMaximum: 10 lines, up to 512 characters per line.\n"
+          "doc": "List of lines of text. Each item in the array is displayed on a new line.\n\nMax: 10 lines (up to 512 characters per line).\n"
         },
         {
           "name": "title",
