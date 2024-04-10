@@ -16,7 +16,5 @@ See the following apps made by Wix and their corresponding IDs. Regardless of th
 | Wix Events             | 140603ad-af8d-84a5-2c80-a0f60cb47351 |
 | Wix Forms              | 14ce1214-b278-a7e4-1373-00cebd1bef7c |
 | Wix Inbox              | 141fbfae-511e-6817-c9f0-48993a7547d1 |
-| Wix Online Programs    | 2936472a-a1ed-4ae5-9f71-614313a9f4e7 |
 | Wix Pricing Plans      | 1522827f-c56c-a5c9-2ac9-00f9e6ae12d3 |
-| Wix Restaurants Orders | 13e8d036-5516-6104-b456-c8466db39542 |
 | Wix Stores             | 215238eb-22a5-4c36-9e7b-e7c08025e04e |
