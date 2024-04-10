@@ -10,7 +10,7 @@ The object passed to a custom Booking Service page contains the following proper
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/api-reference/wix-bookings/services-v-2/service-object), which contains detailed data about the service. |
+| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/business-solutions/bookings/services/services-v2/service-object), which contains detailed data about the service. |
 
 > **Note**: If the page URL specifies a service that is deleted, hidden, or does not exist, the app returns `null`.
 
@@ -22,7 +22,7 @@ The object passed to a custom Booking Calendar page contains the following prope
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/api-reference/wix-bookings/services-v-2/service-object), which contains detailed data about the service. |
+| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/business-solutions/bookings/services/services-v2/service-object), which contains detailed data about the service. |
 
 > **Note**: If the page URL specifies a service that is deleted, hidden, or does not exist, the app returns `null`.
 
