@@ -7,6 +7,106 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New release: More Wix Events APIs
+
+`wix-events.v2`
+
+[Wix Events](https://www.wix.com/velo/reference/wix-events-v2/introduction) introduces new APIs that provide developers with a growing set of services for customizing Events functionality on Wix sites:
+
+- [Categories](https://www.wix.com/velo/reference/wix-events-v2/categories/introduction): Create and assign various categories to their events.
+- [Forms](https://www.wix.com/velo/reference/wix-events-v2/forms/introduction): Customize a registration form for site visitors to fill out with their contact details and other relevant information.
+- [Orders](https://www.wix.com/velo/reference/wix-events-v2/orders/introduction): The **Checkout** module is now merged with **Orders**.
+- [RSVP](https://www.wix.com/velo/reference/wix-events-v2/rsvp/introduction): Access the information on guests who have RSVP'ed to an event.
+- [Schedule](https://www.wix.com/velo/reference/wix-events-v2/schedule/introduction): Share the lineup of an event’s activities, presentations, performances, or sessions.
+- [Schedule Bookmarks](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks/introduction): Allow members to mark their favorite schedule items to curate their own personalized agenda for your event.
+- [Wix Events v2](https://www.wix.com/velo/reference/wix-events-v2/wixeventsv2/introduction): The updated [Wix Events](https://www.wix.com/velo/reference/wix-events-backend/wixevents/introduction) API where you can create and manage events on your site.
+
+(April 4, 2024)
+
+### New Developer Preview APIs: Mobile Elements
+
+`Wix Editor Elements ($w)`
+
+<blockquote class="important">
+
+__Important:__
++ These APIs are only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ These APIs are in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and are subject to change. 
+
+</blockquote>
+
+We added the following mobile APIs:
+
++ [`MobileButton`]($w/mobilebutton): A button element on a mobile app.
++ [`MobileContainer`]($w/mobilecontainer): A container element for repeater items on a mobile app.
++ [`MobileElement`]($w/mobileelement): Provides basic functionality for mobile elements.
++ [`MobileImage`]($w/mobileimage): An image element on a mobile app.
++ [`MobilePicker`]($w/mobilepicker): A picker for selecting items on a mobile app.
++ [`MobileRepeater`]($w/mobilerepeater): A repeater mobile element used for creating repeating layouts on a mobile app widget.
++ [`MobileSwitch`]($w/mobileswitch): A switch used for a single binary choice on a mobile app.
++ [`MobileText`]($w/mobiletext): A text element on a mobile app.
++ [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
+
+(April 3, 2024)
+
+### New Developer Preview API: Wix Mobile 
+
+`wix-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Mobile API](https://www.wix.com/velo/reference/wix-mobile/introduction) provides the functionality required to work with your mobile app.
+
+It contains the [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert) API that creates and opens an alert modal on your mobile app.
+
+(April 3, 2024)
+
+### New Developer Preview API: Wix Navigate Mobile 
+
+`wix-navigate-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Navigate Mobile API](https://www.wix.com/velo/reference/wix-navigate-mobile/introduction) provides the functionality required to navigate through your mobile app.
+
+It contains the [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl) API that directs your mobile app to open the specified URL in the device's browser.
+
+(April 3, 2024)
+
+### Updated API: Wix Window Frontend
+
+`wix-window-frontend`
+
+We've added a new mode, `"Editor"`, to the [`viewMode`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) property of the [`wix-window-frontend`](https://www.wix.com/velo/reference/wix-window-frontend) module.
+
+The `viewMode` property retrieves the `"Editor"` value when viewing a [Wix Blocks](https://support.wix.com/en/article/wix-blocks-check-out-our-articles) built widget in the editor. 
+
+(March 18, 2024)
+
+### New: Wix Blocks Panel Builder Elements
+
+The following elements can be added to [Wix Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Wix Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
+
+* [PanelColorPicker]($w/panelcolorpicker) The panel color picker is used in the Wix Blocks panel builder for picking colors from a color palette.
+* [PanelFontAndColorPicker]($w/panelfontandcolorpicker) The panel font and color picker is used in the Wix Blocks panel builder for picking fonts from a dropdown and colors from a color palette. 
+
+(March 5, 2024)
+
 ### New SPI: Velo Action
 
 The new [Velo Action SPI](https://www.wix.com/velo/reference/spis/wix-automations) lets you create your own custom action to use in your site's automations. You can create and test code directly in your site dashboard when creating or editing an automation.
@@ -46,8 +146,7 @@ The new WixFormsV2 Element displays customizable forms, collects all the info th
 
 `wix-crm-backend` 
 
-The Workflows API and product is being discontinued and will stop working on June 30, 2024. 
-There will not be a replacement for this API.
+The Workflows API will be discontinued in the upcoming months. Our team is working to provide alternatives, and we'll provide timely updates before implementing any changes. We understand that this transition might present challenges, and we appreciate your patience and understanding.
 
 (February 6, 2024)
 

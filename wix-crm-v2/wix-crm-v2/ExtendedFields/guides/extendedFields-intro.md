@@ -13,20 +13,30 @@ title: Introduction
 
 &nbsp;
 
-> **Note:** This module is
+<!-- > **Note:** This module is
 > [universal](/api-overview/api-versions#universal-modules).
 > Functions in this module can run on both the backend and frontend,
-> unless specified otherwise.
+> unless specified otherwise. -->
 
 
-The Extended Fields API provides functionality for managing extended fields for your contacts. Basic contact information is stored in the contact’s default properties, including information such as name, company, phone numbers, addresses, and email addresses. Additional properties are stored in extended fields. 
+The Extended Fields API provides functionality for creating and managing extended field definitions. Extended fields enable you to retrieve and store specific information relevant to your site. Basic fields, such as name, email, and phone, are stored in the contact's default properties. Additional custom contact properties are stored in extended fields. 
 
 With the Extended Fields API, you can:
-+ [Find or create ](wix-crm-v2/extendedfields/findorcreateextendedfiels) an extended field. 
++ [Create](wix-crm-v2/extendedfields/findorcreateextendedfield) a new extended field.
 + [Delete](wix-crm-v2/extendedfields/deleteextendedfield) an extended field.
-+ [Get](wix-crm-v2/extendedfields/getextendedfield) an extended field.
-+ [Rename](wix-crm-v2/extendedfields/renameextendedfield) an extended field.
++ [Update](wix-crm-v2/extendedfields/renameextendedfield) an extended field by renaming its display name.
 + [Query](wix-crm-v2/extendedfields/queryextendedfields) extended fields.
+
+## Before you begin
+
+It is important to note the following points before you begin to code:
+- When you create a new extended field, it becomes available to use for all contacts. The field is blank by default. 
+- Possible data types of extended fields include: 
+    - text
+    - number
+    - date
+    - url
+- Extended fields are represented as key-value pairs in the contact's object in `info.extendedfields`. To manage the extended fields of an individual contact, use the [Contacts API](wix-crm-v2/contacts). 
 
 
 To use the Labels API, import `{ extendedFields }` from the `wix-crm.v2` module. 
@@ -34,6 +44,7 @@ To use the Labels API, import `{ extendedFields }` from the `wix-crm.v2` module.
 ```javascript
 import { extendedFields } from ‘wix-crm.v2’;
 ```
+
 
 ## Permissions information
 
@@ -46,6 +57,6 @@ Functions in the Extended Fields API are restricted and only run if you elevate 
 
 ## Terminology
 
-- **Extended Fields**: Additional properties that store additional contact information. A contact’s extended field data is available in the `contact` object under `info.extendedFields`. There are 2 types of extended fields:
-    - **System fields**: Extended fields added by Wix apps. System fields often enrich contacts with data from Wix apps, such as Wix Stores or Wix Members. System fields cannot be renamed and are typically read-only.
-    - **Custom fields**: Extended fields added by site collaborators or 3rd-party apps. Custom fields can be renamed, and their data can be written by any site collaborators or 3rd-party app.
+- **Extended field**: A customized field that can store additional information for a contact. A contact’s extended field data is available in the `contact` object under `info.extendedFields`. There are 2 types of extended fields:
+    - **System field**: An extended field added by Wix apps. System fields often enrich contacts with data from Wix apps, such as Wix Stores or Wix Members. System fields cannot be renamed and are typically read-only.
+    - **Custom field**: An extended field added by site admins or 3rd-party apps. Custom fields can be renamed, and their data can be written by any site admin or 3rd-party app.
