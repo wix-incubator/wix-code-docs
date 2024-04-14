@@ -7,11 +7,23 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+
 ### New APIs: Open and Close Modal
 
 `wix-dashboard`
 
 Use the [`openModal()`](/wix-dashboard/openmodal) API to open a [dashboard modal extension](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-modal-extensions) on a dashboard page. Use the [`closeModal()`](/wix-dashboard/closemodal) API to close a currently open modal.
+
+(April 14, 2024)
+
+### New Developer Preview APIs: Wix URLs APIs
+
+`wix-urls.v2`
+
+[Wix URLs](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction) introduces new APIs that provide developers with access to a site's URLs:
+
+- [Wix Editor](https://www.wix.com/velo/reference/wix-urls-v2/editor/introduction): Access the site's editor URL and site preview URL.
+- [Wix Site](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction): Access the site's published site URLs, included translated pages.
 
 (April 14, 2024)
 
