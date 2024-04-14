@@ -7,7 +7,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-### New Developer Preview APIs: Wix URL APIs
+### New Developer Preview APIs: Wix URLs APIs
 
 `wix-urls.v2`
 
