@@ -15,15 +15,6 @@ Use the [`openModal()`](/wix-dashboard/openmodal) API to open a [dashboard modal
 
 (April 14, 2024)
 
-### New API: Open Media Manager
-
-`wix-dashboard`
-
-The [`openMediaManager()`](/wix-dashboard/openmediamanager) API allows you to open a Wix Media Manager modal on a dashboard page. Site builders can select one or more the site's media files using the manager. The API returns a list of the selected files when the modal is closed.
-
-(April 14, 2024)
-
-
 
 ### New release: More Wix Events APIs
 
