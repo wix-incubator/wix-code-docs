@@ -7,6 +7,18 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New Developer Preview APIs: Wix URL APIs
+
+`wix-urls.v2`
+
+[Wix URLs](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction) introduces new APIs that provide developers with access to a site's URLs:
+
+- [Wix Editor](https://www.wix.com/velo/reference/wix-urls-v2/editor/introduction): Access the site's editor URL and site preview URL.
+- [Wix Site](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction): Access the site's published site URLs, included translated pages.
+
+(April 14, 2024)
+
+
 ### New release: More Wix Events APIs
 
 `wix-events.v2`
