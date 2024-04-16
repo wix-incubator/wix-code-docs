@@ -17,6 +17,43 @@ We removed the `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, and `onIt
 
 (April 16, 2024)
 
+### Updated API: Container Element
+
+`Wix Editor Elements ($w)`
+
+The [`Container`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) element now contains a new 
+[`onKeyPress()`](https://www.wix.com/velo/reference/$w/container/onkeypress) method. This method adds an event handler that's triggered when a key is pressed while the container or one of its child elements is focused.
+
+(April 16, 2024)
+
+### New API: Open Media Manager
+
+`wix-dashboard`
+
+The [`openMediaManager()`](/wix-dashboard/openmediamanager) API allows you to open a Wix Media Manager modal on a dashboard page. Site builders can select one or more the site's media files using the manager. The API returns a list of the selected files when the modal is closed.
+
+(April 15, 2024)
+
+
+### New APIs: Open and Close Modal
+
+`wix-dashboard`
+
+Use the [`openModal()`](/wix-dashboard/openmodal) API to open a [dashboard modal extension](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-modal-extensions) on a dashboard page. Use the [`closeModal()`](/wix-dashboard/closemodal) API to close a currently open modal.
+
+(April 14, 2024)
+
+### New Developer Preview APIs: Wix URLs APIs
+
+`wix-urls.v2`
+
+[Wix URLs](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction) introduces new APIs that provide developers with access to a site's URLs:
+
+- [Wix Editor](https://www.wix.com/velo/reference/wix-urls-v2/editor/introduction): Access the site's editor URL and site preview URL.
+- [Wix Site](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction): Access the site's published site URLs, included translated pages.
+
+(April 14, 2024)
+
 ### New release: More Wix Events APIs
 
 `wix-events.v2`
