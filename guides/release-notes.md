@@ -11,9 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-We updated and added the following APIs:
- + [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer): We removed `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, `onItemDblClick()` event listeners, and the `menuItems` property from the documentation. The event listener methods did not trigger mouse events in the `MenuContainer API`.
- + [ExpandableMenu](https://www.wix.com/velo/reference/$w/expandablemenu): We added a new `$w` element, `ExpandableMenu` to the documentation. The [table](https://www.wix.com/velo/reference/$w/menu/introduction) of supported menus has been updated in the `Menu API` introduction.
+We updated the [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer) element: We removed `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, `onItemDblClick()` event listeners, and the `menuItems` property from the documentation. The event listener methods did not trigger mouse events in the `MenuContainer API`.
 
 (April 10, 2024)
 
