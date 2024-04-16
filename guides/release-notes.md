@@ -10,10 +10,10 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ### Updated API: Container Element
 
 `Wix Editor Elements ($w)`
+The [`Container`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) element now contains a new 
+[`onKeyPress()`](https://www.wix.com/velo/reference/$w/container/onkeypress) method. This method adds an event handler that's triggered when a key is pressed while the container or one of its child elements is focused.
 
-We've added a new method, [`onKeyPress()`](https://www.wix.com/velo/reference/$w/container/onkeypress), to the [`Container`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) element. This method adds an event handler to a container element that is triggered by a key press keyboard event on the container element.
-
-(April 11, 2024)
+(April 16, 2024)
 
 ### New release: More Wix Events APIs
 
