@@ -11,8 +11,9 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-We updated [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer) element/ 
-The following event listeners were removed: `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, `onItemDblClick()`. The `menuItems` property was also removed from the documentation. These methods and properties were never supported by the `Menu` element. 
+The [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer) element has been udpated.
+
+We removed the `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, and `onItemDblClick()` event handlers and `menuItems` property from the documentation. These methods and properties were never supported by `MenuContainer`.
 
 (April 16, 2024)
 
