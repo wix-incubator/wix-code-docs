@@ -54,7 +54,7 @@
       "docs": {
         "summary": "Creates a new contact.",
         "description": [
-          "The `createContact()` function returns a Promise\nthat resolves to the new contact when it is created.\n\nThe `info` parameter object must include a name, phone number, or email address.\n If all 3 of these parameters are missing,\n the contact won't be created.\n\nBy default, if the call contains an email already in use by another contact, the new contact won't be created. To override this behavior, set `allowDuplicates` in the `options` object to `true`.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "The `createContact()` function returns a Promise\nthat resolves to the new contact when it is created.\n\nThe `info` parameter object must include a name, phone number, or email address.\n If all 3 of these parameters are missing,\n the contact won't be created.\n\nBy default, if the call contains an email already in use by another contact, the new contact won't be created. To override this behavior, set `allowDuplicates` in the `options` object to `true`.\n"
         ],
         "examples": [
           {
@@ -395,16 +395,91 @@
               " * }",
               " */"
             ]
-          
+          },
+          {
+            "title": "Create a new contact with custom labels ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts, labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "export const createContactWithLabels = webMethod(Permissions.Anyone, async (contactInfo) => {",
+              "",
+              "try {  ",
+              "  const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "  const myLabels = await elevatedQueryLabels()",
+              "   .eq('labelType', \"USER_DEFINED\")",
+              "   .find();",
+              "  ",
+              "  const items = myLabels.items;",
+              "  const labelKeys = items.map(label => {",
+              "    return label.key",
+              "  });",
+              "  ",
+              "  contactInfo.labelKeys.items = labelKeys;",
+              "  ",
+              "  const elevatedContact = elevate(contacts.createContact);",
+              "  const newContact = await elevatedContact(contactInfo);",
+              "  ",
+              "  return newContact;",
+              "  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { createContactWithLabels } from 'backend/contacts.web'",
+              "",
+              "// Retrieve contact info when a form's submit button is clicked",
+              "export async function submitButton_click(event) {",
+              "",
+              "  try {",
+              "    const contactInfo = {",
+              "      name: {",
+              "        first: $w('#firstNameInput').value,",
+              "        last: $w('#lastNameInput').value,",
+              "      },",
+              "      emails: {",
+              "        items: [",
+              "          {",
+              "            email: $w('#emailInput').value,",
+              "          }",
+              "        ]",
+              "      },",
+              "      labelKeys: {",
+              "        items: []",
+              "      }",
+              "    };",
+              "",
+              "  // Call backend function to create a contact with labels",
+              "  const newContact = await createContactWithLabels(contactInfo);",
+              "  console.log('Contact created successfully:', newContact);",
+              "",
+              "    return contactInfo;",
+              "  } catch (error) {",
+              "    console.error('Error creating contact:', error);",
+              "    // Handle the error",
+              "  }",
+              "}"
+            ],
+            "extra": {
+              "description": "This function creates a new contact with the user-defined labels retrieved by a query."
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "createContact",
       "isAdminMethod": true
     },
@@ -443,7 +518,7 @@
       "docs": {
         "summary": "Deletes a contact who is not a site member or contributor.",
         "description": [
-          "The `deleteContact()` function returns a Promise\nthat resolves when the specified contact is deleted.\n\n Deleting a contact permanently removes them from your Contact List.\n\n If the contact is also a site member,\nthe member must be deleted first,\nand then the contact can be deleted.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "The `deleteContact()` function returns a Promise\nthat resolves when the specified contact is deleted.\n\n Deleting a contact permanently removes them from your Contact List.\n\n If the contact is also a site member,\nthe member must be deleted first,\nand then the contact can be deleted.\n"
         ],
         "examples": [
           {
@@ -494,11 +569,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteContact",
       "isAdminMethod": true
     },
@@ -547,7 +617,7 @@
       "docs": {
         "summary": "Retrieves a contact.",
         "description": [
-          "The `getContact()` function returns a Promise\nthat resolves when the contact is found.\n\n#### Getting Merged Contacts\nWhen a source contact is merged into a target contact, the source contact is deleted. When calling `getContact()` for a merged contact,\nyou can use the source or target contact ID. In both cases, the target contact is returned.\n\nThis is supported only when calling `getContact()`on merged contacts. Previously deleted source contact IDs can't be passed to any other function.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "The `getContact()` function returns a Promise\nthat resolves when the contact is found.\n\n#### Getting Merged Contacts\nWhen a source contact is merged into a target contact, the source contact is deleted. When calling `getContact()` for a merged contact,\nyou can use the source or target contact ID. In both cases, the target contact is returned.\n\nThis is supported only when calling `getContact()`on merged contacts. Previously deleted source contact IDs can't be passed to any other function.\n"
         ],
         "examples": [
           {
@@ -765,16 +835,127 @@
               " * }",
               " */"
             ]
-
+          },
+          {
+            "title": "Get a contact with specified returned fields ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " *",
+              " * Sample options value: ",
+              " * {",
+              " *   fields: ['createdDate'],",
+              " *   fieldsets: ['BASIC']",
+              " * }",
+              " */",
+              "",
+              "export const myGetContactFunction = webMethod(Permissions.Anyone, async (id) => {",
+              "  try {",
+              "    const elevatedGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevatedGetContact(id);    ",
+              "    const contactId = contact._id;",
+              "    const contactName = contact.info.name.first;",
+              " ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.049Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision };",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Mitchell\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`);",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "The page code passes a contact ID with updated contact information to the backend `overwriteContactInfo()` function. The `overwriteContactInfo()` function retrieves the contact, extracts the revision number, then passes it to `contacts.updateContact()`. This allows the contact to be updated without needing to specify the revision. >**Note:** This code example always retrieves the latest revision before updating a contact. "
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getContact",
       "isAdminMethod": true
     },
@@ -831,7 +1012,7 @@
       "docs": {
         "summary": "Adds labels to a contact.",
         "description": [
-          "The `labelContact()` function returns a Promise\nthat resolves when the specified labels are added to the contact.\n - **To create new labels:** Use `findOrCreateLabel()`.\n- **To find labels:** Use `findOrCreateLabel()`, `getLabel()`, or `queryLabels()`.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "The `labelContact()` function returns a Promise\nthat resolves when the specified labels are added to the contact.\n - **To create new labels:** Use `findOrCreateLabel()`.\n- **To find labels:** Use `findOrCreateLabel()`, `getLabel()`, or `queryLabels()`.\n"
         ],
         "examples": [
           {
@@ -1093,20 +1274,20 @@
               "    const elevatedLabelContact = elevate(contacts.labelContact);",
               "    const newLabel = await elevatedCreateLabel(displayName);",
               "    const labelKeys = [newLabel.label.key];",
-              "    // Extract label key from new label",
+              "    // Retrieve the new label's key",
               "    if (newLabel.newLabel) {",
               "      // Label contact",
               "      const contact = await elevatedLabelContact(contactId, labelKeys);",
-              "      const contactLabels = contact.contact.info.labelKeys.items",
+              "      const contactLabels = contact.contact.info.labelKeys.items;",
               "",
-              "      return contactLabels",
+              "      return contactLabels;",
               "    }",
               "    else {",
-              "      return \"Label was not added to contact.\"",
+              "      return \"Label was not added to contact.\";",
               "    }",
               "  } catch (error) {",
-              "      console.log(error);",
-              "      // Handle the error",
+              "    console.log(error);",
+              "    // Handle the error",
               "  }",
               "});",
               "",
@@ -1119,17 +1300,12 @@
               ""
             ],
             "extra": {
-              "description": "This function creates a new label, extracts the label key, and then labels a contact."
+              "description": "This function creates a new label, gets the label's key, and then adds the label to the contact."
             }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "labelContact",
       "isAdminMethod": true
     },
@@ -1189,7 +1365,7 @@
       "docs": {
         "summary": "Merges source contacts into a target contact.",
         "description": [
-          "Merging contacts has these effects on the target contact:\n\n- No target contact data is overwritten or deleted.\n- Arrays (emails, phones, addresses, and labels) are merged from the source contacts into the target contact.\n- If merging more than one source contact, the 1st source is given precedence, then the 2nd, and so on.\n\nSource contacts are deleted when merging.\nHowever, if a source contact is a site member or collaborator,\nthe `mergeContacts()` function fails because site collaborators and members can't be deleted.\nSite members and collaborators can only be target contacts.\n\nAfter merging, if you call the `getContact()` function with a deleted source contact ID, the target contact ID is returned. This is only supported when calling `getContact()`. Previously deleted source contact IDs can't be passed in any other function.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "Merging contacts has these effects on the target contact:\n\n- No target contact data is overwritten or deleted.\n- Arrays (emails, phones, addresses, and labels) are merged from the source contacts into the target contact.\n- If merging more than one source contact, the 1st source is given precedence, then the 2nd, and so on.\n\nSource contacts are deleted when merging.\nHowever, if a source contact is a site member or collaborator,\nthe `mergeContacts()` function fails because site collaborators and members can't be deleted.\nSite members and collaborators can only be target contacts.\n\nAfter merging, if you call the `getContact()` function with a deleted source contact ID, the target contact ID is returned. This is only supported when calling `getContact()`. Previously deleted source contact IDs can't be passed in any other function.\n"
         ],
         "examples": [
           {
@@ -1479,11 +1655,7 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
+     
       "syntaxName": "mergeContacts",
       "isAdminMethod": true
     },
@@ -1540,7 +1712,7 @@
       "docs": {
         "summary": "Removes labels from a contact.",
         "description": [
-          " The `unlabelContact()` function returns a Promise\n that resolves when the specified labels are removed from the contact.\n\nIf a label is no longer needed and you want to remove it from all contacts, you can remove it with the Labels `deleteLabel()` function.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          " The `unlabelContact()` function returns a Promise\n that resolves when the specified labels are removed from the contact.\n\nIf a label is no longer needed and you want to remove it from all contacts, you can remove it with the Labels `deleteLabel()` function.\n"
         ],
         "examples": [
           {
@@ -1782,11 +1954,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "unlabelContact",
       "isAdminMethod": true
     },
@@ -1857,7 +2024,7 @@
       "docs": {
         "summary": "Updates a contact's properties.",
         "description": [
-          "The `updateContact()` function returns a Promise that resolves\nwhen the specified contact's information is updated.\n\nEach time the contact is updated, `revision` increments by 1. The existing `revision` must be included when updating the contact. This ensures you're working with the latest contact information, and prevents unintended overwrites.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can run this function."
+          "The `updateContact()` function returns a Promise that resolves\nwhen the specified contact's information is updated.\n\nEach time the contact is updated, `revision` increments by 1. The existing `revision` must be included when updating the contact. This ensures you're working with the latest contact information, and prevents unintended overwrites.\n"
         ],
         "examples": [
           {
@@ -2152,16 +2319,77 @@
               " */",
               ""
             ]
-          
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision };",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Mitchell\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`);",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "The page code passes a contact ID with updated contact information to the backend `overwriteContactInfo()` function. The `overwriteContactInfo()` function retrieves the contact, extracts the revision number, then passes it to `contacts.updateContact()`. This allows the contact to be updated without needing to specify the revision. >**Note:** This code example always retrieves the latest revision before updating a contact. "
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateContact",
       "isAdminMethod": true
     }

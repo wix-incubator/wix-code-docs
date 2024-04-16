@@ -108,6 +108,7 @@
         "order.lineItems.price",
         "order.lineItems.productName",
         "order.lineItems.productName.original",
+        "order.lineItems.subscriptionInfo.subscriptionSettings.interval",
         "order.lineItems.taxDetails",
         "order.priceSummary"
       ],
@@ -191,7 +192,7 @@
       "docs": {
         "summary": "Retrieves an order.",
         "description": [
-          "The `getOrder()` function returns a Promise that resolves when the specified order is retrieved."
+          "The `getOrder()` function returns a Promise that resolves when the specified order is retrieved.\n\nTo retrieve an order's payment and refund details, including amounts, payment methods, and payment statuses, pass the order ID to [`listTransactionsForSingleOrder( )`](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/listtransactionsforsingleorder)."
         ],
         "examples": [
           {
@@ -253,7 +254,7 @@
               " *       },",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"0614129c-8777-9f3b-4dfe-b80a54df10d5\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\",",
               " *         \"options\": {",
               " *           \"options\": {",
               " *             \"Weight\": \"500g\",",
@@ -558,7 +559,7 @@
       "docs": {
         "summary": "Updates an order.",
         "description": [
-          "The `updateOrder()` function returns a Promise that resolves when the specified order's information is updated.\n\nCurrently, the following fields can be updated:\n+ `order.buyerInfo.email`\n+ `order.recipientInfo.address`\n+ `order.recipientInfo.contactDetails`\n+ `order.shippingInfo.logistics.shippingDestination.address`\n+ `order.shippingInfo.logistics.shippingDestination.contactDetails`\n\nTo update a field's value, include the new value in the `order` object in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Removing `buyerInfo` or `contactDetails` fields results in an error."
+          "The `updateOrder()` function returns a Promise that resolves when the specified order's information is updated.\n\nCurrently, the following fields can be updated:\n+ `order.buyerInfo.email`\n+ `order.recipientInfo.address`\n+ `order.recipientInfo.contactDetails`\n+ `order.shippingInfo.logistics.shippingDestination.address`\n+ `order.shippingInfo.logistics.shippingDestination.contactDetails`\n\nTo update a field's value, include the new value in the `order` object in the body params.\nTo remove a field's value, pass `null`.\n\n> **Note:** Removing `buyerInfo` or `contactDetails` fields results in an error.\n\nTo update an order's payment status, use [`updatePaymentStatus( )`](https://www.wix.com/velo/reference/wix-ecom-backend/ordertransactions/updatepaymentstatus)."
         ],
         "examples": [
           {
@@ -1659,7 +1660,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Balance amount, can be negative. Negative value signifies amount to be refunded\nand can happen due to possible overcharge or modified manual order."
+          "doc": "Balance amount.\n\nA negative `amount` represents the amount to be refunded. This can happen due to overcharging or the order being modified after a payment has been made."
         },
         {
           "name": "formattedAmount",
@@ -1691,7 +1692,29 @@
               "referenceType": "wix-ecom-backend.Orders.Balance"
             }
           ],
-          "doc": "collectible amount to pay. Part of order’s price_summary excluding all approved payments amount"
+          "doc": "Current amount left to pay."
+        },
+        {
+          "name": "paid",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Sum of all approved and successful payments.\n\nThe value includes payments that have subsequently been fully or partially refunded."
+        },
+        {
+          "name": "refunded",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Sum of all successfully refunded payments."
         }
       ],
       "docs": {
@@ -2576,6 +2599,232 @@
       }
     },
     {
+      "name": "BulkUpdateOrderOptions",
+      "members": [
+        {
+          "name": "returnEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to `true` if you wish to receive back the updated orders in the response"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderRequest",
+      "members": [
+        {
+          "name": "orders",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.MaskedOrder"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Orders to be updated."
+        },
+        {
+          "name": "returnEntity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Set to `true` if you wish to receive back the updated orders in the response"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.BulkActionMetadata"
+            }
+          ],
+          "doc": "Bulk action metadata."
+        },
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.BulkOrderResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Bulk action results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderTagsOptions",
+      "members": [
+        {
+          "name": "assignTags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Tags"
+            }
+          ],
+          "doc": "Tags to be added to orders"
+        },
+        {
+          "name": "unassignTags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Tags"
+            }
+          ],
+          "doc": "Tags to be removed from orders"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderTagsRequest",
+      "members": [
+        {
+          "name": "assignTags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Tags"
+            }
+          ],
+          "doc": "Tags to be added to orders"
+        },
+        {
+          "name": "orderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of orders to update tags for."
+        },
+        {
+          "name": "unassignTags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Tags"
+            }
+          ],
+          "doc": "Tags to be removed from orders"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderTagsResponse",
+      "members": [
+        {
+          "name": "bulkActionMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.BulkActionMetadata"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "results",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.BulkUpdateOrderTagsResult"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkUpdateOrderTagsResult",
+      "members": [
+        {
+          "name": "itemMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.ItemMetadata"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "BuyerInfo",
       "members": [
         {
@@ -3162,7 +3411,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Additional item details in key:value pairs.\n\nUse this optional field to specify a variant of the item or add custom details. There are several ways to use `options`:\n+ Pass specific information about the item variant in this field. For example, size and color of an item of clothing: `\"options\": {\"Size\": \"M\", \"Color\": \"Red\"}`.\n+ Create a separate API for creating item variants that stores the details and generates a unique ID for each item variant. Then pass only the variant ID in this field. For example: `\"options\": {\"variantId\": \"<VARIANT_ID>\"}`.\n"
+          "doc": "Additional item details in key:value pairs.\n\nUse this optional field to provide more specificity with item selection. The `options` field values differ depending on which catalog is providing the items.\n\nFor products and variants from your Wix Stores catalog, learn more about [eCommerce integration](https://www.wix.com/velo/reference/wix-stores-backend/ecommerce-integration).\n"
         }
       ],
       "docs": {
@@ -5903,7 +6152,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Deprecated."
         },
         {
           "name": "oldToWixUri",
@@ -5913,7 +6162,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Deprecated."
         },
         {
           "name": "requireDomain",
@@ -5923,7 +6172,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": ""
+          "doc": "Deprecated."
         },
         {
           "name": "toWixUri",
@@ -5933,7 +6182,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Deprecated."
         }
       ],
       "docs": {
@@ -7644,48 +7893,6 @@
       }
     },
     {
-      "name": "InvoicePaidEvent",
-      "members": [
-        {
-          "name": "_id",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.IdAndVersion"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "data",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Orders.InvoiceFields"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "status",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Supported values:\n- `'Deleted'`\n- `'Draft'`\n- `'Overdue'`\n- `'Paid'`\n- `'PartialAndOverdue'`\n- `'PartiallyPaid'`\n- `'Processing'`\n- `'Sent'`\n- `'Void'`"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "InvoiceSent",
       "members": [],
       "docs": {
@@ -9244,6 +9451,26 @@
       }
     },
     {
+      "name": "MaskedOrder",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Order"
+            }
+          ],
+          "doc": "Order to be updated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "MaskedOrderLineItem",
       "members": [
         {
@@ -9889,7 +10116,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A name."
         },
         {
           "name": "property",
@@ -9899,7 +10126,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": ""
+          "doc": "Indicates whether should be rendered as property."
         },
         {
           "name": "value",
@@ -9909,7 +10136,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A value."
         }
       ],
       "docs": {
@@ -10062,6 +10289,17 @@
             }
           ],
           "doc": "Order attribution source."
+        },
+        {
+          "name": "balanceSummary",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.BalanceSummary"
+            }
+          ],
+          "doc": "Balance summary."
         },
         {
           "name": "billingInfo",
@@ -10886,6 +11124,17 @@
           "doc": "Line item quantity."
         },
         {
+          "name": "refundQuantity",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were refunded."
+        },
+        {
           "name": "restockQuantity",
           "readOnly": true,
           "optional": true,
@@ -10894,7 +11143,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "quantity of inventory requested to be returned. Whether to restock or ignore the request is up the vertical."
+          "doc": "Number of items restocked."
         },
         {
           "name": "subscriptionInfo",
@@ -11015,6 +11264,16 @@
             }
           ],
           "doc": "Item type. Either a preset type or custom."
+        },
+        {
+          "name": "lineItemPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Total price **after** catalog-defined discount and line item discounts."
         },
         {
           "name": "paymentOption",
@@ -11231,6 +11490,113 @@
             }
           ],
           "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "OrderTaxBreakdown",
+      "members": [
+        {
+          "name": "aggregatedTaxAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "The sum of all the tax from line items that calculated by the tax identifiers."
+        },
+        {
+          "name": "jurisdiction",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The name of the jurisdiction in which this tax detail applies."
+        },
+        {
+          "name": "jurisdictionType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of the jurisdiction in which this tax detail applies (e.g. Country,State,County,City,Special)."
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The rate at which this tax detail was calculated."
+        },
+        {
+          "name": "taxName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The name of the tax against which this tax amount was calculated."
+        },
+        {
+          "name": "taxType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of tax that was calculated. Depends on the company's nexus settings as well as the jurisdiction's tax laws."
+        }
+      ],
+      "docs": {
+        "description": [
+          "The summary of the tax breakdown for all the line items. It will hold for each tax name, the aggregated tax amount paid for it and the tax rate.\nTax breakdown is the tax amount split to the tax authorities that applied on the line item."
+        ]
+      }
+    },
+    {
+      "name": "OrderTaxInfo",
+      "members": [
+        {
+          "name": "taxBreakdown",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Orders.OrderTaxBreakdown"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The summary of the tax breakdown for all the line items. It will hold for each tax name, the aggregated tax amount paid for it and the tax rate."
+        },
+        {
+          "name": "totalTax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.Price"
+            }
+          ],
+          "doc": "Calculated tax, added from line items."
         }
       ],
       "docs": {
@@ -13943,7 +14309,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A canonical URL for a site."
         },
         {
           "name": "indexable",
@@ -13953,7 +14319,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": ""
+          "doc": "Indicates whether the site should be indexable by bots."
         },
         {
           "name": "metaTags",
@@ -13970,7 +14336,7 @@
               }
             }
           ],
-          "doc": ""
+          "doc": "A list of meta tags."
         },
         {
           "name": "ogImage",
@@ -13980,7 +14346,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "TDB."
         },
         {
           "name": "suppressTrackingCookies",
@@ -13990,7 +14356,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": ""
+          "doc": "TDB."
         },
         {
           "name": "title",
@@ -14000,7 +14366,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "A title."
         }
       ],
       "docs": {
@@ -14454,11 +14820,78 @@
             }
           ],
           "doc": "Frequency of recurring payment."
+        },
+        {
+          "name": "interval",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Interval of recurring payment."
         }
       ],
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "TagList",
+      "members": [
+        {
+          "name": "tagIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of tag IDs"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Tags",
+      "members": [
+        {
+          "name": "privateTags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TagList"
+            }
+          ],
+          "doc": "Tags that require an additional permission in order to access them, normally not given to site members or visitors."
+        },
+        {
+          "name": "tags",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.TagList"
+            }
+          ],
+          "doc": "Tags that are exposed to anyone who has access to the labeled entity itself, including site members and visitors."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Common object for tags.\nShould be use as in this example:\nmessage Foo {\nstring id = 1;\n...\nTags tags = 5\n}"
         ]
       }
     },
@@ -15831,6 +16264,17 @@
           "doc": "Order attribution source."
         },
         {
+          "name": "balanceSummary",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Orders.BalanceSummary"
+            }
+          ],
+          "doc": "Balance summary."
+        },
+        {
           "name": "billingInfo",
           "optional": true,
           "type": [
@@ -16250,6 +16694,17 @@
           "doc": "Line item quantity."
         },
         {
+          "name": "refundQuantity",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items that were refunded."
+        },
+        {
           "name": "restockQuantity",
           "readOnly": true,
           "optional": true,
@@ -16258,7 +16713,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "quantity of inventory requested to be returned. Whether to restock or ignore the request is up the vertical."
+          "doc": "Number of items restocked."
         },
         {
           "name": "subscriptionInfo",
