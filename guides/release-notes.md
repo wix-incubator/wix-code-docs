@@ -7,6 +7,15 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: Container Element
+
+`Wix Editor Elements ($w)`
+
+The [`Container`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) element now contains a new 
+[`onKeyPress()`](https://www.wix.com/velo/reference/$w/container/onkeypress) method. This method adds an event handler that's triggered when a key is pressed while the container or one of its child elements is focused.
+
+(April 16, 2024)
+
 ### New API: Open Media Manager
 
 `wix-dashboard`
@@ -34,7 +43,6 @@ Use the [`openModal()`](/wix-dashboard/openmodal) API to open a [dashboard modal
 - [Wix Site](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction): Access the site's published site URLs, included translated pages.
 
 (April 14, 2024)
-
 
 ### New release: More Wix Events APIs
 
