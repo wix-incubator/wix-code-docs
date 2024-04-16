@@ -7,13 +7,13 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
-### Updated Menu APIs
+### Updated API: MenuContainer Element
 
 `Wix Editor Elements ($w)`
 
 The [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer) element has been udpated.
 
-We removed the `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, and `onItemDblClick()` event handlers and `menuItems` property from the documentation. These methods and properties were never supported by `MenuContainer`.
+We removed the `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, and `onItemDblClick()` event handlers and the `menuItems` property from the documentation. These methods and properties were never supported by `MenuContainer`.
 
 (April 16, 2024)
 
