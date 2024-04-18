@@ -58,7 +58,7 @@
           {
             "title": "approveDraftPost example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function approveDraftPost(postId, options) {",
               "   try {",
@@ -141,7 +141,7 @@
           {
             "title": "bulkCreateDraftPosts example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkCreateDraftPosts(draftPosts, options) {",
               "   try {",
@@ -222,7 +222,7 @@
           {
             "title": "bulkDeleteDraftPosts example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkDeleteDraftPosts(postIds, options) {",
               "   try {",
@@ -304,7 +304,7 @@
           {
             "title": "bulkRejectDraftPost example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkRejectDraftPost(postIds, options) {",
               "   try {",
@@ -386,7 +386,7 @@
           {
             "title": "bulkRevertToUnpublished example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkRevertToUnpublished(postIds, options) {",
               "   try {",
@@ -451,7 +451,7 @@
           {
             "title": "bulkUpdateDraftPostLanguage example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkUpdateDraftPostLanguage(options) {",
               "   try {",
@@ -517,7 +517,7 @@
           {
             "title": "bulkUpdateDraftPosts example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function bulkUpdateDraftPosts(options) {",
               "   try {",
@@ -990,6 +990,144 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Create a post and send an email notification to subscribers ",
+            "body": [
+              "/*****************************************",
+              " * Backend code - my-backend-file.web.js *",
+              " *****************************************/",
+              "",
+              "import { draftPosts } from 'wix-blog-backend';",
+              "import { contacts, triggeredEmails } from 'wix-crm-backend';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// Create a draft post",
+              "",
+              "export const myCreateDraftPostFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (draftPost, options) => {",
+              "    try {",
+              "      const elevatedCreateDraftPost = elevate(draftPosts.createDraftPost);",
+              "      const createdDraftPost = await elevatedCreateDraftPost(draftPost, options);",
+              "      return createdDraftPost;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              "",
+              "// Send an email notification to all subscribers",
+              "",
+              "export const mySendEmailToContactFunction = webMethod(",
+              "  Permissions.Anyone, ",
+              "  async (postLink) => { // Pass the post URL from the onPostCreated event in events.js code",
+              "  let contactsInfo = []; // An array to contain the IDs and names of all subscribers",
+              "  const queryResults = await contacts.queryContacts()",
+              "    .eq(\"info.extendedFields.emailSubscriptions.subscriptionStatus\", \"SUBSCRIBED\") // Retrieve all subscribers",
+              "    .find();",
+              "  const subscribedContacts = queryResults.items;",
+              "",
+              "  if (subscribedContacts.length >= 1) {",
+              "    for(let i=0; i < subscribedContacts.length; i++) {",
+              "      const contactId = subscribedContacts[i]._id;",
+              "      const contactName = subscribedContacts[i].info.name.first;",
+              "      const contactObject = {",
+              "        id: contactId,",
+              "        name: contactName",
+              "      }; // Loop through the subscribedContacts object. Retrieve the ID and name of each contact from the object. Save each contact as a separate object, so the contact can be added to an array.",
+              "      contactsInfo.push(contactObject); // Push object to an array",
+              "    }",
+              "  } else {",
+              "    console.log('No contacts found');",
+              "    // Handle when no contacts are found",
+              "  }",
+              "",
+              "  const triggeredEmailTemplate = 'myEmail'; // Use your email template name from Triggered Emails",
+              "",
+              "  for (const contact of contactsInfo) { // Send each contact a notification email",
+              "    const options = {",
+              "      \"variables\": {",
+              "        \"name\": contact.name, // Save the contact name to use it in the triggered email template",
+              "        \"link\": postLink // Save the post URL to use it in the triggered template",
+              "      }",
+              "    };",
+              "",
+              "    try {",
+              "      await triggeredEmails.emailContact(triggeredEmailTemplate, contact.id, options); ",
+              "      console.log('Email sent to a contact');",
+              "      } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "      }",
+              "    }",
+              " });",
+              "",
+              "/*****************************************",
+              " * Backend code - events.js              *",
+              " *****************************************/",
+              "",
+              "import { mySendEmailToContactFunction } from 'backend/my-backend-file.web.js'",
+              "",
+              "export function wixBlog_onPostCreated(event) { // set the event that fires when a post is created",
+              "  const postLink = event.entity.url // save the post URL from the event payload",
+              "  mySendEmailToContactFunction(postLink) // send an email notification when a post is created",
+              "}",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { myCreateDraftPostFunction } from 'backend/my-backend-file.web.js'",
+              "",
+              "const post = {",
+              "  \"title\": \"Hello, world!\",",
+              "  \"commentingEnabled\": true,",
+              "  \"featured\": true,",
+              "  \"language\": \"en\",",
+              "  \"memberId\": \"8a8b9b73-4da8-47a5-8268-4396e68a0605\",",
+              "  \"richContent\": {",
+              "    \"nodes\": [",
+              "      {",
+              "        \"type\": \"PARAGRAPH\",",
+              "        \"id\": \"pvirv1\",",
+              "        \"nodes\": [",
+              "        {",
+              "          \"type\": \"TEXT\",",
+              "          \"id\": \"\",",
+              "          \"nodes\": [],",
+              "          \"textData\": {",
+              "          \"text\": \"Hello, world.\",",
+              "          \"decorations\": []",
+              "        }",
+              "      }",
+              "    ],",
+              "    \"paragraphData\": {}",
+              "    }",
+              "  ]",
+              " }",
+              "}",
+              "",
+              "const options = {",
+              " \"publish\": true, // Publish a post right after creating it",
+              " \"fieldsets\": [\"URL\"] // Define this fieldset to receive the URL in the payload",
+              "}",
+              "",
+              "$w.onReady(function () {",
+              "",
+              "myCreateDraftPostFunction(post, options).then(() => {",
+              "  console.log(\"Created post\") // create a post",
+              " })",
+              "",
+              "})",
+              "",
+              ""
+            ],
+            "extra": {
+              "description": "This example uses [triggered emails](https://dev.wix.com/docs/develop-websites/articles/workspace-tools/developer-tools/triggered-emails/getting-started-with-triggered-emails). Create a triggered email before trying this example."
+            }
           }
         ]
       },
@@ -1659,7 +1797,7 @@
           {
             "title": "getDraftPostTotals example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function getDraftPostTotals(options) {",
               "   try {",
@@ -1724,7 +1862,7 @@
           {
             "title": "getPostAmountsByLanguage example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function getPostAmountsByLanguage(status) {",
               "   try {",
@@ -1789,7 +1927,7 @@
           {
             "title": "isDraftPostAutoTranslatable example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function isDraftPostAutoTranslatable(draftPostId) {",
               "   try {",
@@ -2751,7 +2889,7 @@
           {
             "title": "markPostAsInModeration example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function markPostAsInModeration(postId, options) {",
               "   try {",
@@ -3233,7 +3371,7 @@
           {
             "title": "rejectDraftPost example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function rejectDraftPost(postId, options) {",
               "   try {",
@@ -3596,7 +3734,7 @@
           {
             "title": "revertToUnpublished example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function revertToUnpublished(postId, options) {",
               "   try {",
@@ -3672,7 +3810,7 @@
           {
             "title": "translateCategory example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function translateCategory(categoryId, language) {",
               "   try {",
@@ -3758,7 +3896,7 @@
           {
             "title": "translateDraft example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function translateDraft(postId, language, options) {",
               "   try {",
@@ -3823,7 +3961,7 @@
           {
             "title": "unpublishPost example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function unpublishPost(draftPostId) {",
               "   try {",
@@ -4207,7 +4345,7 @@
           {
             "title": "updateDraftPostContent example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function updateDraftPostContent(draftPostId, options) {",
               "   try {",
@@ -4293,7 +4431,7 @@
           {
             "title": "updateDraftPostLanguage example",
             "body": [
-              "import { draftPosts } from 'wix-blog-backend';",
+              "import { draftPosts } from '@wix/wix-blog-backend';",
               "  ",
               " async function updateDraftPostLanguage(postId, language, options) {",
               "   try {",
