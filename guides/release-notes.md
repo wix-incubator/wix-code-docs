@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `wix-forum.v2`
 
-The [Forums categories API](https://www.wix.com/velo/reference/wix-forum-v2/categories) has two new functions:
+The [Forum categories API](https://www.wix.com/velo/reference/wix-forum-v2/categories) has two new functions:
 * `subscribeContactToCategory()` allows you to subscribes a contact to a specific forum category.
 * `unsubscribeContactFromCategory()` allows you to unsubscribe a contact from a specific forum category.
 
