@@ -38,7 +38,7 @@ You cannot change the Schedule collection's permissions. 
 > **Note:**
 > This app collection contains read-only fields that cannot be managed from the collection. You can update the fields from the relevant app in your site’s [dashboard](https://support.wix.com/en/article/accessing-your-sites-dashboard).
 
-The field name is listed as the heading of each section, with the field key listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
+The field name is listed as the heading of each section, with the field ID listed in parentheses, like this: Name (name). The fields appear in this document in the order in which they appear in your collection by default.
 
 > **Note**
 > You cannot create a dynamic page based on the Schedule collection.
