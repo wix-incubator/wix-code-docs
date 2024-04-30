@@ -179,6 +179,16 @@
       "name": "wixVeloEventsCreateRefundRequest",
       "members": [
         {
+          "name": "previouslyRefundedAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Optional parameter used to prevent unintended refunds.\nUsed to check previously refunded amount according to the client\nagainst the amount from server perspective.\nIf they don't match, error with code `PREVIOUSLY_REFUNDED_AMOUNT_MISMATCH` is returned.\n\nRead more about preventing unintended refunds in this\n[article](<https://dev.wix.com/docs/rest/business-management/payments/refunds/introduction#preventing-unintended-refunds>).\n"
+        },
+        {
           "name": "refund",
           "type": [
             {
@@ -1227,6 +1237,36 @@
       }
     },
     {
+      "name": "wixVeloEventsRefundOptions",
+      "members": [
+        {
+          "name": "maxRefundAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Maximum amount allowed to be refunded in base units, e.g. \"12.95\"."
+        },
+        {
+          "name": "minRefundAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Minimum amount allowed to be refunded in base units, e.g. \"0.50\"."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "wixVeloEventsRefundUpdated",
       "members": [
         {
@@ -1270,59 +1310,114 @@
           "doc": "Currency of the charge."
         },
         {
-          "name": "maxRefundAmount",
+          "name": "previouslyRefundedAmount",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Maximum amount allowed to be refunded in base units, e.g. \"12.95\"."
+          "doc": "Sum of amounts of `SUCCEEDED` refunds for this charge in base units, e.g. \"6.47\".\nUsed to prevent unintended refunds, read more in this\n[article](<https://dev.wix.com/docs/rest/business-management/payments/refunds/introduction#preventing-unintended-refunds>)."
         },
         {
-          "name": "minRefundAmount",
+          "name": "refundOptions",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-payments-v2.Events.wixVeloEventsRefundOptions",
+              "displayName": "RefundOptions"
             }
           ],
-          "doc": "Minimum amount allowed to be refunded in base units, e.g. \"0.50\"."
+          "doc": "When charge is refundable, specifies what amounts are allowed for refund."
         },
         {
-          "name": "refundAllowed",
+          "name": "refundable",
           "optional": true,
           "type": [
             {
               "nativeType": "boolean"
             }
           ],
-          "doc": "True if refund is allowed for this charge."
+          "doc": "Whether the caller is allowed to refund the charge."
         },
         {
-          "name": "refundedAmount",
+          "name": "rejection",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-payments-v2.Events.wixVeloEventsRejection",
+              "displayName": "Rejection"
             }
           ],
-          "doc": "Sum of amounts of `SUCCEEDED` refunds for this charge in base units, e.g. \"6.47\"."
-        },
+          "doc": "When charge is not refundable, specifies why refund is not allowed."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfRefundabilityDetailsOneOf",
+            "members": [
+              "refundOptions",
+              "rejection"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          "Internal notes:"
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsRefundabilityDetailsOneOf",
+      "members": [
         {
-          "name": "rejectionReason",
+          "name": "refundOptions",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-payments-v2.Events.wixVeloEventsRefundOptions",
+              "displayName": "RefundOptions"
             }
           ],
-          "doc": "When `refundAllowed` is false, details why refund is not allowed.\n\nFollowing reasons are possible:\n- `CHARGE_REFUNDED` — charge is already fully refunded.\n- `CHARGE_REFUND_IN_PROGRESS` — another refund was initiated for this charge\nand is waiting for confirmation from the provider.\n- `CHARGE_DISPUTED` — charge was disputed.\n- `CHARGE_REFUND_PERIOD_ENDED` — charge is too old to be refunded.\n- `CHARGE_UNPAID` — charge is unpaid.\n- `PROVIDER_DOWN` — PSP is temporarily down.\n- `PROVIDER_NOT_SUPPORTED` — provider doesn't support refunds at the moment,\ncharge is in the wrong state,\nor we don't have required information for this transaction.\n- `PAYMENT_METHOD_NOT_SUPPORTED` — payment method of a charge doesn't support refunds.\n- `MERCHANT_ACCOUNT_NOT_SUPPORTED` — merchant account doesn't support refunds at the moment.\n- `MERCHANT_BALANCE_INSUFFICIENT` — merchant doesn't have enough balance to issue a refund for this charge.\n- `NOT_AUTHORIZED` — logged in merchant has no permission to refund this charge.\n"
+          "doc": "When charge is refundable, specifies what amounts are allowed for refund."
+        },
+        {
+          "name": "rejection",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-payments-v2.Events.wixVeloEventsRejection",
+              "displayName": "Rejection"
+            }
+          ],
+          "doc": "When charge is not refundable, specifies why refund is not allowed."
         }
       ],
       "docs": {
         "description": [
-          "Internal notes:"
+          ""
+        ]
+      }
+    },
+    {
+      "name": "wixVeloEventsRejection",
+      "members": [
+        {
+          "name": "reason",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Following reasons are possible:\n- `CHARGE_REFUNDED` — charge is already fully refunded.\n- `CHARGE_REFUND_IN_PROGRESS` — another refund was initiated for this charge\nand is waiting for confirmation from the provider.\n- `CHARGE_DISPUTED` — charge was disputed.\n- `CHARGE_REFUND_PERIOD_ENDED` — charge is too old to be refunded.\n- `CHARGE_UNPAID` — charge is unpaid.\n- `PROVIDER_DOWN` — PSP is temporarily down.\n- `PROVIDER_NOT_SUPPORTED` — provider doesn't support refunds at the moment,\ncharge is in the wrong state,\nor we don't have required information for this transaction.\n- `PAYMENT_METHOD_NOT_SUPPORTED` — payment method of a charge doesn't support refunds.\n- `MERCHANT_ACCOUNT_NOT_SUPPORTED` — merchant account doesn't support refunds at the moment.\n- `MERCHANT_BALANCE_INSUFFICIENT` — merchant doesn't have enough balance to issue a refund for this charge.\n- `NOT_AUTHORIZED` — logged in merchant has no permission to refund this charge."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
