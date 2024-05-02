@@ -3,7 +3,7 @@ title: Introduction
 ---
 # Introduction
 
-> **Note:** There is a new version of the [Ticket Definitions API](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction). If you're already using Ticket Definitions modules in your code, they will continue to work, but we recommend you to migrate to the new API as soon as possible.
+> **Note:** There is a new version of this [API](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitionsv2/introduction). If you're already using this module in your code, it will continue to work until November 8th, 2024.
 
 The Ticket Definitions API allows you to manage ticket definitions for tickets to your site's events.
 
