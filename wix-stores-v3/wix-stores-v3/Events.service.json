@@ -1665,7 +1665,6 @@
         },
         {
           "name": "products",
-          "optional": true,
           "type": [
             {
               "complexType": {
@@ -11013,7 +11012,7 @@
               "displayName": "Brand"
             }
           ],
-          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`."
+          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`.\nIf you provide `brand.name` only then if brand with such name already exits it will be assigned, otherwise new brand will be created.\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "infoSections",
@@ -11031,7 +11030,7 @@
               }
             }
           ],
-          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request."
+          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request.\nTo assign existing info section to product provide `infoSections.id` or `infoSections.uniqueName`.\nTo create new info section provide `uniqueName`, `title` and `description`\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "mainCategoryId",
@@ -11070,7 +11069,7 @@
               }
             }
           ],
-          "doc": "Product Modifiers"
+          "doc": "Product Modifiers. Allows buyer to customize product, e.g. select Color, Size and so on similarly to `options` but with one main difference - `modifiers` never generate any variants.\nFor existing modifiers and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing modifiers ids will be resolved, not existing modifiers will be created.\n*None*: you cannot change name of existing modifier via this endpoint by passing id and changed name, if you pass id name will be ignored. If you want to update existing modifier name do it by calling CustomizationService"
         },
         {
           "name": "name",
@@ -11098,7 +11097,7 @@
               }
             }
           ],
-          "doc": "Product options"
+          "doc": "Product options. Allows buyer to customize product, e.g. select Color, Size and so on.\nAlways generates variants: every variant must have exactly one choice related to each option.\nSince options and variants tightly coupled and rely on each other they usually should be provided together in all operations.\nFor existing options and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing options ids will be resolved, not existing options will be created.\n*None*: you cannot change name of existing option via this endpoint but you can do it by calling CustomizationService"
         },
         {
           "name": "physicalOptions",
@@ -11133,6 +11132,7 @@
         },
         {
           "name": "revision",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -11150,7 +11150,7 @@
               "displayName": "Ribbon"
             }
           ],
-          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`."
+          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`.\nIf you provide `ribbon.name` only then if ribbon with such name already exits it will be assigned, otherwise new ribbon will be created.\n*None*: you cannot change name of existing ribbon via this endpoint but you can do it by calling RibbonService."
         },
         {
           "name": "seoData",
@@ -11182,7 +11182,17 @@
               "displayName": "Subscription"
             }
           ],
-          "doc": ""
+          "doc": "Product subscription based purchases."
+        },
+        {
+          "name": "taxGroupId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax group id"
         },
         {
           "name": "variants",
@@ -11200,7 +11210,7 @@
               }
             }
           ],
-          "doc": "List of related variants.\nOn update product request with variants product options must be provided"
+          "doc": "List of related variants.\nOn create request at least one variant must be provided.\nOn update product request if you wish to update variants you must pass all of them with together with product options.\nPartial update of variants is not supported.\nIf you want to update existing variant you must provide `id`, otherwise new variant with different id will be created which might break some integrations that rely on variant ids."
         },
         {
           "name": "visible",
@@ -11220,7 +11230,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the product is visible in POS (point of sale app). Default: `true`"
+          "doc": "Whether the product is visible in POS (point of sale app). Default: `true` for productType PHYSICAL.\nNote: productType DIGITAL is not supported in POS so for such products it's always `false` and it's not allowed to change it."
         }
       ],
       "extra": {
@@ -13997,34 +14007,6 @@
       }
     },
     {
-      "name": "wixVeloEventsVariantBulkErrors",
-      "members": [
-        {
-          "name": "variantErrors",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-stores-v3.Events.wixVeloEventsItemMetadata",
-                    "displayName": "ItemMetadata"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "errors occurred in variants service"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "wixVeloEventsVariantComposite",
       "members": [
         {
@@ -14035,7 +14017,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant id."
+          "doc": "Variant id. Autogenerated on create."
         },
         {
           "name": "barcode",
@@ -14045,7 +14027,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant barcode."
+          "doc": "Variant barcode. . Unique for each variant in store."
         },
         {
           "name": "choices",
@@ -14063,7 +14045,7 @@
               }
             }
           ],
-          "doc": "A list of options with a selection of choice per option\nIn case this list is empty, this is the default variant of an unmanaged product"
+          "doc": "List of option choices. Must contain exactly one choice of every option defined in product `options`.\nExample: product has option Size with TEXT_CHOICES S and L and option Color with SWATCH_CHOICES blue and red. Then valid choices will be:\n[Size:S:TEXT_CHOICES, Color:blue:SWATCH_CHOICES] or [Size:S:TEXT_CHOICES, Color:red:SWATCH_CHOICES] or [Size:L:TEXT_CHOICES, Color:blue:SWATCH_CHOICES] or [Size:L:TEXT_CHOICES, Color:red:SWATCH_CHOICES]"
         },
         {
           "name": "digitalOptions",
@@ -14128,7 +14110,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant SKU (stock keeping unit)"
+          "doc": "Variant SKU (stock keeping unit). Unique for each variant in store."
         },
         {
           "name": "visible",
