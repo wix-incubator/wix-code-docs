@@ -1115,6 +1115,23 @@
       "name": "catalogBulkCreateProducts",
       "params": [
         {
+          "name": "products",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-stores-v3.Product.ProductComposite"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -1126,14 +1143,23 @@
         }
       ],
       "requiredFields": [
-        "options.products.subscription.subscriptionPlans",
-        "options.products.subscription.subscriptionPlans.discount",
-        "options.products.subscription.subscriptionPlans.discount.type",
-        "options.products.subscription.subscriptionPlans.subscriptionSettings",
-        "options.products.subscription.subscriptionPlans.subscriptionSettings.frequency",
-        "options.products.subscription.subscriptionPlans.title",
-        "options.products.variants.digitalOptions.digitalFile",
-        "options.products.variants.digitalOptions.digitalFile._id"
+        "products",
+        "products.media.items",
+        "products.name",
+        "products.physicalOptions.pricePerUnit.measurementUnit",
+        "products.productType",
+        "products.subscription.subscriptionPlans",
+        "products.subscription.subscriptionPlans.discount",
+        "products.subscription.subscriptionPlans.discount.type",
+        "products.subscription.subscriptionPlans.subscriptionSettings",
+        "products.subscription.subscriptionPlans.subscriptionSettings.frequency",
+        "products.subscription.subscriptionPlans.title",
+        "products.variants",
+        "products.variants.digitalOptions.digitalFile",
+        "products.variants.digitalOptions.digitalFile._id",
+        "products.variants.physicalOptions.pricePerUnit.settings.measurementUnit",
+        "products.variants.price",
+        "products.variants.price.basePrice"
       ],
       "ret": {
         "type": [
@@ -1151,7 +1177,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates products in bulk. Support partial success.\nLimitations. In one request you can pass limited number of entities in total for all products:\n- options - 100\n- infoSections - 100\n- variants - 1000\nFor example, you can create 100 products with up to 10 variants in each (100*10 = 1000) or one product with 1000 variants.\nPermissions: Requires WIX_STORES.PRODUCT_CREATE permission.\nIf together with product you create other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE, WIX_STORES.INFO_SECTION_CREATE",
+        "summary": "Permissions: Requires WIX_STORES.PRODUCT_CREATE permission. If you provide variants with inventory in request then you also need  WIX_STORES.INVENTORY_UPDATE and/or WIX_STORES.INVENTORY_READ permissions.\nIf together with product you create other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE, WIX_STORES.INFO_SECTION_CREATE",
         "description": [],
         "examples": [
           {
@@ -1159,9 +1185,9 @@
             "body": [
               "import { product } from 'wix-stores.v3';",
               "",
-              "async function catalogBulkCreateProducts(options) {",
+              "async function catalogBulkCreateProducts(products, options) {",
               "  try {",
-              "    const result = await product.catalogBulkCreateProducts(options);",
+              "    const result = await product.catalogBulkCreateProducts(products, options);",
               "    return result;",
               "  } catch (error) {",
               "    console.error(error);",
@@ -1182,9 +1208,9 @@
               "",
               "export const catalogBulkCreateProducts = webMethod(",
               "  Permissions.Anyone,",
-              "  async (options) => {",
+              "  async (products, options) => {",
               "    try {",
-              "      const result = await elevatedCatalogBulkCreateProducts(options);",
+              "      const result = await elevatedCatalogBulkCreateProducts(products, options);",
               "      return result;",
               "    } catch (error) {",
               "      console.error(error);",
@@ -1242,7 +1268,7 @@
         "products.product",
         "products.product._id",
         "products.product.media.items",
-        "products.product.media.main",
+        "products.product.physicalOptions.pricePerUnit.measurementUnit",
         "products.product.revision",
         "products.product.subscription.subscriptionPlans.discount",
         "products.product.subscription.subscriptionPlans.discount.type",
@@ -1251,6 +1277,7 @@
         "products.product.subscription.subscriptionPlans.title",
         "products.product.variants.digitalOptions.digitalFile",
         "products.product.variants.digitalOptions.digitalFile._id",
+        "products.product.variants.physicalOptions.pricePerUnit.settings.measurementUnit",
         "products.product.variants.price",
         "products.product.variants.price.basePrice"
       ],
@@ -1270,9 +1297,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Bulk update up to 100 products. Can return partial success.\nIf you don't need to update product's `options`, variants and inventory you can stop reading.",
+        "summary": "Bulk update up to 100 products. Can return partial success.\nIf you need to update product's `options`, variants or inventory please read carefully description of UpdateProduct method, same logic applied here.",
         "description": [
-          "Limitations. In one request you can pass limited number of entities in total for all products:\n- options - 100\n- infoSections - 100\n- variants - 1000\nFor example, you can update 100 products with up to 10 variants in each (100*10 = 1000) or one product with 1000 variants.\n\nPermissions: Always requires WIX_STORES.PRODUCT_UPDATE.\nIf together with product you provide other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE or WIX_STORES.PRODUCT_OPTION_UPDATE, WIX_STORES.INFO_SECTION_CREATE"
+          "Limitations. In one request you can pass limited number of entities in total for all products:\n- options - 100\n- modifiers - 100\n- infoSections - 100\n- variants - 1000\nFor example, you can update 100 products with up to 10 variants in each (100*10 = 1000) or one product with 1000 variants.\n\nScopes: Requires app to be authorized with `SCOPE.DC-STORES.MANAGE-PRODUCTS` permissions scope.\n\nPermissions: Always requires WIX_STORES.PRODUCT_UPDATE. If you provide variants with inventory in request then you also need  WIX_STORES.INVENTORY_UPDATE and/or WIX_STORES.INVENTORY_READ permissions.\nIf together with product you provide other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE or WIX_STORES.PRODUCT_OPTION_UPDATE, WIX_STORES.INFO_SECTION_CREATE"
         ],
         "examples": [
           {
@@ -1354,8 +1381,8 @@
       "requiredFields": [
         "product",
         "product.media.items",
-        "product.media.main",
         "product.name",
+        "product.physicalOptions.pricePerUnit.measurementUnit",
         "product.productType",
         "product.subscription.subscriptionPlans",
         "product.subscription.subscriptionPlans.discount",
@@ -1363,8 +1390,12 @@
         "product.subscription.subscriptionPlans.subscriptionSettings",
         "product.subscription.subscriptionPlans.subscriptionSettings.frequency",
         "product.subscription.subscriptionPlans.title",
+        "product.variants",
         "product.variants.digitalOptions.digitalFile",
-        "product.variants.digitalOptions.digitalFile._id"
+        "product.variants.digitalOptions.digitalFile._id",
+        "product.variants.physicalOptions.pricePerUnit.settings.measurementUnit",
+        "product.variants.price",
+        "product.variants.price.basePrice"
       ],
       "ret": {
         "type": [
@@ -1382,9 +1413,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a new Product with variants and inventory.\nIf any variant or inventory item creation failed entire request will fail.",
+        "summary": "Creates a new Product with ribbon, brand, info sections, options/modifiers and inventory.",
         "description": [
-          "Permissions: Requires WIX_STORES.PRODUCT_CREATE and WIX_STORES.INVENTORY_CREATE permissions.\nIf together with product you create other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE, WIX_STORES.INFO_SECTION_CREATE"
+          "Scopes: Requires app to be authorized with `SCOPE.DC-STORES.MANAGE-PRODUCTS` permissions scope.\n\nPermissions: Requires WIX_STORES.PRODUCT_CREATE permission. If you provide variants with inventory in request then you also need  WIX_STORES.INVENTORY_UPDATE and/or WIX_STORES.INVENTORY_READ permissions.\nIf together with product you create other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE, WIX_STORES.INFO_SECTION_CREATE"
         ],
         "examples": [
           {
@@ -1477,7 +1508,7 @@
         "_id",
         "product",
         "product.media.items",
-        "product.media.main",
+        "product.physicalOptions.pricePerUnit.measurementUnit",
         "product.revision",
         "product.subscription.subscriptionPlans.discount",
         "product.subscription.subscriptionPlans.discount.type",
@@ -1486,6 +1517,7 @@
         "product.subscription.subscriptionPlans.title",
         "product.variants.digitalOptions.digitalFile",
         "product.variants.digitalOptions.digitalFile._id",
+        "product.variants.physicalOptions.pricePerUnit.settings.measurementUnit",
         "product.variants.price",
         "product.variants.price.basePrice"
       ],
@@ -1505,9 +1537,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Update a Product, supports partial update.\nPass the latest `revision` for a successful update.\nIf you don't need to update product's `options`, variants and inventory you can stop reading.",
+        "summary": "Update a Product, supports partial update.\nPass the latest `revision` for a successful update.\nIf you don't need to update product's `options`, `variants` and `inventory` you can stop reading.",
         "description": [
-          "If product options updated then `item.variants` must be provided.\nIf `item.variants` provided they will replace all variants and inventory items for given product.\nIf you want update existing variant make sure to provide `id` with new data. If `id` field isn't provided then new variants with new ID will be created.\nIf you don't want to update variants omit `variants` field.\nIf you don't want to update inventory items for specific variants don't provide inventory items for it. If you provide at least one inventory item it will override all existing inventory items for this variant.\nIf any variant or inventory item update failed then entire request will fail.\n\nPermissions: Always requires WIX_STORES.PRODUCT_UPDATE. If you provide variants with inventory in request then you also need  WIX_STORES.INVENTORY_UPDATE and/or WIX_STORES.INVENTORY_READ permissions.\nIf together with product you provide other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE or WIX_STORES.PRODUCT_OPTION_UPDATE, WIX_STORES.INFO_SECTION_CREATE or WIX_STORES.INFO_SECTION_UPDATE"
+          "If product `options` updated then `variants` must be provided.\nIf `variants` provided they will replace all variants for given product.\nIf you want update existing variant make sure to provide `id` with new data. If `id` field isn't provided then new variants with new ID will be created.\nIf you don't want to update variants omit `variants` field.\nIf you don't want to update inventory items don't provide `inventoryItem` for any variants. In such case for existing variants (with variant.id provided) inventory won't change but all new variants without ids will be out of stock.\nIf you provide at least one inventory item inventory will be updated for all variants, variants for which you don't provide inventoryItem considered out of stock.\n\nScopes: Requires app to be authorized with `SCOPE.DC-STORES.MANAGE-PRODUCTS` permissions scope.\n\nPermissions: Always requires WIX_STORES.PRODUCT_UPDATE. If you provide variants with inventory in request then you also need  WIX_STORES.INVENTORY_UPDATE and/or WIX_STORES.INVENTORY_READ permissions.\nIf together with product you provide other entities then you might need also WIX_STORES.BRAND_CREATE, WIX_STORES.RIBBON_CREATE, WIX_STORES.PRODUCT_OPTION_CREATE or WIX_STORES.PRODUCT_OPTION_UPDATE, WIX_STORES.INFO_SECTION_CREATE or WIX_STORES.INFO_SECTION_UPDATE"
         ],
         "examples": [
           {
@@ -1750,63 +1782,34 @@
       "ret": {
         "type": [
           {
-            "referenceType": "wix-stores-v3.Product.ProductsQueryBuilder"
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-stores-v3.Product.EventuallyConsistentQueryProductsResponse"
+                }
+              ]
+            }
           }
         ],
         "doc": null
       },
       "docs": {
-        "summary": "Query endpoint for wix-stores.v3",
-        "description": [
-          "",
-          "",
-          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
-          "|:---:|:---:|",
-          "|`physicalOptions.fulfillerId`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`physicalOptions.shippingWeightRange.minValue`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`physicalOptions.shippingWeightRange.maxValue`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`_id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`_createdDate`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`_updatedDate`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`name`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`slug`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`visible`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`visibleInPos`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`taxGroupId`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`options.choicesSettings.choices.choiceId`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`options.optionId`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`brand.id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`brand.name`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`infoSections.id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`infoSections.uniqueName`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`ribbon.id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`directCategories.id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`directCategories.index`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`allCategories.id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`allCategories.index`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`basePriceRange.minValue.value`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`basePriceRange.maxValue.value`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
-          "|`inventory.availabilityStatus`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`inventory.preorderStatus`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`productType`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`variants.physicalOptions.weight`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge)|",
-          "|`variants.visible`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|",
-          "|`variants.sku`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`variants.barcode`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`variants.choices.optionName`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`variants.choices.choiceName`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`variants.price.basePrice.value`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`variants.price.discountedPrice.value`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
-          "|`subscription.allowOneTimePurchases`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome)|"
-        ],
+        "description": [],
         "examples": [
           {
             "title": "eventuallyConsistentQueryProducts example",
             "body": [
               "import { product } from 'wix-stores.v3';",
               "",
-              "async function eventuallyConsistentQueryProducts() {",
-              "  const { items } = product.eventuallyConsistentQueryProducts().find();",
+              "async function eventuallyConsistentQueryProducts(options) {",
+              "  try {",
+              "    const result = await product.eventuallyConsistentQueryProducts(options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               ""
             ]
@@ -1979,7 +1982,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves product by slug. If product exist but has `visible:false` it will be returned only if caller has additional permission `WIX_STORES.PRODUCT_READ_NOT_VISIBLE`, otherwise NOT_FOUND error will be thrown.",
+        "summary": "Retrieves product by slug. If product exist but has `visible:false` it will be returned only if caller has additional permission `WIX_STORES.PRODUCT_READ_NON_VISIBLE` or `\tSCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope, otherwise NOT_FOUND error will be thrown.",
         "description": [],
         "examples": [
           {
@@ -2029,6 +2032,85 @@
         }
       ],
       "syntaxName": "getProductBySlug"
+    },
+    {
+      "name": "queryProducts",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-stores-v3.Product.QueryProductsOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "referenceType": "wix-stores-v3.Product.ProductsQueryBuilder"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Query Products using [WQL - Wix Query Language](https://dev.wix.com/api/rest/getting-started/api-query-language). Use instead of Search when eventually consistent data is not acceptable",
+        "description": [
+          "",
+          "",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`_id`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
+          "|`_createdDate`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
+          "|`_updatedDate`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`lt()`](wix-stores-v3.Product.ProductsQueryBuilder#lt),[`le()`](wix-stores-v3.Product.ProductsQueryBuilder#le),[`gt()`](wix-stores-v3.Product.ProductsQueryBuilder#gt),[`ge()`](wix-stores-v3.Product.ProductsQueryBuilder#ge),[`ascending()`](wix-stores-v3.Product.ProductsQueryBuilder#ascending),[`descending()`](wix-stores-v3.Product.ProductsQueryBuilder#descending)|",
+          "|`slug`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|",
+          "|`options.optionId`|[`eq()`](wix-stores-v3.Product.ProductsQueryBuilder#eq),[`ne()`](wix-stores-v3.Product.ProductsQueryBuilder#ne),[`exists()`](wix-stores-v3.Product.ProductsQueryBuilder#exists),[`in()`](wix-stores-v3.Product.ProductsQueryBuilder#in),[`hasSome()`](wix-stores-v3.Product.ProductsQueryBuilder#hasSome),[`startsWith()`](wix-stores-v3.Product.ProductsQueryBuilder#startsWith)|"
+        ],
+        "examples": [
+          {
+            "title": "queryProducts example",
+            "body": [
+              "import { product } from 'wix-stores.v3';",
+              "",
+              "async function queryProducts() {",
+              "  const { items } = product.queryProducts().find();",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "queryProducts example for exporting from backend code",
+            "body": [
+              "import { product } from 'wix-stores.v3';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "",
+              "export const queryProducts = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (options) => {",
+              "    try {",
+              "      const result = await product.queryProducts(options);",
+              "      return result;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "queryProducts"
     },
     {
       "name": "searchProducts",
@@ -3746,7 +3828,6 @@
         },
         {
           "name": "products",
-          "optional": true,
           "type": [
             {
               "complexType": {
@@ -4693,23 +4774,6 @@
           "doc": "A list of requested fields to be included in the response."
         },
         {
-          "name": "products",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-stores-v3.Product.ProductComposite"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": ""
-        },
-        {
           "name": "returnEntity",
           "optional": true,
           "type": [
@@ -4822,7 +4886,7 @@
               "referenceType": "wix-stores-v3.Product.Brand"
             }
           ],
-          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`."
+          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`.\nIf you provide `brand.name` only then if brand with such name already exits it will be assigned, otherwise new brand will be created.\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "infoSections",
@@ -4839,7 +4903,7 @@
               }
             }
           ],
-          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request."
+          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request.\nTo assign existing info section to product provide `infoSections.id` or `infoSections.uniqueName`.\nTo create new info section provide `uniqueName`, `title` and `description`\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "mainCategoryId",
@@ -4876,7 +4940,7 @@
               }
             }
           ],
-          "doc": "Product Modifiers"
+          "doc": "Product Modifiers. Allows buyer to customize product, e.g. select Color, Size and so on similarly to `options` but with one main difference - `modifiers` never generate any variants.\nFor existing modifiers and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing modifiers ids will be resolved, not existing modifiers will be created.\n*None*: you cannot change name of existing modifier via this endpoint by passing id and changed name, if you pass id name will be ignored. If you want to update existing modifier name do it by calling CustomizationService"
         },
         {
           "name": "name",
@@ -4903,7 +4967,7 @@
               }
             }
           ],
-          "doc": "Product options"
+          "doc": "Product options. Allows buyer to customize product, e.g. select Color, Size and so on.\nAlways generates variants: every variant must have exactly one choice related to each option.\nSince options and variants tightly coupled and rely on each other they usually should be provided together in all operations.\nFor existing options and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing options ids will be resolved, not existing options will be created.\n*None*: you cannot change name of existing option via this endpoint but you can do it by calling CustomizationService"
         },
         {
           "name": "physicalOptions",
@@ -4937,6 +5001,7 @@
         },
         {
           "name": "revision",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -4953,7 +5018,7 @@
               "referenceType": "wix-stores-v3.Product.Ribbon"
             }
           ],
-          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`."
+          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`.\nIf you provide `ribbon.name` only then if ribbon with such name already exits it will be assigned, otherwise new ribbon will be created.\n*None*: you cannot change name of existing ribbon via this endpoint but you can do it by calling RibbonService."
         },
         {
           "name": "seoData",
@@ -4983,7 +5048,17 @@
               "referenceType": "wix-stores-v3.Product.Subscription"
             }
           ],
-          "doc": ""
+          "doc": "Product subscription based purchases."
+        },
+        {
+          "name": "taxGroupId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax group id"
         },
         {
           "name": "variants",
@@ -5000,7 +5075,7 @@
               }
             }
           ],
-          "doc": "List of related variants.\nOn update product request with variants product options must be provided"
+          "doc": "List of related variants.\nOn create request at least one variant must be provided.\nOn update product request if you wish to update variants you must pass all of them with together with product options.\nPartial update of variants is not supported.\nIf you want to update existing variant you must provide `id`, otherwise new variant with different id will be created which might break some integrations that rely on variant ids."
         },
         {
           "name": "visible",
@@ -5020,7 +5095,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the product is visible in POS (point of sale app). Default: `true`"
+          "doc": "Whether the product is visible in POS (point of sale app). Default: `true` for productType PHYSICAL.\nNote: productType DIGITAL is not supported in POS so for such products it's always `false` and it's not allowed to change it."
         }
       ],
       "docs": {
@@ -5704,7 +5779,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or `SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
         },
         {
           "name": "search",
@@ -5744,7 +5819,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or `SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
         },
         {
           "name": "search",
@@ -6537,7 +6612,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or `SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope permission required."
         },
         {
           "name": "search",
@@ -7590,6 +7665,16 @@
           "doc": "A list of requested fields to be included in the response."
         },
         {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-stores-v3.Product.CursorQuery"
+            }
+          ],
+          "doc": "WQL expression. Please pay attention that unlike other arrays when you want to filter by `inventory`, `options` or `variants` instead of standard array operators you must use `$matchItems` (for usage see examples).\nIt means that product will be returned only if one or more items satisfy all filters specified in $matchItems.\nFor example, if you have 2 variants: one visible with price 10 and another one not visible with price 20, when inside $matchItems you specify `visible:true` and `price > 15` nothing will be returned because there are no variants which satisfy both conditions.\nYou still can use `$isEmpty` and `$exists` operators for fields listed above.\nSee examples to understand supported capabilities."
+        },
+        {
           "name": "returnNonVisibleProducts",
           "optional": true,
           "type": [
@@ -7597,7 +7682,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or\t`SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scop required."
         }
       ],
       "docs": {
@@ -7644,7 +7729,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or\t`SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scop required."
         }
       ],
       "docs": {
@@ -13489,7 +13574,7 @@
               "referenceType": "wix-stores-v3.Product.Brand"
             }
           ],
-          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`."
+          "doc": "Optional - Brand. To assign existing brand to product provide `brand.id`.\nIf you provide `brand.name` only then if brand with such name already exits it will be assigned, otherwise new brand will be created.\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "infoSections",
@@ -13506,7 +13591,7 @@
               }
             }
           ],
-          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request."
+          "doc": "Product info sections.\n> **Note:** This field is returned by the API only when you pass `fields: \"INFO_SECTION\"` in a request.\nTo assign existing info section to product provide `infoSections.id` or `infoSections.uniqueName`.\nTo create new info section provide `uniqueName`, `title` and `description`\n*None*: you cannot change name of existing brand via this endpoint but you can do it by calling BrandService."
         },
         {
           "name": "mainCategoryId",
@@ -13543,7 +13628,7 @@
               }
             }
           ],
-          "doc": "Product Modifiers"
+          "doc": "Product Modifiers. Allows buyer to customize product, e.g. select Color, Size and so on similarly to `options` but with one main difference - `modifiers` never generate any variants.\nFor existing modifiers and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing modifiers ids will be resolved, not existing modifiers will be created.\n*None*: you cannot change name of existing modifier via this endpoint by passing id and changed name, if you pass id name will be ignored. If you want to update existing modifier name do it by calling CustomizationService"
         },
         {
           "name": "name",
@@ -13570,7 +13655,7 @@
               }
             }
           ],
-          "doc": "Product options"
+          "doc": "Product options. Allows buyer to customize product, e.g. select Color, Size and so on.\nAlways generates variants: every variant must have exactly one choice related to each option.\nSince options and variants tightly coupled and rely on each other they usually should be provided together in all operations.\nFor existing options and choices provide ids only, all other data (e.g. names, title, types and so on) will be resolved for you by ids.\nIf you don't have ids it's ok to omit them but provide all other data instead. For existing options ids will be resolved, not existing options will be created.\n*None*: you cannot change name of existing option via this endpoint but you can do it by calling CustomizationService"
         },
         {
           "name": "physicalOptions",
@@ -13604,6 +13689,7 @@
         },
         {
           "name": "revision",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -13620,7 +13706,7 @@
               "referenceType": "wix-stores-v3.Product.Ribbon"
             }
           ],
-          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`."
+          "doc": "Product ribbon. To assign existing ribbon to product provide `ribbon.id`.\nIf you provide `ribbon.name` only then if ribbon with such name already exits it will be assigned, otherwise new ribbon will be created.\n*None*: you cannot change name of existing ribbon via this endpoint but you can do it by calling RibbonService."
         },
         {
           "name": "seoData",
@@ -13650,7 +13736,17 @@
               "referenceType": "wix-stores-v3.Product.Subscription"
             }
           ],
-          "doc": ""
+          "doc": "Product subscription based purchases."
+        },
+        {
+          "name": "taxGroupId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax group id"
         },
         {
           "name": "variants",
@@ -13667,7 +13763,7 @@
               }
             }
           ],
-          "doc": "List of related variants.\nOn update product request with variants product options must be provided"
+          "doc": "List of related variants.\nOn create request at least one variant must be provided.\nOn update product request if you wish to update variants you must pass all of them with together with product options.\nPartial update of variants is not supported.\nIf you want to update existing variant you must provide `id`, otherwise new variant with different id will be created which might break some integrations that rely on variant ids."
         },
         {
           "name": "visible",
@@ -13687,7 +13783,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the product is visible in POS (point of sale app). Default: `true`"
+          "doc": "Whether the product is visible in POS (point of sale app). Default: `true` for productType PHYSICAL.\nNote: productType DIGITAL is not supported in POS so for such products it's always `false` and it's not allowed to change it."
         }
       ],
       "extra": {
@@ -13921,6 +14017,127 @@
             }
           ],
           "doc": "Physical properties, can be provided only when `product_type` is PHYSICAL"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryProductsOptions",
+      "members": [
+        {
+          "name": "fields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of requested fields to be included in the response."
+        },
+        {
+          "name": "returnNonVisibleProducts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return products with `visible:false`.\nDefault: false so only visible products will be in response.\nWhen true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or `SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryProductsRequest",
+      "members": [
+        {
+          "name": "fields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of requested fields to be included in the response."
+        },
+        {
+          "name": "query",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-stores-v3.Product.CursorQuery"
+            }
+          ],
+          "doc": "WQL expression"
+        },
+        {
+          "name": "returnNonVisibleProducts",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether to return products with `visible:false`.\nDefault: false so only visible products will be in response.\nWhen true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or `SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryProductsResponse",
+      "members": [
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-stores-v3.Product.CursorPagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata."
+        },
+        {
+          "name": "products",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-stores-v3.Product.Product"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The retrieved Products"
         }
       ],
       "docs": {
@@ -14467,7 +14684,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or\t`SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
         },
         {
           "name": "search",
@@ -14514,7 +14731,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NOT_VISIBLE` permission required."
+          "doc": "Whether to return products with `visible:false`. Default: false so only visible products will be in response. When true `WIX_STORES.PRODUCT_READ_NON_VISIBLE` permission or\t`SCOPE.DC-STORES.MANAGE-PRODUCTS` permission scope required."
         },
         {
           "name": "search",
@@ -16306,33 +16523,6 @@
       }
     },
     {
-      "name": "VariantBulkErrors",
-      "members": [
-        {
-          "name": "variantErrors",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-stores-v3.Product.ItemMetadata"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "errors occurred in variants service"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "VariantComposite",
       "members": [
         {
@@ -16343,7 +16533,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant id."
+          "doc": "Variant id. Autogenerated on create."
         },
         {
           "name": "barcode",
@@ -16353,7 +16543,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant barcode."
+          "doc": "Variant barcode. . Unique for each variant in store."
         },
         {
           "name": "choices",
@@ -16370,7 +16560,7 @@
               }
             }
           ],
-          "doc": "A list of options with a selection of choice per option\nIn case this list is empty, this is the default variant of an unmanaged product"
+          "doc": "List of option choices. Must contain exactly one choice of every option defined in product `options`.\nExample: product has option Size with TEXT_CHOICES S and L and option Color with SWATCH_CHOICES blue and red. Then valid choices will be:\n[Size:S:TEXT_CHOICES, Color:blue:SWATCH_CHOICES] or [Size:S:TEXT_CHOICES, Color:red:SWATCH_CHOICES] or [Size:L:TEXT_CHOICES, Color:blue:SWATCH_CHOICES] or [Size:L:TEXT_CHOICES, Color:red:SWATCH_CHOICES]"
         },
         {
           "name": "digitalOptions",
@@ -16430,7 +16620,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Variant SKU (stock keeping unit)"
+          "doc": "Variant SKU (stock keeping unit). Unique for each variant in store."
         },
         {
           "name": "visible",
