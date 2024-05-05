@@ -111,7 +111,8 @@ async function resumableFileUpload(resumableUploadUrlResponse: GenerateFileResum
   }
 }
 ```
-
+## Add Uploaded Media
+In order to add the uploaded media files to your Wix site, use [getFileDescriptor](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor) to retrieve the compatable media URI. You need to pass in `data.file.id` from the [response object](#Response) as the only parameter.  
 
 ## Status/Error Codes
 Errors from this endpoint will include an HTTP status code.
