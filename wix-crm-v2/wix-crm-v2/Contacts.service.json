@@ -54,35 +54,432 @@
       "docs": {
         "summary": "Creates a new contact.",
         "description": [
-          "The `createContact()` function returns a Promise\nthat resolves to the new contact when it is created.\n\nThe `info` parameter object must include a name, phone number, or email address.\n If all 3 of these parameters are missing,\n the contact won't be created.\n\n<!--\n> **Note:**\n> Only visitors with\n> **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n> can create contacts.\n> You can override the permissions by setting the `suppressAuth` option to `true`.\n-->\n  By default,\n if the call contains an email already in use by another contact,\n the new contact won't be created.\n To override this behavior,\n set `allowDuplicates` in the `options` object to `true`."
+          "The `createContact()` function returns a Promise\nthat resolves to the new contact when it is created.\n\nThe `info` parameter object must include a name, phone number, or email address.\n If all 3 of these parameters are missing,\n the contact won't be created.\n\nBy default, if the call contains an email already in use by another contact, the new contact won't be created. To override this behavior, set `allowDuplicates` in the `options` object to `true`.\n"
         ],
         "examples": [
           {
-            "title": "createContact example",
+            "title": "Create a new contact using a name and email (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function createContact(info, options) {",
-              "   try {",
-              "     const result = await contacts.createContact(info, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contact info value:",
+              " * {",
+              " *   name: {",
+              " *     first: 'John',",
+              " *     last: 'Doe'",
+              " *   },",
+              " *   emails: {",
+              " *     items: [",
+              " *       {",
+              " *         email: 'johndoe1@example.com',",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export async function myCreateContactFunction(info) {",
+              "  ",
+              "  try {",
+              "    const newContact = await contacts.createContact(info);    ",
+              "    console.log('Successfully created a new contact:', newContact);",
+              "    ",
+              "    return newContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *     \"activityType\": \"CONTACT_CREATED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"johndoe1@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {},",
+              " *     \"addresses\": {},",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Doe John\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *         \"contacts.displayByFirstName\": \"John Doe\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.047Z\"",
+              " * }",
+              " */",
+              ""
             ]
+          },
+          {
+            "title": "Create a new contact using a name and email (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contact info value:",
+              " * {",
+              " *   name: {",
+              " *     first: 'John',",
+              " *     last: 'Doe'",
+              " *   },",
+              " *   emails: {",
+              " *     items: [",
+              " *       {",
+              " *         email: 'johndoe1@example.com',",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const myCreateContactFunction = webMethod(Permissions.Anyone, async (info) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateContact = elevate(contacts.createContact);",
+              "    const newContact = await elevatedCreateContact(info);    ",
+              "    console.log('Successfully created a new contact:', newContact);",
+              "    ",
+              "    return newContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *     \"activityType\": \"CONTACT_CREATED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"johndoe1@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {},",
+              " *     \"addresses\": {},",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Doe John\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *         \"contacts.displayByFirstName\": \"John Doe\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.047Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new contact, full object with options ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample info value:",
+              " * {",
+              " *   name: {",
+              " *     first: 'John',",
+              " *     last: 'Doe'",
+              " *   },",
+              " *   emails: {",
+              " *     items: [",
+              " *       {",
+              " *         tag: 'UNTAGGED',",
+              " *         email: 'johndoe1@example.com',",
+              " *         _id: '37db3bde-83c0-4ca2-8097-88964a2f343b'",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   company: 'Wix',",
+              " *   jobTitle: 'Writer',",
+              " *   phones: {",
+              " *     items: [",
+              " *       {",
+              " *         phone: '6465676359',",
+              " *         countryCode: 'US',",
+              " *         primary: 'true',",
+              " *         tag: 'MOBILE' ",
+              " *       }",
+              " *     ]",
+              " *   },",
+              " *   birthdate: '1995-04-25',",
+              " *   locale: 'en-us',",
+              " *   labelKeys: {",
+              " *     items: [",
+              " *       'custom.contact'",
+              " *     ]",
+              " *   },",
+              " *   extendedFields': {",
+              " *     items: {",
+              " *       custom.nickname: 'Jonny'",
+              " *     }",
+              " *   },",
+              " *   addresses: {",
+              " *     items: [",
+              " *       {",
+              " *         tag: 'HOME',",
+              " *         address: {",
+              " *           addressLine1: '3 Park Ave',",
+              " *           city: 'NY',",
+              " *           subdivision: 'US-NY',",
+              " *           country: 'US',",
+              " *           postalCode: '10010'",
+              " *         }",
+              " *       ]",
+              " *     }",
+              " *   }",
+              " * }",
+              " * ",
+              " * Sample options value: ",
+              " * { ",
+              " *   allowDuplicates: true ",
+              " * }",
+              " */",
+              "",
+              "export const myCreateContactFunction = webMethod(Permissions.Anyone, async (info, options) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateContact = elevate(contacts.createContact);",
+              "    const newContact = await elevatedCreateContact(info, options);",
+              "    console.log('Successfully created a new contact:', newContact);",
+              "",
+              "    return newContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *     \"activityType\": \"CONTACT_CREATED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"johndoe1@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *         },",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"MOBILE\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"646-567-6359\",",
+              " *           \"e164Phone\": \"+16465676359\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"addresses\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"HOME\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *             \"addressLine1\": \"3 Park Ave\",",
+              " *             \"city\": \"NY\",",
+              " *             \"subdivision\": \"US-NY\",",
+              " *             \"country\": \"US\",",
+              " *             \"postalCode\": \"10010\"",
+              " *           },",
+              " *           \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"company\": \"Wix\",",
+              " *     \"jobTitle\": \"Writer\",",
+              " *     \"birthdate\": \"1995-04-25\",",
+              " *     \"locale\": \"en-us\",",
+              " *     \"labelKeys\": {",
+              " *       \"items\": [",
+              " *         \"custom.contact\"",
+              " *       ]",
+              " *     },",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Doe John\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *         \"contacts.displayByFirstName\": \"John Doe\",",
+              " *         \"custom.nickname\": \"Jonny\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.047Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Create a new contact with custom labels ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts, labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "export const createContactWithLabels = webMethod(Permissions.Anyone, async (contactInfo) => {",
+              "",
+              "try {  ",
+              "  const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "  const myLabels = await elevatedQueryLabels()",
+              "   .eq('labelType', \"USER_DEFINED\")",
+              "   .find();",
+              "  ",
+              "  const items = myLabels.items;",
+              "  const labelKeys = items.map(label => {",
+              "    return label.key",
+              "  });",
+              "  ",
+              "  contactInfo.labelKeys.items = labelKeys;",
+              "  ",
+              "  const elevatedContact = elevate(contacts.createContact);",
+              "  const newContact = await elevatedContact(contactInfo);",
+              "  ",
+              "  return newContact;",
+              "  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { createContactWithLabels } from 'backend/contacts.web'",
+              "",
+              "// Retrieve contact info when a form's submit button is clicked",
+              "export async function submitButton_click(event) {",
+              "",
+              "  try {",
+              "    const contactInfo = {",
+              "      name: {",
+              "        first: $w('#firstNameInput').value,",
+              "        last: $w('#lastNameInput').value,",
+              "      },",
+              "      emails: {",
+              "        items: [",
+              "          {",
+              "            email: $w('#emailInput').value,",
+              "          }",
+              "        ]",
+              "      },",
+              "      labelKeys: {",
+              "        items: []",
+              "      }",
+              "    };",
+              "",
+              "  // Call backend function to create a contact with labels",
+              "  const newContact = await createContactWithLabels(contactInfo);",
+              "  console.log('Contact created successfully:', newContact);",
+              "",
+              "    return contactInfo;",
+              "  } catch (error) {",
+              "    console.error('Error creating contact:', error);",
+              "    // Handle the error",
+              "  }",
+              "}"
+            ],
+            "extra": {
+              "description": "This function creates a new contact with the user-defined labels retrieved by a query."
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "createContact",
       "isAdminMethod": true
     },
@@ -121,35 +518,57 @@
       "docs": {
         "summary": "Deletes a contact who is not a site member or contributor.",
         "description": [
-          "The `deleteContact()` function returns a Promise\nthat resolves when the specified contact is deleted.\n\n Deleting a contact permanently removes them from your Contact List.\n\n If the contact is also a site member,\nthe member must be deleted first,\nand then the contact can be deleted.\n\n<!--\n > **Note:**\n> Only visitors with\n> **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n> can delete contacts.\n> You can override the permissions by setting the `suppressAuth` option to `true`.\n-->"
+          "The `deleteContact()` function returns a Promise\nthat resolves when the specified contact is deleted.\n\n Deleting a contact permanently removes them from your Contact List.\n\n If the contact is also a site member,\nthe member must be deleted first,\nand then the contact can be deleted.\n"
         ],
         "examples": [
           {
-            "title": "deleteContact example",
+            "title": "Delete a contact (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function deleteContact(contactId) {",
-              "   try {",
-              "     const result = await contacts.deleteContact(contactId);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847' */",
+              "",
+              "export async function myDeleteContactFunction(contactId) {",
+              "  ",
+              "  try {",
+              "    await contacts.deleteContact(contactId);",
+              "    console.log('Contact deleted.');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Delete a contact (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847' */",
+              "",
+              "export const myDeleteContactFunction = webMethod(Permissions.Anyone, async (contactId) => {",
+              "  try {",
+              "    const elevatedDeleteContact = elevate(contacts.deleteContact);",
+              "    await elevatedDeleteContact(contactId);",
+              "    console.log('Contact deleted.');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "deleteContact",
       "isAdminMethod": true
     },
@@ -198,38 +617,347 @@
       "docs": {
         "summary": "Retrieves a contact.",
         "description": [
-          "The `getContact()` function returns a Promise\nthat resolves when the contact is found.\n#### Getting Merged Contacts\nWhen a source contact is merged\nwith a target contact, the source contact is deleted.\nWhen calling `getContact()` for a merged contact,\nyou can use the source or target contact ID.\nIn both cases, the target contact is returned.\n\nThis is supported only when calling `getContact()`,\nand only for merged contacts.\nDeleted source contact IDs are not supported on any other function.\n\n<!-- > - Only visitors with\n>   **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n>   can retrieve contacts.\n>   You can override the permissions by setting the `suppressAuth` option to `true`.\n-->"
+          "The `getContact()` function returns a Promise\nthat resolves when the contact is found.\n\n#### Getting Merged Contacts\nWhen a source contact is merged into a target contact, the source contact is deleted. When calling `getContact()` for a merged contact,\nyou can use the source or target contact ID. In both cases, the target contact is returned.\n\nThis is supported only when calling `getContact()`on merged contacts. Previously deleted source contact IDs can't be passed to any other function.\n"
         ],
         "examples": [
           {
-            "title": "getContact example",
+            "title": "Get a contact by ID (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function getContact(id, options) {",
-              "   try {",
-              "     const result = await contacts.getContact(id, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847' */",
+              "",
+              "export async function myGetContactFunction(id) {",
+              "  ",
+              "  try {",
+              "    const contact = await contacts.getContact(id);    ",
+              "    const contactId = contact._id;",
+              "    const contactName = contact.info.name.first;",
+              " ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *     \"activityType\": \"CONTACT_CREATED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"johndoe1@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *         },",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"MOBILE\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"646-567-6359\",",
+              " *           \"e164Phone\": \"+16465676359\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"addresses\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"HOME\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *             \"addressLine1\": \"3 Park Ave\",",
+              " *             \"city\": \"NY\",",
+              " *             \"subdivision\": \"US-NY\",",
+              " *             \"country\": \"US\",",
+              " *             \"postalCode\": \"10010\"",
+              " *           },",
+              " *           \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"company\": \"Wix\",",
+              " *     \"jobTitle\": \"Writer\",",
+              " *     \"birthdate\": \"1995-04-25\",",
+              " *     \"locale\": \"en-us\",",
+              " *     \"labelKeys\": {",
+              " *       \"items\": [",
+              " *         \"custom.contact\"",
+              " *       ]",
+              " *     },",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Doe John\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *         \"contacts.displayByFirstName\": \"John Doe\",",
+              " *         \"custom.nickname\": \"Jonny\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.047Z\"",
+              " * }",
+              " */",
+              ""
             ]
+          },
+          {
+            "title": "Get a contact by ID (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847' */",
+              "",
+              "export const myGetContactFunction = webMethod(Permissions.Anyone, async (id) => {",
+              "  ",
+              "  try {",
+              "    const elevatedGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevatedGetContact(id);    ",
+              "    const contactId = contact._id;",
+              "    const contactName = contact.info.name.first;",
+              " ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *     \"activityType\": \"CONTACT_CREATED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"johndoe1@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *         },",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"MOBILE\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"646-567-6359\",",
+              " *           \"e164Phone\": \"+16465676359\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"addresses\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"HOME\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *             \"addressLine1\": \"3 Park Ave\",",
+              " *             \"city\": \"NY\",",
+              " *             \"subdivision\": \"US-NY\",",
+              " *             \"country\": \"US\",",
+              " *             \"postalCode\": \"10010\"",
+              " *           },",
+              " *           \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"company\": \"Wix\",",
+              " *     \"jobTitle\": \"Writer\",",
+              " *     \"birthdate\": \"1995-04-25\",",
+              " *     \"locale\": \"en-us\",",
+              " *     \"labelKeys\": {",
+              " *       \"items\": [",
+              " *         \"custom.contact\"",
+              " *       ]",
+              " *     },",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Doe John\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *         \"contacts.displayByFirstName\": \"John Doe\",",
+              " *         \"custom.nickname\": \"Jonny\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.047Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Get a contact with specified returned fields ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " *",
+              " * Sample options value: ",
+              " * {",
+              " *   fields: ['createdDate'],",
+              " *   fieldsets: ['BASIC']",
+              " * }",
+              " */",
+              "",
+              "export const myGetContactFunction = webMethod(Permissions.Anyone, async (id) => {",
+              "  try {",
+              "    const elevatedGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevatedGetContact(id);    ",
+              "    const contactId = contact._id;",
+              "    const contactName = contact.info.name.first;",
+              " ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " * {",
+              " *   \"revision\": 1,",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"johndoe1@example.com\",",
+              " *     \"phone\": \"6465676359\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"John\",",
+              " *       \"last\": \"Doe\"",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *   \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *   \"_updatedDate\": \"2023-12-24T12:50:46.049Z\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision };",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Mitchell\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`);",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "The page code passes a contact ID with updated contact information to the backend `overwriteContactInfo()` function. The `overwriteContactInfo()` function retrieves the contact, extracts the revision number, then passes it to `contacts.updateContact()`. This allows the contact to be updated without needing to specify the revision. >**Note:** This code example always retrieves the latest revision before updating a contact. "
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getContact",
       "isAdminMethod": true
-
     },
     {
       "name": "labelContact",
@@ -258,7 +986,7 @@
               }
             }
           ],
-          "doc": "List of label keys to add to the contact.\n\nLabel keys must exist to be added to the contact.\n Contact labels can be created or retrieved with\n [`findOrCreateLabel()`](wix-crm-backend/contacts/findorcreatelabel)\n or\n [`queryLabels()`](wix-crm-backend/contacts/queryLabels).",
+          "doc": "List of label keys to add to the contact.\n\nLabel keys must exist to be added to the contact.\nContact labels can be created with the\n`findOrCreateLabel()` function. You can use the\n `queryLabels()` function to view the currently existing labels.",
           "required": true
         }
       ],
@@ -284,35 +1012,300 @@
       "docs": {
         "summary": "Adds labels to a contact.",
         "description": [
-          "The `labelContact()` function returns a Promise\nthat resolves when the specified labels are added to the contact.\n - **To create new labels:** Use [`findOrCreateLabel()`](#contacts/findorcreatelabel).\n- **To find labels:** Use [`findOrCreateLabel()`](#contacts/findorcreatelabel), [`getLabel()`](#contacts/getlabel), or [`queryLabels()`](#contacts/queryLabels).\n\n<!--\n > **Note:**\n> Only visitors with\n> **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n> can label contacts.\n> You can override the permissions by setting the `suppressAuth` option to `true`.\n-->"
+          "The `labelContact()` function returns a Promise\nthat resolves when the specified labels are added to the contact.\n - **To create new labels:** Use `findOrCreateLabel()`.\n- **To find labels:** Use `findOrCreateLabel()`, `getLabel()`, or `queryLabels()`.\n"
         ],
         "examples": [
           {
-            "title": "labelContact example",
+            "title": "Add a label to a contact (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function labelContact(contactId, labelKeys, options) {",
-              "   try {",
-              "     const result = await contacts.labelContact(contactId, labelKeys, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample labelKeys value:",
+              " * [",
+              " *   'custom.at-risk',",
+              " *   'custom.active-customer'",
+              " * ]",
+              " * ",
+              " */",
+              "",
+              "export async function myLabelContactFunction(contactId, labelKeys) {",
+              "  ",
+              "  try {",
+              "    const labeledContact = await contacts.labelContact(contactId, labelKeys);  ",
+              "    console.log('Successfully added labels to contact');",
+              "  ",
+              "    return labeledContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 2,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"6465676359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\",",
+              " *           \"custom.at-risk\",",
+              " *           \"custom.active-customer\"",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:54.362Z\"",
+              " *   }",
+              " * }",
+              " * ",
+              " */",
+              ""
             ]
+          },
+          {
+            "title": "Add a label to a contact (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample labelKeys value:",
+              " * [",
+              " *   'custom.at-risk',",
+              " *   'custom.active-customer'",
+              " * ]",
+              " * ",
+              " */",
+              "",
+              "export const myLabelContactFunction = webMethod(Permissions.Anyone, async (contactId, labelKeys) => {",
+              "  ",
+              "  try {",
+              "    const elevatedLabelContact = elevate(contacts.labelContact);",
+              "    const labeledContact = await elevatedLabelContact(contactId, labelKeys);  ",
+              "    console.log('Successfully added labels to contact');",
+              "  ",
+              "    return labeledContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 2,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"6465676359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\",",
+              " *           \"custom.at-risk\",",
+              " *           \"custom.active-customer\"",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:54.362Z\"",
+              " *   }",
+              " * ",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new label and add it to a contact ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts, labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample displayName value: 'Supplier'",
+              " */",
+              "",
+              "export const addNewLabelToContact = webMethod(Permissions.Anyone, async (displayName, contactId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateLabel = elevate(labels.findOrCreateLabel);",
+              "    const elevatedLabelContact = elevate(contacts.labelContact);",
+              "    const newLabel = await elevatedCreateLabel(displayName);",
+              "    const labelKeys = [newLabel.label.key];",
+              "    // Retrieve the new label's key",
+              "    if (newLabel.newLabel) {",
+              "      // Label contact",
+              "      const contact = await elevatedLabelContact(contactId, labelKeys);",
+              "      const contactLabels = contact.contact.info.labelKeys.items;",
+              "",
+              "      return contactLabels;",
+              "    }",
+              "    else {",
+              "      return \"Label was not added to contact.\";",
+              "    }",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to: ",
+              " * [",
+              " *   \"custom.contact\",",
+              " *   \"custom.supplier\"",
+              " *  ]",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function creates a new label, gets the label's key, and then adds the label to the contact."
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "labelContact",
       "isAdminMethod": true
     },
@@ -346,7 +1339,7 @@
               "referenceType": "wix-crm-v2.Contacts.MergeContactsOptions"
             }
           ],
-          "doc": "Merge contacts options.\n",
+          "doc": "Merge contacts options.",
           "required": false
         }
       ],
@@ -372,35 +1365,297 @@
       "docs": {
         "summary": "Merges source contacts into a target contact.",
         "description": [
-          "Merging contacts has these effects on the target contact:\n\n- No target contact data is overwritten or deleted.\n- Arrays (emails, phones, addresses, and labels) are merged from the source contacts.\n- If merging more than one source contact, the 1st source is given precedence, then the 2nd, and so on.\n\n<blockquote class=\"important\">\n\n__Important:__\nMerges cannot be undone.\nUse [Preview Merge Contacts](#preview-merge-contacts)\nto test before merging.\n\n</blockquote>\n\nSource contacts are deleted when merging.\nHowever, if a source contact is a site member or contributor,\nthe merge fails because site contributors and members can't be deleted.\nSite members and contributors can be target contacts only.\n\nAfter merging,\nif you call [Get Contact](#get-contact) with a deleted source contact ID,\nthe target contact ID is returned.\nThis is supported when calling Get Contact only.\nDeleted source contact IDs are not supported on any other endpoint.\n\nMerging contacts triggers these webhooks:\n\n- Contact Merged is triggered.\n- Contact Updated is triggered for the target contact. `originatedFrom` is set to `merge`.\n- Contact Deleted is triggered for each source contact. `originatedFrom` is set to `merge`.\n\nThis function is not a universal function and runs only on the backend."
+          "Merging contacts has these effects on the target contact:\n\n- No target contact data is overwritten or deleted.\n- Arrays (emails, phones, addresses, and labels) are merged from the source contacts into the target contact.\n- If merging more than one source contact, the 1st source is given precedence, then the 2nd, and so on.\n\nSource contacts are deleted when merging.\nHowever, if a source contact is a site member or collaborator,\nthe `mergeContacts()` function fails because site collaborators and members can't be deleted.\nSite members and collaborators can only be target contacts.\n\nAfter merging, if you call the `getContact()` function with a deleted source contact ID, the target contact ID is returned. This is only supported when calling `getContact()`. Previously deleted source contact IDs can't be passed in any other function.\n"
         ],
         "examples": [
           {
-            "title": "mergeContacts example",
+            "title": "Get revision ID and merge contacts (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function mergeContacts(targetContactId, targetContactRevision, options) {",
-              "   try {",
-              "     const result = await contacts.mergeContacts(targetContactId, targetContactRevision, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
+              "/*",
+              " * Sample targetContactId value: '5518ee7f-270e-40c4-b756-dad56e8f0ffc'",
+              " * ",
+              " * Sample targetContactRevision value: Extract from `getContact()` return object",
+              " * ",
+              " * Sample options value:",
+              " *  {",
+              " *    sourceContactIds: [",
+              " *      'ce6475cf-55d7-411c-8cb1-7f62be2429dd',",
+              " *      'cb591d0e-a308-4f19-a9b9-5fb26ee7a11f'",
+              " *    ]",
+              " *  }",
+              "*/",
+              "",
+              "export async function mergeContactsFunction(targetContactId, targetContactRevision, options) {",
+              "  ",
+              "  try{",
+              "    const targetContact = await contacts.getContact(targetContactId);",
+              "    ",
+              "    // Extract revision from target contact",
+              "    targetContactRevision = targetContact.revision;",
+              "    const mergedContact = await contacts.mergeContacts(targetContactId, targetContactRevision, options);",
+              "    console.log(\"successfully merged contacts!\");",
+              "",
+              "    return mergedContact.contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 3,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2024-01-09T12:41:24.295Z\",",
+              " *     \"activityType\": \"CONTACT_MERGED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"524-624-2486\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"Sally\",",
+              " *       \"last\": \"Smith\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"sally.smith@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"fa2a8be4-b0d9-4926-adb3-463ef487787b\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"MOBILE\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"524-624-2486\",",
+              " *           \"e164Phone\": \"+15246242486\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"73382a58-55c6-4b1c-8af1-ffe60a7e5485\"",
+              " *         },",
+              " *         {",
+              " *           \"tag\": \"WORK\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"214-268-2998\",",
+              " *           \"e164Phone\": \"+12142682998\",",
+              " *           \"primary\": false,",
+              " *           \"_id\": \"69bd9ea5-31e3-4e68-97a7-1c74031f26cd\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"addresses\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"HOME\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"NY\",",
+              " *             \"city\": \"NY\"",
+              " *           },",
+              " *           \"_id\": \"f22294bf-349b-47bb-9229-8a0d2ca9cb78\"",
+              " *         },",
+              " *         {",
+              " *           \"tag\": \"WORK\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"12 Park Ave\\nNY\\nUnited States\",",
+              " *             \"addressLine1\": \"12 Park Ave\",",
+              " *             \"city\": \"NY\",",
+              " *             \"country\": \"US\"",
+              " *           },",
+              " *           \"_id\": \"471391d8-285f-405b-ae44-bda559088ac1\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"labelKeys\": {",
+              " *       \"items\": [",
+              " *         \"custom.active-customer\",",
+              " *         \"custom.contact\",",
+              " *         \"contacts.customers\",",
+              " *         \"custom.anonymous\"",
+              " *       ]",
+              " *     },",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Smith Sally\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.effectiveEmail\": \"sally.smith@example.com\",",
+              " *         \"custom.age\": 24,",
+              " *         \"contacts.displayByFirstName\": \"Sally Smith\",",
+              " *         \"custom.nickname\": \"Silly\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\",",
+              " *   \"_createdDate\": \"2023-12-28T11:44:11.331Z\",",
+              " *   \"_updatedDate\": \"2024-01-09T12:41:24.295Z\"",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function uses `getContact()` to extract the `revision` for the target contact, then merges the source contacts into the target contact."
+            }
+          },
+          {
+            "title": "Get revision ID and merge contacts (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/*",
+              " * Sample targetContactId value: '5518ee7f-270e-40c4-b756-dad56e8f0ffc'",
+              " * ",
+              " * Sample targetContactRevision value: Extract from `getContact()` return object",
+              " * ",
+              " * Sample options value:",
+              " *  {",
+              " *    sourceContactIds: [",
+              " *      'ce6475cf-55d7-411c-8cb1-7f62be2429dd',",
+              " *      'cb591d0e-a308-4f19-a9b9-5fb26ee7a11f'",
+              " *    ]",
+              " *  }",
+              "*/",
+              "",
+              "export const mergeContactsFunction = webMethod(Permissions.Anyone, async (targetContactId, targetContactRevision, options) => {",
+              "  ",
+              "  try{",
+              "    const elevateGetContactRevision = elevate(contacts.getContact);",
+              "    const elevatedMergeContacts = elevate(contacts.mergeContacts);",
+              "    const targetContact = await elevateGetContactRevision(targetContactId);",
+              "    ",
+              "    // Extract revision from target contact",
+              "    targetContactRevision = targetContact.revision;",
+              "    const mergedContact = await elevatedMergeContacts(targetContactId, targetContactRevision, options);",
+              "    console.log(\"successfully merged contacts!\");",
+              "",
+              "    return mergedContact.contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": 3,",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"WIX_CODE\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"lastActivity\": {",
+              " *     \"activityDate\": \"2024-01-09T12:41:24.295Z\",",
+              " *     \"activityType\": \"CONTACT_MERGED\"",
+              " *   },",
+              " *   \"primaryInfo\": {",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"524-624-2486\"",
+              " *   },",
+              " *   \"info\": {",
+              " *     \"name\": {",
+              " *       \"first\": \"Sally\",",
+              " *       \"last\": \"Smith\"",
+              " *     },",
+              " *     \"emails\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"UNTAGGED\",",
+              " *           \"email\": \"sally.smith@example.com\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"fa2a8be4-b0d9-4926-adb3-463ef487787b\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"phones\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"MOBILE\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"524-624-2486\",",
+              " *           \"e164Phone\": \"+15246242486\",",
+              " *           \"primary\": true,",
+              " *           \"_id\": \"73382a58-55c6-4b1c-8af1-ffe60a7e5485\"",
+              " *         },",
+              " *         {",
+              " *           \"tag\": \"WORK\",",
+              " *           \"countryCode\": \"US\",",
+              " *           \"phone\": \"214-268-2998\",",
+              " *           \"e164Phone\": \"+12142682998\",",
+              " *           \"primary\": false,",
+              " *           \"_id\": \"69bd9ea5-31e3-4e68-97a7-1c74031f26cd\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"addresses\": {",
+              " *       \"items\": [",
+              " *         {",
+              " *           \"tag\": \"HOME\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"NY\",",
+              " *             \"city\": \"NY\"",
+              " *           },",
+              " *           \"_id\": \"f22294bf-349b-47bb-9229-8a0d2ca9cb78\"",
+              " *         },",
+              " *         {",
+              " *           \"tag\": \"WORK\",",
+              " *           \"address\": {",
+              " *             \"formatted\": \"12 Park Ave\\nNY\\nUnited States\",",
+              " *             \"addressLine1\": \"12 Park Ave\",",
+              " *             \"city\": \"NY\",",
+              " *             \"country\": \"US\"",
+              " *           },",
+              " *           \"_id\": \"471391d8-285f-405b-ae44-bda559088ac1\"",
+              " *         }",
+              " *       ]",
+              " *     },",
+              " *     \"labelKeys\": {",
+              " *       \"items\": [",
+              " *         \"custom.active-customer\",",
+              " *         \"custom.contact\",",
+              " *         \"contacts.customers\",",
+              " *         \"custom.anonymous\"",
+              " *       ]",
+              " *     },",
+              " *     \"extendedFields\": {",
+              " *       \"items\": {",
+              " *         \"contacts.displayByLastName\": \"Smith Sally\",",
+              " *         \"invoices.vatId\": \"\",",
+              " *         \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.subscriptionStatus\": \"NOT_SET\",",
+              " *         \"emailSubscriptions.effectiveEmail\": \"sally.smith@example.com\",",
+              " *         \"custom.age\": 24,",
+              " *         \"contacts.displayByFirstName\": \"Sally Smith\",",
+              " *         \"custom.nickname\": \"Silly\"",
+              " *       }",
+              " *     }",
+              " *   },",
+              " *   \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\",",
+              " *   \"_createdDate\": \"2023-12-28T11:44:11.331Z\",",
+              " *   \"_updatedDate\": \"2024-01-09T12:41:24.295Z\"",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "This function uses `getContact()` to extract the `revision` for the target contact, then merges the source contacts into the target contact."
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
+     
       "syntaxName": "mergeContacts",
       "isAdminMethod": true
     },
@@ -457,35 +1712,248 @@
       "docs": {
         "summary": "Removes labels from a contact.",
         "description": [
-          " The `unlabelContact()` function returns a Promise\n that resolves when the specified labels are removed from the contact.\n\n  If a label is no longer needed\n and you want to remove it from all contacts,\n you can delete it with Labels\n `deleteLabel()`.\n\n<!--\n  > **Note:**\n > Only visitors with\n > **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n > can unlabel contacts.\n > You can override the permissions by setting the `suppressAuth` option to `true`.\n-->"
+          " The `unlabelContact()` function returns a Promise\n that resolves when the specified labels are removed from the contact.\n\nIf a label is no longer needed and you want to remove it from all contacts, you can remove it with the Labels `deleteLabel()` function.\n"
         ],
         "examples": [
           {
-            "title": "unlabelContact example",
+            "title": "Remove a label from a contact (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function unlabelContact(contactId, labelKeys, options) {",
-              "   try {",
-              "     const result = await contacts.unlabelContact(contactId, labelKeys, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample labelKeys value:",
+              " * [",
+              " *   'custom.at-risk'",
+              " * ]",
+              " * ",
+              " */",
+              "",
+              "export async function myUnlabelContactFunction(contactId, labelKeys) {",
+              "  ",
+              "  try {",
+              "    const contact = await contacts.unlabelContact(contactId, labelKeys);",
+              "    console.log('Successfully removed label from contact');",
+              "   ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 3,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"6465676359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\" ",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:54.362Z\"",
+              " *   }",
+              " * }",
+              " * ",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Remove a label from a contact (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample labelKeys value:",
+              " * [",
+              " *   'custom.at-risk'",
+              " * ]",
+              " * ",
+              " */",
+              "",
+              "export const myUnlabelContactFunction = webMethod(Permissions.Anyone, async (contactId, labelKeys) => {",
+              "  ",
+              "  try {",
+              "    const elevatedUnlabelContact = elevate(contacts.unlabelContact);",
+              "    const contact = await elevatedUnlabelContact(contactId, labelKeys);",
+              "    console.log('Successfully removed label from contact');",
+              "   ",
+              "    return contact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 3,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"6465676359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"ed1d7da0-b4a1-4164-81b7-c49dedc25dd7\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\" ",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:54.362Z\"",
+              " *   }",
+              " * }",
+              " * ",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "unlabelContact",
       "isAdminMethod": true
     },
@@ -513,6 +1981,16 @@
           "required": true
         },
         {
+          "name": "revision",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Revision number.\nWhen updating, include the existing `revision`\nto prevent conflicting updates.",
+          "required": true
+        },
+        {
           "name": "options",
           "type": [
             {
@@ -520,13 +1998,13 @@
             }
           ],
           "doc": "Contact update options.",
-          "required": true
+          "required": false
         }
       ],
       "requiredFields": [
         "contactId",
         "info",
-        "options.revision"
+        "revision"
       ],
       "ret": {
         "type": [
@@ -546,35 +2024,372 @@
       "docs": {
         "summary": "Updates a contact's properties.",
         "description": [
-          "The `updateContact()` function returns a Promise that resolves\nwhen the specified contact's information is updated.\n\n Each time the contact is updated,\n`revision` increments by 1.\nThe existing `revision` must be included when updating the contact.\nThis ensures you're working with the latest contact information,\nand it prevents unintended overwrites.\n\n<!--\n > **Note:**\n> Only visitors with\n> **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)\n> can update contacts.\n> You can override the permissions by setting the `suppressAuth` option to `true`.\n-->"
+          "The `updateContact()` function returns a Promise that resolves\nwhen the specified contact's information is updated.\n\nEach time the contact is updated, `revision` increments by 1. The existing `revision` must be included when updating the contact. This ensures you're working with the latest contact information, and prevents unintended overwrites.\n"
         ],
         "examples": [
           {
-            "title": "updateContact example",
+            "title": "Update a contact by adding a phone number (dashboard page code)",
             "body": [
               "import { contacts } from 'wix-crm.v2';",
-              "  ",
-              " async function updateContact(contactId, info, options) {",
-              "   try {",
-              "     const result = await contacts.updateContact(contactId, info, options);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample revision value: '5'",
+              " * ",
+              " * Sample info object:",
+              " * {",
+              " *   phones: {",
+              " *     items: [",
+              " *       {",
+              " *         countryCode:\"US\",",
+              " *         phone:\"6465676359\",",
+              " *         primary:true,",
+              " *         tag:\"MOBILE\"",
+              " *       },",
+              " *       {",
+              " *         phone: \"2421642341\",",
+              " *         countryCode: \"US\",",
+              " *         primary: false,",
+              " *         tag: \"HOME\"",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export async function myUpdateContactFunction(contactId, info, revision, options) {",
+              "  ",
+              "  try {",
+              "    const updatedContact = await contacts.updateContact(contactId, info, revision, options);    ",
+              "    console.log('Successfully updated contact:', updatedContact)",
+              " ",
+              "    return updatedContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 17,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"646-567-6359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           },",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"john.doe.at.home@example.com\",",
+              " *             \"primary\": false,",
+              " *             \"_id\": \"06eef938-13d2-49f3-8097-60686ab4ddd2\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"01e597c0-76c6-4791-bb77-8b3309f893d1\"",
+              " *           },",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"2421642341\",",
+              " *             \"primary\": false,",
+              " *             \"_id\": \"cbbae95c-e1d5-48c4-a3ec-531ee2bf51fb\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\"",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T07:31:48.270Z\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
             ]
+          },
+          {
+            "title": "Update a contact by adding a phone number (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample revision value: '5'",
+              " * ",
+              " * Sample info object:",
+              " * {",
+              " *   phones: {",
+              " *     items: [",
+              " *       {",
+              " *         countryCode:\"US\",",
+              " *         phone:\"6465676359\",",
+              " *         primary:true,",
+              " *         tag:\"MOBILE\"",
+              " *       },",
+              " *       {",
+              " *         phone: \"2421642341\",",
+              " *         countryCode: \"US\",",
+              " *         primary: false,",
+              " *         tag: \"HOME\"",
+              " *       }",
+              " *     ]",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateContactFunction = webMethod(Permissions.Anyone, async (contactId, info, revision, options) => {",
+              "  ",
+              "  try {",
+              "    const elevatedUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevatedUpdateContact(contactId, info, revision, options);    ",
+              "    console.log('Successfully updated contact:', updatedContact)",
+              " ",
+              "    return updatedContact;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"contact\": {",
+              " *     \"revision\": 17,",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"WIX_CODE\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"lastActivity\": {",
+              " *       \"activityDate\": \"2023-12-24T11:50:46.048Z\",",
+              " *       \"activityType\": \"CONTACT_CREATED\"",
+              " *     },",
+              " *     \"primaryInfo\": {",
+              " *       \"email\": \"johndoe1@example.com\",",
+              " *       \"phone\": \"646-567-6359\"",
+              " *     },",
+              " *     \"info\": {",
+              " *       \"name\": {",
+              " *         \"first\": \"John\",",
+              " *         \"last\": \"Doe\"",
+              " *       },",
+              " *       \"emails\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"johndoe1@example.com\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"37db3bde-83c0-4ca2-8097-88964a2f343b\"",
+              " *           },",
+              " *           {",
+              " *             \"tag\": \"UNTAGGED\",",
+              " *             \"email\": \"john.doe.at.home@example.com\",",
+              " *             \"primary\": false,",
+              " *             \"_id\": \"06eef938-13d2-49f3-8097-60686ab4ddd2\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"phones\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"MOBILE\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"646-567-6359\",",
+              " *             \"e164Phone\": \"+16465676359\",",
+              " *             \"primary\": true,",
+              " *             \"_id\": \"01e597c0-76c6-4791-bb77-8b3309f893d1\"",
+              " *           },",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"countryCode\": \"US\",",
+              " *             \"phone\": \"2421642341\",",
+              " *             \"primary\": false,",
+              " *             \"_id\": \"cbbae95c-e1d5-48c4-a3ec-531ee2bf51fb\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"addresses\": {",
+              " *         \"items\": [",
+              " *           {",
+              " *             \"tag\": \"HOME\",",
+              " *             \"address\": {",
+              " *               \"formatted\": \"3 Park Ave\\nNY, New York 10010\\nUnited States\",",
+              " *               \"addressLine1\": \"3 Park Ave\",",
+              " *               \"city\": \"NY\",",
+              " *               \"subdivision\": \"US-NY\",",
+              " *               \"country\": \"US\",",
+              " *               \"postalCode\": \"10010\"",
+              " *             },",
+              " *             \"_id\": \"eeb4e174-fd0f-4ce8-8cac-dc152f284228\"",
+              " *           }",
+              " *         ]",
+              " *       },",
+              " *       \"company\": \"Wix\",",
+              " *       \"jobTitle\": \"Writer\",",
+              " *       \"birthdate\": \"1995-04-25\",",
+              " *       \"locale\": \"en-us\",",
+              " *       \"labelKeys\": {",
+              " *         \"items\": [",
+              " *           \"custom.contact\"",
+              " *         ]",
+              " *       },",
+              " *       \"extendedFields\": {",
+              " *         \"items\": {",
+              " *           \"contacts.displayByLastName\": \"Doe John\",",
+              " *           \"invoices.vatId\": \"\",",
+              " *           \"emailSubscriptions.deliverabilityStatus\": \"NOT_SET\",",
+              " *           \"emailSubscriptions.subscriptionStatus\": \"UNSUBSCRIBED\",",
+              " *           \"contacts.displayByFirstName\": \"John Doe\",",
+              " *           \"custom.nickname\": \"Jonny\"",
+              " *         }",
+              " *       }",
+              " *     },",
+              " *     \"_id\": \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\",",
+              " *     \"_createdDate\": \"2023-12-24T11:50:46.049Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T07:31:48.270Z\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Force update a contact ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const overwriteContactInfo = webMethod(Permissions.Anyone, async (contactId, updatedContactInfo) => {",
+              "",
+              "  try {",
+              "    // Retrieve the contact",
+              "    const elevateGetContact = elevate(contacts.getContact);",
+              "    const contact = await elevateGetContact(contactId);",
+              "    // Extract revision number",
+              "    const revisionNumber = { revision: contact.revision };",
+              "    // Update the contact",
+              "    const elevateUpdateContact = elevate(contacts.updateContact);",
+              "    const updatedContact = await elevateUpdateContact(contactId, updatedContactInfo, revisionNumber);",
+              "    ",
+              "    return updatedContact;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { overwriteContactInfo } from 'backend/contacts.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  const contactId = \"2712ae1d-3f64-46c2-ac3a-94a6c2e29847\";",
+              "  const updatedContactInfo = {",
+              "    name: {",
+              "      first: \"John\",",
+              "      last: \"Mitchell\"",
+              "    }",
+              "  };",
+              "  async function updateContactName(){",
+              "",
+              "    try {",
+              "      const updatedContact = await overwriteContactInfo(contactId, updatedContactInfo);",
+              "",
+              "      return updatedContact;",
+              "    } catch(error){",
+              "      console.log(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              "  const result = await updateContactName();",
+              "    const first = result.contact.info.name.first;",
+              "    const last = result.contact.info.name.last;",
+              "    console.log(`Updated contact name: ${first} ${last}`);",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "The page code passes a contact ID with updated contact information to the backend `overwriteContactInfo()` function. The `overwriteContactInfo()` function retrieves the contact, extracts the revision number, then passes it to `contacts.updateContact()`. This allows the contact to be updated without needing to specify the revision. >**Note:** This code example always retrieves the latest revision before updating a contact. "
+            }
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateContact",
       "isAdminMethod": true
     }
@@ -1560,17 +3375,6 @@
           "doc": "Details about the contact's last action in the site."
         },
         {
-          "name": "picture",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact's profile picture.\nThis can contain an image URL and a Wix Media image ID.\n\n> **Deprecation Notice:**\n> This property has been replaced with\n> `info.picture`\n> and will be removed on March 31, 2022. If your app uses this property,\n> we recommend updating your code as soon as possible."
-        },
-        {
           "name": "primaryInfo",
           "readOnly": true,
           "optional": true,
@@ -1631,7 +3435,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact's last action in the site.\n\nSome possible values:\n`\"GENERAL\"`, `\"CONTACT_CREATED\"`, `\"MEMBER_LOGIN\"`, `\"MEMBER_REGISTER\"`,\n`\"MEMBER_STATUS_CHANGED\"`, `\"FORM_SUBMITTED\"`, `\"INBOX_FORM_SUBMITTED\"`,\n`\"INBOX_PAYMENT_REQUEST_PAID\"`, `\"INBOX_MESSAGE_TO_CUSTOMER\"`,\n`\"INBOX_MESSAGE_FROM_CUSTOMER\"`, `\"NEWSLETTER_SUBSCRIPTION_FORM_SUBMITTED\"`,\n`\"NEWSLETTER_SUBSCRIPTION_UNSUBSCRIBE\"`, `\"ECOM_PURCHASE\"`,\n`\"ECOM_CART_ABANDON\"`, `\"ECOM_CHECKOUT_BUYER\"`, `\"BOOKINGS_APPOINTMENT\"`,\n`\"HOTELS_RESERVATION\"`, `\"HOTELS_PURCHASE\"`, `\"HOTELS_CONFIRMATION\"`,\n`\"HOTELS_CANCEL\"`, `\"VIDEO_PURCHASE\"`, `\"VIDEO_RENT\"`,\n`\"CASHIER_BUTTON_PURCHASE\"`, `\"ARENA_NEW_LEAD\"`, `\"EVENTS_RSVP\"`,\n`\"INVOICE_PAY\"`, `\"INVOICE_OVERDUE\"`, `\"PRICE_QUOTE_ACCEPT\"`,\n`\"PRICE_QUOTE_EXPIRE\"`, `\"RESTAURANTS_ORDER\"`, `\"RESTAURANTS_RESERVATION\"`,\n`\"SHOUTOUT_OPEN\"`, `\"SHOUTOUT_CLICK\"`, `\"CONTACT_MERGED\"`.\n"
+          "doc": "Contact's last action in the site.\n\nSome possible values:\n`\"GENERAL\"`, `\"CONTACT_CREATED\"`, `\"MEMBER_LOGIN\"`, `\"MEMBER_REGISTER\"`,\n`\"MEMBER_STATUS_CHANGED\"`, `\"FORM_SUBMITTED\"`, `\"INBOX_FORM_SUBMITTED\"`,\n`\"INBOX_PAYMENT_REQUEST_PAID\"`, `\"INBOX_MESSAGE_TO_CUSTOMER\"`,\n`\"INBOX_MESSAGE_FROM_CUSTOMER\"`, `\"NEWSLETTER_SUBSCRIPTION_FORM_SUBMITTED\"`,\n`\"NEWSLETTER_SUBSCRIPTION_UNSUBSCRIBE\"`, `\"NEWSLETTER_SUBSCRIPTION_SUBSCRIBE\"`,\n`\"NEWSLETTER_SUBSCRIPTION_PENDING\"`, `\"NEWSLETTER_SUBSCRIPTION_NOT_SET\"`, `\"ECOM_PURCHASE\"`,\n`\"ECOM_CART_ABANDON\"`, `\"ECOM_CHECKOUT_BUYER\"`, `\"BOOKINGS_APPOINTMENT\"`,\n`\"HOTELS_RESERVATION\"`, `\"HOTELS_PURCHASE\"`, `\"HOTELS_CONFIRMATION\"`,\n`\"HOTELS_CANCEL\"`, `\"VIDEO_PURCHASE\"`, `\"VIDEO_RENT\"`,\n`\"CASHIER_BUTTON_PURCHASE\"`, `\"ARENA_NEW_LEAD\"`, `\"EVENTS_RSVP\"`,\n`\"INVOICE_PAY\"`, `\"INVOICE_OVERDUE\"`, `\"PRICE_QUOTE_ACCEPT\"`,\n`\"PRICE_QUOTE_EXPIRE\"`, `\"RESTAURANTS_ORDER\"`, `\"RESTAURANTS_RESERVATION\"`,\n`\"SHOUTOUT_OPEN\"`, `\"SHOUTOUT_CLICK\"`, `\"CONTACT_MERGED\"`,\n`\"PHONE_SUBSCRIPTION_SUBSCRIBE\"`, `\"PHONE_SUBSCRIPTION_PENDING\"`, `\"PHONE_SUBSCRIPTION_NOT_SET\"`,\n`\"PHONE_SUBSCRIPTION_UNSUBSCRIBE\"`.\n"
         }
       ],
       "docs": {
@@ -1702,7 +3506,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": " Address type.\n\n `\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\n  One of:\n\n  - `\"UNTAGGED\"`\n  - `\"HOME\"`\n  - `\"WORK\"`\n  - `\"BILLING\"`\n  - `\"SHIPPING\"`\n"
+          "doc": "Address type.\n\n`\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\nSupported values: `\"UNTAGGED\"`, `\"HOME\"`, `\"WORK\"`, `\"BILLING\"`, `\"SHIPPING\"`.\n"
         }
       ],
       "docs": {
@@ -1800,7 +3604,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Indicates whether this is the contact's primary email address.\nWhen changing `primary` to `true` for an email,\nthe contact's other emails become `false`."
+          "doc": "Indicates whether this is the contact's primary email address.\nWhen changing `primary` to `true` for an email,\nthe contact's other emails become `false`.\nIt also affects the subscription status to marketing emails that are decided based on the primary email."
         },
         {
           "name": "tag",
@@ -1810,7 +3614,57 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email type.\n\n`\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\n One of:\n\n - `\"UNTAGGED\"`\n- `\"MAIN\"`\n- `\"HOME\"`\n- `\"WORK\"`\n"
+          "doc": "Email type.\n\n`\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\nSupported values: `\"UNTAGGED\"`, `\"MAIN\"`, `\"HOME\"`, `\"WORK\"`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ContactEmailSubscriptionUpdated",
+      "members": [
+        {
+          "name": "_updatedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the contact was updated with the email subscription or deliverability status."
+        },
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The updated contact ID."
+        },
+        {
+          "name": "primaryEmail",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.PrimaryEmail"
+            }
+          ],
+          "doc": "The primary email of the contact with the updated subscription and deliverability status."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The revision of the contact."
         }
       ],
       "docs": {
@@ -1917,7 +3771,7 @@
               "referenceType": "wix-crm-v2.Contacts.LabelsWrapper"
             }
           ],
-          "doc": "List of contact label keys.\n [Contact labels](https://support.wix.com/en/article/adding-labels-to-contacts-in-your-contact-list)\n help categorize contacts.\n\n Label keys must exist to be added to the contact.\n Contact labels can be created or retrieved with\n [`findOrCreateLabel()`](wix-crm-v2/labels/findorcreatelabel)\n or\n [`queryLabels()`](wix-crm-v2/labels/queryLabels).\n\n"
+          "doc": "List of label keys applied to the contact.\n\nLabel keys must exist to be added to the contact.\nContact labels can be created with the\n`findOrCreateLabel()` function. You can use the\n `queryLabels()` function to view the currently existing labels.\n\n"
         },
         {
           "name": "locale",
@@ -2076,7 +3930,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "[ITU E.164-formatted](https://www.itu.int/rec/T-REC-E.164/)\nphone number.\nAutomatically generated using `phone` and `countryCode`,\nas long as both of those values are valid."
+          "doc": "[ITU E.164-formatted](https://www.itu.int/rec/T-REC-E.164/)\nphone number.\nAutomatically generated using `phone` and `countryCode`, pending both values are valid."
         },
         {
           "name": "phone",
@@ -2096,7 +3950,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether this is the contact's primary phone number.\nWhen changing `primary` to `true` for a phone,\nthe contact's other phones become `false`."
+          "doc": "Whether this is the contact's primary phone number.\nWhen changing `primary` to `true` for a phone,\nthe contact's `primary` field for other phones becomes `false`.\nIt also affects the subscription status to SMS messages that are decided based on the primary phone."
         },
         {
           "name": "tag",
@@ -2106,7 +3960,57 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Phone type.\n\n`\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\n One of:\n\n - `\"UNTAGGED\"`\n- `\"MAIN\"`\n- `\"HOME\"`\n- `\"MOBILE\"`\n- `\"WORK\"`\n- `\"FAX\"`\n"
+          "doc": "Phone type.\n\n`\"UNTAGGED\"` is shown as \"Other\" in the Contact List.\n\nSupported values: `\"UNTAGGED\"`, `\"MAIN\"`, `\"HOME\"`,`\"MOBILE\"`, `\"WORK\"`, `\"FAX\"`.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ContactPhoneSubscriptionUpdated",
+      "members": [
+        {
+          "name": "_updatedDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the contact was updated with the SMS subscription status."
+        },
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The updated contact ID."
+        },
+        {
+          "name": "primaryPhone",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.PrimaryPhone"
+            }
+          ],
+          "doc": "The primary phone of the contact with the updated subscription status."
+        },
+        {
+          "name": "revision",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The revision of the contact."
         }
       ],
       "docs": {
@@ -2159,6 +4063,66 @@
       "docs": {
         "description": [
           "TEST contact picture description"
+        ]
+      }
+    },
+    {
+      "name": "ContactPrimaryInfoUpdated",
+      "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The updated contact ID."
+        },
+        {
+          "name": "previousPrimaryEmailSubscriptionStatus",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.PrimarySubscriptionStatus"
+            }
+          ],
+          "doc": "previous primary email subscription status"
+        },
+        {
+          "name": "previousPrimaryPhoneSubscriptionStatus",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.PrimarySubscriptionStatus"
+            }
+          ],
+          "doc": "previous primary phone subscription status"
+        },
+        {
+          "name": "primaryEmailUpdated",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indication whether the primary email was updated."
+        },
+        {
+          "name": "primaryPhoneUpdated",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indication whether primary phone was updated."
+        }
+      ],
+      "docs": {
+        "description": [
+          "This message is an internal message used by this app and it is used to trigger\nthe update of the subscription status of the contact asynchronously.\nIt is published after a contact is created/updated/merged."
         ]
       }
     },
@@ -2216,17 +4180,6 @@
             }
           ],
           "doc": "Some possible values:\n\n`\"OTHER\"`, `\"ADMIN\"`, `\"WIX_APP\"`, `\"IMPORT\"`, `\"THIRD_PARTY\"`,\n`\"WIX_BOOKINGS\"`, `\"WIX_CHAT\"`, `\"WIX_EMAIL_MARKETING\"`, `\"WIX_EVENTS\"`,\n`\"WIX_FORMS\"`, `\"WIX_GROUPS\"`, `\"WIX_HOTELS\"`, `\"WIX_MARKET_PLACE\"`,\n`\"WIX_MUSIC\"`, `\"WIX_RESTAURANTS\"`, `\"WIX_SITE_MEMBERS\"`, `\"WIX_STORES\"`."
-        },
-        {
-          "name": "wixAppId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "App ID, if the contact was created by a Wix app.\n\n> **Deprecation Notice:**\n> This property has been replaced with\n> `appId`\n> and will be removed on March 31, 2022. If your app uses this property,\n> we recommend updating your code as soon as possible."
         }
       ],
       "docs": {
@@ -2395,7 +4348,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefault: `false`\n"
         }
       ],
       "docs": {
@@ -2415,7 +4368,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefault: `false`\n"
         },
         {
           "name": "info",
@@ -2542,6 +4495,199 @@
       }
     },
     {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "DuplicateContactExists",
       "members": [
         {
@@ -2582,6 +4728,66 @@
       }
     },
     {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Error",
       "members": [
         {
@@ -2603,317 +4809,6 @@
             }
           ],
           "doc": "Error details."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateAudienceSizeOptions",
-      "members": [
-        {
-          "name": "activeContactsOnly",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Should \"inactive\" contacts be excluded or not (default value \"false\")."
-        },
-        {
-          "name": "contactIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Contact IDs of a campaign audience."
-        },
-        {
-          "name": "contactsFilter",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Object"
-            }
-          ],
-          "doc": "Contacts filter expression (json)."
-        },
-        {
-          "name": "labelIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Label IDs of a campaign audience."
-        },
-        {
-          "name": "resendCampaignId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Id of a campaign that is to be resent."
-        },
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contacts plain text search expression (searches in name, phone and email fields)."
-        },
-        {
-          "name": "segmentIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Segment ids of a campaign audience."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateAudienceSizeRequest",
-      "members": [
-        {
-          "name": "activeContactsOnly",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Should \"inactive\" contacts be excluded or not (default value \"false\")."
-        },
-        {
-          "name": "contactIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Contact IDs of a campaign audience."
-        },
-        {
-          "name": "contactsFilter",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Object"
-            }
-          ],
-          "doc": "Contacts filter expression (json)."
-        },
-        {
-          "name": "labelIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Label IDs of a campaign audience."
-        },
-        {
-          "name": "resendCampaignId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Id of a campaign that is to be resent."
-        },
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contacts plain text search expression (searches in name, phone and email fields)."
-        },
-        {
-          "name": "segmentIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Segment ids of a campaign audience."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateAudienceSizeResponse",
-      "members": [
-        {
-          "name": "estimation",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Audience size estimation."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateFilterSizeOptions",
-      "members": [
-        {
-          "name": "activeContactsOnly",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Should \"inactive\" contacts be excluded or not (default value \"false\")."
-        },
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contacts plain text search expression (searches in name, phone and email fields)."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateFilterSizeRequest",
-      "members": [
-        {
-          "name": "activeContactsOnly",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Should \"inactive\" contacts be excluded or not (default value \"false\")."
-        },
-        {
-          "name": "filter",
-          "type": [
-            {
-              "nativeType": "Object"
-            }
-          ],
-          "doc": "Contacts filter expression."
-        },
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contacts plain text search expression (searches in name, phone and email fields)."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "EstimateFilterSizeResponse",
-      "members": [
-        {
-          "name": "estimation",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Mailing list size estimation."
         }
       ],
       "docs": {
@@ -3139,6 +5034,63 @@
       }
     },
     {
+      "name": "GroupInfo",
+      "members": [
+        {
+          "name": "groupIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Group IDs"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "IdentityInfo",
+      "members": [
+        {
+          "name": "email",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Login email"
+        },
+        {
+          "name": "signupDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Signup date"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Item",
       "members": [
         {
@@ -3235,7 +5187,7 @@
               }
             }
           ],
-          "doc": "List of label keys to remove from the contact."
+          "doc": "List of label keys to remove from the contact.\n\nYou can use the `queryLabels()` function to view the currently existing labels.\n\n"
         }
       ],
       "docs": {
@@ -3270,7 +5222,7 @@
               }
             }
           ],
-          "doc": "List of label keys to add to the contact.\n\nLabel keys must exist to be added to the contact.\n Contact labels can be created or retrieved with\n [`findOrCreateLabel()`](wix-crm-v2/labels/findorcreatelabel)\n or\n [`queryLabels()`](wix-crm-v2/labels/queryLabels).\n"
+          "doc": "List of label keys applied to the contact.\n\nLabel keys must exist to be added to the contact.\nContact labels can be created with the\n`findOrCreateLabel()` function. You can use the\n `queryLabels()` function to view the currently existing labels.\n"
         },
         {
           "name": "labelKeysToRemove",
@@ -3286,7 +5238,7 @@
               }
             }
           ],
-          "doc": "List of label keys to remove from the contact."
+          "doc": "List of label keys to remove from the contact.\n\nYou can use the `queryLabels()` function to view the currently existing labels.\n\n"
         }
       ],
       "docs": {
@@ -3350,7 +5302,7 @@
               }
             }
           ],
-          "doc": "List of label keys to add to the contact.\n\nLabel keys must exist to be added to the contact.\n Contact labels can be created or retrieved with\n [`findOrCreateLabel()`](wix-crm-v2/labels/findorcreatelabel)\n or\n [`queryLabels()`](wix-crm-v2/labels/queryLabels).\n"
+          "doc": "List of label keys to add to the contact.\n\nLabel keys must exist to be added to the contact.\nContact labels can be created with the\n`findOrCreateLabel()` function. You can use the\n `queryLabels()` function to view the currently existing labels.\n\n"
         }
       ],
       "docs": {
@@ -3687,6 +5639,76 @@
             }
           ],
           "doc": "List of location ids."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "MemberInfo",
+      "members": [
+        {
+          "name": "groupInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.GroupInfo"
+            }
+          ],
+          "doc": "Group info. For more details see [here](https://github.com/wix-private/crm/blob/master/members-groups/api/src/main/proto/com/wixpress/members/groups/Groups.proto)"
+        },
+        {
+          "name": "identityInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.IdentityInfo"
+            }
+          ],
+          "doc": "Identity info. For more details see [here](https://github.com/wix-private/identity/blob/master/iam/identity/identity-service/proto/wix/iam/identity/v1/identity.proto)"
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Member ID. For more details see [here](https://github.com/wix-private/identity/blob/master/iam/memberid/proto/wix/iam/member/v1/member_id_service.proto)"
+        },
+        {
+          "name": "profileInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.ProfileInfo"
+            }
+          ],
+          "doc": "Profile info. For more details see [here](https://github.com/wix-private/app-market/blob/master/members/members-profiles-api/proto/com/wixpress/members/profiles/profile.proto)"
+        },
+        {
+          "name": "sessionInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.SessionInfo"
+            }
+          ],
+          "doc": "Session info. For more details see [here](https://github.com/wix-private/identity/blob/master/iam/session/session-management/proto/wix/iam/session/v1/session.proto)"
+        },
+        {
+          "name": "userInfo",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Contacts.UserInfo"
+            }
+          ],
+          "doc": "User info. For more details see [here](https://dev.wix.com/docs/rest/internal-only/identity/user-member-connection-v1/user-member-connection-object)"
         }
       ],
       "docs": {
@@ -4103,6 +6125,183 @@
       }
     },
     {
+      "name": "PrimaryEmail",
+      "members": [
+        {
+          "name": "deliverabilityStatus",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Indicates last reported status of sent emails.\n\n- `NOT_SET`: No status reported. Default.\n- `VALID`: Emails are being successfully delivered.\n- `BOUNCED`: The last email to the recipient bounced or was rejected.\n- `SPAM_COMPLAINT`: Recipient registered a spam complaint\nwith their email provider.\n- `INACTIVE`: Multiple emails have been delivered without any kind of engagement from the recipient."
+        },
+        {
+          "name": "email",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Primary email address.\n\nThis property reflects the email address in `info.emails`\nwhere `primary` is `true`."
+        },
+        {
+          "name": "subscriptionStatus",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Indicates the recipient's opt-in or opt-out status for marketing emails.\n\n- `NOT_SET`: No status specified. Default.\n- `PENDING`: Subscription confirmation was requested,\nbut recipient hasn't confirmed yet.\n- `SUBSCRIBED`: Recipient has opted in to marketing emails.\n- `UNSUBSCRIBED`: Recipient has opted out of marketing emails."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PrimaryPhone",
+      "members": [
+        {
+          "name": "countryCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "[ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the primary phone."
+        },
+        {
+          "name": "e164Phone",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "[ITU E.164-formatted](https://www.itu.int/rec/T-REC-E.164/)\nphone number.\nAutomatically generated using `phone` and `countryCode`,\nas long as both of those values are valid."
+        },
+        {
+          "name": "formattedPhone",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Formatted phone. Automatically generated using phone and countryCode."
+        },
+        {
+          "name": "phone",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Primary phone number.\n\nThis property reflects the phone number in `info.phones`\nwhere `primary` is `true`."
+        },
+        {
+          "name": "subscriptionStatus",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Indicates the recipient's opt-in or opt-out status for SMS messages.\n\n- `NO_SUBSCRIPTION_STATUS`: No status exists. This is the status when the phone is not a valid E164 phone.\n- `NOT_SET`: No status specified. Default when the phone is a valid E164 phone.\n- `PENDING`: Subscription confirmation was requested,\nbut recipient hasn't confirmed yet.\n- `SUBSCRIBED`: Recipient has opted in to SMS messages.\n- `UNSUBSCRIBED`: Recipient has opted out of SMS messages."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PrimarySubscriptionStatus",
+      "members": [
+        {
+          "name": "subscriptionStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "subscription status"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ProfileInfo",
+      "members": [
+        {
+          "name": "nickname",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Nickname"
+        },
+        {
+          "name": "privacyStatus",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Privacy status"
+        },
+        {
+          "name": "reported",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicate whether the member is reported"
+        },
+        {
+          "name": "suspended",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicate whether the member is suspended"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Query",
       "members": [
         {
@@ -4281,7 +6480,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Only allowed fields:\n#info.extendedFields.emailSubscriptions.effectiveEmail ($exists)\n#info.extendedFields.emailSubscriptions.deliverabilityStatus ($eq, $ne, $in, $nin)\n#info.extendedFields.emailSubscriptions.subscriptionStatus ($eq, $ne, $in)"
+          "doc": "Only allowed fields:\n#info.extendedFields.emailSubscriptions.effectiveEmail ($exists)\n#info.extendedFields.emailSubscriptions.subscriptionStatus ($eq, $ne, $in, $nin)\n#info.extendedFields.emailSubscriptions.deliverabilityStatus ($eq, $ne, $in, $nin)"
         },
         {
           "name": "language",
@@ -4321,7 +6520,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Only allowed fields:\n#info.extendedFields.emailSubscriptions.effectiveEmail ($exists)\n#info.extendedFields.emailSubscriptions.deliverabilityStatus ($eq, $ne, $in, $nin)\n#info.extendedFields.emailSubscriptions.subscriptionStatus ($eq, $ne, $in)"
+          "doc": "Only allowed fields:\n#info.extendedFields.emailSubscriptions.effectiveEmail ($exists)\n#info.extendedFields.emailSubscriptions.subscriptionStatus ($eq, $ne, $in, $nin)\n#info.extendedFields.emailSubscriptions.deliverabilityStatus ($eq, $ne, $in, $nin)"
         },
         {
           "name": "language",
@@ -4670,6 +6869,53 @@
       }
     },
     {
+      "name": "SessionInfo",
+      "members": [
+        {
+          "name": "lastMobileLogin",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Last mobile login"
+        },
+        {
+          "name": "lastWebLogin",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Last web login"
+        },
+        {
+          "name": "mobileAppNames",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of mobile apps that the member has ever logged in to"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Sorting",
       "members": [
         {
@@ -4680,7 +6926,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Field to sort by.\n\nSupported properties:\n`createdDate`, `lastActivity.activityDate`, `primaryInfo.email`,\n`info.name.first`, `info.name.last`, `info.company`, `info.jobTitle`,\n`info.birthdate`\n"
+          "doc": "Field to sort by.\n\nSupported properties:\n`createdDate`, `lastActivity.activityDate`, `primaryInfo.email`, `info.name.first`, `info.name.last`, `info.company`,\n`info.jobTitle`, `info.birthdate`\n"
         },
         {
           "name": "order",
@@ -4934,15 +7180,6 @@
             }
           ],
           "doc": "Controls whether the call will succeed if the new contact information contains an email already used by another contact.\n\nIf set to `true`, the call will succeed even if an email address is used by another contact. If set to `false`, the call will fail if an email address is used by another contact.\n\nDefaults to `false`.\n"
-        },
-        {
-          "name": "revision",
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Revision number.\nWhen updating, include the existing `revision`\nto prevent conflicting updates."
         }
       ],
       "docs": {
@@ -4962,7 +7199,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefaults to `false`.\n"
+          "doc": "Controls whether the call will succeed\nif the new contact information contains an email or a phone number already used by another contact.\n\nIf set to `true`,\nthe call will succeed even if an email address or phone number is used by another contact.\nIf set to `false`,\nthe call will fail if the given email address is used by another contact or,\nif the email address is not given and the given phone number is used by another contact.\n\nDefault: `false`\n"
         },
         {
           "name": "contactId",
@@ -5059,6 +7296,36 @@
             }
           ],
           "doc": "Upserted contact."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UserInfo",
+      "members": [
+        {
+          "name": "role",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "User role"
+        },
+        {
+          "name": "userId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "User ID"
         }
       ],
       "docs": {
