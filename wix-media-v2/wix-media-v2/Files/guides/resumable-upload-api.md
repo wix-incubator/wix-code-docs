@@ -7,6 +7,9 @@ This article demonstrates how to use the response object from [`generateFileResu
 
 >**Note:** Due to limits on the size and duration of files that you can upload, we recommend using [`importFile()`](wix-media-v2/files/importfile). See [Wix Media: Supported Media File Types and File Sizes](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) for more details.
 
+### Use uploaded media in your site
+The data in the response object is not yet compatible with your Wix site. To add the uploaded media files to the frontend of your site using code, call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor). Pass `file.id` from the Upload API's [response object](#Response) as its only parameter. Now you can retrieve the valid Wix URI from the `Media` property in the returned `FileDescriptor` object.  
+
 ## Authorization
 This endpoint uses the `uploadToken` from the response for authorization.
 No additional authorization is needed.
@@ -111,10 +114,6 @@ async function resumableFileUpload(resumableUploadUrlResponse: GenerateFileResum
   }
 }
 ```
-## Add Uploaded Media
-In order to add the uploaded media files to your Wix site, use [getFileDescriptor()](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor) to retrieve the compatable media URI. Pass in `data.file.id` from the [response object](#Response) as the only parameter.  
 
 ## Status/Error Codes
 Errors from this endpoint will include an HTTP status code.
-        
-

@@ -7,8 +7,8 @@ This article demonstrates how to use the `uploadUrl` response from [`generateFil
 
 >**Note:** Due to limits on the size and duration of files that you can upload, we recommend using [`importFile()`](wix-media-v2/files/importfile). See [Wix Media: Supported Media File Types and File Sizes](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) for more details.
 
-## Use uploaded media in your site
-The data in the response object is not compatible in your Wix site. To programatically add the uploaded media files to the frontend of your site, you must first call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor). Pass `file.id` from the Upload API's [response object](#Response) as its only parameter. Retrieve the valid Wix URI from the `Media` property of the returned `FileDescriptor` object.  
+### Use uploaded media in your site
+The data in the response object is not yet compatible with your Wix site. To add the uploaded media files to the frontend of your site using code, call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor). Pass `file.id` from the Upload API's [response object](#Response) as its only parameter. Now you can retrieve the valid Wix URI from the `Media` property in the returned `FileDescriptor` object.  
 
 ## Authorization
 This endpoint uses the upload token included in the url for authorization.
