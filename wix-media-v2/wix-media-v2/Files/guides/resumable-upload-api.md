@@ -7,6 +7,11 @@ This article demonstrates how to use the response object from [`generateFileResu
 
 >**Note:** Due to limits on the size and duration of files that you can upload, we recommend using [`importFile()`](wix-media-v2/files/importfile). See [Wix Media: Supported Media File Types and File Sizes](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) for more details.
 
+### Use uploaded media in your site
+After successfully making the REST HTTP request and receiving a valid [response](#Response), the media has been successfully uploaded to your [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager). You can access the content from there and insert it into your site using the UI. 
+
+The data in the response object, however is not directly compatible with your Wix site. To add the uploaded media files to the frontend of your site using code, call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor). Pass `file.id` from the Upload API's [response object](#Response) as its only parameter. Retrieve the valid Wix URI from the `Media` property in the returned `FileDescriptor` object. Set it to the `src` property of your site's elements. 
+
 ## Authorization
 This endpoint uses the `uploadToken` from the response for authorization.
 No additional authorization is needed.
