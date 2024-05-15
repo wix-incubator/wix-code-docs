@@ -11,7 +11,7 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-We added following properties were added to the [`PanelButton`](https://www.wix.com/velo/reference/$w/panelbutton) element: 
+We added following properties were to the [`PanelButton`](https://www.wix.com/velo/reference/$w/panelbutton) element: 
 + [link](https://www.wix.com/velo/reference/$w/panelbutton/link): Sets or gets the element's link to an external site.
 + [target](https://www.wix.com/velo/reference/$w/panelbutton/target): Sets or gets the target of the element's link. 
 
