@@ -7,6 +7,14 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+## New API: Dashboard `onBeforeUnload`
+
+`wix-dashboard`
+
+We added a new function to `wix-dashboard` called  [`onBeforeUnload()`](/wix-dashboard/onbeforeunload). Use this function on dashboard pages to prompt site builders before leaving a page with unsaved data.
+
+(May 16, 2024)
+
 ### Updated API: PanelButton Element
 
 `Wix Editor Elements ($w)`
