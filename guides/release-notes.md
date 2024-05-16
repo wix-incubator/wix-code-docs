@@ -7,6 +7,16 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### Updated API: PanelButton Element
+
+`Wix Editor Elements ($w)`
+
+We added following properties to the [`PanelButton`](https://www.wix.com/velo/reference/$w/panelbutton) element: 
++ [`link`](https://www.wix.com/velo/reference/$w/panelbutton/link): Sets or gets the element's link to an external site.
++ [`target`](https://www.wix.com/velo/reference/$w/panelbutton/target): Sets or gets the target of the element's link. 
+
+(May 15, 2024)
+
 ### New APIs: Forum Categories
 
 `wix-forum.v2`
