@@ -1,0 +1,497 @@
+{
+  "name": "AppPlans",
+  "memberOf": "wix-app-management-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-app-management.v2-app_plans",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "listAppPlansByAppId",
+      "params": [
+        {
+          "name": "appIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of app IDs to retrieve plans for.\n\nMin: 1 app ID\nMax: 100 app IDs",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "appIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-app-management-v2.AppPlans.ListAppPlansByAppIdResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves plans for the given apps.",
+        "description": [
+          "Also returns tax settings and currency details. Wix calculates this information\nbased on the 2-letter country code in [ISO-3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)\nformat that you pass in the call's header. If you don't pass a country code in\nthe header, Wix calculates the tax settings and currency details based on the\ncall's IP address. Note that the tax settings and currency details may not resolve\nproperly if you call through a VPN.\n\nPrices for plans that are managed outside of Wix aren't returned.\n\nConsumers must pay for yearly and multi-yearly plans of your app every month.\nFor these plans this endpoint returns the price that the consumer must pay every\nmonth and not the total price for the entire year.\n\n<blockquote class=\"important\">\n\n__Important:__\nThe App Plans API doesn't follow any tenancy model. You don't need any\npermissions to call `List App Plans by App ID`.\n\n</blockquote>"
+        ],
+        "examples": [
+          {
+            "title": "listAppPlansByAppId example for dashboard page code",
+            "body": [
+              "import { appPlans } from 'wix-app-management.v2';",
+              "",
+              "async function listAppPlansByAppId(appIds) {",
+              "  try {",
+              "    const result = await appPlans.listAppPlansByAppId(appIds);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "listAppPlansByAppId example for exporting from backend code",
+            "body": [
+              "import { appPlans } from 'wix-app-management.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedListAppPlansByAppId = elevate(appPlans.listAppPlansByAppId);",
+              "",
+              "export const listAppPlansByAppId = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (appIds) => {",
+              "    try {",
+              "      const result = await elevatedListAppPlansByAppId(appIds);",
+              "      return result;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "listAppPlansByAppId",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "AppPlans",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "App ID, as defined in the [Wix Dev Center](https://dev.wix.com/)."
+        },
+        {
+          "name": "plans",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-app-management-v2.AppPlans.Plan"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of the app's pricing plans.\n\nMin: `0` plans\nMax: `50` plans\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "An `appPlans` object describes how you charge users for using your app.\nYou can set up multiple plans for a single app, with different plans giving access to\ndifferent tiers of functionality. For example, you can offer a free plan and\n3 paid plans with an increasing number of benefits. Learn more about\n[setting up your app pricing](https://dev.wix.com/docs/build-apps/build-your-app/pricing-plans/set-up-your-app-pricing)."
+        ]
+      }
+    },
+    {
+      "name": "Cycle",
+      "members": [
+        {
+          "name": "cycleDuration",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-app-management-v2.AppPlans.Duration"
+            }
+          ],
+          "doc": "Duration of the billing cycle. Available only for `{\"cycleType\": \"RECURRING\"}`."
+        },
+        {
+          "name": "cycleType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of the billing cycle.\n\n+ `\"UNKNOWN_UNIT\"`:  There is no information about the billing cycle.\n+ `\"ONE_TIME\"`:  The customer pays for unlimited usage of the app with a single payment.\n+ `\"RECURRING\"`: The customer pays for a subscription to the app on a recurring schedule.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Duration",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Count of units that make up the billing cycle."
+        },
+        {
+          "name": "unit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unit of the billing cycle."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAppPlansByAppIdRequest",
+      "members": [
+        {
+          "name": "appIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of app IDs to retrieve plans for.\n\nMin: 1 app ID\nMax: 100 app IDs\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListAppPlansByAppIdResponse",
+      "members": [
+        {
+          "name": "appPlans",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-app-management-v2.AppPlans.AppPlans"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Retrieved app plans.\n\nMin: 0 plans\nMax: 50 plans\n"
+        },
+        {
+          "name": "currency",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "3-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes)\nformat. Wix calculates the currency based on the country code that\nyou pass in the call's header. If you don't pass a country code in the header,\nWix calculates the currency based on the caller's IP address. Note that the\ncurrency may not resolve properly if you call through a VPN."
+        },
+        {
+          "name": "currencySymbol",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Currency symbol in decimal HTML entity format. For example, `&#36;` for $\n(United States Dollar). Wix calculates the currency symbol based on the\ncountry code that you pass in the call's header. If you don't pass a country\ncode in the header, Wix calculates the tax settings based on the caller's IP\naddress. Note that the currency symbol may not resolve properly if you call\nthrough a VPN."
+        },
+        {
+          "name": "taxSettings",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-app-management-v2.AppPlans.TaxSettings"
+            }
+          ],
+          "doc": "Tax settings. Wix calculates the tax settings based on the country code that\nyou pass in the call's header. If you don't pass a country code in the header,\nWix calculates the tax settings based on the caller's IP address. Note that the\ntax settings may not resolve properly if you call through a VPN."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Plan",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app plan."
+        },
+        {
+          "name": "benefits",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of your plan's benefits, as defined by you in the [Dev Center](https://dev.wix.com/).\nCurrently, the benefits are available only in English.\n\nMin: `0` benefits\nMax: `4` benefits\nMax per benefit: 1024 characters\n"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of your app's pricing plan, as defined by you in the [Dev Center](https://dev.wix.com/)."
+        },
+        {
+          "name": "prices",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-app-management-v2.AppPlans.Price"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of the plan's prices. Available only when the plan's prices are managed\nby Wix and not externally.\n\nMin: `0` prices\nMax: `10` prices\n"
+        },
+        {
+          "name": "vendorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of your app's pricing plan, as displayed in the [Dev Center](https://dev.wix.com/).\nIdentical to `vendorProductId` in the\n[Paid Plan Purchased webhook](https://dev.wix.com/docs/rest/api-reference/app-management/apps/app-instance/paid-plan-purchased)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Price",
+      "members": [
+        {
+          "name": "billingCycle",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-app-management-v2.AppPlans.Cycle"
+            }
+          ],
+          "doc": "Information about the plan's recurring billing cycle or single payment."
+        },
+        {
+          "name": "priceBeforeTax",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Price without taxes. For yearly plans, Wix calculates and returns the\naverage price per month. You can get thefull price by multiplying the\nreturned price with 12.\n\nMin: `0.00`\nMax: 1024 characters\n"
+        },
+        {
+          "name": "totalPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Total price including taxes.\n\nMin: `0.00`\nMax: 1024 characters\n"
+        },
+        {
+          "name": "usageBaseOptions",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-app-management-v2.AppPlans.UsageBasedDetails"
+            }
+          ],
+          "doc": "Details about the plan's usage-based pricing.\nAvailable only for plans with\n[usage-based pricing](https://dev.wix.com/docs/build-apps/build-your-app/pricing-plans/usage-based-pricing)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaxSettings",
+      "members": [
+        {
+          "name": "percentage",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax rate for the given country as percentage. Returned as `0` when\n`{\"showPriceWithTax\": false}`."
+        },
+        {
+          "name": "showPriceWithTax",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether you must display the total price including taxes in the given\ncountry."
+        },
+        {
+          "name": "taxType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Type of tax required in the given country.\n\n+ `\"NOT_APPLICABLE\"`: The country doesn't require that you display the total price including taxes, or Wix failed to calculate the country based on the call's IP address.\n+ `\"VAT\"`: The given country requires that you display the total price including [value-added tax (VAT)](https://en.wikipedia.org/wiki/Value-added_tax).\n+ `\"GST\"`: The given country requires that you display the total price including [generation-skipping transfer tax (GST)](https://en.wikipedia.org/wiki/Generation-skipping_transfer_tax).\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UsageBasedDetails",
+      "members": [
+        {
+          "name": "customChargeDescription",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the usaged-based pricing plan, as defined in the\n[Dev Center](https://dev.wix.com/).\n\nMax: 1024 characters\n"
+        },
+        {
+          "name": "minimumChargeIncrement",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Smallest possible amount that your app charges customers in usage-based\npricing. For example, the price of a single SMS message if your\napp charges customers for sending text messages. Always in\n[USD](https://en.wikipedia.org/wiki/United_States_dollar).\n\nMin: `0.00`\nMax: 1024 characters\n"
+        },
+        {
+          "name": "monthlyBaseFee",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Recurring, monthly base fee in usaged-based pricing that your app\ncharges customers regardless of how much they use your app.\n\nMin: `0.00`\nMax: 1024 characters\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}
