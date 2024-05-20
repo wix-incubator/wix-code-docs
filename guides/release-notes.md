@@ -11,12 +11,20 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 
 `Wix Editor Elements ($w)`
 
-Velo APIs exposed the functionality of the [`WixComments`](https://www.wix.com/velo/reference/$w/wixcomments) element. It is a comment widget available in the [Wix App Market](https://www.wix.com/app-market/comments-widget) to facilitate a comment thread of comments and replies by your site visitors on your Wix site. 
+The new [`WixComments`](https://www.wix.com/velo/reference/$w/wixcomments) element is a comment widget available in the [Wix App Market](https://www.wix.com/app-market/comments-widget) to facilitate a comment thread of comments and replies by your site visitors on your Wix site. 
 
 The WixComments API allows you to control the comment widget's functionality using code. You can [lock](https://www.wix.com/velo/reference/$w/wixcomments/lock) the widget, [create new comment threads](https://www.wix.com/velo/reference/$w/wixcomments/setresourceid), [open](https://www.wix.com/velo/reference/$w/wixcomments/opennearestcommentbox) and [close](https://www.wix.com/velo/reference/$w/wixcomments/closecommentboxes) the comment text input area, and set event handlers for [viewing new comments](https://www.wix.com/velo/reference/$w/wixcomments/oncommentcreate) and tracking the total [comment count](https://www.wix.com/velo/reference/$w/wixcomments/oncommentcountchange). 
 
-(May 16, 2024)
+(May 20, 2024)
 
+
+### New API: Dashboard `onBeforeUnload`
+
+`wix-dashboard`
+
+We added a new function to `wix-dashboard` called [`onBeforeUnload()`](/wix-dashboard/onbeforeunload). Use this function on dashboard pages to prompt site builders before leaving a page with unsaved data.
+
+(May 16, 2024)
 
 ### Updated API: PanelButton Element
 
