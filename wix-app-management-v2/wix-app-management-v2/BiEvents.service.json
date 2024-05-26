@@ -1,0 +1,210 @@
+{
+  "name": "BiEvents",
+  "memberOf": "wix-app-management-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-app-management.v2-send_bi_event_response",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "sendBiEvent",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-app-management-v2.BiEvents.SendBiEventOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Submit a BI event to Wix.",
+        "description": [],
+        "examples": [
+          {
+            "title": "sendBiEvent example for dashboard page code",
+            "body": [
+              "import { biEvents } from 'wix-app-management.v2';",
+              "",
+              "async function sendBiEvent(options) {",
+              "  try {",
+              "    const result = await biEvents.sendBiEvent(options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "sendBiEvent example for exporting from backend code",
+            "body": [
+              "import { biEvents } from 'wix-app-management.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "const elevatedSendBiEvent = elevate(biEvents.sendBiEvent);",
+              "",
+              "export const sendBiEvent = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (options) => {",
+              "    try {",
+              "      const result = await elevatedSendBiEvent(options);",
+              "      return result;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "sendBiEvent",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "SendBIEventRequest",
+      "members": [
+        {
+          "name": "customEventName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of your app's custom event that was triggered. Required when `{\"eventName\": \"CUSTOM\"}`.\n\nMin: 2 characters\n"
+        },
+        {
+          "name": "eventData",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Supported values include: `\"cycle_name\"`, `\"currency\"`, `\"sum\"`, `\"reason\"`, `\"app_plan_id\"`.\nYou may also submit data with keys that aren't listed here.\n\nAdditional data about your app's event.\n\n+ `\"cycle_name\"`: Supported values: `\"monthly\"`, `\"yearly\"`, `\"2 years\"`, `\"one time\"`.\n+ `\"currency\"`: 3-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format.\n+ `\"sum\"`: Amount of money. Required for `{\"eventName\": \"CHARGE\"}` and `{\"eventName\": \"FUNDS_RETURNED\"}`.\n+ `\"reason\"`: Information about why the event was triggered in your app.\n+ `\"app_plan_id\"`: ID of the your app's plan as displayed in the Developers Center. Note that it's the same value as `vendorProductId` in the [Paid Plan Purchased webhook](https://dev.wix.com/docs/rest/api-reference/app-management/apps/app-instance/paid-plan-purchased).\n"
+        },
+        {
+          "name": "eventName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the event that's triggered in your app.\n\n+ `\"APP_DASHBOARD_LOADED\"`: A site onwer or contributor loads your app's dashboard.\n+ `\"APP_FINISHED_CONFIGURATION\"`: The site owner completes all required configurations for your app in the Wix Developers Center.\n+ `\"APP_UPGRADED\"`: The site owner upgrades your app's paid plan. An upgrade means that they have finished the checkout flow on the app's side but not necessarily on Wix's side.\n+ `\"PRIMARY_ACTION_PERFORMED\"`: A site owner, contributor, or visitor triggers your app's primary action. For example, a site visitor writes a product review using your product review app.\n+ `\"CHARGE\"`: You charge money from the site owner. For example, when the site owner purchases or renews a subscription for your app. Make sure to also send `eventData` and a key of `sum`.\n+ `\"FUNDS_RETURNED\"`: Trigger this event when you send money back to a site owner (for example, refunds or chargebacks). Make sure to also send the charge amount inside `eventData`. For example, `{\"eventData\": {\"sum\": \"5.99\"}}`.\n+ `\"CUSTOM\"`: Any event that's not listed here. Make sure to also send `customEventName`.\n+ `\"APP_DEPLOYED\"`: Your app’s internal code implementation is changed and might affect user flows or cause a regression.\n+ `\"APP_FINISH_BUSINESS_SETUP\"`: __Deprecation Notice:__ This enum value will be removed on March 30, 2023. Use `\"APP_SETUP_FINISHED\"` instead.\n+ `\"APP_SETUP_FINISHED\"`: The site owner completes your app's required business setup.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SendBIEventResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SendBiEventOptions",
+      "members": [
+        {
+          "name": "customEventName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of your app's custom event that was triggered. Required when `{\"eventName\": \"CUSTOM\"}`.\n\nMin: 2 characters\n"
+        },
+        {
+          "name": "eventData",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Supported values include: `\"cycle_name\"`, `\"currency\"`, `\"sum\"`, `\"reason\"`, `\"app_plan_id\"`.\nYou may also submit data with keys that aren't listed here.\n\nAdditional data about your app's event.\n\n+ `\"cycle_name\"`: Supported values: `\"monthly\"`, `\"yearly\"`, `\"2 years\"`, `\"one time\"`.\n+ `\"currency\"`: 3-letter currency code in [ISO-4217 alphabetic](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) format.\n+ `\"sum\"`: Amount of money. Required for `{\"eventName\": \"CHARGE\"}` and `{\"eventName\": \"FUNDS_RETURNED\"}`.\n+ `\"reason\"`: Information about why the event was triggered in your app.\n+ `\"app_plan_id\"`: ID of the your app's plan as displayed in the Developers Center. Note that it's the same value as `vendorProductId` in the [Paid Plan Purchased webhook](https://dev.wix.com/docs/rest/api-reference/app-management/apps/app-instance/paid-plan-purchased).\n"
+        },
+        {
+          "name": "eventName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the event that's triggered in your app.\n\n+ `\"APP_DASHBOARD_LOADED\"`: A site onwer or contributor loads your app's dashboard.\n+ `\"APP_FINISHED_CONFIGURATION\"`: The site owner completes all required configurations for your app in the Wix Developers Center.\n+ `\"APP_UPGRADED\"`: The site owner upgrades your app's paid plan. An upgrade means that they have finished the checkout flow on the app's side but not necessarily on Wix's side.\n+ `\"PRIMARY_ACTION_PERFORMED\"`: A site owner, contributor, or visitor triggers your app's primary action. For example, a site visitor writes a product review using your product review app.\n+ `\"CHARGE\"`: You charge money from the site owner. For example, when the site owner purchases or renews a subscription for your app. Make sure to also send `eventData` and a key of `sum`.\n+ `\"FUNDS_RETURNED\"`: Trigger this event when you send money back to a site owner (for example, refunds or chargebacks). Make sure to also send the charge amount inside `eventData`. For example, `{\"eventData\": {\"sum\": \"5.99\"}}`.\n+ `\"CUSTOM\"`: Any event that's not listed here. Make sure to also send `customEventName`.\n+ `\"APP_DEPLOYED\"`: Your app’s internal code implementation is changed and might affect user flows or cause a regression.\n+ `\"APP_FINISH_BUSINESS_SETUP\"`: __Deprecation Notice:__ This enum value will be removed on March 30, 2023. Use `\"APP_SETUP_FINISHED\"` instead.\n+ `\"APP_SETUP_FINISHED\"`: The site owner completes your app's required business setup.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}
