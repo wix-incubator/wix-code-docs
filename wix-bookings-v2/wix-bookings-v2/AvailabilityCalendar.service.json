@@ -10,6 +10,104 @@
   "properties": [],
   "operations": [
     {
+      "name": "getAvailabilityTimeSlot",
+      "params": [
+        {
+          "name": "serviceId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Service ID of the time slot.\nCurrently supported only for services of type `APPOINTMENT`.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.GetAvailabilityTimeSlotOptions"
+            }
+          ],
+          "doc": "",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "options.localEndDate",
+        "options.localStartDate",
+        "options.location",
+        "options.timeZone",
+        "serviceId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-bookings-v2.AvailabilityCalendar.GetAvailabilityTimeSlotResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "a decision based proxy between GetSlotAvailability and  service-availability's GetAvailabilityTimeSlot\nthis is a temporary solution based on FromV2 flag, and will be removed once all the clients are migrated to v2\nthe request will be proxied to GetSlotAvailability if from_v2 is false, and to GetAvailabilityTimeSlot if from_v2 is true\nit supports only appointment services (NOT classes, and NOT courses)\nin case from_v2 is not provided, the request will be proxied based on `ShouldCallAvailabilityService` FT and ResourceManagement check [exists not staff resource]\nin case from_v2 is false and ResourceManagement check is true, an FAILED_PRECONDITION error will be thrown",
+        "description": [],
+        "examples": [
+          {
+            "title": "getAvailabilityTimeSlot example",
+            "body": [
+              "import { availabilityCalendar } from 'wix-bookings.v2';",
+              "",
+              "async function getAvailabilityTimeSlot(serviceId, options) {",
+              "  try {",
+              "    const result = await availabilityCalendar.getAvailabilityTimeSlot(serviceId, options);",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              ""
+            ]
+          },
+          {
+            "title": "getAvailabilityTimeSlot example for exporting from backend code",
+            "body": [
+              "import { availabilityCalendar } from 'wix-bookings.v2';",
+              "import { webMethod, Permissions } from 'wix-web-module';",
+              "",
+              "export const getAvailabilityTimeSlot = webMethod(",
+              "  Permissions.Anyone,",
+              "  async (serviceId, options) => {",
+              "    try {",
+              "      const result = await availabilityCalendar.getAvailabilityTimeSlot(serviceId, options);",
+              "      return result;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ");",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getAvailabilityTimeSlot"
+    },
+    {
       "name": "queryAvailability",
       "params": [
         {
@@ -174,6 +272,54 @@
     }
   ],
   "messages": [
+    {
+      "name": "AvailableResources",
+      "members": [
+        {
+          "name": "hasMoreAvailableResources",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether there are more available resources for the slot that are not listed in `resources` due to size limitations."
+        },
+        {
+          "name": "resourceTypeId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Resource type ID."
+        },
+        {
+          "name": "resources",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.Resource"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Available resources for the time slot.\n\n+ When returned from `ListAvailabilityTimeSlots`, empty by default.\n+ + If you provided `includeResourceTypeIds` or  `resourceIds` in request,\ncontains __up__ to 10 available resources out of those provided.\n\n+ When returned from `GetAvailabilityTimeSlots`, contains all available resources by default.\n+ + If you provided `includeResourceTypeIds` or  `resourceIds` in request,\ncontains all of the available resources out of those provided.\n\n\n> + When returned from `ListMultiServiceAvailabilityTimeSlots`, empty by default.\n> + + If you provided `includeResourceTypeIds` or  `resourceIds` in request,\n> contains __up__ to 10 available resources out of those provided.\n\n> + When returned from `GetMultiServiceAvailabilityTimeSlots`, contains all available resources by default.\n> + + If you provided `includeResourceTypeIds` or  `resourceIds` in request,\n> contains all of the available resources out of those provided.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "BookingPolicySettings",
       "members": [
@@ -602,6 +748,234 @@
       "docs": {
         "description": [
           "Selected customer choices.\nThese choices are selected by the customer during the booking flow and can be utilized to calculate the corresponding service's configuration properties."
+        ]
+      }
+    },
+    {
+      "name": "EventInfo",
+      "members": [],
+      "docs": {
+        "description": [
+          "relevant for event based slots, and not for availability based slots"
+        ]
+      }
+    },
+    {
+      "name": "GetAvailabilityTimeSlotOptions",
+      "members": [
+        {
+          "name": "fromV2",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "includeResourceTypeIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Resource type IDs to include in response, this is in addition to the requested `resourceIds`.\n\nIf specified in request, the returned `TimeSlot` contains only the `AvailableResources` with `ResourceTypeId`\nout of those specified, each contains all the available resources of this type.\n"
+        },
+        {
+          "name": "localEndDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local end date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\"."
+        },
+        {
+          "name": "localStartDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local start date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\"."
+        },
+        {
+          "name": "location",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Service_availabilityLocation"
+            }
+          ],
+          "doc": "The location of the time slot.\n\nYou must provide a specific `locationType`.\nIf locationType is `BUSINESS`, you __must__ also provide a `locationId`.\n\n<blockquote class=\"warning\">\n<p>Supports filtering by location type, or by location ID.\nOther fields like <code class=\"grey-background\">name</code> are ignored.</p>\n</blockquote>\n"
+        },
+        {
+          "name": "resourceIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Resources to include in response.\n\nIf specified,\nthe returned `TimeSlot` contains only the available resources out of provided list.\nOtherwise, the returned `TimeSlot` returned with all possible `AvailableResources`.\n"
+        },
+        {
+          "name": "timeZone",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time zone, in IANA time zone format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAvailabilityTimeSlotRequest",
+      "members": [
+        {
+          "name": "fromV2",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "includeResourceTypeIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Resource type IDs to include in response, this is in addition to the requested `resourceIds`.\n\nIf specified in request, the returned `TimeSlot` contains only the `AvailableResources` with `ResourceTypeId`\nout of those specified, each contains all the available resources of this type.\n"
+        },
+        {
+          "name": "localEndDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local end date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\"."
+        },
+        {
+          "name": "localStartDate",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local start date of the time slot, in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\"."
+        },
+        {
+          "name": "location",
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Service_availabilityLocation"
+            }
+          ],
+          "doc": "The location of the time slot.\n\nYou must provide a specific `locationType`.\nIf locationType is `BUSINESS`, you __must__ also provide a `locationId`.\n\n<blockquote class=\"warning\">\n<p>Supports filtering by location type, or by location ID.\nOther fields like <code class=\"grey-background\">name</code> are ignored.</p>\n</blockquote>\n"
+        },
+        {
+          "name": "resourceIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Resources to include in response.\n\nIf specified,\nthe returned `TimeSlot` contains only the available resources out of provided list.\nOtherwise, the returned `TimeSlot` returned with all possible `AvailableResources`.\n"
+        },
+        {
+          "name": "serviceId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Service ID of the time slot.\nCurrently supported only for services of type `APPOINTMENT`."
+        },
+        {
+          "name": "timeZone",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time zone, in IANA time zone format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetAvailabilityTimeSlotResponse",
+      "members": [
+        {
+          "name": "timeSlot",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.TimeSlot"
+            }
+          ],
+          "doc": "Time slot."
+        },
+        {
+          "name": "timeZone",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Time zone, in IANA time zone format."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
         ]
       }
     },
@@ -1076,6 +1450,36 @@
       }
     },
     {
+      "name": "Resource",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Resource ID."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Resource name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ResourcesFilter",
       "members": [
         {
@@ -1164,6 +1568,183 @@
             }
           ],
           "doc": "The total number of spots defined for the schedule, including\nboth open and non-available spots."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Service_availabilityBookingPolicyViolations",
+      "members": [
+        {
+          "name": "bookOnlineDisabled",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Bookings policy violation. Online booking is disabled for the `TimeSlot` service."
+        },
+        {
+          "name": "tooEarlyToBook",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Bookings policy violation. Too early to book this slot."
+        },
+        {
+          "name": "tooLateToBook",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Bookings policy violation. Too late to book this slot."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Service_availabilityLocation",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Business Location ID. Present only if the location is a business location."
+        },
+        {
+          "name": "formattedAddress",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A string representation for the full address of the location."
+        },
+        {
+          "name": "locationType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of location:\n- `CUSTOM`: The location is specific to this service, and is not derived from the business location.\n- `BUSINESS`: A business location, either the default business address, or locations defined for the business by the Business Info.\n- `CUSTOMER`: The location is determined by the customer and is not set up beforehand."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The location name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Service_availabilityNestedTimeSlot",
+      "members": [
+        {
+          "name": "availableResources",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.AvailableResources"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of `AvailableResources` for the nested time slot.\nEach `AvailableResources` contains information about available resources of the same type."
+        },
+        {
+          "name": "localEndDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local end date of the nested time slot in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\"."
+        },
+        {
+          "name": "localStartDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local start date of the nested time slot in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\"."
+        },
+        {
+          "name": "serviceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Service ID of the nested time slot."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Service_availabilityWaitingList",
+      "members": [
+        {
+          "name": "remainingCapacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of remaining spots for this wait list.\nFor example, a Yoga event with 10 waitList spots and 3 registered\non the waitList has 10 `total_capacity` and 7 `remaining_capacity`."
+        },
+        {
+          "name": "totalCapacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of spots in this wait list."
         }
       ],
       "docs": {
@@ -1410,6 +1991,130 @@
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "TimeSlot",
+      "members": [
+        {
+          "name": "availableResources",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.AvailableResources"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of `AvailableResources` for the time slot.\nEach `AvailableResources` contains information about available resources of the same type.\n\n> Not returned from `MultiServiceAvailabilityTimeSlots` API calls.\n> Instead, each nested time slot has its own available resources.\n"
+        },
+        {
+          "name": "bookable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the slot is bookable according to the service's booking policies.\n\nIf booking this time slot does not violates any of the service's booking policies,\nthe returned value is `true`. Otherwise, returns `false`.\n"
+        },
+        {
+          "name": "bookingPolicyViolations",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Service_availabilityBookingPolicyViolations"
+            }
+          ],
+          "doc": "Indicators for booking policy violations for the slot.\n\nEach nested field is checked on its own. i.e. if `tooEarlyToBook` is defined and `bookOnlineDisabled` is not defined\nwe will return also slots for which `tooEarlyToBook` is same as on the request, regardless of `bookOnlineDisabled`.\n"
+        },
+        {
+          "name": "localEndDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local end date of the time slot in ISO-8601 format.\nFor example, \"2024-01-30T14:30:00\"."
+        },
+        {
+          "name": "localStartDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Local start date of the time slot in ISO-8601 format.\nFor example, \"2024-01-30T13:30:00\"."
+        },
+        {
+          "name": "location",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.AvailabilityCalendar.Service_availabilityLocation"
+            }
+          ],
+          "doc": "The geographic location of the slot."
+        },
+        {
+          "name": "nestedTimeSlots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.AvailabilityCalendar.Service_availabilityNestedTimeSlot"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "> Nested time slots.\n> Returned only from `MultiServiceAvailabilityTimeSlots` API calls."
+        },
+        {
+          "name": "remainingCapacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Remaining number of spots for the slot.\nFor example, for an appointment service with total capacity of 1 spot and one booked spot, the remaining capacity will be 0."
+        },
+        {
+          "name": "serviceId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Service ID.\n\n> Not returned from `MultiServiceAvailabilityTimeSlots` API calls.\n> Instead, each nested time slot has its own serviceId.\n"
+        },
+        {
+          "name": "totalCapacity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of spots for the slot."
+        }
+      ],
+      "docs": {
+        "description": [
+          "The `TimeSlot` object represents the availability information\nfor an `Appointment` service's specific slot, including:"
         ]
       }
     },
