@@ -13,23 +13,6 @@
       "name": "bulkSetAttendance",
       "params": [
         {
-          "name": "attendanceList",
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-bookings-v2.Attendance.Attendance"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "The attendance information for a booked sessions that you want to create or update.",
-          "required": true
-        },
-        {
           "name": "options",
           "type": [
             {
@@ -40,11 +23,7 @@
           "required": false
         }
       ],
-      "requiredFields": [
-        "attendanceList",
-        "attendanceList.bookingId",
-        "attendanceList.status"
-      ],
+      "requiredFields": [],
       "ret": {
         "type": [
           {
@@ -71,9 +50,9 @@
             "body": [
               "import { attendance } from 'wix-bookings.v2';",
               "",
-              "async function bulkSetAttendance(attendanceList, options) {",
+              "async function bulkSetAttendance(options) {",
               "  try {",
-              "    const result = await attendance.bulkSetAttendance(attendanceList, options);",
+              "    const result = await attendance.bulkSetAttendance(options);",
               "    return result;",
               "  } catch (error) {",
               "    console.error(error);",
@@ -94,9 +73,9 @@
               "",
               "export const bulkSetAttendance = webMethod(",
               "  Permissions.Anyone,",
-              "  async (attendanceList, options) => {",
+              "  async (options) => {",
               "    try {",
-              "      const result = await elevatedBulkSetAttendance(attendanceList, options);",
+              "      const result = await elevatedBulkSetAttendance(options);",
               "      return result;",
               "    } catch (error) {",
               "      console.error(error);",
@@ -238,7 +217,7 @@
           "For field support, see [supported filters](https://dev.wix.com/api/rest/wix-bookings/attendance/supported-filters).",
           "",
           "> __Notes__:",
-          "> + Another way to retrieve attendance information is to call Bookings Reader V2's [Query Extended Bookings](https://dev.wix.com/api/rest/wix-bookings/bookings-reader-v2/query-extended-bookings) with `withBookingAttendanceInfo` as `true`.",
+          "> + Another way to retrieve attendance information is to call Bookings Reader V2's [Query Extended Bookings](https://dev.wix.com/api/rest/wix-bookings/bookings-reader-v2/query-extended-bookings) with `withBookingAttendanceDetails` as `true`.",
           "> + Up to 100 results can be returned per request.",
           "> + Only 1 filter is supported per query. If you define multiple filters in the same query, only the first is processed.",
           "",
@@ -523,6 +502,36 @@
       }
     },
     {
+      "name": "AttendanceDetails",
+      "members": [
+        {
+          "name": "attendance",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Attendance.Attendance"
+            }
+          ],
+          "doc": "The created or updated attendance information for the booked session."
+        },
+        {
+          "name": "participantNotification",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-bookings-v2.Attendance.ParticipantNotification"
+            }
+          ],
+          "doc": "Information about whether to send a message to a customer after their attendance was set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "AttendanceMarkedAsNotAttended",
       "members": [
         {
@@ -626,14 +635,38 @@
       "name": "BulkSetAttendanceOptions",
       "members": [
         {
-          "name": "participantNotification",
+          "name": "attendanceDetails",
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-bookings-v2.Attendance.ParticipantNotification"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Attendance.AttendanceDetails"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "Information about whether to send a message to a customer after their attendance was set."
+          "doc": "The attendance information for a booked sessions that you want to create or update. Min size 1."
+        },
+        {
+          "name": "attendanceList",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Attendance.Attendance"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The attendance information for a booked sessions that you want to create or update. Min size 1.\nDeprecated. use `attendance_details`."
         },
         {
           "name": "returnFullEntity",
@@ -656,7 +689,25 @@
       "name": "BulkSetAttendanceRequest",
       "members": [
         {
+          "name": "attendanceDetails",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-bookings-v2.Attendance.AttendanceDetails"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "The attendance information for a booked sessions that you want to create or update. Min size 1."
+        },
+        {
           "name": "attendanceList",
+          "optional": true,
           "type": [
             {
               "complexType": {
@@ -669,17 +720,7 @@
               }
             }
           ],
-          "doc": "The attendance information for a booked sessions that you want to create or update."
-        },
-        {
-          "name": "participantNotification",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-bookings-v2.Attendance.ParticipantNotification"
-            }
-          ],
-          "doc": "Information about whether to send a message to a customer after their attendance was set."
+          "doc": "The attendance information for a booked sessions that you want to create or update. Min size 1.\nDeprecated. use `attendance_details`."
         },
         {
           "name": "returnFullEntity",
