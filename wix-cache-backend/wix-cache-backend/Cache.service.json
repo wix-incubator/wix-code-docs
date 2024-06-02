@@ -13,17 +13,26 @@
       "name": "invalidateCache",
       "params": [
         {
-          "name": "options",
+          "name": "invalidationMethods",
           "type": [
             {
-              "referenceType": "wix-cache-backend.Cache.InvalidateCacheOptions"
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-cache-backend.Cache.InvalidationMethods"
+                  }
+                ]
+              }
             }
           ],
-          "doc": "",
-          "required": false
+          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached responses with any listed tags will be invalidated. If no tags are specified, nothing will be invalidated.",
+          "required": true
         }
       ],
-      "requiredFields": [],
+      "requiredFields": [
+        "invalidationMethods"
+      ],
       "ret": {
         "type": [
           {
@@ -40,17 +49,19 @@
         "doc": null
       },
       "docs": {
-        "summary": "Clear SSR Cache by tags",
-        "description": [],
+        "summary": "Clears the cache of function responses by specified tags.",
+        "description": [
+          "This function invalidates or clears cached API call responses using specified tags. The `invalidationMethods` parameter takes an array of objects, each containing a `tag` field that represents the tags associated with the cached responses, as identified by the `webMethod()` function in [`wix-web-module`](https://dev.wix.com/docs/velo/api-reference/wix-web-module/web-method). For example, using an array such as `[{ tag: \"contacts\" }, { tag: \"labels\" }]` will invalidate any cached API call responses previously tagged with \"contacts\" or \"labels\".\n\n<blockquote class=\"important\">\n\n__Important:__\n- If you didn't use the `tags` identifier property when caching the API call response, the cached response can only be invalidated when the TTL expires, or when you re-publish your site with a code change.\n\n</blockquote>\n\n>**Note:** This function only invalidates the caches from API calls. To invalidate the Server Side Rendering (SSR) cache for your site, use the `invalidateCache()` function from the [`wix-site-backend`](https://dev.wix.com/docs/velo/api-reference/wix-site-backend/invalidate-cache) module."
+        ],
         "examples": [
           {
             "title": "invalidateCache example for dashboard page code",
             "body": [
               "import { cache } from 'wix-cache-backend';",
               "",
-              "async function invalidateCache(options) {",
+              "async function invalidateCache(invalidationMethods, options) {",
               "  try {",
-              "    const result = await cache.invalidateCache(options);",
+              "    const result = await cache.invalidateCache(invalidationMethods, options);",
               "    return result;",
               "  } catch (error) {",
               "    console.error(error);",
@@ -71,9 +82,9 @@
               "",
               "export const invalidateCache = webMethod(",
               "  Permissions.Anyone,",
-              "  async (options) => {",
+              "  async (invalidationMethods, options) => {",
               "    try {",
-              "      const result = await elevatedInvalidateCache(options);",
+              "      const result = await elevatedInvalidateCache(invalidationMethods, options);",
               "      return result;",
               "    } catch (error) {",
               "      console.error(error);",
@@ -99,25 +110,7 @@
   "messages": [
     {
       "name": "InvalidateCacheOptions",
-      "members": [
-        {
-          "name": "invalidationMethods",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-cache-backend.Cache.InvalidationMethods"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "The method by which to invalidate the cache. All sites containing any of these tags will be invalidated."
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -142,7 +135,7 @@
               }
             }
           ],
-          "doc": "The method by which to invalidate the cache. All sites containing any of these tags will be invalidated."
+          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached responses with any listed tags will be invalidated. If no tags are specified, nothing will be invalidated."
         }
       ],
       "docs": {
@@ -171,7 +164,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Tag to invalidate by"
+          "doc": "Cached API call responses with this tag to be invalidated."
         }
       ],
       "extra": {
@@ -201,7 +194,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Tag to invalidate by"
+          "doc": "Cached API call responses with this tag to be invalidated."
         }
       ],
       "docs": {
