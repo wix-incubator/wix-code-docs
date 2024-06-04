@@ -58,7 +58,7 @@ The table below presents each mixin. Click its link to see its functions and pro
 | [LinkableMixin](/$w/linkable-mixin) | Provides functionality for elements that can act as links. |
 | [Node](/$w/node) | Provides functionality for all Wix objects, including objects that are not [elements](https://www.wix.com/corvid/reference/$w/element). |
 | [PlayableMixin](/$w/playable-mixin) | Provides functionality for elements that can be played. |
-| [ReadOnlyMixin](/$w/readonly-mixin) | Provides functionality for input elements that support readonly mode. |
+| [ReadOnlyMixin](/read-only-mixin/introduction) | Provides functionality for input elements that support readonly mode. |
 | [RequiredMixin](/$w/required-mixin) | Provides functionality for input elements that can be required to have a value. |
 | [Style](/$w/style) | Provides an object representing an element's styles. |
 | [StyleMixin](/$w/style-mixin) | Provides functionality for elements that can be styled. |
