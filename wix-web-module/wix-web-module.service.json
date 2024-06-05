@@ -10,7 +10,7 @@
       "description":
         [ "The Web Modules API allows you to define functions in your backend code that can be called from your site's frontend code. In order to call the function from the frontened, you need to define the necessary permissions. ",
           "",
-          "With web modules you can also cache the responses of the backend functions in your code. This means you can temporarily store the result of the function for a specified period of time. Caching responses helps reduce response times, decrease server load, and enhance the overall user experience of site visitors by providing quicker access to previously generated data. ",
+          "With web modules you can also cache the return values of the backend functions in your code. This means you can temporarily store the result of the function for a specified period of time. Caching return values reduces response times, decreases server load, and enhances the overall user experience of site visitors by providing quicker access to previously generated data. ",
           "",
           "To use the Web Modules API, import the `webMethod` function and the `Permissions` enum from the `wix-web-module` module:",
           "```javascript",
@@ -59,9 +59,16 @@
                 " - `Permissions.SiteMember`: Only site members can call the function.",
                 "",
                 "",
-                "The `cache` object, found within the `options` parameter, enables you to cache or temporarily store the responses of your backend functions for a specific duration. Use the `ttl` property to define the duration, in seconds, for which you want your response to be cached. If the TTL (Time To Live) is not set, the default value is `604000` seconds, which is approximately 1 week. ",
+                "The `cache` object, found in the `options` parameter, enables you to cache or temporarily store the return values of your backend functions for a specific duration. Use the `ttl` property to define the duration, in seconds, for which you want your return value to be cached. If the Time To Live (TTL) is not set, the default value is `604000` seconds, which is approximately 1 week. ",
                 "",
-                "You can also assign identifiers to cached responses using the `tags` property of the `cache` object. Tags allow you to specify cached responses that may require invalidation due to a significant change in your data. To invalidate a cached response, use the [`invalidateCache()`](https://dev.wix.com/docs/velo/api-reference/wix-cache-backend/invalidate-cache) function from `wix-cache-backend`. Once invalidated, the response will be re-cached the next time the function is called. ",
+                "You can also assign identifiers to cached return values using the `tags` property of the `cache` object. Tags allow you to specify cached return values that may require invalidation due to a significant change in your data. To invalidate a cached return value, use the [`invalidateCache()`](https://dev.wix.com/docs/velo/api-reference/wix-cache-backend/invalidate-cache) function from `wix-cache-backend`. Once invalidated, the return value will be re-cached the next time the function is called. ",
+                "",
+                "<blockquote class=\"important\">",
+                "",
+                "__Important:__",
+                "If you plan to invalidate your caches, you must first cache them using the `tags` property to identify them. Without tags, your cache will only be invalidated when the TTL expires or when you re-publish your site with a code change. ",
+                "",
+                "</blockquote>",
                 "",
                 "",
                 "Web methods must be defined in files with a `.web.js` extension." ],
@@ -86,7 +93,10 @@
                     {  } },
                 { "title": "Export and cache a backend function, then use it in frontend code",
                   "body":
-                    [ "// Exporting a backend function from a '.web.js' file:",
+                    [ "/**********************************",
+                      " * Backend code - multiply.web.js *",
+                      " **********************************/",
+                      "",
                       "import { Permissions, webMethod } from \"wix-web-module\";",
                       "",
                       "export const cachedMultiply = webMethod(Permissions.Anyone, (a, b) => a * b, {",
@@ -96,7 +106,10 @@
                       "  },",
                       "});",
                       "",
-                      "// Using the function in frontend code:",
+                      "/*************",
+                      " * Page code *",
+                      " *************/",
+                      "",
                       "import { multiply } from \"backend/multiply.web\";",
                       "",
                       "$w.onReady(async function () {",
@@ -106,22 +119,21 @@
                       "});" ],
                   "extra":
                     {  } },
-                { "title": "Cache the response for a getContact() function using elevate",
+                { "title": "Cache the return value for a `getContact()` function using `elevate()`",
                   "body":
                     [ "import { Permissions, webMethod } from \"wix-web-module\";",
                       "import { contacts } from \"wix-crm.v2\";",
                       "import { elevate } from \"wix-auth\";",
                       "",
-                      "/* Sample contact id value: \"2ca312b3-e850-465a-9991-c59c9c140919\"*/",
+                      "/* Sample contact ID value: \"2ca312b3-e850-465a-9991-c59c9c140919\"*/",
+                      "",
+                      "const elevatedGetContact = elevate(contacts.getContact);",
                       "",
                       "export const myGetContactFunction = webMethod(",
                       "  Permissions.Anyone,",
                       "  async (id) => {",
                       "    try {",
-                      "      const elevatedGetContact = elevate(contacts.getContact);",
                       "      const contact = await elevatedGetContact(id);",
-                      "      const contactId = contact._id;",
-                      "      const contactName = contact.info.name.first;",
                       "",
                       "      return contact;",
                       "    } catch (error) {",
@@ -129,11 +141,11 @@
                       "      // Handle the error",
                       "    }",
                       "  },",
-                      "  { cache: ",
-                      "    { ",
-                      "      tags: [\"contact\", \"crm\"], ",
-                      "      ttl: 120 ",
-                      "    } ",
+                      "  {",
+                      "    cache: {",
+                      "      tags: [\"contact\", \"crm\"],",
+                      "      ttl: 259200,",
+                      "    },",
                       "  }",
                       ");" ],
                   "extra":
@@ -146,7 +158,7 @@
   "messages":
     [ { "name": "Cache",
         "locations":
-          [ { "lineno": 68,
+          [ { "lineno": 75,
               "filename": "web-methods.js" } ],
         "docs":
           { "summary": "Caching options.",
@@ -160,11 +172,11 @@
                 { "name": "Array",
                   "typeParams":
                     [ "string" ] },
-              "doc": "An array of strings used to categorize and identify cached responses. These tags help you organize and specify which cached data to invalidate later.",
+              "doc": "An array of strings used to categorize and identify cached return values. These tags help you organize and later specify which cached data to invalidate.",
               "optional": true },
             { "name": "ttl",
               "type": "number",
-              "doc": "The TTL for the cached response specified in seconds. This defines how long the cached response should be stored before expiring and being re-retrieved. \n\nDefault: `604000`",
+              "doc": "The Time To Live (TTL) for the cached return value specified in seconds. This defines how long the return value should be stored before it expires and is re-retrieved. \n\nDefault: `604000` (approximately 1 week)",
               "optional": true } ],
         "extra":
           {  },
@@ -172,7 +184,7 @@
           [ "changed" ] },
       { "name": "Options",
         "locations":
-          [ { "lineno": 62,
+          [ { "lineno": 69,
               "filename": "web-methods.js" } ],
         "docs":
           { "summary": "An object representing caching options.",
@@ -183,11 +195,12 @@
         "members":
           [ { "name": "cache",
               "type": "wix-web-module.Cache",
-              "doc": "Options for caching the response of the `function` being passed.",
+              "doc": "Options for caching the return value of the `function` being passed.",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] } ],
+        "labels":
+          [ "changed" ] } ],
   "extra":
     { "scopes":
         [ "backend" ] } }
