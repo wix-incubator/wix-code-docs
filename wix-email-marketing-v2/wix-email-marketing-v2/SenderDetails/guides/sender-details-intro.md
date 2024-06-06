@@ -17,9 +17,9 @@ title: Introduction
 The Sender Details API contains the information that is displayed as the sender’s name and email address when sending an email from your Wix site. 
 
 With the Sender Details API you can: 
-- [Get](wix-email-marketing-v2/senderdetails/getsenderdetails) your email sender details.
-- [Update](wix-email-marketing-v2/senderdetails/updatesenderdetails) your email sender details.
-- [Verify](wix-email-marketing-v2/senderdetails/verifyemail) your sender email address.
+- [Get](/sender-details/get-sender-details) your email sender details.
+- [Update](/sender-details/update-sender-details) your email sender details.
+- [Verify](/sender-details/verify-email) your sender email address.
 
 ## Before you begin
 
@@ -34,11 +34,3 @@ To use the Sender Details API, import `{ senderDetails }` from the `wix-email-ma
 ```js
 import { senderDetails } from `wix-email-marketing.v2`; 
 ```
-
-## Permissions information
-
-Functions in the Sender Details API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
-
-<blockquote class='warning'>
-<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
-</blockquote>
