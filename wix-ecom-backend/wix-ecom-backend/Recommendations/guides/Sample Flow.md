@@ -5,7 +5,7 @@ This article shares a possible use case your site could support, as well as an e
 ## Send emails to customers recommending related products 
 To send emails to customers with item recommendations based on their most recent purchases from your Wix store, follow this basic flow:
 
-1. [Query the Stores/Orders collection](https://www.wix.com/velo/reference/wix-stores-backend/%22orders%22-collection-fields#wix-stores-backend_%22orders%22-collection-fields_orders-collection-fields) on your site, using appropriate [filtering](https://www.wix.com/velo/reference/wix-data/filter) to obtain the most recent order by a customer (identified by their contact or member ID).
+1. [Query the Stores/Orders collection](/wix-stores-backend/orders-collection-fields) on your site, using appropriate [filtering](https://www.wix.com/velo/reference/wix-data/filter) to obtain the most recent order by a customer (identified by their contact or member ID).
 2. Record the `catalogItemId` from the first `lineItem`.
 3. Call [`listAvailableAlgorithms()`](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/listavailablealgorithms) in the Recommendations API to get the `algorithmId` of the "Frequently bought together" algorithm.
 4. Call [`getRecommendation()`](https://www.wix.com/velo/reference/wix-ecom-backend/recommendations/getrecommendation) in the Recommendations API with the `catalogItemId` from step 2 and the `algorithmId` from step 3. Use the Wix Stores app ID (`215238eb-22a5-4c36-9e7b-e7c08025e04e`) in the algorithm object.
