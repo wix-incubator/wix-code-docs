@@ -24,7 +24,7 @@ wixSearch.search(phrase)
 > **Note**
 > The Stores/Products fields supported by wix-search are not identical to the fields in your site's [Stores/Products collection](https://support.wix.com/en/article/velo-wix-stores-products-collection-fields).
 
-The following fields appear in each matching search result [document](/wix-search/wixsearchresult/documents) when searching Wix Store products:
+The following fields appear in each matching search result [document](/wix-search/wix-search-result/documents) when searching Wix Store products:
 
 #### documentType 
 
