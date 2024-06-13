@@ -20,7 +20,7 @@ wixData.query("Billing/Invoices")
   } );
 ```
 
-This document describes the permissions and fields in your Invoices collection. 
+This document describes the permissions and fields in your Invoices collection..
 
 ### Permissions 
 
