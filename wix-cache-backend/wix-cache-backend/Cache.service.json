@@ -26,7 +26,7 @@
               }
             }
           ],
-          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached responses with any listed tags will be invalidated. If no tags are specified, nothing will be invalidated.",
+          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached return values with any listed tags are invalidated. If no tags are specified, nothing is invalidated.",
           "required": true
         }
       ],
@@ -49,43 +49,59 @@
         "doc": null
       },
       "docs": {
-        "summary": "Clears the cache of function responses by specified tags.",
+        "summary": "Clears the cache of the function return values using specified tags.",
         "description": [
-          "This function invalidates or clears cached API call responses using specified tags. The `invalidationMethods` parameter takes an array of objects, each containing a `tag` field that represents the tags associated with the cached responses, as identified by the `webMethod()` function in [`wix-web-module`](https://dev.wix.com/docs/velo/api-reference/wix-web-module/web-method). For example, using an array such as `[{ tag: \"contacts\" }, { tag: \"labels\" }]` will invalidate any cached API call responses previously tagged with \"contacts\" or \"labels\".\n\n<blockquote class=\"important\">\n\n__Important:__\n- If you didn't use the `tags` identifier property when caching the API call response, the cached response can only be invalidated when the TTL expires, or when you re-publish your site with a code change.\n\n</blockquote>\n\n>**Note:** This function only invalidates the caches from API calls. To invalidate the Server Side Rendering (SSR) cache for your site, use the `invalidateCache()` function from the [`wix-site-backend`](https://dev.wix.com/docs/velo/api-reference/wix-site-backend/invalidate-cache) module."
+          "This function invalidates or clears the cached return values of your backend function calls, using specified tags. The `invalidationMethods` parameter takes an array of objects, each containing a `tag` field that represents the tags associated with the cached return values. These tags are defined using the `webMethod()` function in the [`wix-web-module`](https://dev.wix.com/docs/velo/api-reference/wix-web-module/web-method). For example, using an array such as `[{ tag: \"contacts\" }, { tag: \"labels\" }]` will invalidate any previously cached return values tagged with \"contacts\" or \"labels\".\n\n<blockquote class=\"important\">\n\n__Important:__\n- If you don't use the `tags` identifier property when caching the function call's return value, you can only invalidate the cached return value when the TTL expires, or when you republish your site with a code change.\n\n- This function only invalidates the caches from your backend function calls. To invalidate the Server Side Rendering (SSR) cache for your site, use the `invalidateCache()` function from the [`wix-site-backend`](https://dev.wix.com/docs/velo/api-reference/wix-site-backend/invalidate-cache) module.\n\n</blockquote>"
         ],
         "examples": [
           {
-            "title": "invalidateCache example for dashboard page code",
+            "title": "Invalidate cached return value from queryContacts() @description:",
             "body": [
-              "import { cache } from 'wix-cache-backend';",
               "",
-              "async function invalidateCache(invalidationMethods, options) {",
-              "  try {",
-              "    const result = await cache.invalidateCache(invalidationMethods, options);",
-              "    return result;",
-              "  } catch (error) {",
-              "    console.error(error);",
-              "    // Handle the error",
+              "import { cache } from \"wix-cache-backend\";",
+              "import { contacts } from \"wix-crm.v2\";",
+              "import { webMethod, Permissions } from \"wix-web-module\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "// Query contacts and cache result",
+              "const elevatedQueryContact = elevate(contacts.queryContacts);",
+              "",
+              "export const myQueryContactFunction = webMethod(",
+              "  Permissions.Anyone,",
+              "  async () => {",
+              "    try {",
+              "      const contact = await elevatedQueryContact().find();",
+              "      return contact.items;",
+              "    } catch (error) {",
+              "      console.log(error);",
+              "      // Handle the error",
+              "    }",
+              "  },",
+              "  {",
+              "    cache: {",
+              "      tags: [\"contact\", \"crm\"],",
+              "      ttl: 85500,",
+              "    },",
               "  }",
-              "}",
-              ""
-            ]
-          },
-          {
-            "title": "invalidateCache example for exporting from backend code",
-            "body": [
-              "import { cache } from 'wix-cache-backend';",
-              "import { webMethod, Permissions } from 'wix-web-module';",
-              "import { elevate } from 'wix-auth';",
+              ");",
               "",
+              "",
+              "",
+              "// Invalidate cached query return value",
+              "/* Sample invalidationMethods value:",
+              " * [",
+              " *   { tag: \"contact\" },",
+              " *   { tag: \"crm\" }",
+              " * ]",
+              " */",
               "const elevatedInvalidateCache = elevate(cache.invalidateCache);",
               "",
               "export const invalidateCache = webMethod(",
               "  Permissions.Anyone,",
-              "  async (invalidationMethods, options) => {",
+              "  async (invalidationMethods) => {",
               "    try {",
-              "      const result = await elevatedInvalidateCache(invalidationMethods, options);",
-              "      return result;",
+              "      await elevatedInvalidateCache(invalidationMethods);",
+              "      return console.log(\"Successfully invalidated cache.\");",
               "    } catch (error) {",
               "      console.error(error);",
               "      // Handle the error",
@@ -93,6 +109,39 @@
               "  }",
               ");",
               ""
+            ]
+          },
+          {
+            "title": "Cache the value returned from a function, then invalidate it ",
+            "body": [
+              "import { cache } from \"wix-cache-backend\";",
+              "import { webMethod, Permissions } from \"wix-web-module\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "// Cache the return value",
+              "export const cachedMultiply = webMethod(Permissions.Anyone, (a, b) => a * b, {",
+              "  cache: {",
+              "    tags: [\"multiply\", \"math\"],",
+              "    ttl: 604000,",
+              "  },",
+              "});",
+              "",
+              "",
+              "// Invalidate the cache",
+              "const invalidationMethods = [{ tag: \"multiply\" }, { tag: \"math\" }];",
+              "const elevatedInvalidateCache = elevate(cache.invalidateCache);",
+              "",
+              "export const invalidateCache = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    await elevatedInvalidateCache(invalidationMethods);",
+              "    console.log(\"Successfully invalidated cache.\")",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */"
             ]
           }
         ]
@@ -135,7 +184,7 @@
               }
             }
           ],
-          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached responses with any listed tags will be invalidated. If no tags are specified, nothing will be invalidated."
+          "doc": "An array of objects containing a `tag` field used to identify the cache to invalidate. All cached return values with any listed tags are invalidated. If no tags are specified, nothing is invalidated."
         }
       ],
       "docs": {
@@ -164,7 +213,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cached API call responses with this tag to be invalidated."
+          "doc": "Identifiers of the caches to invalidate."
         }
       ],
       "extra": {
@@ -194,7 +243,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cached API call responses with this tag to be invalidated."
+          "doc": "Identifiers of the caches to invalidate."
         }
       ],
       "docs": {
