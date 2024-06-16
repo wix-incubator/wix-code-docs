@@ -26,7 +26,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to move to the Media Manager's trash bin.",
+          "doc": "IDs or Wix media URLs of the files to move to the Media Manager's trash bin.",
           "required": true
         },
         {
@@ -814,10 +814,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "> **Deprecated.**\n> This function has been replaced with `bulkImportFile()`, and will be removed on March 31, 2024.",
-        "description": [
-          "The `bulkImportFiles()` function returns a Promise that resolves to an array of the imported files' descriptors.\n\nImports a bulk of files to the Media Manager using external urls.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\n>**Note:** The `media` property isn't returned in the `files` response object.\n\nTo import files, you need to do one of the following for each file:\n- Pass its [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` field of the request. For example, `mimeType: 'image/jpeg'`.\n- Include its extension in either the `displayName` or `url` field of the request. For example, `displayName: 'Example Image.jpeg` or `url: https://www.example.com/image.jpeg`.\n- Ensure the server hosting the file supports HEAD requests. In these cases the Wix servers can retrieve the MIME type from the hosting server.\n  > **Note:** If you want to validate the media type, pass the file's expected media type in the optional `mediaType` field of the request.  For example, `mediaType: 'IMAGE'`."
-        ],
+        "description": [],
         "examples": [
           {
             "title": "Bulk import files (dashboard page code)",
@@ -1134,7 +1131,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to restore from the Media Manager's trash bin.",
+          "doc": "IDs or Wix media URLs of the files to restore from the Media Manager's trash bin.",
           "required": true
         }
       ],
@@ -1317,7 +1314,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID.",
+          "doc": "File ID, or the file's Wix media URL.",
           "required": true
         },
         {
@@ -1793,7 +1790,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to download.",
+          "doc": "IDs or Wix media URLs of the files to download.",
           "required": true
         }
       ],
@@ -1970,7 +1967,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID.",
+          "doc": "File ID, or the file's Wix media URL.",
           "required": true
         },
         {
@@ -2096,7 +2093,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID.",
+          "doc": "File ID, or the file's Wix media URL.",
           "required": true
         }
       ],
@@ -2247,7 +2244,7 @@
               }
             }
           ],
-          "doc": "File IDs.",
+          "doc": "File IDs, or the files' Wix media URLs.",
           "required": true
         }
       ],
@@ -3184,7 +3181,7 @@
       "docs": {
         "summary": "Retrieves a list of files in the Media Manager.",
         "description": [
-          "The `listFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nTo retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the function retrieves only the list of files in the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted files, use the `listDeletedFiles()` function."
+          "The `listFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nTo retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the function retrieves only the files in the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted files, use the `listDeletedFiles()` function."
         ],
         "examples": [
           {
@@ -4361,29 +4358,19 @@
       "name": "updateFileDescriptor",
       "params": [
         {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "File ID. Generated when a file is uploaded to the Media Manager.",
-          "required": true
-        },
-        {
           "name": "file",
           "type": [
             {
-              "referenceType": "wix-media-v2.Files.UpdateFileDescriptorFile"
+              "referenceType": "wix-media-v2.Files.FileDescriptor"
             }
           ],
-          "doc": "",
+          "doc": "The file to update.",
           "required": true
         }
       ],
       "requiredFields": [
-        "_id",
-        "file"
+        "file",
+        "file._id"
       ],
       "ret": {
         "type": [
@@ -5231,7 +5218,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to move to the Media Manager's trash bin."
+          "doc": "IDs or Wix media URLs of the files to move to the Media Manager's trash bin."
         },
         {
           "name": "permanent",
@@ -5452,7 +5439,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to restore from the Media Manager's trash bin."
+          "doc": "IDs or Wix media URLs of the files to restore from the Media Manager's trash bin."
         }
       ],
       "docs": {
@@ -6579,7 +6566,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID."
+          "doc": "File ID, or the file's Wix media URL."
         }
       ],
       "docs": {
@@ -6627,6 +6614,16 @@
             }
           ],
           "doc": "Temporary file name used to identify the file type. For example, a file named \"myFile.jpeg\" identifies as an \"image/jpeg\" file type.\n<br /> **Note:** The name that appears in the Media Manager is taken from the `filename` query parameter in the upload request."
+        },
+        {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
         },
         {
           "name": "labels",
@@ -6705,6 +6702,16 @@
             }
           ],
           "doc": "Temporary file name used to identify the file type. For example, a file named \"myFile.jpeg\" identifies as an \"image/jpeg\" file type.\n<br /> **Note:** The name that appears in the Media Manager is taken from the `filename` query parameter in the upload request."
+        },
+        {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
         },
         {
           "name": "labels",
@@ -6844,6 +6851,16 @@
           "doc": "Temporary file name used to identify the file type. For example, a file named \"myFile.jpeg\" identifies as an \"image/jpeg\" file type.\n<br /> **Note:** The name that appears in the Media Manager is taken from the `filename` query parameter in the upload request."
         },
         {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
+        },
+        {
           "name": "labels",
           "optional": true,
           "type": [
@@ -6920,6 +6937,16 @@
             }
           ],
           "doc": "Temporary file name used to identify the file type. For example, a file named \"myFile.jpeg\" identifies as an \"image/jpeg\" file type.\n<br /> **Note:** The name that appears in the Media Manager is taken from the `filename` query parameter in the upload request."
+        },
+        {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
         },
         {
           "name": "labels",
@@ -7022,7 +7049,7 @@
               }
             }
           ],
-          "doc": "IDs of the files to download."
+          "doc": "IDs or Wix media URLs of the files to download."
         }
       ],
       "docs": {
@@ -7081,7 +7108,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID."
+          "doc": "File ID, or the file's Wix media URL."
         },
         {
           "name": "format",
@@ -7159,7 +7186,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "File ID."
+          "doc": "File ID, or the file's Wix media URL."
         }
       ],
       "docs": {
@@ -7205,7 +7232,7 @@
               }
             }
           ],
-          "doc": "File IDs."
+          "doc": "File IDs, or the files' Wix media URLs."
         }
       ],
       "docs": {
@@ -7487,6 +7514,16 @@
           "doc": "A place to map an external entity to an imported file in the Wix Media Manager."
         },
         {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
+        },
+        {
           "name": "labels",
           "optional": true,
           "type": [
@@ -7592,6 +7629,16 @@
             }
           ],
           "doc": "A place to map an external entity to an imported file in the Wix Media Manager."
+        },
+        {
+          "name": "filePath",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The path by folder names to create the file under.\nIn case a folder in the path does not exist it will be created\nIf multiple folders with the same name exist, the first one will be used\nIf `parentFolderId` is provided, the path will be nested under the folder specified by the `parentFolderId`\nexample: 'videos/2024/december'"
         },
         {
           "name": "labels",
@@ -8525,207 +8572,6 @@
       }
     },
     {
-      "name": "UpdateFileDescriptorFile",
-      "members": [
-        {
-          "name": "_createdDate",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Date and time the file was created."
-        },
-        {
-          "name": "_id",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "File ID. Generated when a file is uploaded to the Media Manager."
-        },
-        {
-          "name": "_updatedDate",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Date and time the file was updated."
-        },
-        {
-          "name": "displayName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "File name as it appears in the Media Manager."
-        },
-        {
-          "name": "hash",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "File hash."
-        },
-        {
-          "name": "labels",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Labels assigned to media files that describe and categorize them. Provided by the user, or generated by [Google Vision API](https://cloud.google.com/vision/docs/drag-and-drop) for images."
-        },
-        {
-          "name": "media",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-media-v2.Files.FileMedia"
-            }
-          ],
-          "doc": "Media file content."
-        },
-        {
-          "name": "mediaType",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Media file type."
-        },
-        {
-          "name": "operationStatus",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Status of the file that was uploaded.\n* `FAILED`: The file failed to upload, for example, during media post processing.\n* `READY`: The file uploaded, finished all processing, and is ready for use.\n* `PENDING`: The file is processing and the URLs are not yet available. This response is returned when importing a file."
-        },
-        {
-          "name": "parentFolderId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "ID of the file's parent folder."
-        },
-        {
-          "name": "private",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Whether the link to the uploaded file is public or private. Private links require a token."
-        },
-        {
-          "name": "siteId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The Wix site ID where the media file is stored."
-        },
-        {
-          "name": "sizeInBytes",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Size of the uploaded file in bytes."
-        },
-        {
-          "name": "sourceUrl",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "URL where the file was uploaded from."
-        },
-        {
-          "name": "state",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "State of the file."
-        },
-        {
-          "name": "thumbnailUrl",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "URL of the file's thumbnail."
-        },
-        {
-          "name": "url",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Static URL of the file."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "UpdateFileDescriptorOptions",
       "members": [],
       "docs": {
@@ -8840,7 +8686,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the file to update."
+          "doc": "ID or Wix media URL of the file to update."
         },
         {
           "name": "labels",
