@@ -40,9 +40,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Deletes multiple contacts.",
+        "summary": "Deletes multiple contacts based on the specified filter and search criteria.",
         "description": [
-          "All contacts that meet the specified `filter` and `search` criteria are deleted.\nThe request should contain a `filter` value or a `search` value, or both.\nTo perform a dry run, use the intended filter options with\n[Query Contacts](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/query-contacts).\n\nWhen this endpoint is used, a bulk job is started and the job ID is returned.\nThe job might not complete right away, depending on its size.\nThe job's status can be retrieved with\n[Get Bulk Job](https://dev.wix.com/api/rest/contacts/contacts/bulk-jobs/get-bulk-job) or\n[List Bulk Jobs](https://dev.wix.com/api/rest/contacts/contacts/bulk-jobs/list-bulk-jobs).\n\nThe following errors can happen while processing the bulk and they will appear in the bulk job:\n- `CANNOT_DELETE_SITE_MEMBERS` - Contact is a site member and cannot be deleted. Member must be deleted first.\n- `CANNOT_DELETE_CONTACT_WITH_BILLING_SUBSCRIPTION` - Contact has a valid billing subscription and cannot be deleted.\n- `CANNOT_DELETE_MEMBER_OWNER_OR_CONTRIBUTOR` - Member cannot be deleted because it is the owner or a contributor. This can happen only if the request indicated to delete the member.\n- `FAILED_DELETE_CONTACT_AFTER_MEMBER_DELETION` - Member was deleted, but contact was not. This can happen only if the request indicated to delete the member.\n- 'FAILED_DELETE_CONTACT' - Contact could not be deleted."
+          "This function returns a Promise that resolves to the `jobId` of the bulk function. When you run the `bulkDeleteContacts()` function, it creates a bulk job. The time required for the bulk job to complete varies based on the number of contacts being deleted. Use the `getBulkJob()` function with the `jobId` to retrieve the status and details of the `bulkDeleteContacts()` job.\n\nErrors that might occur while processing the bulk delete contacts job include:\n- `CANNOT_DELETE_SITE_MEMBERS`: Contact is a site member and cannot be deleted. Member must be deleted first.\n- `CANNOT_DELETE_CONTACT_WITH_BILLING_SUBSCRIPTION`: Contact has a valid billing subscription and cannot be deleted.\n- `CANNOT_DELETE_MEMBER_OWNER_OR_CONTRIBUTOR` - Member cannot be deleted because it is the site owner or a contributor. This can happen only if the request indicated to delete the member.\n- `FAILED_DELETE_CONTACT_AFTER_MEMBER_DELETION`: Member was deleted, but contact was not. This can happen only if the request indicated to delete the member.\n- `FAILED_DELETE_CONTACT`: Contact could not be deleted.\""
         ],
         "examples": [
           {
@@ -128,9 +128,9 @@
         "doc": null
       },
       "docs": {
-        "summary": "Adds and removes labels from multiple contacts.",
+        "summary": "Adds and removes labels from multiple contacts based on the specified filter and search criteria.",
         "description": [
-          "Labels are added to and removed from all contacts that meet the specified\n`filter` and `search` criteria.\nThe request should contain a `filter` value or a `search` value, or both.  To perform a dry run, use the intended filter options with\n[Query Contacts](https://dev.wix.com/api/rest/contacts/contacts/contacts-v4/query-contacts).\n\nWhen this endpoint is used, a bulk job is started and the job ID is returned.\nThe job might not not complete right away, depending on its size.\nThe job's status can be retrieved with\n[Get Bulk Job](https://dev.wix.com/api/rest/contacts/contacts/bulk-jobs/get-bulk-job) or\n[List Bulk Jobs](https://dev.wix.com/api/rest/contacts/contacts/bulk-jobs/list-bulk-jobs)."
+          "This function returns a Promise that resolves to the `jobId` of the bulk function. When you run the `bulkLabelAndUnlabelContacts()` function, it creates a bulk job. The time required for the bulk job to complete varies based on the number of contacts being labeled and unlabeled. Use the `getBulkJob()` function with the `jobId` to retrieve the status and details of the `bulkLabelAndUnlabelContacts()` job."
         ],
         "examples": [
           {
@@ -2567,18 +2567,7 @@
     },
     {
       "name": "queryContacts",
-      "params": [
-        {
-          "name": "options",
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Contacts.QueryContactsOptions"
-            }
-          ],
-          "doc": "Query contact options.",
-          "required": false
-        }
-      ],
+      "params": [],
       "requiredFields": [],
       "ret": {
         "type": [
@@ -2592,44 +2581,19 @@
         "summary": "Creates a query to retrieve a list of contacts.",
         "description": [
           "",
-          "The `queryContacts()` function builds a query to retrieve a list of contacts",
-          "and returns a",
-          "[`ContactsQueryBuilder`](#contactsquerybuilder)",
-          "object.",
+          "The `queryContacts()` function builds a query to retrieve a list of contacts and returns a `ContactsQueryBuilder` object.",
           "",
-          "The returned object contains the query definition,",
-          "which is typically used to run the query using the",
-          "[`find()`](#contactsquerybuilder/find)",
-          "function.",
+          "The returned object contains the query definition, which is typically used to run the query using the `find()` function.",
           "",
-          "You can refine the query",
-          "by chaining `ContactsQueryBuilder` functions onto the query.",
-          "`ContactsQueryBuilder` functions enable you to sort, filter,",
-          "and control the results `queryContacts()` returns.",
+          "You can refine the query by chaining `ContactsQueryBuilder` functions onto the query. `ContactsQueryBuilder` functions enable you to sort, filter, and control the results `queryContacts()` returns.",
           "",
-          "`queryContacts()` runs with these `ContactsQueryBuilder` defaults,",
-          "which you can override:",
+          "`queryContacts()` runs with these `ContactsQueryBuilder` defaults, which you can override:",
           "",
-          "- [`skip(0)`](#contactsquerybuilder/skip)",
-          "- [`limit(50)`](#contactsquerybuilder/limit)",
-          "- [`descending(\"_createdDate\")`](#contactsquerybuilder/descending)",
+          "- `skip(0)`",
+          "- `limit(50)`",
+          "- `descending(\\\"_createdDate\\\")`",
           "",
-          "The functions that are chained to `queryContacts()`",
-          "are applied in the order they are called.",
-          "For example, if you apply `ascending('info.company')`",
-          "and then `descending('info.name.last')`,",
-          "the results are sorted first by the company name, and then,",
-          "if there are multiple results with the same company,",
-          "the items are sorted by last name.",
-          "",
-          "<!--",
-          "> **Note:**",
-          "> Only visitors with",
-          "> **Manage Contacts** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions)",
-          "> can query contacts.",
-          "> You can override the permissions by setting the `suppressAuth` option to `true`",
-          "> in the [`find()`](wix-crm-v2/contacts/contactsquerybuilder/find) function.",
-          "-->",
+          "The functions that are chained to `queryContacts()` are applied in the order they are called. For example, if you apply `ascending('info.company')` and then `descending('info.name.last')`, the results are sorted first by the company name, and then, if there are multiple results with the same company, the items are sorted by last name.",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -7984,18 +7948,7 @@
     },
     {
       "name": "QueryContactsOptions",
-      "members": [
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Plain text search for an exact match.\n\nSupported properties:\n`info.name.first`, `info.name.last`, `info.emails.email`, `info.phones.phone`\n\nMax: 100 characters\n"
-        }
-      ],
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -8014,16 +7967,6 @@
             }
           ],
           "doc": "Query options."
-        },
-        {
-          "name": "search",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Plain text search for an exact match.\n\nSupported properties:\n`info.name.first`, `info.name.last`, `info.emails.email`, `info.phones.phone`\n\nMax: 100 characters\n"
         }
       ],
       "docs": {
