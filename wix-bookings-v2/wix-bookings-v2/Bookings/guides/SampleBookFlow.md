@@ -1,13 +1,13 @@
 # Bookings: Sample Use Cases and Flows
 
-This article shares basic flows you could support. You're certainly not limited
-to these use cases, but it can be a helpful jumping off point as you plan your
-code. You code could add bookings to your business calendar. These bookings can
-be for appointment based services, classes, and courses. They may also use all
-payment methods that are supported in
+This article shares basic flows your code could support. You're certainly not
+limited to these use cases, but it can be a helpful jumping off point for your
+planning. Your code could add bookings to your business calendar. These
+bookings can be for appointment-based services, classes, and courses. They may
+also use all payment methods that are supported in
 [Wix eCommerce](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/introduction)
 in addition to
-[Wix Pricing Plans](https://dev.wix.com/docs/velo/api-reference/wix-pricing-plans-v2/introduction). 
+[Wix Pricing Plans](https://dev.wix.com/docs/velo/api-reference/wix-pricing-plans-v2/introduction).
 
 ## Book an appointment
 
