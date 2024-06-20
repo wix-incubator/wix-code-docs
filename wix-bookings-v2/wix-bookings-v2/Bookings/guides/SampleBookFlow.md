@@ -22,7 +22,7 @@ customer, let them select their slot of choice and create the related booking.
 1. Display the relevant time slots to the customer and let them select their
    preferred time. Save the corresponding `slot`.
 1. Use [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking) 
-   and pass the `slot` from the previous step including `startDate`, `endDate`,
+   and in `booking.bookedEntity` pass the `slot` from the previous step including `startDate`, `endDate`,
    `resource` and `location`. The status of the booking is
    `CREATED`.
 1. Allow the customer to pay for the service, this can be done in 2 ways:
