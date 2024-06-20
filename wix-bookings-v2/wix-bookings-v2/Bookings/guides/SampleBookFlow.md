@@ -18,14 +18,12 @@ customer, let them select their slot of choice and create the related booking.
    to retrieve all relevant services and display them to the customer. Then,
    save the ID of the service the customer wants to book.
 1. Run [queryAvailability()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/availability-calendar/query-availability).
-   Make sure to pass `serviceID`, the business `timezone`, the relevant `startDate` and `endDate` as
-   filters.
+   Make sure to pass `serviceID`, the relevant `startDate` and `endDate` as filters.
 1. Display the relevant time slots to the customer and let them select their
    preferred time. Save the corresponding `slot`.
 1. Use [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking) 
-   and pass `startDate`, `endDate` , `timezone` , `resource` and `location`
-   using the data from the `slot`. If the call is successful, you will receive
-   the created booking in the response. The status of the created booking is
+   and pass the `slot` from the previous step including `startDate`, `endDate`,
+   `resource` and `location`. The status of the booking is
    `CREATED`.
 1. Allow the customer to pay for the service, this can be done in 2 ways:
    - Using [Wix eCommerce](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/introduction):
