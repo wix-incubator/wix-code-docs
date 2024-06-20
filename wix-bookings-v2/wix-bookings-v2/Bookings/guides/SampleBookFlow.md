@@ -28,12 +28,16 @@ customer, let them select their slot of choice and create the related booking.
 1. Allow the customer to pay for the service, this can be done in 2 ways:
    - Using [Wix eCommerce](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/introduction):
       1. Run [createCheckout()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-checkout).
+         Make sure to pass the
+         [Wix Bookings app ID](https://dev.wix.com/docs/rest/articles/getting-started/wix-business-solutions#about-apps-made-by-wix)
+         as `catalogReference.appId` and the booking ID as `catalogReference.catalogItemId`.
       1. Redirect the customer to the checkout page (coming soon).
-      1. Call Create Order (coming soon).
+      1. Run [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order).
    - With your own Checkout:
       1. Implement your own checkout.
       1. Use [confirmOrDeclineBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/confirm-or-decline-booking).
-      1. Run createOrder() (coming soon) with your custom payment details.
+      1. Run [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order)
+         with your custom payment details.
 
 ## Book a class session
 
