@@ -22,8 +22,8 @@ payment flow.
    Make sure to pass `serviceID`, and the relevant `startDate` and `endDate` as filters.
 1. Display the relevant time slots to the customer and let them select their
    preferred time. Make sure to save the `slot`.
-1. Use [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking)
-   and in `booking.bookedEntity.slot` pass `startDate`, `endDate`, `resource`
+1. Invoke [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking).
+   In `booking.bookedEntity.slot` pass `startDate`, `endDate`, `resource`
    and `location` from your saved slot. The status of the booking is now
    `CREATED`.
 1. Allow the customer to pay for the service. You can do this in 2 ways:
@@ -35,9 +35,9 @@ payment flow.
          `catalogReference.catalogItemId`. Save the checkout ID and
          `totalAfterGiftCard.amount`.
       1. Redirect the customer to the checkout page (coming soon).
-      1. Run [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order)
+      1. Use [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order)
          and pass the `checkoutId` as `_id`.
-      1. Run [createPayment](https://dev.wix.com/docs/velo/api-reference/wix-pay-backend/create-payment)
+      1. Invoke [createPayment](https://dev.wix.com/docs/velo/api-reference/wix-pay-backend/create-payment)
          to set up the payment details before you ask the customer to pay. Make
          sure to pass `totalAfterGiftCard.amount` as `paymentInfo.amount`. You
          may pass information about the customer in `userInfo` to prefill the
@@ -63,8 +63,8 @@ them choose the session, create the booking, and handle the payment flow.
    filters.
 1. Display the retrieved sessions to the customer and let them select their
    preferred option. Make sure to save the corresponding `sessionId`.
-1. Use [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking) 
-   and pass the relevant `sessionId` in `booking.bookedEntity.slot.sessionId`.
+1. Invoke [createBooking()](https://dev.wix.com/docs/velo/api-reference/wix-bookings-v2/bookings/create-booking).
+   Pass the relevant `sessionId` in `booking.bookedEntity.slot.sessionId`.
    The status of the booking is now `CREATED`.
 1. Allow the customer to pay for the service. You can do this in 2 ways:
    - Using [Wix eCommerce](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/introduction):
@@ -75,14 +75,14 @@ them choose the session, create the booking, and handle the payment flow.
          `catalogReference.catalogItemId`. Save the checkout ID and
          `totalAfterGiftCard.amount`.
       1. Redirect the customer to the checkout page (coming soon).
-      1. Run [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order)
+      1. Use [createOrder()](https://dev.wix.com/docs/velo/api-reference/wix-ecom-backend/checkout/create-order)
          and pass the `checkoutId` as `_id`.
-      1. Run [createPayment](https://dev.wix.com/docs/velo/api-reference/wix-pay-backend/create-payment)
+      1. Invoke [createPayment](https://dev.wix.com/docs/velo/api-reference/wix-pay-backend/create-payment)
          to set up the payment details before you ask the customer to pay. Make
          sure to pass `totalAfterGiftCard.amount` as `paymentInfo.amount`. You
          may pass information about the customer in `userInfo` to prefill the
          payment form that Wix displays to the customer.
-      1. Run [startPayment()](https://dev.wix.com/docs/velo/api-reference/wix-pay-frontend/start-payment)
+      1. Use [startPayment()](https://dev.wix.com/docs/velo/api-reference/wix-pay-frontend/start-payment)
          to let the customer pay for the booking. Pass the `paymentId` from the previous step.
    - With your own checkout:
       1. Implement your own checkout.
