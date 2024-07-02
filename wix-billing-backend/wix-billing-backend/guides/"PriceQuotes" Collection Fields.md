@@ -4,7 +4,8 @@
 
 # "PriceQuotes" Collection Fields
 
-
+> **Note:**
+> This collection has been temporarily removed from CMS in both the Editor and Site Dashboard.
 
 
 
