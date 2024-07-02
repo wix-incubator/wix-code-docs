@@ -24,6 +24,14 @@ The object passed to a custom Booking Calendar page contains the following prope
 | --- | --- | --- |
 | `service` | Object | The [Service object](https://dev.wix.com/docs/rest/business-solutions/bookings/services/services-v2/service-object), which contains detailed data about the service. |
 
-> **Note**: If the page URL specifies a service that is deleted, hidden, or does not exist, the app returns `null`.
+## Pricing Plans Page
 
-Learn more about [building a custom Calendar page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-bookings/build-a-custom-booking-calendar-page).
+The object passed to a custom Pricing Plans page contains the following properties:
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `plan` | Object | The [Plan object](https://dev.wix.com/docs/rest/business-solutions/pricing-plans/pricing-plans/plans/plan-object), which contains detailed data about the plans. |
+
+> **Note**: If the page URL specifies a plan that is deleted, hidden, or does not exist, the app returns `null`.
+
+Learn more about [building a custom Pricing Plans page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-pricing-plans/build-a-custom-pricing-plans-page).
