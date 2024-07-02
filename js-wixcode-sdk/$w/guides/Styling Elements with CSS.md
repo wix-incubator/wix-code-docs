@@ -99,7 +99,7 @@ For reference, here is a list of global classes:
 - [Video box](/video-box/css-classes)
 - [Video player](/video-player/css-classes)
 
-The following classes are can be customized but don't have an associated $w API:
+The following classes can be customized but don't have an associated $w API:
 
 ### Image button classes
 
