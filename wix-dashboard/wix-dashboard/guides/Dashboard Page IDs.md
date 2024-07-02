@@ -4,6 +4,8 @@
 
 When you use [`navigate()`](#navigate), you need to provide the page ID for the dashboard page you're navigating to. You can navigate to your app's dashboard pages or to dashboard pages built by Wix.
 
+>**Note:** Currently, you can't use `navigate()` to navigate to dashboard pages created with [Wix Blocks](https://dev.wix.com/docs/build-apps/wix-blocks/getting-started/welcome-to-wix-blocks) or to [dashboard pages created with the Wix Editor](https://dev.wix.com/docs/develop-websites/articles/coding-with-velo/frontend-code/dashboard-admin-pages/working-with-dashboard-pages).
+
 ## Your app's dashboard pages
 The IDs for your app's dashboard pages correspond to the IDs for [dashboard page extensions](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-extensions/about-dashboard-page-extensions) added to your app. You can find these IDs in the Wix Dev Center or your app's code files, depending on how you created your extensions:
 
