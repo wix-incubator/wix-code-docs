@@ -99,9 +99,11 @@ For reference, here is a list of global classes:
 - [Video box](/video-box/css-classes)
 - [Video player](/video-player/css-classes)
 
-## Image button classes
+The following classes are can be customized but don't have an associated $w API:
 
-### `.image-button`
+### Image button classes
+
+#### `.image-button`
 
 Targets image button elements.
 For example:
@@ -114,9 +116,9 @@ For example:
 }
 ```
 
-## Language menu classes
+### Language menu classes
 
-### `.language-menu`
+#### `.language-menu`
 
 Targets language menu elements.
 For example:
@@ -129,7 +131,7 @@ For example:
 }
 ```
 
-### `.language-menu__option`
+#### `.language-menu__option`
 
 Targets language menu option elements.
 For example:
@@ -141,9 +143,9 @@ For example:
 }
 ```
 
-## Lightbox classes
+### Lightbox classes
 
-### `.lightbox`
+#### `.lightbox`
 
 Targets lightbox elements.
 For example:
@@ -156,7 +158,7 @@ For example:
 }
 ```
 
-### `.lightbox__close-button`
+#### `.lightbox__close-button`
 
 Targets lightbox close buttons.
 For example:
@@ -167,9 +169,9 @@ For example:
 }
 ```
 
-## Line classes
+### Line classes
 
-### `.horizontal-line`
+#### `.horizontal-line`
 
 Targets horizontal line elements.
 For example:
@@ -180,7 +182,7 @@ For example:
 }
 ```
 
-### `.vertical-line`
+#### `.vertical-line`
 
 Targets vertical line elements.
 For example:
@@ -191,9 +193,9 @@ For example:
 }
 ```
 
-## Search bar classes
+### Search bar classes
 
-### `.search-bar`
+#### `.search-bar`
 
 Targets search bar elements.
 For example:
@@ -206,7 +208,7 @@ For example:
 }
 ```
 
-### `.search-bar__icon`
+#### `.search-bar__icon`
 
 Targets search bar icons.
 For example:
@@ -217,7 +219,7 @@ For example:
 }
 ```
 
-### `.search-bar__input`
+#### `.search-bar__input`
 
 Targets search bar input boxes.
 For example:
