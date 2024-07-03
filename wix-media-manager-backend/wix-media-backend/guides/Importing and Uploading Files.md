@@ -1,8 +1,8 @@
 # Importing and Uploading Files
 
-When you [import](/wix-media-backend/media-manager/import-file) or [upload](/wix-media-backend/media-manager/upload) a file, it is not immediately available. Files can take time to import or upload, but the function will send a response once it has started the importing process.
+When you [import](/wix-media-backend/media-manager/import-file) or [upload](/wix-media-backend/media-manager/upload) a file, it is not immediately available. Files can take time to import or upload and be processed, but the function will return a response once it has validated the request.
 
-To run code when a file finishes importing or uploading successfully, use the [`onFileUploaded()`](wix-media-backend/events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](/wix-media-backend/events/on-audio-transcoded) and [`onVideoTranscoded()`](/wix-media-backend/events/on-video-transcoded), respectively.
+To run code when a file finishes processing successfully, use the [`onFileUploaded()`](wix-media-backend/events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](/wix-media-backend/events/on-audio-transcoded) and [`onVideoTranscoded()`](/wix-media-backend/events/on-video-transcoded), respectively.
 
 ## Using `context`
 
