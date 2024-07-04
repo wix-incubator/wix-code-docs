@@ -7,6 +7,203 @@ We love hearing your feedback! You can help us improve the docs by reporting any
 ![Was this helpful, yes/no buttons](../media/feedback.png)
 
 ---
+### New API: WixComments Element
+
+`Wix Editor Elements ($w)`
+
+The new [`WixComments`](https://www.wix.com/velo/reference/$w/wixcomments) element is a comment widget available in the [Wix App Market](https://www.wix.com/app-market/comments-widget) to manage comment threads on your Wix site. 
+
+The WixComments API allows you to control the comment widget's functionality using code. You can [lock](https://www.wix.com/velo/reference/$w/wixcomments/lock) the widget, [create new comment threads](https://www.wix.com/velo/reference/$w/wixcomments/setresourceid), [open](https://www.wix.com/velo/reference/$w/wixcomments/opennearestcommentbox) and [close](https://www.wix.com/velo/reference/$w/wixcomments/closecommentboxes) the comment text input area, and set event handlers for [viewing new comments](https://www.wix.com/velo/reference/$w/wixcomments/oncommentcreate) and tracking the total [comment count](https://www.wix.com/velo/reference/$w/wixcomments/oncommentcountchange). 
+
+(May 20, 2024)
+
+
+### New API: Dashboard `onBeforeUnload`
+
+`wix-dashboard`
+
+We added a new function to `wix-dashboard` called [`onBeforeUnload()`](/wix-dashboard/onbeforeunload). Use this function on dashboard pages to prompt site builders before leaving a page with unsaved data.
+
+(May 16, 2024)
+
+### Updated API: PanelButton Element
+
+`Wix Editor Elements ($w)`
+
+We added following properties to the [`PanelButton`](https://www.wix.com/velo/reference/$w/panelbutton) element: 
++ [`link`](https://www.wix.com/velo/reference/$w/panelbutton/link): Sets or gets the element's link to an external site.
++ [`target`](https://www.wix.com/velo/reference/$w/panelbutton/target): Sets or gets the target of the element's link. 
+
+(May 15, 2024)
+
+### New APIs: Forum Categories
+
+`wix-forum.v2`
+
+The Forum [categories API](https://www.wix.com/velo/reference/wix-forum-v2/categories) has two new functions:
+* [`subscribeContactToCategory()`](https://www.wix.com/velo/reference/wix-forum-v2/categories/subscribecontacttocategory): Subscribes a contact to a specific forum category.
+* [`unsubscribeContactFromCategory()`](https://www.wix.com/velo/reference/wix-forum-v2/categories/unsubscribecontactfromcategory): Unsubscribes a contact from a specific forum category.
+
+
+(April 22, 2024)
+
+### Updated API: MenuContainer Element 
+
+`Wix Editor Elements ($w)`
+
+In the [MenuContainer](https://www.wix.com/velo/reference/$w/menucontainer) element, we removed the `onItemMouseIn()`, `onItemMouseOut()`, `onItemClick()`, and `onItemDblClick()` event handlers and the `menuItems` property from its documentation. These methods and properties were never supported by `MenuContainer`.
+
+(April 17, 2024)
+
+### Updated API: Wix Billing Backend
+
+`wix-billing-backend`
+
+We made the following changes to the [Invoices API](https://www.wix.com/velo/reference/wix-billing-backend/invoices):
+
+ + [`createInvoice()`](https://www.wix.com/velo/reference/wix-billing-backend/invoices/createinvoice): Added an optional `locale` object to the `invoiceFields` parameter. This parameter sets the locale of the customer invoice.    
+
+ +  [`getInvoice()`](https://www.wix.com/velo/reference/wix-billing-backend/invoices/getinvoice): Adjusted the list of supported IETF language subtags in the `locale.language` property. The previous 4-letter language codes listed in the documentation were never returned in the `Invoice` response object. The listed codes have been corrected to display 2-letter language subtags.  
+    
+(April 16, 2024)
+
+### Updated API: Container Element
+
+`Wix Editor Elements ($w)`
+
+The [`Container`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) element now contains a new 
+[`onKeyPress()`](https://www.wix.com/velo/reference/$w/container/onkeypress) method. This method adds an event handler that's triggered when a key is pressed while the container or one of its child elements is focused.
+
+(April 16, 2024)
+
+### New API: Open Media Manager
+
+`wix-dashboard`
+
+The [`openMediaManager()`](/wix-dashboard/openmediamanager) API allows you to open a Wix Media Manager modal on a dashboard page. Site builders can select one or more the site's media files using the manager. The API returns a list of the selected files when the modal is closed.
+
+(April 15, 2024)
+
+
+### New APIs: Open and Close Modal
+
+`wix-dashboard`
+
+Use the [`openModal()`](/wix-dashboard/openmodal) API to open a [dashboard modal extension](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-modal-extensions) on a dashboard page. Use the [`closeModal()`](/wix-dashboard/closemodal) API to close a currently open modal.
+
+(April 14, 2024)
+
+### New Developer Preview APIs: Wix URLs APIs
+
+`wix-urls.v2`
+
+[Wix URLs](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction) introduces new APIs that provide developers with access to a site's URLs:
+
+- [Wix Editor](https://www.wix.com/velo/reference/wix-urls-v2/editor/introduction): Access the site's editor URL and site preview URL.
+- [Wix Site](https://www.wix.com/velo/reference/wix-urls-v2/site/introduction): Access the site's published site URLs, included translated pages.
+
+(April 14, 2024)
+
+### New release: More Wix Events APIs
+
+`wix-events.v2`
+
+[Wix Events](https://www.wix.com/velo/reference/wix-events-v2/introduction) introduces new APIs that provide developers with a growing set of services for customizing Events functionality on Wix sites:
+
+- [Categories](https://www.wix.com/velo/reference/wix-events-v2/categories/introduction): Create and assign various categories to their events.
+- [Forms](https://www.wix.com/velo/reference/wix-events-v2/forms/introduction): Customize a registration form for site visitors to fill out with their contact details and other relevant information.
+- [Orders](https://www.wix.com/velo/reference/wix-events-v2/orders/introduction): The **Checkout** module is now merged with **Orders**.
+- [RSVP](https://www.wix.com/velo/reference/wix-events-v2/rsvp/introduction): Access the information on guests who have RSVP'ed to an event.
+- [Schedule](https://www.wix.com/velo/reference/wix-events-v2/schedule/introduction): Share the lineup of an event’s activities, presentations, performances, or sessions.
+- [Schedule Bookmarks](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks/introduction): Allow members to mark their favorite schedule items to curate their own personalized agenda for your event.
+- [Wix Events v2](https://www.wix.com/velo/reference/wix-events-v2/wixeventsv2/introduction): The updated [Wix Events](https://www.wix.com/velo/reference/wix-events-backend/wixevents/introduction) API where you can create and manage events on your site.
+
+(April 4, 2024)
+
+### New Developer Preview APIs: Mobile Elements
+
+`Wix Editor Elements ($w)`
+
+<blockquote class="important">
+
+__Important:__
++ These APIs are only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ These APIs are in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and are subject to change. 
+
+</blockquote>
+
+We added the following mobile APIs:
+
++ [`MobileButton`]($w/mobilebutton): A button element on a mobile app.
++ [`MobileContainer`]($w/mobilecontainer): A container element for repeater items on a mobile app.
++ [`MobileElement`]($w/mobileelement): Provides basic functionality for mobile elements.
++ [`MobileImage`]($w/mobileimage): An image element on a mobile app.
++ [`MobilePicker`]($w/mobilepicker): A picker for selecting items on a mobile app.
++ [`MobileRepeater`]($w/mobilerepeater): A repeater mobile element used for creating repeating layouts on a mobile app widget.
++ [`MobileSwitch`]($w/mobileswitch): A switch used for a single binary choice on a mobile app.
++ [`MobileText`]($w/mobiletext): A text element on a mobile app.
++ [`MobileTextInput`]($w/mobiletextinput): A text input element for capturing small amounts of text on a mobile app.
+
+(April 3, 2024)
+
+### New Developer Preview API: Wix Mobile 
+
+`wix-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Mobile API](https://www.wix.com/velo/reference/wix-mobile/introduction) provides the functionality required to work with your mobile app.
+
+It contains the [showAlert()](https://www.wix.com/velo/reference/wix-mobile/showalert) API that creates and opens an alert modal on your mobile app.
+
+(April 3, 2024)
+
+### New Developer Preview API: Wix Navigate Mobile 
+
+`wix-navigate-mobile`
+
+<blockquote class="important">
+
+__Important:__
++ This API is only relevant for custom widgets in [Branded Apps](https://www.wix.com/app-builder).
++ Custom widgets are not yet available to all users. 
++ This API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. 
+
+</blockquote>
+
+The [Wix Navigate Mobile API](https://www.wix.com/velo/reference/wix-navigate-mobile/introduction) provides the functionality required to navigate through your mobile app.
+
+It contains the [openUrl()](https://www.wix.com/velo/reference/wix-navigate-mobile/openurl) API that directs your mobile app to open the specified URL in the device's browser.
+
+(April 3, 2024)
+
+### Updated API: Wix Window Frontend
+
+`wix-window-frontend`
+
+We've added a new mode, `"Editor"`, to the [`viewMode`](https://www.wix.com/velo/reference/wix-window-frontend/viewmode) property of the [`wix-window-frontend`](https://www.wix.com/velo/reference/wix-window-frontend) module.
+
+The `viewMode` property retrieves the `"Editor"` value when viewing a [Wix Blocks](https://support.wix.com/en/article/wix-blocks-check-out-our-articles) built widget in the editor. 
+
+(March 18, 2024)
+
+### New: Wix Blocks Panel Builder Elements
+
+The following elements can be added to [Wix Blocks Custom Panels](https://support.wix.com/en/article/wix-blocks-about-panels#custom-panels) and managed in the [Wix Blocks Panel Code](https://support.wix.com/en/article/wix-blocks-adding-code-to-your-custom-panels):
+
+* [PanelColorPicker]($w/panelcolorpicker) The panel color picker is used in the Wix Blocks panel builder for picking colors from a color palette.
+* [PanelFontAndColorPicker]($w/panelfontandcolorpicker) The panel font and color picker is used in the Wix Blocks panel builder for picking fonts from a dropdown and colors from a color palette. 
+
+(March 5, 2024)
+
 ### New SPI: Velo Action
 
 The new [Velo Action SPI](https://www.wix.com/velo/reference/spis/wix-automations) lets you create your own custom action to use in your site's automations. You can create and test code directly in your site dashboard when creating or editing an automation.
@@ -46,7 +243,7 @@ The new WixFormsV2 Element displays customizable forms, collects all the info th
 
 `wix-crm-backend` 
 
-The Workflows product and APIs are being discontinued and will stop working on June 30, 2024. There will not be a direct replacement for this API. However, our team is working to provide alternatives. We understand that this change may pose challenges, and we appreciate your patience and understanding.
+The Workflows API will be discontinued in the upcoming months. Our team is working to provide alternatives, and we'll provide timely updates before implementing any changes. We understand that this transition might present challenges, and we appreciate your patience and understanding.
 
 (February 6, 2024)
 
