@@ -22,8 +22,8 @@ title: Introduction
 The Roles API provides functionality for managing roles of group [members](https://www.wix.com/velo/reference/wix-members-v2). 
  
 With the Roles API, you can:
-- [Assign](wix-groups-v2/roles/assignrole) a role to specific group members.
-- [Unassign](wix-groups-v2/roles/unassignrole) a role from specific group members.
+- [Assign](/roles/assign-role) a role to specific group members.
+- [Unassign](/roles/unassign-role) a role from specific group members.
 
 
 > **Note:** This module is only relevant for site admins and group admins.
