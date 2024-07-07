@@ -36,6 +36,7 @@ import { roles } from 'wix-groups.v2';
 ```
 
 ## Before you begin
+
 Before you begin coding, make sure to add the [Wix Groups](https://support.wix.com/en/article/wix-groups-adding-and-setting-up-wix-groups) application to your site. 
 
 
