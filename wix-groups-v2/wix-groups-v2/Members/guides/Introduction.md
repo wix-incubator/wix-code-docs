@@ -21,16 +21,16 @@ The Members API provides functionality for managing group members, inluding addi
 + **Note:** If the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function is used, all permissions are overridden, and all site members (including non-group members) can add additional members to a group. 
 
 The Members API provides functionality allowing you to:
- + [Add](wix-groups-v2/members/addgroupmembers) members to a group. 
- + [List](wix-groups-v2/members/listgroupmembers) all members of a group. 
- + [List](wix-groups-v2/members/listmemberships) a site member's group memberships. 
- + [Query](wix-groups-v2/members/querygroupmembers) members of a group. 
- + [Query](wix-groups-v2/members/querymemberships) a site member's group memberships. 
- + [Remove](wix-groups-v2/members/removegroupmembers) members of a group.   
+ + [Add](/members/add-group-members) members to a group. 
+ + [List](/members/list-group-members) all members of a group. 
+ + [List](/members/list-memberships) a site member's group memberships. 
+ + [Query](/members/query-group-members) members of a group. 
+ + [Query](/members/query-memberships) a site member's group memberships. 
+ + [Remove](/members/remove-group-members) members of a group.   
 
 ## Permissions information
 Permission requirements for the functions in this API can be overridden using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function. This will have the following effects:
- + [`addGroupMembers()`](wix-groups-v2/members/addgroupmembers) - All site members (including non-group members) can add additional members to a group.
+ + [`addGroupMembers()`](/members/add-group-members) - All site members (including non-group members) can add additional members to a group.
  + [`listGroupMembers()`](wix-groups-v2/members/listGroupMembers) - All site members (including non-group members) can see the list of group members.
  + [`listMemberships()`](wix-groups-v2/members/listMemberships) - All site members (including non-group members) can see a list of a site member's memberships.
  + [`queryGroupMembers()`](wix-groups-v2/members/queryGroupMembers) - All site members (including non-group members) can query group members.
