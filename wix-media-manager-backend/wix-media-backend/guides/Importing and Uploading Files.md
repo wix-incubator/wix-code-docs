@@ -1,12 +1,12 @@
 # Importing and Uploading Files
 
-When you [import](/media-manager/import-file) or [upload](/media-manager/upload) a file, it's not immediately available, meaning you can't manage or use the file straight away. Files can take time to import or upload and be processed. This is true even though the function used to import or upload a file returns a successful response.
+When you [import](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/import-file) or [upload](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/upload) a file, it's not immediately available, meaning you can't manage or use the file straight away. Files can take time to import or upload and be processed. This is true even though the function used to import or upload a file returns a successful response.
 
-To run code when a file finishes processing successfully, use the [`onFileUploaded()`](events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](/events/on-audio-transcoded) or [`onVideoTranscoded()`](/events/on-video-transcoded).
+To run code when a file finishes processing successfully, use the [`onFileUploaded()`](events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/events/on-audio-transcoded) or [`onVideoTranscoded()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/events/on-video-transcoded).
 
 ## Using `context`
 
-The [`import()`](/media-manager/import-file), [`upload()`](/media-manager/upload), and [`getUploadUrl()`](/media-manager/get-upload-url) functions have a parameter called `context`. 
+The [`import()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/import-file), [`upload()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/upload), and [`getUploadUrl()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/get-upload-url) functions have a parameter called `context`. 
 Arguments passed to this parameter are included only in the `wix-media-backend` event bodies. 
 
 Use `context` to pass information to the events that isn't contained in the file descriptor object.
@@ -19,8 +19,8 @@ There is a form on a site that sends site visitors a confirmation email with the
 In the email, we want to send a Wix download URL for the image, not the original image URL. This means we can only send the email when the image file is ready to download.
 
 To implement this, we use the following flow:
-1. When the user submits the form, send the form information to a [data collection](/wix-data/introductionn), getting back the form data's `_id`.
-1. Use [`import()`](/media-manager/import-file) to upload the image to the Media Manager. Include the `context` parameter as follows:
+1. When the user submits the form, send the form information to a [data collection](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction), getting back the form data's `_id`.
+1. Use [`import()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/import-file) to upload the image to the Media Manager. Include the `context` parameter as follows:
     ```json
     {
       "context": {
@@ -29,8 +29,8 @@ To implement this, we use the following flow:
       }
     }
     ```
-1. Add the [`onFileUploaded()`](events/on-file-uploaded) event in your **events.js** file, and implement the following steps to handle the event:
+1. Add the [`onFileUploaded()`](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/events/on-file-uploaded) event in your **events.js** file, and implement the following steps to handle the event:
     1. Check that the value for `context.origin` is `formBuilder`. We don't want to run this code if media was added from a different source.
-    1. Use the `_id` to [retrieve the form details](data-items/save-data-item) from the CMS.
-    1. [Get a download URL](/media-manager/get-download-url) for the image.
+    1. Use the `_id` to [retrieve the form details](https://dev.wix.com/docs/velo/api-reference/wix-data/get) from the CMS.
+    1. [Get a download URL](https://dev.wix.com/docs/velo/api-reference/wix-media-backend/media-manager/get-download-url) for the image.
     1. Send the confirmation email with the form details and the download URL.
