@@ -2,14 +2,14 @@
 
 When you [import](/wix-media-backend/media-manager/import-file) or [upload](/wix-media-backend/media-manager/upload) a file, it's not immediately available, meaning you can't manage or use the file straight away. Files can take time to import or upload and be processed. This is true even though the function used to import or upload a file returns a successful response.
 
-To run code when a file finishes processing successfully, use the [`onFileUploaded()`](wix-media-backend/events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](/wix-media-backend/events/on-audio-transcoded) and [`onVideoTranscoded()`](/wix-media-backend/events/on-video-transcoded), respectively.
+To run code when a file finishes processing successfully, use the [`onFileUploaded()`](wix-media-backend/events/on-file-uploaded) event. For audio or video files, use [`onAudioTranscoded()`](/wix-media-backend/events/on-audio-transcoded) or [`onVideoTranscoded()`](/wix-media-backend/events/on-video-transcoded).
 
 ## Using `context`
 
 The [`import()`](/wix-media-backend/media-manager/import-file), [`upload()`](/wix-media-backend/media-manager/upload), and [`getUploadUrl()`](/wix-media-backend/media-manager/get-upload-url) functions have a parameter called `context`. 
 Arguments passed to this parameter are included only in the `wix-media-backend` event bodies. 
 
-Use `context` to pass information to the event that isn't contained in the file descriptor object.
+Use `context` to pass information to the events that isn't contained in the file descriptor object.
 
 ### `context` use case
 
