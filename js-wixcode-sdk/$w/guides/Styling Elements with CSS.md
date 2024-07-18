@@ -62,12 +62,12 @@ For reference, here is a list of global classes:
 - [Form]($w/form/css-classes)
 - [Google map](/google-map/css-classes)
 - [Header]($w/header/css-classes)
-- [Horizontal line]($w/element/css-classes#horizontal-line)
+- [Horizontal line](#horizontal-line)
 - [Horizontal menu]($w/menu/css-classes#horizontal-menu)
 - [Image]($w/image/css-classes)
-- [Image button]($w/element/css-classes#image-button)
-- [Language menu]($w/element/css-classes#language-menu)
-- [Lightbox]($w/element/css-classes#lightbox)
+- [Image button](#image-button-classes)
+- [Language menu](#language-menu-classes)
+- [Lightbox](#lightbox-classes)
 - [Lottie]($w/lottie/css-classes)
 - [Menu]($w/menu/css-classes)
 - [Menu container](/menu-container/css-classes)
@@ -80,7 +80,7 @@ For reference, here is a list of global classes:
 - [Ratings input](/ratings-input/css-classes)
 - [Repeater]($w/repeater/css-classes)
 - [Rich text box](/rich-text-box/css-classes)
-- [Search bar]($w/element/css-classes#search-bar)
+- [Search bar](#search-bar-classes)
 - [Section]($w/section/css-classes)
 - [Selection tags](/selection-tags/css-classes)
 - [Signature input](/signature-input/css-classes)
@@ -94,7 +94,141 @@ For reference, here is a list of global classes:
 - [Time picker](/time-picker/css-classes)
 - [Upload button](/upload-button/css-classes)
 - [Vector image](/vector-image/css-classes)
-- [Vertical line]($w/element/css-classes#vertical-line)
+- [Vertical line](#vertical-line)
 - [Vertical menu]($w/menu/css-classes#vertical-menu)
 - [Video box](/video-box/css-classes)
 - [Video player](/video-player/css-classes)
+
+The following classes can be customized but don't have an associated $w API:
+
+### Image button classes
+
+#### `.image-button`
+
+Targets image button elements.
+For example:
+
+```css
+.image-button {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+}
+```
+
+### Language menu classes
+
+#### `.language-menu`
+
+Targets language menu elements.
+For example:
+
+```css
+.language-menu {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+}
+```
+
+#### `.language-menu__option`
+
+Targets language menu option elements.
+For example:
+
+```css
+.language-menu__option {
+  background-color: #dfd2f4;
+  font-family: monospace;
+}
+```
+
+### Lightbox classes
+
+#### `.lightbox`
+
+Targets lightbox elements.
+For example:
+
+```css
+.lightbox {
+  border: 5px solid #d1a917;
+  border-radius: 6px;
+  filter: drop-shadow(2px 4px 6px black);
+}
+```
+
+#### `.lightbox__close-button`
+
+Targets lightbox close buttons.
+For example:
+
+```css
+.lightbox__close-button {
+  width: 10px;
+}
+```
+
+### Line classes
+
+#### `.horizontal-line`
+
+Targets horizontal line elements.
+For example:
+
+```css
+.horizontal-line {
+  border-top: 6px dotted orange;
+}
+```
+
+#### `.vertical-line`
+
+Targets vertical line elements.
+For example:
+
+```css
+.vertical-line {
+  border-left: 12px dashed pink;
+}
+```
+
+### Search bar classes
+
+#### `.search-bar`
+
+Targets search bar elements.
+For example:
+
+```css
+.search-bar {
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+}
+```
+
+#### `.search-bar__icon`
+
+Targets search bar icons.
+For example:
+
+```css
+.search-bar__icon {
+  fill: #840292;
+}
+```
+
+#### `.search-bar__input`
+
+Targets search bar input boxes.
+For example:
+
+```css
+.search-bar__input {
+  border: none;
+  border-bottom: 2px solid #840292;
+  background-color: #dfd2f4;
+  font-family: monospace;
+}
+```
