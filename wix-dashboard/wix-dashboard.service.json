@@ -1,7 +1,7 @@
 { "name": "wix-dashboard",
   "mixes": [],
   "labels":
-    [ "new" ],
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "index.js" },
@@ -17,21 +17,91 @@
           "  ![Toast notification](/images/toast_example.png \"Toast notification\")",
           "- Retrieve data about changes to the dashboard's state and use it to update your page in real time.",
           "- Request user confirmation before they leave the page.",
+          "- Set the page title in the browser tab.",
           "",
           "To use the Wix Dashboard API, import the applicable function from `wix-dashboard`:",
           "",
           "```js",
           "import { <function> } from 'wix-dashboard';",
           "```",
+          "",
           "## Before you begin",
-          "It's important to note that the Wix Dashboard API can only be used in code running on dashboard pages. The functions in this API don't work in backend code or on any other pages on your site." ],
+          "It's important to note that the Wix Dashboard API can only be used in code running on dashboard pages. The functions in this API don't work in backend code or on any other pages on your site.",
+          "",
+          "## Dashboard permissions",
+          "",
+          "When you call Wix APIs from your dashboard page code, you need to keep in mind which permissions are available to your code. These permissions are different for dashboard pages created in the Editor and pages created with Wix Blocks.",
+          "",
+          "### Pages created in the Editor",
+          "",
+          "Permissions for code running on dashboard pages created in the Editor are scoped to the currently logged-in user. This means that if your code makes calls to APIs that the user does not have permissions to access, those calls will fail.",
+          "",
+          "For example, your dashboard page code may make a call to the [`stores` API](https://dev.wix.com/docs/velo/api-reference/wix-stores-v2/products/introduction) to add products to the site's store. However, if the user accessing the page has a [role](https://support.wix.com/en/article/roles-permissions-overview) that doesn't allow adding products, those API calls will fail.",
+          "",
+          "",
+          "### Pages created with Wix Blocks",
+          "",
+          "Dashboard pages created with Wix Blocks are always part of an [app](https://dev.wix.com/docs/build-an-app/develop-your-app/frameworks/wix-blocks/getting-started-with-blocks/welcome-to-wix-blocks). The code on these pages can access APIs with the permissions of the currently logged-in user, but only if the app has also been granted those permissions.",
+          "",
+          "![Dashboard Permissions](../assets/images/dashboard-permissions.png)",
+          "",
+          "For example, if your app has permissions to add products to a store, but the current user does not, your app will not be able to use the [`stores` API](https://dev.wix.com/docs/velo/api-reference/wix-stores-v2/products/introduction) to add products to the store. Conversely, if the current user has permissions to add products to a store, but your app does not, your app will not be able to add products to the store. The only way your app can add products to a store is if both your app and the current user have permissions to do so." ],
       "links": [],
       "examples": [],
       "extra":
         {  } },
   "properties": [],
   "operations":
-    [ { "name": "closeModal",
+    [ { "name": "addSitePlugin",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "pluginId",
+              "type": "string",
+              "doc": "ID of the site plugin, which you can find in your app's site plugin extension in the Wix Dev Center." },
+            { "name": "options",
+              "type": "wix-dashboard.AddSitePluginOptions",
+              "doc": "Options to use when adding a site plugin." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "void" ] },
+            "doc": "Fulfilled - when the plugin is added to the site." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "<blockquote class=\"important\">\n\n__Important:__\n\nThis API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. \n\n</blockquote>\n\nAdds a site plugin to a slot within an app created by Wix.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "The `addSitePlugin()` function returns a Promise that resolves when the plugin is added to the site.",
+                "",
+                "> **Note:** To use this function, Your app must have a site plugin extension. Learn more about [site plugins](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/about-site-plugin-extensions)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Add a site plugin",
+                  "body":
+                    [ "import { addSitePlugin } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "const pluginId = '975bffb7-3c04-42cc-9840-3d48c24e73d5';",
+                      "const pluginPlacement = {",
+                      "    appDefinitionId: '13d21c63-b5ec-5912-8397-c3a5ddb27a97',",
+                      "    widgetId: 'a91a0543-d4bd-4e6b-b315-9410aa27bcde',",
+                      "    slotId: 'slot1',",
+                      "};",
+                      "",
+                      "addSitePlugin(pluginId, { placement: pluginPlacement });" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "closeModal",
         "labels": [],
         "nameParams": [],
         "params":
@@ -77,7 +147,7 @@
                   [ "string" ] },
             "doc": "Fulfilled - The URL of the dashboard page." },
         "locations":
-          [ { "lineno": 15,
+          [ { "lineno": 19,
               "filename": "navigation.js" } ],
         "docs":
           { "summary": "Gets the full URL for a dashboard page.",
@@ -115,7 +185,11 @@
             "description":
               [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
-                "If a `destination` object with an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard." ],
+                "You can identify the page to navigate to using its [page ID](#dashboard-page-ids).",
+                "If a `destination` object with an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard.",
+                "",
+                ">**Note:** Currently, you can only use `navigate()` to navigate to dashboard pages created in the [Wix Dev Center](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-extensions/dashboard-page#create-a-wix-dashboard) or with the [Wix CLI](https://dev.wix.com/docs/build-apps/developer-tools/cli/get-started/about-the-wix-cli-for-apps). ",
+                "You can't use it to navigate to pages created with [Wix Blocks](https://dev.wix.com/docs/build-apps/wix-blocks/getting-started/welcome-to-wix-blocks) or to [dashboard pages created with the Wix Editor](https://dev.wix.com/docs/develop-websites/articles/coding-with-velo/frontend-code/dashboard-admin-pages/working-with-dashboard-pages)." ],
             "links": [],
             "examples":
               [ { "title": "Navigate to the dashboard home page",
@@ -163,6 +237,56 @@
                       "  console.log('custom param', pageParams.customParam);",
                       "  console.log('locale', environmentState.locale);",
                       "});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "onBeforeUnload",
+        "labels":
+          [ "changed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "callback",
+              "type": "wix-dashboard.onBeforeUnloadCallback",
+              "doc": "Callback function to call when the `beforeunload` event fires. The function receives an `event` object as an argument." } ],
+        "ret":
+          { "type": "wix-dashboard.onBeforeUnloadReturn" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "summary": "Registers a [`beforeunload` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) handler for a dashboard page.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "`onBeforeUnload()` accepts a callback that's triggered when a site builder is about to navigate away from a dashboard page or when the browsing context of an app is being unloaded. This can happen when the site builder selects another page from the dashboard's sidebar.",
+                "",
+                " The event object passed to the callback function contains a function called `preventDefault()`. If the callback calls `preventDefault()`, navigation away from the page is paused. A dialog is displayed in the dashboard warning the site builder that there may be unsaved data on the page. The site builder can choose to stay on the current page and save their data, or to proceed.",
+                "",
+                "> **Notes:** ",
+                "> * The `beforeunload` event does not fire when a user closes the browser or refreshes the page.",
+                "> * You should not assume that the `beforeunload` event will always fire or that the confirmation dialog will always be presented. These behaviors vary depending on the site builder's browser." ],
+            "links": [],
+            "examples":
+              [ { "title": "Ask for confirmation before unloading unsaved data",
+                  "body":
+                    [ "import { onBeforeUnload } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "const { remove } = onBeforeUnload((event) => {",
+                      "  // Check if there is unsaved data on the page",
+                      "  if (unsavedPageData) {",
+                      "    event.preventDefault();",
+                      "  }",
+                      "});",
+                      "",
+                      "// ...",
+                      "",
+                      "// Remove the onBeforeUnload event handler",
+                      "remove();" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -330,6 +454,57 @@
               {  } },
         "extra":
           {  } },
+      { "name": "setPageTitle",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "pageTitle",
+              "type": "string",
+              "doc": "Page title to set in the browser tab." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "setPageTitle.js" } ],
+        "docs":
+          { "summary": "Sets the title of the current dashboard page in the browser tab.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "Call the `setPageTitle()` function whenever the page reloads, or to apply a new title when updating a page's content dynamically, without reloading. ",
+                "",
+                "Set the page title to `null` to reset the title to the default dashboard page title." ],
+            "links": [],
+            "examples":
+              [ { "title": "Set the title for a page",
+                  "body":
+                    [ "import { setPageTitle } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "setPageTitle('Product: Green apples');" ],
+                  "extra":
+                    {  } },
+                { "title": "Set the page title to a product ID included in the URL's query parameters",
+                  "body":
+                    [ "import { navigate, observeState, setPageTitle } from 'wix-dashboard';",
+                      "",
+                      "observeState((_, environmentState) => {",
+                      "  // Use a regular expression to capture the productId value.",
+                      "  const queryParams = environmentState.pageLocation.search;  ",
+                      "  const productIdMatch = queryParams.match(/[?&]productId=([^&]+)/); ",
+                      "  let productId; ",
+                      "  if (productIdMatch) {",
+                      "    productId = productIdMatch[1]; ",
+                      "  }",
+                      "  setPageTitle(`Product: ${productId}`);",
+                      "});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
       { "name": "showToast",
         "labels": [],
         "nameParams": [],
@@ -462,9 +637,45 @@
             "extra":
               {  } },
         "extra":
+          {  } },
+      { "name": "onBeforeUnloadCallback",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "event",
+              "type": "wix-dashboard.onBeforeUnloadEvent",
+              "doc": "Event object. Contains a function called `preventDefault()`." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 28,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
           {  } } ],
   "messages":
-    [ { "name": "Archive",
+    [ { "name": "AddSitePluginOptions",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "An object representing the options to use when adding a site plugin.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "placement",
+              "type": "wix-dashboard.PluginPlacement",
+              "doc": "Information about the slot in which you want to add the plugin. Learn more about the [slots that are available on Wix app pages](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/supported-wix-app-pages/about-slots)." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Archive",
         "locations":
           [ { "lineno": 90,
               "filename": "openMediaManager.js" } ],
@@ -591,7 +802,7 @@
         "labels": [] },
       { "name": "Destination",
         "locations":
-          [ { "lineno": 30,
+          [ { "lineno": 34,
               "filename": "navigation.js" } ],
         "docs":
           { "summary": "Destination Object",
@@ -602,7 +813,7 @@
         "members":
           [ { "name": "pageId",
               "type": "string",
-              "doc": "ID of the page to link to. Use the [Dashboard Page IDs](#dashboard-page-ids) table to find the appropriate ID." },
+              "doc": "ID of the page to link to. See [Dashboard Page IDs](#dashboard-page-ids) to find the appropriate ID." },
             { "name": "relativeUrl",
               "type": "string",
               "doc": "URL segment to append to the base URL of the selected page. Can include path segments, a query string, and a fragment identifier.",
@@ -897,6 +1108,29 @@
         "extra":
           {  },
         "labels": [] },
+      { "name": "PluginPlacement",
+        "locations":
+          [ { "lineno": 37,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "An object representing a slot in which to add a plugin.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "appDefinitionId",
+              "type": "string",
+              "doc": "ID of the Wix app." },
+            { "name": "widgetId",
+              "type": "string",
+              "doc": "ID of the host widget." },
+            { "name": "slotId",
+              "type": "string",
+              "doc": "ID of the slot." } ],
+        "extra":
+          {  },
+        "labels": [] },
       { "name": "Serializable",
         "locations":
           [ { "lineno": 39,
@@ -1025,6 +1259,38 @@
           [ { "name": "video",
               "type": "string",
               "doc": "Information about the video." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "onBeforeUnloadEvent",
+        "locations":
+          [ { "lineno": 33,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "preventDefault",
+              "type": "Function",
+              "doc": "Prevents the page from unloading. Opens a dialog with a warning that there may be unsaved data on the page." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "onBeforeUnloadReturn",
+        "locations":
+          [ { "lineno": 23,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "remove",
+              "type": "Function",
+              "doc": "Removes the `onBeforeUnload` event handler." } ],
         "extra":
           {  },
         "labels": [] },

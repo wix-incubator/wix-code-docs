@@ -1,6 +1,6 @@
 # Introduction
 
-With the Site API, you can retrieve the relevant URLs the published site, including translated pages. 
+With the Site API, you can retrieve the relevant URLs for the published site, including translated pages. 
 
 
 ## Use cases
