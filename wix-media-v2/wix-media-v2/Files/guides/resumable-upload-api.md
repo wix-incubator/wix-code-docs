@@ -5,7 +5,7 @@ title: Resumable Upload API
 # Resumable Upload API
 This article demonstrates how to use the response object from [`generateFileResumableUploadUrl()`](wix-media-v2/files/generatefileresumableuploadurl) to upload a file to a site's Media Manager. 
 
->**Note:** Due to limits on the size and duration of files that you can upload, we recommend using [`importFile()`](wix-media-v2/files/importfile). See [Wix Media: Supported Media File Types and File Sizes](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) for more details.
+>**Note:** Due to limits on the size and duration of files that you can upload, we recommend using [`importFile()`](wix-media-v2/files/importfile). See [Wix Media: Supported Media File Types and File Sizes](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) for more details. 
 
 ## Authorization
 This endpoint uses the `uploadToken` from the response for authorization.
@@ -112,8 +112,15 @@ async function resumableFileUpload(resumableUploadUrlResponse: GenerateFileResum
 }
 ```
 
-
 ## Status/Error Codes
 Errors from this endpoint will include an HTTP status code.
         
+### Use uploaded media on your site
+After making the REST HTTP request, you can either display the media on your site directly from the [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager#accessing-the-media-manager-1), or you can set the uploaded media to `$w` frontend elements.
 
+To display the media files on the frontend of your site with code, you first need to retrieve the file's Media Manager URL.
+
+To retrieve the Media Manager URL:
+1.  Call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor), passing in `file.id` from the Upload API's [response object](#Response) as its only parameter. 
+2. Retrieve the valid Media Manager URL from the `media` property in the `FileDescriptor` object that was returned in the previous step.
+3. To use the media in a `$w` element, set the value of the associated `media` property to the element's `src` property. 

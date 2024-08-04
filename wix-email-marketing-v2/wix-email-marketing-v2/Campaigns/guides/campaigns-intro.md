@@ -19,12 +19,12 @@ The Campaigns API provides functionality for managing your email marketing campa
 
 With the Campaigns API you can: 
 
-- [Get](wix-email-marketing-v2/campaigns/getcampaign) or [list](wix-email-marketing-v2/campaigns/listcampaigns) email campaigns.
-- [Create a draft copy](wix-email-marketing-v2/campaigns/reusecampaign) of an existing campaign. 
-- [Permanently delete](wix-email-marketing-v2/campaigns/deletecampaign) a campaign. 
-- [List statistics](wix-email-marketing-v2/campaigns/liststatistics) and [list recipients](wix-email-marketing-v2/campaigns/listrecipients) of campaigns.
-- [Pause](wix-email-marketing-v2/campaigns/pausescheduling) a scheduled campaign.
-- [Publish](wix-email-marketing-v2/campaigns/publishcampaign) a campaign or [send a test](wix-email-marketing-v2/campaigns/sendtest) email.
+- [Get](/campaigns/get-campaign) or [list](/campaigns/list-campaigns) email campaigns.
+- [Create a draft copy](/campaigns/reuse-campaign) of an existing campaign. 
+- [Permanently delete](/campaigns/delete-campaign) a campaign. 
+- [List statistics](/campaigns/list-statistics) and [list recipients](/campaigns/list-recipients) of campaigns.
+- [Pause](/campaigns/pause-scheduling) a scheduled campaign.
+- [Publish](/campaigns/publish-campaign) a campaign or [send a test](/campaigns/send-test) email.
 
 
 To use the Campaigns API, import `campaigns` from the `wix-email-marketing.v2` module:
@@ -32,11 +32,3 @@ To use the Campaigns API, import `campaigns` from the `wix-email-marketing.v2` m
 ```js
 import { campaigns } from `wix-email-marketing.v2`;
 ```
-
-## Permissions information
-
-Functions in the Campaign API are restricted and only run if you elevate permissions using the `wix-auth` [`elevate()`](https://www.wix.com/velo/reference/wix-auth/elevate) function.
-
-<blockquote class='warning'>
-<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
-</blockquote>
