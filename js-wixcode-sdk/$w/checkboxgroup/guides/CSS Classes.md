@@ -35,7 +35,7 @@ For example:
 
 ## `.checkbox-group__label`
 
-Targets checkbox group [label text]($w/checkboxgroup/label).
+Targets checkbox group [label text]($w/checkbox-group/label).
 For example:
 
 ```css

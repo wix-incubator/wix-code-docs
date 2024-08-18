@@ -36,7 +36,7 @@ For example:
 
 ## `.radio-button-group__label`
 
-Targets radio button group [label text]($w/radiobuttongroup/label).
+Targets radio button group [label text]($w/radio-button-group/label).
 For example:
 
 ```css
@@ -50,7 +50,7 @@ For example:
 
 ## `.radio-button-group__option`
 
-Targets radio button group [options]($w/radiobuttongroup/options).
+Targets radio button group [options]($w/radio-button-group/options).
 For example:
 
 ```css
