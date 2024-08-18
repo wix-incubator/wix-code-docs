@@ -35,7 +35,7 @@ For example:
 
 ## `.time-picker__label`
 
-Targets time picker [label text]($w/timepicker/label).
+Targets time picker [label text]($w/time-picker/label).
 For example:
 
 ```css
