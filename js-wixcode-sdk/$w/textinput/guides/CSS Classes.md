@@ -36,7 +36,7 @@ For example:
 
 ## `.text-input__label`
 
-Targets text input [label text]($w/textinput/label).
+Targets text input [label text]($w/text-input/label).
 For example:
 
 ```css

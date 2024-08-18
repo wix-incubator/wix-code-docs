@@ -35,7 +35,7 @@ For example:
 
 ## `.text-box__label`
 
-Targets text box [label text]($w/textbox/label).
+Targets text box [label text]($w/text-box/label).
 For example:
 
 ```css
