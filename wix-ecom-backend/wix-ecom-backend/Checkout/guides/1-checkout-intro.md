@@ -3,6 +3,10 @@ title: Introduction
 ---
 # Introduction
 
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend.
+
 The eCommerce Checkout API provides functionality for [creating](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/createcheckout), [retrieving](https://www.wix.com/velo/reference/wix-ecom-backend/checkout/getcheckout). and managing a checkout.
 
 The checkout is the second phase of an eCommerce purchase flow, coming after cart and before order. A checkout holds information about items to be purchased, price and tax summaries, shipping and billing info, any applied discounts, and more.

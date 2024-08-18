@@ -3,6 +3,10 @@ title: Introduction
 ---
 # Introduction
 
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend.
+
 The Current Cart API provides functionality for managing the current site visitor's cart and [creating a checkout](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/createcheckoutfromcurrentcart) based on the current cart.
 
 A cart object is created whenever a product or service is [added to the current cart](https://www.wix.com/velo/reference/wix-ecom-backend/currentcart/addtocurrentcart), or the [`cart.createCart()`](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcart) function is called.

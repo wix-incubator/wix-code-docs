@@ -3,6 +3,10 @@ title: Introduction
 ---
 # Introduction
 
+> **Note:** This module is
+> [universal](/api-overview/api-versions#universal-modules).
+> Functions in this module can run on both the backend and frontend.
+
 The eCommerce Cart API provides functionality for creating and managing carts, as well as for [creating a checkout](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcheckout) based on an existing cart. The cart is the first phase of an eCommerce purchase flow, followed by checkout, then order. A cart holds information about items for purchase, prices, discounts, site details, and more.
 
 A cart can be created either by using the [createCart()](https://www.wix.com/velo/reference/wix-ecom-backend/cart/createcart) function, or by [adding an item to the cart](https://www.wix.com/velo/reference/wix-ecom-backend/cart/addtocart).
