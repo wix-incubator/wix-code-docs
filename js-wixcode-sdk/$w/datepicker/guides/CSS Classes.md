@@ -35,7 +35,7 @@ For example:
 
 ## `.date-picker__label`
 
-Targets date picker [label text]($w/datepicker/label).
+Targets date picker [label text]($w/date-picker/label).
 For example:
 
 ```css
