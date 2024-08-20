@@ -1,0 +1,1415 @@
+{
+  "name": "TimeSlots",
+  "memberOf": "wix-table-reservations-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-table-reservations.v2-time_slot",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "getTimeSlots",
+      "params": [
+        {
+          "name": "reservationLocationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the reservation location for which to retrieve time slots.",
+          "required": true
+        },
+        {
+          "name": "date",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time for which to retrieve a time slot.",
+          "required": true
+        },
+        {
+          "name": "partySize",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Size of the party that needs to be seated during this time slot.\n\nMin: `1`",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.TimeSlots.GetTimeSlotsOptions"
+            }
+          ],
+          "doc": "Options for retrieving the time slots.\n",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "date",
+        "partySize",
+        "reservationLocationId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-table-reservations-v2.TimeSlots.GetTimeSlotsResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Returns a list of time slots at a given restaurant on a given `date`, and their availability for a given `partySize`.",
+        "description": [
+          "Without passing optional parameters, the list will contain a single time slot at the given `date`.\nUse `slotsBefore` and `slotsAfter` to get additional time slots before and after the given `date`.\n\nIf you do not provide a `duration`, the duration will be calculated automatically based on the reservation location's configuration.\nThe reservation location's settings used to determine the duration are its `defaultTurnoverTime` and `turnoverTimeRules`. These specify how much time should be allotted for a reservation of a party of a given size.\n\nThe `startDate`s of time slots in the response are 15 minutes apart regardless of the `duration` provided."
+        ],
+        "examples": [
+          {
+            "title": "Get time slots for a given date,location, and party size (page code) @description:",
+            "body": [
+              "import { timeSlots } from 'wix-table-reservations-v2';",
+              "",
+              "/* Sample reservationLocationId value: 'fab8cc1f-31cf-462f-b5bb-392594624bf2'",
+              " * Sample date value: new Date(\"2023-12-29T12:30:00Z\")",
+              " * Sample partySize value: 2",
+              " */",
+              "",
+              "timeSlots.getTimeSlots(reservationLocationId, new Date(date), partySize)",
+              "  .then((retrievedSlots) => {",
+              "    const firstStartDate = retrievedSlots.items[0].startDate;",
+              "    const firstStatus = retrievedSlots.items[0].status;",
+              "",
+              "    console.log('Success! Retrieved the following time slots:', retrievedSlots);",
+              "    return retrievedSlots;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"timeSlots\": [",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *   },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T15:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get time slots with options (page code) ",
+            "body": [
+              "import { timeSlots } from 'wix-table-reservations-v2';",
+              "",
+              "/* Sample reservationLocationId value: 'fab8cc1f-31cf-462f-b5bb-392594624bf2'",
+              " * Sample date value: new Date(\"2023-12-29T12:30:00Z\")",
+              " * Sample partySize value: 2",
+              " * ",
+              " * Sample options value: ",
+              " * {",
+              " *   \"duration\": 5,",
+              " *   \"slotsAfter\": 1,",
+              " *   \"slotsBefore\": 0",
+              " * }",
+              " */",
+              "",
+              "timeSlots.getTimeSlots(reservationLocationId, new Date(date), partySize)",
+              "  .then((retrievedSlots) => {",
+              "    const firstStartDate = retrievedSlots.items[0].startDate;",
+              "    const firstStatus = retrievedSlots.items[0].status;",
+              "",
+              "    console.log('Success! Retrieved the following time slots:', retrievedSlots);",
+              "    return retrievedSlots;",
+              "  })",
+              "  .catch((error) => {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  });",
+              "",
+              "/* Promise resolves to:",
+              "* {",
+              "*   \"timeSlots\": [",
+              "*     {",
+              "*       \"startDate\": \"2023-12-29T12:30:00.000Z\",",
+              "*       \"duration\": 5,",
+              "*       \"status\": \"UNAVAILABLE\",",
+              "*       \"tableCombinations\": [],",
+              "*       \"manualApproval\": false",
+              "*     },",
+              "*     {",
+              "*       \"startDate\": \"2023-12-29T12:45:00.000Z\",",
+              "*       \"duration\": 5,",
+              "*       \"status\": \"UNAVAILABLE\",",
+              "*       \"tableCombinations\": [],",
+              "*       \"manualApproval\": false",
+              "*     }",
+              "*   ]",
+              "* }",
+              "*/",
+              ""
+            ],
+            "extra": {
+              "description": "This example gets a 5-minute time slot at the selected date, and the next 5-minute time slot after it."
+            }
+          },
+          {
+            "title": "Get time slots for a given date,location, and party size (backend) @description:",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { timeSlots } from 'wix-table-reservations-v2';",
+              "",
+              "/* Sample reservationLocationId value: 'fab8cc1f-31cf-462f-b5bb-392594624bf2'",
+              " * Sample date value: new Date(\"2023-12-29T12:30:00Z\")",
+              " * Sample partySize value: 2",
+              " */",
+              "",
+              "export const myGetTimeSlotsFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const retrievedSlots = await timeSlots.getTimeSlots(reservationLocationId, new Date(date), partySize)",
+              "",
+              "    const firstStartDate = retrievedSlots.items[0].startDate;",
+              "    const firstStatus = retrievedSlots.items[0].status;",
+              "",
+              "    console.log('Success! Retrieved the following time slots:', retrievedSlots);",
+              "    return retrievedSlots;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"timeSlots\": [",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T10:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *   },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T11:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T12:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T13:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"UNAVAILABLE\",",
+              " *       \"tableCombinations\": [],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:15:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:30:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T14:45:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     },",
+              " *     {",
+              " *       \"startDate\": \"2023-12-29T15:00:00.000Z\",",
+              " *       \"duration\": 90,",
+              " *       \"status\": \"AVAILABLE\",",
+              " *       \"tableCombinations\": [",
+              " *         {",
+              " *           \"tableIds\": [",
+              " *             \"1ed802ae-708f-4da6-9177-54c3df5d3dd5\"",
+              " *           ]",
+              " *         }",
+              " *       ],",
+              " *       \"manualApproval\": false",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Create a held reservation with a given time, location, and party size. ",
+            "body": [
+              "/* This example requires the following elements:",
+              " * A dropdown element named `locationDropdown`.",
+              " * A dropdown element named `partySizeDropdown`.",
+              " * A dropdown element named `timeSlotDropdown`.",
+              " * A button named `confirmButton`.",
+              " * A text element named `heldReservationNotification`.",
+              " */",
+              "",
+              "/**********************************************",
+              " * Backend code - reservationLocations.web.js *",
+              " **********************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { locations } from 'wix-business-tools.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const getRestaurantLocation = webMethod(Permissions.Anyone, async (location_id) => {",
+              "  const elevatedGetLocation = elevate(locations.getLocation);",
+              "",
+              "  try {",
+              "     const result = await elevatedGetLocation(location_id);",
+              "     return result;",
+              "   } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { reservationLocations } from 'wix-table-reservations.v2';",
+              "import { reservations } from 'wix-table-reservations.v2';",
+              "import { timeSlots } from 'wix-table-reservations.v2';",
+              "",
+              "import { getRestaurantLocation } from 'backend/reservationLocations.web';",
+              "",
+              "$w.onReady(async function () {",
+              "  $w('#timeSlotDropdown').hide();",
+              "  $w('#partySizeDropdown').hide();",
+              "  $w('#confirmButton').hide();",
+              "  $w('#heldReservationNotification').hide();",
+              "",
+              "  //Get the list of reservation locations",
+              "  const myReservationLocationList = await (async () => {",
+              "    try {",
+              "      let fullListObject = await reservationLocations.listReservationLocations();",
+              "      return fullListObject.reservationLocations;",
+              "    } catch (error) {",
+              "     console.error(error);",
+              "     // Handle the error",
+              "   }",
+              "  })();",
+              "",
+              "  //Create an array to hold names and values for our locations dropdown list",
+              "  let locationDropdownOptions = [];",
+              "  for (const object in myReservationLocationList){",
+              "    //Use the _id stored in the reservation location's location object to get the location's name from the `locations` service",
+              "    const locationObject = await getRestaurantLocation(myReservationLocationList[object].location._id);",
+              "    locationDropdownOptions.push({",
+              "      \"label\": locationObject.name, ",
+              "      \"value\": myReservationLocationList[object]._id",
+              "    })\t",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#locationDropdown\").options = locationDropdownOptions;",
+              "",
+              "  //Create an array to hold numbers and values for our party size dropdown list",
+              "  let partySizeDropdownOptions = [];",
+              "  for (let i = 1; i<10; i++){",
+              "    partySizeDropdownOptions.push({",
+              "      \"label\": String(i), ",
+              "      \"value\": String(i)",
+              "    })\t",
+              "  }",
+              "  //Populate our dropdown list with the array",
+              "  $w(\"#partySizeDropdown\").options = partySizeDropdownOptions;",
+              "",
+              "  $w('#locationDropdown').onChange( (event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#partySizeDropdown').show();",
+              "      $w('#timeSlotDropdown').hide()",
+              "      $w('#confirmButton').hide();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#partySizeDropdown').onChange( async (event) => {",
+              "    if ($w('#locationDropdown').value) {",
+              "      $w('#timeSlotDropdown').show()",
+              "      $w('#confirmButton').hide();",
+              "",
+              "      const timeSlotDetails = {",
+              "        \"reservationLocationId\": $w('#locationDropdown').value, ",
+              "        \"date\": new Date(),",
+              "        \"partySize\": parseInt($w('#partySizeDropdown').value)",
+              "      };",
+              "",
+              "      const timeSlotOptions = {",
+              "        \"duration\": 30,",
+              "\t\"slotsAfter\": 8,",
+              "\t\"slotsBefore\": 0",
+              "      };",
+              "",
+              "      //Get the list of time slots according to the details and options above",
+              "      const availableTimeSlots = await (async () => {",
+              "        try {",
+              "          let fullListObject = await timeSlots.getTimeSlots(timeSlotDetails.reservationLocationId, timeSlotDetails.date, timeSlotDetails.partySize, timeSlotOptions);",
+              "          return fullListObject.timeSlots;",
+              "        } catch (error) {",
+              "          console.error(error);",
+              "          // Handle the error",
+              "        }",
+              "      })();",
+              "",
+              "      //Create an array to hold numbers and values for our time slot dropdown list",
+              "      let timeSlotDropdownOptions = [];",
+              "      for (const timeSlot in availableTimeSlots){",
+              "        if(availableTimeSlots[timeSlot].status == \"AVAILABLE\"){",
+              "          timeSlotDropdownOptions.push({",
+              "            \"label\": String(availableTimeSlots[timeSlot].startDate), ",
+              "            \"value\": String(availableTimeSlots[timeSlot].startDate)",
+              "          })",
+              "        }\t",
+              "      }",
+              "      //Populate our dropdown list with the array",
+              "      $w(\"#timeSlotDropdown\").options = timeSlotDropdownOptions;",
+              "    }",
+              "  });",
+              "",
+              "  $w('#timeSlotDropdown').onChange( async (event) => {",
+              "    if ($w('#timeSlotDropdown').value) {",
+              "      $w('#confirmButton').show();",
+              "    }",
+              "  });",
+              "",
+              "  $w('#confirmButton').onClick( async (event) => {",
+              "    //Get the list of time slots according to the details and options above",
+              "    ",
+              "    const createdHeldReservation = await (async () => {",
+              "      try {",
+              "        const reservationDetails = {",
+              "          \"reservationLocationId\": $w('#locationDropdown').value, ",
+              "          \"startDate\": new Date($w(\"#timeSlotDropdown\").value),",
+              "          \"partySize\": parseInt($w('#partySizeDropdown').value)",
+              "        };",
+              "",
+              "        return await reservations.createHeldReservation(reservationDetails);",
+              "      } catch (error) {",
+              "        console.error(error);",
+              "        // Handle the error",
+              "      }",
+              "    })();",
+              "",
+              "    if(createdHeldReservation){",
+              "      $w('#heldReservationNotification').text = \"Held reservation created successfully.\"",
+              "      $w('#heldReservationNotification').show();",
+              "    }",
+              "  });",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This scenario sets up an interface that allows a site owner to select a reservation location and a party size, then select a time slot to reserve. Once a time slot is selected, the site owner can click a confirm button to create a held reservation at that time."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getTimeSlots"
+    }
+  ],
+  "messages": [
+    {
+      "name": "CheckReservationDetailsOptions",
+      "members": [
+        {
+          "name": "date",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date."
+        },
+        {
+          "name": "duration",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Duration."
+        },
+        {
+          "name": "excludeReservationId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation, that should be ignored during the check."
+        },
+        {
+          "name": "partySize",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Party size."
+        },
+        {
+          "name": "tableIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Requested table combination."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CheckReservationDetailsRequest",
+      "members": [
+        {
+          "name": "date",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date."
+        },
+        {
+          "name": "duration",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Duration."
+        },
+        {
+          "name": "excludeReservationId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation, that should be ignored during the check."
+        },
+        {
+          "name": "partySize",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Party size."
+        },
+        {
+          "name": "reservationLocationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation location ID."
+        },
+        {
+          "name": "tableIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Requested table combination."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CheckReservationDetailsResponse",
+      "members": [
+        {
+          "name": "requestedTableCombination",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-table-reservations-v2.TimeSlots.TableCombination"
+            }
+          ],
+          "doc": "Requested table combination state."
+        },
+        {
+          "name": "reservationLocationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.ReservationLocationConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Reservation location conflicts."
+        },
+        {
+          "name": "tableCombinations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.TableCombination"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Table combinations states."
+        },
+        {
+          "name": "tableReservedConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.TableReservedConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of reserved tables with corresponding reservation ids."
+        },
+        {
+          "name": "tables",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.Table"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Tables states."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetTimeSlotsOptions",
+      "members": [
+        {
+          "name": "duration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Duration in minutes of the time slot.\n\nMin: `5`\n"
+        },
+        {
+          "name": "slotsAfter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of time slots to retrieve after the given `date`."
+        },
+        {
+          "name": "slotsBefore",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of time slots to retrieve before the given `date`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetTimeSlotsRequest",
+      "members": [
+        {
+          "name": "date",
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time for which to retrieve a time slot."
+        },
+        {
+          "name": "duration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Duration in minutes of the time slot.\n\nMin: `5`\n"
+        },
+        {
+          "name": "partySize",
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Size of the party that needs to be seated during this time slot.\n\nMin: `1`\n"
+        },
+        {
+          "name": "reservationLocationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the reservation location for which to retrieve time slots."
+        },
+        {
+          "name": "slotsAfter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of time slots to retrieve after the given `date`."
+        },
+        {
+          "name": "slotsBefore",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "The number of time slots to retrieve before the given `date`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetTimeSlotsResponse",
+      "members": [
+        {
+          "name": "timeSlots",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.TimeSlot"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "A list of time slots and their availability according to the given party size."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ReservationLocationConflict",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Reservation location conflict type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Table",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "tableConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.TableConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Table conflicts."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableCombination",
+      "members": [
+        {
+          "name": "tableCombinationConflicts",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-table-reservations-v2.TimeSlots.TableCombinationConflict"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "tableIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableCombinationConflict",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conflict type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableConflict",
+      "members": [
+        {
+          "name": "type",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conflict type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TableReservedConflict",
+      "members": [
+        {
+          "name": "reservationIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of reservation ids."
+        },
+        {
+          "name": "tableId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Table id."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TimeSlot",
+      "members": [
+        {
+          "name": "duration",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Duration in minutes of this time slot."
+        },
+        {
+          "name": "manualApproval",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether manual approval is required to make a reservation in this time slot."
+        },
+        {
+          "name": "startDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Start date and time of this time slot."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Availability status of this time slot.\n\n* `AVAILABLE`: The restaurant can accommodate a party of the given size in this time slot.\n* `UNAVAILABLE`: The restaurant can't accommodate a party of the given size in this time slot.\n* `NON_WORKING_HOURS`: The restaurant is not open during this time slot.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TimeSlotTableCombination",
+      "members": [
+        {
+          "name": "tableIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Table IDs of the tables in the combination."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Table combination."
+        ]
+      }
+    }
+  ]
+}

@@ -3,12 +3,17 @@
   "mixes": [],
   "labels": [],
   "location":
-    { "lineno": 45,
+    { "lineno": 53,
       "filename": "index.js" },
   "docs":
     { "summary": "The Members API contains functionality for viewing and managing site members from backend code.",
       "description":
-        [ "To use the Members API, import `{members}` from the `wix-members-backend` module:",
+        [ "> **Note:**",
+          "> There is a [new version](https://www.wix.com/velo/reference/wix-members-v2) of this API.",
+          "> If you're already using this module in your code,",
+          "> it will continue to work.",
+          "",
+          "To use the Members API, import `{members}` from the `wix-members-backend` module:",
           "",
           "```javascript",
           "import { members } from 'wix-members-backend';",
@@ -42,13 +47,6 @@
                 "The `deleteMember()` function returns a Promise that resolves to a member object",
                 "when the specified member is deleted.",
                 "",
-                "> **Note:**",
-                "> This function replaces the deprecated",
-                "> `wix-users-backend.deleteUser()`.",
-                "> The deprecated function will continue to work, but it will not receive updates.",
-                "> To keep any existing code compatible with future changes, see the",
-                "> [migration instructions](wix-users-backend/deleteuser#migration-instructions).",
-                "",
                 "This function permanently deletes a member.",
                 "Once deleted, a member cannot be restored.",
                 "<!--END:ONLY:VELO-->" ],
@@ -56,13 +54,13 @@
             "examples":
               [ { "title": "Delete a member by ID",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// 'efab296e-2687-4751-9956-ee73200dd4bb'",
                       "",
-                      "export function myDeleteMemberFunction(id) {",
-                      "",
+                      "export const myDeleteMemberFunction = webMethod(Permissions.Anyone, (id) => {",
                       "  return members.deleteMember(id)",
                       "    .then(() => {",
                       "      console.log('Member deleted');",
@@ -70,7 +68,7 @@
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
-                      "}" ],
+                      "});" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -107,12 +105,13 @@
             "examples":
               [ { "title": "Delete a member's addresses",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
                       "",
-                      "export function myDeleteAddressesFunction(id) {",
+                      "export const myDeleteAddressesFunction = webMethod(Permissions.Anyone, (id) => {",
                       "  return members.deleteMemberAddresses(id)",
                       "    .then((updatedMember) => {",
                       "      const addresses = updatedMember.contactDetails.addresses;",
@@ -121,7 +120,7 @@
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    })",
-                      "}",
+                      "});",
                       "",
                       "/* Promise resolves to:",
                       " * {",
@@ -192,12 +191,13 @@
             "examples":
               [ { "title": "Delete a member's email addresses",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
                       "",
-                      "export function myDeleteEmailsFunction(id) {",
+                      "export const myDeleteEmailsFunction = webMethod(Permissions.Anyone, (id) => {",
                       "  return members.deleteMemberEmails(id)",
                       "    .then((updatedMember) => {",
                       "      const emails = updatedMember.contactDetails.emails;",
@@ -206,7 +206,7 @@
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    })",
-                      "}",
+                      "});",
                       "",
                       "/* Promise resolves to:",
                       " * {",
@@ -281,12 +281,13 @@
             "examples":
               [ { "title": "Delete a member's phone numbers",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
                       "",
-                      "export function myDeletePhonesFunction(id) {",
+                      "export const myDeletePhonesFunction = webMethod(Permissions.Anyone, (id) => {",
                       "  return members.deleteMemberPhones(id)",
                       "    .then((updatedMember) => {",
                       "      const phones = updatedMember.contactDetails.phones;",
@@ -295,7 +296,7 @@
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    })",
-                      "}",
+                      "});",
                       "",
                       "/* Promise resolves to:",
                       " * {",
@@ -366,15 +367,14 @@
               [ "<!--ONLY:VELO-->",
                 "This function returns a Promise that resolves to a member object.",
                 "",
-                "> **Notes:**",
-                "> - This function replaces the deprecated `wix-users-backend.getUser()`. The deprecated function will continue to work, but it will not receive updates. To keep any existing code compatible with future changes, see the [migration instructions](wix-users-backend/getuser#migration-instructions).",
-                "> - The resolved Member object contains only the fields that were explicity added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/customizing-your-member-profile-fields).",
+                "> **Note:** The resolved Member object contains only the fields that were explicity added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/customizing-your-member-profile-fields).",
                 "<!--END:ONLY:VELO-->" ],
             "links": [],
             "examples":
               [ { "title": "Get a member by ID",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// '60a91ab6-5e30-4af2-9d5e-a205c351ffd7'",
@@ -384,7 +384,7 @@
                       "//   fieldsets: [ 'FULL' ]",
                       "// }",
                       "",
-                      "export function myGetMemberFunction(id, options) {",
+                      "export const myGetMemberFunction = webMethod(Permissions.Anyone, (id, options) => {",
                       "  return members.getMember(id, options)",
                       "    .then((member) => {",
                       "      const slug = member.profile.slug;",
@@ -395,7 +395,7 @@
                       "    .catch((error) => {",
                       "      console.error(error);",
                       "    });",
-                      "}",
+                      "});",
                       "",
                       "/* Promise resolves to:",
                       " * {",
@@ -459,7 +459,7 @@
                   [ "wix-members-backend.Members.Member" ] },
             "doc": "Fulfilled - Updated member.\nRejected - Error message." },
         "locations":
-          [ { "lineno": 98,
+          [ { "lineno": 108,
               "filename": "updateMember.js" } ],
         "docs":
           { "summary": "Updates a member's properties.",
@@ -479,9 +479,7 @@
                 "The `updateMember()` function returns a Promise that resolves to a member object",
                 "when the specified member is updated.",
                 "",
-                "> **Notes:**",
-                "> - This function replaces the deprecated `wix-users-backend.updateUserFields()`. The deprecated function will continue to work, but it will not receive updates. To keep any existing code compatible with future changes, see the [migration instructions](wix-users-backend/updateuserfields#migration-instructions).",
-                "> - The updated Member object contains only the fields that were explicity added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/customizing-your-member-profile-fields).",
+                "> **Note:** The updated Member object contains only the fields that were explicity added to the Member object. Custom Contact fields are **not** automatically added to the Member object. They must be [added to the Member object by the site owner](https://support.wix.com/en/article/customizing-your-member-profile-fields).",
                 "",
                 "Only the requested fields are updated.",
                 "",
@@ -494,15 +492,16 @@
                 "> However, passing an empty array will have no effect,",
                 "> and these functions must be used to clear all data from the respective array:",
                 ">",
-                "> - To clear `contactDetails.addresses`, use [`deleteMemberAddresses()`](wix-members-backend/members/deletememberaddresses).",
-                "> - To clear `contactDetails.emails`, use [`deleteMemberEmails()`](wix-members-backend/members/deletememberemails).",
-                "> - To clear `contactDetails.phones`, use [`deleteMemberPhones()`](wix-members-backend/members/deletememberphones).",
+                "> - To clear `contactDetails.addresses`, use [`deleteMemberAddresses()`](https://dev.wix.com/docs/velo/api-reference/wix-members-backend/members/delete-member-addresses).",
+                "> - To clear `contactDetails.emails`, use [`deleteMemberEmails()`](https://dev.wix.com/docs/velo/api-reference/wix-members-backend/members/delete-member-emails).",
+                "> - To clear `contactDetails.phones`, use [`deleteMemberPhones()`](https://dev.wix.com/docs/velo/api-reference/wix-members-backend/members/delete-member-phones).",
                 "<!--END:ONLY:VELO-->" ],
             "links": [],
             "examples":
               [ { "title": "Overwrite a member's email addresses",
                   "body":
-                    [ "import { members } from 'wix-members-backend';",
+                    [ "import { Permissions, webMethod } from 'wix-web-module';",
+                      "import { members } from 'wix-members-backend';",
                       "",
                       "// Sample id value:",
                       "// 'f32cbc51-a331-442b-86c2-2c664613e8b9'",
@@ -514,15 +513,15 @@
                       "//   }",
                       "// }",
                       "",
-                      "export function myUpdateMemberFunction(id, member) {",
+                      "export const myUpdateMemberFunction = webMethod(Permissions.Anyone, (id, member) => {",
                       "  return members.updateMember(id, member)",
                       "    .then((member) => {",
                       "      return member;",
                       "    })",
                       "    .catch((error) => {",
                       "      console.error(error);",
-                      "    })",
-                      "}",
+                      "    });",
+                      "});",
                       "",
                       "/* Promise resolves to:",
                       " * {",
@@ -557,7 +556,11 @@
                       " *         \"country\": \"IE\"",
                       " *       }",
                       " *     ],",
-                      " *     \"customFields\": {}",
+                      " *     \"customFields\": {",
+                      " *       \"someKey\": {",
+                      " *         \"value\": \"someValue\"",
+                      " *       }",
+                      " *     }",
                       " *   },",
                       " *   \"profile\": {",
                       " *     \"nickname\": \"Claude Morales\",",
@@ -724,8 +727,8 @@
               "doc": "Contact's job title.",
               "optional": true },
             { "name": "customFields",
-              "type": "Object",
-              "doc": "Set of key-value pairs.\nCustom fields,\nwhere each key is the field key,\nand each value is the field's value for the member." } ],
+              "type": "object",
+              "doc": "Custom fields,\n[structured as key:object pairs](wix-members-backend/introduction#data-structure).\nCustom field IDs are defined in the\n[Contacts Extended Fields API](wix-crm-backend/contacts).\nThe paired object contains the `name` and `value` properties,\nwhere `name` is the display name and `value` is the value stored for the member.\n\nOnly custom fields\n[added to the member profile in the Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembers-account)\nare available through the Members API.\nEmpty fields are not returned.\n\nWhen updating a member, `name` is ignored." } ],
         "extra":
           {  },
         "labels": [] },
@@ -783,14 +786,36 @@
               "optional": true },
             { "name": "customFields",
               "type": "Object",
-              "doc": "Set of key-value pairs.\nCustom fields,\nwhere each key is the field key,\nand each value is the field's value for the member.",
+              "doc": "Custom fields,\n[structured as key:object pairs](wix-members-frontend/introduction#data-structure).\nCustom field IDs are defined in the\n[Contacts Extended Fields API](wix-crm-backend/contacts).\nThe paired object contains the `name` and `value` properties,\nwhere `name` is the display name and `value` is the value stored for the member.\n\nOnly custom fields\n[added to the member profile in the Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembers-account)\nare available through the Members API.\nEmpty fields are not returned.\n\nWhen updating a member, `name` is ignored.",
               "optional": true } ],
         "extra":
           {  },
         "labels": [] },
+      { "name": "CustomField",
+        "locations":
+          [ { "lineno": 48,
+              "filename": "members_shared.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "name",
+              "type": "string",
+              "doc": "Field display name." },
+            { "name": "value",
+              "type":
+                [ "string",
+                  "number" ],
+              "doc": "Value stored in the field." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "removed" ] },
       { "name": "FieldsetOptions",
         "locations":
-          [ { "lineno": 154,
+          [ { "lineno": 164,
               "filename": "members_shared.js" } ],
         "docs":
           { "links": [],
@@ -809,7 +834,7 @@
         "labels": [] },
       { "name": "Image",
         "locations":
-          [ { "lineno": 137,
+          [ { "lineno": 147,
               "filename": "members_shared.js" } ],
         "docs":
           { "summary": "Member's profile photo.",
@@ -820,7 +845,7 @@
         "members":
           [ { "name": "_id",
               "type": "string",
-              "doc": "Wix Media image ID,\n set when the member selects an image from Wix Media." },
+              "doc": "**Deprecated.** Wix Media image ID,\n set when the member selects an image from Wix Media." },
             { "name": "url",
               "type": "string",
               "doc": "Image URL." },
@@ -841,7 +866,7 @@
         "labels": [] },
       { "name": "Member",
         "locations":
-          [ { "lineno": 44,
+          [ { "lineno": 54,
               "filename": "members_shared.js" } ],
         "docs":
           { "summary": "Updated member.",
@@ -891,7 +916,7 @@
         "labels": [] },
       { "name": "MemberInfo",
         "locations":
-          [ { "lineno": 43,
+          [ { "lineno": 53,
               "filename": "updateMember.js" } ],
         "docs":
           { "summary": "Member details to update.",
@@ -913,7 +938,7 @@
         "labels": [] },
       { "name": "Profile",
         "locations":
-          [ { "lineno": 112,
+          [ { "lineno": 122,
               "filename": "members_shared.js" } ],
         "docs":
           { "summary": "Profile display info.",
@@ -945,7 +970,7 @@
         "labels": [] },
       { "name": "ProfileImageInfo",
         "locations":
-          [ { "lineno": 81,
+          [ { "lineno": 91,
               "filename": "updateMember.js" } ],
         "docs":
           { "summary": "Member's profile photo.",
@@ -983,7 +1008,7 @@
         "labels": [] },
       { "name": "ProfileInfo",
         "locations":
-          [ { "lineno": 57,
+          [ { "lineno": 67,
               "filename": "updateMember.js" } ],
         "docs":
           { "summary": "Profile display info.",
@@ -1013,7 +1038,7 @@
         "labels": [] },
       { "name": "StreetAddress",
         "locations":
-          [ { "lineno": 129,
+          [ { "lineno": 139,
               "filename": "members_shared.js" } ],
         "docs":
           { "summary": "Street address object, with number and name in separate fields.",
@@ -1033,7 +1058,7 @@
         "labels": [] },
       { "name": "StreetAddressInfo",
         "locations":
-          [ { "lineno": 73,
+          [ { "lineno": 83,
               "filename": "updateMember.js" } ],
         "docs":
           { "summary": "Street address object, with number and name in separate fields.",

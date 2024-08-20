@@ -8,6 +8,7 @@ Some common uses of the **Job Scheduler** are to:
 -   Delete collection data that is no longer relevant once a week.
 -   Send a status report to relevant parties once a month.
 
+Scheduled Jobs run with [Admin permissions](https://support.wix.com/en/article/velo-about-web-module-permissions).
 ## Creating a Scheduled Job
 
 To configure scheduled jobs, start by creating file in the **backend** root named **jobs.config**. The file must contain a JSON object that defines the jobs you want to schedule. You can configure up to twenty jobs.

@@ -1,0 +1,1473 @@
+{
+  "name": "Conversations",
+  "memberOf": "wix-inbox-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-inbox.v2-conversation",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "getConversation",
+      "params": [
+        {
+          "name": "conversationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conversation ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "conversationId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-inbox-v2.Conversations.GetConversationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a conversation by conversation ID.",
+        "description": [
+          "If you don't have the conversation ID,\nuse [`getOrCreateConversation()`](#getorcreateconversation)\nto retrieve the conversation with the visitor, contact, or member ID.\n"
+        ],
+        "examples": [
+          {
+            "title": "Get a conversation (dashboard page code)",
+            "body": [
+              "import { conversations } from 'wix-inbox.v2';",
+              "",
+              "/* Sample conversationID value: '092d1135-99cf-3ca9-a0bf-378e1df4539b' */",
+              "",
+              "export async function myGetConversationFunction(conversationId) {",
+              "  ",
+              "  try {",
+              "    const conversationObject = await conversations.getConversation(conversationId);",
+              "    const channels = conversationObject.conversation.channels;",
+              "    const firstChannel = conversationObject.conversation.channels[0];",
+              "    const businessName = conversationObject.conversation.businessDisplayData.name;",
+              "",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " *  {",
+              " *    \"conversation\": {",
+              " *      \"_id\": \"6fd2b962-dd8f-382f-8d27-ae63f188c939\",",
+              " *      \"businessDisplayData\": {",
+              " *        \"name\": \"Tim's Cookies\"",
+              " *      },",
+              " *      \"channels\": [",
+              " *        \"CHAT\",",
+              " *        \"EMAIL\"",
+              " *      ],",
+              " *      \"participant\": {",
+              " *        \"contactId\": \"9e668c08-8bdb-4240-babb-8176935f6f78\"",
+              " *      },",
+              " *      \"participantDisplayData\": {",
+              " *        \"name\": \"jsmith@example.com\"",
+              " *      }",
+              " *    }",
+              " *  }",
+              " */"
+            ]
+          },
+          {
+            "title": "Get a conversation (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample conversationID value: '092d1135-99cf-3ca9-a0bf-378e1df4539b' */",
+              "",
+              "export const myGetConversationFunction = webMethod(Permissions.Anyone, async (conversationId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedGetConversation = elevate(conversations.getConversation);",
+              "    const conversationObject = await elevatedGetConversation(conversationId);",
+              "    const channels = conversationObject.conversation.channels;",
+              "    const firstChannel = conversationObject.conversation.channels[0];",
+              "    const businessName = conversationObject.conversation.businessDisplayData.name;",
+              "",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " *  {",
+              " *    \"conversation\": {",
+              " *      \"_id\": \"6fd2b962-dd8f-382f-8d27-ae63f188c939\",",
+              " *      \"businessDisplayData\": {",
+              " *        \"name\": \"Tim's Cookies\"",
+              " *      },",
+              " *      \"channels\": [",
+              " *        \"CHAT\",",
+              " *        \"EMAIL\"",
+              " *      ],",
+              " *      \"participant\": {",
+              " *        \"contactId\": \"9e668c08-8bdb-4240-babb-8176935f6f78\"",
+              " *      },",
+              " *      \"participantDisplayData\": {",
+              " *        \"name\": \"jsmith@example.com\"",
+              " *      }",
+              " *    }",
+              " *  }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getConversation",
+      "isAdminMethod": true
+    },
+    {
+      "name": "getOrCreateConversation",
+      "params": [
+        {
+          "name": "participantId",
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ParticipantId"
+            }
+          ],
+          "doc": "ID of the visitor, contact, or member chatting with the business.\n\nRequired for 3rd-party apps.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "participantId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-inbox-v2.Conversations.GetOrCreateConversationResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a conversation for the specified visitor, contact, or member ID,\nor creates one if it doesn't exist.",
+        "description": [],
+        "examples": [
+          {
+            "title": "Get or create a conversation from a member (dashboard page code)",
+            "body": [
+              "import { conversations } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample participantId value:",
+              " * {",
+              " *   memberId: 'b17c523c-6ec9-4b56-9d9d-123cc6978bdf'",
+              " * }",
+              " */",
+              "",
+              "export async function myGetOrCreateConversationFunction(participantId) { ",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "    const id = conversationObject.conversation._id;",
+              "    const channels = conversationObject.conversation.channels;",
+              "    const siteName = conversationObject.conversation.businessDisplayData.name;",
+              "    ",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"conversation\": {",
+              " *     \"_id\": \"092d1135-99cf-3ca9-a0bf-378e1df4539b\",",
+              " *     \"businessDisplayData\": {",
+              " *       \"name\": \"Classic Cars\"",
+              " *     },",
+              " *     \"channels\": [",
+              " *       \"CHAT\", ",
+              " *        EMAIL",
+              " *     ],",
+              " *     \"participant\": {",
+              " *       \"memberId\": \"b17c523c-6ec9-4b56-9d9d-123cc6978bdf\"",
+              " *     },",
+              " *      \"participantDisplayData\": {",
+              " *       \"name\": \"alevine@email.com\"",
+              " *   }",
+              " *   \"newConversation\": false",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get or create a conversation from a member (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample participantId value:",
+              " * {",
+              " *   memberId: 'b17c523c-6ec9-4b56-9d9d-123cc6978bdf'",
+              " * }",
+              " */",
+              "",
+              "export const myGetOrCreateConversationFunction = webMethod(Permissions.Anyone, async (participantId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "    const id = conversationObject.conversation._id;",
+              "    const channels = conversationObject.conversation.channels;",
+              "    const siteName = conversationObject.conversation.businessDisplayData.name;",
+              "",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"conversation\": {",
+              " *     \"_id\": \"092d1135-99cf-3ca9-a0bf-378e1df4539b\",",
+              " *     \"businessDisplayData\": {",
+              " *       \"name\": \"Classic Cars\"",
+              " *     },",
+              " *     \"channels\": [",
+              " *       \"CHAT\", ",
+              " *        EMAIL",
+              " *     ],",
+              " *     \"participant\": {",
+              " *       \"memberId\": \"b17c523c-6ec9-4b56-9d9d-123cc6978bdf\"",
+              " *     },",
+              " *      \"participantDisplayData\": {",
+              " *       \"name\": \"alevine@email.com\"",
+              " *   }",
+              " *   \"newConversation\": false",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get or create a new conversation with a member ",
+            "body": [
+              "/*******************************",
+              " * Backend code - inbox.web.js *",
+              " ******************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations, messages } from 'wix-inbox.v2';",
+              "import { currentMember } from 'wix-members-backend'",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const sendFormData = webMethod(Permissions.Anyone, async (formData) => {",
+              "  const message = {",
+              "    direction: 'PARTICIPANT_TO_BUSINESS',",
+              "    visibility: 'BUSINESS',",
+              "    content: {",
+              "      previewText: 'New Contact',",
+              "      form: {",
+              "        title: 'New Contact',",
+              "        description: 'New Contact Form',",
+              "        fields: [",
+              "          { ",
+              "            name: 'First Name', ",
+              "            value: formData.firstName",
+              "          },",
+              "          { ",
+              "            name: 'Last Name', ",
+              "            value: formData.lastName ",
+              "          },",
+              "          { ",
+              "            name: 'email', ",
+              "            value: formData.email ",
+              "          },",
+              "          { ",
+              "            name: 'Wants Newsletter', ",
+              "            value: formData.subscribeNewsletter.toString() ",
+              "          }",
+              "        ],",
+              "      }",
+              "    }",
+              "  }",
+              "  ",
+              "  try {",
+              "    const conversationId = await getOrCreateConversationIdFromMember();",
+              "",
+              "    const elevatedSendMessage = elevate(messages.sendMessage);",
+              "    const formMessage = await elevatedSendMessage(conversationId, message);",
+              "",
+              "    return formMessage;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const getOrCreateConversationIdFromMember = webMethod(Permissions.Anyone, async () => {",
+              "  const member = await currentMember.getMember();",
+              "  const participantId = { ",
+              "    memberId: member._id ",
+              "  };",
+              "  ",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "    ",
+              "    return conversationObject.converation._id;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { sendFormData } from 'backend/inbox.web';",
+              "",
+              "$w.onReady(function () {",
+              "  $w('#submitButton').onClick(async () => {",
+              "    const firstName = $w('#firstName').value;",
+              "    const lastName = $w('#lastName').value;",
+              "    const email = $w('#email').value;",
+              "    const subscribeNewsletter = $w('#subscribeNewsletter').checked;",
+              "    const dataToInsert = {",
+              "      firstName,",
+              "      lastName,",
+              "      email,",
+              "      subscribeNewsletter",
+              "    };",
+              "",
+              "    const formData = await sendFormData(dataToInsert);",
+              "    console.log(`The form data is ${formData}`);",
+              "  });",
+              "});"
+            ],
+            "extra": {
+              "description": "The page code passes input values submitted by a logged-in member to the backend `sendFormData` function. This function retrieves the logged-in member ID, gets an existing or creates a new converation object and uses the conversation ID to send a form message to the site owner's inbox dashboard."
+            }
+          },
+          {
+            "title": "Get or create a conversation with a contact ",
+            "body": [
+              "/****************************",
+              " * Backend code - events.js *",
+              " ****************************/",
+              "",
+              "import { sendThankYou } from 'backend/inbox';",
+              "",
+              "export function wixCrm_onContactCreated(event) {",
+              "  const contactId = event.metadata.entityId;",
+              "  sendThankYou(contactId);",
+              "}",
+              "",
+              "/*******************************",
+              " * Backend code - inbox.web.js *",
+              " ******************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations, messages } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const sendThankYou = webMethod(Permissions.Anyone, async (contactId) => {",
+              "  const participantId = {",
+              "    contactId: contactId",
+              "  };",
+              "  const message = {",
+              "    direction: 'BUSINESS_TO_PARTICIPANT',",
+              "    visibility: 'BUSINESS_AND_PARTICIPANT',",
+              "    content: {",
+              "      previewText: 'Thank You',",
+              "      basic: {",
+              "        items: [",
+              "          { text: 'Thank you for your input' },",
+              "        ]",
+              "      }",
+              "    },",
+              "    sourceChannel: 'CHAT',",
+              "    targetChannels: ['CHAT']",
+              "  }",
+              "  ",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "    const conversationId = conversationObject.conversation._id;",
+              "",
+              "    const elevatedSendMessage = elevate(messages.sendMessage);",
+              "    const thankYouMessage = await elevatedSendMessage(conversationId, message);",
+              "",
+              "    return thankYouMessage;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This code registers an event listener in the `events.js` file that triggers when a new contact is created. The event handler calls `getOrCreateConversation()` to generate or retrieve a conversation. It then sends a thank-you message in the `wix-chat` widget."
+            }
+          },
+          {
+            "title": "Get or create a conversation with anonymousVisitorId ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample participantId value:",
+              " * {",
+              " *   anonymousVisitorId: 'af63e767-caeb-4435-bf8c-f14ebd413060'",
+              " * }",
+              " */",
+              "",
+              "export const getConversationFromVisitor = webMethod(Permissions.Anyone, async (participantId) => {",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation)",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "    const id = conversationObject.conversation._id;",
+              "    const firstChannel = conversationObject.conversation.channels[0];",
+              "",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"conversation\": {",
+              " *     \"_id\": \"c4999cbd-33ea-37cb-a374-75600f409d0b\",",
+              " *     \"businessDisplayData\": {",
+              " *       \"name\": \"Peak Fitness\"",
+              " *     },",
+              " *     \"channels\": [",
+              " *       \"CHAT\"",
+              " *     ],",
+              " *     \"participant\": {",
+              " *       \"anonymousVisitorId\": \"5dc5855b-0e34-495b-9762-3a9f591baa37\"",
+              " *     },",
+              " *     \"participantDisplayData\": {",
+              " *       \"name\": \"Visitor #8145\",",
+              " *       \"imageUrl\": \"https://static.parastorage.com/services/engage-web/1.6076.0/assets/visitor-avatars-faces/Avatar1Orange.png\"",
+              " *     }",
+              " *   },",
+              " *   \"newConversation\": false",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get or create a conversation from a contact",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample participantId value:",
+              " * {",
+              " *   contactId: 'c5ef5c35-3b53-41c9-aeeb-214424e5f6e5'",
+              " * }",
+              " */",
+              "",
+              "export const myGetOrCreateConversationFunction = webMethod(Permissions.Anyone, async (participantId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await conversations.getOrCreateConversation(participantId);",
+              "    const id = conversationObject.conversation._id;",
+              "    const channels = conversationObject.conversation.channels;",
+              "    const siteName = conversationObject.conversation.businessDisplayData.name;",
+              "",
+              "    return conversationObject;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"conversation\": {",
+              " *     \"_id\": \"7d313780-d237-3d5e-bfdb-f348bf615140\",",
+              " *       \"businessDisplayData\": {",
+              " *       \"name\": \"Ticket Express\"",
+              " *     },",
+              " *     \"channels\": [",
+              " *       \"CHAT\",",
+              " *       \"EMAIL\"",
+              " *     ],",
+              " *     \"participant\": {",
+              " *       \"contactId\": \"c5ef5c35-3b53-41c9-aeeb-214424e5f6e5\"",
+              " *     },",
+              " *     \"participantDisplayData\": {",
+              " *       \"name\": \"Connor Dawson\"",
+              " *     }",
+              " *   },",
+              " *   \"newConversation\": true",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get or create a conversation from a site visitor ",
+            "body": [
+              "/****************************",
+              " * Backend code - events.js *",
+              " ****************************/",
+              "",
+              "import { sendMinimalMessage } from 'backend/inbox';",
+              "",
+              "export function wixBlog_onPostLiked(event) {",
+              "  console.log(`New post liked with ID ${event.data.postId}`);  ",
+              "  const anonymousVisitorId = event.data.anonymousVisitorId;",
+              "  sendMinimalMessage(anonymousVisitorId);",
+              "}",
+              "",
+              "/****************************",
+              " * Backend code - inbox.web.js *",
+              " ****************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { conversations, messages } from 'wix-inbox.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const sendMinimalMessage = webMethod(Permissions.Anyone, async (anonymousVisitorId) => {",
+              "  const message = {",
+              "    direction: 'PARTICIPANT_TO_BUSINESS',",
+              "    visibility: 'BUSINESS',",
+              "    content: {",
+              "      previewText: 'New Like',",
+              "      minimal: {",
+              "        text: 'New Like',",
+              "        iconUrl: 'https://static.wixstatic.com/media/727514_1a58537f1b6a44a7b09956cdbc5ac774~mv2.png/v1/fill/w_297,h_324,al_c,lg_1,q_85/727514_1a58537f1b6a44a7b09956cdbc5ac774~mv2.webp'",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  try {",
+              "    const conversationId = await getOrCreateConversationIdFromVisitor(anonymousVisitorId);",
+              "",
+              "    const elevatedSendMessage = elevate(messages.sendMessage);",
+              "    const minimalMessage = await elevatedSendMessage(conversationId, message);",
+              "    console.log(`The message object returned is ${minimalMessage}`);",
+              "",
+              "    return minimalMessage;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              "",
+              "export const getOrCreateConversationIdFromVisitor = webMethod(Permissions.Anyone, async (anonymousVisitorId) => {",
+              "  const participantId = {",
+              "    anonymousVisitorId: anonymousVisitorId",
+              "  };",
+              "",
+              "  try {",
+              "    const elevatedGetOrCreateConversation = elevate(conversations.getOrCreateConversation);",
+              "    const conversationObject = await elevatedGetOrCreateConversation(participantId);",
+              "",
+              "    return conversationObject.conversation._id;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This code detects a when a site visitor likes a blog post by registering the `onPostLiked` event listener in the `events.js` file. This event triggers an event object containing the `anonymousVisitorId`, which is  passed as an argument to `getOrCreateConversationIdFromVisitor`. The conversationId is returned and passed as a parameter to `sendMinimal`, which sends a minimal message to the site owner's inbox dashboard."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "getOrCreateConversation",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "AddConversationChannelsOptions",
+      "members": [
+        {
+          "name": "conversationChannels",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-inbox-v2.Conversations.ConversationChannel"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AddConversationChannelsRequest",
+      "members": [
+        {
+          "name": "conversationChannels",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-inbox-v2.Conversations.ConversationChannel"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "conversationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AddConversationChannelsResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ChatroomsMerged",
+      "members": [
+        {
+          "name": "oldChatroomIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "old chatroom ids"
+        },
+        {
+          "name": "targetChatroomId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "new chatroom id"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Conversation",
+      "members": [
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conversation ID."
+        },
+        {
+          "name": "businessDisplayData",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ConversationDisplayData"
+            }
+          ],
+          "doc": "Display name and avatar for the business."
+        },
+        {
+          "name": "channels",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of communication channels where the visitor, contact, or member can receive messages."
+        },
+        {
+          "name": "participant",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.IdentificationData"
+            }
+          ],
+          "doc": "ID of the visitor, contact, or member who is chatting with the business."
+        },
+        {
+          "name": "participantDisplayData",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ConversationDisplayData"
+            }
+          ],
+          "doc": "Display name and avatar for the visitor, contact, or member."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConversationChannel",
+      "members": [
+        {
+          "name": "channel",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Supported values:\n- `'CHAT'`\n- `'EMAIL'`\n- `'FACEBOOK'`\n- `'INSTAGRAM'`\n- `'SMS'`\n- `'UNKNOWN_CHANNEL_TYPE'`\n- `'WHATSAPP'`"
+        },
+        {
+          "name": "recipients",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "TODO rename? - Shalom"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConversationDisplayData",
+      "members": [
+        {
+          "name": "imageUrl",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Avatar image URL."
+        },
+        {
+          "name": "name",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Display name."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ConversationsMerged",
+      "members": [
+        {
+          "name": "oldConversationIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of old conversation IDs."
+        },
+        {
+          "name": "targetConversationId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "New conversation ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        },
+        {
+          "name": "prev",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to previous page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteConversationRequest",
+      "members": [
+        {
+          "name": "conversationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteConversationResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetConversationRequest",
+      "members": [
+        {
+          "name": "conversationId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Conversation ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetConversationResponse",
+      "members": [
+        {
+          "name": "conversation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.Conversation"
+            }
+          ],
+          "doc": "Retrieved conversation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrCreateConversationRequest",
+      "members": [
+        {
+          "name": "participantId",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.ParticipantId"
+            }
+          ],
+          "doc": "ID of the visitor, contact, or member chatting with the business.\n\nRequired for 3rd-party apps.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetOrCreateConversationResponse",
+      "members": [
+        {
+          "name": "conversation",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.Conversation"
+            }
+          ],
+          "doc": "Created or retrieved conversation."
+        },
+        {
+          "name": "newConversation",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates whether the conversation was just created.\n\nIf `true`, the conversation was just created.\nIf `false`, the conversation already existed.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "IdentificationData",
+      "members": [
+        {
+          "name": "anonymousVisitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of an anonymous site visitor."
+        },
+        {
+          "name": "contactId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[contact](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts)."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[member](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmember-permissions/members)."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfIdentificationDataIdOneOf",
+            "members": [
+              "anonymousVisitorId",
+              "memberId"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "IdentificationDataIdOneOf",
+      "members": [
+        {
+          "name": "anonymousVisitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of an anonymous site visitor."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[member](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmember-permissions/members)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConversationsOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.CursorPaging"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.Sorting"
+            }
+          ],
+          "doc": "only message time is supported for field name"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConversationsRequest",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.CursorPaging"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "sorting",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.Sorting"
+            }
+          ],
+          "doc": "only message time is supported for field name"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListConversationsResponse",
+      "members": [
+        {
+          "name": "conversations",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-inbox-v2.Conversations.Conversation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.PagingMetadataV2"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadataV2",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-inbox-v2.Conversations.Cursors"
+            }
+          ],
+          "doc": "Cursors to navigate through the result pages using `next` and `prev`. Returned if cursor paging is used."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ParticipantId",
+      "members": [
+        {
+          "name": "anonymousVisitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of an anonymous site visitor."
+        },
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[contact](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts)."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[member](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmember-permissions/members)."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfParticipantIdIdOneOf",
+            "members": [
+              "anonymousVisitorId",
+              "contactId",
+              "memberId"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ParticipantIdIdOneOf",
+      "members": [
+        {
+          "name": "anonymousVisitorId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of an anonymous site visitor."
+        },
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[contact](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fcontacts)."
+        },
+        {
+          "name": "memberId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of a site\n[member](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmember-permissions/members)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Sorting",
+      "members": [
+        {
+          "name": "fieldName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the field to sort by."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}

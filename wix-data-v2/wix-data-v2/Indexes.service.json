@@ -1,0 +1,1026 @@
+{
+  "name": "Indexes",
+  "memberOf": "wix-data-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-data.v2-index",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "createIndex",
+      "params": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which to generate the index.",
+          "required": true
+        },
+        {
+          "name": "index",
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Index"
+            }
+          ],
+          "doc": "Details of the index to be created.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "dataCollectionId",
+        "index",
+        "index.fields",
+        "index.fields.path",
+        "index.name"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-data-v2.Indexes.Index"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Details of the index being generated.\n"
+      },
+      "docs": {
+        "summary": "Creates an index for a data collection.",
+        "description": [
+          "The index can't be used immediately, as the process of generating the index takes time.\nYou can check whether your index is ready using `listIndexes()`.\n\nNote that when an index fails to create, the failed index still occupies a slot.\nTo remove the failed index and free up the slot for a new index, use `dropIndex()`."
+        ],
+        "examples": [
+          {
+            "title": "Create an index (dashboard page code)",
+            "body": [
+              "import { indexes } from 'wix-data.v2';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample index value: ",
+              " * {",
+              " *   fields: [",
+              " *     {",
+              " *       path: 'price'",
+              " *     }",
+              " *   ],",
+              " *   name: 'byPrice'",
+              " * }",
+              " */",
+              "",
+              "",
+              "export async function myCreateIndexFunction(dataCollectionId, index) {",
+              "  try {",
+              "    const createIndexResponse = await indexes.createIndex(dataCollectionId, index);",
+              "    console.log(`Successfully created an index named ${createIndexResponse.name}. Full response: `, createIndexResponse);",
+              "",
+              "    return createIndexResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"caseInsensitive\": false,",
+              " *   \"fields\": [",
+              " *     {",
+              " *       \"order\": \"ASC\",",
+              " *       \"path\": \"price\"",
+              " *     }",
+              " *   ],",
+              " *   \"name\": \"byPrice\",",
+              " *   \"status\": \"BUILDING\",",
+              " *   \"unique\": false,",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create an index (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { indexes } from 'wix-data.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample index value: ",
+              " * {",
+              " *   fields: [",
+              " *     {",
+              " *       path: 'price'",
+              " *     }",
+              " *   ],",
+              " *   name: 'byPrice'",
+              " * }",
+              " */",
+              "",
+              "export const myCreateIndexFunction = webMethod(Permissions.Anyone, async (dataCollectionId, index) => {",
+              "  try {",
+              "    const elevatedCreateIndex = elevate(indexes.createIndex);",
+              "    const createIndexResponse = await elevatedCreateIndex(dataCollectionId, index);",
+              "    console.log(`Successfully created an index named ${createIndexResponse.name}. Full response: `, createIndexResponse);",
+              "",
+              "    return createIndexResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"caseInsensitive\": false,",
+              " *   \"fields\": [",
+              " *     {",
+              " *       \"order\": \"ASC\",",
+              " *       \"path\": \"price\"",
+              " *     }",
+              " *   ],",
+              " *   \"name\": \"byPrice\",",
+              " *   \"status\": \"BUILDING\",",
+              " *   \"unique\": false,",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Create an index ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { indexes } from 'wix-data.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample index value: ",
+              " * {",
+              " *   caseInsensitive: true,",
+              " *   fields: [",
+              " *     {",
+              " *       path: 'itemName'",
+              " *     },",
+              " *     {",
+              " *       path: 'price'",
+              " *     },",
+              " *     {",
+              " *       order: 'DESC',",
+              " *       path: 'size'",
+              " *     }",
+              " *   ],",
+              " *   name: 'byItemNameAndPriceAndSize'",
+              " * }",
+              " */",
+              "",
+              "export const myCreateIndexFunction = webMethod(Permissions.Anyone, async (dataCollectionId, index) => {",
+              "  try {",
+              "    const elevatedCreateIndex = elevate(indexes.createIndex);",
+              "    const createIndexResponse = await elevatedCreateIndex(dataCollectionId, index);",
+              "    console.log(`Successfully created an index named ${createIndexResponse.name}. Full response: `, createIndexResponse);",
+              "",
+              "    return createIndexResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"caseInsensitive\": true,",
+              " *   \"fields\": [",
+              " *     {",
+              " *       \"order\": \"ASC\",",
+              " *       \"path\": \"itemName\"",
+              " *     }, ",
+              " *     {",
+              " *       \"order\": \"ASC\",",
+              " *       \"path\": \"price\"",
+              " *     },",
+              " *     {",
+              " *       \"order\": \"DESC\",",
+              " *       \"path\": \"size\"",
+              " *     }",
+              " *   ],",
+              " *   \"name\": \"byItemNameAndPriceAndSize\",",
+              " *   \"status\": \"BUILDING\",",
+              " *   \"unique\": false,",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "Create a case-insensitive index based on the item name and price in ascending order, and item size in descending order "
+            }
+          },
+          {
+            "title": "Create a unique index ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { indexes } from 'wix-data.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'shoes';",
+              " * ",
+              " * Sample index value = ",
+              " * {",
+              " *   name: 'bySerialNum',",
+              " *   unique: true,",
+              " *   fields: [",
+              " *     {",
+              " *       path: 'serial'",
+              " *     }",
+              " *   ]",
+              " * };",
+              "*/",
+              "",
+              "export const myCreateIndexFunction = webMethod(Permissions.Anyone, async (dataCollectionId, index) => {",
+              "  try {",
+              "    const elevatedCreateIndex = elevate(indexes.createIndex);",
+              "    const createUniqueIndexResponse = await elevatedCreateIndex(dataCollectionId, index);",
+              "    console.log(`Successfully created an index named ${createUniqueIndexResponse.name}. Full response: `, createUniqueIndexResponse);",
+              "",
+              "    return createUniqueIndexResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Returns a promise that resolves to the index being created:",
+              " * {",
+              " *   \"caseInsensitive\": false,",
+              " *   \"fields\": [",
+              " *     {",
+              " *       \"order\": \"ASC\",",
+              " *       \"path\": \"serial\"",
+              " *     }",
+              " *   ],",
+              " *   \"name\": \"bySerialNum\",",
+              " *   \"status\": \"BUILDING\",",
+              " *   \"unique\": true,",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "createIndex",
+      "isAdminMethod": true
+    },
+    {
+      "name": "dropIndex",
+      "params": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which the index to be dropped is defined.",
+          "required": true
+        },
+        {
+          "name": "indexName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the index to drop.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "dataCollectionId",
+        "indexName"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Removes an index from a data collection.",
+        "description": [
+          "The process of dropping an index from a collection takes time.\nYou can check whether your index has been dropped by calling `listIndexes()`."
+        ],
+        "examples": [
+          {
+            "title": "Drop an index (dashboard page code)",
+            "body": [
+              "import { indexes } from \"wix-data.v2\";",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample indexName value = 'BySizeAndAvailability'",
+              "*/",
+              "",
+              "export async function myDropIndexFunction(dataCollectionId, indexName) {",
+              "  try {",
+              "    await indexes.dropIndex(dataCollectionId, indexName);",
+              "    console.log(`The ${indexName} index is being dropped.`);",
+              "",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to void */",
+              ""
+            ]
+          },
+          {
+            "title": "Drop an index (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { indexes } from 'wix-data.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample indexName value = 'BySizeAndAvailability'",
+              "*/",
+              "",
+              "",
+              "export const myDropIndexFunction = webMethod(Permissions.Anyone, async (dataCollectionId, indexName) => {",
+              "  try {",
+              "    const elevatedDropIndex = elevate(indexes.dropIndex);",
+              "    await elevatedDropIndex(dataCollectionId, indexName);",
+              "    console.log(`The ${indexName} index is being dropped.`);",
+              "",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "dropIndex",
+      "isAdminMethod": true
+    },
+    {
+      "name": "listIndexes",
+      "params": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which to list indexes.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.ListIndexesOptions"
+            }
+          ],
+          "doc": "Options for retrieving a list of indexes.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "dataCollectionId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-data-v2.Indexes.ListIndexesResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Lists all indexes defined for a data collection.",
+        "description": [
+          "When an index's status is `ACTIVE`, it is ready to use.\nWhile it is still being created, its status is `BUILDING`.\n\nWhen an index's status is `DROPPED`, it has been dropped successfully.\nWhile it is still in the process of being removed, its status is `DROPPING`."
+        ],
+        "examples": [
+          {
+            "title": "List indexes (dashboard page code)",
+            "body": [
+              "import { indexes } from \"wix-data.v2\";",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample options value = {",
+              " *   limit: 5",
+              " * }",
+              "*/",
+              "",
+              "export async function myListIndexesFunction(dataCollectionId, options) {",
+              "  try {",
+              "    const listIndexesResponse = await indexes.listIndexes(dataCollectionId, options);",
+              "    console.log(`List of indexes for this collection: ${listIndexesResponse.indexes}`);",
+              "",
+              "    return listIndexesResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to a list of indexes for the specified collection, with paging metadata:",
+              "* {",
+              "*   \"indexes\": [",
+              "*     {",
+              "*       \"caseInsensitive\": true,",
+              "*       \"fields\": [",
+              "*         {",
+              "*           \"order\": \"ASC\"",
+              "*           \"path\": \"itemName\",",
+              "*         },",
+              "*         {",
+              "*           \"order\": \"DESC\"",
+              "*           \"path\": \"size\",",
+              "*         }",
+              "*       ],",
+              "*       \"name\": \"byItemNameAndSize\",",
+              "*       \"status\": \"ACTIVE\",",
+              "*       \"unique\": false,",
+              "*     },",
+              "*     {",
+              "*       \"caseInsensitive\": false",
+              "*       \"fields\": [",
+              "*         {",
+              "*           \"order\": \"ASC\"",
+              "*           \"path\": \"size\",",
+              "*         },",
+              "*         {",
+              "*           \"order\": \"DESC\"",
+              "*           \"path\": \"available\",",
+              "*         }",
+              "*       ],",
+              "*       \"name\": \"bySizeAndAvailability\",",
+              "*       \"status\": \"ACTIVE\",",
+              "*       \"unique\": false,",
+              "*     }",
+              "*   ],",
+              "*   \"pagingMetadata\": {",
+              "*     \"count\": 2,",
+              "*     \"offset\": 0,",
+              "*     \"total\": 2,",
+              "*     \"tooManyToCount\": false",
+              "*   }",
+              "* }",
+              "*/",
+              ""
+            ]
+          },
+          {
+            "title": "List indexes (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { indexes } from 'wix-data.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* ",
+              " * Sample dataCollectionId value = 'Jackets'",
+              " *",
+              " * Sample options value = {",
+              " *   limit: 5",
+              " * }",
+              "*/",
+              "",
+              "export const myListIndexesFunction = webMethod(Permissions.Anyone, async (dataCollectionId, options) => {",
+              "  try {",
+              "    const elevatedListIndexes = elevate(indexes.listIndexes);",
+              "    const listIndexesResponse = await elevatedListIndexes(dataCollectionId, options);",
+              "    console.log(`List of indexes for this collection: ${listIndexesResponse.indexes}`);",
+              "",
+              "    return listIndexesResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to a list of indexes for the specified collection, with paging metadata:",
+              "* {",
+              "*   \"indexes\": [",
+              "*     {",
+              "*       \"caseInsensitive\": true,",
+              "*       \"fields\": [",
+              "*         {",
+              "*           \"order\": \"ASC\"",
+              "*           \"path\": \"itemName\",",
+              "*         },",
+              "*         {",
+              "*           \"order\": \"DESC\"",
+              "*           \"path\": \"size\",",
+              "*         }",
+              "*       ],",
+              "*       \"name\": \"byItemNameAndSize\",",
+              "*       \"status\": \"ACTIVE\",",
+              "*       \"unique\": false,",
+              "*     },",
+              "*     {",
+              "*       \"caseInsensitive\": false",
+              "*       \"fields\": [",
+              "*         {",
+              "*           \"order\": \"ASC\"",
+              "*           \"path\": \"size\",",
+              "*         },",
+              "*         {",
+              "*           \"order\": \"DESC\"",
+              "*           \"path\": \"available\",",
+              "*         }",
+              "*       ],",
+              "*       \"name\": \"bySizeAndAvailability\",",
+              "*       \"status\": \"ACTIVE\",",
+              "*       \"unique\": false,",
+              "*     }",
+              "*   ],",
+              "*   \"pagingMetadata\": {",
+              "*     \"count\": 2,",
+              "*     \"offset\": 0,",
+              "*     \"total\": 2,",
+              "*     \"tooManyToCount\": false",
+              "*   }",
+              "* }",
+              "*/",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "listIndexes",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "CreateIndexOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateIndexRequest",
+      "members": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which to generate the index."
+        },
+        {
+          "name": "index",
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Index"
+            }
+          ],
+          "doc": "Details of the index to be created."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateIndexResponse",
+      "members": [
+        {
+          "name": "index",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Index"
+            }
+          ],
+          "doc": "Details of the index being generated."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DropIndexOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DropIndexRequest",
+      "members": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which the index to be dropped is defined."
+        },
+        {
+          "name": "indexName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the index to drop."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DropIndexResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Failure",
+      "members": [
+        {
+          "name": "code",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code.\n- `WDE0112`: Unknown error while building collection index.\n- `WDE0113`: Duplicate key error while building collection index.\n- `WDE0114`: Document too large while building collection index."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the failure."
+        },
+        {
+          "name": "itemId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data item that caused the failure.\nFor example, if `unique` is `true`, the ID of an item containing a duplicate value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Field",
+      "members": [
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order for the index. Base on how the data is regularly queried.\n\nSupported values: `ASC`, `DESC`.\n\nDefault: `ASC`\n"
+        },
+        {
+          "name": "path",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Path of the field to index. For example: `title` or `options.price`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Index",
+      "members": [
+        {
+          "name": "caseInsensitive",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the index ignores case.\n\nDefault: `false`\n"
+        },
+        {
+          "name": "failure",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Failure"
+            }
+          ],
+          "doc": "Contains details about the reasons for failure when `status` is `FAILED`."
+        },
+        {
+          "name": "fields",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-data-v2.Indexes.Field"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Fields for which the index is defined.\n\nMax: 3 fields (for a unique index: 1 field)\n"
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the index."
+        },
+        {
+          "name": "status",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Current status of the index.\n- `BUILDING`: Index creation is in progress.\n- `ACTIVE`: Index has been successfully created and can be used in queries.\n- `DROPPING`: Index is in the process of being dropped.\n- `DROPPED`: Index has been dropped successfully.\n- `FAILED`: Index creation has failed.\n- `INVALID`: Index contains incorrectly indexed data."
+        },
+        {
+          "name": "unique",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the index enforces uniqueness of values in the field for which it is defined.\nIf `true`, the index can have only one field.\n\nDefault: `false`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          "An index is a map of a collection's data, organized according to specific fields to increase query speed."
+        ]
+      }
+    },
+    {
+      "name": "ListIndexesOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Paging"
+            }
+          ],
+          "doc": "paging"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListIndexesRequest",
+      "members": [
+        {
+          "name": "dataCollectionId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the data collection for which to list indexes."
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.Paging"
+            }
+          ],
+          "doc": "paging"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListIndexesResponse",
+      "members": [
+        {
+          "name": "indexes",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-data-v2.Indexes.Index"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of all indexes for the requested data collection."
+        },
+        {
+          "name": "pagingMetadata",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.Indexes.PagingMetadata"
+            }
+          ],
+          "doc": "Paging metadata"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Paging",
+      "members": [
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to load."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items to skip in the current sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadata",
+      "members": [
+        {
+          "name": "count",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Number of items returned in the response."
+        },
+        {
+          "name": "offset",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}

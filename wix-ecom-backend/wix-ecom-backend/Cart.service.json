@@ -29,13 +29,15 @@
               "referenceType": "wix-ecom-backend.Cart.AddToCartOptions"
             }
           ],
-          "doc": "",
+          "doc": "Items to be added to cart.",
           "required": false
         }
       ],
       "requiredFields": [
         "_id",
-        "options.lineItems.catalogReference"
+        "options.lineItems.catalogReference",
+        "options.lineItems.selectedMembership._id",
+        "options.lineItems.selectedMembership.appId"
       ],
       "ret": {
         "type": [
@@ -53,7 +55,7 @@
         "doc": "Fulfilled - Cart.\n"
       },
       "docs": {
-        "summary": "Adds catalog line items and/or custom line items to a cart.",
+        "summary": "Adds catalog line items to a cart.",
         "description": [
           "The `addToCart()` function returns a Promise that resolves to the updated cart when the specified items have been added.\n\n> **Note:** When adding catalog items, `options.lineItems.catalogReference` is required."
         ],
@@ -62,12 +64,13 @@
             "title": "Add a catalog item to a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myAddToCartFunction(_id, options) {",
+              "export const myAddToCartFunction = webMethod(Permissions.Anyone, async (_id, options) => {",
               "  try {",
               "    const updatedCart = await cart.addToCart(_id, options);",
               "    console.log('Success! Updated cart:', updatedCart);",
@@ -76,21 +79,21 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myAddToCartFunction } from 'backend/my-backend-file';",
+              "import { myAddToCartFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample addToCart function parameters:",
-              "const cartId = \"96a61a4b-6b61-47d1-a039-0213a8230ccd\";",
+              "const cartId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
               "const options = {",
               "  \"lineItems\": [{",
               "    \"catalogReference\": {",
               "      // Wix Stores appId",
-              "      \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              "      \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\",",
               "      // Wix Stores productId",
               "      \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
               "    },",
@@ -122,7 +125,7 @@
               " *       \"quantity\": 1,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *       },",
               " *       \"productName\": {",
               " *         \"original\": \"Shirt\",",
@@ -199,13 +202,13 @@
               " *   \"_updatedDate\": \"2022-05-23T12:11:55.095Z\"",
               " * }",
               " *",
-              " */",
-              ""
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "addToCart"
     },
     {
       "name": "createCart",
@@ -217,12 +220,15 @@
               "referenceType": "wix-ecom-backend.Cart.CreateCartOptions"
             }
           ],
-          "doc": "",
+          "doc": "Cart creation options.",
           "required": false
         }
       ],
       "requiredFields": [
-        "options.lineItems.catalogReference"
+        "options.lineItems.catalogReference",
+        "options.lineItems.quantity",
+        "options.lineItems.selectedMembership._id",
+        "options.lineItems.selectedMembership.appId"
       ],
       "ret": {
         "type": [
@@ -249,12 +255,13 @@
             "title": "Create a cart with minimum required fields ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myCreateCartFunction(options) {",
+              "export const myCreateCartFunction = webMethod(Permissions.Anyone, async (options) => {",
               "  try {",
               "    const newCart = await cart.createCart(options);",
               "    console.log('Success! Created newCart:', newCart);",
@@ -263,20 +270,20 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myCreateCartFunction } from 'backend/my-backend-file';",
+              "import { myCreateCartFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample options object:",
               "const options = {",
               "  lineItems: [{",
               "    catalogReference: {",
               "      // appId for Wix Stores Catalog",
-              "      appId: \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              "      appId: \"215238eb-22a5-4c36-9e7b-e7c08025e04e\",",
               "      // example of Wix Stores productId",
               "      catalogItemId: \"c8539b66-7a44-fe18-affc-afec4be8562a\"",
               "    },",
@@ -307,13 +314,13 @@
               " *       \"quantity\": 3,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *       },",
               " *       \"productName\": {",
               " *         \"original\": \"Shirt\",",
               " *         \"translated\": \"Shirt\"",
               " *       },",
-              " *       \"url\": \"https://roysha.wixsite.com/ep-tester\",",
+              " *       \"url\": \"https://example.wixsite.com\",",
               " *       \"price\": {",
               " *         \"amount\": \"10\",",
               " *         \"convertedAmount\": \"10\",",
@@ -389,7 +396,8 @@
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "createCart"
     },
     {
       "name": "createCheckout",
@@ -411,7 +419,7 @@
               "referenceType": "wix-ecom-backend.Cart.CreateCheckoutOptions"
             }
           ],
-          "doc": "",
+          "doc": "Checkout creation options.",
           "required": false
         }
       ],
@@ -434,21 +442,22 @@
         "doc": "Fulfilled - ID of the newly created checkout.\n"
       },
       "docs": {
-        "summary": "Creates a checkout from the current site visitor’s cart.",
+        "summary": "Creates a checkout from a cart.",
         "description": [
-          "The `createCheckout()` function returns a Promise that resolves to the new checkout's ID when it's created.\n\nIf a checkout was already created from the specified cart, that checkout will be\nupdated with any new information from the cart."
+          "The `createCheckout()` function returns a Promise that resolves to the new checkout's ID when it's created.\n\nIf a checkout was already created from the specified cart, that checkout will be\nupdated with any new information from the cart.\n\n> **Note:** `options.channelType` is a required field."
         ],
         "examples": [
           {
             "title": "Create a checkout from a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myCreateCheckoutFunction(cartId, options) {",
+              "export const myCreateCheckoutFunction = webMethod(Permissions.Anyone, async (cartId, options) => {",
               "  try {",
               "    const checkoutId = await cart.createCheckout(cartId, options);",
               "    console.log('Success! Checkout created, checkoutId:', checkoutId);",
@@ -457,19 +466,20 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myCreateCheckoutFunction } from 'backend/my-backend-file';",
+              "import { myCreateCheckoutFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"96a61a4b-6b61-47d1-a039-0213a8230ccd\";",
+              "const cartId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
               "",
               "// Sample options object:",
               "const options = {",
+              "  // channelType is a required field",
               "  \"channelType\": \"WEB\",",
               "  \"email\": \"janedoe@example.com\",",
               "  \"shippingAddress\": {",
@@ -500,13 +510,13 @@
               " *",
               " * {\"checkoutId\": \"a43420aa-986b-456a-a2f7-7ea5c80e9007\"}",
               " *",
-              " */",
-              ""
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "createCheckout"
     },
     {
       "name": "deleteCart",
@@ -550,12 +560,13 @@
             "title": "Delete a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myDeleteCartFunction(cartId) {",
+              "export const myDeleteCartFunction = webMethod(Permissions.Anyone, async (cartId) => {",
               "  try {",
               "    await cart.deleteCart(cartId);",
               "    console.log('Success! Deleted cart');",
@@ -564,16 +575,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myDeleteCartFunction } from 'backend/my-backend-file';",
+              "import { myDeleteCartFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"96a61a4b-6b61-47d1-a039-0213a8230ccd\";",
+              "const cartId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
               "",
               "myDeleteCartFunction(cartId)",
               "  .then(() => {",
@@ -583,13 +594,13 @@
               "  .catch((error) => {",
               "    console.error(error);",
               "    // Handle the error",
-              "  });",
-              ""
+              "  });"
             ]
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "deleteCart"
     },
     {
       "name": "estimateTotals",
@@ -611,7 +622,7 @@
               "referenceType": "wix-ecom-backend.Cart.EstimateTotalsOptions"
             }
           ],
-          "doc": "",
+          "doc": "Total estimation options.",
           "required": false
         }
       ],
@@ -642,13 +653,14 @@
           {
             "title": "Estimate a cart's totals ",
             "body": [
-              "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
-              " *************************************/",
+              "/*****************************************",
+              " * Backend code - my-backend-file.web.js *",
+              " ****************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myEstimateTotalsFunction(cartId, estimateOptions) {",
+              "export const myEstimateTotalsFunction = webMethod(Permissions.Anyone, async (cartId, estimateOptions) => {",
               "  try {",
               "    const estimatedCartTotals = await cart.estimateTotals(cartId, estimateOptions);",
               "    console.log('Success! Cart totals estimated:', estimatedCartTotals);",
@@ -657,16 +669,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myEstimateTotalsFunction } from 'backend/my-backend-file';",
+              "import { myEstimateTotalsFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"96a61a4b-6b61-47d1-a039-0213a8230ccd\";",
+              "const cartId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
               "",
               "// Sample options object:",
               "const estimateOptions = {",
@@ -723,7 +735,7 @@
               " *         \"quantity\": 5,",
               " *         \"catalogReference\": {",
               " *           \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *           \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *           \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *         },",
               " *         \"productName\": {",
               " *           \"original\": \"Shirt\",",
@@ -1037,7 +1049,8 @@
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "estimateTotals"
     },
     {
       "name": "getCart",
@@ -1081,12 +1094,13 @@
             "title": "Get a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myGetCartFunction(cartId) {",
+              "export const myGetCartFunction = webMethod(Permissions.Anyone, async (cartId) => {",
               "  try {",
               "    const retrievedCart = await cart.getCart(cartId);",
               "    console.log('Success! Retrieved cart:', retrievedCart);",
@@ -1095,16 +1109,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myGetCartFunction } from 'backend/my-backend-file';",
+              "import { myGetCartFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"96a61a4b-6b61-47d1-a039-0213a8230ccd\";",
+              "const cartId = '96a61a4b-6b61-47d1-a039-0213a8230ccd';",
               "",
               "myGetCartFunction(cartId)",
               "  .then((cart) => {",
@@ -1130,13 +1144,13 @@
               " *       \"quantity\": 3,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *       },",
               " *       \"productName\": {",
               " *         \"original\": \"Shirt\",",
               " *         \"translated\": \"Shirt\"",
               " *       },",
-              " *       \"url\": \"https://roysha.wixsite.com/ep-tester\",",
+              " *       \"url\": \"https://example.wixsite.com\",",
               " *       \"price\": {",
               " *         \"amount\": \"10\",",
               " *         \"convertedAmount\": \"10\",",
@@ -1213,7 +1227,8 @@
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "getCart"
     },
     {
       "name": "removeCoupon",
@@ -1257,12 +1272,13 @@
             "title": "Remove coupon from a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " **************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myRemoveCouponFunction(cartId) {",
+              "export const myRemoveCouponFunction = webMethod(Permissions.Anyone, async (cartId) => {",
               "  try {",
               "    const updatedCart = await cart.removeCoupon(cartId);",
               "    console.log('Success! Updated cart:', updatedCart);",
@@ -1271,16 +1287,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myRemoveCouponFunction } from 'backend/my-backend-file';",
+              "import { myRemoveCouponFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"ba47a627-7bb8-4918-89b2-6a72af464765\";",
+              "const cartId = 'ba47a627-7bb8-4918-89b2-6a72af464765';",
               "",
               "myRemoveCouponFunction(cartId)",
               "  .then((updatedCart) => {",
@@ -1308,7 +1324,7 @@
               " *       \"quantity\": 1,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *       },",
               " *       \"productName\": {",
               " *         \"original\": \"Shirt\",",
@@ -1384,13 +1400,13 @@
               " *   \"_updatedDate\": \"2022-06-16T09:20:23.388Z\"",
               " * }",
               " *",
-              " */",
-              ""
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "removeCoupon"
     },
     {
       "name": "removeLineItems",
@@ -1451,13 +1467,14 @@
           {
             "title": "Remove 3 line items from a cart ",
             "body": [
-              "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
-              " *************************************/",
+              "/*****************************************",
+              " * Backend code - my-backend-file.web.js *",
+              " ****************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myRemoveLineItemsFunction(cartId, lineItemIds) {",
+              "export const myRemoveLineItemsFunction = webMethod(Permissions.Anyone, async (cartId, lineItemIds) => {",
               "  try {",
               "    const updatedCart = await cart.removeLineItems(cartId, lineItemIds);",
               "    console.log('Success! Line items removed from cart:', updatedCart);",
@@ -1466,16 +1483,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myRemoveLineItemsFunction } from 'backend/my-backend-file';",
+              "import { myRemoveLineItemsFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"ba47a627-7bb8-4918-89b2-6a72af464765\";",
+              "const cartId = 'ba47a627-7bb8-4918-89b2-6a72af464765';",
               "",
               "// Sample lineItemIds array:",
               "const lineItemIds = [",
@@ -1524,13 +1541,13 @@
               " *   \"_updatedDate\": \"2022-06-16T09:18:32.388Z\"",
               " * }",
               " *",
-              " */",
-              ""
+              " */"
             ]
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "removeLineItems"
     },
     {
       "name": "updateCart",
@@ -1585,37 +1602,38 @@
             "title": "Update a cart ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myUpdateCartFunction(options) {",
+              "export const myUpdateCartFunction = webMethod(Permissions.Anyone, async (_id, options) => {",
               "  try {",
-              "    const updatedCart = await cart.updateCart(options);",
+              "    const updatedCart = await cart.updateCart(_id, options);",
               "    console.log('Success! Updated cart:', updatedCart);",
               "    return updatedCart;",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myUpdateCartFunction } from 'backend/my-backend-file';",
+              "import { myUpdateCartFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"ba47a627-7bb8-4918-89b2-6a72af464765\";",
+              "const _id = 'ba47a627-7bb8-4918-89b2-6a72af464765';",
               "",
               "// Coupon code to be applied to the cart",
               "const updateOptions = {",
               "  \"couponCode\": \"SUMMERSALE10\"",
               "}",
               "",
-              "myUpdateCartFunction(updateOptions)",
+              "myUpdateCartFunction(_id, updateOptions)",
               "  .then((updatedCart) => {",
               "    // appliedCoupon boolean resolves to true if coupon object exists",
               "    const appliedCoupon = !!updatedCart.appliedDiscounts[0].coupon",
@@ -1646,7 +1664,7 @@
               " *       \"quantity\": 1,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"c8539b66-7a44-fe18-affc-afec4be8562a\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\"",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\"",
               " *       },",
               " *       \"productName\": {",
               " *         \"original\": \"Shirt\",",
@@ -1722,8 +1740,7 @@
               " *   \"_updatedDate\": \"2022-06-16T09:20:23.388Z\"",
               " * }",
               " *",
-              " */",
-              ""
+              " */"
             ],
             "extra": {
               "description": "Apply a coupon to a cart"
@@ -1731,7 +1748,8 @@
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "updateCart"
     },
     {
       "name": "updateLineItemsQuantity",
@@ -1786,19 +1804,20 @@
       "docs": {
         "summary": "Updates the quantity of one or more line items in a specified cart.",
         "description": [
-          "The `updateLineItemsQuantity()` function returns a Promise that resolves when the quantities of the specified cart's line items are updated."
+          "The `updateLineItemsQuantity()` function returns a Promise that resolves when the quantities of the specified cart's line items are updated.\n\nThis endpoint is only for updating the quantity of line items. To entirely remove a line item from the cart, use [`removeLineItems()`](#removelineitems). To add a new line item to the cart, use [`addToCart()`](#addtocart).\n\nThis endpoint checks the amount of stock remaining for this line item. If the specified `quantity` is greater than the remaining stock, then the `quantity` returned in the response is the total amount of remaining stock."
         ],
         "examples": [
           {
             "title": "Update the quantity of a cart's line items ",
             "body": [
               "/**************************************",
-              " * Backend code - my-backend-file.jsw *",
+              " * Backend code - my-backend-file.web.js *",
               " *************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { cart } from 'wix-ecom-backend';",
               "",
-              "export async function myUpdateLineItemsQuantityFunction(cartId, lineItems) {",
+              "export const myUpdateLineItemsQuantityFunction = webMethod(Permissions.Anyone, async (cartId, lineItems) => {",
               "  try {",
               "    const updatedCart = await cart.updateLineItemsQuantity(cartId, lineItems);",
               "    console.log('Success! Line item quantities updated:', updatedCart);",
@@ -1807,16 +1826,16 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { myUpdateLineItemsQuantityFunction } from 'backend/my-backend-file';",
+              "import { myUpdateLineItemsQuantityFunction } from 'backend/my-backend-file.web';",
               "",
               "// Sample cartId:",
-              "const cartId = \"b79fd177-ec98-4245-b9f6-f09e7afa9d04\";",
+              "const cartId = 'b79fd177-ec98-4245-b9f6-f09e7afa9d04';",
               "",
               "// Sample lineItems array:",
               "const lineItems = [",
@@ -1844,8 +1863,6 @@
               "    // Handle the error",
               "  });",
               "",
-              "",
-              "",
               "/* Promise resolves to:",
               " *",
               " * {",
@@ -1856,7 +1873,7 @@
               " *       \"quantity\": 2,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"df19c1f7-07d8-a265-42f8-e8dfa824cc6e\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\",",
               " *         \"options\": {",
               " *           \"variantId\": \"e62fee23-7878-437a-bf0e-292f17d11cb5\"",
               " *         }",
@@ -1933,7 +1950,7 @@
               " *       \"quantity\": 3,",
               " *       \"catalogReference\": {",
               " *         \"catalogItemId\": \"1a2d7e83-4bef-31d5-09e1-3326ee271c09\",",
-              " *         \"appId\": \"1380b703-ce81-ff05-f115-39571d94dfcd\",",
+              " *         \"appId\": \"215238eb-22a5-4c36-9e7b-e7c08025e04e\",",
               " *         \"options\": {",
               " *           \"variantId\": \"132b84e8-aab8-47a1-a1f6-2c47557b64a4\"",
               " *         }",
@@ -2045,7 +2062,8 @@
           }
         ]
       },
-      "isVeloEvent": false
+      "isVeloEvent": false,
+      "syntaxName": "updateLineItemsQuantity"
     }
   ],
   "messages": [
@@ -2072,23 +2090,6 @@
     {
       "name": "AddToCartOptions",
       "members": [
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
-        },
         {
           "name": "lineItems",
           "optional": true,
@@ -2124,23 +2125,6 @@
             }
           ],
           "doc": "Cart ID."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -2187,10 +2171,20 @@
       }
     },
     {
-      "name": "AddToCurrentCartRequest",
+      "name": "AddToCurrentCartAndEstimateTotalsRequest",
       "members": [
         {
-          "name": "customLineItems",
+          "name": "billingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Address"
+            }
+          ],
+          "doc": "Billing address. Used for calculating tax if all the items in the cart are not shippable."
+        },
+        {
+          "name": "lineItems",
           "optional": true,
           "type": [
             {
@@ -2198,14 +2192,54 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
+                    "referenceType": "wix-ecom-backend.Cart.LineItem"
                   }
                 ]
               }
             }
           ],
-          "doc": "Custom line items."
+          "doc": "Catalog line items."
         },
+        {
+          "name": "selectedMemberships",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedMemberships"
+            }
+          ],
+          "doc": "The selected membership payment options and which line items they apply to."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
+        },
+        {
+          "name": "shippingAddress",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Address"
+            }
+          ],
+          "doc": "Shipping address. Used for calculating tax and shipping (when applicable)."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "AddToCurrentCartRequest",
+      "members": [
         {
           "name": "lineItems",
           "optional": true,
@@ -2241,7 +2275,24 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Additional fee's unique code (or ID) for future processing"
+          "doc": "Additional fee's unique code (or ID) for future processing."
+        },
+        {
+          "name": "lineItemIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Optional - Line items associated with this additional fee.\nIf no `lineItemIds` are provided, the fee will be associated with the whole cart/checkout/order."
         },
         {
           "name": "name",
@@ -2251,7 +2302,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated additional fee's name"
+          "doc": "Translated additional fee's name."
         },
         {
           "name": "price",
@@ -2261,7 +2312,17 @@
               "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
             }
           ],
-          "doc": "Additional fee's price"
+          "doc": "Additional fee's price."
+        },
+        {
+          "name": "priceBeforeTax",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Additional fee's price before tax."
         },
         {
           "name": "providerAppId",
@@ -2271,7 +2332,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Provider's app id"
+          "doc": "Provider's app id."
         },
         {
           "name": "taxDetails",
@@ -2281,7 +2342,7 @@
               "referenceType": "wix-ecom-backend.Cart.ItemTaxFullDetails"
             }
           ],
-          "doc": "Tax details"
+          "doc": "Tax details."
         }
       ],
       "docs": {
@@ -2351,7 +2412,7 @@
               "referenceType": "wix-ecom-backend.Cart.StreetAddress"
             }
           ],
-          "doc": "Street address object, with number, name, and apartment number in separate fields."
+          "doc": "Street address."
         },
         {
           "name": "subdivision",
@@ -2418,7 +2479,7 @@
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Cart.ApiFullAddressContactDetails"
+              "referenceType": "wix-ecom-backend.Cart.FullAddressContactDetails"
             }
           ],
           "doc": "Contact details."
@@ -2431,62 +2492,72 @@
       }
     },
     {
-      "name": "ApiFullAddressContactDetails",
+      "name": "AggregatedTaxBreakdown",
       "members": [
         {
-          "name": "company",
+          "name": "aggregatedTaxAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "The sum of all the tax from line items that calculated by the tax identifiers."
+        },
+        {
+          "name": "jurisdiction",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Company name."
+          "doc": "The name of the jurisdiction in which this tax detail applies."
         },
         {
-          "name": "firstName",
+          "name": "jurisdictionType",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "First name."
+          "doc": "The type of the jurisdiction in which this tax detail applies (e.g. Country,State,County,City,Special)."
         },
         {
-          "name": "lastName",
+          "name": "rate",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Last name."
+          "doc": "The rate at which this tax detail was calculated, e.g 0.1000 signifies 10% tax and 2.000 signifies 200% tax. (Decimal value)"
         },
         {
-          "name": "phone",
+          "name": "taxName",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Phone number."
+          "doc": "The name of the tax against which this tax amount was calculated."
         },
         {
-          "name": "vatId",
+          "name": "taxType",
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-ecom-backend.Cart.VatId"
+              "nativeType": "string"
             }
           ],
-          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set - UNSPECIFIED is not allowed."
+          "doc": "The type of tax that was calculated. Depends on the company's nexus settings as well as the jurisdiction's tax laws."
         }
       ],
       "docs": {
         "description": [
-          "Full contact details for an address"
+          "The summary of the tax breakdown for all the line items. It will hold for each tax name, the aggregated tax amount paid for it and the tax rate.\nTax breakdown is the tax amount split to the tax authorities that applied on the line item."
         ]
       }
     },
@@ -2501,7 +2572,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
+          "doc": "Error code."
         },
         {
           "name": "data",
@@ -2511,7 +2582,7 @@
               "nativeType": "Object"
             }
           ],
-          "doc": ""
+          "doc": "Data related to the error."
         },
         {
           "name": "description",
@@ -2521,77 +2592,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": ""
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "AppliedCoupon",
-      "members": [
-        {
-          "name": "code",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Coupon code"
-        },
-        {
-          "name": "convertedDiscountValue",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Converted discount value"
-        },
-        {
-          "name": "couponId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Coupon internal ID"
-        },
-        {
-          "name": "couponType",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Type (e.g., moneyOff, percentOff)"
-        },
-        {
-          "name": "discountValue",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Discount value"
-        },
-        {
-          "name": "name",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Coupon name"
+          "doc": "Description of the error."
         }
       ],
       "docs": {
@@ -2750,8 +2751,18 @@
       }
     },
     {
-      "name": "BuyerDetails",
+      "name": "BuyerInfo",
       "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact ID. For more information, see the Contacts API."
+        },
         {
           "name": "email",
           "optional": true,
@@ -2760,61 +2771,11 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Email address"
-        },
-        {
-          "name": "firstName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's first name"
-        },
-        {
-          "name": "lastName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's last name"
-        },
-        {
-          "name": "phone",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Phone number"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "BuyerInfo",
-      "members": [
-        {
-          "name": "contactId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Contact ID. Auto-created if one does not yet exist. For more information, see the [Contacts API](https://www.wix.com/velo/reference/wix-crm-backend/contacts/introduction)."
+          "doc": "Buyer email address."
         },
         {
           "name": "memberId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2825,6 +2786,7 @@
         },
         {
           "name": "userId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2835,6 +2797,7 @@
         },
         {
           "name": "visitorId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2867,6 +2830,7 @@
       "members": [
         {
           "name": "memberId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2877,6 +2841,7 @@
         },
         {
           "name": "userId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -2887,6 +2852,7 @@
         },
         {
           "name": "visitorId",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -3229,7 +3195,6 @@
         },
         {
           "name": "buyerInfo",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -3268,7 +3233,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the checkout related to this cart."
+          "doc": "ID of the checkout that originated from this cart."
         },
         {
           "name": "contactInfo",
@@ -3289,7 +3254,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are presented in this currency."
+          "doc": "Currency code used for all the converted prices that are returned.\nFor a site that supports multiple currencies, this is the currency the buyer selected."
         },
         {
           "name": "currency",
@@ -3321,6 +3286,37 @@
           "doc": "Line items."
         },
         {
+          "name": "overrideCheckoutUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "`overrideCheckoutUrl` allows the flexibility to redirect customers to a customized checkout page.\n\nThis field overrides the `checkoutUrl` in a cart or checkout. `checkoutUrl` is used to send customers back to their checkouts. By default, a `checkoutUrl` generates for a checkout and directs to a standard Wix checkout page. When `overrideCheckoutUrl` has a value, it will replace and set the value of `checkoutUrl`.\n"
+        },
+        {
+          "name": "purchaseFlowId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Persistent ID that correlates between the various eCommerce elements: cart, checkout, and order."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
+        },
+        {
           "name": "siteLanguage",
           "readOnly": true,
           "optional": true,
@@ -3329,7 +3325,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Site language in which original values are shown."
+          "doc": "Site language in which original values are displayed."
         },
         {
           "name": "taxIncludedInPrices",
@@ -3357,147 +3353,6 @@
       "docs": {
         "description": [
           ""
-        ]
-      }
-    },
-    {
-      "name": "CartAddress",
-      "members": [
-        {
-          "name": "address",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.CommonAddress"
-            }
-          ],
-          "doc": "Address"
-        },
-        {
-          "name": "contactDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.FullAddressContactDetails"
-            }
-          ],
-          "doc": "Contact details"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CartCompletedEvent",
-      "members": [
-        {
-          "name": "appliedCoupon",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.AppliedCoupon"
-            }
-          ],
-          "doc": "Coupon applied to this cart"
-        },
-        {
-          "name": "billingAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.CartAddress"
-            }
-          ],
-          "doc": "Customer's billing address"
-        },
-        {
-          "name": "buyerInfo",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.V1BuyerInfo"
-            }
-          ],
-          "doc": "Customer's Wix ID"
-        },
-        {
-          "name": "buyerNote",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Message from the customer"
-        },
-        {
-          "name": "cartId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "completedTime",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Time the cart was created"
-        },
-        {
-          "name": "currency",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.Currency"
-            }
-          ],
-          "doc": "Currency used for pricing in this store"
-        },
-        {
-          "name": "shippingInfo",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.ShippingInfo"
-            }
-          ],
-          "doc": "Cart shipping information"
-        },
-        {
-          "name": "totals",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.Totals"
-            }
-          ],
-          "doc": "Totals for order's line items"
-        },
-        {
-          "name": "weightUnit",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Weight measurement unit - defaults to site's weight unit. Supported values:\n+ `\"KG\"`\n+ `\"LB\"`"
-        }
-      ],
-      "docs": {
-        "description": [
-          "This webhook is triggered when a customer has completed their checkout. In most cases, an order will be created immediately and an Order Event webhook will also be triggered. In some cases, the payment provider may list the order as \"pending\" - and the order will not be created until the payment is listed as \"approved.\""
         ]
       }
     },
@@ -3583,7 +3438,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "App ID of the catalog the item comes from. For example, the Wix Stores `appId` is `\"1380b703-ce81-ff05-f115-39571d94dfcd\"`."
+          "doc": "ID of the app providing the catalog.\n\nYou can get your app's ID from its page in the [Wix Dev Center](https://dev.wix.com/apps).\n\nFor items from Wix catalogs, the following values always apply:\n+ Wix Stores: `\"215238eb-22a5-4c36-9e7b-e7c08025e04e\"`\n+ Wix Bookings: `\"13d21c63-b5ec-5912-8397-c3a5ddb27a97\"`\n+ Wix Restaurants: `\"9a5d83fd-8570-482e-81ab-cfa88942ee60\"`\n"
         },
         {
           "name": "catalogItemId",
@@ -3593,7 +3448,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the item within its catalog. For example, `productId` for Wix Stores."
+          "doc": "ID of the item within the catalog it belongs to."
         },
         {
           "name": "options",
@@ -3603,12 +3458,12 @@
               "nativeType": "Object"
             }
           ],
-          "doc": "Additional info in key:value form. For example, for a product variant from Wix Stores Catalog, `options` field would hold something like one of the following:\n+ `{\"Size\": \"M\", \"Color\": \"Red\"}`\n+ `{\"variantId\": \"<VARIANT_ID>\"}`."
+          "doc": "Additional item details in key:value pairs.\n\nUse this optional field to provide more specificity with item selection. The `options` field values differ depending on which catalog is providing the items.\n\nFor products and variants from your Wix Stores catalog, learn more about [eCommerce integration](https://www.wix.com/velo/reference/wix-stores-backend/ecommerce-integration).\n"
         }
       ],
       "docs": {
         "description": [
-          "Used for grouping line items and is sent on add to cart"
+          "Used for grouping line items. Sent when an item is added to a cart, checkout, or order."
         ]
       }
     },
@@ -3644,137 +3499,6 @@
             }
           ],
           "doc": "Description line color name translated into buyer's language. Defaults to `original` when not defined."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "CommonAddress",
-      "members": [
-        {
-          "name": "addressLine",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Main address line, usually street and number as free text."
-        },
-        {
-          "name": "addressLine1",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Main address line, usually street and number as free text."
-        },
-        {
-          "name": "addressLine2",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Free text providing more detailed address info. Usually contains Apt, Suite, and Floor."
-        },
-        {
-          "name": "city",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "City name."
-        },
-        {
-          "name": "country",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Country code."
-        },
-        {
-          "name": "postalCode",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Zip/postal code."
-        },
-        {
-          "name": "streetAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.StreetAddress"
-            }
-          ],
-          "doc": "Street name and number."
-        },
-        {
-          "name": "subdivision",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Subdivision. Usually a state, region, prefecture, or province code, according to [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)."
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfCommonAddressStreetOneOf",
-            "members": [
-              "addressLine",
-              "streetAddress"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          "Physical address"
-        ]
-      }
-    },
-    {
-      "name": "CommonAddressStreetOneOf",
-      "members": [
-        {
-          "name": "addressLine",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Main address line, usually street and number as free text."
-        },
-        {
-          "name": "streetAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.StreetAddress"
-            }
-          ],
-          "doc": "Street name and number."
         }
       ],
       "docs": {
@@ -3835,23 +3559,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -3916,23 +3623,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -4016,7 +3706,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
+          "doc": "**Required**. Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
         },
         {
           "name": "email",
@@ -4076,7 +3766,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
+          "doc": "**Required**. Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
         },
         {
           "name": "email",
@@ -4145,7 +3835,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
+          "doc": "**Required**. Sales channel type. Supported values:\n+ `\"AMAZON\"`\n+ `\"BACKOFFICE_MERCHANT\"`\n+ `\"EBAY\"`\n+ `\"OTHER_PLATFORM\"`\n+ `\"POS\"`\n+ `\"WEB\"`\n+ `\"WISH\"`\n+ `\"WIX_APP_STORE\"`\n+ `\"WIX_INVOICES\"`"
         },
         {
           "name": "email",
@@ -4205,36 +3895,6 @@
       }
     },
     {
-      "name": "Currency",
-      "members": [
-        {
-          "name": "code",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Currency code"
-        },
-        {
-          "name": "symbol",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Currency symbol"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "CustomLineItem",
       "members": [
         {
@@ -4245,7 +3905,27 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item ID. Defaults to an auto-generated ID."
+          "doc": "Custom line item ID. If passed, `id` must be unique.\nDefault: auto-generated ID."
+        },
+        {
+          "name": "catalogReference",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.CatalogReference"
+            }
+          ],
+          "doc": "Catalog and item reference. Includes IDs for the item and the catalog it came from, as well as further optional info."
+        },
+        {
+          "name": "depositAmount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Optional - partial payment for the given item to be paid upfront during the checkout.\nEligible for catalog items with type `DEPOSIT_ONLINE`.\nIf omitted - item's price will not be split and is expected to be paid in single installment"
         },
         {
           "name": "descriptionLines",
@@ -4265,6 +3945,26 @@
           "doc": "Custom line item description lines. Used for displaying the cart, checkout and order."
         },
         {
+          "name": "fullPrice",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Optional - Item price **before** catalog-defined discount. Defaults to `price` when not provided."
+        },
+        {
+          "name": "itemType",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.ItemType"
+            }
+          ],
+          "doc": "Required** - Item type. Either a preset type or custom."
+        },
+        {
           "name": "media",
           "optional": true,
           "type": [
@@ -4275,14 +3975,24 @@
           "doc": "Custom line item media. Supported formats:\n+ Link to an image/video from the [Wix Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager) - `\"wix:image://v1/3c76e2_c53...4ea4~mv2.jpg#originWidth=1000&originHeight=1000\"`.\n+ An image from the web - `\"http(s)://<image url>\"`."
         },
         {
-          "name": "name",
+          "name": "paymentOption",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item name."
+          "doc": "Optional - Type of selected payment option for current item. Defaults to `FULL_PAYMENT_ONLINE`.\n+ `FULL_PAYMENT_ONLINE` - Entire payment for this item happens as part of the checkout.\n+ `FULL_PAYMENT_OFFLINE` - Entire payment for this item happens after the checkout. For example, when using cash, check, or other offline payment methods.\n+ `MEMBERSHIP` - Payment for this item is done by charging a membership. When this option is used, `lineItem.price.amount` is 0.\n+ `DEPOSIT_ONLINE` -  Partial payment for the given item to be paid upfront during the checkout. Amount to be paid is defined by deposit_amount field."
+        },
+        {
+          "name": "physicalProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.PhysicalProperties"
+            }
+          ],
+          "doc": "Optional - Physical properties of the item. When relevant, contains information such as SKU and item weight."
         },
         {
           "name": "price",
@@ -4292,7 +4002,27 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom line item price."
+          "doc": "Custom line item price.\n\nMust be a number or a decimal without symbols.\n"
+        },
+        {
+          "name": "priceDescription",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.PriceDescription"
+            }
+          ],
+          "doc": "Additional description for the price. For example, when price is 0 but additional details about the actual price are needed - \"Starts at $67\"."
+        },
+        {
+          "name": "productName",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.ProductName"
+            }
+          ],
+          "doc": "*Required** - Item name.\n+ Stores - `product.name`\n+ Bookings - `service.info.name`\n+ Events - `ticket.name`"
         },
         {
           "name": "quantity",
@@ -4302,7 +4032,57 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Custom line item quantity."
+          "doc": "Custom line item quantity.\n\nMin: `1`\nMax: `100000`\n"
+        },
+        {
+          "name": "quantityAvailable",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Optional - Item quantity available for purchase. Only return this if inventory is managed.\nNot returning this field means that the buyer can \"infinitely\" tick up the number of items in the cart."
+        },
+        {
+          "name": "rootCatalogItemId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Optional - In cases where `catalogReference.catalogItemId` is NOT the actual catalog item ID, this field will return the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ in most cases, this field is the name as `catalogReference.catalogItemId`.\n+ Used in membership validation."
+        },
+        {
+          "name": "serviceProperties",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.ServiceProperties"
+            }
+          ],
+          "doc": "Optional - Service properties. When relevant, this contains information such as date and number of participants.\nUsed, among other things, when checking for valid memberships."
+        },
+        {
+          "name": "taxGroupId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax group ID for this custom line item."
+        },
+        {
+          "name": "url",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Optional - URL to the item's page on the site. When not provided, the link back from the cart page to the relevant product page will not work.\nThe URL is optional and if not provided, the site URL will be used."
         }
       ],
       "docs": {
@@ -4389,6 +4169,36 @@
       }
     },
     {
+      "name": "DeliveryTimeSlot",
+      "members": [
+        {
+          "name": "from",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "starting time of the delivery time slot"
+        },
+        {
+          "name": "to",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "ending time of the delivery time slot"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Description",
       "members": [
         {
@@ -4409,7 +4219,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated subscription option name."
+          "doc": "Translated subscription option description."
         }
       ],
       "docs": {
@@ -4559,6 +4369,16 @@
           "doc": ""
         },
         {
+          "name": "systemError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SystemError"
+            }
+          ],
+          "doc": ""
+        },
+        {
           "name": "tracing",
           "optional": true,
           "type": [
@@ -4595,6 +4415,7 @@
             "name": "oneOfDetailsKindOneOf",
             "members": [
               "applicationError",
+              "systemError",
               "validationError"
             ]
           }
@@ -4615,6 +4436,16 @@
           "type": [
             {
               "referenceType": "wix-ecom-backend.Cart.ApplicationError"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "systemError",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SystemError"
             }
           ],
           "doc": ""
@@ -4717,7 +4548,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "random GUID so clients can tell if event was already handled"
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
           "name": "actionEvent",
@@ -4750,6 +4581,16 @@
           "doc": ""
         },
         {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
           "name": "entityFqdn",
           "optional": true,
           "type": [
@@ -4767,7 +4608,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Assuming that all messages including Actions have id\nExample: The id of the specific order, the id of a specific campaign"
+          "doc": "ID of the entity associated with the event."
         },
         {
           "name": "eventTime",
@@ -4777,17 +4618,7 @@
               "nativeType": "Date"
             }
           ],
-          "doc": "The time of the event. Useful if there was a delay in dipatching"
-        },
-        {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.ExtendedFieldsUpdatedEvent"
-            }
-          ],
-          "doc": ""
+          "doc": "Event timestamp."
         },
         {
           "name": "originatedFrom",
@@ -4807,7 +4638,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "This is top level to ease client code dipatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
         },
         {
           "name": "triggeredByAnonymizeRequest",
@@ -4817,7 +4648,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "A field that should be set if this event was triggered by an anonymize request.\nFor example you must set it to true when sending an event as a result of a GDPR right to be forgotten request.\nNOTE: This field is not relevant for `EntityCreatedEvent` but is located here for better ergonomics of consumers."
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
         },
         {
           "name": "updatedEvent",
@@ -4838,7 +4669,6 @@
               "actionEvent",
               "createdEvent",
               "deletedEvent",
-              "extendedFieldsUpdatedEvent",
               "updatedEvent"
             ]
           }
@@ -4879,16 +4709,6 @@
           "type": [
             {
               "referenceType": "wix-ecom-backend.Cart.EntityDeletedEvent"
-            }
-          ],
-          "doc": ""
-        },
-        {
-          "name": "extendedFieldsUpdatedEvent",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.ExtendedFieldsUpdatedEvent"
             }
           ],
           "doc": ""
@@ -4941,7 +4761,18 @@
     },
     {
       "name": "EntityDeletedEvent",
-      "members": [],
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -5284,6 +5115,24 @@
           "doc": "Tax summary."
         },
         {
+          "name": "violations",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-ecom-backend.Cart.Violation"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of validation violations raised by the [Validations Custom Extension SPI](https://www.wix.com/velo/reference/spis/wix-ecom/ecom-validations/introduction)."
+        },
+        {
           "name": "weightUnit",
           "optional": true,
           "type": [
@@ -5301,17 +5150,27 @@
       }
     },
     {
-      "name": "ExtendedFieldsUpdatedEvent",
+      "name": "ExtendedFields",
       "members": [
         {
-          "name": "currentEntityAsJson",
+          "name": "namespaces",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "complexType": {
+                "nativeType": "Record",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  },
+                  {
+                    "nativeType": "Object"
+                  }
+                ]
+              }
             }
           ],
-          "doc": ""
+          "doc": "Extended field data. Each key corresponds to the namespace of the app that created the extended fields.\nThe value of each key is structured according to the schema defined when the extended fields were configured.\n\nYou can only access fields for which you have the appropriate permissions.\n\nLearn more about [extended fields](https://dev.wix.com/docs/rest/articles/getting-started/extended-fields).\n"
         }
       ],
       "docs": {
@@ -5371,7 +5230,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Suppoerted values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
+          "doc": "Supported values:\n- `'DECIMAL_GT'`\n- `'DECIMAL_GTE'`\n- `'DECIMAL_LT'`\n- `'DECIMAL_LTE'`\n- `'DECIMAL_MAX_SCALE'`\n- `'FIELD_NOT_ALLOWED'`\n- `'FORMAT'`\n- `'INVALID_ENUM_VALUE'`\n- `'MAX'`\n- `'MAX_LENGTH'`\n- `'MAX_SIZE'`\n- `'MIN'`\n- `'MIN_LENGTH'`\n- `'MIN_SIZE'`\n- `'ONE_OF_ALIGNMENT'`\n- `'OTHER'`\n- `'REQUIRED_FIELD'`\n- `'VALIDATION'`"
         }
       ],
       "docs": {
@@ -5391,17 +5250,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact's company"
-        },
-        {
-          "name": "email",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Email associated with the address"
+          "doc": "Company name."
         },
         {
           "name": "firstName",
@@ -5411,7 +5260,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact first name"
+          "doc": "First name."
         },
         {
           "name": "lastName",
@@ -5421,7 +5270,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact last name"
+          "doc": "Last name."
         },
         {
           "name": "phone",
@@ -5431,7 +5280,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Contact phone number"
+          "doc": "Phone number."
         },
         {
           "name": "vatId",
@@ -5441,7 +5290,7 @@
               "referenceType": "wix-ecom-backend.Cart.VatId"
             }
           ],
-          "doc": "tax info (Currently usable only in Brazil)"
+          "doc": "Tax information (for Brazil only). If ID is provided, `vatId.type` must also be set, `UNSPECIFIED` is not allowed."
         }
       ],
       "docs": {
@@ -5638,6 +5487,53 @@
       }
     },
     {
+      "name": "HostSelectedMembership",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Membership ID."
+        },
+        {
+          "name": "appId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the app providing this payment option."
+        },
+        {
+          "name": "lineItemIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the line items this membership applies to."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "InvalidMembership",
       "members": [
         {
@@ -5688,7 +5584,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Item availability status."
+          "doc": "Item availability status.\n\nNOT_FOUND - Item does not exist.\nNOT_AVAILABLE - Not in stock.\nPARTIALLY_AVAILABLE - Available quantity is less than requested.\n"
         }
       ],
       "docs": {
@@ -5716,7 +5612,7 @@
               }
             }
           ],
-          "doc": "If breakdown exists, the sum of rates in the breakdown must equal `tax_rate`."
+          "doc": "If breakdown exists, the sum of rates in the breakdown must equal `tax_rate`. Deprecated - use 'tax_breakdown' instead."
         },
         {
           "name": "taxRate",
@@ -5766,7 +5662,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom item type."
+          "doc": "Custom item type. When none of the preset types are suitable, specifies the custom type."
         },
         {
           "name": "preset",
@@ -5807,7 +5703,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Custom item type."
+          "doc": "Custom item type. When none of the preset types are suitable, specifies the custom type."
         },
         {
           "name": "preset",
@@ -5831,6 +5727,7 @@
       "members": [
         {
           "name": "_id",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -5859,6 +5756,17 @@
             }
           ],
           "doc": "Catalog and item reference. Holds IDs for the item and the catalog it came from, as well as further optional info."
+        },
+        {
+          "name": "depositAmount",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Partial payment to be paid upfront during the checkout. Eligible for catalog items with `lineItem.paymentOption` type `DEPOSIT_ONLINE` only."
         },
         {
           "name": "descriptionLines",
@@ -5996,7 +5904,17 @@
               "nativeType": "string"
             }
           ],
-          "doc": "In cases where `catalogReference.catalogItemId` is NOT the actual catalog item ID, this field will return the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ in most cases, this field is the name as `catalogReference.catalogItemId`.\n+ Used in membership validation."
+          "doc": "In cases where `catalogReference.catalogItemId` is NOT the actual catalog item ID, this field will return the true item's ID.\n+ For example, for Wix Bookings, `catalogReference.catalogItemId` is the booking ID. Therefore this value is set to the service ID.\n+ in most cases, this field is the same as `catalogReference.catalogItemId`.\n+ Used in membership validation."
+        },
+        {
+          "name": "selectedMembership",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedMembership"
+            }
+          ],
+          "doc": "Selected membership to be used as payment for this item. Must be used with `lineItem.paymentOption` set to `MEMBERSHIP` or `MEMBERSHIP_OFFLINE`. This field can be empty when `lineItem.paymentOption` is set to `MEMBERSHIP_OFFLINE`."
         },
         {
           "name": "serviceProperties",
@@ -6008,6 +5926,17 @@
             }
           ],
           "doc": "Service properties. When relevant, this contains information such as date and number of participants."
+        },
+        {
+          "name": "taxGroupId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Tax group ID for this line item."
         },
         {
           "name": "url",
@@ -6028,8 +5957,48 @@
       }
     },
     {
+      "name": "LineItemDiscount",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of line item the discount applies to."
+        },
+        {
+          "name": "totalDiscountAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Discount value."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "LineItemPricesData",
       "members": [
+        {
+          "name": "fullPrice",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "Item price **before** line item discounts and **before** catalog-defined discount. Defaults to `price` when not provided."
+        },
         {
           "name": "lineItemPrice",
           "optional": true,
@@ -6098,7 +6067,7 @@
               "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
             }
           ],
-          "doc": "Deprecated - please use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Total price after discounts, and before tax."
         }
       ],
       "docs": {
@@ -6118,7 +6087,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Line item ID."
+          "doc": "Line item ID. Required."
         },
         {
           "name": "quantity",
@@ -6128,7 +6097,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "New quantity. Number must 1 or higher."
+          "doc": "New quantity. Number must be 1 or higher. Required."
         }
       ],
       "docs": {
@@ -6300,7 +6269,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Cart.SelectedMembership"
+                    "referenceType": "wix-ecom-backend.Cart.HostSelectedMembership"
                   }
                 ]
               }
@@ -6452,6 +6421,26 @@
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "Other",
+      "members": [
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location on a checkout or a cart page where a general (other) violation will be displayed."
+        }
+      ],
+      "docs": {
+        "description": [
+          "General (other) violation."
         ]
       }
     },
@@ -6636,7 +6625,7 @@
               "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
             }
           ],
-          "doc": "Total additional fees price."
+          "doc": "Total additional fees price before tax."
         },
         {
           "name": "discount",
@@ -6875,7 +6864,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Scope namespace (Wix Stores, Wix Bookings, Wix Events)"
+          "doc": "Scope namespace (Wix Stores, Wix Bookings, Wix Events, Wix Pricing Plans)"
         }
       ],
       "docs": {
@@ -6895,7 +6884,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Media ID in media manager."
+          "doc": "Media ID in Wix Media Manager."
         },
         {
           "name": "fileName",
@@ -6905,7 +6894,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Original file name."
+          "doc": "Original filename."
         },
         {
           "name": "fileType",
@@ -7106,7 +7095,7 @@
               "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
             }
           ],
-          "doc": "Deprecated - please use `total_price_after_tax` minus `tax_details.total_tax` instead."
+          "doc": "Total price of shipping after discounts (when relevant), and before tax."
         }
       ],
       "docs": {
@@ -7137,28 +7126,11 @@
             }
           ],
           "doc": "ID of the app providing this payment option."
-        },
-        {
-          "name": "lineItemIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "IDs of the line items this membership applies to."
         }
       ],
       "docs": {
         "description": [
-          ""
+          "Selected Membership"
         ]
       }
     },
@@ -7174,7 +7146,7 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-ecom-backend.Cart.SelectedMembership"
+                    "referenceType": "wix-ecom-backend.Cart.HostSelectedMembership"
                   }
                 ]
               }
@@ -7241,87 +7213,6 @@
             }
           ],
           "doc": "The date and time for which the service is supposed to be provided. For example, the time of the class."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ShippingInfo",
-      "members": [
-        {
-          "name": "pickupDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.V1PickupDetails"
-            }
-          ],
-          "doc": "Pickup details when this object describes pickup"
-        },
-        {
-          "name": "shippingAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.CartAddress"
-            }
-          ],
-          "doc": "Shipment details when this object describes shipment"
-        },
-        {
-          "name": "shippingRuleDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.ShippingRuleDetails"
-            }
-          ],
-          "doc": "Selected shipping rule details"
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfShippingInfoDetailsOneOf",
-            "members": [
-              "pickupDetails",
-              "shippingAddress"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ShippingInfoDetailsOneOf",
-      "members": [
-        {
-          "name": "pickupDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.V1PickupDetails"
-            }
-          ],
-          "doc": "Pickup details when this object describes pickup"
-        },
-        {
-          "name": "shippingAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.CartAddress"
-            }
-          ],
-          "doc": "Shipment details when this object describes shipment"
         }
       ],
       "docs": {
@@ -7496,56 +7387,6 @@
       }
     },
     {
-      "name": "ShippingRuleDetails",
-      "members": [
-        {
-          "name": "deliveryOption",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Rule title (as provided by the store owner)"
-        },
-        {
-          "name": "estimatedDeliveryTime",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Shipping option delivery time"
-        },
-        {
-          "name": "optionId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Selected option ID"
-        },
-        {
-          "name": "ruleId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Selected shipping rule ID"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "StreetAddress",
       "members": [
         {
@@ -7567,36 +7408,6 @@
             }
           ],
           "doc": "Street number."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Subdivision",
-      "members": [
-        {
-          "name": "code",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Short subdivision code."
-        },
-        {
-          "name": "name",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Subdivision full name."
         }
       ],
       "docs": {
@@ -7666,7 +7477,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of billing cycles before subscription ends. Ignored if `autoRenewal: true`."
+          "doc": "Number of billing cycles before subscription ends. Ignored if `autoRenewal` is `true`."
         },
         {
           "name": "frequency",
@@ -7682,6 +7493,217 @@
       "docs": {
         "description": [
           ""
+        ]
+      }
+    },
+    {
+      "name": "SystemError",
+      "members": [
+        {
+          "name": "errorCode",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Error code."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Target",
+      "members": [
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.TargetLineItem"
+            }
+          ],
+          "doc": "Specific line item violation."
+        },
+        {
+          "name": "other",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Other"
+            }
+          ],
+          "doc": "General (other) violation."
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfTargetTargetTypeOneOf",
+            "members": [
+              "lineItem",
+              "other"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TargetLineItem",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the line item containing the violation."
+        },
+        {
+          "name": "name",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Location on a checkout or a cart page where the specific line item violation will be displayed."
+        }
+      ],
+      "docs": {
+        "description": [
+          "Specific line item violation."
+        ]
+      }
+    },
+    {
+      "name": "TargetTargetTypeOneOf",
+      "members": [
+        {
+          "name": "lineItem",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.TargetLineItem"
+            }
+          ],
+          "doc": "Specific line item violation."
+        },
+        {
+          "name": "other",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Other"
+            }
+          ],
+          "doc": "General (other) violation."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaxBreakdown",
+      "members": [
+        {
+          "name": "jurisdiction",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The name of the jurisdiction to which this tax detail applies. For example, \"New York\" or \"Quebec\"."
+        },
+        {
+          "name": "jurisdictionType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of the jurisdiction in which this tax detail applies."
+        },
+        {
+          "name": "nonTaxableAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "The amount of this line item price that was considered nontaxable. (Decimal value)"
+        },
+        {
+          "name": "rate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The rate at which this tax detail was calculated, e.g 0.1000 signifies 10% tax and 2.0000 signifies 200% tax. (Decimal value)"
+        },
+        {
+          "name": "taxAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "The amount of tax estimated for this line item. (Decimal value)"
+        },
+        {
+          "name": "taxName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The name of the tax against which this tax amount was calculated. For example, \"NY State Sales Tax\", \"Quebec GST\", etc.\nThis name should be explicit enough to allow the merchant to understand what tax was calculated."
+        },
+        {
+          "name": "taxType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The type of tax that was calculated. Depends on the jurisdiction's tax laws. For example, \"Sales Tax\", \"Income Tax\", \"Value Added Tax\", etc."
+        },
+        {
+          "name": "taxableAmount",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.MultiCurrencyPrice"
+            }
+          ],
+          "doc": "The taxable amount of this line item."
+        }
+      ],
+      "docs": {
+        "description": [
+          "TaxBreakdown represents tax information for a line item.\nIt holds the tax amount and the tax rate for each tax authority that apply on the line item."
         ]
       }
     },
@@ -7777,7 +7799,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Type of tax against which the calculation was performed."
+          "doc": "Name of tax against which the calculation was performed."
         },
         {
           "name": "rate",
@@ -7859,7 +7881,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Subscription option name."
+          "doc": "Subscription option name in the site's default language."
         },
         {
           "name": "translated",
@@ -7869,87 +7891,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Translated subscription option name."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Totals",
-      "members": [
-        {
-          "name": "discount",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total calculated discount value, according to order.discount"
-        },
-        {
-          "name": "quantity",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total line items quantity"
-        },
-        {
-          "name": "shipping",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total shipping price, including tax"
-        },
-        {
-          "name": "subtotal",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Subtotal of all line items, before tax"
-        },
-        {
-          "name": "tax",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total tax"
-        },
-        {
-          "name": "total",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total price"
-        },
-        {
-          "name": "weight",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Total items weight"
+          "doc": "Subscription option name translated into the buyer's language.\n\nDefault: Same as `original`.\n"
         }
       ],
       "docs": {
@@ -8013,7 +7955,6 @@
         },
         {
           "name": "buyerInfo",
-          "readOnly": true,
           "optional": true,
           "type": [
             {
@@ -8052,7 +7993,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of the checkout related to this cart."
+          "doc": "ID of the checkout that originated from this cart."
         },
         {
           "name": "contactInfo",
@@ -8073,7 +8014,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "All the converted prices are presented in this currency."
+          "doc": "Currency code used for all the converted prices that are returned.\nFor a site that supports multiple currencies, this is the currency the buyer selected."
         },
         {
           "name": "currency",
@@ -8105,6 +8046,37 @@
           "doc": "Line items."
         },
         {
+          "name": "overrideCheckoutUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "`overrideCheckoutUrl` allows the flexibility to redirect customers to a customized checkout page.\n\nThis field overrides the `checkoutUrl` in a cart or checkout. `checkoutUrl` is used to send customers back to their checkouts. By default, a `checkoutUrl` generates for a checkout and directs to a standard Wix checkout page. When `overrideCheckoutUrl` has a value, it will replace and set the value of `checkoutUrl`.\n"
+        },
+        {
+          "name": "purchaseFlowId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Persistent ID that correlates between the various eCommerce elements: cart, checkout, and order."
+        },
+        {
+          "name": "selectedShippingOption",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.SelectedShippingOption"
+            }
+          ],
+          "doc": "Selected shipping option."
+        },
+        {
           "name": "siteLanguage",
           "readOnly": true,
           "optional": true,
@@ -8113,7 +8085,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Site language in which original values are shown."
+          "doc": "Site language in which original values are displayed."
         },
         {
           "name": "taxIncludedInPrices",
@@ -8165,23 +8137,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -8246,23 +8201,6 @@
             }
           ],
           "doc": "The code of an existing coupon to apply to the cart. For more information, see the [Coupons API](https://www.wix.com/velo/reference/wix-marketing-backend/coupons)."
-        },
-        {
-          "name": "customLineItems",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-ecom-backend.Cart.CustomLineItem"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Custom line items."
         },
         {
           "name": "lineItems",
@@ -8407,76 +8345,6 @@
       }
     },
     {
-      "name": "V1BuyerInfo",
-      "members": [
-        {
-          "name": "_id",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer details"
-        },
-        {
-          "name": "email",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's email address"
-        },
-        {
-          "name": "firstName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's first name"
-        },
-        {
-          "name": "identityType",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's relationship to the website"
-        },
-        {
-          "name": "lastName",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's last name"
-        },
-        {
-          "name": "phone",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Customer's phone number"
-        }
-      ],
-      "docs": {
-        "description": [
-          "This might expand and add additional data"
-        ]
-      }
-    },
-    {
       "name": "V1Coupon",
       "members": [
         {
@@ -8547,46 +8415,6 @@
       }
     },
     {
-      "name": "V1PickupDetails",
-      "members": [
-        {
-          "name": "buyerDetails",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.BuyerDetails"
-            }
-          ],
-          "doc": "Customer details"
-        },
-        {
-          "name": "pickupAddress",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-ecom-backend.Cart.CommonAddress"
-            }
-          ],
-          "doc": "Pickup address"
-        },
-        {
-          "name": "pickupInstructions",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Store owner's pickup instructions"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
       "name": "ValidationError",
       "members": [
         {
@@ -8624,7 +8452,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Customer's tax ID"
+          "doc": "Customer's tax ID."
         },
         {
           "name": "type",
@@ -8634,7 +8462,47 @@
               "nativeType": "string"
             }
           ],
-          "doc": "tax type"
+          "doc": "Tax type.\n\nSupported values:\n+ `CPF`: for individual tax payers\n+ `CNPJ`: for corporations\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Violation",
+      "members": [
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Violation description. Can include rich text. Only HTTP or HTTPS links in the following format are allowed: `<a href=\"https://www.wix.com\">Click me</a>`."
+        },
+        {
+          "name": "severity",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Severity of the violation. The violations are shown on the cart and checkout pages. A warning is displayed as yellow, and allows a site visitor to proceed with caution. An error is displayed as red, and doesn't allow a site visitor to proceed with the eCommerce flow."
+        },
+        {
+          "name": "target",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-ecom-backend.Cart.Target"
+            }
+          ],
+          "doc": "Target location on a checkout or cart page where the violation will be displayed."
         }
       ],
       "docs": {

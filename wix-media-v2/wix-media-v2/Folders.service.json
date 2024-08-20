@@ -1,0 +1,3150 @@
+{
+  "name": "Folders",
+  "memberOf": "wix-media-v2",
+  "mixes": [],
+  "callbacks": [],
+  "extra": {},
+  "clientId": "wix-media.v2-folder",
+  "docs": {},
+  "relatedGuides": [],
+  "properties": [],
+  "operations": [
+    {
+      "name": "bulkDeleteFolders",
+      "params": [
+        {
+          "name": "folderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the folders to move to the Media Manager's trash bin.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.BulkDeleteFoldersOptions"
+            }
+          ],
+          "doc": "Options to use when deleting folders.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "folderIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Temporarily deletes the specified folders from the Media Manager.",
+        "description": [
+          "The `bulkDeleteFolders()` function returns a Promise that resolves when the folders are deleted.\n\nThe deleted folders are moved to the Media Manager's `TRASH_ROOT` folder (trash bin) unless permanently deleted. To permanently delete folders, pass the `permanent` parameter with the value `true`. Permanently deleting folders isn't reversible, so make sure that the files in these folders aren't being used in a site or in any other way as the files will no longer be accessible.\n\n>**Notes:**\n> - When a folder is deleted, the files in that folder are deleted.\n> - The specified folders can be from different parent folders.\n> - Moving multiple folders at once is an asynchronous action, and may take time for the changes to appear in the Media Manager.\n> - Attempting to delete folders that are already in the trash bin doesn't result in an error.\n> - If your site contains files from a non-permanently deleted media folder, the files still appear on your site as the deleted folder is still in the Media Manager (in the trash bin).\n> - You can use the `bulkRestoreFoldersFromTrashBin()` function to restore folders from the Media Manager's trash bin."
+        ],
+        "examples": [
+          {
+            "title": "Bulk delete folders (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "/* Sample folderIds value:",
+              " * [ ",
+              " *   '302fc049d70c41dea33fa4a27ab481ba',",
+              " *   's8ze556gf8wfao3us62nx25ww3lr595a'",
+              " * ] ",
+              " */",
+              "",
+              "async function myBulkDeleteFoldersFunction(folderIds) {",
+              "  try {",
+              "    const deletedFolders = await folders.bulkDeleteFolders(folderIds);",
+              "",
+              "    console.log('Successfully moved folders to trash.');",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Bulk delete folders (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample folderIds value:",
+              " * [ ",
+              " *   '302fc049d70c41dea33fa4a27ab481ba',",
+              " *   's8ze556gf8wfao3us62nx25ww3lr595a'",
+              " * ] ",
+              " */",
+              "",
+              "export const myBulkDeleteFoldersFunction = webMethod(Permissions.Anyone, async (folderIds) => {",
+              "  try {",
+              "    const elevatedBulkDeleteFolders = elevate(folders.bulkDeleteFolders);",
+              "    const deletedFolders = await elevatedBulkDeleteFolders(folderIds);",
+              "",
+              "    console.log('Successfully moved folders to trash.');",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk permanently delete folders",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample folderIds value:",
+              " * [ ",
+              " *   '302fc049d70c41dea33fa4a27ab481ba',",
+              " *   's8ze556gf8wfao3us62nx25ww3lr595a',",
+              " *   'c956d69906414e7faf8a0ad81117b17d'",
+              " * ]",
+              " * ",
+              " * Sample options value:",
+              " * {",
+              " *   permanent: true",
+              " * }",
+              " */",
+              "",
+              "export const myBulkDeleteFoldersFunction = webMethod(Permissions.Anyone, async (folderIds, options) => {",
+              "  try {",
+              "    const elevatedBulkDeleteFolders = elevate(folders.bulkDeleteFolders);",
+              "    const deletedFolders = await elevatedBulkDeleteFolders(folderIds, options);",
+              "",
+              "    console.log('Successfully permanently deleted files.');",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Bulk delete all folders ",
+            "body": [
+              "/****************************************",
+              " * Backend code - delete-folders.web.js *",
+              " ***************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const deleteFolders = webMethod(Permissions.Anyone, async (folderIds) => {",
+              "  try {",
+              "    const elevatedBulkDeleteFolders = elevate(folders.bulkDeleteFolders);",
+              "    const deletedFolders = await elevatedBulkDeleteFolders(folderIds);",
+              "",
+              "    console.log('Successfully moved folders to trash.');",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const searchFolders = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const elevatedSearchFolders = elevate(folders.searchFolders)",
+              "    const foldersFound = await elevatedSearchFolders(options);",
+              "",
+              "    return foldersFound;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { deleteFolders, listFolders, searchFolders } from 'backend/delete-folders.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdown();",
+              "",
+              "  $w('#bulkDelete').onClick(async () => {",
+              "    const searchOptions = { rootFolder: $w('#foldersDropdown').value};",
+              "",
+              "    const foldersToDelete = await searchFolders(searchOptions);",
+              "    const foldersIdsToDelete = foldersToDelete.map((folder) => {",
+              "      return folder._id;",
+              "    });",
+              "    await deleteFolders(foldersIdsToDelete);",
+              "",
+              "    console.log(`Successfully deleted all folders found in ${$w('#foldersDropdown').label}.`)",
+              "    $w('#bulkDeleteSuccessMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdown() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#foldersDropdown').options = dropdownOptions;",
+              "};"
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then deletes all folders found within that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "bulkDeleteFolders",
+      "isAdminMethod": true
+    },
+    {
+      "name": "bulkRestoreFoldersFromTrashBin",
+      "params": [
+        {
+          "name": "folderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the folders to restore from the Media Manager's trash bin.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "folderIds"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Restores the specified folders from the Media Manager's trash bin, and moves them to their original locations in the Media Manager.",
+        "description": [
+          "The `bulkRestoreFoldersFromTrashBin()` function returns a Promise that resolves when the folders have been restored."
+        ],
+        "examples": [
+          {
+            "title": "Bulk restore (non-permanently deleted) folders (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "/* Sample folderIds value:",
+              " * [",
+              " *   'd4051a6890724365a78678a6208ac37e',",
+              " *   '302fc049d70c41dea33fa4a27ab481ba'",
+              " * ]",
+              " */",
+              "",
+              "async function myBulkRestoreFoldersFromTrashBinFunc(folderIds) {",
+              "  try {",
+              "    const restoredFolders = await folders.bulkRestoreFoldersFromTrashBin(folderIds);",
+              "",
+              "    console.log('Restored deleted folders:', restoredFolders);",
+              "    return restoredFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              " /* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Bulk restore (non-permanently deleted) folders (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample folderIds value:",
+              " * [",
+              " *   'd4051a6890724365a78678a6208ac37e',",
+              " *   '302fc049d70c41dea33fa4a27ab481ba'",
+              " * ]",
+              " */",
+              "",
+              "export const myBulkRestoreFoldersFromTrashBinFunc = webMethod(Permissions.Anyone, async (folderIds) => {",
+              "  try {",
+              "    const elevatedBulkRestoreFoldersFromTrashBin = elevate(folders.bulkRestoreFoldersFromTrashBin);",
+              "    const restoredFolders = await elevatedBulkRestoreFoldersFromTrashBin(folderIds);",
+              "",
+              "    console.log('Restored deleted folders:', restoredFolders);",
+              "    return restoredFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              " /* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Bulk restore all folders from the trash bin",
+            "body": [
+              "/*****************************************",
+              " * Backend code - restore-folders.web.js *",
+              " ****************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const restoreAllFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListDeletedFolders = elevate(folders.listDeletedFolders);",
+              "    const deletedFolders = await elevatedListDeletedFolders();",
+              "",
+              "    const deletedFolderIds = deletedFolders.map((folder) => {",
+              "        return folder._id;",
+              "    });",
+              "      ",
+              "    const elevatedBulkRestoreFoldersFromTrashBin = elevate(folders.bulkRestoreFoldersFromTrashBin);",
+              "    const restoredFolders = await elevatedBulkRestoreFoldersFromTrashBin(deletedFolderIds);",
+              "",
+              "    return restoredFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { restoreAllFolders } from 'backend/restore-folders.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  $w('#restoreAll').onClick(async () => {",
+              "    const restoredFolders = await restoreAllFolders();",
+              "",
+              "    console.log('Restored all folders:', restoredFolders);",
+              "    $w('#bulkRestoreSuccessMsg').show();",
+              "  });",
+              "});"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "bulkRestoreFoldersFromTrashBin",
+      "isAdminMethod": true
+    },
+    {
+      "name": "createFolder",
+      "params": [
+        {
+          "name": "displayName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder name that appears in the Media Manager.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CreateFolderOptions"
+            }
+          ],
+          "doc": "Options for specifying where to create a folder.",
+          "required": false
+        }
+      ],
+      "requiredFields": [
+        "displayName"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.CreateFolderResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a new folder in the Media Manager.",
+        "description": [
+          "The `createFolder()` function returns a Promise that resolves to the created folder.\n\nUse the `parentFolderId` parameter to specify in which existing folder you want the new folder to be created.\nIf no folder is specified, the new folder is created in the `media-root` folder."
+        ],
+        "examples": [
+          {
+            "title": "Create a folder (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "/* Sample displayName value: 'Vector Art'",
+              " * ",
+              " * Sample options value:",
+              " * {",
+              " *    parentFolderId: 'b2bc72834460412494c93617d88b8c89'",
+              " * }",
+              " */",
+              "",
+              "async function myCreateFolderFunction(displayName, options) {",
+              "  try {",
+              "    const newFolder = await folders.createFolder(displayName, options);",
+              "",
+              "    console.log('Created folder successfully:', newFolder);",
+              "    return newFolder;",
+              "  } catch (err){",
+              "    console.error(err);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folder\": {",
+              " *     \"_createdDate\": \"2023-08-14T08:05:03.000Z\",",
+              " *     \"_id\": \"128833f888ea4846bbfbe8f164f3c6b5\",",
+              " *     \"_updatedDate\": \"2023-08-14T08:05:03.000Z\",",
+              " *     \"displayName\": \"Vector Art\",",
+              " *     \"parentFolderId\": \"b2bc72834460412494c93617d88b8c89\",",
+              " *     \"state\": \"OK\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Create a folder (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "/* Sample displayName value: 'Vector Art'",
+              " * ",
+              " * Sample options value:",
+              " * {",
+              " *    parentFolderId: 'b2bc72834460412494c93617d88b8c89'",
+              " * }",
+              " */",
+              "",
+              "export const myCreateFolderFunction = webMethod(Permissions.Anyone, async (displayName, options) => {",
+              "  try {",
+              "    const elevateCreateFolder = elevate(folders.createFolder);",
+              "    const newFolder = await elevateCreateFolder(displayName, options);",
+              "",
+              "    console.log('Created folder successfully:', newFolder);",
+              "    return newFolder;",
+              "  } catch (err){",
+              "    console.error(err);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folder\": {",
+              " *     \"_createdDate\": \"2023-08-14T08:05:03.000Z\",",
+              " *     \"_id\": \"128833f888ea4846bbfbe8f164f3c6b5\",",
+              " *     \"_updatedDate\": \"2023-08-14T08:05:03.000Z\",",
+              " *     \"displayName\": \"Vector Art\",",
+              " *     \"parentFolderId\": \"b2bc72834460412494c93617d88b8c89\",",
+              " *     \"state\": \"OK\"",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Create a folder from visitor input ",
+            "body": [
+              "/***************************************",
+              " * Backend code - create-folder.web.js *",
+              " **************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const createFolder = webMethod(Permissions.Anyone, async (displayName, options) => {",
+              "  try {",
+              "    const elevateCreateFolder = elevate(folders.createFolder);",
+              "    const newFolder = await elevateCreateFolder(displayName, options);",
+              "",
+              "    return newFolder;",
+              "  } catch (err){",
+              "    console.error(err);",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { createFolder, listFolders } from 'backend/create-folder.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdown();",
+              "",
+              "  $w('#createFolder').onClick(async () => {",
+              "    const folderName = $w('folderName').value;",
+              "    const createOptions = {parentFolderId: $w('foldersDropdown').value};",
+              "    const newFolder = await createFolder(folderName, createOptions);",
+              "",
+              "    console.log(`Successfully created new folder \"${folderName}\" in ${$w('#foldersDropdown').label}.`)",
+              "    $w('#createdFolderSuccessMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdown() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#foldersDropdown').options = dropdownOptions;",
+              "};"
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then creates a folder within that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "createFolder",
+      "isAdminMethod": true
+    },
+    {
+      "name": "generateFolderDownloadUrl",
+      "params": [
+        {
+          "name": "folderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "folderId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.GenerateFolderDownloadUrlResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Generates a URL for downloading a compressed file containing a specific folder in the Media Manager.",
+        "description": [
+          "The `generateFolderDownloadUrl()` function returns a Promise that resolves to a download URL.\n\nThe compressed file can contain sub-folders, and up to 1000 files."
+        ],
+        "examples": [
+          {
+            "title": "Generate a folder download url (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "async function generateFolderDownloadUrl(folderId) {",
+              "  try {",
+              "    const result = await folders.generateFolderDownloadUrl(folderId);",
+              "",
+              "    const folderDownloadUrl = result.downloadUrl;",
+              "    return folderDownloadUrl;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"downloadUrl\": \"https://archive.wixmp.com/archive/wix/b367fe21877e4ef589cde5352a3a04af\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Generate a folder download url (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const generateFolderDownloadUrl = webMethod(Permissions.Anyone, async (folderId) => {",
+              "  try {",
+              "    const elevatedGenerateFolderDownloadUrl = elevate(folders.generateFolderDownloadUrl);",
+              "    const result = await elevatedGenerateFolderDownloadUrl(folderId);",
+              "",
+              "    const folderDownloadUrl = result.downloadUrl;",
+              "    return folderDownloadUrl;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"downloadUrl\": \"https://archive.wixmp.com/archive/wix/b367fe21877e4ef589cde5352a3a04af\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Generate a folder download url for a chosen folder ",
+            "body": [
+              "/***************************************************",
+              " * Backend code - generate-folder-download-url.web.js *",
+              " **************************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const generateDownloadUrl = webMethod(Permissions.Anyone, async (folderId) => {",
+              "  try {",
+              "    const elevatedGenerateFolderDownloadUrl = elevate(folders.generateFolderDownloadUrl);",
+              "    const result = await elevatedGenerateFolderDownloadUrl(folderId);",
+              "  ",
+              "    const folderDownloadUrl = result.downloadUrl;",
+              "    return folderDownloadUrl;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { generateDownloadUrl, listFolders } from 'backend/generate-folder-download-url.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdown();",
+              "",
+              "  $w('#downloadFolder').onClick(async () => {",
+              "    const folderId = $w('foldersDropdown').value;",
+              "    const downloadUrl = await generateDownloadUrl(folderId);",
+              "",
+              "    $w('#downloadFolderBtn').link = downloadUrl;",
+              "    $w('#downloadingFolderMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdown() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#foldersDropdown').options = dropdownOptions;",
+              "};"
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then receives a folder download url for that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "generateFolderDownloadUrl",
+      "isAdminMethod": true
+    },
+    {
+      "name": "getFolder",
+      "params": [
+        {
+          "name": "folderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "folderId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.Folder"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Information about the folder.\n"
+      },
+      "docs": {
+        "summary": "Gets information from the specified folder in the Media Manager.",
+        "description": [
+          "The `getFolder()` function returns a Promise that resolves to information about the specified folder."
+        ],
+        "examples": [
+          {
+            "title": "Get a folder (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "/* Sample folderId value: '30ed8f8a8f1e4a99b82c516cb212192f' */",
+              "",
+              "async function myGetFolderFunction(folderId) {",
+              "  try {",
+              "    const folder = await folders.getFolder(folderId);",
+              "",
+              "    console.log('Successfully retrieved folder:', folder);",
+              "    return folder;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_createdDate\": \"2023-08-22T08:31:06.000Z\",",
+              " *   \"_id\": \"30ed8f8a8f1e4a99b82c516cb212192f\",",
+              " *   \"_updatedDate\": \"2023-08-22T08:31:06.000Z\",",
+              " *   \"displayName\": \"test2\",",
+              " *   \"parentFolderId\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *   \"state\": \"OK\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Get a folder (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample folderId value: '30ed8f8a8f1e4a99b82c516cb212192f' */",
+              "",
+              "export const myGetFolderFunction = webMethod(Permissions.Anyone, async (folderId) => {",
+              "  try {",
+              "    const elevatedGetFolder = elevate(folders.getFolder);",
+              "    const folder = await elevatedGetFolder(folderId);",
+              "",
+              "    console.log('Successfully retrieved folder:', folder);",
+              "    return folder;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_createdDate\": \"2023-08-22T08:31:06.000Z\",",
+              " *   \"_id\": \"30ed8f8a8f1e4a99b82c516cb212192f\",",
+              " *   \"_updatedDate\": \"2023-08-22T08:31:06.000Z\",",
+              " *   \"displayName\": \"test2\",",
+              " *   \"parentFolderId\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *   \"state\": \"OK\"",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "getFolder",
+      "isAdminMethod": true
+    },
+    {
+      "name": "listDeletedFolders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.ListDeletedFoldersOptions"
+            }
+          ],
+          "doc": "Options to use when listing deleted folders from the trash bin.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.ListDeletedFoldersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of deleted folders from the trash bin.",
+        "description": [
+          "The `listDeletedFolders()` function returns a Promise that resolves to information about the specified deleted folders and cursor information.\n\nTo retrieve a list of non-deleted folders, use the `listFolders()` function."
+        ],
+        "examples": [
+          {
+            "title": "List deleted folders (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "async function listDeletedFolders() {",
+              "  try {",
+              "    const deletedFolders = await folders.listDeletedFolders();",
+              "",
+              "    console.log(\"Deleted Folders:\", deletedFolders);",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"_id\": \"d4051a6890724365a78678a6208ac37e\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"displayName\": \"family\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"_id\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "List deleted folders (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const listDeletedFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListDeletedFolders = elevate(folders.listDeletedFolders);",
+              "    const deletedFolders = await elevatedListDeletedFolders();",
+              "",
+              "    console.log(\"Deleted Folders:\", deletedFolders);",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"_id\": \"d4051a6890724365a78678a6208ac37e\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"displayName\": \"family\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"_id\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "List deleted folders with sort ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample options value:",
+              " * {",
+              " *   sort: {",
+              " *     fieldName: 'displayName',",
+              " *     order: 'ASC'",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const listDeletedFolders = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const elevatedListDeletedFolders = elevate(folders.listDeletedFolders);",
+              "    const deletedFolders = await elevatedListDeletedFolders(options);",
+              "",
+              "    console.log(\"Deleted folders, sorted alphabetically by name:\", deletedFolders);",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"_id\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"_id\": \"d4051a6890724365a78678a6208ac37e\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:32:47.000Z\",",
+              " *       \"displayName\": \"family\",",
+              " *       \"parentFolderId\": \"trash-root\",",
+              " *       \"state\": \"DELETED\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk restore all folders from the trash bin",
+            "body": [
+              "/*****************************************",
+              " * Backend code - restore-folders.web.js *",
+              " ****************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const restoreAllFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListDeletedFolders = elevate(folders.listDeletedFolders);",
+              "    const deletedFolders = await elevatedListDeletedFolders();",
+              "",
+              "    const deletedFolderIds = deletedFolders.map((folder) => {",
+              "        return folder._id;",
+              "    });",
+              "      ",
+              "    const elevatedBulkRestoreFoldersFromTrashBin = elevate(folders.bulkRestoreFoldersFromTrashBin);",
+              "    const restoredFolders = await elevatedBulkRestoreFoldersFromTrashBin(deletedFolderIds);",
+              "",
+              "    return restoredFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { restoreAllFolders } from 'backend/restore-folders.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  $w('#restoreAll').onClick(async () => {",
+              "    const restoredFolders = await restoreAllFolders();",
+              "",
+              "    console.log('Restored all folders:', restoredFolders);",
+              "    $w('#bulkRestoreSuccessMsg').show();",
+              "  });",
+              "});"
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "listDeletedFolders",
+      "isAdminMethod": true
+    },
+    {
+      "name": "listFolders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.ListFoldersOptions"
+            }
+          ],
+          "doc": "Options to use when listing folders from the Media Manager.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.ListFoldersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Retrieves a list of folders in the Media Manager.",
+        "description": [
+          "The `listFolders()` function returns a Promise that resolves to information about the specified folders and cursor information.\n\nTo retrieve a list of folders within a specific folder in the Media Manager, pass the specific folder's ID in the `parentFolderId` parameter. If no folder is specified, the function retrieves only the list of folders within the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted folders, use the `listDeletedFolders()` function."
+        ],
+        "examples": [
+          {
+            "title": "List folders (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "async function myListFoldersFunction()",
+              "{",
+              "  try {",
+              "    const foldersList = await folders.listFolders();",
+              "",
+              "    console.log(\"Folders:\", foldersList);",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"_id\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"_updatedDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"displayName\": \"Pictures\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:38:31.000Z\",",
+              " *       \"_id\": \"c956d69906414e7faf8a0ad81117b17d\",",
+              " *       \"_updatedDate\": \"2023-08-14T07:38:31.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-09T08:57:12.000Z\",",
+              " *       \"_id\": \"b2bc72834460412494c93617d88b8c89\",",
+              " *       \"_updatedDate\": \"2023-08-09T08:57:12.000Z\",",
+              " *       \"displayName\": \"Documents\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "List folders (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myListFoldersFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders);",
+              "    const folderList = await elevatedListFolders();",
+              "",
+              "    console.log(\"Folders:\", folderList);",
+              "    return folderList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"_id\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"_updatedDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"displayName\": \"Pictures\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:38:31.000Z\",",
+              " *       \"_id\": \"c956d69906414e7faf8a0ad81117b17d\",",
+              " *       \"_updatedDate\": \"2023-08-14T07:38:31.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-09T08:57:12.000Z\",",
+              " *       \"_id\": \"b2bc72834460412494c93617d88b8c89\",",
+              " *       \"_updatedDate\": \"2023-08-09T08:57:12.000Z\",",
+              " *       \"displayName\": \"Documents\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "List 5 folders found in a parent folder, sorted alphabetically by name ",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "",
+              "/* Sample options value:",
+              " * {",
+              " *   paging: {",
+              " *       limit: 5",
+              " *   },",
+              " *   parentFolderId : '103601562ec94214bee61f470b403dd5',",
+              " *   sort : {",
+              " *       fieldName : 'displayName',",
+              " *       order : 'ASC'",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const myListFoldersFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const result = await folders.listFolders(options);",
+              "",
+              "    const folderList = result.folders;",
+              "",
+              "    folderList.forEach(element => {",
+              "      console.log(element.displayName);",
+              "    });",
+              "",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:33:47.000Z\",",
+              " *       \"_id\": \"0cfdf68ac3b9453b81cfe171caf40b0c\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:33:47.000Z\",",
+              " *       \"displayName\": \"31-08\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:33:30.000Z\",",
+              " *       \"_id\": \"193161aeef8f4b80b97d7032fb2c4f0a\",",
+              " *       \"_updatedDate\": \"2023-08-21T11:09:58.000Z\",",
+              " *       \"displayName\": \"Water\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:39.000Z\",",
+              " *       \"_id\": \"4b9e2dd061de4f3e80e3ada23b0fb440\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:32:39.000Z\",",
+              " *       \"displayName\": \"city\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:56:43.000Z\",",
+              " *       \"_id\": \"6a86df2ce32c4d279c21fbdd2887c18b\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:56:43.000Z\",",
+              " *       \"displayName\": \"docs1\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:33:10.000Z\",",
+              " *       \"_id\": \"5d0625ed28494bf7938c03e9a21130ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T09:33:24.000Z\",",
+              " *       \"displayName\": \"docs2\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:34.000Z\",",
+              " *       \"_id\": \"7984b3c5454e4371acbd4f4eedde96bc\",",
+              " *       \"_updatedDate\": \"2023-08-21T11:10:51.000Z\",",
+              " *       \"displayName\": \"mountains\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Create a folder from visitor input ",
+            "body": [
+              "/***************************************",
+              " * Backend code - create-folder.web.js *",
+              " **************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const createFolder = webMethod(Permissions.Anyone, async (displayName, options) => {",
+              "  try {",
+              "    const elevateCreateFolder = elevate(folders.createFolder);",
+              "    const newFolder = await elevateCreateFolder(displayName, options);",
+              "",
+              "    return newFolder;",
+              "  } catch (err){",
+              "    console.error(err);",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { createFolder, listFolders } from 'backend/create-folder.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdown();",
+              "",
+              "  $w('#createFolder').onClick(async () => {",
+              "    const folderName = $w('folderName').value;",
+              "    const createOptions = {parentFolderId: $w('foldersDropdown').value};",
+              "    const newFolder = await createFolder(folderName, createOptions);",
+              "",
+              "    console.log(`Successfully created new folder \"${folderName}\" in ${$w('#foldersDropdown').label}.`)",
+              "    $w('#createdFolderSuccessMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdown() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#foldersDropdown').options = dropdownOptions;",
+              "};"
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then creates a folder within that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "listFolders",
+      "isAdminMethod": true
+    },
+    {
+      "name": "searchFolders",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.SearchFoldersOptions"
+            }
+          ],
+          "doc": "Options specifying which folders to search.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.SearchFoldersResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Searches the Media Manager and returns a list of folders that match the terms specified in the parameters.",
+        "description": [
+          "The `searchFolders()` function returns a Promise that resolves to information about the specified folders and cursor information.\n\nIf no parameters are specified, the function returns all folders in the `MEDIA_ROOT` folder."
+        ],
+        "examples": [
+          {
+            "title": "Search folders (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "async function mySearchFoldersFunction() {",
+              "  try {",
+              "    const foldersFound = await folders.searchFolders();",
+              "",
+              "    console.log(\"Folders found in search:\", foldersFound);",
+              "    return foldersFound;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"_id\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"_updatedDate\": \"2023-08-21T11:09:08.000Z\",",
+              " *       \"displayName\": \"Pictures\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"_id\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Search folders (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const mySearchFoldersFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedSearchFolders = elevate(folders.searchFolders);",
+              "    const foldersFound = await elevatedSearchFolders();",
+              "",
+              "    console.log(\"Folders found in search:\", foldersFound);",
+              "    return foldersFound;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-14T07:41:19.000Z\",",
+              " *       \"_id\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"_updatedDate\": \"2023-08-21T11:09:08.000Z\",",
+              " *       \"displayName\": \"Pictures\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"_id\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"_updatedDate\": \"2023-08-21T05:34:03.000Z\",",
+              " *       \"displayName\": \"Videos\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Search for 2 folders by key-word, returned alphabetically ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample options value:",
+              " * {",
+              " *   search: 'mountains',",
+              " *   sort: {",
+              " *     fieldName: 'updatedDate',",
+              " *     order: 'ASC'",
+              " *   },",
+              " *   paging: {",
+              " *     limit: 2",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const mySearchFoldersFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const elevatedSearchFolders = elevate(folders.searchFolders);",
+              "    const foldersFound = await elevatedSearchFolders(options);",
+              "",
+              "    console.log(\"Folders found in search:\", foldersFound);",
+              "    return foldersFound;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"folders\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-21T09:32:34.000Z\",",
+              " *       \"_id\": \"7984b3c5454e4371acbd4f4eedde96bc\",",
+              " *       \"_updatedDate\": \"2023-08-21T11:10:51.000Z\",",
+              " *       \"displayName\": \"mountains\",",
+              " *       \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *       \"state\": \"OK\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-08-24T11:26:26.000Z\",",
+              " *       \"_id\": \"742d4a0ee5884b119292d52ed964f14d\",",
+              " *       \"_updatedDate\": \"2023-08-24T11:26:26.000Z\",",
+              " *       \"displayName\": \"mountain_videos\",",
+              " *       \"parentFolderId\": \"302fc049d70c41dea33fa4a27ab481ba\",",
+              " *       \"state\": \"OK\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"eyJ0b3RhbCI6IDEsICJvZmZzZXQiOiAyfQ==\"",
+              " *     },",
+              " *     \"hasNext\": true",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ],
+            "extra": {
+              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the 'MEDIA_ROOT' folder."
+            }
+          },
+          {
+            "title": "Bulk delete all folders ",
+            "body": [
+              "/****************************************",
+              " * Backend code - delete-folders.web.js *",
+              " ***************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const deleteFolders = webMethod(Permissions.Anyone, async (folderIds) => {",
+              "  try {",
+              "    const elevatedBulkDeleteFolders = elevate(folders.bulkDeleteFolders);",
+              "    const deletedFolders = await elevatedBulkDeleteFolders(folderIds);",
+              "",
+              "    console.log('Successfully moved folders to trash.');",
+              "    return deletedFolders;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const searchFolders = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const elevatedSearchFolders = elevate(folders.searchFolders)",
+              "    const foldersFound = await elevatedSearchFolders(options);",
+              "",
+              "    return foldersFound;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { deleteFolders, listFolders, searchFolders } from 'backend/delete-folders.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdown();",
+              "",
+              "  $w('#bulkDelete').onClick(async () => {",
+              "    const searchOptions = { rootFolder: $w('#foldersDropdown').value};",
+              "",
+              "    const foldersToDelete = await searchFolders(searchOptions);",
+              "    const foldersIdsToDelete = foldersToDelete.map((folder) => {",
+              "      return folder._id;",
+              "    });",
+              "    await deleteFolders(foldersIdsToDelete);",
+              "",
+              "    console.log(`Successfully deleted all folders found in ${$w('#foldersDropdown').label}.`)",
+              "    $w('#bulkDeleteSuccessMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdown() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#foldersDropdown').options = dropdownOptions;",
+              "};"
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then deletes all folders found within that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "searchFolders",
+      "isAdminMethod": true
+    },
+    {
+      "name": "updateFolder",
+      "params": [
+        {
+          "name": "_id",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID. Generated when a folder is created in the Media Manager.",
+          "required": true
+        },
+        {
+          "name": "folder",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.UpdateFolder"
+            }
+          ],
+          "doc": "Folder to update.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "_id",
+        "folder"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-media-v2.Folders.Folder"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "Information about the updated folder.\n"
+      },
+      "docs": {
+        "summary": "Updates a folder.",
+        "description": [
+          "The `updateFolder()` function returns a Promise that resolves to information about the updated folder.\n\nYou can use the `parentFolderId` parameter to move a folder from its current parent folder to a different parent folder."
+        ],
+        "examples": [
+          {
+            "title": "Update a folder's name (dashboard page code)",
+            "body": [
+              "import { folders } from 'wix-media.v2';",
+              "",
+              "/* Sample id value: '7984b3c5454e4371aqbd4f4eedde96bc'",
+              " *",
+              " * Sample folder value:",
+              " * {",
+              " *   displayName: 'mountains'",
+              " * }",
+              " */",
+              "",
+              "async function myUpdateFolderFunction(id, options) {",
+              "  try {",
+              "    const updatedFolder = await folders.updateFolder(id, options);",
+              "",
+              "    console.log(`Updated folder ${updatedFolder.displayName}:`, updatedFolder);",
+              "    return updatedFolder;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_createdDate\": \"2023-08-21T09:32:34.000Z\",",
+              " *   \"_id\": \"7984b3c5454e4371acbd4f4eedde96bc\",",
+              " *   \"_updatedDate\": \"2023-08-21T11:10:51.000Z\",",
+              " *   \"displayName\": \"mountains\",",
+              " *   \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *   \"state\": \"OK\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Update a folder's name (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample id value: '7984b3c5454e4371aqbd4f4eedde96bc'",
+              " *",
+              " * Sample folder value:",
+              " * {",
+              " *   displayName: 'mountains'",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateFolderFunction = webMethod(Permissions.Anyone, async (id, options) => {",
+              "  try {",
+              "    const elevatedUpdateFolder = elevate(folders.updateFolder);",
+              "    const updatedFolder = await elevatedUpdateFolder(id, options);",
+              "",
+              "    console.log(`Updated folder ${updatedFolder.displayName}:`, updatedFolder);",
+              "    return updatedFolder;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_createdDate\": \"2023-08-21T09:32:34.000Z\",",
+              " *   \"_id\": \"7984b3c5454e4371acbd4f4eedde96bc\",",
+              " *   \"_updatedDate\": \"2023-08-21T11:10:51.000Z\",",
+              " *   \"displayName\": \"mountains\",",
+              " *   \"parentFolderId\": \"103601562ec94214bee61f470b403dd5\",",
+              " *   \"state\": \"OK\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Update a folder's location ",
+            "body": [
+              "/************************************",
+              " * Backend code - create-folder.web.js *",
+              " ***********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { folders } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const listFolders = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedListFolders = elevate(folders.listFolders)",
+              "    const foldersList = await elevatedListFolders();",
+              "",
+              "    return foldersList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "export const updateFolder = webMethod(Permissions.Anyone, async (id, options) => {",
+              "  try {",
+              "    const elevatedUpdateFolder = elevate(folders.updateFolder);",
+              "    const updatedFolder = await elevatedUpdateFolder(id, options);",
+              "",
+              "    return updatedFolder;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " ************/",
+              "",
+              "import { updateFolder, listFolders } from 'backend/create-folder.web';",
+              "",
+              "$w.onReady(async () => {",
+              "  await populateFoldersDropdowns();",
+              "",
+              "  $w('#updateFolderLocation').onClick(async () => {",
+              "    const folderId = $w('#updateFolderDropdown').value;",
+              "    const parentFolderId = $w('#parentFolderDropdown').value;",
+              "    if (folderId === parentFolderId) {",
+              "        $w('#folderIsParentFolderMsg').show();",
+              "        return;",
+              "    };",
+              "    const options = {parentFolderId};",
+              "    const updatedFolder = await updateFolder(folderId, options);",
+              "",
+              "    console.log(`Successfully updated folder ${updatedFolder.displayName}:`, updatedFolder);",
+              "    $w('#updateFolderSuccessMsg').show();",
+              "  });",
+              "});",
+              "",
+              "async function populateFoldersDropdowns() {",
+              "  const folders = await listFolders();",
+              "  const dropdownOptions = folders.map((folder) => {",
+              "    return {",
+              "      label: folder.displayName,",
+              "      value: folder._id",
+              "    };",
+              "  });",
+              "",
+              "  $w('#updateFolderDropdown').options = dropdownOptions;",
+              "  $w('#parentFolderDropdown').options = dropdownOptions;",
+              "};",
+              ""
+            ],
+            "extra": {
+              "description": "This code is an example of a page on which a visitor chooses a folder from a dropdown list, and then creates a folder within that folder."
+            }
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "updateFolder",
+      "isAdminMethod": true
+    }
+  ],
+  "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkDeleteFoldersOptions",
+      "members": [
+        {
+          "name": "permanent",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the specified folders are permanently deleted. <br />\nDefault: `false`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkDeleteFoldersRequest",
+      "members": [
+        {
+          "name": "folderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the folders to move to the Media Manager's trash bin."
+        },
+        {
+          "name": "permanent",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the specified folders are permanently deleted. <br />\nDefault: `false`"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkDeleteFoldersResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkRestoreFoldersFromTrashBinRequest",
+      "members": [
+        {
+          "name": "folderIds",
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "IDs of the folders to restore from the Media Manager's trash bin."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "BulkRestoreFoldersFromTrashBinResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateFolderOptions",
+      "members": [
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateFolderRequest",
+      "members": [
+        {
+          "name": "displayName",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder name that appears in the Media Manager."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CreateFolderResponse",
+      "members": [
+        {
+          "name": "folder",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Folder"
+            }
+          ],
+          "doc": "Information about the newly created folder."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+        },
+        {
+          "name": "limit",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Maximum number of items to return in the results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor string pointing to the next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Folder",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date the folder was created."
+        },
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID. Generated when a folder is created in the Media Manager."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date the folder was updated."
+        },
+        {
+          "name": "displayName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder name as it appears in the Media Manager."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder. <br /> Default: `media-root` folder."
+        },
+        {
+          "name": "state",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "State of the folder.\n\nSupported values: `\"OK\"`, `\"DELETED\"`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GenerateFolderDownloadUrlRequest",
+      "members": [
+        {
+          "name": "folderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GenerateFolderDownloadUrlResponse",
+      "members": [
+        {
+          "name": "downloadUrl",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "URL for downloading a specific folder in the Media Manager."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetFolderRequest",
+      "members": [
+        {
+          "name": "folderId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "GetFolderResponse",
+      "members": [
+        {
+          "name": "folder",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Folder"
+            }
+          ],
+          "doc": "Information about the folder."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListDeletedFoldersOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListDeletedFoldersRequest",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListDeletedFoldersResponse",
+      "members": [
+        {
+          "name": "folders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-media-v2.Folders.Folder"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "List of folders in the Media Manager's trash bin."
+        },
+        {
+          "name": "nextCursor",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.PagingMetadataV2"
+            }
+          ],
+          "doc": "The next cursor if it exists."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFoldersOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder.\n<br /> Default: `media-root` folder."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFoldersRequest",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder.\n<br /> Default: `media-root` folder."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\nDefault: `_updatedDate` in `\"DESC\"` order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ListFoldersResponse",
+      "members": [
+        {
+          "name": "folders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-media-v2.Folders.Folder"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Information about the folders in the requested folder."
+        },
+        {
+          "name": "nextCursor",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.PagingMetadataV2"
+            }
+          ],
+          "doc": "The next cursor if it exists."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "PagingMetadataV2",
+      "members": [
+        {
+          "name": "cursors",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Cursors"
+            }
+          ],
+          "doc": "Cursors to navigate through the result pages using `next` and `prev`. Returned if cursor paging is used."
+        },
+        {
+          "name": "total",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "number"
+            }
+          ],
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchFoldersOptions",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "rootFolder",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A root folder in the media manager to search in. <br />\nDefault: `MEDIA_ROOT`."
+        },
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Term to search for, such as the value of a folder's `displayName`.\n\nFor example, if a folder's `displayName` is 'my-videos-folder', the search term is `'my-videos-folder'`.\n"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\n\nDefault: `_updatedDate` in `\"DSEC\"` order.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchFoldersRequest",
+      "members": [
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.CursorPaging"
+            }
+          ],
+          "doc": "Cursor and paging information."
+        },
+        {
+          "name": "rootFolder",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A root folder in the media manager to search in. <br />\nDefault: `MEDIA_ROOT`."
+        },
+        {
+          "name": "search",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Term to search for, such as the value of a folder's `displayName`. <br />\nFor example, if a folder's `displayName` is 'my-videos-folder', the search term is 'my-videos-folder'."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Sorting"
+            }
+          ],
+          "doc": "Field name and order to sort by. One of:\n- `displayName`\n- `_updatedDate`\n\nDefault: `_updatedDate` in `\"DESC\"` order.\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SearchFoldersResponse",
+      "members": [
+        {
+          "name": "folders",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-media-v2.Folders.Folder"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Information about the folders in the requested folder."
+        },
+        {
+          "name": "nextCursor",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.PagingMetadataV2"
+            }
+          ],
+          "doc": "The next cursor if it exists."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Sorting",
+      "members": [
+        {
+          "name": "fieldName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the field to sort by."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order.\n\nSupported values: `\"ASC\"`, `\"DESC\"`\n"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateFolder",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date the folder was created."
+        },
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder ID. Generated when a folder is created in the Media Manager."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date the folder was updated."
+        },
+        {
+          "name": "displayName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Folder name as it appears in the Media Manager."
+        },
+        {
+          "name": "parentFolderId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the folder's parent folder. <br /> Default: `media-root` folder."
+        },
+        {
+          "name": "state",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "State of the folder.\n\nSupported values: `\"OK\"`, `\"DELETED\"`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateFolderOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateFolderRequest",
+      "members": [
+        {
+          "name": "folder",
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Folder"
+            }
+          ],
+          "doc": "The folder to update."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateFolderResponse",
+      "members": [
+        {
+          "name": "folder",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Folders.Folder"
+            }
+          ],
+          "doc": "Information about the updated folder."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    }
+  ]
+}

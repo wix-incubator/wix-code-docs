@@ -118,7 +118,7 @@ The file contains the following functions:
     export function detectAndStoreAffiliateId()
     ```
 
-    **Note:** The site's [$w.onReady()](https://www.wix.com/velo/reference/$w/onready) function runs twice. To prevent the function from being called twice, add the following `if` statement before calling the function in the **masterPage.js** file. [Learn more.](https://www.wix.com/velo/reference/wix-window/rendering-obj/env)
+    **Note:** The site's [$w.onReady()](https://www.wix.com/velo/reference/$w/onready) function runs twice. To prevent the function from being called twice, add the following `if` statement before calling the function in the **masterPage.js** file. [Learn more.](https://www.wix.com/velo/reference/wix-window/rendering/env)
  
     ```js
     if (wixWindow.rendering.env === 'browser') {
