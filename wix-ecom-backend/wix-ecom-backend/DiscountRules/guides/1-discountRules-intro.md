@@ -40,3 +40,12 @@ import { discountRules } from 'wix-ecom-backend';
 
 - **Trigger**: A set of conditions that must be met for a discount to become applicable. Triggers can be chained so that more than 1 condition must be met.
   - **Default triggers:** These built-in triggers fire when a specified minimum/maximum item quantity (for example, "at least 5 items") or cart subtotal ("no more than $100") is reached. For this trigger to fire, the items must also be part of a defined scope.
+
+## Permissions information
+
+Functions in the Discount Rules API are restricted and only run if
+you elevate permissions using the `wix-auth` [`elevate()`](https://dev.wix.com/docs/velo/api-reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor. Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>

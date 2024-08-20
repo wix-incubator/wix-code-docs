@@ -7,10 +7,6 @@
 </div> 
 
 &nbsp;
-> **Note:** This module is
-> [universal](/api-overview/api-versions#universal-modules).
-> Functions in this module can run on both the backend and frontend,
-> unless specified otherwise.
 
 The Checkout Templates API allows you to create and manage pre-populated checkouts to share with customers. When customers then create checkouts from these templates, the new checkouts already include this information.
 
@@ -27,3 +23,14 @@ To use the Checkout Templates API, import `{ checkoutTemplates }` from the `wix-
 ``` javascript
 import { checkoutTemplates } from 'wix-ecom-backend';
 ```
+
+## Permissions information
+
+Except for [`createCheckoutFromTemplate()`](#create-checkout-from-template), 
+all functions in the Checkout Templates API are restricted and only run if you elevate permissions
+using the `wix-auth` [`elevate()`](https://dev.wix.com/docs/velo/api-reference/wix-auth/elevate) function.
+
+<blockquote class='warning'>
+<p><strong>Warning:</strong> Elevating a function allows it to be called by any site visitor.
+Exercise caution to prevent security vulnerabilities.</p>
+</blockquote>
