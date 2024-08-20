@@ -26,10 +26,10 @@ are restricted and only run if you elevate permissions
 using the `wix-auth` [`elevate()`](https://dev.wix.com/docs/velo/api-reference/wix-auth/elevate)
 function:
 
-+ [`createFulfillment()`](/#create-fulfillment)
-+ [`bulkCreateFulfillments()`](#bulk-create-fulfillments)
-+ [`updateFulfillment()`](#update-fulfillment)
-+ [`deleteFulfillment()`](#delete-fulfillment)
++ [`createFulfillment()`](#createFulfillment)
++ [`bulkCreateFulfillments()`](#bulkCreateFulfillments)
++ [`updateFulfillment()`](#updateFulfillment)
++ [`deleteFulfillment()`](#deleteFulfillment)
 
 <blockquote class='warning'>
 <p>

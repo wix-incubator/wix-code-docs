@@ -38,7 +38,7 @@ import { checkoutSettings } from 'wix-ecom-backend';
 The following functions in the Checkout Settings API are restricted and only run if
 you elevate permissions using the `wix-auth` [`elevate()`](https://dev.wix.com/docs/velo/api-reference/wix-auth/elevate) function:
 
-- [`updateCheckoutSettings()`](#update-checkout-settings)
+- [`updateCheckoutSettings()`](#updateCheckoutSettings)
 
 <blockquote class='warning'>
 <p>

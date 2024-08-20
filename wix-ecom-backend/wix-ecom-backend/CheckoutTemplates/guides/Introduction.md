@@ -26,7 +26,7 @@ import { checkoutTemplates } from 'wix-ecom-backend';
 
 ## Permissions information
 
-Except for [`createCheckoutFromTemplate()`](#create-checkout-from-template), 
+Except for [`createCheckoutFromTemplate()`](#createCheckoutFromTemplate), 
 all functions in the Checkout Templates API are restricted and only run if you elevate permissions
 using the `wix-auth` [`elevate()`](https://dev.wix.com/docs/velo/api-reference/wix-auth/elevate) function.
 
