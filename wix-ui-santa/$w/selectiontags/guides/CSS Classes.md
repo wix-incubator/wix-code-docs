@@ -35,7 +35,7 @@ For example:
 
 ## `.selection-tags__options`
 
-Targets selection tags [options]($w/selectiontags/options).
+Targets selection tags [options]($w/selection-tags/options).
 For example:
 
 ```css

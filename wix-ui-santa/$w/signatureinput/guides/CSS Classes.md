@@ -36,7 +36,7 @@ For example:
 
 ## `.signature-input__label`
 
-Targets signature input [label text]($w/signatureinput/label).
+Targets signature input [label text]($w/signature-input/label).
 For example:
 
 ```css
