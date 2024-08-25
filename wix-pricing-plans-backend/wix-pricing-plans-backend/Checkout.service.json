@@ -22,7 +22,7 @@
           "",
           " + Offer membership plans as described in [About Pricing Plans](https://support.wix.com/en/article/about-pricing-plans). When setting up your site to accept pricing plans, ",
           "   define the plans you want to offer [using the Dashboard](https://support.wix.com/en/article/creating-a-plan-in-pricing-plans) or",
-          "   [using the Pricing Plan APIs](wix-pricing-plans-backend/createplan).",
+          "   [using the Pricing Plan APIs](wix-pricing-plans-backend/create-plan).",
           "",
           "",
           " ### Checking out pricing plans",
@@ -46,7 +46,7 @@
           "",
           " Online orders are considered drafts until they are paid for. Drafts are not listed",
           " in the Subscriptions dashboard page and are not saved in the `Orders` collection. Drafts",
-          " are displayed when listing orders with the [`listOrders()`](wix-pricing-plans-backend/orders/listorders) function. ",
+          " are displayed when listing orders with the [`listOrders()`](wix-pricing-plans-backend/orders/list-orders) function. ",
           "",
           " Offline orders are never considered drafts even if they are not yet paid for. Unlike ",
           " online orders, offline orders are immediately listed",
@@ -108,7 +108,7 @@
                   [ "wix-pricing-plans-backend.Checkout.ApplyCoupon" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 400,
+          [ { "lineno": 385,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Applies a coupon to a draft order.",
@@ -124,8 +124,8 @@
                 "",
                 " Once the coupon is applied, taxes are recalculated if [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection).",
                 "",
-                " `applyCoupon()` makes a change to the order itself. To see what the price would be if the coupon is applied, but without making an actual change to the order, use the [previewOfflineOrder()](wix-pricing-plans-backend/checkout/previewofflineorder), ",
-                " [previewOnlineOrder()](wix-pricing-plans-backend/checkout/previewonlineorder), or [previewPrice()](wix-pricing-plans-backend/checkout/previewprice) functions.",
+                " `applyCoupon()` makes a change to the order itself. To see what the price would be if the coupon is applied, but without making an actual change to the order, use the [previewOfflineOrder()](wix-pricing-plans-backend/checkout/preview-offline-order), ",
+                " [previewOnlineOrder()](wix-pricing-plans-backend/checkout/preview-online-order), or [previewPrice()](wix-pricing-plans-backend/checkout/preview-price) functions.",
                 "",
                 " When a coupon applies to the entire order, there is a single `price` for the repeating payment cycle for the entire duration of the order.",
                 "",
@@ -463,7 +463,8 @@
         "extra":
           {  } },
       { "name": "createOfflineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -489,19 +490,11 @@
           { "summary": "Creates an order for a buyer who purchased the plan with an offline transaction.",
             "description":
               [ "The `createOfflineOrder()` function returns a Promise that resolves to an `Order` object when the ",
-                " order has been created. ",
-                " ",
-                " > **Note:**",
-                " > The pricing plan `createOnlineOrder()` and the `createOfflineOrder()` APIs ",
-                " > replace the deprecated paid plans `orderPlan()` API.",
-                " > The deprecated API will continue to work, but will not receive updates.",
-                " > To keep any existing code compatible with future changes, see the",
-                " > [migration instructions](wix-paid-plans/orderplan#migration-instructions).",
-                "",
+                " order has been created.  ",
                 "",
                 " Payment of an offline order is handled in 1 of 2 ways: ",
                 " + When creating the order, select `true` in the `paid` request parameter. ",
-                " + After creation, with the [`markAsPaid()`](wix-pricing-plans-backend/orders/markAsPaid) function.",
+                " + After creation, with the [`markAsPaid()`](wix-pricing-plans-backend/orders/mark-as-paid) function.",
                 "",
                 " Creating a *non-free* offline order causes: ",
                 " + The order's status is set to `\"PENDING\"` if the start date is in the future. Otherwise, the status is set to `\"ACTIVE\"`.",
@@ -741,7 +734,8 @@
         "extra":
           {  } },
       { "name": "createOnlineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -753,7 +747,7 @@
               "optional": true },
             { "name": "couponCode",
               "type": "string",
-              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [`applyCoupon()`](wix-pricing-plans-backend/checkout/applycoupon).",
+              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [`applyCoupon()`](wix-pricing-plans-backend/checkout/apply-coupon).",
               "optional": true } ],
         "ret":
           { "type":
@@ -762,7 +756,7 @@
                   [ "wix-pricing-plans-backend.Orders.Order" ] },
             "doc": "Fulfilled - The order of the plan." },
         "locations":
-          [ { "lineno": 204,
+          [ { "lineno": 196,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Creates an order online for currently logged-in member.",
@@ -770,20 +764,13 @@
               [ "The `createOnlineOrder()` function returns a Promise that resolves to an `Order` object when the ",
                 " order has been created. The order is for the currently logged-in member. The buyer must be logged in for you to be able to create an order.",
                 "",
-                " > **Note:**",
-                " > The pricing plan `createOnlineOrder()` and `createOfflineOrder()` functions ",
-                " > replace the deprecated paid plans `orderPlan()` function.",
-                " > The deprecated function will continue to work, but will not receive updates.",
-                " > To keep any existing code compatible with future changes, see the",
-                " > [migration instructions](wix-paid-plans/orderplan#migration-instructions).",
-                "",
                 " Purchasing a plan:",
                 " 1. Starts with creating an order. ",
-                " 1. For non-free plans, calling the Wix Pay [`startPayment()`](wix-pay-frontend/startPayment) ",
+                " 1. For non-free plans, calling the Wix Pay [`startPayment()`](wix-pay-frontend/start-payment) ",
                 "    function with the `wixPayOrderId` value as the `paymentId` parameter to enable your buyer to pay for the order. ",
                 "    (Do not  call the Wix Pay `createPayment()` function to create the payment ID because this",
                 "    `createOnlineOrder()` function does that for you.)",
-                " 1.  If the order is free, do not call the Wix Pay [`startPayment()`](wix-pay-frontend/startPayment) ",
+                " 1.  If the order is free, do not call the Wix Pay [`startPayment()`](wix-pay-frontend/start-payment) ",
                 "     function after `createOnlineOrder()`. The order is created and considered paid for.",
                 "",
                 " Once an online order is paid for, the `status` of the order is no longer `\"DRAFT\"` and at this point, its `startDate` cannot be changed.",
@@ -791,7 +778,7 @@
                 " Creating an online order causes: ",
                 " + The order status to be set to `\"PENDING\"` if the start date is in the future. Otherwise, the `status` is set to `\"ACTIVE\"`.",
                 "",
-                " The [`onOrderCreated()`](wix-pricing-plans-backend/events/onOrderCreated) event handler runs when an online order is created.",
+                " The [`onOrderCreated()`](wix-pricing-plans-backend/events/on-order-created) event handler runs when an online order is created.",
                 "",
                 " > **Note:**",
                 " > If `startDate` is not used in the function, the missing parameter has to be passed as",
@@ -1027,7 +1014,8 @@
         "extra":
           {  } },
       { "name": "previewOfflineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -1047,7 +1035,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 292,
+          [ { "lineno": 277,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an offline order as if it was purchased.",
@@ -1068,7 +1056,7 @@
                 "",
                 " This function is not available to the buyer. You specify the member ID for the buyer whose order ",
                 " should be previewed. To get a general price preview for a plan that's not buyer-specific, use ",
-                " the [previewPrice()](wix-pricing-plans-backend/checkout/previewprice) function.",
+                " the [previewPrice()](wix-pricing-plans-backend/checkout/preview-price) function.",
                 "",
                 " > **Note**: Only those with the **Manage Pricing Plans** and **Manage Subscriptions** [permissions](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Froles-and-permissions/roles) ",
                 " > can preview offline orders. You can override the permissions by setting the function's `suppressAuth` ",
@@ -1163,7 +1151,8 @@
         "extra":
           {  } },
       { "name": "previewOnlineOrder",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -1180,7 +1169,7 @@
                   [ "wix-pricing-plans-backend.Checkout.OrderPreview" ] },
             "doc": "Fulfilled - A preview of the order." },
         "locations":
-          [ { "lineno": 329,
+          [ { "lineno": 314,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an online order as if it was purchased.",
@@ -1202,7 +1191,7 @@
                 "",
                 " This function is available to the site owner and the buyer. Because the buyer is logged in, ",
                 " you do not need to specify the `buyerId` when previewing an online order. To get a general price preview ",
-                " for a plan that's not buyer-specific, use the [previewPrice()](wix-pricing-plans-backend/checkout/previewprice) function." ],
+                " for a plan that's not buyer-specific, use the [previewPrice()](wix-pricing-plans-backend/checkout/preview-price) function." ],
             "links":
               [ "[previewOfflineOrder( )](#previewOfflineOrder)",
                 "[previewPrice( )](#previewPrice)" ],
@@ -1304,7 +1293,8 @@
         "extra":
           {  } },
       { "name": "previewPrice",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "planId",
@@ -1312,7 +1302,7 @@
               "doc": "ID of the plan whose pricing should be previewed." },
             { "name": "couponCode",
               "type": "string",
-              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/applycoupon).",
+              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/apply-coupon).",
               "optional": true } ],
         "ret":
           { "type":
@@ -1321,7 +1311,7 @@
                   [ "wix-pricing-plans-backend.Checkout.PricePreview" ] },
             "doc": "Fulfilled - A preview of the pricing for the order." },
         "locations":
-          [ { "lineno": 370,
+          [ { "lineno": 355,
               "filename": "checkout.js" } ],
         "docs":
           { "summary": "Provides a preview of an order's pricing as if was purchased.",
@@ -1332,7 +1322,7 @@
                 " If [taxes are configured for the site](https://support.wix.com/en/article/pricing-plans-setting-up-tax-collection), taxes are applied to the preview.  If not, the `tax` previews as `null`.",
                 "",
                 " Buyers do not have to be logged in to preview the price, as such, the details returned by this function are not buyer-specific. To generate ",
-                " a preview of a purchase for a specific buyer, use the [previewOfflineOrder()](wix-pricing-plans-backend/checkout/previewofflineorder) or [previewOnlineOrder()](wix-pricing-plans-backend/checkout/previewonlineorder) functions." ],
+                " a preview of a purchase for a specific buyer, use the [previewOfflineOrder()](wix-pricing-plans-backend/checkout/preview-offline-order) or [previewOnlineOrder()](wix-pricing-plans-backend/checkout/preview-online-order) functions." ],
             "links":
               [ "[previewOfflineOrder( )](#previewOfflineOrder)",
                 "[previewOnlineOrder( )](#previewOnlineOrder)" ],
@@ -1410,7 +1400,7 @@
   "messages":
     [ { "name": "ApplyCoupon",
         "locations":
-          [ { "lineno": 394,
+          [ { "lineno": 379,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1476,11 +1466,12 @@
               "optional": true },
             { "name": "couponCode",
               "type": "string",
-              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/applycoupon).",
+              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/apply-coupon).",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "CreateOnlineOrderOptions",
         "locations":
           [ { "lineno": 140,
@@ -1505,7 +1496,7 @@
           [ "removed" ] },
       { "name": "OrderPreview",
         "locations":
-          [ { "lineno": 282,
+          [ { "lineno": 267,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
@@ -1547,8 +1538,7 @@
               "optional": true } ],
         "extra":
           {  },
-        "labels":
-          [ "changed" ] },
+        "labels": [] },
       { "name": "PreviewOnlineOrderOptions",
         "locations":
           [ { "lineno": 144,
@@ -1565,14 +1555,15 @@
               "optional": true },
             { "name": "couponCode",
               "type": "string",
-              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/applycoupon).",
+              "doc": "Coupon code to apply.\n\nTo learn more about coupons, see [applyCoupon()](wix-pricing-plans-backend/checkout/apply-coupon).",
               "optional": true } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "PricePreview",
         "locations":
-          [ { "lineno": 363,
+          [ { "lineno": 348,
               "filename": "checkout.js" } ],
         "docs":
           { "links": [],
