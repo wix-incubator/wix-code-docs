@@ -1,6 +1,7 @@
 
 # Introduction
 
+
 Velo SPIs (Service Provider Interfaces) provide you with a very powerful way to extend Velo’s functionality so that you can:
 
 + **Inject your own custom logic into existing app flows**
