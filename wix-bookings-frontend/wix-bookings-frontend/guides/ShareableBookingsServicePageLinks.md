@@ -18,7 +18,7 @@ To send a shareable Bookings service page link:
    Alternatively, you can also obtain the Bookings service page URL from your
    dashboard by following
    [these steps](#how-to-get-the-bookings-service-page-url-from-your-dashboard).
-1. Retrieve the ID of the location that you want to preselect by using either
+1. Retrieve the ID of the location you want to preselect by using either
    [`listLocations()`](/wix-business-tools-v2/locations/listlocations) or
    [`queryLocations()`](/wix-business-tools-v2/locations/querylocations).
 1. Combine `<SITE_URL>`, `<SERVICE_SLUG>`, and `<LOCATION_ID>` to create the
@@ -34,8 +34,8 @@ To send a shareable Bookings service page link:
 
 ### How to get the Bookings service page URL from your dashboard
 
-If you prefer to retrieve the standard Bookings service page URL directly from
-your dashboard, follow these steps to get the correct `<SITE_URL>` and
+If you prefer to retrieve the Bookings service page URL directly from
+your dashboard, follow these steps to obtain the correct `<SITE_URL>` and
 `<SERVICE_SLUG>`.
 
 1. Get the `<SITE_URL>`.
