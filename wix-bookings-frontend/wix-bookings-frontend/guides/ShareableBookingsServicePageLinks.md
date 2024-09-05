@@ -22,7 +22,7 @@ To send a shareable Bookings service page link:
    [`listLocations()`](/wix-business-tools-v2/locations/listlocations) or
    [`queryLocations()`](/wix-business-tools-v2/locations/querylocations).
 1. Combine `<SITE_URL>`, `<SERVICE_SLUG>`, and `<LOCATION_ID>` to create the
-   shareable link using the foolowing format. If you want to preselect multiple
+   shareable link using the following format. If you want to preselect multiple
    locations, make sure to separate the IDs with commas.
    ```url
    https://<SITE_URL>/service-page/<SERVICE_SLUG>?location=<LOCATION_ID>
