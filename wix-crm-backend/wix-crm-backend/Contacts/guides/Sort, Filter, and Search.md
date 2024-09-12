@@ -6,7 +6,7 @@ in the Contacts API, the Labels API, and the Extended Fields API.
 ## Query contacts: Supported filters, sorting, and search
 
 The available options when calling 
-[`queryContacts()`](wix-crm-backend/contacts/querycontacts)
+[`queryContacts()`](wix-crm-backend/contacts/query-contacts)
 have been divided into these 3 sections:
 
 - [Contact properties](#contact-properties-supported-filters,-sorting,-and-search):
@@ -28,8 +28,8 @@ for the base set of contact properties.
 It doesn't include extended fields (those are covered in the sections below).
 
 For a full description of the `Contact` object, see
-[`ContactsQueryResult`](wix-crm-backend/contacts/contactsqueryresult) >
-[`items`](wix-crm-backend/contacts/contactsqueryresult/items).
+[`ContactsQueryResult`](wix-crm-backend/contacts/contacts-query-result) >
+[`items`](wix-crm-backend/contacts/contacts-query-result/items).
 
 | Property                     | Supported Filters & Sorting                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -105,35 +105,35 @@ and free-text searching for custom fields.
 ## Query labels: Supported filters and sorting
 
 This section covers the available options when calling
-[`queryLabels()`](wix-crm-backend/contacts/querylabels).
+[`queryLabels()`](wix-crm-backend/contacts/query-labels).
 
 The table below shows field support for filters and sorting
 for the label object.
 
 For a full description of the `Label` object, see
-[`LabelsQueryResult`](wix-crm-backend/contacts/labelsqueryresult) >
-[`items`](wix-crm-backend/contacts/labelsqueryresult/items).
+[`LabelsQueryResult`](wix-crm-backend/contacts/labels-query-result) >
+[`items`](wix-crm-backend/contacts/labels-query-result/items).
 
 | Property       | Supported Sorting &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `_createdDate` | [`ascending()`](wix-crm-backend/contacts/labelsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/labelsquerybuilder/descending)                                                                                    |
-| `_updatedDate` | [`ascending()`](wix-crm-backend/contacts/labelsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/labelsquerybuilder/descending)                                                                                    |
-| `displayName`  | [`ascending()`](wix-crm-backend/contacts/labelsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/labelsquerybuilder/descending)                                                                                    |
+| `_createdDate` | [`ascending()`](wix-crm-backend/contacts/labels-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/labels-query-builder/descending)                                                                                    |
+| `_updatedDate` | [`ascending()`](wix-crm-backend/contacts/labels-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/labels-query-builder/descending)                                                                                    |
+| `displayName`  | [`ascending()`](wix-crm-backend/contacts/labels-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/labels-query-builder/descending)                                                                                    |
 
 ## Query extended fields: Supported filters and sorting
 
 This section covers the available options when calling
-[`queryExtendedFields()`](wix-crm-backend/contacts/queryextendedfields).
+[`queryExtendedFields()`](wix-crm-backend/contacts/query-extended-fields).
 
 The table below shows field support for filters and sorting
 for the extended field object.
 
 For a full description of the `ExtendedField` object, see
-[`ExtendedFieldsQueryResult`](wix-crm-backend/contacts/extendedfieldsqueryresult) >
-[`items`](wix-crm-backend/contacts/extendedfieldsqueryresult/items).
+[`ExtendedFieldsQueryResult`](wix-crm-backend/contacts/extended-fields-query-result) >
+[`items`](wix-crm-backend/contacts/extended-fields-query-result/items).
 
 | Property       | Supported Sorting &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `_createdDate` | [`ascending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/descending)                                                                    |
-| `_updatedDate` | [`ascending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/descending)                                                                    |
-| `displayName`  | [`ascending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/ascending), [`descending()`](wix-crm-backend/contacts/extendedfieldsquerybuilder/descending)                                                                    |
+| `_createdDate` | [`ascending()`](wix-crm-backend/contacts/extended-fields-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/extended-fields-query-builder/descending)                                                                    |
+| `_updatedDate` | [`ascending()`](wix-crm-backend/contacts/extended-fields-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/extended-fields-query-builder/descending)                                                                    |
+| `displayName`  | [`ascending()`](wix-crm-backend/contacts/extended-fields-query-builder/ascending), [`descending()`](wix-crm-backend/contacts/extended-fields-query-builder/descending)                                                                    |
