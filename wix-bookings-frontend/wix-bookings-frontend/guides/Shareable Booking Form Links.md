@@ -1,6 +1,4 @@
-<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
-
-# Sharing a link to a preloaded booking form
+# Shareable Bookings Form Links
 
 Once you add Wix Bookings, [certain pages](https://support.wix.com/en/article/about-wix-bookings-pages#get-details-you-need-from-clients-with-the-booking-form) are automatically added to your site. 
 You use these pages to run all aspects of your Booking business; from creating services to managing your schedule each week. 
