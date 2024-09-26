@@ -22,7 +22,7 @@ wixSearch.search(phrase)
 > **Note**
 > The Forum fields supported by wix-search are not identical to the fields in your site's [Forum/Posts](https://support.wix.com/en/article/velo-wix-forum-posts-collection-fields) and [Forum/Comments](https://support.wix.com/en/article/velo-wix-forum-comments-collection-fields) collections.
 
-The following fields appear in each matching search result [document](/wix-search/wixsearchresult/documents) when searching Wix Forum content:
+The following fields appear in each matching search result [document](https://dev.wix.com/docs/velo/api-reference/wix-search/wix-search-result/documents) when searching Wix Forum content:
 
 #### documentType 
 
