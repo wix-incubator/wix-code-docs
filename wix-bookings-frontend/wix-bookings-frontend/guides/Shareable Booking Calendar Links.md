@@ -1,6 +1,4 @@
-<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
-
-# Creating a Shareable Booking Calendar Link
+# Shareable Bookings Calendar Links
 
 With booking calendar page [query parameters](#query-parameters), you can:
 
