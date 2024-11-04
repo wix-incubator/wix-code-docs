@@ -2,7 +2,7 @@
 
 # App Page Data
 
-You can use the [`getAppPageData()`](/wix-window-frontend/getapppagedata) function in code for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
+You can use the [`getAppPageData()`](https://dev.wix.com/docs/velo/api-reference/wix-window-frontend/get-app-page-data) function in code for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
 
 ## Booking Service Page
 
@@ -34,4 +34,4 @@ The object passed to a custom Pricing Plans page contains the following properti
 
 > **Note**: If the page URL specifies a plan that is deleted, hidden, or does not exist, the app returns `null`.
 
-Learn more about [building a custom Pricing Plans page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-pricing-plans/build-a-custom-pricing-plans-page).
+Learn more about [building a custom Pricing Plans page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/other-apps/wix-pricing-plans/tutorial-using-the-pricing-plans-api-for-pricing-plan-ordering-and-payment).
