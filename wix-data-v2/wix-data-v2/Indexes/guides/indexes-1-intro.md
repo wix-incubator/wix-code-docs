@@ -37,5 +37,5 @@ It's important to note the following points before starting to code:
 
 ## Terminology
 
-- **Regular index:** An index that increases query speed for up to 3 fields.
+- **Regular index:** An index that increases query speed. Up to 3 fields can be selected for a regular index.
 - **Unique index:** An index that increases query speed and enforces unique values for 1 field.
