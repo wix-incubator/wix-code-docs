@@ -11,7 +11,7 @@ The Indexes API allows you to create 2 kinds of indexes:
 
 ## Regular indexes
 
-You can create up to 3 regular indexes for each collection. A regular index can be created for up to 3 fields, with each field sorted either in ascending or descending order.
+You can create up to 3 regular indexes for each collection. Most regular indexes can be created for up to 3 fields, with each field sorted either in ascending or descending order.
 
 For example, consider a database containing information about many different products. Each data item contains `productName`, `category`, and `price` fields.
 
@@ -26,3 +26,7 @@ A unique index enforces unique values for an indexed field. You can create 1 uni
 A unique index can only have 1 field. For that field, it functions like a regular index. For example, a unique index for the `productName` field in a product database enables faster queries based on that field.
 
 In addition, a unique index enforces unique values for the indexed field in all data items across the collection. So if you created a unique index for the `productName` field, you will not be able to create more than one item with any given `productName` value.
+
+## Available indexes
+
+Basic plans and most premium plans support 4 indexes, 3 regular and 1 unique. Elite and Business Elite plans support 15 indexes, 5 regular (up to 3 fields),  2 unique, and 8 additional regular fields (1 field). If you need additional indexes than your plan offers, you can [upgrade your site](https://www.wix.com/upgrade/website).
