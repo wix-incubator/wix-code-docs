@@ -2,7 +2,7 @@
 
 # Selection Tags CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `SelectionTags` elements with CSS.
@@ -35,7 +35,7 @@ For example:
 
 ## `.selection-tags__options`
 
-Targets selection tags [options]($w/selectiontags/options).
+Targets selection tags [options]($w/selection-tags/options).
 For example:
 
 ```css

@@ -58,7 +58,7 @@
         ],
         "examples": [
           {
-            "title": "Adjust loyalty account balance ",
+            "title": "Adjust loyalty account balance (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -124,8 +124,76 @@
             ]
           },
           {
+            "title": "Adjust loyalty account balance (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\";",
+              "",
+              "/* Sample options values:",
+              " *  {",
+              " *    balance: 715,",
+              " *    description: \"Sync from external program.\",",
+              " *    revision: \"3\"",
+              " *   };",
+              " */",
+              "",
+              "export const myAdjustPointsFunction = webMethod(Permissions.Anyone, async (accountId, options) => {",
+              "  try {",
+              "    const updatedAccount = await accounts.adjustPoints(accountId, options);",
+              "",
+              "    const updatedBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.account.latestTransaction._id;",
+              "",
+              "    console.log('Success! New account balance is: ', updatedBalance, ' The ID for this transaction is: ', transactionId);  ",
+              "",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1ab8f49c-a329-4ddc-a31d-814afbb3b565\",",
+              " *     \"contactId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"memberId\": \"3128dc64-74fc-442f-aa32-e8e871dad141\",",
+              " *     \"points\": {",
+              " *       \"balance\": 715,",
+              " *       \"earned\": 0,",
+              " *       \"adjusted\": 715,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"da9096b4-a7fe-41a0-bf3b-05c22e3102fb\",",
+              " *       \"amount\": 715,",
+              " *       \"type\": \"ADJUST\",",
+              " *       \"description\": \"Sync from external program.\",",
+              " *       \"_createdDate\": \"2023-01-17T12:04:49.171Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *     },",
+              " *     \"rewardAvailable\": false,",
+              " *     \"_createdDate\": \"2022-11-28T11:57:30.722Z\",",
+              " *     \"_updatedDate\": \"2023-01-17T12:04:49.620Z\",",
+              " *     \"lastActivityDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *     \"revision\": \"2\",",
+              " *     \"tier\": {",
+              " *       \"_id\": \"05e9d924-54c4-4540-94ef-8edd1e303611\",",
+              " *       \"_updatedDate\": \"2023-01-17T12:04:49.619Z\",",
+              " *       \"points\": 715",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
             "title": "Get a loyalty account's latest revision, then give points to the account ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { accounts } from 'wix-loyalty.v2';",
               "import * as wixAuth from 'wix-auth';",
               "",
@@ -138,17 +206,13 @@
               " * }  ",
               " */  ",
               "",
-              "export async function myGetRevisionAndAdjustPointsFunction(accountId, options) {",
-              "",
-              "  // Get the current revision of this loyalty account.",
+              "export const myGetRevisionAndAdjustPointsFunction = webMethod(Permissions.Anyone, async (accountId, options) => {",
               "  const elevatedGetLoyaltyAccount = wixAuth.elevate(accounts.getAccount);",
               "  const retrievedLoyaltyAccount = await elevatedGetLoyaltyAccount(accountId);",
-              "  const currentRevision = retrievedLoyaltyAccount.account.revision",
+              "  const currentRevision = retrievedLoyaltyAccount.account.revision;",
               "",
-              "  // Update your options parameters for the latest revision",
-              "  options.revision = currentRevision",
+              "  options.revision = currentRevision;",
               "",
-              "  // Now call the `adjustPoints()` function.",
               "  const elevatedAdjustPoints = wixAuth.elevate(accounts.adjustPoints);",
               "",
               "  try {",
@@ -157,13 +221,13 @@
               "    const updatedBalance = updatedAccount.account.points.balance;",
               "    const transactionId = updatedAccount.account.latestTransaction._id;",
               "",
-              "    console.log('Success! New account balance is: ', updatedBalance, '. This ID for this transaction is: ', transactionId);  ",
+              "    console.log('Success! New account balance is: ', updatedBalance, '. This ID for this transaction is: ', transactionId);",
               "",
               "    return updatedAccount;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -212,7 +276,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "adjustPoints"
+      "syntaxName": "adjustPoints",
+      "isAdminMethod": true
     },
     {
       "name": "createAccount",
@@ -253,7 +318,7 @@
         ],
         "examples": [
           {
-            "title": "Create a loyalty account for a site contact ",
+            "title": "Create a loyalty account for a site contact (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -293,6 +358,49 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Create a loyalty account for a site contact (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample contactId value: 'ff61204b-b19a-5cc8-823b-7eed8ae5fc28'  ",
+              "",
+              "export const myCreateAccountFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const newLoyaltyAccount = await accounts.createAccount(contactId);  ",
+              "",
+              "    const accountId = newLoyaltyAccount.account._id;  ",
+              "",
+              "    console.log('Success! The account ID for this new loyalty account is: ', accountId);",
+              "",
+              "    return newLoyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"1e3f99cf-1e7f-4cba-8777-f081549f49cd\",",
+              " *     \"contactId\": \"ff61204b-b19a-5cc8-823b-7eed8ae5fc28\",",
+              " *     \"points\": {",
+              " *       \"balance\": 0,",
+              " *       \"earned\": 0,",
+              " *       \"adjusted\": 0,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"rewardAvailable\": false,",
+              " *     \"_createdDate\": \"2022-11-09T12:49:25.408Z\",",
+              " *     \"_updatedDate\": \"2022-11-09T12:49:25.408Z\",",
+              " *     \"revision\": \"1\"",
+              " *   }",
+              " * }  ",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -302,7 +410,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "createAccount"
+      "syntaxName": "createAccount",
+      "isAdminMethod": true
     },
     {
       "name": "earnPoints",
@@ -356,7 +465,7 @@
         ],
         "examples": [
           {
-            "title": "Earn loyalty points ",
+            "title": "Earn loyalty points (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -419,6 +528,72 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Earn loyalty points (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "/* Sample accountId value: '6d2c421e-3c1a-4464-bf2f-df13a3fc8aea'",
+              " *",
+              " * Sample options value:",
+              " * {",
+              " *   'amount': 50,",
+              " *   'description': 'Subscribed to newsletter.',",
+              " *   'appId': '553c79f3-5625-4f38-b14b-ef7c0d1e87df',",
+              " *   'idempotencyKey': 'bfdc785c-bbc6-447d-b987-220ca649a3b2'",
+              " * }",
+              " */",
+              "",
+              "export const myEarnPointsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const updatedAccount = await accounts.earnPoints(accountId, options);",
+              "",
+              "    const newBalance = updatedAccount.account.points.balance;",
+              "    const transactionId = updatedAccount.latestTransaction._id;",
+              "",
+              "    console.log('Success! New balance is ', newBalance);",
+              "    return updatedAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"6d2c421e-3c1a-4464-bf2f-df13a3fc8aea\",",
+              " *     \"contactId\": \"7fa15d5e-49c4-44ef-8111-4cb0a04ca4db\",",
+              " *     \"memberId\": \"7fa15d5e-49c4-44ef-8111-4cb0a04ca4db\",",
+              " *     \"points\": {",
+              " *       \"balance\": 185,",
+              " *       \"earned\": 185,",
+              " *       \"adjusted\": 0,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"4dd51f9d-2664-420a-9802-4df7811a5221\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"EARN\",",
+              " *       \"description\": \"Subscribed to newsletter.\",",
+              " *       \"_createdDate\": \"2022-11-28T14:48:59.887Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"bfdc785c-bbc6-447d-b987-220ca649a3b2\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-09T15:18:53.582Z\",",
+              " *     \"_updatedDate\": \"2022-11-28T14:48:59.940Z\",",
+              " *     \"revision\": \"6\",",
+              " *     \"tier\": {",
+              " *       \"_updatedDate\": \"2022-11-28T14:48:59.939Z\",",
+              " *       \"points\": 185",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -428,7 +603,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "earnPoints"
+      "syntaxName": "earnPoints",
+      "isAdminMethod": true
     },
     {
       "name": "getAccount",
@@ -469,7 +645,7 @@
         ],
         "examples": [
           {
-            "title": "Get a loyalty account ",
+            "title": "Get a loyalty account (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -520,6 +696,60 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Get a loyalty account (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: 'e6f39a5b-a6d0-4556-b889-0cf09d8a84f7'",
+              "",
+              "export const myGetLoyaltyAccountFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const loyaltyAccount = await accounts.getAccount(accountId);",
+              "",
+              "    const currentBalance = loyaltyAccount.account.points.balance;",
+              "    const canGetReward = loyaltyAccount.account.rewardAvailable;",
+              "",
+              "    console.log('Success! Current points balance for this account is: ', currentBalance, ' and there is a reward available: ', canGetReward);",
+              "",
+              "    return loyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"e6f39a5b-a6d0-4556-b889-0cf09d8a84f7\",",
+              " *     \"contactId\": \"88615e02-3e8a-4297-8939-5d0a432b322a\",",
+              " *     \"memberId\": \"a517751b-a1ca-4423-8d91-aaf8f5b34215\",",
+              " *     \"points\":   {",
+              " *       \"balance\": 15,",
+              " *       \"earned\": 10,",
+              " *       \"redeemed\": 0,",
+              " *       \"adjusted\": 5",
+              " *     },",
+              " *     \"latestTransaction\":   {",
+              " *       \"_id\": \"262c8eb0-123e-4117-9fe6-4973a3551688\",",
+              " *       \"amount\": 5,",
+              " *       \"type\": \"ADJUST\",",
+              " *       \"description\": \"\",",
+              " *       \"_createdDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"f33ce6re-cy18-445e-8761-23d9471b8b96\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2021-12-06T14:33:19.114Z\",",
+              " *     \"_updatedDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *     \"revision\": \"4\"",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -529,7 +759,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "getAccount"
+      "syntaxName": "getAccount",
+      "isAdminMethod": true
     },
     {
       "name": "getAccountBySecondaryId",
@@ -570,7 +801,7 @@
         ],
         "examples": [
           {
-            "title": "Get a loyalty account using a contact ID ",
+            "title": "Get a loyalty account using a contact ID (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';  ",
               "",
@@ -628,6 +859,67 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Get a loyalty account using a contact ID (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   contactId: '8a71f711-f77b-43fe-9e3d-5c243f94b2bc'",
+              " * }",
+              " */ ",
+              "",
+              "export const myGetAccountByContactIdFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "  try {",
+              "    const loyaltyAccount = await accounts.getAccountBySecondaryId(options);",
+              "",
+              "    const accountId = loyaltyAccount.account._id;",
+              "    const currentRevision = loyaltyAccount.account.revision;",
+              "",
+              "    console.log(\"Success! This site contact's loyalty account ID is: \", accountId);",
+              "",
+              "    return loyaltyAccount;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"account\": {",
+              " *     \"_id\": \"dd0020ca-eef0-4ff1-a615-63ecdcdfcd28\",",
+              " *     \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
+              " *     \"points\": {",
+              " *       \"balance\": 700,",
+              " *       \"earned\": 135,",
+              " *       \"adjusted\": 565,",
+              " *       \"redeemed\": 0",
+              " *     },",
+              " *     \"latestTransaction\": {",
+              " *       \"_id\": \"65ac9989-89cd-40bb-9bfa-52d3b1e2fae2\",",
+              " *       \"amount\": 50,",
+              " *       \"type\": \"EARN\",",
+              " *       \"description\": \"Signed up for newsletter\",",
+              " *       \"_createdDate\": \"2022-11-09T11:18:44.987Z\",",
+              " *       \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *       \"idempotencyKey\": \"b494fca4-3fec-40e9-b7a0-43e51b0b5057\"",
+              " *     },",
+              " *     \"rewardAvailable\": true,",
+              " *     \"_createdDate\": \"2022-11-08T22:52:44.758Z\",",
+              " *     \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *     \"revision\": \"6\",",
+              " *     \"tier\": {",
+              " *       \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *       \"points\": 700",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -637,7 +929,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "getAccountBySecondaryId"
+      "syntaxName": "getAccountBySecondaryId",
+      "isAdminMethod": true
     },
     {
       "name": "getProgramTotals",
@@ -665,7 +958,7 @@
         ],
         "examples": [
           {
-            "title": "Get the total points for the entire loyalty program ",
+            "title": "Get the total points for the entire loyalty program (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';  ",
               "",
@@ -696,6 +989,40 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Get the total points for the entire loyalty program (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "export const myGetProgramTotalsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const programTotals = await accounts.getProgramTotals();",
+              "",
+              "    const currentBalance = programTotals.points.balance;",
+              "    const redeemed = programTotals.points.redeemed;",
+              "",
+              "    console.log('Success! ', redeemed, ' total points have been redeemed in the life of this program.');",
+              "",
+              "    return programTotals;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"points\": {",
+              " *     \"balance\": 2046,",
+              " *     \"earned\": 1475,",
+              " *     \"adjusted\": 571,",
+              " *     \"redeemed\": 0",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -705,7 +1032,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "getProgramTotals"
+      "syntaxName": "getProgramTotals",
+      "isAdminMethod": true
     },
     {
       "name": "getTransaction",
@@ -746,7 +1074,7 @@
         ],
         "examples": [
           {
-            "title": "Get a transaction ",
+            "title": "Get a transaction (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -779,6 +1107,43 @@
               " *  }}",
               ""
             ]
+          },
+          {
+            "title": "Get a transaction (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample transactionId value: '262c8eb0-123e-4117-9fe6-4973a3551688'",
+              "",
+              "export const myGetTransactionFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const retrievedTransaction = await accounts.getTransaction(transactionId);",
+              "",
+              "    const transactionType = retrievedTransaction.transaction.type;",
+              "    const transactionDate = retrievedTransaction.transaction._createdDate;",
+              "",
+              "    console.log('Success! That transaction was created on ', transactionDate, ' and is a ', transactionType, ' type.');",
+              "    return retrievedTransaction;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " *  {\"transaction\":  {",
+              " *  \"_id\": \"262c8eb0-123e-4117-9fe6-4973a3551688\",",
+              " *  \"amount\": 5,",
+              " *  \"type\": \"ADJUST\",",
+              " *  \"description\": \"\",",
+              " *  \"_createdDate\": \"2021-12-07T07:30:23.749Z\",",
+              " *  \"rewardId\": null,",
+              " *  \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *  \"idempotencyKey\": null",
+              " *  }}",
+              " */ ",
+              ""
+            ]
           }
         ]
       },
@@ -788,7 +1153,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "getTransaction"
+      "syntaxName": "getTransaction",
+      "isAdminMethod": true
     },
     {
       "name": "listAccounts",
@@ -827,7 +1193,7 @@
         ],
         "examples": [
           {
-            "title": "Get a list of loyalty accounts, limited to 3 accounts ",
+            "title": "Get a list of loyalty accounts, limited to 3 accounts (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';  ",
               "",
@@ -939,9 +1305,123 @@
             ]
           },
           {
+            "title": "Get a list of loyalty accounts, limited to 3 accounts (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';  ",
+              "",
+              "/* Sample options value: ",
+              " *   {",
+              " *   'cursorPaging': {",
+              " *     'limit': 3",
+              " *     }",
+              " *   }",
+              " */",
+              "",
+              "export const myListLoyaltyAccountsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const accountsList = await accounts.listAccounts(options);",
+              "",
+              "    const firstAccountId = accountsList.accounts[0]._id;",
+              "    const firstAccountBalance = accountsList.accounts[0].points.balance;",
+              "",
+              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, ' and ', firstAccountBalance);  ",
+              "",
+              "    return accountsList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"accounts\": [",
+              " *     {",
+              " *       \"_id\": \"dd0020ca-eef0-4ff1-a615-63ecdcdfcd28\",",
+              " *       \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2bc\",",
+              " *       \"points\": {",
+              " *         \"balance\": 700,",
+              " *         \"earned\": 135,",
+              " *         \"adjusted\": 565,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"65ac9989-89cd-40bb-9bfa-52d3b1e2fae2\",",
+              " *         \"amount\": 50,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"Subscribed to newsletter.\",",
+              " *         \"_createdDate\": \"2022-11-09T11:18:44.987Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"fc3df3c1-36b2-4279-8be1-8e72a05a88c8\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-08T22:52:44.758Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *       \"revision\": \"6\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T11:18:45.037Z\",",
+              " *         \"points\": 700",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"7b801cdf-e74c-42b7-ba57-a068a78ea6b5\",",
+              " *       \"contactId\": \"6f158e70-26f6-4fce-80a8-1d57e6791c34\",",
+              " *       \"points\": {",
+              " *         \"balance\": 125,",
+              " *         \"earned\": 125,",
+              " *         \"adjusted\": 0,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"latestTransaction\": {",
+              " *         \"_id\": \"93f31476-f3cf-4440-9933-aaca6e61e15b\",",
+              " *         \"amount\": 125,",
+              " *         \"type\": \"EARN\",",
+              " *         \"description\": \"\",",
+              " *         \"_createdDate\": \"2022-11-09T06:41:48.450Z\",",
+              " *         \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *         \"idempotencyKey\": \"262c8eb0-123e-4117-9fe6-4973a3551688\"",
+              " *       },",
+              " *       \"rewardAvailable\": true,",
+              " *       \"_createdDate\": \"2022-11-07T15:49:11.763Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T06:41:48.879Z\",",
+              " *       \"revision\": \"3\",",
+              " *       \"tier\": {",
+              " *         \"_updatedDate\": \"2022-11-09T06:41:48.616Z\",",
+              " *         \"points\": 125",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"_id\": \"f0411f1a-ad5a-4b80-94c2-34350cbf1af7\",",
+              " *       \"contactId\": \"8a71f711-f77b-43fe-9e3d-5c243f94b2cd\",",
+              " *       \"points\": {",
+              " *         \"balance\": 0,",
+              " *         \"earned\": 0,",
+              " *         \"adjusted\": 0,",
+              " *         \"redeemed\": 0",
+              " *       },",
+              " *       \"rewardAvailable\": false,",
+              " *       \"_createdDate\": \"2022-11-09T06:44:48.159Z\",",
+              " *       \"_updatedDate\": \"2022-11-09T06:44:48.159Z\",",
+              " *       \"revision\": \"1\"",
+              " *     }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"total\": 4,",
+              " *     \"cursors\": {",
+              " *       \"next\": \"4cdca1370d1419d1874c0eb639ef64804fa6d5de.Gh0KDnBvaW50cy5iYWxhbmNlEAEaCREAAAAAAAAAABorCgxfdXBkYXRlZERhdGUaGyoZChcKCiR0aW1lc3RhbXASCREA8HklskV4QiIkZjA0MTFmMWEtYWQ1YS00YjgwLTk0YzItMzQzNTBjYmYxYWY3\"",
+              " *     }",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
             "title": "Get a list of specific loyalty accounts using their account IDs ",
             "body": [
-              "import { accounts } from 'wix-loyalty.v2';  ",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
               "",
               "/* Sample options value: ",
               " * {",
@@ -952,20 +1432,20 @@
               " * }",
               " */  ",
               "",
-              "export async function myListLoyaltyAccountsFunction() {",
+              "export const myListLoyaltyAccountsFunction = webMethod(Permissions.Anyone, async () => {",
               "  try {",
-              "    const accountsList = await accounts.listAccounts(contactIds);  ",
+              "    const accountsList = await accounts.listAccounts(contactIds);",
               "",
               "    const firstAccountId = accountsList.accounts[0]._id;",
-              "    const firstAccountBalance = accountsList.accounts[0].points.balance;  ",
+              "    const firstAccountBalance = accountsList.accounts[0].points.balance;",
               "",
-              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, 'and ', firstAccountBalance);  ",
+              "    console.log('Success! The ID and point balance for the first account in your list is: ', firstAccountId, 'and ', firstAccountBalance);",
               "",
               "    return accountsList;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -1043,7 +1523,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "listAccounts"
+      "syntaxName": "listAccounts",
+      "isAdminMethod": true
     },
     {
       "name": "listTransactions",
@@ -1094,7 +1575,7 @@
         ],
         "examples": [
           {
-            "title": "Get a list of transactions for a loyalty account ",
+            "title": "Get a list of transactions for a loyalty account (dashboard page code)",
             "body": [
               "import { accounts } from 'wix-loyalty.v2';",
               "",
@@ -1158,6 +1639,73 @@
               " */",
               ""
             ]
+          },
+          {
+            "title": "Get a list of transactions for a loyalty account (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { accounts } from 'wix-loyalty.v2';",
+              "",
+              "// Sample accountId value: 'b04a7524-f0cc-435a-981a-b765f758438b'",
+              "",
+              "export const myListTransactionsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const transactionsList = await accounts.listTransactions(accountId);",
+              "",
+              "    const firstId = transactionsList.transactions[0]._id;",
+              "    const firstStatus = transactionsList.transactions[0].type;",
+              "",
+              "    console.log('The most recent transaction ID is: ', firstId);",
+              "    return transactionsList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"transactions\": [{",
+              " *     \"id\": \"03992fc4-8e8c-4406-8d3c-0292ed3be5d8\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 150,",
+              " *     \"type\": \"ADJUST\",",
+              " *     \"description\": \"Signed up as site member.\",",
+              " *     \"createdDate\": \"2022-05-23T22:50:49.366Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"70f0711b-e16f-44d7-ad03-4301c78d8623\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-05-24T09:11:51.274Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"0eb76578-8928-418e-8428-4a330d24186c\"",
+              " *   },",
+              " *   {",
+              " *     \"id\": \"78a5c76e-fe47-4103-bfda-15e05c2ab003\",",
+              " *     \"accountId\": \"b04a7524-f0cc-435a-981a-b765f758438b\",",
+              " *     \"contactId\": \"8b4ff9ff-2f9a-41de-901d-9f6ecdb91664\",",
+              " *     \"amount\": 50,",
+              " *     \"type\": \"EARN\",",
+              " *     \"description\": \"Shared post on social\",",
+              " *     \"createdDate\": \"2022-06-19T22:09:23.434Z\",",
+              " *     \"appId\": \"553c79f3-5625-4f38-b14b-ef7c0d1e87df\",",
+              " *     \"idempotencyKey\": \"5a036e48-4188-4200-a42e-de37c273c3c1\"",
+              " *   }",
+              " *   ],",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
+              " *     \"cursors\": {},",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * } ",
+              " */",
+              ""
+            ]
           }
         ]
       },
@@ -1167,7 +1715,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "listTransactions"
+      "syntaxName": "listTransactions",
+      "isAdminMethod": true
     }
   ],
   "messages": [

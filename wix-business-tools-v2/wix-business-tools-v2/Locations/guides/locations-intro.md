@@ -19,7 +19,7 @@ title: Introduction
 > Functions in this module can run on both the backend and frontend,
 > unless specified otherwise.
 
-With Locations, site owners can define multiple physical locations for their business. This allows them to set individual opening hours for each location.
+With Locations, you can define multiple physical locations for their business. You can also set individual opening hours for each location.
 
 The Locations API allows you to:
 
@@ -35,15 +35,6 @@ To use the Locations API, import `{ locations }` from `wix-business-tools.v2`:
 import { locations } from 'wix-business-tools.v2';
 ```
 
-## Terminology
-
-+ **Default location:** Location reflected in the site properties. This location is used on invoices.
-+ **Type:** Describes whether a location is an office, reception, branch or the headquarters.
-+ **Status:** Indicates whether a location is `ACTIVE` or `INACTIVE`.
-+ **Business Schedule:** Describes the location's regular and exceptional opening hours.
-+ **Period:** Regular, weekly recurring opening hours of the location.
-+ **Special Hour Period:** Exception to the location's regular hours. The location can be either open or closed during the Special Hour Period.
-
 ## Before you begin
 
 It’s important to note the following points before starting to code:
@@ -52,9 +43,14 @@ It’s important to note the following points before starting to code:
 + You can't delete a location. Instead, you can archive a location using the [`archiveLocation()`](wix-business-tools-v2/locations/archivelocation) function.
 + You can't archive the default location.
 + Archived locations can't be unarchived.
-+ The [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function replaces an existing location with a new location. Currently, you can't partially update a location.
-+ Currently, the location type is just informational and doesn't affect a location's functionality.
++ You must pass the full location object in the `location` parameter when using the [`updateLocation()`](wix-business-tools-v2/locations/updatelocation) function. Currently, you can't partially update a location.
++ `locationType` isn't currently supported.
 + The status `INACTIVE` isn't currently supported.
+
+## Terminology
+
++ **Type:** Describes whether a location is an office, reception, branch or the headquarters.
++ **Status:** Indicates whether a location is `ACTIVE` or `INACTIVE`.
 
 ## Permissions information
 

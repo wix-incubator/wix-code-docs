@@ -2,7 +2,7 @@
 
 # Menu CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `Menu` elements with CSS.
@@ -63,7 +63,15 @@ For example:
 }
 ```
 
-## Dropdown menu classes
+## Dropdown menu classes (Deprecated)
+
+<blockquote class='warning'>
+
+__Deprecation Notice:__
+
+The drop-down menu component has been deprecated. It will continue to work, but can no longer be added in the editor.
+
+</blockquote>
 
 ### `.dropdown-menu`
 
@@ -140,72 +148,6 @@ For example:
   font-weight: 700;
   text-transform: lowercase;
   color: black;
-}
-```
-
-### `.horizontal-menu__submenu-container`
-
-<!-- TODO - should be horizontal-menu__submenu.
-  update when team confirms they're making the change. -->
-
-Targets horizontal submenu containers.
-For example:
-
-```css
-.horizontal-menu__submenu-container {
-  background-color: #a2a2fc;
-}
-```
-
-### `.horizontal-menu__submenu-title`
-
-Targets the `menuItem` that opens the submenu.
-For example:
-
-```css
-.horizontal-menu__submenu-title {
-  text-transform: uppercase;
-  margin: 0;
-  padding: 0;
-}
-```
-
-### `.horizontal-menu__submenu-title-label`
-
-Targets the label of the `menuItem` that opens the submenu.
-For example:
-
-```css
-.horizontal-menu__submenu-title-label {
-  font-family: sans-serif;
-  text-transform: capitalize;
-  color: #5A5A5A;
-}
-```
-
-### `.horizontal-menu__submenu-item`
-
-Targets horizontal submenu items.
-For example:
-
-```css
-.horizontal-menu__submenu-item {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-```
-
-### `.horizontal-menu__submenu-item-label`
-
-Targets horizontal submenu item labels.
-For example:
-
-```css
-.horizontal-menu__submenu-item-label {
-  font-family: sans-serif;
-  text-transform: capitalize;
-  background-color: #5A5A5A;
-  color: #FFFFFF;
 }
 ```
 

@@ -3,34 +3,44 @@ title: Introduction
 ---
 # Introduction
 
-&nbsp;
-<div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
-    <b>Developer Preview</b>
-    <br/>
-    <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
-</div> . 
+[Wix Events](https://support.wix.com/en/article/about-wix-events) allows site owners to create and manage events, including ticket sales, order tracking, and event policy management.    
 
-&nbsp;
+Wix Events include the following APIs:  
+- [WixEvents](https://www.wix.com/velo/reference/wix-events-v2/wixeventsv2): Manage events.
+- [Ticket Definitions](https://www.wix.com/velo/reference/wix-events-v2/ticketdefinitions): Manage the types of tickets available for purchase (for ticketed events).
+- [Tickets](https://www.wix.com/velo/reference/wix-events-v2/tickets): Retrieve information about the purchased tickets and check them in.
+- [RSVP](https://www.wix.com/velo/reference/wix-events-v2/rsvp): Manage guest RSVP statuses (for RSVP events).
+- [Categories](https://www.wix.com/velo/reference/wix-events-v2/categories): Create and assign various categories for events.
+- [Orders](https://www.wix.com/velo/reference/wix-events-v2/orders): Manage and track ticket reservations, checkout, and orders.
+- [Forms](https://www.wix.com/velo/reference/wix-events-v2/forms): Manage event registration forms.
+- [Schedule](https://www.wix.com/velo/reference/wix-events-v2/schedule): Create a detailed schedule for an event.
+- [Schedule Bookmark](https://www.wix.com/velo/reference/wix-events-v2/schedulebookmarks): Bookmark a schedule item for a site member.
+- [Guests](https://www.wix.com/velo/reference/wix-events-v2/guests): Get information about all guests who bought tickets to an event or who RSVP'ed.
+- [Policies](https://www.wix.com/velo/reference/wix-events-v2/policies): Create and reorder event policies in the dashboard or checkout form.  
 
-<!--
->**Note**: These modules are [universal](/api-overview/api-versions#universal-modules). Functions in these modules can run on both the backend and frontend, unless specified otherwise.
--->
+## Before you begin
 
-[Wix Events](https://support.wix.com/en/article/about-wix-events) allows site owners to [create and manage events](https://www.wix.com/velo/reference/wix-events-backend/wixevents), including selling tickets, tracking orders and managing event policies.
+It’s important to note the following points before starting to code:  
+
+- Install the **Wix Events & Tickets** app from [Wix App Market](https://www.wix.com/app-market/wix-events?referral=category&appIndex=5&referralTag=booking--events).
+- A Wix service fee of 2.5% is charged for each ticket sold in ticketed events. This fee can either be passed on to the buyer or absorbed by the event owner.
+- To use the `wix-events.v2` API, import the `wix-events.v2` module.
+
+```js
+import * from 'wix-events.v2';
+```
 
 ## Terminology
-- **Event** - a type of gathering an individual or a business holds for a group of people. Our APIs support the following types of events:
-  - Ticketed events: Events which have tickets for sale (e.g., a conference).
-- **Ticket definition** - the settings that define the ticket options available for purchase for ticketed events. Name, price and currency are required for each ticket definition.
-- **Policy** - free-text that defines terms & conditions and other policies, as relevant.
-
-> **NOTE**:  
-A Wix service fee of 2.5% is charged for each ticket sold. This fee can either be passed on to the buyer or absorbed by the event owner.
-
-The Wix Events APIs include:  
-- **Tickets**: Manage purchased tickets.   
-- **Ticket Definitions**: Create and manage the types of tickets available for purchase.  
-- **Policies**: Create and manage event policies.  
-- **Checkout**: Create and manage reservations. 
-- **Orders**: Manage and track ticket orders.  
-
+- **Event**: A gathering organized by an individual or business for a group of people. Our APIs support the following types of events:
+  - **RSVP**: Non-ticketed events for which guests indicate whether they plan to attend.
+  - **Ticketed events**: Events with tickets available for sale.
+  - **External registration events**: Events where registration occurs on a different website, and Wix only displays event information.
+- **Ticket definition**: Settings defining the ticket options available for purchase for ticketed events. Each ticket definition requires a name, price, and currency.
+- **Policy**: Text that defines terms & conditions, as relevant.
+- **Guest**: The individual who has been invited to the event.
+- **Ticket buyer**: An individual who purchases 1 or more tickets to the event.
+- **Check-in:** The process of verifying a guest's attendance at the event.
+- **Guest list**: A summary of all guests who have been invited to the event.
+- **Organizer**: The person or entity responsible for planning and hosting the event.
+- **Event Dashboard**: Control center, which allows you to manage your site events settings and features.
+- **Checkout form**: The final step in the ticket purchasing process where the customer fills in personal info, reads policies, and pays.

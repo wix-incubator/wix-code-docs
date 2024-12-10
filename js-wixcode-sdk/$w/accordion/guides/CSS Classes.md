@@ -2,7 +2,7 @@
 
 # Accordion CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `Accordion` elements with CSS.

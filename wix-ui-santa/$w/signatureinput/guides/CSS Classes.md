@@ -2,7 +2,7 @@
 
 # Signature Input CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `SignatureInput` elements with CSS.
@@ -36,7 +36,7 @@ For example:
 
 ## `.signature-input__label`
 
-Targets signature input [label text]($w/signatureinput/label).
+Targets signature input [label text]($w/signature-input/label).
 For example:
 
 ```css

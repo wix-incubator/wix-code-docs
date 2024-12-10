@@ -2,7 +2,7 @@
 
 # Radio Button Group CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `RadioButtonGroup` elements with CSS.
@@ -36,7 +36,7 @@ For example:
 
 ## `.radio-button-group__label`
 
-Targets radio button group [label text]($w/radiobuttongroup/label).
+Targets radio button group [label text]($w/radio-button-group/label).
 For example:
 
 ```css
@@ -50,7 +50,7 @@ For example:
 
 ## `.radio-button-group__option`
 
-Targets radio button group [options]($w/radiobuttongroup/options).
+Targets radio button group [options]($w/radio-button-group/options).
 For example:
 
 ```css

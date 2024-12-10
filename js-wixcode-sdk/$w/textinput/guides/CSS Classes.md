@@ -1,6 +1,8 @@
+<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
+
 # Text Input CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `TextInput` elements with CSS.
@@ -19,26 +21,26 @@ select elements with the documented class names only.
 
 </blockquote>
 
-## `text-input`
+## `.text-input`
 
 Targets text input elements.
 For example:
 
 ```css
-text-input {
+.text-input {
   width: 500px;
   display: flex;
   flex-direction: row;
 }
 ```
 
-## `text-input__label`
+## `.text-input__label`
 
-Targets text input [label text]($w/textinput/label).
+Targets text input [label text]($w/text-input/label).
 For example:
 
 ```css
-text-input__label {
+.text-input__label {
   font-family: sans-serif;
   font-weight: 700;
   text-transform: lowercase;
@@ -46,13 +48,13 @@ text-input__label {
 }
 ```
 
-## `text-input__input`
+## `.text-input__input`
 
 Targets text input boxes.
 For example:
 
 ```css
-text-input__input {
+.text-input__input {
   border: none;
   border-bottom: 2px solid #840292;
   background-color: #dfd2f4;

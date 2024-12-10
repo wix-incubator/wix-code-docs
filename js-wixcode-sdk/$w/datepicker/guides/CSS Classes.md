@@ -2,7 +2,7 @@
 
 # Date Picker CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `DatePicker` elements with CSS.
@@ -35,7 +35,7 @@ For example:
 
 ## `.date-picker__label`
 
-Targets date picker [label text]($w/datepicker/label).
+Targets date picker [label text]($w/date-picker/label).
 For example:
 
 ```css

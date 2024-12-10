@@ -18,23 +18,17 @@ The Site Properties API
 holds all the public information about the site and business in a single place,
 including profile, contact details, schedule information, and consent policy.
 
-You can manage your site properties
-using the [Business Info][dashoard-business-info] page in the site dashbaord.
-
 The Site Properties API allows you to:
 
 - Read all site properties.
 - Manage your business contact details, business schedule,
   region and locale settings, and default consent policy for visitors.
 
-For more information about managing your site properties,
-see [Adding Your Site's Business Information][kb-adding-business-info].
-
 To use the Site Properties API,
-import `{ properties }` from wix-business-tools.v2:
+import `{ siteProperties }` from `wix-business-tools.v2`:
 
 ```js
-import { properties } from 'wix-business-tools.v2';
+import { siteProperties } from 'wix-business-tools.v2';
 ```
 
 ## About consent policy
@@ -71,6 +65,3 @@ For more information about the consent policy process, see the following:
 - [Displaying a Cookie Banner On Your Site](https://support.wix.com/en/article/displaying-a-cookie-banner-on-your-site)
 - [Adding a "Do Not Sell Data" Link to Your Wix Site](https://support.wix.com/en/article/adding-a-do-not-sell-data-link-to-your-wix-site)
 - [Important Information About Editor Elements - Third Party Apps](https://support.wix.com/en/article/important-information-about-editor-elements-third-party-apps-custom-code-and-the-cookie-banner#third-party-apps)
-
-[dashboard-business-info]: https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fsettings/business-info
-[kb-adding-business-info]: https://support.wix.com/en/article/adding-your-sites-business-information

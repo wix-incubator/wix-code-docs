@@ -2,7 +2,7 @@
 
 # Text Box CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `TextBox` elements with CSS.
@@ -35,7 +35,7 @@ For example:
 
 ## `.text-box__label`
 
-Targets text box [label text]($w/textbox/label).
+Targets text box [label text]($w/text-box/label).
 For example:
 
 ```css

@@ -8,45 +8,212 @@
   "docs":
     { "summary": "The wix-dashboard module contains functionality for interacting with your site's dashboard in the code for dashboard pages.",
       "description":
-        [ "The Wix Dashboard API allows the code in [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages) to interact with the Wix dashboard enviroment.",
+        [ "The Wix Dashboard API allows the code for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages) to interact with the Wix dashboard environment.",
+          "",
           "",
           "Using the module you can:",
           "- Navigate users to other pages in the dashboard.",
-          "- Display toast notifications at the top of the dashboard.  ",
+          "- Display toast notifications at the top of the dashboard.",
           "  ![Toast notification](/images/toast_example.png \"Toast notification\")",
-          "<!-- Retrieve data about changes to the dashboard's state and use it to update your page in real time. -->",
+          "- Retrieve data about changes to the dashboard's state and use it to update your page in real time.",
+          "- Request user confirmation before they leave the page.",
+          "- Set the page title in the browser tab.",
           "",
           "To use the Wix Dashboard API, import the applicable function from `wix-dashboard`:",
           "",
           "```js",
           "import { <function> } from 'wix-dashboard';",
           "```",
+          "",
           "## Before you begin",
-          "It's important to note that the Wix Dashboard API can only be used in code running on dashboard pages. The functions in this API don't work in backend code or on any other pages on your site." ],
+          "It's important to note that the Wix Dashboard API can only be used in code running on dashboard pages. The functions in this API don't work in backend code or on any other pages on your site.",
+          "",
+          "## Dashboard permissions",
+          "",
+          "When you call Wix APIs from your dashboard page code, you need to keep in mind which permissions are available to your code. These permissions are different for dashboard pages created in the Editor and pages created with Wix Blocks.",
+          "",
+          "### Pages created in the Editor",
+          "",
+          "Permissions for code running on dashboard pages created in the Editor are scoped to the currently logged-in user. This means that if your code makes calls to APIs that the user does not have permissions to access, those calls will fail.",
+          "",
+          "For example, your dashboard page code may make a call to the [`stores` API](https://dev.wix.com/docs/velo/api-reference/wix-stores-v2/products/introduction) to add products to the site's store. However, if the user accessing the page has a [role](https://support.wix.com/en/article/roles-permissions-overview) that doesn't allow adding products, those API calls will fail.",
+          "",
+          "",
+          "### Pages created with Wix Blocks",
+          "",
+          "Dashboard pages created with Wix Blocks are always part of an [app](https://dev.wix.com/docs/build-an-app/develop-your-app/frameworks/wix-blocks/getting-started-with-blocks/welcome-to-wix-blocks). The code on these pages can access APIs with the permissions of the currently logged-in user, but only if the app has also been granted those permissions.",
+          "",
+          "![Dashboard Permissions](../assets/images/dashboard-permissions.png)",
+          "",
+          "For example, if your app has permissions to add products to a store, but the current user does not, your app will not be able to use the [`stores` API](https://dev.wix.com/docs/velo/api-reference/wix-stores-v2/products/introduction) to add products to the store. Conversely, if the current user has permissions to add products to a store, but your app does not, your app will not be able to add products to the store. The only way your app can add products to a store is if both your app and the current user have permissions to do so." ],
       "links": [],
       "examples": [],
       "extra":
         {  } },
   "properties": [],
   "operations":
-    [ { "name": "navigate",
+    [ { "name": "addSitePlugin",
         "labels": [],
         "nameParams": [],
         "params":
-          [ { "name": "pageId",
+          [ { "name": "pluginId",
               "type": "string",
-              "doc": "ID of the page to navigate to. Use the [Dashboard Page IDs](#dashboard-page-ids) table to find the appropriate ID." } ],
+              "doc": "ID of your site plugin, which you can find in your app's dashboard, in the site plugin extension's settings." },
+            { "name": "options",
+              "type": "wix-dashboard.AddSitePluginOptions",
+              "doc": "Options to use when adding a site plugin." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "void" ] },
+            "doc": "Fulfilled - when the plugin is added to the site." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "<blockquote class=\"important\">\n\n__Important:__\n\nThis API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. \n\n</blockquote>\n\nAdds a site plugin to one of the slots supported in an app created by Wix. You can specify a single slot in which you want to add the plugin, or add the plugin to one of the available slots based on a list of prioritized slots that you configure in the plugin's installation settings in your [app's dashboard](https://manage.wix.com/studio/custom-apps).",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "The `addSitePlugin()` function returns a Promise that resolves when the plugin is added to the site.",
+                "",
+                "> **Note:** To use this function, Your app must have a site plugin extension. Learn more about [site plugins](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/about-site-plugin-extensions)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Add a site plugin to a specific slot",
+                  "body":
+                    [ "import { addSitePlugin } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "const pluginId = '975bffb7-3c04-42cc-9840-3d48c24e73d5';",
+                      "const pluginPlacement = {",
+                      "    appDefinitionId: '13d21c63-b5ec-5912-8397-c3a5ddb27a97',",
+                      "    widgetId: 'a91a0543-d4bd-4e6b-b315-9410aa27bcde',",
+                      "    slotId: 'slot1',",
+                      "};",
+                      "",
+                      "addSitePlugin(pluginId, { placement: pluginPlacement })",
+                      "  .then(() => {",
+                      "    console.log('Plugin added successfully');",
+                      "  })",
+                      "  .catch(error => {",
+                      "    console.error('Error adding plugin:', error);",
+                      "  });" ],
+                  "extra":
+                    {  } },
+                { "title": "Add a site plugin without specifying a slot",
+                  "body":
+                    [ "import { addSitePlugin } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "const pluginId = '975bffb7-3c04-42cc-9840-3d48c24e73d5';",
+                      "",
+                      "addSitePlugin(pluginId, {})",
+                      "  .then(() => {",
+                      "    console.log('Plugin added successfully');",
+                      "  })",
+                      "  .catch(error => {",
+                      "    console.error('Error adding plugin:', error);",
+                      "  });" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "closeModal",
+        "labels":
+          [ "removed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "closeData",
+              "type": "wix-dashboard.Serializable",
+              "doc": "Data to pass to the modal's opener. This data is returned by [`openModal`](#openmodal) once the modal is closed. It must be Serializable data, which means it can be cloned using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm). For example, you cannot pass function callbacks in this parameter.",
+              "optional": true } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 28,
+              "filename": "modal.js" } ],
+        "docs":
+          { "summary": "Closes the currently open modal.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Close a modal",
+                  "body":
+                    [ "import { closeModal } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "closeModal({ message: 'The modal is closed!' });" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "getPageUrl",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "destination",
+              "type": "wix-dashboard.Destination",
+              "doc": "URL destination details." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "string" ] },
+            "doc": "Fulfilled - The URL of the dashboard page." },
+        "locations":
+          [ { "lineno": 19,
+              "filename": "navigation.js" } ],
+        "docs":
+          { "summary": "Gets the full URL for a dashboard page.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Get the URL of the dashboard home page",
+                  "body":
+                    [ "import { getPageUrl } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "console.log('Home page url is:', await getPageUrl({pageId: '2e96bad1-df32-47b6-942f-e3ecabd74e57'}));" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "navigate",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "destination",
+              "type": "wix-dashboard.Destination",
+              "doc": "Destination to navigate to." } ],
         "ret":
           { "type": "void" },
         "locations":
           [ { "lineno": 1,
-              "filename": "navigate.js" } ],
+              "filename": "navigation.js" } ],
         "docs":
           { "summary": "Navigates the user to another page in the dashboard.",
             "description":
-              [ "> This function can only be used in page code files for [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages).",
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
-                "If an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard." ],
+                "You can identify the page to navigate to using its [page ID](#dashboard-page-ids).",
+                "If a `destination` object with an invalid `pageId` value is passed to this function, a **Page Not Found** message is displayed in the dashboard.",
+                "",
+                ">**Note:** Currently, you can only use `navigate()` to navigate to dashboard pages created in the [Wix Dev Center](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-extensions/dashboard-page#create-a-wix-dashboard) or with the [Wix CLI](https://dev.wix.com/docs/build-apps/developer-tools/cli/get-started/about-the-wix-cli-for-apps). ",
+                "You can't use it to navigate to pages created with [Wix Blocks](https://dev.wix.com/docs/build-apps/develop-your-app/frameworks/wix-blocks/about-wix-blocks) or to [dashboard pages created with the Wix Editor](https://dev.wix.com/docs/develop-websites/articles/coding-with-velo/frontend-code/dashboard-admin-pages/working-with-dashboard-pages)." ],
             "links": [],
             "examples":
               [ { "title": "Navigate to the dashboard home page",
@@ -55,7 +222,307 @@
                       "",
                       "// ...",
                       "",
-                      "navigate('home');" ],
+                      "navigate({pageId: '2e96bad1-df32-47b6-942f-e3ecabd74e57'});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "observeState",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "observer",
+              "type": "wix-dashboard.observeStateCallback",
+              "doc": "Callback function for receiving state data." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "summary": "Defines a callback function that receives changes to the state of a dashboard page's environment.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "Use the data passed to `observeState()`'s  callback function to dynamically update a dashboard page's content.",
+                "",
+                "The callback function passed to `observeState()` is triggered when the dashboard page is initialized and every time it's updated." ],
+            "links": [],
+            "examples":
+              [ { "title": "Receive state data and log it to the console",
+                  "body":
+                    [ "import { observeState } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "observeState((pageParams, environmentState) => {",
+                      "  console.log('custom param', pageParams.customParam);",
+                      "  console.log('locale', environmentState.locale);",
+                      "});" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "onBeforeUnload",
+        "labels":
+          [ "changed" ],
+        "nameParams": [],
+        "params":
+          [ { "name": "callback",
+              "type": "wix-dashboard.onBeforeUnloadCallback",
+              "doc": "Callback function to call when the `beforeunload` event fires. The function receives an `event` object as an argument." } ],
+        "ret":
+          { "type": "wix-dashboard.onBeforeUnloadReturn" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "summary": "Registers a [`beforeunload` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) handler for a dashboard page.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "`onBeforeUnload()` accepts a callback that's triggered when a site builder is about to navigate away from a dashboard page or when the browsing context of an app is being unloaded. For example, this can happen when the site builder selects another page from the dashboard's sidebar.",
+                "",
+                " The event object passed to the callback function contains a function called `preventDefault()`. If the callback calls `preventDefault()`, navigation away from the page or other context unloading is paused. A dialog is displayed in the dashboard warning the site builder that there may be unsaved data. The site builder can then choose to cancel and stay in the current context or proceed.",
+                "",
+                "> **Notes:** ",
+                "> * The `beforeunload` event does not fire when a user closes the browser or refreshes the page.",
+                "> * You should not assume that the `beforeunload` event will always fire or that the confirmation dialog will always be presented. These behaviors vary depending on the site builder's browser." ],
+            "links": [],
+            "examples":
+              [ { "title": "Ask for confirmation before unloading unsaved data",
+                  "body":
+                    [ "import { onBeforeUnload } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "const { remove } = onBeforeUnload((event) => {",
+                      "  // Check if there is unsaved data on the page",
+                      "  if (unsavedPageData) {",
+                      "    event.preventDefault();",
+                      "  }",
+                      "});",
+                      "",
+                      "// ...",
+                      "",
+                      "// Remove the onBeforeUnload event handler",
+                      "remove();" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "openMediaManager",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "options",
+              "type": "wix-dashboard.OpenMediaManagerOptions",
+              "doc": "Options for the Media Manager." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "wix-dashboard.openMediaManagerReturn" ] },
+            "doc": "Fulfilled - An object containing an array of file descriptors for the selected media files." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "summary": "<blockquote class=\"important\">\n\n__Important:__\n\nThis API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. \n\n</blockquote>\n\nOpens the Wix Media Manager in a modal.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "The Media Manager allows a site contributor to select one or more of the site's media files. ",
+                "",
+                "The `openMediaManager()` function returns a promise that resolves to an object containing an array of file descriptors for the selected media files." ],
+            "links": [],
+            "examples":
+              [ { "title": "Open a media manager modal",
+                  "body":
+                    [ "import { openMediaManager } from 'wix-dashboard';",
+                      "",
+                      "/* Sample options value:",
+                      " * {",
+                      " *   multiSelect: true,",
+                      " *   category: 'IMAGE'",
+                      " * }",
+                      " */",
+                      "",
+                      "openMediaManager(options)",
+                      "  .then((fileDescriptors) => {",
+                      "    const firstId = fileDescriptors.items[0]._id;",
+                      "    const firstDisplayname = fileDescriptors.items[0].displayName;",
+                      "",
+                      "    console.log('Success! Retrieved these fileDescriptors:', fileDescriptors);",
+                      "    return fileDescriptors;",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* Promise resolves to:",
+                      " * [",
+                      " *   {",
+                      " *    \"_createdDate\": \"2023-07-23T10:33:00.000Z\",",
+                      " *    \"_id\": \"w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\",",
+                      " *    \"_updatedDate\": \"2023-07-23T10:33:00.000Z\",",
+                      " *    \"displayName\": \"example.jpg\",",
+                      " *    \"hash\": \"x5bq2o4p8fj68xqt25v49wdnasys04xe\",",
+                      " *    \"labels\": [],",
+                      " *    \"media\": {",
+                      " *      \"image\": {",
+                      " *        \"faces\": [],",
+                      " *        \"image\": \"wix:image://v1/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg/example.jpg\"",
+                      " *      }",
+                      " *    },",
+                      " *    \"mediaType\": \"IMAGE\",",
+                      " *    \"operationStatus\": \"READY\",",
+                      " *    \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+                      " *    \"private\": false,",
+                      " *    \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+                      " *    \"sizeInBytes\": \"47177\",",
+                      " *    \"sourceUrl\": \"https://example.org/filename.jpg\",",
+                      " *    \"state\": \"OK\",",
+                      " *    \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\",",
+                      " *    \"url\": \"https://static.wixstatic.com/media/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\"",
+                      " *   }",
+                      " * ...",
+                      " * ]",
+                      " */" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "openModal",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "modalId",
+              "type": "string",
+              "doc": "ID of the dashboard modal extension to open." },
+            { "name": "modalParams",
+              "type": "Object",
+              "doc": "Custom data to pass into the extension. The extension can access this data using [`observeState()`](#observestate).",
+              "optional": true } ],
+        "ret":
+          { "type": "wix-dashboard.OpenModalReturn" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "modal.js" } ],
+        "docs":
+          { "summary": "Opens a [dashboard modal extension](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/dashboard-extensions/dashboard-modals/about-dashboard-modals).",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "",
+                "The `openModal()` function returns an object with a property called `modalClosed`. This property is a promise that resolves to the data passed to [`closeModal()`](#closeModal) when the modal is closed.",
+                "",
+                "> **Note:** Before you use this function, you need a dashboard modal extension. Learn more about [implementing dashboard modal extensions](https://dev.wix.com/docs/build-apps/develop-your-app/frameworks/wix-cli/supported-extensions/dashboard-extensions/dashboard-modals/add-dashboard-modal-extensions-with-the-cli)." ],
+            "links": [],
+            "examples":
+              [ { "title": "Open a modal and log the data returned when it's closed",
+                  "body":
+                    [ "import { openModal } from 'wix-dashboard';",
+                      "",
+                      "/* Sample modalID: '1d52d058-0392-44fa-bd64-ed09275a6fcc' */",
+                      "",
+                      "const { modalClosed } = openModal('myModalId')",
+                      "",
+                      "modalClosed",
+                      "  .then((closeData) => {",
+                      "        console.log('The modal was closed and returned: ', closeData);",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* The value of `modalClosed` resolves to an object containing the data passed in when the modal is closed. */" ],
+                  "extra":
+                    {  } },
+                { "title": "Pass data to a modal extension",
+                  "body":
+                    [ "import { openModal } from 'wix-dashboard';",
+                      "",
+                      "/* Sample modalID value: '1d52d058-0392-44fa-bd64-ed09275a6fcc' ",
+                      " * Sample modalParams value",
+                      " * {",
+                      " *   firstName: 'Name'",
+                      " * }",
+                      " */",
+                      "",
+                      "const { modalClosed } = client.dashboard.openModal('myModalId', myModalParams)",
+                      "",
+                      "modalClosed",
+                      "  .then((closeData) => {",
+                      "    console.log('The modal was closed and returned: ', closeData);",
+                      "  })",
+                      "  .catch((error) => {",
+                      "    console.error(error);",
+                      "    // Handle the error",
+                      "  });",
+                      "",
+                      "/* The value of `modalClosed` resolves to an object containing the data passed in when the modal is closed. */" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "setPageTitle",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "pageTitle",
+              "type": "string",
+              "doc": "Page title to set in the browser tab." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "setPageTitle.js" } ],
+        "docs":
+          { "summary": "Sets the title of the current dashboard page in the browser tab.",
+            "description":
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+                "",
+                "Call the `setPageTitle()` function whenever the page reloads, or to apply a new title when updating a page's content dynamically, without reloading. ",
+                "",
+                "Set the page title to `null` to reset the title to the default dashboard page title." ],
+            "links": [],
+            "examples":
+              [ { "title": "Set the title for a page",
+                  "body":
+                    [ "import { setPageTitle } from 'wix-dashboard';",
+                      "",
+                      "// ...",
+                      "",
+                      "setPageTitle('Product: Green apples');" ],
+                  "extra":
+                    {  } },
+                { "title": "Set the page title to a product ID included in the URL's query parameters",
+                  "body":
+                    [ "import { navigate, observeState, setPageTitle } from 'wix-dashboard';",
+                      "",
+                      "observeState((_, environmentState) => {",
+                      "  // Use a regular expression to capture the productId value.",
+                      "  const queryParams = environmentState.pageLocation.search;  ",
+                      "  const productIdMatch = queryParams.match(/[?&]productId=([^&]+)/); ",
+                      "  let productId; ",
+                      "  if (productIdMatch) {",
+                      "    productId = productIdMatch[1]; ",
+                      "  }",
+                      "  setPageTitle(`Product: ${productId}`);",
+                      "});" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -63,8 +530,7 @@
         "extra":
           {  } },
       { "name": "showToast",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "config",
@@ -78,7 +544,7 @@
         "docs":
           { "summary": "Displays a toast notification at the top of a dashboard page.\n\n![Toast notification](/images/toast_example.png \"Toast notification\")",
             "description":
-              [ "> This function can only be used in page code files for [dashboard pages](https://support.wix.com/en/article/velo-working-with-dashboard-pages).",
+              [ "> This function can only be used in page code files for dashboard pages created in the [Wix Editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
                 "The `showToast()` function returns an object containing a key called `remove`. ",
                 "The value of `remove` is a function that removes the toast from the page.",
@@ -89,7 +555,7 @@
                 "* Create a clickable call-to-action that displays in the toast.",
                 "",
                 "When showing multiple toasts, requests to display toasts may be queued and the toast may not be displayed immediately. Toasts with a higher",
-                "priority level are displayed first. A toasts priority is defined using the `config.priority` parameter. Toasts with the same priority level are displayed in the order",
+                "priority level are displayed first. A toast's priority is defined using the `config.priority` parameter. Toasts with the same priority level are displayed in the order",
                 "they're requested. ",
                 "",
                 "> **Note:** When the timeout parameter is set to `\"none\"` the toast is rendered into the page layout and pushes the rest of the page down. When timeout is set to `\"normal\"`, the toast appears on top of other content on the page." ],
@@ -173,9 +639,537 @@
               {  } },
         "extra":
           {  } } ],
-  "callbacks": [],
+  "callbacks":
+    [ { "name": "observeStateCallback",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "pageParams",
+              "type": "Object",
+              "doc": "Custom parameters passed to the dashboard page." },
+            { "name": "environmentState",
+              "type": "wix-dashboard.EnvironmentState",
+              "doc": "Data about the dashboard's environment." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 18,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } },
+      { "name": "onBeforeUnloadCallback",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "event",
+              "type": "wix-dashboard.onBeforeUnloadEvent",
+              "doc": "Event object. Contains a function called `preventDefault()`." } ],
+        "ret":
+          { "type": "void" },
+        "locations":
+          [ { "lineno": 28,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
   "messages":
-    [ { "name": "ToastAction",
+    [ { "name": "AddSitePluginOptions",
+        "locations":
+          [ { "lineno": 31,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "An object representing the options to use when adding a site plugin.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "placement",
+              "type": "wix-dashboard.PluginPlacement",
+              "doc": "Optional. Details of the slot in which you want to add the plugin. You can find this information in the articles about the [slots that are available on Wix app pages](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/supported-wix-app-pages/about-slots). If you do not include this property,  your plugin is placed in the first available slot according to the order you defined in the plugin's installation settings in your app's dashboard. If that slot is occupied, it is added in the next available slot, and so on. If there are no available slots, it is not added.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Archive",
+        "locations":
+          [ { "lineno": 90,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "_id",
+              "type": "string",
+              "doc": "WixMedia ID." },
+            { "name": "filename",
+              "type": "string",
+              "doc": "Archive filename." },
+            { "name": "sizeInBytes",
+              "type": "string",
+              "doc": "Archive size in bytes." },
+            { "name": "url",
+              "type": "string",
+              "doc": "Archive URL." },
+            { "name": "urlExpirationDate",
+              "type": "Date",
+              "doc": "Archive URL expiration date (when relevant)." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "AudioV2",
+        "locations":
+          [ { "lineno": 99,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "_id",
+              "type": "string",
+              "doc": "WixMedia ID." },
+            { "name": "assets",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "Audio formats available for this file." },
+            { "name": "bitrate",
+              "type": "number",
+              "doc": "Audio bitrate." },
+            { "name": "duration",
+              "type": "number",
+              "doc": "Audio duration in seconds." },
+            { "name": "format",
+              "type": "string",
+              "doc": "Audio format." },
+            { "name": "sizeInBytes",
+              "type": "string",
+              "doc": "Audio size in bytes." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Color",
+        "locations":
+          [ { "lineno": 135,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "hex",
+              "type": "string",
+              "doc": "HEX code." },
+            { "name": "rgb",
+              "type": "wix-dashboard.ColorRGB",
+              "doc": "RGB color." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ColorRGB",
+        "locations":
+          [ { "lineno": 141,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "b",
+              "type": "number",
+              "doc": "Blue channel." },
+            { "name": "g",
+              "type": "number",
+              "doc": "Green channel." },
+            { "name": "r",
+              "type": "number",
+              "doc": "Red channel." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Colors",
+        "locations":
+          [ { "lineno": 129,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "palette",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "wix-dashboard.Color" ] },
+              "doc": "Color palette of the image." },
+            { "name": "prominent",
+              "type": "wix-dashboard.Color",
+              "doc": "Main color of the image." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Destination",
+        "locations":
+          [ { "lineno": 34,
+              "filename": "navigation.js" } ],
+        "docs":
+          { "summary": "Destination Object",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "pageId",
+              "type": "string",
+              "doc": "ID of the page to link to. See [Dashboard Page IDs](#dashboard-page-ids) to find the appropriate ID." },
+            { "name": "relativeUrl",
+              "type": "string",
+              "doc": "URL segment to append to the base URL of the selected page. Can include path segments, a query string, and a fragment identifier.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Document",
+        "locations":
+          [ { "lineno": 70,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "document",
+              "type": "string",
+              "doc": "Information about the document." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "EnvironmentState",
+        "locations":
+          [ { "lineno": 24,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "locale",
+              "type": "string",
+              "doc": "User's locale." },
+            { "name": "pageLocation",
+              "type": "wix-dashboard.PageLocation",
+              "doc": "Information about the currently rendered page location." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "FaceRecognition",
+        "locations":
+          [ { "lineno": 148,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "confidence",
+              "type": "number",
+              "doc": "The accuracy percentage of the face recognition. The likelihood that a face is detected." },
+            { "name": "height",
+              "type": "number",
+              "doc": "Face pixel height." },
+            { "name": "width",
+              "type": "number",
+              "doc": "Face pixel width." },
+            { "name": "x",
+              "type": "number",
+              "doc": "Top left x pixel coordinate of the face." },
+            { "name": "y",
+              "type": "number",
+              "doc": "Top left y pixel coordinate of the face." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "FileDescriptor",
+        "locations":
+          [ { "lineno": 43,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "_createdDate",
+              "type": "Date",
+              "doc": "Date and time the file was created." },
+            { "name": "_id",
+              "type": "string",
+              "doc": "File ID. Generated when a file is uploaded to the Media Manager." },
+            { "name": "_updatedDate",
+              "type": "Date",
+              "doc": "Date and time the file was updated." },
+            { "name": "displayName",
+              "type": "string",
+              "doc": "File name as it appears in the Media Manager." },
+            { "name": "hash",
+              "type": "string",
+              "doc": "File hash." },
+            { "name": "labels",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "Labels assigned to media files that describe and categorize them. Provided by the user, or generated by Google Vision API for images." },
+            { "name": "media",
+              "type":
+                [ "wix-dashboard.Archive",
+                  "wix-dashboard.AudioV2",
+                  "wix-dashboard.Document",
+                  "wix-dashboard.Image",
+                  "wix-dashboard.Model3D",
+                  "wix-dashboard.Vector",
+                  "wix-dashboard.Video" ],
+              "doc": "Media file content." },
+            { "name": "mediaType",
+              "type": "string",
+              "doc": "Media file type.\n\nSupported values: `\"IMAGE\"`, `\"VIDEO\"`, `\"AUDIO\"`, `\"DOCUMENT\"`, `\"VECTOR\"`, `\"ARCHIVE\"`, `\"MODEL3D\"`" },
+            { "name": "operationStatus",
+              "type": "string",
+              "doc": "Status of the file that was uploaded. \n\nSupported values: `\"FAILED\"`, `\"READY\"`, `\"PENDING\"`" },
+            { "name": "parentFolderId",
+              "type": "string",
+              "doc": "ID of the file's parent folder." },
+            { "name": "private",
+              "type": "boolean",
+              "doc": "Whether the link to the uploaded file is public or private. Private links require a token." },
+            { "name": "siteId",
+              "type": "string",
+              "doc": "The Wix site ID where the media file is stored." },
+            { "name": "sizeInBytes",
+              "type": "string",
+              "doc": "Size of the uploaded file in bytes." },
+            { "name": "sourceUrl",
+              "type": "string",
+              "doc": "URL where the file was uploaded from." },
+            { "name": "state",
+              "type": "string",
+              "doc": "State of the file. \n\nSupported values: `\"OK\"`, `\"DELETED\"`" },
+            { "name": "thumbnailUrl",
+              "type": "string",
+              "doc": "URL of the file's thumbnail." },
+            { "name": "url",
+              "type": "string",
+              "doc": "Static URL of the file." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Image",
+        "locations":
+          [ { "lineno": 80,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "image",
+              "type": "wix-dashboard.ImageMedia",
+              "doc": "Information about the image." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ImageMedia",
+        "locations":
+          [ { "lineno": 120,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "caption",
+              "type": "string",
+              "doc": "Optional, An AI generated description of the image." },
+            { "name": "colors",
+              "type": "wix-dashboard.Colors",
+              "doc": "Image colors." },
+            { "name": "faces",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "wix-dashboard.FaceRecognition" ] },
+              "doc": "Information about faces in the image. Use to crop images without cutting out faces." },
+            { "name": "image",
+              "type": "string",
+              "doc": "Image data." },
+            { "name": "previewImage",
+              "type": "string",
+              "doc": "Information about the image preview. You can use this to display a preview for private images." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Model3D",
+        "locations":
+          [ { "lineno": 109,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "_id",
+              "type": "string",
+              "doc": "WixMedia 3D ID." },
+            { "name": "altText",
+              "type": "string",
+              "doc": "3D alt text." },
+            { "name": "filename",
+              "type": "string",
+              "doc": "3D filename." },
+            { "name": "sizeInBytes",
+              "type": "string",
+              "doc": "3D size in bytes." },
+            { "name": "thumbnail",
+              "type": "string",
+              "doc": "3D thumbnail Image." },
+            { "name": "url",
+              "type": "string",
+              "doc": "3D URL." },
+            { "name": "urlExpirationDate",
+              "type": "Date",
+              "doc": "3D URL expiration date (when relevant)." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "OpenMediaManagerOptions",
+        "locations":
+          [ { "lineno": 27,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "category",
+              "type": "string",
+              "doc": "The type of media files to display in the modal. If this value is empty, all media types are displayed. \n\nSupported values: `\"IMAGE\"`, `\"VIDEO\"`, `\"MUSIC\"`, `\"DOCUMENT\"`, `\"VECTOR_ART\"`, `\"3D_IMAGE\"`\n\nBy default, all the categories except `\"3D_IMAGE\"` are displayed.",
+              "optional": true },
+            { "name": "multiSelect",
+              "type": "boolean",
+              "doc": "Whether multiple files can be selected.<br>Default: `false`",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "OpenModalReturn",
+        "locations":
+          [ { "lineno": 22,
+              "filename": "modal.js" } ],
+        "docs":
+          { "summary": "Open Modal Return Object",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "modalClosed",
+              "type":
+                { "name": "Promise",
+                  "typeParams":
+                    [ "wix-dashboard.Serializable" ] },
+              "doc": "Resolves to the data passed to [`closeModal()`](#closeModal) when the modal is closed." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PageLocation",
+        "locations":
+          [ { "lineno": 30,
+              "filename": "observeState.js" } ],
+        "docs":
+          { "summary": "PageLocation Object",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "pageId",
+              "type": "string",
+              "doc": "ID of the rendered page." },
+            { "name": "pathname",
+              "type": "string",
+              "doc": "Any parts of the current URL path appended to the page's full URL." },
+            { "name": "search",
+              "type": "string",
+              "doc": "The current URL's query string.",
+              "optional": true },
+            { "name": "hash",
+              "type": "string",
+              "doc": "The current URL's fragment.",
+              "optional": true } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "PluginPlacement",
+        "locations":
+          [ { "lineno": 38,
+              "filename": "sitePlugins.js" } ],
+        "docs":
+          { "summary": "An object representing a slot in which to add a plugin.",
+            "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "appDefinitionId",
+              "type": "string",
+              "doc": "ID of the Wix business solution to which you want to add your plugin." },
+            { "name": "widgetId",
+              "type": "string",
+              "doc": "ID of the host widget in which the slot is located." },
+            { "name": "slotId",
+              "type": "string",
+              "doc": "ID of the slot." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Serializable",
+        "locations":
+          [ { "lineno": 39,
+              "filename": "modal.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members": [],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "ToastAction",
         "locations":
           [ { "lineno": 65,
               "filename": "toast.js" } ],
@@ -219,7 +1213,7 @@
               "doc": "Text that appears in the toast." },
             { "name": "timeout",
               "type": "string",
-              "doc": "Whether the toast removes itself or not. \n\nOptions:  \n- `\"normal\"`: The toast removes itself after 6 seconds.\n- `\"none\"`: The toast doesn't remove itself.\n\nDefault: `\"normal\"`",
+              "doc": "Whether the toast removes itself. \n\nOptions:  \n- `\"normal\"`: The toast removes itself after 6 seconds.\n- `\"none\"`: The toast doesn't remove itself.\n\nDefault: `\"normal\"`",
               "optional": true },
             { "name": "type",
               "type": "string",
@@ -258,6 +1252,89 @@
           [ { "name": "remove",
               "type": "Function",
               "doc": "Removes the displayed toast." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Vector",
+        "locations":
+          [ { "lineno": 85,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "vector",
+              "type": "wix-dashboard.ImageMedia",
+              "doc": "Information about the vector." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "Video",
+        "locations":
+          [ { "lineno": 75,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "video",
+              "type": "string",
+              "doc": "Information about the video." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "onBeforeUnloadEvent",
+        "locations":
+          [ { "lineno": 33,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "preventDefault",
+              "type": "Function",
+              "doc": "Prevents the page from unloading. Opens a dialog with a warning that there may be unsaved data on the page." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "onBeforeUnloadReturn",
+        "locations":
+          [ { "lineno": 23,
+              "filename": "onBeforeUnload.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "remove",
+              "type": "Function",
+              "doc": "Removes the `onBeforeUnload` event handler." } ],
+        "extra":
+          {  },
+        "labels": [] },
+      { "name": "openMediaManagerReturn",
+        "locations":
+          [ { "lineno": 37,
+              "filename": "openMediaManager.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "items",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "wix-dashboard.FileDescriptor" ] },
+              "doc": "An array of file descriptors for the selected media files." } ],
         "extra":
           {  },
         "labels": [] } ],

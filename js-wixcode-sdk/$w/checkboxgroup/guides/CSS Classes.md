@@ -2,7 +2,7 @@
 
 # Checkbox Group CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `CheckboxGroup` elements with CSS.
@@ -35,7 +35,7 @@ For example:
 
 ## `.checkbox-group__label`
 
-Targets checkbox group [label text]($w/checkboxgroup/label).
+Targets checkbox group [label text]($w/checkbox-group/label).
 For example:
 
 ```css

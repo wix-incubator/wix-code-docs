@@ -2,7 +2,8 @@
   "memberOf": "wix-data",
   "mixes":
     [ "wix-data.WixDataFilter" ],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "query.js" },
@@ -193,7 +194,7 @@
                 "",
                 " If you have already run a query with [`find()`](#find), you can retrieve",
                 " the number of query results without calling `count()`. The [`find()`](#find)",
-                " function returns a Promise that resolves to a [`WixDataQueryResult`](wix-data.WixDataQueryResult)",
+                " function returns a Promise that resolves to a [`WixDataQueryResult`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query-result/introduction)",
                 " object, which has a `totalCount` property whose value is the number of results." ],
             "links": [],
             "examples":
@@ -358,14 +359,15 @@
         "extra":
           {  } },
       { "name": "distinct",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "propertyName",
               "type": "string",
               "doc": "The property whose value will be compared for distinct values." },
             { "name": "options",
-              "type": "wix-data.WixDataOptions",
+              "type": "wix-data.WixDataQueryOptions",
               "doc": "An object containing options to use when processing this operation.",
               "optional": true } ],
         "ret":
@@ -389,13 +391,14 @@
                 " Unlike `find()`, which returns all item objects that match the query, `distinct()` returns matching field values, and eliminates",
                 " duplicate field values from the query result. You cannot use `find()` and `distinct()` together.",
                 "",
-                " For an item to be resolved as distinct, only the specified field must be distinct. Other fields for that item in the",
-                " collection are not evaluated when resolving the promise.",
+                " For an item to be resolved as distinct, only the specified field must be distinct. Other fields for that item in the collection are not evaluated when resolving the promise.",
                 "",
                 " The Promise is rejected if `distinct()` is called with incorrect permissions or if any of the",
                 " functions used to refine the query is invalid.",
                 "",
-                " >**Note:** Only site visitors with [Data Read](https://support.wix.com/en/article/collection-permissions-an-overview#permissions) permissions can retrieve and view data. You can override the permissions by setting the `suppressAuth` option to `true`." ],
+                " > **Notes:**",
+                "> - Only site visitors with [Data Read](https://support.wix.com/en/article/collection-permissions-an-overview#permissions) permissions can retrieve and view data. You can override the permissions by setting the `suppressAuth` option to `true`.",
+                "- `distinct()` returns the full distinct items that match the query. To specify which fields to return for each retrieved item, use the `fields()` method." ],
             "links": [],
             "examples":
               [ { "title": "Get distinct values from a query",
@@ -525,13 +528,13 @@
         "params":
           [ { "name": "propertyName",
               "type": "string",
-              "doc": "Properties to return. To return multiple properties, \npass properties as additional arguments.",
+              "doc": "Properties to return. To return multiple properties,\npass properties as additional arguments.",
               "spread": true } ],
         "ret":
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the query." },
         "locations":
-          [ { "lineno": 117,
+          [ { "lineno": 118,
               "filename": "query.js" } ],
         "docs":
           { "summary": "Lists the fields to return in a query's results.",
@@ -592,11 +595,12 @@
         "extra":
           {  } },
       { "name": "find",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "options",
-              "type": "wix-data.WixDataOptions",
+              "type": "wix-data.WixDataQueryOptions",
               "doc": "An object containing options to use when processing this operation.",
               "optional": true } ],
         "ret":
@@ -606,7 +610,7 @@
                   [ "wix-data.WixDataQueryResult" ] },
             "doc": "Fulfilled - A Promise that resolves to the results of the query.\nRejected - Error that caused the query to fail." },
         "locations":
-          [ { "lineno": 141,
+          [ { "lineno": 142,
               "filename": "query.js" } ],
         "docs":
           { "summary": "Returns the items that match the query.",
@@ -618,16 +622,19 @@
                 "",
                 " Calling the `find()` function triggers the [`beforeQuery()`](wix-data.Hooks.html#beforeQuery)",
                 " and [`afterQuery()`](wix-data.Hooks.html#afterQuery) hooks if they have been defined.",
-                " If the query being run contains an [`include()`](#include), calling `find()`",
-                " triggers [`beforeQuery()`](wix-data.Hooks.html#beforeQuery) and",
-                " [`afterQuery()`](wix-data.Hooks.html#afterQuery) hooks for the referenced",
-                " collection as well.",
                 "",
-                " Use the `options` parameter to run `find()` without checking for permissions",
-                " or without its registered hooks.",
                 "",
-                " If you build a query and don't refine it with any `wixDataQuery` functions,",
-                " `find()` returns the entire collection." ],
+                " Use the `options` parameter to override default preferences:",
+                " + Override permission checks with `suppressAuth`.",
+                " + Ensure the most up-to-date data is retrieved with `consistentRead`.",
+                " + Prevent hooks from running with `suppressHooks`.",
+                " + Speed up execution with `omitTotalCount`, if you don't need a count of items matching the query.",
+                "",
+                " If you build a query and don't refine it with any `wixDataQuery` functions, `find()` returns the entire collection.",
+                "",
+                "> **Notes:**:",
+                "> - Calling `find()` triggers hooks for the specified collection only. It doesn’t trigger hooks for referenced collections.",
+                "> - `find()` returns the full items that match the query. To specify which fields to return for each retrieved item, use the `fields()` method." ],
             "links": [],
             "examples":
               [ { "title": "Perform a find on a query",
@@ -765,7 +772,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the query." },
         "locations":
-          [ { "lineno": 226,
+          [ { "lineno": 230,
               "filename": "query.js" } ],
         "docs":
           { "summary": "Includes referenced items for the specified properties in a query's results.",
@@ -802,10 +809,10 @@
                 "   [`queryReferenced()`](wix-data.html#queryReferenced) function.",
                 "",
                 "",
-                " For a discussion of when to use the similar [`queryReferenced()`](wix-data.html#queryReferenced) ",
+                " For a discussion of when to use the similar [`queryReferenced()`](wix-data.html#queryReferenced)",
                 " function and when to use `include()`, see [Querying Items that Reference Other Items](https://support.wix.com/en/article/including-referenced-data-when-filtering).",
                 "",
-                "  > **Notes:** ",
+                "  > **Notes:**",
                 "  > - Calling the `include()` function does not trigger any hooks.",
                 "  > - The `include()` function is not supported for Single Item Collections." ],
             "links": [],
@@ -954,7 +961,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 179,
+          [ { "lineno": 183,
               "filename": "query.js" } ],
         "docs":
           { "summary": "Limits the number of items the query returns.",
@@ -1072,7 +1079,7 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A `WixDataQuery` object representing the refined query." },
         "locations":
-          [ { "lineno": 205,
+          [ { "lineno": 209,
               "filename": "query.js" } ],
         "docs":
           { "summary": "Sets the number of items to skip before returning query results.",

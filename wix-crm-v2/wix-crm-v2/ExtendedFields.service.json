@@ -44,25 +44,56 @@
       "docs": {
         "summary": "Deletes an extended field.",
         "description": [
-          "The `deleteExtendedField()` function returns a Promise that resolves when the specified extended field is deleted.\n\nWhen an extended field is deleted, any contact data stored in the field is permanently deleted as well.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can delete extended fields.\n\nThis function is not a universal function and runs only on the backend."
+          "The `deleteExtendedField()` function returns a Promise that resolves when the specified extended field is deleted.\n\nWhen an extended field is deleted, any contact data stored in the field is permanently deleted as well.\n"
         ],
         "examples": [
           {
-            "title": "Delete an extended field ",
+            "title": "Delete an extended field (dashboard page code)",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "",
-              "export function myDeleteExtendedFieldFunction() {",
-              "  const key = 'custom.event-name';",
+              "/* Sample key value: 'custom.nickname' */",
               "",
-              "  return extendedFields.deleteExtendedField(key)",
-              "    .then(() => {",
-              "      console.log('Extended field deleted');",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}"
+              "export async function myDeleteExtendedFieldFunction(key) {",
+              "  ",
+              "  try {",
+              "    const extendedField = await extendedFields.deleteExtendedField(key);    ",
+              "    console.log('Extended field deleted.')",
+              " ",
+              "    return extendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Delete an extended field (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.nickname' */",
+              "",
+              "export const myDeleteExtendedFieldFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  ",
+              "  try {",
+              "    const elevatedDeleteExtendedField = elevate(extendedFields.deleteExtendedField);",
+              "    const extendedField = await elevatedDeleteExtendedField(key);    ",
+              "    console.log('Extended field deleted.')",
+              " ",
+              "    return extendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */"
             ]
           }
         ]
@@ -73,7 +104,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "deleteExtendedField"
+      "syntaxName": "deleteExtendedField",
+      "isAdminMethod": true
     },
     {
       "name": "findOrCreateExtendedField",
@@ -121,85 +153,162 @@
       "docs": {
         "summary": "Retrieves a custom field with a given name, or creates one if it doesn't exist.",
         "description": [
-          "The `findOrCreateExtendedField()` function returns a Promise that resolves when the specified custom field is found or created.\n\nSuccessful calls to `findOrCreateExtendedField()` always return an extended field, which can be passed to subsequent function calls.\n\nTo find an existing extended field without potentially creating a new one, use [`getExtendedField()`](#getextendedfield) or [`queryExtendedFields()`](#queryextendedfields).\n\n>**Note:** Only visitors with **Manage Contacts** permissions can find or create extended fields.\n\n\nThis function is not a universal function and runs only on the backend."
+          "The `findOrCreateExtendedField()` function returns a Promise that resolves when the specified custom field is found or created.\n\nSuccessful calls to `findOrCreateExtendedField()` always return an extended field, which can be passed to subsequent function calls.\n\nTo find an existing extended field without potentially creating a new one, use `getExtendedField()` or `queryExtendedFields()`.\n"
         ],
         "examples": [
           {
-            "title": "Create an extended field ",
+            "title": "Create an extended field (dashboard page code)",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "",
-              "export function myFindOrCreateExtendedFieldFunction() {",
-              "  const displayName = 'Last Contacted';",
-              "  const dataType = 'DATE';",
+              "/* Sample displayName value: ",
+              " *  ",
+              " *  'Age'",
+              " * ",
+              " * Sample dataType value: ",
+              " * ",
+              " *  'NUMBER'",
+              " */",
               "",
-              "  return extendedFields.findOrCreateExtendedField(displayName, dataType)",
-              "    .then((extendedField) => {",
-              "      return extendedField;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
+              "export async function myCreateExtendedFieldFunction(displayName, dataType) {",
+              "  ",
+              "  try {",
+              "    const newExtendedField = await extendedFields.findOrCreateExtendedField(displayName, dataType);    ",
+              "    console.log('Successfully created new extended field:', newExtendedField)",
+              " ",
+              "    return newExtendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
-              "/*",
-              " * Promise that resolves to:",
-              " *",
+              "/* Promise resolves to:",
               " * {",
               " *   \"field\": {",
-              " *     \"_createdDate\": \"2021-01-19T23:18:16.550Z\",",
-              " *     \"_updatedDate\": \"2021-01-19T23:18:16.550Z\"",
               " *     \"namespace\": \"custom\",",
-              " *     \"key\": \"custom.last-contacted\",",
-              " *     \"displayName\": \"Last Contacted\",",
-              " *     \"dataType\": \"DATE\",",
+              " *     \"key\": \"custom.age\",",
+              " *     \"displayName\": \"Age\",",
+              " *     \"dataType\": \"NUMBER\",",
               " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"ed349d8c-b2bc-46a4-80d8-7632c6f50b00\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_double_27\",",
+              " *     \"_createdDate\": \"2023-12-25T12:16:40.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:16:40.000Z\"",
               " *   },",
-              " *   \"newField\": true",
+              " *   \"newField\": false",
               " * }",
               " */"
             ]
           },
           {
-            "title": "Find an extended field ",
+            "title": "Create an extended field (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
               "",
-              "export function myFindOrCreateExtendedFieldFunction() {",
-              "    const displayName = 'Last Contacted';",
-              "    const dataType = 'DATE';",
+              "/* Sample displayName value: ",
+              " *  ",
+              " *  'Age'",
+              " * ",
+              " * Sample dataType value: ",
+              " * ",
+              " *  'NUMBER'",
+              " */",
               "",
-              "  return extendedFields.findOrCreateExtendedField(displayName, dataType)",
-              "    .then((extendedField) => {",
-              "      return extendedField;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}",
+              "export const myCreateExtendedFieldFunction = webMethod(Permissions.Anyone, async (displayName, dataType) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateExtendedField = elevate(extendedFields.findOrCreateExtendedField);",
+              "    const newExtendedField = await elevatedCreateExtendedField(displayName, dataType);    ",
+              "    console.log('Successfully created new extended field:', newExtendedField)",
+              " ",
+              "    return newExtendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
               "",
-              "/*",
-              " * Promise resolves to:",
-              " *",
+              "/* Promise resolves to:",
               " * {",
               " *   \"field\": {",
-              " *     \"_createdDate\": \"2021-01-19T23:18:17Z\",",
-              " *     \"_updatedDate\": \"2021-01-19T23:18:17Z\"",
               " *     \"namespace\": \"custom\",",
-              " *     \"key\": \"custom.last-contacted\",",
-              " *     \"displayName\": \"Last Contacted\",",
-              " *     \"dataType\": \"DATE\",",
+              " *     \"key\": \"custom.age\",",
+              " *     \"displayName\": \"Age\",",
+              " *     \"dataType\": \"NUMBER\",",
               " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"ed349d8c-b2bc-46a4-80d8-7632c6f50b00\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_double_27\",",
+              " *     \"_createdDate\": \"2023-12-25T12:16:40.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:16:40.000Z\"",
               " *   },",
               " *   \"newField\": false",
               " * }",
-              "*/"
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Find an extended field ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample displayName value: ",
+              " *  ",
+              " *  'Nickname'",
+              " * ",
+              " * Sample dataType value: ",
+              " * ",
+              " *  'TEXT'",
+              " */",
+              "",
+              "export const myFindExtendedFieldFunction = webMethod(Permissions.Anyone, async (displayName, dataType) => {",
+              "  ",
+              "  try {",
+              "    const elevatedFindExtendedField = elevate(extendedFields.findOrCreateExtendedField);",
+              "    const newExtendedField = await elevatedFindExtendedField(displayName, dataType);    ",
+              "    console.log('This extended field already exists.');",
+              " ",
+              "    return newExtendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " * {",
+              " *   \"field\": {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.nickname\",",
+              " *     \"displayName\": \"Nickname\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *     \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:22:25.000Z\"",
+              " *   },",
+              " *   \"newField\": false",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "syntaxName": "findOrCreateExtendedField"
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
+      "syntaxName": "findOrCreateExtendedField",
+      "isAdminMethod": true
     },
     {
       "name": "getExtendedField",
@@ -236,39 +345,106 @@
       "docs": {
         "summary": "Retrieves an extended field.",
         "description": [
-          "The `getExtendedField()` function returns a Promise that resolves when the extended field is retrieved.\n\n>**Note:** Only visitors with **Manage Contacts** permissions can retrieve extended fields.\n\nThis function is not a universal function and runs only on the backend."
+          "The `getExtendedField()` function returns a Promise that resolves when the extended field is retrieved.\n"
         ],
         "examples": [
           {
-            "title": "Get an extended field ",
+            "title": "Get a specified extended field (dashboard page code)",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "",
-              "export function myGetExtendedFieldFunction() {",
-              "  const key = 'custom.event-name';",
+              "/* Sample key value: 'custom.nickname' */",
               "",
-              "  return extendedFields.getExtendedField(key)",
-              "    .then((extendedField) => {",
-              "      return extendedField;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
+              "export async function myGetExtendedFieldFunction(key) {",
+              "  ",
+              "  try {",
+              "    const extendedField = await extendedFields.getExtendedField(key);    ",
+              "    console.log('Successfully retrieved extended field:', extendedField);",
+              " ",
+              "    return extendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
               "/*",
               " * Promise resolves to:",
-              " *",
               " * {",
-              " *   \"_createdDate\": \"2021-01-19T21:41:39Z\",",
-              " *   \"_updatedDate\": \"2021-01-19T21:41:39Z\"",
               " *   \"namespace\": \"custom\",",
-              " *   \"key\": \"custom.event-name\",",
-              " *   \"displayName\": \"Event Name\",",
+              " *   \"key\": \"custom.nickname\",",
+              " *   \"displayName\": \"Nickname\",",
               " *   \"dataType\": \"TEXT\",",
               " *   \"fieldType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *   \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *   \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T12:22:25.000Z\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Get a specified extended field (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.nickname' */",
+              "",
+              "export const myGetExtendedFieldFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  ",
+              "  try {",
+              "    const elevatedGetExtendedField = elevate(extendedFields.getExtendedField);",
+              "    const extendedField = await elevatedGetExtendedField(key);    ",
+              "    console.log('Successfully retrieved extended field:', extendedField);",
+              " ",
+              "    return extendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/*",
+              " * Promise resolves to:",
+              " * {",
+              " *   \"namespace\": \"custom\",",
+              " *   \"key\": \"custom.nickname\",",
+              " *   \"displayName\": \"Nickname\",",
+              " *   \"dataType\": \"TEXT\",",
+              " *   \"fieldType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *   \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *   \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T12:22:25.000Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get the dataType for the specified extended field ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myGetExtendedFieldFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  try {",
+              "    const elevatedGetExtendedField = elevate(extendedFields.getExtendedField);",
+              "    const extendedField = await elevatedGetExtendedField(key);    ",
+              "    const nicknameType = extendedField.dataType;",
+              " ",
+              "    return nicknameType",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "// Return value: \"TEXT\""
             ]
           }
         ]
@@ -279,7 +455,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "getExtendedField"
+      "syntaxName": "getExtendedField",
+      "isAdminMethod": true
     },
     {
       "name": "queryExtendedFields",
@@ -297,41 +474,41 @@
         "summary": "Creates a query to retrieve a list of extended fields.",
         "description": [
           "",
-          "The `queryExtendedFields()` function builds a query to retrieve a list of extended fields and returns an [`FieldsQueryBuilder`](#fieldsquerybuilder) object.",
+          "The `queryExtendedFields()` function builds a query to retrieve a list of extended fields and returns an `FieldsQueryBuilder` object.",
           "",
-          "The returned object contains the query definition, which is used to run the query using the [`find()`](#fieldsquerybuilder/find) function.",
+          "The returned object contains the query definition, which is used to run the query using the `find()` function.",
           "",
           "You can refine the query by chaining `FieldsQueryBuilder` functions onto the query. `FieldsQueryBuilder` functions enable you to filter, sort, and control the results that `queryExtendedFields()` returns. ",
           "",
           "`queryExtendedFields()` runs with these `FieldsQueryBuilder` defaults, which you can override:",
-          "- [`skip()`](#fieldsquerybuilder/skip)",
-          "- [`limit(50)`](#fieldsquerybuilder/limit)",
-          "- [`descending('_createdDate')`](#fieldsquerybuilder/descending)",
+          "- `skip()`",
+          "- `limit(50)`",
+          "- `descending('_createdDate')`",
           "",
-          "> **Note:** Only visitors with **Manage Contacts** permissions can query extended fields.",
+          "The following `FieldsQueryBuilder` functions are supported for `queryExtendedFields()`. For a full description of the `Extended Field` object, see the object returned for the `items` property in `FieldsQueryResult`.",
           "",
-          "The following `FieldsQueryBuilder` functions are supported for `queryExtendedFields()`. For a full description of the `Extended Field` object, see the object returned for the [`items`](#fieldsqueryresult/items) property in [`FieldsQueryResult`](#fieldsqueryresult).",
+          "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
           "|:---:|:---:|",
-          "|`namespace`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne)|",
-          "|`key`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne),[`in()`](wix-crm-v2.Fields.FieldsQueryBuilder#in)|",
-          "|`displayName`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne),[`in()`](wix-crm-v2.Fields.FieldsQueryBuilder#in),[`startsWith()`](wix-crm-v2.Fields.FieldsQueryBuilder#startsWith),[`ascending()`](wix-crm-v2.Fields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Fields.FieldsQueryBuilder#descending)|",
-          "|`dataType`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne)|",
-          "|`fieldType`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq)|",
-          "|`_createdDate`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne),[`gt()`](wix-crm-v2.Fields.FieldsQueryBuilder#gt),[`lt()`](wix-crm-v2.Fields.FieldsQueryBuilder#lt),[`le()`](wix-crm-v2.Fields.FieldsQueryBuilder#le),[`ascending()`](wix-crm-v2.Fields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Fields.FieldsQueryBuilder#descending)|",
-          "|`_updatedDate`|[`eq()`](wix-crm-v2.Fields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.Fields.FieldsQueryBuilder#ne),[`gt()`](wix-crm-v2.Fields.FieldsQueryBuilder#gt),[`lt()`](wix-crm-v2.Fields.FieldsQueryBuilder#lt),[`le()`](wix-crm-v2.Fields.FieldsQueryBuilder#le),[`ascending()`](wix-crm-v2.Fields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Fields.FieldsQueryBuilder#descending)|"
+          "|`namespace`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne)|",
+          "|`key`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne),[`in()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#in)|",
+          "|`displayName`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne),[`in()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#in),[`startsWith()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#startsWith),[`ascending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#descending)|",
+          "|`dataType`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne)|",
+          "|`fieldType`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq)|",
+          "|`_createdDate`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne),[`gt()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#gt),[`lt()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#lt),[`ge()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ge),[`le()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#le),[`ascending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#descending)|",
+          "|`_updatedDate`|[`eq()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#eq),[`ne()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ne),[`gt()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#gt),[`lt()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#lt),[`ge()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ge),[`le()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#le),[`ascending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#ascending),[`descending()`](wix-crm-v2.ExtendedFields.FieldsQueryBuilder#descending)|"
         ],
         "examples": [
           {
-            "title": "Retrieve all extended fields ",
+            "title": "Retrieve all extended fields (dashboard page code)",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "",
-              "export function myQueryExtendedFieldsFunction() {",
+              "export async function myQueryExtendedFieldsFunction() {",
+              "  ",
               "  try {",
-              "",
-              "    const queryResults = extendedFields.queryExtendedFields()",
-              "    .find();",
+              "    const queryResults = await extendedFields.queryExtendedFields()",
+              "      .find();",
               "",
               "    const items = queryResults.items;",
               "    const firstItem = items[0];",
@@ -340,11 +517,10 @@
               "    const hasPrev = queryResults.hasPrev();",
               "    const length = queryResults.length;",
               "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
               "",
               "    return items;",
-              "",
               "  } catch (error) {",
-              "",
               "    console.error(error);",
               "    // Handle the error",
               "",
@@ -354,130 +530,347 @@
               "/* Returns items:",
               " * [",
               " *   {",
-              " *     \"_createdDate\": \"2021-03-30T12:41:13.000Z\",",
-              " *     \"_updatedDate\": \"2021-03-30T12:41:13.000Z\",",
-              " *     \"displayName\": \"Event we met at\",",
-              " *     \"key\": \"custom.event-we-met-at\",",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.nickname\",",
+              " *     \"displayName\": \"Nickname\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"fieldType\": \"USER_DEFINED\"",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *     \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:22:25.000Z\"",
               " *   },",
               " *   {",
-              " *     \"_createdDate\": \"2021-01-19T23:18:17.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-19T23:18:17.000Z\",",
-              " *     \"displayName\": \"Last Contacted\",",
-              " *     \"key\": \"custom.last-contacted\",",
-              " *     \"dataType\": \"DATE\",",
               " *     \"namespace\": \"custom\",",
-              " *     \"fieldType\": \"USER_DEFINED\"",
+              " *     \"key\": \"custom.age\",",
+              " *     \"displayName\": \"Age\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"ed349d8c-b2bc-46a4-80d8-7632c6f50b00\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_double_27\",",
+              " *     \"_createdDate\": \"2023-12-25T12:16:40.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:16:40.000Z\"",
               " *   },",
               " *   {",
-              " *     \"_createdDate\": \"2021-01-17T18:42:31.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-17T18:42:31.000Z\",",
-              " *     \"displayName\": \"Patronus\",",
-              " *     \"key\": \"custom.patronus\",",
-              " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"fieldType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"displayName\": \"Display Name (start with first)\",",
+              " *     \"namespace\": \"contacts\",",
               " *     \"key\": \"contacts.displayByFirstName\",",
-              " *     \"description\": \"Display name starting with first name (read only)\",",
+              " *     \"displayName\": \"Display Name (start with first)\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"contacts\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Display name starting with first name (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Display Name (start with last)\",",
+              " *     \"namespace\": \"contacts\",",
               " *     \"key\": \"contacts.displayByLastName\",",
-              " *     \"description\": \"Display name starting with last name (read only)\",",
+              " *     \"displayName\": \"Display Name (start with last)\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"contacts\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Display name starting with last name (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"VAT ID\",",
-              " *     \"key\": \"invoices.vatId\",",
-              " *     \"description\": \"Vat ID for Wix Invoices\",",
-              " *     \"dataType\": \"TEXT\",",
               " *     \"namespace\": \"invoices\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"key\": \"invoices.vatId\",",
+              " *     \"displayName\": \"VAT ID\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Vat ID for Wix Invoices\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Membership Status\",",
+              " *     \"namespace\": \"members\",",
               " *     \"key\": \"members.membershipStatus\",",
-              " *     \"description\": \"APPROVED/DENIED/PENDING/INACTIVE (read only)\",",
+              " *     \"displayName\": \"Membership Status\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"members\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"APPROVED/DENIED/PENDING/INACTIVE/OFFLINE_ONLY (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Mobile flag\",",
+              " *     \"namespace\": \"members\",",
               " *     \"key\": \"members.mobile\",",
-              " *     \"description\": \"true/false\",",
+              " *     \"displayName\": \"Mobile flag\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"members\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"true/false\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"# of Purchases\",",
+              " *     \"namespace\": \"ecom\",",
               " *     \"key\": \"ecom.numOfPurchases\",",
-              " *     \"description\": \"Wix Stores purchase count (read only)\",",
+              " *     \"displayName\": \"# of Purchases\",",
               " *     \"dataType\": \"NUMBER\",",
-              " *     \"namespace\": \"ecom\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores purchase count (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Total Spent Amount\",",
+              " *     \"namespace\": \"ecom\",",
               " *     \"key\": \"ecom.totalSpentAmount\",",
-              " *     \"description\": \"Wix Stores aggregated spent amount (read only)\",",
+              " *     \"displayName\": \"Total Spent Amount\",",
               " *     \"dataType\": \"NUMBER\",",
-              " *     \"namespace\": \"ecom\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores aggregated spent amount (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Total Spent Currency\",",
+              " *     \"namespace\": \"ecom\",",
               " *     \"key\": \"ecom.totalSpentCurrency\",",
-              " *     \"description\": \"Wix Stores currency code (read only)\",",
+              " *     \"displayName\": \"Total Spent Currency\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"ecom\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores currency code (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Last Purchase Date\",",
+              " *     \"namespace\": \"ecom\",",
               " *     \"key\": \"ecom.lastPurchaseDate\",",
-              " *     \"description\": \"Wix Stores last purchase date (read only)\",",
+              " *     \"displayName\": \"Last Purchase Date\",",
               " *     \"dataType\": \"DATE\",",
-              " *     \"namespace\": \"ecom\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores last purchase date (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Effective Subscription Status\",",
+              " *     \"namespace\": \"emailSubscriptions\",",
               " *     \"key\": \"emailSubscriptions.subscriptionStatus\",",
-              " *     \"description\": \"SUBSCRIBED/UNSUBSCRIBED/NOT_SET/PENDING (read only)\",",
+              " *     \"displayName\": \"Effective Subscription Status\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"emailSubscriptions\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"SUBSCRIBED/UNSUBSCRIBED/NOT_SET/PENDING (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Effective Deliverability Status\",",
+              " *     \"namespace\": \"emailSubscriptions\",",
               " *     \"key\": \"emailSubscriptions.deliverabilityStatus\",",
-              " *     \"description\": \"VALID/BOUNCED/SPAM_COMPLAINT/INACTIVE (read only)\",",
+              " *     \"displayName\": \"Effective Deliverability Status\",",
               " *     \"dataType\": \"TEXT\",",
-              " *     \"namespace\": \"emailSubscriptions\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"VALID/BOUNCED/SPAM_COMPLAINT/INACTIVE (read only)\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Effective Email\",",
-              " *     \"key\": \"emailSubscriptions.effectiveEmail\",",
-              " *     \"description\": \"Effective Email for subscription purposes (read only)\",",
-              " *     \"dataType\": \"TEXT\",",
               " *     \"namespace\": \"emailSubscriptions\",",
-              " *     \"fieldType\": \"SYSTEM\"",
+              " *     \"key\": \"emailSubscriptions.effectiveEmail\",",
+              " *     \"displayName\": \"Effective Email\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Effective Email for subscription purposes (read only)\"",
               " *   }",
               " * ]",
               " */"
+            ]
+          },
+          {
+            "title": "Retrieve all extended fields (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "export const myQueryExtendedFieldsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  ",
+              "  try {",
+              "    const elevatedQueryExtendedFields = elevate(extendedFields.queryExtendedFields);",
+              "    const queryResults = await elevatedQueryExtendedFields()",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "",
+              "  }",
+              "});",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.nickname\",",
+              " *     \"displayName\": \"Nickname\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *     \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:22:25.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.age\",",
+              " *     \"displayName\": \"Age\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"ed349d8c-b2bc-46a4-80d8-7632c6f50b00\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_double_27\",",
+              " *     \"_createdDate\": \"2023-12-25T12:16:40.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:16:40.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"key\": \"contacts.displayByFirstName\",",
+              " *     \"displayName\": \"Display Name (start with first)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Display name starting with first name (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"key\": \"contacts.displayByLastName\",",
+              " *     \"displayName\": \"Display Name (start with last)\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Display name starting with last name (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"invoices\",",
+              " *     \"key\": \"invoices.vatId\",",
+              " *     \"displayName\": \"VAT ID\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Vat ID for Wix Invoices\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"members\",",
+              " *     \"key\": \"members.membershipStatus\",",
+              " *     \"displayName\": \"Membership Status\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"APPROVED/DENIED/PENDING/INACTIVE/OFFLINE_ONLY (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"members\",",
+              " *     \"key\": \"members.mobile\",",
+              " *     \"displayName\": \"Mobile flag\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"true/false\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.numOfPurchases\",",
+              " *     \"displayName\": \"# of Purchases\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores purchase count (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.totalSpentAmount\",",
+              " *     \"displayName\": \"Total Spent Amount\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores aggregated spent amount (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.totalSpentCurrency\",",
+              " *     \"displayName\": \"Total Spent Currency\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores currency code (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.lastPurchaseDate\",",
+              " *     \"displayName\": \"Last Purchase Date\",",
+              " *     \"dataType\": \"DATE\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores last purchase date (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"key\": \"emailSubscriptions.subscriptionStatus\",",
+              " *     \"displayName\": \"Effective Subscription Status\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"SUBSCRIBED/UNSUBSCRIBED/NOT_SET/PENDING (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"key\": \"emailSubscriptions.deliverabilityStatus\",",
+              " *     \"displayName\": \"Effective Deliverability Status\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"VALID/BOUNCED/SPAM_COMPLAINT/INACTIVE (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"emailSubscriptions\",",
+              " *     \"key\": \"emailSubscriptions.effectiveEmail\",",
+              " *     \"displayName\": \"Effective Email\",",
+              " *     \"dataType\": \"TEXT\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Effective Email for subscription purposes (read only)\"",
+              " *   }",
+              " * ]",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Retrieve extended fields with specified type ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myQueryExtendedFieldsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedQueryExtendedFields = elevate(extendedFields.queryExtendedFields);",
+              "    const queryResults = await elevatedQueryExtendedFields()",
+              "      .eq(\"dataType\", \"NUMBER\")",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "",
+              "  }",
+              "});",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"key\": \"custom.age\",",
+              " *     \"displayName\": \"Age\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"ed349d8c-b2bc-46a4-80d8-7632c6f50b00\",",
+              " *     \"wixSearchColumn\": \"info_extendedFields_custom_double_27\",",
+              " *     \"_createdDate\": \"2023-12-25T12:16:40.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T12:16:40.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.numOfPurchases\",",
+              " *     \"displayName\": \"# of Purchases\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores purchase count (read only)\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"ecom\",",
+              " *     \"key\": \"ecom.totalSpentAmount\",",
+              " *     \"displayName\": \"Total Spent Amount\",",
+              " *     \"dataType\": \"NUMBER\",",
+              " *     \"fieldType\": \"SYSTEM\",",
+              " *     \"description\": \"Wix Stores aggregated spent amount (read only)\"",
+              " *   }",
+              " * ]",
+              "*/",
+              ""
             ]
           }
         ]
@@ -488,7 +881,8 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "queryExtendedFields"
+      "syntaxName": "queryExtendedFields",
+      "isAdminMethod": true
     },
     {
       "name": "renameExtendedField",
@@ -510,7 +904,7 @@
               "referenceType": "wix-crm-v2.ExtendedFields.RenameExtendedField"
             }
           ],
-          "doc": "Extended field display name to rename.",
+          "doc": "Extended field to rename.",
           "required": true
         }
       ],
@@ -537,41 +931,97 @@
       "docs": {
         "summary": "Renames an extended field.",
         "description": [
-          "The `renameExtendedField()` function returns a Promise that resolves when the specified extended field's display name is changed\n\n> **Note:** Only visitors with **Manage Contacts** permissions can rename extended fields.\n\nThis function is not a universal function and runs only on the backend."
+          "The `renameExtendedField()` function returns a Promise that resolves when the specified extended field's display name is changed\n"
         ],
         "examples": [
           {
-            "title": "Rename an extended field ",
+            "title": "Rename an extended field (dashboard page code)",
             "body": [
               "import { extendedFields } from 'wix-crm.v2';",
               "",
-              "export function myRenameExtendedFieldFunction() {",
-              "  const key = 'custom.event-venue';",
-              "  const field = {",
-              "    displayName: 'Event Location'",
-              "  };",
+              "/* Sample key value: ",
+              " *  ",
+              " *  'custom.nickname'",
+              " * ",
+              " * Sample field value: ",
+              " * {",
+              " *  'Contact Nickname'",
+              " * }",
+              " */",
               "",
-              "  return extendedFields.renameExtendedField(key, field)",
-              "    .then((renamedExtendedField) => {",
-              "      return renamedExtendedField;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
+              "export async function myRenameExtendedFieldFunction(key, field) {",
+              "  ",
+              "  try {",
+              "    const renamedExtendedField = await extendedFields.renameExtendedField(key, field); ",
+              "    console.log('Successfulyl renamed extendedField:', renamedExtendedField);",
+              " ",
+              "    return renamedExtendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
               "/* Promise resolves to:",
-              " *",
               " * {",
-              " *   \"_createdDate\": \"2021-01-19T22:06:34Z\",",
-              " *   \"_updatedDate\": \"2021-01-20T18:54:14Z\"",
               " *   \"namespace\": \"custom\",",
-              " *   \"key\": \"custom.event-venue\",",
-              " *   \"displayName\": \"Event Location\",",
+              " *   \"key\": \"custom.nickname\",",
+              " *   \"displayName\": \"Contact Nickname\",",
               " *   \"dataType\": \"TEXT\",",
               " *   \"fieldType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *   \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *   \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T13:25:35.000Z\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Rename an extended field (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { extendedFields } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: ",
+              " *  ",
+              " *  'custom.nickname'",
+              " * ",
+              " * Sample field value: ",
+              " * {",
+              " *  'Contact Nickname'",
+              " * }",
+              " */",
+              "",
+              "export const myRenameExtendedFieldFunction = webMethod(Permissions.Anyone, async (key, field) => {",
+              "  ",
+              "  try {",
+              "    const elevatedRenameExtendedField = elevate(extendedFields.renameExtendedField);",
+              "    const renamedExtendedField = await elevatedRenameExtendedField(key, field)   ; ",
+              "    console.log('Successfulyl renamed extendedField:', renamedExtendedField);",
+              " ",
+              "    return renamedExtendedField;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"namespace\": \"custom\",",
+              " *   \"key\": \"custom.nickname\",",
+              " *   \"displayName\": \"Contact Nickname\",",
+              " *   \"dataType\": \"TEXT\",",
+              " *   \"fieldType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"63408eaf-e3d0-43f3-afa5-942847d272a1\",",
+              " *   \"wixSearchColumn\": \"info_extendedFields_custom_string_18\",",
+              " *   \"_createdDate\": \"2023-12-25T12:21:42.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T13:25:35.000Z\"",
+              " * }",
+              " */",
+              ""
             ]
           }
         ]
@@ -582,10 +1032,31 @@
           "id": "maturity-beta"
         }
       ],
-      "syntaxName": "renameExtendedField"
+      "syntaxName": "renameExtendedField",
+      "isAdminMethod": true
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "DeleteExtendedFieldRequest",
       "members": [
@@ -608,6 +1079,259 @@
     {
       "name": "DeleteExtendedFieldResponse",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.ExtendedFields.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -680,7 +1404,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
+          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: System field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: Custom field that can be modified by 3rd-party apps or site admins."
         },
         {
           "name": "key",
@@ -702,7 +1426,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field namespace.\n\nExtended fields created by site contributors or 3rd-party apps\nare automatically assigned to the `custom` namespace."
+          "doc": "Extended field namespace.\n\nExtended fields created by site collaborators or 3rd-party apps\nare automatically assigned to the `custom` namespace."
         }
       ],
       "docs": {
@@ -1343,7 +2067,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: The field is a system field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: The field is a custom field and can be modified by 3rd-party apps or site contributors."
+          "doc": "Indicates whether the extended field is a system field or custom field.\n\nOne of:\n- `\"SYSTEM\"`: System field managed by Wix. System fields cannot be modified by 3rd-party apps or site contributors.\n- `\"USER_DEFINED\"`: Custom field that can be modified by 3rd-party apps or site admins."
         },
         {
           "name": "namespace",
@@ -1354,7 +2078,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Extended field namespace.\n\nExtended fields created by site contributors or 3rd-party apps\nare automatically assigned to the `custom` namespace."
+          "doc": "Extended field namespace.\n\nExtended fields created by site collaborators or 3rd-party apps\nare automatically assigned to the `custom` namespace."
         }
       ],
       "docs": {

@@ -2,7 +2,7 @@
 
 # Time Picker CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `TimePicker` elements with CSS.
@@ -35,7 +35,7 @@ For example:
 
 ## `.time-picker__label`
 
-Targets time picker [label text]($w/timepicker/label).
+Targets time picker [label text]($w/time-picker/label).
 For example:
 
 ```css

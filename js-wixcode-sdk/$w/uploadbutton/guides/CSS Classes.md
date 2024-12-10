@@ -2,7 +2,7 @@
 
 # Upload Button CSS Classes
 
-> This feature is not yet available to all users.
+> **Note:** This feature is only available to Wix Studio users.
 
 You can use the classes listed below
 to style your `UploadButton` elements with CSS.
@@ -50,7 +50,7 @@ For example:
 
 ## `.upload-button__label`
 
-Targets upload button [label text]($w/uploadbutton/buttonlabel).
+Targets upload button [label text]($w/upload-button/button-label).
 For example:
 
 ```css

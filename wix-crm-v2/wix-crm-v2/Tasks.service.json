@@ -10,16 +10,145 @@
   "properties": [],
   "operations": [
     {
+      "name": "countTasks",
+      "params": [
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.CountTasksOptions"
+            }
+          ],
+          "doc": "Filtering options.",
+          "required": false
+        }
+      ],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "referenceType": "wix-crm-v2.Tasks.CountTasksResponse"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Counts the number of tasks.",
+        "description": [
+          "This endpoint returns the count of all tasks regardless of the task `status`.\n\nOptionally, you can pass a filter to count only tasks based\non specified criteria."
+        ],
+        "examples": [
+          {
+            "title": "Count the total number of tasks (dashboard page code)",
+            "body": [
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "export async function myCountTasksFunction() {",
+              "  try {",
+              "    const count = await tasks.countTasks();",
+              "",
+              "    return count;",
+              "  } catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"count\": 9",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Count the total number of tasks (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myCountTasksFunction = webMethod(Permissions.Anyone, async () => {",
+              "",
+              "  try {",
+              "    const elevatedCountTasks = elevate(tasks.countTasks);",
+              "    const count = await elevatedCountTasks();",
+              "",
+              "    return count;",
+              "  } catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"count\": 9",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": " Count the number of completed tasks ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample options value: ",
+              " * {",
+              " *   'filter' : {",
+              " *     'status': 'COMPLETED'",
+              " *   }",
+              " * }",
+              " */",
+              "",
+              "export const myCountTasksFunction = webMethod(Permissions.Anyone, async (options) => {",
+              "",
+              "  try {",
+              "    const elevatedCountTasks = elevate(tasks.countTasks);",
+              "    const count = await elevatedCountTasks(options);",
+              "",
+              "    return count;",
+              "  } catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"count\": 9",
+              " * }",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "countTasks",
+      "isAdminMethod": true
+    },
+    {
       "name": "createTask",
       "params": [
         {
           "name": "task",
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
+              "referenceType": "wix-crm-v2.Tasks.Task"
             }
           ],
-          "doc": "Task information.\n",
+          "doc": "Task to create.",
           "required": true
         }
       ],
@@ -33,7 +162,168 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-crm-v2.Tasks.CreateTaskResponse"
+                  "referenceType": "wix-crm-v2.Tasks.Task"
+                }
+              ]
+            }
+          }
+        ],
+        "doc": "The created task.\n"
+      },
+      "docs": {
+        "summary": "Creates a new task.",
+        "description": [
+          "All fields in the `task` object are optional. If you don't pass any fields in the `task` object, the function returns a task with the following core properties:\n- `_id`\n- `_createdDate`\n- `_updatedDate`\n- `status`\n- `source`\n- `revision`\n"
+        ],
+        "examples": [
+          {
+            "title": "Create a new task (dashboard page code)",
+            "body": [
+              "",
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "/* Sample task value:",
+              " * {",
+              " *   contact: {",
+              " *     _id: '5518ee7f-270e-40c4-b756-dad56e8f0ffc'",
+              " *   },",
+              " *   description: 'Send a follow up email',",
+              " *   dueDate: new Date(2024, 1, 31),",
+              " *   status: 'ACTION_NEEDED',",
+              " *   title: 'Follow up'",
+              " * }",
+              "*/",
+              "",
+              "export async function myCreateTaskFunction(task) {",
+              "  ",
+              "  try {     ",
+              "    const newTask = await tasks.createTask(task);",
+              "    console.log('Successfully created a new task:', newTask);",
+              "",
+              "    return newTask;",
+              "  }",
+              "  catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": \"1\",",
+              " *   \"title\": \"Follow up\",",
+              " *   \"description\": \"Send a follow up email\",",
+              " *   \"dueDate\": \"2024-01-31T00:00:00.000Z\",",
+              " *   \"status\": \"ACTION_NEEDED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"APP\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Sally\",",
+              " *     \"lastName\": \"Smith\",",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"+1 524-624-2486\",",
+              " *     \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *   },",
+              " *   \"_id\": \"37c2c378-8085-4ef7-8a3e-6f341248e757\",",
+              " *   \"_createdDate\": \"2024-01-18T12:16:37.452Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T12:16:37.452Z\"",
+              " * }",
+              "*/",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new task (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample task value:",
+              " * {",
+              " *   contact: {",
+              " *     _id: '5518ee7f-270e-40c4-b756-dad56e8f0ffc'",
+              " *   },",
+              " *   description: 'Send a follow up email',",
+              " *   dueDate: new Date(2024, 1, 31),",
+              " *   status: 'ACTION_NEEDED',",
+              " *   title: 'Follow up'",
+              " * }",
+              "*/",
+              "",
+              "export const myCreateTaskFunction = webMethod(Permissions.Anyone, async (task) => {",
+              "  try {     ",
+              "    const elevatedCreateTask = elevate(tasks.createTask);",
+              "    const newTask = await elevatedCreateTask(task);",
+              "    console.log('Successfully created a new task:', newTask);",
+              "",
+              "    return newTask;",
+              "  }",
+              "  catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": \"1\",",
+              " *   \"title\": \"Follow up\",",
+              " *   \"description\": \"Send a follow up email\",",
+              " *   \"dueDate\": \"2024-01-31T00:00:00.000Z\",",
+              " *   \"status\": \"ACTION_NEEDED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"APP\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Sally\",",
+              " *     \"lastName\": \"Smith\",",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"+1 524-624-2486\",",
+              " *     \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *   },",
+              " *   \"_id\": \"37c2c378-8085-4ef7-8a3e-6f341248e757\",",
+              " *   \"_createdDate\": \"2024-01-18T12:16:37.452Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T12:16:37.452Z\"",
+              " * }",
+              "*/",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "createTask",
+      "isAdminMethod": true
+    },
+    {
+      "name": "deleteTask",
+      "params": [
+        {
+          "name": "taskId",
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the task to delete.",
+          "required": true
+        }
+      ],
+      "requiredFields": [
+        "taskId"
+      ],
+      "ret": {
+        "type": [
+          {
+            "complexType": {
+              "nativeType": "Promise",
+              "typeParams": [
+                {
+                  "nativeType": "void"
                 }
               ]
             }
@@ -42,55 +332,79 @@
         "doc": null
       },
       "docs": {
-        "summary": "Creates a new task.",
-        "description": [
-          "The `createTask()` function returns a Promise that resolves to the ID of the created task.\n\nWhen creating a new task, the specified `task` object must  contain a `title` value.\n\nThis function is not a universal function and runs only on the backend."
-        ],
+        "summary": "Deletes a task by ID.",
+        "description": [],
         "examples": [
           {
-            "title": "createTask example",
+            "title": "Delete a task (dashboard page code)",
             "body": [
               "import { tasks } from 'wix-crm.v2';",
-              "  ",
-              " async function createTask(task) {",
-              "   try {",
-              "     const result = await tasks.createTask(task);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "/* Sample taskId value:",
+              " * '3194f3f2-945f-4810-8905-d02b24f9e790'",
+              " */",
+              "",
+              "export async function myDeleteTaskFunction(taskId) {",
+              "  ",
+              "  try {",
+              "    await tasks.deleteTask(taskId);",
+              "",
+              "    console.log('Task deleted.')",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    //Handle the error",
+              "  }",
+              "}"
+            ]
+          },
+          {
+            "title": "Delete a task (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample taskId value:",
+              " * '3194f3f2-945f-4810-8905-d02b24f9e790'",
+              " */",
+              "",
+              "export const myDeleteTaskFunction = webMethod(Permissions.Anyone, async (taskId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedDeleteTask = elevate(tasks.deleteTask);",
+              "    await elevatedDeleteTask(taskId);",
+              "",
+              "    console.log('Task deleted.')",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    //Handle the error",
+              "  }",
+              "});",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "createTask"
+      "syntaxName": "deleteTask",
+      "isAdminMethod": true
     },
     {
       "name": "getTask",
       "params": [
         {
-          "name": "_id",
+          "name": "taskId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID.\n",
+          "doc": "ID of the task to retrieve.",
           "required": true
         }
       ],
       "requiredFields": [
-        "_id"
+        "taskId"
       ],
       "ret": {
         "type": [
@@ -99,64 +413,146 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-crm-v2.Tasks.GetTaskResponse"
+                  "referenceType": "wix-crm-v2.Tasks.Task"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "The retrieved task.\n"
       },
       "docs": {
-        "summary": "Gets a task by ID.",
-        "description": [
-          "The `getTask()` function returns a Promise that resolves to the task with the given ID.\n\nThis function is not a universal function and runs only on the backend."
-        ],
+        "summary": "Retrieves a task by ID.",
+        "description": [],
         "examples": [
           {
-            "title": "getTask example",
+            "title": "Get a task (dashboard page code)",
             "body": [
-              "import { tasks } from 'wix-crm.v2';",
-              "  ",
-              " async function getTask(id) {",
-              "   try {",
-              "     const result = await tasks.getTask(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "/* Sample taskId value:",
+              " * '3194f3f2-945f-4810-8905-d02b24f9e790'",
+              " */",
+              "",
+              "export async function myGetTaskFunction(taskId) {",
+              "    ",
+              "  try {",
+              "    const task = await tasks.getTask(taskId);",
+              "      ",
+              "    return task;",
+              "  } catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * { ",
+              " *   \"revision\": \"1\",",
+              " *   \"title\": \"Follow up\",",
+              " *   \"description\": \"Send a follow up email\",",
+              " *   \"status\": \"ACTION_NEEDED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"APP\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Sally\",",
+              " *     \"lastName\": \"Smith\",",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"+1 524-624-2486\",",
+              " *     \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *   },",
+              " *   \"_id\": \"3194f3f2-945f-4810-8905-d02b24f9e790\",",
+              " *   \"_createdDate\": \"2024-01-18T11:35:29.092Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T11:35:29.092Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get a task (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample taskId value:",
+              " * '3194f3f2-945f-4810-8905-d02b24f9e790'",
+              " */",
+              "",
+              "export const myGetTaskFunction = webMethod(Permissions.Anyone, async (taskId) => {",
+              "    ",
+              "  try {",
+              "    const elevatedGetTask = elevate(tasks.getTask);",
+              "    const task = await elevatedGetTask(taskId);",
+              "      ",
+              "    return task;",
+              "  } catch(error){",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * { ",
+              " *   \"revision\": \"1\",",
+              " *   \"title\": \"Follow up\",",
+              " *   \"description\": \"Send a follow up email\",",
+              " *   \"status\": \"ACTION_NEEDED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"APP\",",
+              " *     \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Sally\",",
+              " *     \"lastName\": \"Smith\",",
+              " *     \"email\": \"sally.smith@example.com\",",
+              " *     \"phone\": \"+1 524-624-2486\",",
+              " *     \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *   },",
+              " *   \"_id\": \"3194f3f2-945f-4810-8905-d02b24f9e790\",",
+              " *   \"_createdDate\": \"2024-01-18T11:35:29.092Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T11:35:29.092Z\"",
+              " * }",
+              " */",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "getTask"
+      "syntaxName": "getTask",
+      "isAdminMethod": true
     },
     {
-      "name": "removeTask",
+      "name": "moveTaskAfter",
       "params": [
         {
-          "name": "_id",
+          "name": "taskId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID.\n",
+          "doc": "The task ID to move.",
           "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.MoveTaskAfterOptions"
+            }
+          ],
+          "doc": "Options for moving the task.",
+          "required": false
         }
       ],
       "requiredFields": [
-        "_id"
+        "taskId"
       ],
       "ret": {
         "type": [
@@ -165,7 +561,7 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-crm-v2.Tasks.DeleteTaskResponse"
+                  "nativeType": "void"
                 }
               ]
             }
@@ -174,41 +570,462 @@
         "doc": null
       },
       "docs": {
-        "summary": "Removes an existing task.",
+        "summary": "Moves a task specified by ID to be placed after another task in the display.",
         "description": [
-          "The `removeTask()` function returns a Promise that resolves to the ID of the removed task after it has been successfully removed.\n\nThis function is not a universal function and runs only on the backend."
+          "You can reposition a task to be first in the display by ommitting `beforeTaskId`."
         ],
         "examples": [
           {
-            "title": "removeTask example",
+            "title": "Update the display order of tasks (dashboard page code)",
             "body": [
-              "import { tasks } from 'wix-crm.v2';",
-              "  ",
-              " async function removeTask(id) {",
-              "   try {",
-              "     const result = await tasks.removeTask(id);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "/* Sample taskId value: ",
+              " * '37c2c378-8085-4ef7-8a3e-6f341248e757'",
+              " *",
+              " * Sample options value:",
+              " * {",
+              " *   beforeTaskId: '3a49f901-62d5-4ca2-a8e8-395c562a3f7b'",
+              " * }",
+              " */",
+              "",
+              "export async function myMoveTaskAfterFunction(taskId, options) {",
+              "",
+              "  try {",
+              "    await tasks.moveTaskAfter(taskId, options);",
+              "",
+              "    console.log('Successfuly updated task display.');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "}",
+              ""
+            ],
+            "extra": {
+              "description": "This function moves a specified task to be displayed after another task using the `moveTaskAfter()` function."
+            }
+          },
+          {
+            "title": "Update the display order of tasks (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample taskId value: ",
+              " * '37c2c378-8085-4ef7-8a3e-6f341248e757'",
+              " *",
+              " * Sample options value:",
+              " * {",
+              " *   beforeTaskId: '3a49f901-62d5-4ca2-a8e8-395c562a3f7b'",
+              " * }",
+              " */",
+              "",
+              "export const myMoveTaskAfterFunction = webMethod(Permissions.Anyone, async (taskId, options) => {",
+              "",
+              "  try {",
+              "    const elevatedMoveTaskAfter = elevate(tasks.moveTaskAfter);",
+              "    await elevatedMoveTaskAfter(taskId, options);",
+              "",
+              "    console.log('Successfuly updated task display.');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "});",
+              ""
+            ],
+            "extra": {
+              "description": "This function moves a specified task to be displayed after another task using the `moveTaskAfter()` function."
+            }
+          },
+          {
+            "title": "Move a task to the top of the display. ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample taskId value: ",
+              " * '37c2c378-8085-4ef7-8a3e-6f341248e757'",
+              " */",
+              "",
+              "export const myMoveTaskAfterFunction = webMethod(Permissions.Anyone, async (taskId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedMoveTaskAfter = elevate(tasks.moveTaskAfter);",
+              "    await elevatedMoveTaskAfter(taskId);",
+              "  ",
+              "    console.log('Moved task to top of display');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "});",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "removeTask"
+      "syntaxName": "moveTaskAfter",
+      "isAdminMethod": true
     },
     {
-      "name": "updateTaskFields",
+      "name": "queryTasks",
+      "params": [],
+      "requiredFields": [],
+      "ret": {
+        "type": [
+          {
+            "referenceType": "wix-crm-v2.Tasks.TasksQueryBuilder"
+          }
+        ],
+        "doc": null
+      },
+      "docs": {
+        "summary": "Creates a query to retrieve a list of tasks.",
+        "description": [
+          "",
+          "The `queryTasks()` function builds a query to retrieve a list of tasks and returns a `TasksQueryBuilder` object. ",
+          "",
+          "The returned object contains the query definition which is typically used to run the query using the `find()` function. You can refine the query by chaining `TasksQueryBuilder` functions onto the query. `TasksQueryBuilder` functions enable you to sort, filter, and control the results that `queryTasks()` returns. ",
+          "",
+          "`queryTasks()` runs with these `TasksQueryBuilder` defaults, which you can override: ",
+          "- `limit(50)`",
+          "- `descending('_createdDate')`",
+          "",
+          "The functions that are chained to `queryTasks()` are applied in the order they are called. For example, if you apply `ascending('_createdDate')` and then `descending('_updatedDate')`, the results are sorted first by the created date and then, if there are multiple results with the same date, the items are sorted by the updated date.",
+          "",
+          "The following `TasksQueryBuilder` functions are supported for `queryTasks()`. For a full description of the `task` object, see the object returned for the `items` property in `TasksQueryResult`.",
+          "",
+          "",
+          "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
+          "|:---:|:---:|",
+          "|`_id`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`in()`](wix-crm-v2.Tasks.TasksQueryBuilder#in),[`ascending()`](wix-crm-v2.Tasks.TasksQueryBuilder#ascending),[`descending()`](wix-crm-v2.Tasks.TasksQueryBuilder#descending)|",
+          "|`_createdDate`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`gt()`](wix-crm-v2.Tasks.TasksQueryBuilder#gt),[`lt()`](wix-crm-v2.Tasks.TasksQueryBuilder#lt),[`ge()`](wix-crm-v2.Tasks.TasksQueryBuilder#ge),[`le()`](wix-crm-v2.Tasks.TasksQueryBuilder#le),[`ascending()`](wix-crm-v2.Tasks.TasksQueryBuilder#ascending),[`descending()`](wix-crm-v2.Tasks.TasksQueryBuilder#descending)|",
+          "|`_updatedDate`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`gt()`](wix-crm-v2.Tasks.TasksQueryBuilder#gt),[`lt()`](wix-crm-v2.Tasks.TasksQueryBuilder#lt),[`ge()`](wix-crm-v2.Tasks.TasksQueryBuilder#ge),[`le()`](wix-crm-v2.Tasks.TasksQueryBuilder#le),[`ascending()`](wix-crm-v2.Tasks.TasksQueryBuilder#ascending),[`descending()`](wix-crm-v2.Tasks.TasksQueryBuilder#descending)|",
+          "|`dueDate`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`gt()`](wix-crm-v2.Tasks.TasksQueryBuilder#gt),[`lt()`](wix-crm-v2.Tasks.TasksQueryBuilder#lt),[`ge()`](wix-crm-v2.Tasks.TasksQueryBuilder#ge),[`le()`](wix-crm-v2.Tasks.TasksQueryBuilder#le),[`ascending()`](wix-crm-v2.Tasks.TasksQueryBuilder#ascending),[`descending()`](wix-crm-v2.Tasks.TasksQueryBuilder#descending)|",
+          "|`status`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`in()`](wix-crm-v2.Tasks.TasksQueryBuilder#in)|",
+          "|`contact.id`|[`eq()`](wix-crm-v2.Tasks.TasksQueryBuilder#eq),[`ne()`](wix-crm-v2.Tasks.TasksQueryBuilder#ne),[`in()`](wix-crm-v2.Tasks.TasksQueryBuilder#in),[`exists()`](wix-crm-v2.Tasks.TasksQueryBuilder#exists)|"
+        ],
+        "examples": [
+          {
+            "title": "Retrieve all tasks (dashboard page code)",
+            "body": [
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "export async function myQueryTasksFunction() {",
+              "",
+              "  try {",
+              "    const queryResults = await tasks.queryTasks()",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to:",
+              " * [",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Send email\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Julie\",",
+              " *       \"lastName\": \"Jones\",",
+              " *       \"email\": \"julie.jones@example.com\",",
+              " *       \"phone\": \"+1 516-569-2772\",",
+              " *       \"_id\": \"719784da-0361-4f86-b4a4-b38409d7bce1\"",
+              " *     },",
+              " *     \"_id\": \"37e5d602-adad-4ba3-ba3d-06384394fb9e\",",
+              " *     \"_createdDate\": \"2024-01-18T13:47:38.292Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:47:38.292Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Update Contact\",",
+              " *     \"description\": \"Add new label to sontact\",",
+              " *     \"dueDate\": \"2024-03-15T00:00:00.000Z\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Julie\",",
+              " *       \"lastName\": \"Jones\",",
+              " *       \"email\": \"julie.jones@example.com\",",
+              " *       \"phone\": \"+1 516-569-2772\",",
+              " *       \"_id\": \"719784da-0361-4f86-b4a4-b38409d7bce1\"",
+              " *     },",
+              " *     \"_id\": \"cdc52d55-e3e8-4fb4-8413-f15838e352b1\",",
+              " *     \"_createdDate\": \"2024-01-18T13:46:18.198Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:46:18.198Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Follow up\",",
+              " *     \"dueDate\": \"2024-01-26T10:00:00.000Z\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"USER\",",
+              " *       \"userId\": \"162e6672-d392-42f8-bf79-999ee633c92a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Jane\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"email\": \"jane.doe1@example.com\",",
+              " *       \"phone\": \"+1 214-533-2543\",",
+              " *       \"_id\": \"dfcb4c01-7336-4b59-ae43-957cb89952ce\"",
+              " *     },",
+              " *     \"_id\": \"3a49f901-62d5-4ca2-a8e8-395c562a3f7b\",",
+              " *     \"_createdDate\": \"2024-01-18T13:40:56.414Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:40:56.414Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Follow up\",",
+              " *     \"description\": \"Send a follow up email\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Sally\",",
+              " *       \"lastName\": \"Smith\",",
+              " *       \"email\": \"sally.smith@example.com\",",
+              " *       \"phone\": \"+1 524-624-2486\",",
+              " *       \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *     },",
+              " *     \"_id\": \"3194f3f2-945f-4810-8905-d02b24f9e790\",",
+              " *     \"_createdDate\": \"2024-01-18T11:35:29.092Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T11:35:29.092Z\"",
+              " *   }",
+              " * ]",
+              " */"
+            ]
+          },
+          {
+            "title": "Retrieve all tasks (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myQueryTasksFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedQueryTasks = elevate(tasks.queryTasks);",
+              "    const queryResults = await elevatedQueryTasks()",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * [",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Send email\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Julie\",",
+              " *       \"lastName\": \"Jones\",",
+              " *       \"email\": \"julie.jones@example.com\",",
+              " *       \"phone\": \"+1 516-569-2772\",",
+              " *       \"_id\": \"719784da-0361-4f86-b4a4-b38409d7bce1\"",
+              " *     },",
+              " *     \"_id\": \"37e5d602-adad-4ba3-ba3d-06384394fb9e\",",
+              " *     \"_createdDate\": \"2024-01-18T13:47:38.292Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:47:38.292Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Update Contact\",",
+              " *     \"description\": \"Add new label to sontact\",",
+              " *     \"dueDate\": \"2024-03-15T00:00:00.000Z\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Julie\",",
+              " *       \"lastName\": \"Jones\",",
+              " *       \"email\": \"julie.jones@example.com\",",
+              " *       \"phone\": \"+1 516-569-2772\",",
+              " *       \"_id\": \"719784da-0361-4f86-b4a4-b38409d7bce1\"",
+              " *     },",
+              " *     \"_id\": \"cdc52d55-e3e8-4fb4-8413-f15838e352b1\",",
+              " *     \"_createdDate\": \"2024-01-18T13:46:18.198Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:46:18.198Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Follow up\",",
+              " *     \"dueDate\": \"2024-01-26T10:00:00.000Z\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"USER\",",
+              " *       \"userId\": \"162e6672-d392-42f8-bf79-999ee633c92a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Jane\",",
+              " *       \"lastName\": \"Doe\",",
+              " *       \"email\": \"jane.doe1@example.com\",",
+              " *       \"phone\": \"+1 214-533-2543\",",
+              " *       \"_id\": \"dfcb4c01-7336-4b59-ae43-957cb89952ce\"",
+              " *     },",
+              " *     \"_id\": \"3a49f901-62d5-4ca2-a8e8-395c562a3f7b\",",
+              " *     \"_createdDate\": \"2024-01-18T13:40:56.414Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T13:40:56.414Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"1\",",
+              " *     \"title\": \"Follow up\",",
+              " *     \"description\": \"Send a follow up email\",",
+              " *     \"status\": \"ACTION_NEEDED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Sally\",",
+              " *       \"lastName\": \"Smith\",",
+              " *       \"email\": \"sally.smith@example.com\",",
+              " *       \"phone\": \"+1 524-624-2486\",",
+              " *       \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *     },",
+              " *     \"_id\": \"3194f3f2-945f-4810-8905-d02b24f9e790\",",
+              " *     \"_createdDate\": \"2024-01-18T11:35:29.092Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T11:35:29.092Z\"",
+              " *   }",
+              " * ]",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Retrieve all completed tasks ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const queryCompletedTasksFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedQueryTasks = elevate(tasks.queryTasks);",
+              "    const queryResults = await elevatedQueryTasks()",
+              "      .eq(\"status\", \"COMPLETED\")",
+              "      .ascending(\"_createdDate\")",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              "* [",
+              " *   {",
+              " *     \"revision\": \"2\",",
+              " *     \"title\": \"Follow up\",",
+              " *     \"description\": \"Send a follow up email\",",
+              " *     \"status\": \"COMPLETED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Sally\",",
+              " *       \"lastName\": \"Smith\",",
+              " *       \"email\": \"sally.smith@example.com\",",
+              " *       \"phone\": \"+1 524-624-2486\",",
+              " *       \"_id\": \"5518ee7f-270e-40c4-b756-dad56e8f0ffc\"",
+              " *     },",
+              " *     \"_id\": \"3194f3f2-945f-4810-8905-d02b24f9e790\",",
+              " *     \"_createdDate\": \"2024-01-18T11:35:29.092Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T14:50:25.210Z\"",
+              " *   },",
+              " *   {",
+              " *     \"revision\": \"2\",",
+              " *     \"title\": \"Send email\",",
+              " *     \"status\": \"COMPLETED\",",
+              " *     \"source\": {",
+              " *       \"sourceType\": \"APP\",",
+              " *       \"appId\": \"151e476a-715e-ec33-db9a-a7ff4d51f70a\"",
+              " *     },",
+              " *     \"contact\": {",
+              " *       \"firstName\": \"Julie\",",
+              " *       \"lastName\": \"Jones\",",
+              " *       \"email\": \"julie.jones@example.com\",",
+              " *       \"phone\": \"+1 516-569-2772\",",
+              " *       \"_id\": \"719784da-0361-4f86-b4a4-b38409d7bce1\"",
+              " *     },",
+              " *     \"_id\": \"37e5d602-adad-4ba3-ba3d-06384394fb9e\",",
+              " *     \"_createdDate\": \"2024-01-18T13:47:38.292Z\",",
+              " *     \"_updatedDate\": \"2024-01-18T14:50:29.878Z\"",
+              " *   }",
+              " * ]",
+              " */",
+              ""
+            ]
+          }
+        ]
+      },
+      "isVeloEvent": false,
+      "syntaxName": "queryTasks",
+      "isAdminMethod": true
+    },
+    {
+      "name": "updateTask",
       "params": [
         {
           "name": "_id",
@@ -218,40 +1035,23 @@
             }
           ],
           "doc": "Task ID.",
-          "required": true
-        },
-        {
-          "name": "fields",
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Required fields.\n",
           "required": true
         },
         {
           "name": "task",
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
+              "referenceType": "wix-crm-v2.Tasks.UpdateTask"
             }
           ],
-          "doc": "Task information.",
+          "doc": "Task to update.",
           "required": true
         }
       ],
       "requiredFields": [
         "_id",
-        "fields",
-        "task"
+        "task",
+        "task.revision"
       ],
       "ret": {
         "type": [
@@ -260,148 +1060,213 @@
               "nativeType": "Promise",
               "typeParams": [
                 {
-                  "referenceType": "wix-crm-v2.Tasks.UpdateTaskResponse"
+                  "referenceType": "wix-crm-v2.Tasks.Task"
                 }
               ]
             }
           }
         ],
-        "doc": null
+        "doc": "The updated task.\n"
       },
       "docs": {
-        "summary": "Updates the specified fields of an existing task.",
+        "summary": "Updates a task.",
         "description": [
-          "The `updateTaskFields()` function returns a Promise that resolves to the ID of the updated task after it has been successfully updated.\n\nOnly the properties in the `task` object are updated. All other properties remain the same.\n\nTo remove a value from the task, pass its corresponding property with a value  of `null`.\n\nThis function is not a universal function and runs only on the backend."
+          "Each time the task is updated, `revision` increments by 1.\nThe existing `revision` must be included when updating the task.\nThis ensures you're working with the latest task\nand prevents unintended overwrites."
         ],
         "examples": [
           {
-            "title": "updateTaskFields example",
+            "title": "Partially update a task (dashboard page code)",
             "body": [
-              "import { tasks } from 'wix-crm.v2';",
-              "  ",
-              " async function updateTaskFields(id, fields, task) {",
-              "   try {",
-              "     const result = await tasks.updateTaskFields(id, fields, task);",
               "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
+              "import { tasks } from 'wix-crm.v2';",
+              "",
+              "/* Sample _id value:",
+              " * '3a49f901-62d5-4ca2-a8e8-395c562a3f7b'",
+              " *",
+              " * Sample task value:",
+              " * {",
+              " *   revision: 2,",
+              " *   status: 'COMPLETED',",
+              " *   title: 'Send email",
+              " * }",
+              " */",
+              " ",
+              " export async function myUpdateTaskFunction(_id, task) {",
+              "  ",
+              "  try {",
+              "    const updatedTask = await tasks.updateTask(_id, task);",
+              "      ",
+              "    return updatedTask;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "}",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"revision\": \"3\",",
+              " *   \"title\": \"Send email\",",
+              " *   \"dueDate\": \"2024-02-08T10:00:00.000Z\",",
+              " *   \"status\": \"COMPLETED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"USER\",",
+              " *     \"userId\": \"162e6672-d392-42f8-bf79-999ee633c92a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Jane\",",
+              " *     \"lastName\": \"Doe\",",
+              " *     \"email\": \"jane.doe1@example.com\",",
+              " *     \"phone\": \"+1 214-533-2543\",",
+              " *     \"_id\": \"dfcb4c01-7336-4b59-ae43-957cb89952ce\"",
+              " *   },",
+              " *   \"_id\": \"3a49f901-62d5-4ca2-a8e8-395c562a3f7b\",",
+              " *   \"_createdDate\": \"2024-01-18T13:40:56.414Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T15:44:52.606Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Partially update a task (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample _id value:",
+              " * '3a49f901-62d5-4ca2-a8e8-395c562a3f7b'",
+              " *",
+              " * Sample task value:",
+              " * {",
+              " *   revision: 2,",
+              " *   status: 'COMPLETED',",
+              " *   title: 'Send email",
+              " * }",
+              " */",
+              " ",
+              "export const myUpdateTaskFunction = webMethod(Permissions.Anyone, async (_id, task) => {",
+              "  try {",
+              "    const elevatedUpdateTask = elevate(tasks.updateTask);",
+              "    const updatedTask = await elevatedUpdateTask(_id, task);",
+              "      ",
+              "    return updatedTask;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "});",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"revision\": \"3\",",
+              " *   \"title\": \"Send email\",",
+              " *   \"dueDate\": \"2024-02-08T10:00:00.000Z\",",
+              " *   \"status\": \"COMPLETED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"USER\",",
+              " *     \"userId\": \"162e6672-d392-42f8-bf79-999ee633c92a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Jane\",",
+              " *     \"lastName\": \"Doe\",",
+              " *     \"email\": \"jane.doe1@example.com\",",
+              " *     \"phone\": \"+1 214-533-2543\",",
+              " *     \"_id\": \"dfcb4c01-7336-4b59-ae43-957cb89952ce\"",
+              " *   },",
+              " *   \"_id\": \"3a49f901-62d5-4ca2-a8e8-395c562a3f7b\",",
+              " *   \"_createdDate\": \"2024-01-18T13:40:56.414Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T15:44:52.606Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Update task ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { tasks } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample _id value:",
+              " * '3a49f901-62d5-4ca2-a8e8-395c562a3f7b'",
+              " *",
+              " * Sample task value:",
+              " * {",
+              " *   revision: 3,",
+              " *   contact: {",
+              " *      _id: 'dfcb4c01-7336-4b59-ae43-957cb89952ce'",
+              " *   },",
+              " *   description: 'Send follow up email email',",
+              " *   dueDate: new Date(2024, 3, 16),",
+              " *   status: 'ACTION_NEEDED',",
+              " *   title: 'Follow up'",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateTaskFunction = webMethod(Permissions.Anyone, async (_id, task) => {",
+              "",
+              "  try {",
+              "    const elevatedUpdateTask = elevate(tasks.updateTask);",
+              "    const updatedTask = await elevatedUpdateTask(_id, task);",
+              "      ",
+              "    return updatedTask;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }   ",
+              "});",
+              "",
+              "",
+              "",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"revision\": \"4\",",
+              " *   \"title\": \"Follow up\",",
+              " *   \"description\": \"Send follow up email email\",",
+              " *   \"dueDate\": \"2024-04-16T00:00:00.000Z\",",
+              " *   \"status\": \"ACTION_NEEDED\",",
+              " *   \"source\": {",
+              " *     \"sourceType\": \"USER\",",
+              " *     \"userId\": \"162e6672-d392-42f8-bf79-999ee633c92a\"",
+              " *   },",
+              " *   \"contact\": {",
+              " *     \"firstName\": \"Jane\",",
+              " *     \"lastName\": \"Doe\",",
+              " *     \"email\": \"jane.doe1@example.com\",",
+              " *     \"phone\": \"+1 214-533-2543\",",
+              " *     \"_id\": \"dfcb4c01-7336-4b59-ae43-957cb89952ce\"",
+              " *   },",
+              " *   \"_id\": \"3a49f901-62d5-4ca2-a8e8-395c562a3f7b\",",
+              " *   \"_createdDate\": \"2024-01-18T13:40:56.414Z\",",
+              " *   \"_updatedDate\": \"2024-01-18T15:49:53.065Z\"",
+              " * }",
+              " */"
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "updateTaskFields"
-    },
-    {
-      "name": "updateTaskStatus",
-      "params": [
-        {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID.",
-          "required": true
-        },
-        {
-          "name": "isCompleted",
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indicates whether the task is completed.\n",
-          "required": true
-        }
-      ],
-      "requiredFields": [
-        "_id",
-        "isCompleted"
-      ],
-      "ret": {
-        "type": [
-          {
-            "complexType": {
-              "nativeType": "Promise",
-              "typeParams": [
-                {
-                  "referenceType": "wix-crm-v2.Tasks.CompleteTaskResponse"
-                }
-              ]
-            }
-          }
-        ],
-        "doc": null
-      },
-      "docs": {
-        "summary": "Updates completed status of task.",
-        "description": [
-          "The `updateTaskStatus()` function returns a Promise that resolves to the ID of the task whose completed status was updated.\n\nThis function is not a universal function and runs only on the backend."
-        ],
-        "examples": [
-          {
-            "title": "updateTaskStatus example",
-            "body": [
-              "import { tasks } from 'wix-crm.v2';",
-              "  ",
-              " async function updateTaskStatus(id, isCompleted) {",
-              "   try {",
-              "     const result = await tasks.updateTaskStatus(id, isCompleted);",
-              "",
-              "     return result;",
-              "   } catch (error) {",
-              "     console.error(error);",
-              "     // Handle the error",
-              "   }",
-              " }",
-              "  "
-            ]
-          }
-        ]
-      },
-      "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
-      "syntaxName": "updateTaskStatus"
+      "syntaxName": "updateTask",
+      "isAdminMethod": true
     }
   ],
   "messages": [
     {
-      "name": "CompleteTaskRequest",
+      "name": "ActionEvent",
       "members": [
         {
-          "name": "_id",
+          "name": "bodyAsJson",
+          "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
-        },
-        {
-          "name": "isCompleted",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indicates whether the task is completed."
+          "doc": ""
         }
       ],
       "docs": {
@@ -411,7 +1276,7 @@
       }
     },
     {
-      "name": "CompleteTaskResponse",
+      "name": "ContactInfo",
       "members": [
         {
           "name": "_id",
@@ -421,17 +1286,82 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
+          "doc": "ID of the contact associated with the task."
         },
         {
-          "name": "version",
+          "name": "email",
+          "readOnly": true,
           "optional": true,
           "type": [
             {
-              "nativeType": "number"
+              "nativeType": "string"
             }
           ],
-          "doc": "The task version. Incremented on each change"
+          "doc": "Contact's primary email."
+        },
+        {
+          "name": "firstName",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact's first name."
+        },
+        {
+          "name": "imageUrl",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact's image url."
+        },
+        {
+          "name": "lastName",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact's last name."
+        },
+        {
+          "name": "phone",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Contact's primary phone."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "ContactNotFoundError",
+      "members": [
+        {
+          "name": "contactId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -444,31 +1374,14 @@
       "name": "CountTasksOptions",
       "members": [
         {
-          "name": "field",
+          "name": "filter",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "nativeType": "Object"
             }
           ],
-          "doc": "Group by field"
-        },
-        {
-          "name": "where",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Where strings"
+          "doc": "Filter which tasks to count. See the list of supported filters in `queryContacts`.\n\nFilterable fields include:\n- `_id`\n- `_createdDate`\n- `_updatedDate`\n- `dueDate`\n- `status`\n- `contact.id`\n"
         }
       ],
       "docs": {
@@ -481,31 +1394,14 @@
       "name": "CountTasksRequest",
       "members": [
         {
-          "name": "field",
+          "name": "filter",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "nativeType": "Object"
             }
           ],
-          "doc": "Group by field"
-        },
-        {
-          "name": "where",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Where strings"
+          "doc": "Filter which tasks to count. See the list of supported filters in `queryContacts`.\n\nFilterable fields include:\n- `_id`\n- `_createdDate`\n- `_updatedDate`\n- `dueDate`\n- `status`\n- `contact.id`\n"
         }
       ],
       "docs": {
@@ -518,34 +1414,14 @@
       "name": "CountTasksResponse",
       "members": [
         {
-          "name": "byRequestedField",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Record",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  },
-                  {
-                    "nativeType": "number"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Map by requested field"
-        },
-        {
-          "name": "tasksInSite",
+          "name": "count",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "Tasks in site"
+          "doc": "The number of tasks that match the provided filter."
         }
       ],
       "docs": {
@@ -559,13 +1435,12 @@
       "members": [
         {
           "name": "task",
-          "optional": true,
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
+              "referenceType": "wix-crm-v2.Tasks.Task"
             }
           ],
-          "doc": "Task information."
+          "doc": "Task to create."
         }
       ],
       "docs": {
@@ -578,24 +1453,44 @@
       "name": "CreateTaskResponse",
       "members": [
         {
-          "name": "_id",
+          "name": "task",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.Task"
+            }
+          ],
+          "doc": "The created task."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "CursorPaging",
+      "members": [
+        {
+          "name": "cursor",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
+          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
-          "name": "version",
+          "name": "limit",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "The task version. Incremented on each change"
+          "doc": "Number of items to load."
         }
       ],
       "docs": {
@@ -605,28 +1500,37 @@
       }
     },
     {
-      "name": "Creator",
+      "name": "CursorPagingMetadata",
       "members": [
         {
-          "name": "_id",
-          "readOnly": true,
+          "name": "count",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "nativeType": "number"
             }
           ],
-          "doc": "Creator ID."
+          "doc": "Number of items returned in the response."
         },
         {
-          "name": "creatorType",
+          "name": "cursors",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.Cursors"
             }
           ],
-          "doc": "Creator type"
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "hasNext",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Indicates if there are more results after the current page.\nIf `true`, another page of results can be retrieved.\nIf `false`, this is the last page."
         }
       ],
       "docs": {
@@ -636,8 +1540,56 @@
       }
     },
     {
-      "name": "DeleteCompletedRequest",
-      "members": [],
+      "name": "CursorQuery",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-crm-v2.Tasks.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfCursorQueryPagingMethodOneOf",
+            "members": [
+              "cursorPaging"
+            ]
+          }
+        ]
+      },
       "docs": {
         "description": [
           ""
@@ -645,10 +1597,70 @@
       }
     },
     {
-      "name": "DeleteCompletedResponse",
+      "name": "CursorQueryPagingMethodOneOf",
       "members": [
         {
-          "name": "ids",
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Cursors",
+      "members": [
+        {
+          "name": "next",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to next page in the list of results."
+        },
+        {
+          "name": "prev",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Cursor pointing to previous page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteCompletedTasksRequest",
+      "members": [
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "An optional filter of tasks to count. See 'queryTasks' for supported filter options."
+        },
+        {
+          "name": "taskIds",
           "optional": true,
           "type": [
             {
@@ -662,9 +1674,18 @@
               }
             }
           ],
-          "doc": "Array of deleted task IDs."
+          "doc": "Optional list of tasks ids of the tasks to delete. If the list is not provided the filter is used."
         }
       ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DeleteCompletedTasksResponse",
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -675,13 +1696,13 @@
       "name": "DeleteTaskRequest",
       "members": [
         {
-          "name": "_id",
+          "name": "taskId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
+          "doc": "ID of the task to delete."
         }
       ],
       "docs": {
@@ -692,6 +1713,15 @@
     },
     {
       "name": "DeleteTaskResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
       "members": [
         {
           "name": "_id",
@@ -701,17 +1731,180 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
         },
         {
-          "name": "version",
+          "name": "actionEvent",
           "optional": true,
           "type": [
             {
-              "nativeType": "number"
+              "referenceType": "wix-crm-v2.Tasks.ActionEvent"
             }
           ],
-          "doc": "The task version. Incremented on each change"
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -721,118 +1914,66 @@
       }
     },
     {
-      "name": "FilterBy",
+      "name": "Empty",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
       "members": [
         {
-          "name": "assigneeId",
+          "name": "entityAsJson",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Assignee ID."
-        },
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
         {
-          "name": "contactIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of contact IDs."
-        },
-        {
-          "name": "fromDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "From due date"
-        },
-        {
-          "name": "isCompleted",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Completed status."
-        },
-        {
-          "name": "labelIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of labels IDs."
-        },
-        {
-          "name": "subtitle",
+          "name": "deletedEntityAsJson",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task title contains substring"
-        },
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
         {
-          "name": "tasksIds",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "List of tasks IDs."
-        },
-        {
-          "name": "title",
+          "name": "currentEntityAsJson",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "The title of the task."
-        },
-        {
-          "name": "toDate",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "To due date"
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -845,13 +1986,13 @@
       "name": "GetTaskRequest",
       "members": [
         {
-          "name": "_id",
+          "name": "taskId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Task ID."
+          "doc": "ID of the task to retrieve."
         }
       ],
       "docs": {
@@ -871,7 +2012,7 @@
               "referenceType": "wix-crm-v2.Tasks.Task"
             }
           ],
-          "doc": "Task information."
+          "doc": "The retrieved task."
         }
       ],
       "docs": {
@@ -881,27 +2022,17 @@
       }
     },
     {
-      "name": "GetTasksListOptions",
+      "name": "MoveTaskAfterOptions",
       "members": [
         {
-          "name": "contactId",
+          "name": "beforeTaskId",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Assigned contact ID for the task. Optional."
-        },
-        {
-          "name": "key",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Sort key."
+          "doc": "The task ID after which the moved task is positioned in the display.\nIf `beforeTaskId` is not provided, the moved task is positioned first in the display of tasks."
         }
       ],
       "docs": {
@@ -911,27 +2042,26 @@
       }
     },
     {
-      "name": "GetTasksListRequest",
+      "name": "MoveTaskAfterRequest",
       "members": [
         {
-          "name": "contactId",
+          "name": "beforeTaskId",
           "optional": true,
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Assigned contact ID for the task. Optional."
+          "doc": "The task ID after which the moved task is positioned in the display.\nIf `beforeTaskId` is not provided, the moved task is positioned first in the display of tasks."
         },
         {
-          "name": "key",
-          "optional": true,
+          "name": "taskId",
           "type": [
             {
               "nativeType": "string"
             }
           ],
-          "doc": "Sort key."
+          "doc": "The task ID to move."
         }
       ],
       "docs": {
@@ -941,26 +2071,8 @@
       }
     },
     {
-      "name": "GetTasksListResponse",
-      "members": [
-        {
-          "name": "tasks",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-crm-v2.Tasks.Task"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Array of the site's tasks"
-        }
-      ],
+      "name": "MoveTaskAfterResponse",
+      "members": [],
       "docs": {
         "description": [
           ""
@@ -968,100 +2080,8 @@
       }
     },
     {
-      "name": "Label",
+      "name": "Paging",
       "members": [
-        {
-          "name": "color",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Label's color."
-        },
-        {
-          "name": "labelId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The ID of the label. Should not be populated in `createTask`."
-        },
-        {
-          "name": "name",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Label name.\n\nMax: 50 characters\n"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ListOptions",
-      "members": [
-        {
-          "name": "cursor",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Optional cursor"
-        },
-        {
-          "name": "params",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.ListParams"
-            }
-          ],
-          "doc": "List params"
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfListTasksRequestGetByOneOf",
-            "members": [
-              "cursor",
-              "params"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ListParams",
-      "members": [
-        {
-          "name": "filter",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.FilterBy"
-            }
-          ],
-          "doc": "Filter"
-        },
         {
           "name": "limit",
           "optional": true,
@@ -1070,7 +2090,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Limit"
+          "doc": "Number of items to load."
         },
         {
           "name": "offset",
@@ -1080,24 +2100,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Offset"
-        },
-        {
-          "name": "order",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Order"
+          "doc": "Number of items to skip in the current sort order."
         }
       ],
       "docs": {
@@ -1107,214 +2110,27 @@
       }
     },
     {
-      "name": "ListTasksRequest",
+      "name": "PagingMetadataV2",
       "members": [
         {
-          "name": "cursor",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Optional cursor"
-        },
-        {
-          "name": "params",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.ListParams"
-            }
-          ],
-          "doc": "List params"
-        }
-      ],
-      "extra": {
-        "oneOfGroups": [
-          {
-            "name": "oneOfListTasksRequestGetByOneOf",
-            "members": [
-              "cursor",
-              "params"
-            ]
-          }
-        ]
-      },
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ListTasksRequestGetByOneOf",
-      "members": [
-        {
-          "name": "cursor",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Optional cursor"
-        },
-        {
-          "name": "params",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.ListParams"
-            }
-          ],
-          "doc": "List params"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "ListTasksResponse",
-      "members": [
-        {
-          "name": "pagination",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.Pagination"
-            }
-          ],
-          "doc": "Pagination information"
-        },
-        {
-          "name": "tasks",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "referenceType": "wix-crm-v2.Tasks.Task"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Array of the site's tasks"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "MoveTaskOptions",
-      "members": [
-        {
-          "name": "taskBeforeId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID of the task positioned before."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "MoveTaskRequest",
-      "members": [
-        {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID."
-        },
-        {
-          "name": "taskBeforeId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID of the task positioned before."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "MoveTaskResponse",
-      "members": [
-        {
-          "name": "_id",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID."
-        },
-        {
-          "name": "version",
+          "name": "count",
           "optional": true,
           "type": [
             {
               "nativeType": "number"
             }
           ],
-          "doc": "The task version. Incremented on each change"
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "Pagination",
-      "members": [
-        {
-          "name": "cursor",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Optional cursor"
+          "doc": "Number of items returned in the response."
         },
         {
-          "name": "limit",
+          "name": "cursors",
           "optional": true,
           "type": [
             {
-              "nativeType": "number"
+              "referenceType": "wix-crm-v2.Tasks.Cursors"
             }
           ],
-          "doc": "Pagination limit"
+          "doc": "Cursors to navigate through the result pages using `next` and `prev`. Returned if cursor paging is used."
         },
         {
           "name": "offset",
@@ -1324,7 +2140,17 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Pagination offset"
+          "doc": "Offset that was requested."
+        },
+        {
+          "name": "tooManyToCount",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Flag that indicates the server failed to calculate the `total` field."
         },
         {
           "name": "total",
@@ -1334,7 +2160,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Pagination total"
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
         }
       ],
       "docs": {
@@ -1344,60 +2170,40 @@
       }
     },
     {
-      "name": "Task",
+      "name": "QueryTasksInternalRequest",
       "members": [
         {
-          "name": "assigneeId",
+          "name": "query",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.QueryV2"
             }
           ],
-          "doc": "Assignee ID for the task."
-        },
+          "doc": "WQL expression"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryTasksInternalResponse",
+      "members": [
         {
-          "name": "contactId",
+          "name": "pagingMetadata",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.PagingMetadataV2"
             }
           ],
-          "doc": "Assigned contact ID for the task"
+          "doc": "Details on the paged set of results returned."
         },
         {
-          "name": "creator",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.Creator"
-            }
-          ],
-          "doc": "The ID of the creator of the task."
-        },
-        {
-          "name": "dueAt",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Expected due date for the task."
-        },
-        {
-          "name": "isCompleted",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "boolean"
-            }
-          ],
-          "doc": "Indicates if the task is completed."
-        },
-        {
-          "name": "labels",
+          "name": "tasks",
           "optional": true,
           "type": [
             {
@@ -1405,44 +2211,13 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "referenceType": "wix-crm-v2.Tasks.Label"
+                    "referenceType": "wix-crm-v2.Tasks.Task"
                   }
                 ]
               }
             }
           ],
-          "doc": "The labels assigned to the task"
-        },
-        {
-          "name": "taskId",
-          "readOnly": true,
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The ID of the task. Should not be populated in `createTask`."
-        },
-        {
-          "name": "title",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The title of the task."
-        },
-        {
-          "name": "version",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "Task version. Incremented on each change."
+          "doc": "The retrieved Tasks"
         }
       ],
       "docs": {
@@ -1452,40 +2227,40 @@
       }
     },
     {
-      "name": "TaskData",
+      "name": "QueryTasksRequest",
       "members": [
         {
-          "name": "assigneeId",
+          "name": "query",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.CursorQuery"
             }
           ],
-          "doc": "Assignee ID for the task."
-        },
+          "doc": "Query options."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryTasksResponse",
+      "members": [
         {
-          "name": "contactId",
+          "name": "pagingMetadata",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.CursorPagingMetadata"
             }
           ],
-          "doc": "Assigned contact ID for the task."
+          "doc": "Paging metadata."
         },
         {
-          "name": "dueAt",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "Date"
-            }
-          ],
-          "doc": "Expected due date for the task."
-        },
-        {
-          "name": "labelIds",
+          "name": "tasks",
           "optional": true,
           "type": [
             {
@@ -1493,23 +2268,13 @@
                 "nativeType": "Array",
                 "typeParams": [
                   {
-                    "nativeType": "string"
+                    "referenceType": "wix-crm-v2.Tasks.Task"
                   }
                 ]
               }
             }
           ],
-          "doc": "The label IDs assigned to the task."
-        },
-        {
-          "name": "title",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The title of the task.\n\nMax: 500 characters.\n"
+          "doc": "The retrieved tasks."
         }
       ],
       "docs": {
@@ -1519,83 +2284,17 @@
       }
     },
     {
-      "name": "TaskNotification",
+      "name": "QueryV2",
       "members": [
         {
-          "name": "changes",
+          "name": "cursorPaging",
           "optional": true,
           "type": [
             {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
+              "referenceType": "wix-crm-v2.Tasks.CursorPaging"
             }
           ],
-          "doc": "Set of updated fields"
-        },
-        {
-          "name": "instanceId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Instance ID of the task in Tasks App."
-        },
-        {
-          "name": "task",
-          "optional": true,
-          "type": [
-            {
-              "referenceType": "wix-crm-v2.Tasks.Task"
-            }
-          ],
-          "doc": "The changed task"
-        },
-        {
-          "name": "taskAction",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "The action that was performed  on the task"
-        },
-        {
-          "name": "taskId",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID."
-        }
-      ],
-      "docs": {
-        "description": [
-          ""
-        ]
-      }
-    },
-    {
-      "name": "UpdateTaskRequest",
-      "members": [
-        {
-          "name": "_id",
-          "type": [
-            {
-              "nativeType": "string"
-            }
-          ],
-          "doc": "Task ID."
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
         },
         {
           "name": "fields",
@@ -1612,17 +2311,577 @@
               }
             }
           ],
-          "doc": "Required fields."
+          "doc": "Array of projected fields. A list of specific field names to return. If `fieldsets` are also specified, the union of `fieldsets` and `fields` is returned."
+        },
+        {
+          "name": "fieldsets",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Array of named, predefined sets of projected fields. A array of predefined named sets of fields to be returned. Specifying multiple `fieldsets` will return the union of fields from all sets. If `fields` are also specified, the union of `fieldsets` and `fields` is returned."
+        },
+        {
+          "name": "filter",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Object"
+            }
+          ],
+          "doc": "Filter object in the following format:\n`\"filter\" : {\n\"fieldName1\": \"value1\",\n\"fieldName2\":{\"$operator\":\"value2\"}\n}`\nExample of operators: `$eq`, `$ne`, `$lt`, `$lte`, `$gt`, `$gte`, `$in`, `$hasSome`, `$hasAll`, `$startsWith`, `$contains`"
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.Paging"
+            }
+          ],
+          "doc": "Paging options to limit and skip the number of items."
+        },
+        {
+          "name": "sort",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "referenceType": "wix-crm-v2.Tasks.Sorting"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Sort object in the following format:\n`[{\"fieldName\":\"sortField1\",\"order\":\"ASC\"},{\"fieldName\":\"sortField2\",\"order\":\"DESC\"}]`"
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfQueryV2PagingMethodOneOf",
+            "members": [
+              "cursorPaging",
+              "paging"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "QueryV2PagingMethodOneOf",
+      "members": [
+        {
+          "name": "cursorPaging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.CursorPaging"
+            }
+          ],
+          "doc": "Cursor token pointing to a page of results. Not used in the first request. Following requests use the cursor token and not `filter` or `sort`."
+        },
+        {
+          "name": "paging",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.Paging"
+            }
+          ],
+          "doc": "Paging options to limit and skip the number of items."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "RepositionTask",
+      "members": [
+        {
+          "name": "position",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The position of the last task that was re-positioned"
+        },
+        {
+          "name": "taskId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The id of the last task that was re-positioned"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SendTasksReminderRequest",
+      "members": [
+        {
+          "name": "reminderType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The reminder type"
+        },
+        {
+          "name": "taskIds",
+          "optional": true,
+          "type": [
+            {
+              "complexType": {
+                "nativeType": "Array",
+                "typeParams": [
+                  {
+                    "nativeType": "string"
+                  }
+                ]
+              }
+            }
+          ],
+          "doc": "Ids of the tasks to remind"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "SendTasksReminderResponse",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Sorting",
+      "members": [
+        {
+          "name": "fieldName",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Name of the field to sort by."
+        },
+        {
+          "name": "order",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Sort order."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "Task",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the task was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Task ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the task was last updated."
+        },
+        {
+          "name": "contact",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.ContactInfo"
+            }
+          ],
+          "doc": "Information about the contact associated with the task."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the task."
+        },
+        {
+          "name": "dueDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Due date for the task."
+        },
+        {
+          "name": "revision",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the task is updated. To prevent conflicting changes, the existing `revision` must be used when updating a task."
+        },
+        {
+          "name": "source",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.TaskSource"
+            }
+          ],
+          "doc": "Details about the task source."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the task.\n\nSupported values: `\"ACTION_NEEDED\"`, `\"COMPLETED\"`.\n\nDefault: `\"ACTION_NEEDED\"`\n"
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Title of the task."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaskAssigned",
+      "members": [
+        {
+          "name": "assigneeId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The id of the assignee"
         },
         {
           "name": "task",
           "optional": true,
           "type": [
             {
-              "referenceType": "wix-crm-v2.Tasks.TaskData"
+              "referenceType": "wix-crm-v2.Tasks.Task"
             }
           ],
-          "doc": "Task information."
+          "doc": "The task that was assigned"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaskNotFoundError",
+      "members": [
+        {
+          "name": "taskId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "The task id that was not found"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaskOverdue",
+      "members": [
+        {
+          "name": "task",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.Task"
+            }
+          ],
+          "doc": "The overdue task."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "TaskSource",
+      "members": [
+        {
+          "name": "appId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "App ID, if the task was created by an app."
+        },
+        {
+          "name": "sourceType",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "How the task was created.\n\nSupported values: `\"APP\"`, `\"USER\"`."
+        },
+        {
+          "name": "userId",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "User ID, if the task was created by a user."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateTask",
+      "members": [
+        {
+          "name": "_createdDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the task was created."
+        },
+        {
+          "name": "_id",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Task ID."
+        },
+        {
+          "name": "_updatedDate",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Date and time the task was last updated."
+        },
+        {
+          "name": "contact",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.ContactInfo"
+            }
+          ],
+          "doc": "Information about the contact associated with the task."
+        },
+        {
+          "name": "description",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Description of the task."
+        },
+        {
+          "name": "dueDate",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Due date for the task."
+        },
+        {
+          "name": "revision",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Revision number, which increments by 1 each time the task is updated. To prevent conflicting changes, the existing `revision` must be used when updating a task."
+        },
+        {
+          "name": "source",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.TaskSource"
+            }
+          ],
+          "doc": "Details about the task source."
+        },
+        {
+          "name": "status",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Status of the task.\n\nSupported values: `\"ACTION_NEEDED\"`, `\"COMPLETED\"`.\n\nDefault: `\"ACTION_NEEDED\"`\n"
+        },
+        {
+          "name": "title",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Title of the task."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateTaskOptions",
+      "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "UpdateTaskRequest",
+      "members": [
+        {
+          "name": "task",
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Tasks.Task"
+            }
+          ],
+          "doc": "Task to update."
         }
       ],
       "docs": {
@@ -1635,24 +2894,14 @@
       "name": "UpdateTaskResponse",
       "members": [
         {
-          "name": "_id",
+          "name": "task",
           "optional": true,
           "type": [
             {
-              "nativeType": "string"
+              "referenceType": "wix-crm-v2.Tasks.Task"
             }
           ],
-          "doc": "Task ID."
-        },
-        {
-          "name": "version",
-          "optional": true,
-          "type": [
-            {
-              "nativeType": "number"
-            }
-          ],
-          "doc": "The task version. Incremented on each change"
+          "doc": "The updated task."
         }
       ],
       "docs": {
