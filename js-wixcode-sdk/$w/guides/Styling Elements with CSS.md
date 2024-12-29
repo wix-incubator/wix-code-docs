@@ -80,7 +80,6 @@ For reference, here is a list of global classes:
 - [Ratings input](/ratings-input/css-classes)
 - [Repeater]($w/repeater/css-classes)
 - [Rich text box](/rich-text-box/css-classes)
-- [Search bar](#search-bar-classes)
 - [Section]($w/section/css-classes)
 - [Selection tags](/selection-tags/css-classes)
 - [Signature input](/signature-input/css-classes)
@@ -193,7 +192,7 @@ For example:
 }
 ```
 
-### Search bar classes
+<!--### Search bar classes
 
 #### `.search-bar`
 
@@ -231,4 +230,4 @@ For example:
   background-color: #dfd2f4;
   font-family: monospace;
 }
-```
+```-->
