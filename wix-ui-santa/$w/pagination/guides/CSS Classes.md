@@ -1,5 +1,3 @@
-<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
-
 # Pagination CSS Classes
 
 > **Note:** This feature is only available to Wix Studio users.
@@ -8,7 +6,7 @@ You can use the classes listed below
 to style your `Pagination` elements with CSS.
 
 For more information on styling your elements with CSS, see
-[Styling Elements with CSS]($w/styling-elements-with-css) and the
+[Styling Elements with CSS](https://dev.wix.com/docs/velo/api-reference/$w/styling-elements-with-css) and the
 [MDN CSS reference docs](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
 <blockquote class="important">
@@ -21,6 +19,8 @@ select elements with the documented class names only.
 
 </blockquote>
 
+<!-- Commented out classes that are only currently supported in classic editor for partners -->
+
 ## `.pagination`
 
 Targets pagination elements.
@@ -32,7 +32,7 @@ For example:
 }
 ```
 
-## `.pagination__current-page`
+<!-- ## `.pagination__current-page`
 
 Targets pagination [current page]($w/pagination/currentPage) element.
 For example:
@@ -66,7 +66,7 @@ For example:
   font-family: sans-serif;
   color: black;
 }
-```
+``` -->
 
 ## `.pagination__navigation-button`
 
@@ -81,7 +81,8 @@ For example:
 }
 ```
 
-## `.pagination__input-field`
+
+<!-- ## `.pagination__input-field`
 
 Targets pagination input fields.
 For example:
@@ -93,4 +94,4 @@ For example:
   background-color: #dfd2f4;
   font-family: monospace;
 }
-```
+``` -->
