@@ -60,7 +60,9 @@
       },
       "docs": {
         "summary": "Creates multiple coupons.",
-        "description": [],
+        "description": [
+          "The `bulkCreateCoupons()` function returns a Promise that resolves when the coupons are created."
+        ],
         "examples": [
           {
             "title": "bulkCreateCoupons example",
@@ -83,11 +85,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkCreateCoupons",
       "isAdminMethod": true
     },
@@ -131,8 +128,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Deletes multiple coupons.",
-        "description": [],
+        "summary": "Deletes the specified coupons.",
+        "description": [
+          "The `bulkDeleteCoupons()` function returns a Promise that resolves when the coupons are deleted."
+        ],
         "examples": [
           {
             "title": "bulkDeleteCoupons example",
@@ -155,11 +154,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkDeleteCoupons",
       "isAdminMethod": true
     },
@@ -198,11 +192,11 @@
       "docs": {
         "summary": "Creates a new coupon.",
         "description": [
-          "When creating a coupon, the `specification` object must contain values for `name`, `code`, `startTime`, and either `scope` or `minimumSubtotal`. The exception is for a `freeShipping` coupon type, for which you cannot apply a `scope` and `minimumSubtotal` is optional.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application, a group within the application, or a single item within a group. See the [introduction](#introduction) for a table of currently supported coupon scopes.\n\nThe `specification` object must also contain a value for exactly 1 of the following coupon properties. This defines the coupon type.\n\n+ `\"moneyOffAmount\"`\n+ `\"percentOffRate\"`\n+ `\"freeShipping\"`\n+ `\"fixedPriceAmount\"`\n+ `\"buyXGetY\"`"
+          "The `createCoupon()` function returns a Promise that resolves to the new coupon when it is created.\n\nWhen creating a coupon, the `specification` object must contain values for `name`, `code`, `startTime`, and either `scope` or `minimumSubtotal`. The exception is for a `freeShipping` coupon type, for which you cannot apply a `scope` and `minimumSubtotal` is optional.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application, a group within the application, or a single item within a group. See the [introduction](#introduction) for a table of currently supported coupon scopes.\n\nThe `specification` object must also contain a value for exactly 1 of the following coupon properties. This defines the coupon type.\n\n+ `\"moneyOffAmount\"`\n+ `\"percentOffRate\"`\n+ `\"freeShipping\"`\n+ `\"fixedPriceAmount\"`\n+ `\"buyXGetY\"`"
         ],
         "examples": [
           {
-            "title": "Create a new coupon with options ",
+            "title": "Create a new coupon with options (dashboard page code)",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
               "",
@@ -231,11 +225,42 @@
             ]
           },
           {
-            "title": "Create a new \"money off\" coupon ",
+            "title": "Create a new coupon with options (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
+              "  let specification = {",
+              "    \"name\": \"My Coupon\",",
+              "    \"code\": \"myCouponCode\",",
+              "    \"startTime\": new Date(),",
+              "    \"expirationTime\": new Date(2020, 12, 31),",
+              "    \"usageLimit\": 100,",
+              "    \"limitedToOneItem\": true,",
+              "    \"limitPerCustomer\": 1,",
+              "    \"active\": true,",
+              "    \"scope\": {",
+              "      \"namespace\": \"stores\"",
+              "    },",
+              "    \"moneyOffAmount\": 10",
+              "  };",
+              "",
+              "  return coupons.createCoupon(specification);",
+              "});",
+              "",
+              "// Returns promise that resolves to:",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              ""
+            ]
+          },
+          {
+            "title": "Create a new \"money off\" coupon ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"My Coupon\",",
               "    \"code\": \"myCouponCode\",",
@@ -247,19 +272,20 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
               ""
             ]
           },
           {
             "title": "Create a new free shipping coupon ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"My Coupon\",",
               "    \"code\": \"myCouponCode\",",
@@ -268,19 +294,20 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
               ""
             ]
           },
           {
             "title": "Create a new \"buy x, get y\" coupon ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"My Coupon\",",
               "    \"code\": \"myCouponCode\",",
@@ -295,19 +322,20 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
               ""
             ]
           },
           {
             "title": "Create a new coupon that applies to a specific store product ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"My Coupon\",",
               "    \"code\": \"myCouponCode\",",
@@ -323,19 +351,20 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
               ""
             ]
           },
           {
             "title": "Create a new coupon that applies to all event tickets ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"My Coupon\",",
               "    \"code\": \"myCouponCode\",",
@@ -350,19 +379,20 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
+              "// {\"_id\": \"058b0b56-e90d-4f4e-a8a3-8bf90b3fc4e6\"}",
               ""
             ]
           },
           {
             "title": "Create a new \"percent off\" coupon that applies to all pricing plans ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function createCoupon() {",
+              "export const createCoupon = webMethod(Permissions.Admin, () => {",
               "  let specification = {",
               "    \"name\": \"Summer Sale 20%\",",
               "    \"code\": \"SUMMER20\",",
@@ -375,10 +405,10 @@
               "  };",
               "",
               "  return coupons.createCoupon(specification);",
-              "}",
+              "});",
               "",
               "// Returns promise that resolves to:",
-              "// {\"id\": \"c2750c68-c253-42ce-85a4-2c9d09bfbcd8\"}",
+              "// {\"_id\": \"c2750c68-c253-42ce-85a4-2c9d09bfbcd8\"}",
               ""
             ]
           }
@@ -422,10 +452,12 @@
       },
       "docs": {
         "summary": "Deletes a coupon.",
-        "description": [],
+        "description": [
+          "The `deleteCoupon()` function returns a Promise that resolves when the specified coupon is deleted."
+        ],
         "examples": [
           {
-            "title": "Delete a coupon ",
+            "title": "Delete a coupon (dashboard page code)",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
               "",
@@ -436,6 +468,20 @@
               "// Returns a promise that is resolved when",
               "// the coupon is deleted.",
               ""
+            ]
+          },
+          {
+            "title": "Delete a coupon (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export const deleteCoupon = webMethod(Permissions.Admin, (_id) => {",
+              "  return coupons.deleteCoupon(_id);",
+              "});",
+              "",
+              "// Returns a promise that is resolved when",
+              "// the coupon is deleted."
             ]
           }
         ]
@@ -478,7 +524,9 @@
       },
       "docs": {
         "summary": "Retrieves a coupon by ID.",
-        "description": [],
+        "description": [
+          "The `getCoupon()` function returns a Promise that resolves when the specified coupon is retrieved."
+        ],
         "examples": [
           {
             "title": "getCoupon example",
@@ -501,11 +549,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getCoupon",
       "isAdminMethod": true
     },
@@ -542,8 +585,10 @@
         "doc": null
       },
       "docs": {
-        "summary": "Retrieves a list of coupons with pagination and filters.\nA maximum of 100 coupons will be returned per request.",
-        "description": [],
+        "summary": "Retrieves a list of up to 100 coupons with pagination and filters.",
+        "description": [
+          "The `queryCoupons()` function returns a Promise that resolves when the coupons are retrieved."
+        ],
         "examples": [
           {
             "title": "queryCoupons example",
@@ -566,11 +611,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "queryCoupons",
       "isAdminMethod": true
     },
@@ -638,11 +678,11 @@
       "docs": {
         "summary": "Updates a coupon.",
         "description": [
-          "Only the properties passed in the `specification` object will be updated. All other properties will remain the same.\n\nTo remove a value from the coupon, pass its corresponding property with a value of `null`.\n\nWhen updating a coupon, you cannot change the coupon's `type`. For example, if the coupon's `type` is `moneyOffAmount`,\nyou cannot change it to `fixedPriceAmount`. You can update the coupon type's value. For example, you can change the\nvalue of `moneyOffAmount` from `5` to `10`.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application,\na group within the application, or a single item within a group.\nSee the [introduction](#introduction) for a table of currently supported coupon scopes."
+          "The `updateCoupon()` function returns a Promise that resolves when the coupon is updated.\n\nOnly the properties passed in the `specification` object will be updated. All other properties will remain the same.\n\nTo remove a value from the coupon, pass its corresponding property with a value of `null`.\n\nWhen updating a coupon, you cannot change the coupon's `type`. For example, if the coupon's `type` is `moneyOffAmount`, you cannot change it to `fixedPriceAmount`. You can update the coupon type's value. For example, you can change the value of `moneyOffAmount` from `5` to `10`.\n\nThe coupon `scope` defines the items a coupon applies to. A coupon can apply to all items in a specific Wix application, a group within the application, or a single item within a group.\nSee the [introduction](#introduction) for a table of currently supported coupon scopes."
         ],
         "examples": [
           {
-            "title": "Update an existing coupon ",
+            "title": "Update an existing coupon (dashboard page code)",
             "body": [
               "import { coupons } from 'wix-marketing.v2';",
               "",
@@ -656,11 +696,27 @@
             ]
           },
           {
-            "title": "Update a coupon's expiration date ",
+            "title": "Update an existing coupon (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { coupons } from 'wix-marketing.v2';",
               "",
-              "export function updateCoupon() {",
+              "export const updateCoupon = webMethod(Permissions.Admin, (params) => {",
+              "  const { _id, fieldMask, specification } = params;",
+              "  return coupons.updateCoupon(_id, fieldMask, specification);",
+              "});",
+              "",
+              "// Returns a promise that is resolved when",
+              "// the coupon is updated."
+            ]
+          },
+          {
+            "title": "Update a coupon's expiration date ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { coupons } from 'wix-marketing.v2';",
+              "",
+              "export const updateCoupon = webMethod(Permissions.Admin, () => {",
               "  let _id = \"bff1f257-5e7e-437d-9f86-098de337cae6\";",
               "",
               "  let fieldMask = \"expirationTime\"",
@@ -673,11 +729,10 @@
               "  };",
               "",
               "  return coupons.updateCouponFields(_id, fieldMask, specification);",
-              "}",
+              "});",
               "",
               "// Returns a promise that is resolved when",
-              "// the coupon is updated.",
-              ""
+              "// the coupon is updated."
             ]
           }
         ]
@@ -688,6 +743,26 @@
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "ApplicationError",
       "members": [
@@ -1515,7 +1590,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "ID of Wix app that applied the coupon. Supported values:\n+ Wix Stores - `1380b703-ce81-ff05-f115-39571d94dfcd`\n+ Wix Bookings - `13d21c63-b5ec-5912-8397-c3a5ddb27a97`\n+ Wix Events - `140603ad-af8d-84a5-2c80-a0f60cb47351`"
+          "doc": "ID of Wix app that applied the coupon. Supported values:\n+ Wix Stores - `215238eb-22a5-4c36-9e7b-e7c08025e04e`\n+ Wix Bookings - `13d21c63-b5ec-5912-8397-c3a5ddb27a97`\n+ Wix Events - `140603ad-af8d-84a5-2c80-a0f60cb47351`"
         },
         {
           "name": "wixAppOrderId",
@@ -1634,6 +1709,259 @@
             }
           ],
           "doc": "Coupon name to be displayed."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-marketing-v2.Coupons.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -2602,23 +2930,6 @@
             }
           ],
           "doc": "ID of the coupon to update."
-        },
-        {
-          "name": "fieldMask",
-          "optional": true,
-          "type": [
-            {
-              "complexType": {
-                "nativeType": "Array",
-                "typeParams": [
-                  {
-                    "nativeType": "string"
-                  }
-                ]
-              }
-            }
-          ],
-          "doc": "Field mask of fields to update (required - passing an empty `fieldMask` will return an error). Valid field masks are any of those in the `specification` field."
         },
         {
           "name": "specification",

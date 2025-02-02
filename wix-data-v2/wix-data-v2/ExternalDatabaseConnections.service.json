@@ -21,6 +21,16 @@
           ],
           "doc": "External database connection details.",
           "required": true
+        },
+        {
+          "name": "options",
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.CreateExternalDatabaseConnectionOptions"
+            }
+          ],
+          "doc": "Options for creating an external database connection.",
+          "required": false
         }
       ],
       "requiredFields": [
@@ -45,105 +55,135 @@
       "docs": {
         "summary": "Creates a new external database connection.",
         "description": [
-          "The `options.externalDatabaseConnection` parameter must include a name, base URL, and configuration details for the external database.\nIf any of these are missing, the external database connection isn't created.\n\nThis function is not a universal function and runs only on the backend."
+          "The `externalDatabaseConnection` parameter must include a `name`, `endpoint`, and `configuration` details for the external database.\nIf any of these are missing, the external database connection isn't created."
         ],
         "examples": [
           {
-            "title": "Create an external database connection",
+            "title": "Create an external database connection (dashboard page code) ",
             "body": [
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "/* Sample external connection object: ",
-              " *",
-              " * const externalDatabaseConnection = {",
-              " *   \"externalDatabaseConnection\": {",
-              " *     \"configuration\": {",
-              " *       \"secretKey\": \"<your-secret-key>\"",
-              " *     },",
-              " *     \"endpoint\": \"<external-database-endpoint>\",",
-              " *     \"name\": \"connectionName\"",
-              " *   }",
-              " * };",
+              "const elevatedCreateExternalDbConnection = elevate(externalDatabaseConnections.createExternalDatabaseConnection);",
+              "",
+              "/* Sample externalDatabaseConnection object:",
+              " *  ",
+              " * {",
+              " *   capabilities: {",
+              " *     collectionModificationsSupported: false,",
+              " *     fieldTypes: []",
+              " *   },",
+              " *   configuration: {",
+              " *     secretKey: '74dbd6d6-ec5b-4668-8229-c77379bc6431'",
+              " *   },",
+              " *   endpoint: 'https://example.com/my-external-database',",
+              " *   name: 'connectionOne'",
+              " * }",
               " */",
               "",
-              "export async function myCreateExternalDbConnection(externalDatabaseConnection) {",
+              "",
+              "export async function myCreateExternalDbConnectionFunction(newExternalDatabaseConnection) {",
               "  try {",
-              "    const createdExternalDbConnection = await externalDatabaseConnections.createExternalDatabaseConnection(externalDatabaseConnection);",
-              "    return createdExternalDbConnection; ",
-              "  } catch(error) {",
-              "    console.log(error)",
+              "    const createExternalDbConnectionResponse = await elevatedCreateExternalDbConnection(newExternalDatabaseConnection);",
+              "    ",
+              "    const dbConnectionStatus = createExternalDbConnectionResponse.connectionStatus; ",
+              "    const dbCapabilities = createExternalDbConnectionResponse.capabilities; ",
+              "    ",
+              "    console.log('Successfully created an external database connection. Full response:', createExternalDbConnectionResponse);",
+              "    ",
+              "    return createExternalDbConnectionResponse; ",
+              "  } catch (error) {",
+              "    console.error(error);",
               "    // Handle the error",
               "  }",
               "}",
               "",
-              "/* Returns a promise that resolves to the created external database connection:",
+              "/* Promise resolves to:",
+              " * ",
               " * {",
-              " *   \"name\": \"connectionName\",",
-              " *   \"endpoint\": \"<external-database-endpoint>\",",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": false,",
+              " *     \"fieldTypes\": []",
+              " *   }",
               " *   \"configuration\": {",
-              " *     \"secretKey\": \"<your-secret-key>\"",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\"",
               " *   },",
               " *   \"connectionStatus\": {",
-              " *     \"successful\": true,",
               " *     \"causeOfFailure\": \"NONE\",",
-              " *     \"hasCollections\": false",
+              " *     \"hasCollections\": \"YES\"",
+              " *     \"successful\": true,",
               " *   },",
-              " *   \"protocolVersion\": \"V2\"",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connectionOne\",",
+              " *   \"protocolVersion\": \"V2\",",
               " * }",
               " */"
             ]
           },
           {
-            "title": "Create an external database connection  ",
+            "title": "Create an external database connection (export from backend code) ",
             "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "/* Sample external connection object: ",
-              " *",
-              " * const externalDatabaseConnection = {",
-              " *   \"externalDatabaseConnection\": {",
-              " *     \"configuration\": {",
-              " *       \"secretKey\": \"<your-secret-key>\"",
-              " *       \"dbName\": \"database1\",",
-              " *       \"description\": \"This is a connection to an AWS database.\"",
-              " *     },",
-              " *     \"endpoint\": \"<external-database-endpoint>\",",
-              " *     \"name\": \"connectionName\"",
-              " *   }",
-              " * };",
+              "const elevatedCreateExternalDbConnection = elevate(externalDatabaseConnections.createExternalDatabaseConnection);",
+              "",
+              "/* Sample externalDatabaseConnection object:",
+              " *  ",
+              " * {",
+              " *   capabilities: {",
+              " *     collectionModificationsSupported: false,",
+              " *     fieldTypes: []",
+              " *   },",
+              " *   configuration: {",
+              " *     secretKey: '74dbd6d6-ec5b-4668-8229-c77379bc6431'",
+              " *   },",
+              " *   endpoint: 'https://example.com/my-external-database',",
+              " *   name: 'connectionOne'",
+              " * }",
               " */",
               "",
-              "export async function myCreateExternalDbConnection(externalDatabaseConnection) {",
-              "  try {",
-              "    const createdExternalDbConnection = await externalDatabaseConnections.createExternalDatabaseConnection(externalDatabaseConnection);",
-              "    return createdExternalDbConnection; ",
-              "  } catch(error) {",
-              "    console.log(error)",
-              "    // Handle the error",
-              "  }",
-              "}",
+              "export const myCreateExternalDbConnectionFunction = webMethod (",
+              "  Permissions.Admin, ",
+              "  async (newExternalDatabaseConnection) => {",
+              "    try {",
+              "      const createExternalDbConnectionResponse = await elevatedCreateExternalDbConnection(newExternalDatabaseConnection);",
               "",
-              "/* Returns a promise that resolves to the created external database connection with additional configurations:",
+              "      const dbConnectionStatus = createExternalDbConnectionResponse.connectionStatus; ",
+              "      const dbCapabilities = createExternalDbConnectionResponse.capabilities; ",
+              "",
+              "      console.log('Successfully created an external database connection. Full response:', createExternalDbConnectionResponse);",
+              "",
+              "      return createExternalDbConnectionResponse; ",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ")",
+              "",
+              "/* Promise resolves to:",
+              " * ",
               " * {",
-              " *   \"name\": \"connectionName\",",
-              " *   \"endpoint\": \"<external-database-endpoint>\",",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": false,",
+              " *     \"fieldTypes\": []",
+              " *   }",
               " *   \"configuration\": {",
-              " *     \"secretKey\": \"<your-secret-key>\",",
-              " *     \"dbName\": \"database1\",",
-              " *     \"description\": \"This is a connection to an AWS database.\"",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\"",
               " *   },",
               " *   \"connectionStatus\": {",
-              " *     \"successful\": true,",
               " *     \"causeOfFailure\": \"NONE\",",
-              " *     \"hasCollections\": false",
+              " *     \"hasCollections\": \"YES\"",
+              " *     \"successful\": true,",
               " *   },",
-              " *   \"protocolVersion\": \"V2\"",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connectionOne\",",
+              " *   \"protocolVersion\": \"V2\",",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "This function creates a connection to an existing database hosted on external platforms such as Google Cloud Platform, AWS, or Microsoft Azure. The connection is configured more extensively, based on the external database's API."
-            }
+            ]
           }
         ]
       },
@@ -191,23 +231,61 @@
       "docs": {
         "summary": "Deletes an external database connection.",
         "description": [
-          "> **Note:** Once an external database connection is deleted, it can't be restored. To reconnect the database you need to create a new external database connection.\n\nThis function is not a universal function and runs only on the backend."
+          "> **Note:** Once an external database connection is deleted, it can't be restored. To reconnect the database you need to create a new external database connection."
         ],
         "examples": [
           {
-            "title": "Deletes an external database connection",
+            "title": "Delete an external database connection (dashboard page code)",
             "body": [
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "export async function myDeleteExternalDbConnection(name) {",
+              "const elevatedDeleteExternalDbConnection = elevate(externalDatabaseConnections.deleteExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'ConnectionOne'",
+              " */",
+              "",
+              "export async function myDeleteExternalDbConnection (name) {",
               "  try {",
-              "    await externalDatabaseConnections.deleteExternalDatabaseConnection(name) ",
-              "    return; ",
-              "  } catch(error) {",
-              "    console.log(error)",
+              "    await elevatedDeleteExternalDbConnection(name);",
+              "",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
               "    // Handle the error",
-              "  }",
+              "  }        ",
               "}",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Delete an external database connection (export from backend code) ",
+            "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
+              "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "const elevatedDeleteExternalDbConnection = elevate(externalDatabaseConnections.deleteExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'ConnectionOne'",
+              " */",
+              "",
+              "export const myDeleteExternalDbConnection = webMethod(",
+              "  Permissions.Admin,",
+              "  async (name) => {",
+              "    try {",
+              "      await elevatedDeleteExternalDbConnection(name);",
+              "",
+              "      return;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }        ",
+              "  }",
+              ")",
               "",
               "/* Promise resolves to void */"
             ]
@@ -257,43 +335,109 @@
       },
       "docs": {
         "summary": "Retrieves an external database connection by name.",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
+        "description": [],
         "examples": [
           {
-            "title": "Gets an external database connection",
+            "title": "Get an external database connection (dashboard page code) ",
             "body": [
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "/* Sample name parameter: ",
-              " *",
-              " * const name = <external-db-connection-name>;",
-              " * ",
+              "const elevatedGetExternalDbConnection = elevate(externalDatabaseConnections.getExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'ConnectionOne'",
               " */",
               "",
-              "export async function myGetExternalDbConnection(name) {",
+              "export async function myGetExternalDbConnection (name) {",
               "  try {",
-              "    const retrievedDb = await externalDatabaseConnections.getExternalDatabaseConnection(name); ",
-              "    return retrievedDb; ",
-              "  } catch(error) {",
-              "    console.log(error)",
+              "    const getExternalDbConnectionResponse = await elevatedGetExternalDbConnection(name);",
+              "",
+              "    const connectionSuccessful = getExternalDbConnectionResponse.connectionStatus.successful; ",
+              "    const dbEndpoint = getExternalDbConnectionResponse.endpoint;",
+              "",
+              "    console.log(`Retrieved the ${name} external database connection, which is ${connectionSuccessful ? 'successful' : 'unsuccessful'}`);",
+              "    console.log(`It is mounted at ${dbEndpoint}`);",
+              "",
+              "    return getExternalDbConnectionResponse;",
+              "  } catch (error) {",
+              "    console.error(error);",
               "    // Handle the error",
-              "  }",
+              "  }        ",
               "}",
               "",
-              "/* Returns a promise that resolves to the retrieved external database connection:",
+              "/* Promise resolves to:",
+              " * ",
               " * {",
-              " *   \"name\": \"<external-connection-name>\",",
-              " *   \"endpoint\": \"<external-database-endpoint>\",",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": true,",
+              " *     \"fieldTypes\": []",
+              " *   }",
               " *   \"configuration\": {",
-              " *     \"secretKey\": \"<your-secret-key>\"",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\"",
               " *   },",
               " *   \"connectionStatus\": {",
-              " *     \"successful\": true,",
               " *     \"causeOfFailure\": \"NONE\",",
-              " *     \"hasCollections\": true",
+              " *     \"hasCollections\": \"YES\"",
+              " *     \"successful\": true,",
               " *   },",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connectionOne\",",
+              " *   \"protocolVersion\": \"V2\"",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Get an external database connection (export from backend code) ",
+            "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
+              "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "const elevatedGetExternalDbConnection = elevate(externalDatabaseConnections.getExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'ConnectionOne'",
+              " */",
+              "",
+              "export const myGetExternalDbConnection = webMethod(",
+              "  Permissions.Admin,",
+              "  async (name) => {",
+              "    try {",
+              "      const getExternalDbConnectionResponse = await elevatedGetExternalDbConnection(name);",
+              "",
+              "      const connectionSuccessful = getExternalDbConnectionResponse.connectionStatus.successful; ",
+              "      const dbEndpoint = getExternalDbConnectionResponse.endpoint;",
+              "",
+              "      console.log(`Retrieved the ${name} external database connection, which is ${connectionSuccessful ? 'successful' : 'unsuccessful'}`);",
+              "      console.log(`It is mounted at ${dbEndpoint}`);",
+              "",
+              "      return getExternalDbConnectionResponse;",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }        ",
+              "  }",
+              ")",
+              "",
+              "/* Promise resolves to:",
+              " * ",
+              " * {",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": true,",
+              " *     \"fieldTypes\": []",
+              " *   }",
+              " *   \"configuration\": {",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\"",
+              " *   },",
+              " *   \"connectionStatus\": {",
+              " *     \"causeOfFailure\": \"NONE\",",
+              " *     \"hasCollections\": \"YES\"",
+              " *     \"successful\": true,",
+              " *   },",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connectionOne\",",
               " *   \"protocolVersion\": \"V2\"",
               " * }",
               " */"
@@ -342,116 +486,329 @@
       },
       "docs": {
         "summary": "Retrieves a list of all external database collections associated with the site or project.",
-        "description": [
-          "This function is not a universal function and runs only on the backend."
-        ],
+        "description": [],
         "examples": [
           {
-            "title": "List existing external database connections",
+            "title": "List existing external database connections (dashboard page code) ",
             "body": [
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "export async function myListDataCollectionsFunction(options) {  ",
+              "const elevatedListExternalDbConnections = elevate(externalDatabaseConnections.listExternalDatabaseConnections);",
+              "",
+              "export async function myListExternalDatabaseConnectionsFunction() {",
               "  try {",
-              "    const myExternalDatabaseConnections = await externalDatabaseConnections.listExternalDatabaseConnections();",
-              "    return myExternalDatabaseConnections;",
+              "    const listExternalDbConnectionsResponse = await elevatedListExternalDbConnections();",
+              "",
+              "    const firstConnectionName = listExternalDbConnectionsResponse.externalDatabaseConnections[0].name;",
+              "    const firstConnectionHaveCollections = listExternalDbConnectionsResponse.externalDatabaseConnections[0].connectionStatus.hasCollections;",
+              "",
+              "    console.log('Here is a list of all current external database connections: ', listExternalDbConnectionsResponse.externalDatabaseConnections);",
+              "",
+              "    return listExternalDbConnectionsResponse;",
               "  } catch (error) {",
               "    console.error(error);",
-              "    // Handle the error ",
-              "  } ",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
-              "/* Returns a promise that resolves to a list of external database connections:",
-              " * {",
-              " *   \"externalDatabaseConnections\": [",
-              " *     {",
-              " *       \"name\": \"<external-connection-name>\",",
-              " *       \"endpoint\": \"<external-database-endpoint>\",",
-              " *       \"configuration\": {",
-              " *         \"secretKey\": \"<your-secret-key>\"",
-              " *       },",
-              " *       \"connectionStatus\": {",
-              " *         \"successful\": true,",
-              " *         \"causeOfFailure\": \"NONE\",",
-              " *         \"hasCollections\": true",
-              " *       },",
-              " *       \"protocolVersion\": \"V2\"",
-              " *     },",
-              " *     {",
-              " *       \"name\": \"<external-connection-name>\",",
-              " *       \"endpoint\": \"<external-database-endpoint>\",",
-              " *       \"configuration\": {",
-              " *         \"secretKey\": \"<your-secret-key>\"",
-              " *       },",
-              " *       \"connectionStatus\": {",
-              " *         \"successful\": true,",
-              " *         \"causeOfFailure\": \"NONE\",",
-              " *         \"hasCollections\": true",
-              " *       },",
-              " *       \"protocolVersion\": \"V2\"",
+              "/* Promise resolves to:",
+              " * [",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
               " *     }",
-              " *   ],",
-              " *   \"pagingMetadata\": {",
-              " *     \"count\": 2,",
-              " *     \"offset\": 0,",
-              " *     \"total\": 2,",
-              " *     \"tooManyToCount\": false",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"fkapmf9s-kf5z-lg04-mfia-kfo294pamvi5\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connection1\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"ukapguvn-kf5z-kfo4-kg94-nfoem4pamfi6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionFour\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"kf0pguvn-mgoi-kfo4-kg94-nfoefds5mfi6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionThree\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"fergfy84-kf5z-fdsf-kg94-nfoegfdg67i6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionTwo\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"applicationId\": \"8b7e9a62-t5hd-4372-gres-c6fb7762600b\"",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": false,",
+              " *       \"causeOfFailure\": \"DESTINATION_ENDPOINT_NOT_DEFINED\",",
+              " *       \"hasCollections\": \"UNKNOWN\"",
+              " *     },",
+              " *     \"name\": \"extDbSpi\",",
+              " *     \"protocolVersion\": \"V3\",",
               " *   }",
-              " * }",
+              " * ]",
               " */"
             ]
           },
           {
-            "title": "List existing external database connections using advanced configuration",
+            "title": "List existing external database connections (export from backend code) ",
             "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "/* Sample options parameter:",
-              " *",
-              " * const options = {",
+              "const elevatedListExternalDbConnections = elevate(externalDatabaseConnections.listExternalDatabaseConnections);",
+              "",
+              "export const myListExternalDatabaseConnectionsFunction = webMethod(",
+              "  Permissions.Admin,",
+              "  async () => {",
+              "    try {",
+              "      const listExternalDbConnectionsResponse = await elevatedListExternalDbConnections();",
+              "",
+              "      const firstConnectionName = listExternalDbConnectionsResponse.externalDatabaseConnections[0].name;",
+              "      const firstConnectionHaveCollections = listExternalDbConnectionsResponse.externalDatabaseConnections[0].connectionStatus.hasCollections;",
+              "",
+              "      console.log('Here is a list of all current external database connections: ', listExternalDbConnectionsResponse.externalDatabaseConnections);",
+              "",
+              "      return listExternalDbConnectionsResponse; ",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ")",
+              "",
+              "/* Promise resolves to:",
+              " * [",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"fkapmf9s-kf5z-lg04-mfia-kfo294pamvi5\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connection1\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"ukapguvn-kf5z-kfo4-kg94-nfoem4pamfi6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionFour\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"kf0pguvn-mgoi-kfo4-kg94-nfoefds5mfi6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionThree\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"capabilities\": {",
+              " *       \"collectionModificationsSupported\": false,",
+              " *       \"fieldTypes\": []",
+              " *     }",
+              " *     \"configuration\": {",
+              " *       \"secretKey\": \"fergfy84-kf5z-fdsf-kg94-nfoegfdg67i6\"",
+              " *     },",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": true,",
+              " *       \"causeOfFailure\": \"NONE\",",
+              " *       \"hasCollections\": \"YES\"",
+              " *     },",
+              " *     \"endpoint\": \"https://example.com/my-external-database\",",
+              " *     \"name\": \"connectionTwo\",",
+              " *     \"protocolVersion\": \"V2\",",
+              " *   },",
+              " *   {",
+              " *     \"applicationId\": \"8b7e9a62-t5hd-4372-gres-c6fb7762600b\"",
+              " *     \"connectionStatus\": {",
+              " *       \"successful\": false,",
+              " *       \"causeOfFailure\": \"DESTINATION_ENDPOINT_NOT_DEFINED\",",
+              " *       \"hasCollections\": \"UNKNOWN\"",
+              " *     },",
+              " *     \"name\": \"extDbSpi\",",
+              " *     \"protocolVersion\": \"V3\",",
+              " *   }",
+              " * ]",
+              " */"
+            ]
+          },
+          {
+            "title": "List existing external database connections with pagination ",
+            "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
+              "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "const elevatedListExternalDbConnections = elevate(externalDatabaseConnections.listExternalDatabaseConnections);",
+              "",
+              "/* Sample options object:",
+              " * ",
+              " * {",
               " *   paging: {",
-              " *     limit: 5, ",
+              " *     limit: 3,",
               " *     offset: 1",
               " *   }",
-              " * };",
-              " */ ",
+              " * }",
+              " */",
               "",
-              "export async function myListDataCollectionsFunction(options) {  ",
-              "  try {",
-              "    const myExternalDatabaseConnections = await externalDatabaseConnections.listExternalDatabaseConnections(options);",
-              "    return myExternalDatabaseConnections;",
-              "  } catch (error) {",
-              "    console.error(error);",
-              "    // Handle the error ",
-              "  } ",
-              "}",
+              "export const myListExternalDatabaseConnectionsFunctionOptions = webMethod(",
+              "  Permissions.Admin,",
+              "  async (options) => {",
+              "    try {",
+              "      const listExternalDbConnectionsResponse = await elevatedListExternalDbConnections(options);",
               "",
-              "/* Returns a promise that resolves to a list of up to five external database connections with an offset of one:",
+              "      const firstConnectionName = listExternalDbConnectionsResponse.externalDatabaseConnections[0].name;",
+              "      const firstConnectionHaveCollections = listExternalDbConnectionsResponse.externalDatabaseConnections[0].connectionStatus.hasCollections;",
+              "",
+              "      console.log('Here is a list of all current external database connections: ', listExternalDbConnectionsResponse.externalDatabaseConnections);",
+              "",
+              "      return listExternalDbConnectionsResponse; ",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ")",
+              "",
+              "/* Promise resolves to:",
               " * {",
               " *   \"externalDatabaseConnections\": [",
               " *     {",
-              " *       \"name\": \"<external-connection-name>\", // Starts with the second connection on the list",
-              " *       \"endpoint\": \"<external-database-endpoint>\",",
+              " *       \"capabilities\": {",
+              " *         \"collectionModificationsSupported\": false,",
+              " *         \"fieldTypes\": []",
+              " *       }",
               " *       \"configuration\": {",
-              " *         \"secretKey\": \"<your-secret-key>\",",
-              " *         \"addedField\": \"addedValue\"",
+              " *         \"secretKey\": \"kvod85qz-fk40-mfi5-mfi4-mflqpmgl4f1\"",
               " *       },",
               " *       \"connectionStatus\": {",
               " *         \"successful\": true,",
               " *         \"causeOfFailure\": \"NONE\",",
-              " *         \"hasCollections\": true",
+              " *         \"hasCollections\": \"YES\"",
               " *       },",
-              " *       \"protocolVersion\": \"V2\"",
+              " *       \"endpoint\": \"https://example.com/my-external-database\",",
+              " *       \"name\": \"connectionFour\",",
+              " *       \"protocolVersion\": \"V2\",",
+              " *     },",
+              " *     {",
+              " *       \"capabilities\": {",
+              " *         \"collectionModificationsSupported\": false,",
+              " *         \"fieldTypes\": []",
+              " *       }",
+              " *       \"configuration\": {",
+              " *         \"secretKey\": \"lfoe8tfd-fl35-mfo4-mfd1-mvkf99bjfi30\"",
+              " *       },",
+              " *       \"connectionStatus\": {",
+              " *         \"successful\": true,",
+              " *         \"causeOfFailure\": \"NONE\",",
+              " *         \"hasCollections\": \"YES\"",
+              " *       },",
+              " *       \"endpoint\": \"https://example.com/my-external-database\",",
+              " *       \"name\": \"connectionThree\",",
+              " *       \"protocolVersion\": \"V2\",",
+              " *     },",
+              " *     {",
+              " *       \"capabilities\": {",
+              " *         \"collectionModificationsSupported\": false,",
+              " *         \"fieldTypes\": []",
+              " *       }",
+              " *       \"configuration\": {",
+              " *         \"secretKey\": \"fkapguvn-kf5z-kfo4-kg94-nfoem4pamfi6\"",
+              " *       },",
+              " *       \"connectionStatus\": {",
+              " *         \"successful\": true,",
+              " *         \"causeOfFailure\": \"NONE\",",
+              " *         \"hasCollections\": \"YES\"",
+              " *       },",
+              " *       \"endpoint\": \"https://example.com/my-external-database\",",
+              " *       \"name\": \"connectionTwo\",",
+              " *       \"protocolVersion\": \"V2\",",
               " *     }",
               " *   ],",
-              " *   \"pagingMetadata\": { ",
-              " *     \"count\": 1,",
+              " *   \"pagingMetadata\": {",
+              " *     \"count\": 3,",
               " *     \"offset\": 1,",
-              " *     \"total\": 2,",
+              " *     \"total\": 5,",
               " *     \"tooManyToCount\": false",
               " *   }",
               " * }",
-              " */"
+              " */ "
             ]
           }
         ]
@@ -485,7 +842,7 @@
               "referenceType": "wix-data-v2.ExternalDatabaseConnections.UpdateExternalDatabaseConnection"
             }
           ],
-          "doc": "",
+          "doc": "Updated external database connection details. The existing connection is replaced with this version.",
           "required": true
         }
       ],
@@ -511,65 +868,134 @@
       "docs": {
         "summary": "Updates an external database connection.",
         "description": [
-          "An external database collection name must be provided in `name`.\nIf an existing external database connection is found with the same name, that connection's details are updated.\nIf no external database connection has that name, the request fails.\n\n> **Note:** After an external database connection is updated, it only contains the values provided in the request. All previous values are lost.\n\nThis function is not a universal function and runs only on the backend."
+          "An external database collection name must be provided in `name`.\nIf an existing external database connection is found with the same name, that connection's details are updated.\nIf no external database connection has that name, the request fails.\n\n> **Note:** After an external database connection is updated, it only contains the values provided in the request. All previous values are lost."
         ],
         "examples": [
           {
-            "title": "Update an existing external database connection ",
+            "title": "Update an existing external database connection (dashboard page code) ",
             "body": [
               "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
               "",
-              "/* Sample external connection object: ",
+              "const elevatedUpdateExternalDatabaseConnection = elevate(externalDatabaseConnections.updateExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'connectionOne'",
               " *",
-              " * const externalDatabaseConnection = {",
-              " *   \"name\": \"<connection-name>\",",
-              " *   \"externalDatabaseConnection\": {",
-              " *     \"endpoint\": \"<external-database-endpoint>\",",
-              " *     \"configuration\": {",
-              " *       \"secretKey\": \"<your-secret-key>\"",
-              " *       \"addedField\": \"addedValue\"",
-              " *       // Add additional fields here ",
-              " *     },",
-              " *     \"connectionStatus\": {",
-              " *       \"successful\": true,",
-              " *       \"causeOfFailure\": \"NONE\",",
-              " *       \"hasCollections\": true",
-              " *     },",
-              " *     \"protocolVersion\": \"V2\"",
-              " *   }",
-              " * };",
+              " * Sample externalDatabaseConnection object:",
+              " * ",
+              " * {",
+              " *   capabilities: {",
+              " *     collectionModificationsSupported: false,",
+              " *     fieldTypes: []",
+              " *   },",
+              " *   configuration: {",
+              " *     secretKey: '74dbd6d6-ec5b-4668-8229-c77379bc6431',",
+              " *     username: 'Jane Doe'",
+              " *   },",
+              " *   endpoint: 'https://example.com/my-external-database'",
+              " * }",
               " */",
               "",
               "export async function myUpdateExternalDatabaseConnectionFunction(name, externalDatabaseConnection) {",
               "  try {",
-              "    const updatedExternalDatabaseConnection = await externalDatabaseConnections.updateExternalDatabaseConnection(name, externalDatabaseConnection);",
-              "    return updatedExternalDatabaseConnection; ",
+              "    const updateExternalDatabaseConnectionResponse = await elevatedUpdateExternalDatabaseConnection(name, externalDatabaseConnection);",
+              "",
+              "    console.log(`The ${name} connection was updated with the new values. It is currently mounted at ${updateExternalDatabaseConnectionResponse.endpoint}`);",
+              "",
+              "    return updateExternalDatabaseConnectionResponse; ",
               "  } catch (error) {",
               "    console.error(error);",
               "    // Handle the error",
-              "  } ",
-              "} ",
+              "  }",
+              "}",
               "",
-              "/* Returns a promise that resolves to the updated external database connection:",
+              "/* Promise resolves to:",
               " * {",
-              " *   \"name\": \"<connection-name>\",",
-              " *   \"endpoint\": \"<external-database-endpoint>\",",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": false,",
+              " *     \"fieldTypes\": []",
+              " *   }",
               " *   \"configuration\": {",
-              " *     \"secretKey\": \"<your-secret-key>\"",
-              " *     \"addedField\": \"addedValue\"",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\",",
+              " *     \"username\": \"Jane Doe\"",
               " *   },",
               " *   \"connectionStatus\": {",
               " *     \"successful\": true,",
               " *     \"causeOfFailure\": \"NONE\",",
-              " *     \"hasCollections\": false",
+              " *     \"hasCollections\": \"YES\"",
               " *   },",
-              " *   \"protocolVersion\": \"V2\"",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connection1\",",
+              " *   \"protocolVersion\": \"<connection-protocol-version>\"",
               " * }",
-              " */ "
-            ],
-            "extra": {
-              "description": "This function effectively replaces the existing database connection with one passed as a parameter"
-            }
+              " */"
+            ]
+          },
+          {
+            "title": "Update an existing external database connection (export from backend code) ",
+            "body": [
+              "import { Permissions, webMethod } from \"wix-web-module\";",
+              "import { externalDatabaseConnections } from \"wix-data.v2\";",
+              "import { elevate } from \"wix-auth\";",
+              "",
+              "const elevatedUpdateExternalDatabaseConnection = elevate(externalDatabaseConnections.updateExternalDatabaseConnection);",
+              "",
+              "/* ",
+              " * Sample name value: 'connectionOne'",
+              " *",
+              " * Sample externalDatabaseConnection object:",
+              " * ",
+              " * {",
+              " *   capabilities: {",
+              " *     collectionModificationsSupported: false,",
+              " *     fieldTypes: []",
+              " *   },",
+              " *   configuration: {",
+              " *     secretKey: '74dbd6d6-ec5b-4668-8229-c77379bc6431',",
+              " *     username: 'Jane Doe'",
+              " *   },",
+              " *   endpoint: 'https://example.com/my-external-database'",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateExternalDatabaseConnectionFunction = webMethod(",
+              "  Permissions.Admin,",
+              "  async (name, externalDatabaseConnection) => {",
+              "    try {",
+              "      const updateExternalDatabaseConnectionResponse = await elevatedUpdateExternalDatabaseConnection(name, externalDatabaseConnection);",
+              "",
+              "      console.log(`The ${name} connection was updated with the new values. It is currently mounted at ${updateExternalDatabaseConnectionResponse.endpoint}`);",
+              "",
+              "      return updateExternalDatabaseConnectionResponse; ",
+              "    } catch (error) {",
+              "      console.error(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
+              ")",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"capabilities\": {",
+              " *     \"collectionModificationsSupported\": false,",
+              " *     \"fieldTypes\": []",
+              " *   }",
+              " *   \"configuration\": {",
+              " *     \"secretKey\": \"74dbd6d6-ec5b-4668-8229-c77379bc6431\",",
+              " *     \"username\": \"Jane Doe\"",
+              " *   },",
+              " *   \"connectionStatus\": {",
+              " *     \"successful\": true,",
+              " *     \"causeOfFailure\": \"NONE\",",
+              " *     \"hasCollections\": \"YES\"",
+              " *   },",
+              " *   \"endpoint\": \"https://example.com/my-external-database\",",
+              " *   \"name\": \"connection1\",",
+              " *   \"protocolVersion\": \"<connection-protocol-version>\"",
+              " * }",
+              " */"
+            ]
           }
         ]
       },
@@ -585,6 +1011,26 @@
   ],
   "messages": [
     {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "Capabilities",
       "members": [
         {
@@ -595,7 +1041,7 @@
               "nativeType": "boolean"
             }
           ],
-          "doc": "Whether the external database supports creating or updating collections."
+          "doc": "Whether the external database supports creating new collections, updating the structure of existing collections, or deleting them."
         },
         {
           "name": "fieldTypes",
@@ -612,7 +1058,7 @@
               }
             }
           ],
-          "doc": "Field types supported by the external database.\nThis option only affects collection creation and update requests."
+          "doc": "Field types the external database supports.\nThis field only applies when `collectionModificationsSupported` is `true`."
         }
       ],
       "docs": {
@@ -632,7 +1078,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Reason for the failure, if a connection isn't established successfully.\n+ `NONE`: No connection failure.\n+  `COMMUNICATION_FAILURE`: General communication failure.\n+ `DESTINATION_HOST_UNREACHABLE`: External database host is unreachable.\n+ `UNAUTHORIZED`: Unauthorized to access external database."
+          "doc": "If and why a connection attempt failed.\n+ `NONE`: No connection failure.\n+ `COMMUNICATION_FAILURE`: General communication failure.\n+ `DESTINATION_HOST_UNREACHABLE`: External database host is unreachable.\n+ `UNAUTHORIZED`: Unauthorized to access external database.\n+ `DESTINATION_ENDPOINT_NOT_DEFINED`: `Endpoint` property is not set."
         },
         {
           "name": "hasCollections",
@@ -663,8 +1109,38 @@
       }
     },
     {
+      "name": "CreateExternalDatabaseConnectionOptions",
+      "members": [
+        {
+          "name": "connectionType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Connection type."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "CreateExternalDatabaseConnectionRequest",
       "members": [
+        {
+          "name": "connectionType",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Connection type."
+        },
         {
           "name": "externalDatabaseConnection",
           "type": [
@@ -730,8 +1206,272 @@
       }
     },
     {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "ExternalDatabaseConnection",
       "members": [
+        {
+          "name": "capabilities",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.Capabilities"
+            }
+          ],
+          "doc": "The external database's capabilities."
+        },
         {
           "name": "configuration",
           "optional": true,
@@ -979,6 +1719,17 @@
     {
       "name": "UpdateExternalDatabaseConnection",
       "members": [
+        {
+          "name": "capabilities",
+          "readOnly": true,
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-data-v2.ExternalDatabaseConnections.Capabilities"
+            }
+          ],
+          "doc": "The external database's capabilities."
+        },
         {
           "name": "configuration",
           "optional": true,

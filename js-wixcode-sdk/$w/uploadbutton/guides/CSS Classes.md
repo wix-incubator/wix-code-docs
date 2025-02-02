@@ -50,7 +50,7 @@ For example:
 
 ## `.upload-button__label`
 
-Targets upload button [label text]($w/uploadbutton/buttonlabel).
+Targets upload button [label text]($w/upload-button/button-label).
 For example:
 
 ```css

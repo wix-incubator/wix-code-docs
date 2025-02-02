@@ -2,7 +2,7 @@
 
 # App Page Data
 
-You can use the [`getAppPageData()`](/wix-window-frontend/getapppagedata) function in code for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
+You can use the [`getAppPageData()`](https://dev.wix.com/docs/velo/api-reference/wix-window-frontend/get-app-page-data) method for [custom app pages](https://dev.wix.com/docs/develop-websites/articles/wix-apps/build-a-custom-wix-business-app-page) to retrieve data you can use to customize the page. The data passed to each type of custom app page is different. This article lists the objects passed to each type of custom app page.
 
 ## Booking Service Page
 
@@ -10,7 +10,7 @@ The object passed to a custom Booking Service page contains the following proper
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/api-reference/wix-bookings/services-v-2/service-object), which contains detailed data about the service. |
+| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/business-solutions/bookings/services/services-v2/service-object), which contains detailed data about the service. |
 
 > **Note**: If the page URL specifies a service that is deleted, hidden, or does not exist, the app returns `null`.
 
@@ -22,8 +22,16 @@ The object passed to a custom Booking Calendar page contains the following prope
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/api-reference/wix-bookings/services-v-2/service-object), which contains detailed data about the service. |
+| `service` | Object | The [Service object](https://dev.wix.com/docs/rest/business-solutions/bookings/services/services-v2/service-object), which contains detailed data about the service. |
 
-> **Note**: If the page URL specifies a service that is deleted, hidden, or does not exist, the app returns `null`.
+## Pricing Plans Page
 
-Learn more about [building a custom Calendar page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/wix-bookings/build-a-custom-booking-calendar-page).
+The object passed to a custom Pricing Plans page contains the following properties:
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `plan` | Object | The [Plan object](https://dev.wix.com/docs/rest/business-solutions/pricing-plans/pricing-plans/plans/plan-object), which contains detailed data about the plans. |
+
+> **Note**: If the page URL specifies a plan that is deleted, hidden, or does not exist, the app returns `null`.
+
+Learn more about [building a custom Pricing Plans page](https://dev.wix.com/docs/develop-websites/articles/wix-apps/other-apps/wix-pricing-plans/tutorial-using-the-pricing-plans-api-for-pricing-plan-ordering-and-payment).

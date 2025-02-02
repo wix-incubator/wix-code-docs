@@ -98,7 +98,7 @@
         "doc": null
       },
       "docs": {
-        "summary": "Triggered when a file fails during essential post-upload processing.",
+        "summary": "Triggered when a file fails during post-upload processing.",
         "description": [],
         "examples": [
           {
@@ -117,14 +117,14 @@
               "  ",
               "/* Full event object:",
               " * {",
+              " *   \"data\": {",
+              " *     \"externalInfo\": {}",
+              " *   },",
               " *   \"metadata\": {",
               " *     \"entityId\": \"d4dde1_f6660fb1274c41bf87514db2f5926ae0\",",
               " *     \"eventTime\": \"2023-09-18T10:27:33.046Z\",",
               " *     \"id\": \"8cf0189d-9f49-45c5-9f3c-bc7928a42e34\",",
               " *     \"triggeredByAnonymizeRequest\": false",
-              " *   },",
-              " *   \"data\": {",
-              " *     \"externalInfo\": {}",
               " *   }",
               " * }",
               " */"
@@ -171,18 +171,18 @@
         ],
         "examples": [
           {
-            "title": "An event that triggers when a file is ready to be used, after any post-upload processing",
+            "title": "An event that triggers when a file is ready to be used",
             "body": [
               "// Place this code in the events.js file",
               "// of your site's Backend section.",
               "// Add the file if it doesn't exist.",
               "",
               "export function wixMediaSiteMedia_onFileDescriptorFileReady(event) {",
-              "  const fileName = event.data.file.displayName;",
+              "  const displayName = event.data.file.displayName;",
               "  const parentFolderId = event.data.parentFolderId;",
               "  const eventTime = event.metadata.eventTime;",
               "",
-              "  console.log(`${fileName}, located in the parent folder with ID ${parentFolderId}, is ready to be used. Completion of post-upload processing was at ${eventTime}.`)",
+              "  console.log(`${displayName}, located in the parent folder with ID ${parentFolderId}, is ready to be used. Completion of post-upload processing was at ${eventTime}.`)",
               "}",
               "",
               "/* Full event object:",
@@ -359,20 +359,14 @@
               "",
               "export function wixMediaSiteMedia_onFileDescriptorUpdated(event) {",
               "  const eventTime = event.metadata.eventTime;",
-              "  const fileName = event.entity.displayName;",
+              "  const displayName = event.entity.displayName;",
               "  const parentFolder = event.entity.parentFolderId;",
               "  ",
-              "  console.log(`${fileName}, currently located in the parent folder with ID ${parentFolder}, was updated at ${eventTime}.`)",
+              "  console.log(`${displayName}, currently located in the parent folder with ID ${parentFolder}, was updated at ${eventTime}.`)",
               "}",
               "",
               "/* Full event object:",
               " * {",
-              " *   \"metadata\": {",
-              " *     \"id\": \"acfe4b7a-bc6a-41f5-8fb3-d0f1301fea51\",",
-              " *     \"entityId\": \"d4dde1_e76448de45bf4deb912b373bc7c3ac6f~mv2.jpg\",",
-              " *     \"eventTime\": \"2023-09-18T10:22:39.193Z\",",
-              " *     \"triggeredByAnonymizeRequest\": false",
-              " *   },",
               " *   \"entity\": {",
               " *     \"displayName\": \"image1\",",
               " *     \"mediaType\": \"IMAGE\",",
@@ -474,6 +468,12 @@
               " *         },",
               " *         \"faces\": []",
               " *       }",
+              " *     },",
+              " *     \"metadata\": {",
+              " *       \"entityId\": \"d4dde1_e76448de45bf4deb912b373bc7c3ac6f~mv2.jpg\",",
+              " *       \"eventTime\": \"2023-09-18T10:22:39.193Z\",",
+              " *       \"id\": \"acfe4b7a-bc6a-41f5-8fb3-d0f1301fea51\",",
+              " *       \"triggeredByAnonymizeRequest\": false",
               " *     },",
               " *     \"siteId\": \"c96bcd13-173a-4938-88e0-a126391adf49\",",
               " *     \"thumbnailUrl\": \"https://static.wixstatic.com/media/d4dde1_e76448de45bf4deb912b373bc7c3ac6f~mv2.jpg\",",
@@ -3276,6 +3276,26 @@
       }
     },
     {
+      "name": "mediaSiteMediaV1FileDescriptorActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
       "name": "mediaSiteMediaV1FileDescriptorApplicationError",
       "members": [
         {
@@ -3907,7 +3927,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -3917,7 +3937,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -3937,7 +3957,208 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FileDescriptorDomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FileDescriptorDomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FileDescriptorEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -3968,6 +4189,66 @@
             }
           ],
           "doc": "The file download URL."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FileDescriptorEntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FileDescriptorEntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FileDescriptorEntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -5845,7 +6126,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of items that match the query."
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
         }
       ],
       "docs": {
@@ -6131,7 +6412,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Video format\nPossible values: ['144p.mp4' '144p.webm' '240p.mp4' '240p.webm' '360p.mp4' '360p.webm' '480p.mp4' '480p.webm'\n'720p.mp4' '720p.webm' '1080p.mp4' '1080p.webm' ]"
+          "doc": "Video format\nPossible values: ['144p.mp4' '144p.webm' '240p.mp4' '240p.webm' '360p.mp4' '360p.webm' '480p.mp4' '480p.webm'\n'720p.mp4' '720p.webm' '1080p.mp4' '1080p.webm', 'hls' ]"
         },
         {
           "name": "height",
@@ -6162,6 +6443,26 @@
             }
           ],
           "doc": "Video width."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -6357,7 +6658,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -6367,7 +6668,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -6387,7 +6688,268 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderDomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderDomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderActionEvent",
+              "displayName": "ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityCreatedEvent",
+              "displayName": "EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityDeletedEvent",
+              "displayName": "EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Events.mediaSiteMediaV1FolderEntityUpdatedEvent",
+              "displayName": "EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderEntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderEntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "mediaSiteMediaV1FolderEntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -6812,7 +7374,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of items that match the query."
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
         }
       ],
       "docs": {

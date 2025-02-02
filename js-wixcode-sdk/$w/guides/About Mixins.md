@@ -41,28 +41,28 @@ The table below presents each mixin. Click its link to see its functions and pro
 
 | Mixin | Description |
 | --- | --- |
-| [CheckedMixin](/$w/checkedmixin) | Provides functionality for elements that can be be checked. |
-| [ClickableMixin](/$w/clickablemixin) | Provides functionality for elements that can be clicked. |
-| [CollapsedMixin](/$w/collapsedmixin) | Provides functionality for elements that can be collapsed. |
-| [ContainableMixin](/$w/containablemixin) | Provides functionality for elements that can contain other elements. |
-| [DisabledMixin](/$w/disabledmixin) | Provides functionality for elements that can be disabled. |
+| [CheckedMixin](/$w/checked-mixin) | Provides functionality for elements that can be be checked. |
+| [ClickableMixin](/$w/clickable-mixin) | Provides functionality for elements that can be clicked. |
+| [CollapsedMixin](/$w/collapsed-mixin) | Provides functionality for elements that can be collapsed. |
+| [ContainableMixin](/$w/containable-mixin) | Provides functionality for elements that can contain other elements. |
+| [DisabledMixin](/$w/disabled-mixin) | Provides functionality for elements that can be disabled. |
 | [Effects](/$w/effects) | Provides functionality for displaying an element's defined effects. |
-| [EffectsMixin](/$w/effectsmixin) | Provides functionality for elements with defined effects. |
+| [EffectsMixin](/$w/effects-mixin) | Provides functionality for elements with defined effects. |
 | [Element](/$w/element) | Provides basic functionality for elements. |
 | [Event](/$w/event) | Provides properties for events that are fired when certain actions occur to elements. |
-| [FocusMixin](/$w/focusmixin) | Provides functionality for elements that can set and lose focus. |
-| [FormElement](/$w/formelement) | Provides functionality related to user input elements. |
-| [HiddenCollapsedMixin](/$w/hiddencollapsedmixin) | Provides functionality for all elements that can be hidden or collapsed. |
-| [HiddenMixin](/$w/hiddenmixin) | Provides functionality for elements that can be hidden. |
-| [LabelMixin](/$w/labelmixin) | Provides functionality for elements that have a label. |
-| [LinkableMixin](/$w/linkablemixin) | Provides functionality for elements that can act as links. |
+| [FocusMixin](/$w/focus-mixin) | Provides functionality for elements that can set and lose focus. |
+| [FormElement](/$w/form-element) | Provides functionality related to user input elements. |
+| [HiddenCollapsedMixin](/$w/hidden-collapsed-mixin) | Provides functionality for all elements that can be hidden or collapsed. |
+| [HiddenMixin](/$w/hidden-mixin) | Provides functionality for elements that can be hidden. |
+| [LabelMixin](/$w/label-mixin) | Provides functionality for elements that have a label. |
+| [LinkableMixin](/$w/linkable-mixin) | Provides functionality for elements that can act as links. |
 | [Node](/$w/node) | Provides functionality for all Wix objects, including objects that are not [elements](https://www.wix.com/corvid/reference/$w/element). |
-| [PlayableMixin](/$w/playablemixin) | Provides functionality for elements that can be played. |
-| [ReadOnlyMixin](/$w/readonlymixin) | Provides functionality for input elements that support readonly mode. |
-| [RequiredMixin](/$w/requiredmixin) | Provides functionality for input elements that can be required to have a value. |
+| [PlayableMixin](/$w/playable-mixin) | Provides functionality for elements that can be played. |
+| [ReadOnlyMixin](/read-only-mixin/introduction) | Provides functionality for input elements that support readonly mode. |
+| [RequiredMixin](/$w/required-mixin) | Provides functionality for input elements that can be required to have a value. |
 | [Style](/$w/style) | Provides an object representing an element's styles. |
-| [StyleMixin](/$w/stylemixin) | Provides functionality for elements that can be styled. |
-| [TextInputMixin](/$w/textinputmixin) | Provides functionality for elements that accept text as input. |
-| [ValidatableMixin](/$w/validatablemixin) | Provides functionality for elements that can be validated. |
-| [ValueMixin](/$w/valuemixin) | Adds the value property to elements. |
-| [ViewportMixin](/$w/viewportmixin) | Provides functionality for elements that can be scrolled into and out of view. |
+| [StyleMixin](/$w/style-mixin) | Provides functionality for elements that can be styled. |
+| [TextInputMixin](/$w/text-input-mixin) | Provides functionality for elements that accept text as input. |
+| [ValidatableMixin](/$w/validatable-mixin) | Provides functionality for elements that can be validated. |
+| [ValueMixin](/$w/value-mixin) | Adds the value property to elements. |
+| [ViewportMixin](/$w/viewport-mixin) | Provides functionality for elements that can be scrolled into and out of view. |

@@ -724,7 +724,7 @@
         "ret":
           { "type": "void" },
         "locations":
-          [ { "lineno": 670,
+          [ { "lineno": 672,
               "filename": "events.js" } ],
         "docs":
           { "summary": "A backend event that fires when a ticket order is deleted.",
@@ -1139,7 +1139,44 @@
                       " *  }",
                       " */" ],
                   "extra":
-                    {  } } ],
+                    {  } },
+                { "title": "Send a triggered email to a customer when an order has expired",
+                  "body":
+                    [ "/*****************************************",
+                      " * Backend code - my-backend-file.web.js *",
+                      " *****************************************/",
+                      "",
+                      "import { triggeredEmails } from 'wix-crm-backend';",
+                      "import { webMethod, Permissions } from 'wix-web-module';",
+                      "",
+                      "export const sendEmailToContact = webMethod(",
+                      "  Permissions.Anyone, ",
+                      "  async (contactId) => { // Pass the contact ID from the onOrderUpdated event in the event.js code",
+                      "    const triggeredEmailTemplate = 'myEmail'; // Use your email template name from Triggered Emails",
+                      "    try {",
+                      "      await triggeredEmails.emailContact(triggeredEmailTemplate, contactId);",
+                      "      console.log('Email sent to contact');",
+                      "    } catch (error) {",
+                      "      console.error(error);",
+                      "      // Handle the error",
+                      "    }",
+                      "  });",
+                      "",
+                      "",
+                      "/*****************************************",
+                      " * Backend code - events.js              *",
+                      " *****************************************/",
+                      "",
+                      "import { sendEmailToContact } from 'backend/my-backend-file.web.js'",
+                      "",
+                      "export function wixEvents_onOrderUpdated(event) { // Set the event that fires when an order is updated",
+                      "    if (event.status === 'CANCELED') { // Send an email only if the order is canceled",
+                      "      const contactId = event.contactId; // Save the site visitor contact ID from the event payload",
+                      "      sendEmailToContact(contactId) // Send an email notification when an order is canceled",
+                      "    }",
+                      "}" ],
+                  "extra":
+                    { "description": "This example uses [triggered emails](https://dev.wix.com/docs/develop-websites/articles/workspace-tools/developer-tools/triggered-emails/getting-started-with-triggered-emails). Create a triggered email before trying this example." } } ],
             "extra":
               {  } },
         "extra":
@@ -4311,7 +4348,7 @@
         "labels": [] },
       { "name": "OrderDeletedEvent",
         "locations":
-          [ { "lineno": 686,
+          [ { "lineno": 688,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing the deleted ticket order.",
@@ -4554,7 +4591,7 @@
         "labels": [] },
       { "name": "OrderUpdatedEvent",
         "locations":
-          [ { "lineno": 640,
+          [ { "lineno": 642,
               "filename": "events.js" } ],
         "docs":
           { "summary": "An object representing the updated order.",

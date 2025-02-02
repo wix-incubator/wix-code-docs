@@ -22,10 +22,10 @@ title: Introduction
 The Create Requests API provides functionality for managing requests to create a group.
  
 With the Create Requests API, you can:
-+ [Approve](wix-groups-v2/createrequests/approvegrouprequests) requests to create a group. 
-+ [List](wix-groups-v2/createrequests/listgrouprequests) requests to create a group. 
-+ [Query](wix-groups-v2/createrequests/querygrouprequests)  requests to create a group.
-+ [Reject](wix-groups-v2/createrequests/rejectgrouprequests)  requests to create a group. 
++ [Approve](/create-requests/approve-group-requests) requests to create a group. 
++ [List](/create-requests/list-group-requests) requests to create a group. 
++ [Query](/create-requests/query-group-requests)  requests to create a group.
++ [Reject](/create-requests/reject-group-requests)  requests to create a group. 
 
 
 > **Note:** This module is only relevant if admin approval is required for creating a group. 
@@ -44,7 +44,7 @@ Before you begin coding, make sure to add the [Wix Groups](https://support.wix.c
 ### Settings for Typical Use Case
 + Site admins determine who can create groups. They can choose to require that site members request approval when creating a group. 
 + This setting can be found in your site's Dashboard under **Groups Application > General Settings > Group Creation**. 
-+ If set to admin approval required, a site member uses the [`createGroup()`](wix-groups-v2/groups/creategroup) function to create a group, and the group becomes a `groupRequest` with a status of `PENDING`. 
++ If set to admin approval required, a site member uses the [`createGroup()`](/groups/create-group) function to create a group, and the group becomes a `groupRequest` with a status of `PENDING`. 
 + Only a site admin can approve or reject requests to create a group. 
 + When a site member's request to create a group is approved, the `groupRequest` status changes to `APPROVED`, and the newly created group is added to the Groups List page of your site. 
 
