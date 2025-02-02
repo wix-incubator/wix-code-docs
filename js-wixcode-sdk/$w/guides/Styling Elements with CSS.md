@@ -41,7 +41,7 @@ viewing <strong>CSS Classes</strong> in your code panel:
 
 ![CSS Classes in code panel](../../../media/css_classes_code_panel.png "CSS Classes in code panel")
 
-Or add your own classes in the custom classes field.
+You can also add your own classes in the custom classes field. Custom classes are added to the root of the component.
 
 For reference, here is a list of global classes:
 - [Accordion]($w/accordion/css-classes)
