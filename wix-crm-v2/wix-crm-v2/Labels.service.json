@@ -44,25 +44,52 @@
       "docs": {
         "summary": "Deletes a label from the site and removes it from contacts it applies to.",
         "description": [
-          "The `deleteLabel()` function returns a Promise that resolves when the specified label is deleted.\n\n> **Note:**\n> Only visitors with **Manage Contacts** permissions can run this function.\n\n\nThis function is not a universal function and runs only on the backend."
+          "The `deleteLabel()` function returns a Promise that resolves when the specified label is deleted.\n\n"
         ],
         "examples": [
           {
-            "title": "Delete a label ",
+            "title": "Delete a label (dashboard page code)",
             "body": [
               "import { labels } from 'wix-crm.v2';",
               "",
-              "export function myDeleteLabelFunction() {",
-              "  const key = 'custom.new-lead';",
+              "/* Sample key value: 'custom.at-risk' */",
+              "",
+              "export async function myDeleteLabelFunction(key) {",
               "  ",
-              "  return labels.deleteLabel(key)",
-              "    .then(() => {",
-              "      console.log('Label deleted');",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}"
+              "  try {",
+              "    const deletedLabel = await labels.deleteLabel(key);    ",
+              "    console.log('Label deleted.');",
+              " ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "/* Promise resolves to void */"
+            ]
+          },
+          {
+            "title": "Delete a label (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.at-risk' */",
+              "",
+              "export const myDeleteLabelFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  try {",
+              "    const elevatedDeleteLabel = elevate(labels.deleteLabel);",
+              "    const deletedLabel = await elevatedDeleteLabel(key);    ",
+              "    console.log('Label deleted.');",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */"
             ]
           }
         ]
@@ -121,37 +148,40 @@
       "docs": {
         "summary": "Retrieves a label with a given name, or creates one if it doesn't exist.",
         "description": [
-          "The `findOrCreateLabel()` function returns a Promise that resolves when the specified label is found or created.\n\nSuccessful calls to `findOrCreateLabel()` always returns a label, which can be passed to subsequent function calls.\n\nTo find an existing label without potentially creating a new one, use [`getLabel()`](#getlabel) or [`queryLabels()`](#querylabels).\n\n> **Note:**\n> Only visitors with **Manage Contacts** permissions can run this function.\n\n\nThis function is not a universal function and runs only on the backend."
+          "The `findOrCreateLabel()` function returns a Promise that resolves when the specified label is found or created.\n\nSuccessful calls to `findOrCreateLabel()` always returns a label, which can be passed to subsequent function calls.\n\nTo find an existing label without potentially creating a new one, use `getLabel()` or `queryLabels()`.\n\n"
         ],
         "examples": [
           {
-            "title": "Create a label ",
+            "title": "Create a label (dashboard page code)",
             "body": [
               "import { labels } from 'wix-crm.v2';",
               "",
-              "export function myFindOrCreateLabelFunction() {",
-              "  const displayName = 'Active Customer';",
+              "/*  Sample displayName value: 'At Risk' */",
               "",
-              "  return labels.findOrCreateLabel(displayName)",
-              "    .then((label) => {",
-              "      return label;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
+              "export async function myCreateLabelFunction(displayName) {",
+              "  ",
+              "  try {",
+              "    const newLabel = await labels.findOrCreateLabel(displayName);    ",
+              "    console.log('Successfully created a new label:', newLabel);",
+              " ",
+              "    return newLabel;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
-              "/*",
-              " * Promise resolves to:",
-              " *",
+              "/* Promise resolves to: ",
               " * {",
               " *   \"label\": {",
-              " *     \"_createdDate\": \"2021-01-20T00:31:41.452Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T00:31:41.452Z\"",
               " *     \"namespace\": \"custom\",",
-              " *     \"key\": \"custom.active-customer\",",
-              " *     \"displayName\": \"Active Customer\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.at-risk\",",
+              " *     \"displayName\": \"At Risk\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *     \"_createdDate\": \"2023-12-25T08:38:36.138Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T08:38:36.138Z\"",
               " *   },",
               " *   \"newLabel\": true",
               " * }",
@@ -159,42 +189,142 @@
             ]
           },
           {
-            "title": "Find a label ",
+            "title": "Create a label (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
               "",
-              "export function myFindOrCreateLabelFunction() {",
-              "  const displayName = 'Active Customer';",
+              "/*  Sample displayName value: 'At Risk' */",
               "",
-              "  return labels.findOrCreateLabel(displayName)",
-              "    .then((label) => {",
-              "      return label;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}",
+              "export const myCreateLabelFunction = webMethod(Permissions.Anyone, async (displayName) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateLabel = elevate(labels.findOrCreateLabel);",
+              "    const newLabel = await elevatedCreateLabel(displayName);    ",
+              "    console.log('Successfully created a new label:', newLabel);",
+              " ",
+              "    return newLabel;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
               "",
-              "/*",
-              " * Promise resolves to:",
-              " *",
+              "/* Promise resolves to: ",
               " * {",
               " *   \"label\": {",
-              " *     \"_createdDate\": \"2021-01-20T00:31:41.452Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T00:31:41.452Z\"",
               " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.at-risk\",",
+              " *     \"displayName\": \"At Risk\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *     \"_createdDate\": \"2023-12-25T08:38:36.138Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T08:38:36.138Z\"",
+              " *   },",
+              " *   \"newLabel\": true",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Find a label ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample displayName value: 'Active Customer' */",
+              "",
+              "export const myFindLabelFunction = webMethod(Permissions.Anyone, async (displayName) => {",
+              "  ",
+              "  try {",
+              "    const elevatedFindLabel = elevate(labels.findOrCreateLabel);",
+              "    const label = await elevatedFindLabel(displayName);    ",
+              "    console.log('This label already exists:', label);",
+              " ",
+              "    return label;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"label\": {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
               " *     \"key\": \"custom.active-customer\",",
               " *     \"displayName\": \"Active Customer\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *     \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:21.000Z\"",
               " *   },",
               " *   \"newLabel\": false",
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Create a new label and add it to a contact ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { contacts, labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample contactId value: '2712ae1d-3f64-46c2-ac3a-94a6c2e29847'",
+              " * ",
+              " * Sample displayName value: 'Supplier'",
+              " */",
+              "",
+              "export const addNewLabelToContact = webMethod(Permissions.Anyone, async (displayName, contactId) => {",
+              "  ",
+              "  try {",
+              "    const elevatedCreateLabel = elevate(labels.findOrCreateLabel);",
+              "    const elevatedLabelContact = elevate(contacts.labelContact);",
+              "    const newLabel = await elevatedCreateLabel(displayName);",
+              "    const labelKeys = [newLabel.label.key];",
+              "    // Retrieve the new label's key",
+              "    if (newLabel.newLabel) {",
+              "      // Label contact",
+              "      const contact = await elevatedLabelContact(contactId, labelKeys);",
+              "      const contactLabels = contact.contact.info.labelKeys.items;",
+              "",
+              "      return contactLabels;",
+              "    }",
+              "    else {",
+              "      return \"Label was not added to contact.\";",
+              "    }",
+              "  } catch (error) {",
+              "    // Handle the error",
+              "    console.log(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to: ",
+              " * [",
+              " *   \"custom.contact\",",
+              " *   \"custom.supplier\"",
+              " * ]",
+              " */"
+            ],
+            "extra": {
+              "description": "This function creates a new label, gets the label's key, and then adds the label to the contact."
+            }
           }
         ]
       },
       "isVeloEvent": false,
+      "customLabels": [
+        {
+          "id": "maturity-beta"
+        }
+      ],
       "syntaxName": "findOrCreateLabel",
       "isAdminMethod": true
     },
@@ -208,7 +338,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label key.\n\n`key` is generated when the label is created\nand cannot be modified, even if `displayName` changes.",
+          "doc": "Label key.\n\n`key` is generated when the label is created.\nIt cannot be modified, even if `displayName` is updated.",
           "required": true
         },
         {
@@ -243,38 +373,131 @@
       "docs": {
         "summary": "Retrieves a label by the specified label key.",
         "description": [
-          "The `getLabel()` function returns a Promise that resolves when the specified label is retrieved.\n\nThis function is not a universal function and runs only on the backend."
+          "The `getLabel()` function returns a Promise that resolves when the specified label is retrieved."
         ],
         "examples": [
           {
-            "title": "Get a label ",
+            "title": "Get a specified label (dashboard page code)",
             "body": [
               "import { labels } from 'wix-crm.v2';",
               "",
-              "export function myGetLabelFunction() {",
-              "  const key = 'custom.active-customer';",
+              "/* Sample key value: 'custom.at-risk' */",
               "",
-              "  return labels.getLabel(key)",
-              "    .then((label) => {",
-              "      return label;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
+              "export async function myGetLabelFunction(key) {",
+              "  ",
+              "  try {",
+              "    const label = await labels.getLabel(key);    ",
+              "    console.log('successfully retrieved label:', label);",
+              " ",
+              "    return label;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
               "}",
               "",
-              "/*",
-              " * Promise resolves to:",
-              " *",
+              "/* Promise resolves to:",
               " * {",
-              " *   \"_createdDate\": \"2021-01-20T00:31:41Z\",",
-              " *   \"_updatedDate\": \"2021-01-20T00:31:41Z\"",
               " *   \"namespace\": \"custom\",",
-              " *   \"key\": \"custom.active-customer\",",
-              " *   \"displayName\": \"Active Customer\",",
-              " *   \"labelType\": \"USER_DEFINED\"",
+              " *   \"namespaceDisplayName\": \"Labels\",",
+              " *   \"key\": \"custom.at-risk\",",
+              " *   \"displayName\": \"At Risk\",",
+              " *   \"labelType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *   \"_createdDate\": \"2023-12-25T08:38:36.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T08:38:36.000Z\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Get a specified label (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.at-risk' */",
+              "",
+              "export const myGetLabelFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  try {",
+              "    const elevatedGetLabel = elevate(labels.getLabel);",
+              "    const label = await elevatedGetLabel(key);    ",
+              "    console.log('successfully retrieved label:', label);",
+              " ",
+              "    return label;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"namespace\": \"custom\",",
+              " *   \"namespaceDisplayName\": \"Labels\",",
+              " *   \"key\": \"custom.at-risk\",",
+              " *   \"displayName\": \"At Risk\",",
+              " *   \"labelType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *   \"_createdDate\": \"2023-12-25T08:38:36.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T08:38:36.000Z\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Get the display name for a specified label ",
+            "body": [
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.at-risk' */",
+              "",
+              "export async function myGetLabelFunction(key) {",
+              "  ",
+              "  try {",
+              "    const elevatedGetLabel = elevate(labels.getLabel);",
+              "    const label = await elevatedGetLabel(key);   ",
+              "    const displayName = label.displayName; ",
+              "    console.log('successfully retrieved the display name:', displayName);",
+              " ",
+              "    return displayName;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "}",
+              "",
+              "// Return value: \"At Risk\""
+            ]
+          },
+          {
+            "title": "Get the display name for a specified label ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value: 'custom.at-risk' */",
+              "",
+              "export const myGetLabelFunction = webMethod(Permissions.Anyone, async (key) => {",
+              "  try {",
+              "    const elevatedGetLabel = elevate(labels.getLabel);",
+              "    const label = await elevatedGetLabel(key);   ",
+              "    const displayName = label.displayName; ",
+              "    console.log('successfully retrieved the display name:', displayName);",
+              " ",
+              "    return displayName;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "// Return value: \"At Risk\"",
+              ""
             ]
           }
         ]
@@ -298,7 +521,7 @@
               "referenceType": "wix-crm-v2.Labels.QueryLabelsOptions"
             }
           ],
-          "doc": "Language options.\n",
+          "doc": "Language options.",
           "required": false
         }
       ],
@@ -315,20 +538,20 @@
         "summary": "Creates a query to retrieve a list of labels.",
         "description": [
           "",
-          "The `queryLabels()` function builds a query to retrieve a list of labels and returns a [`LabelsQueryBuilder`](#labelsquerybuilder) object.",
+          "The `queryLabels()` function builds a query to retrieve a list of labels and returns a `LabelsQueryBuilder` object.",
           "",
-          "The returned object contains the query definition, which is used to run the query using the [`find()`](#labelsquerybuilder/find) function. ",
+          "The returned object contains the query definition, which is used to run the query using the `find()` function. ",
           "",
           "You can refine the query by chaining `LabelsQueryBuilder` functions onto the query. `LabelsQueryBuilder` functions enable you to filter, sort, and control the results that `queryLabels()` returns. ",
           "",
           "`queryLabels()` runs with the following `LabelsQueryBuilder` defaults, which you can override:",
-          "- [`skip(0)`](#labelsquerybuilder/skip)",
-          "- [`limit(50)`](#labelsquerybuilder/limit)",
-          "- [`descending('_createdDate')`](#labelsquerybuilder/descending) ",
+          "- `skip(0)`",
+          "- `limit(50)`",
+          "- `descending('_createdDate')`",
           "",
-          ">**Note:** Only visitors with **Manage Contacts** permissions can query labels.",
+          "The following `LabelsQueryBuilder` functions are supported for `queryLabels()`. For a full description of the `Labels` object, see the object returned for the `items` property in `LabelsQueryResult`.",
           "",
-          "The following `LabelsQueryBuilder` functions are supported for `queryLabels()`. For a full description of the `Labels` object, see the object returned for the [`items`](#labelsqueryresult/items) property in [`LabelsQueryResult`](#labelsqueryresult).",
+          "",
           "",
           "",
           "|PROPERTY\t|SUPPORTED FILTERS & SORTING\t",
@@ -337,18 +560,18 @@
           "|`key`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`in()`](wix-crm-v2.Labels.LabelsQueryBuilder#in)|",
           "|`displayName`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`in()`](wix-crm-v2.Labels.LabelsQueryBuilder#in),[`startsWith()`](wix-crm-v2.Labels.LabelsQueryBuilder#startsWith),[`ascending()`](wix-crm-v2.Labels.LabelsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Labels.LabelsQueryBuilder#descending)|",
           "|`labelType`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq)|",
-          "|`_createdDate`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`gt()`](wix-crm-v2.Labels.LabelsQueryBuilder#gt),[`lt()`](wix-crm-v2.Labels.LabelsQueryBuilder#lt),[`le()`](wix-crm-v2.Labels.LabelsQueryBuilder#le),[`ascending()`](wix-crm-v2.Labels.LabelsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Labels.LabelsQueryBuilder#descending)|",
-          "|`_updatedDate`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`gt()`](wix-crm-v2.Labels.LabelsQueryBuilder#gt),[`lt()`](wix-crm-v2.Labels.LabelsQueryBuilder#lt),[`le()`](wix-crm-v2.Labels.LabelsQueryBuilder#le),[`ascending()`](wix-crm-v2.Labels.LabelsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Labels.LabelsQueryBuilder#descending)|"
+          "|`_createdDate`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`gt()`](wix-crm-v2.Labels.LabelsQueryBuilder#gt),[`lt()`](wix-crm-v2.Labels.LabelsQueryBuilder#lt),[`ge()`](wix-crm-v2.Labels.LabelsQueryBuilder#ge),[`le()`](wix-crm-v2.Labels.LabelsQueryBuilder#le),[`ascending()`](wix-crm-v2.Labels.LabelsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Labels.LabelsQueryBuilder#descending)|",
+          "|`_updatedDate`|[`eq()`](wix-crm-v2.Labels.LabelsQueryBuilder#eq),[`ne()`](wix-crm-v2.Labels.LabelsQueryBuilder#ne),[`gt()`](wix-crm-v2.Labels.LabelsQueryBuilder#gt),[`lt()`](wix-crm-v2.Labels.LabelsQueryBuilder#lt),[`ge()`](wix-crm-v2.Labels.LabelsQueryBuilder#ge),[`le()`](wix-crm-v2.Labels.LabelsQueryBuilder#le),[`ascending()`](wix-crm-v2.Labels.LabelsQueryBuilder#ascending),[`descending()`](wix-crm-v2.Labels.LabelsQueryBuilder#descending)|"
         ],
         "examples": [
           {
-            "title": "Retrieve all labels ",
+            "title": "Retrieve all labels (dashboard page code)",
             "body": [
               "import { labels } from 'wix-crm.v2';",
               "",
               "export async function myQueryLabelsFunction() {",
+              "  ",
               "  try {",
-              "",
               "    const queryResults = await labels.queryLabels()",
               "      .find();",
               "",
@@ -359,12 +582,11 @@
               "    const hasPrev = queryResults.hasPrev();",
               "    const length = queryResults.length;",
               "    const query = queryResults.query;",
-              "",
+              "    console.log('Retrieved items:', items);",
+              "    ",
               "    return items;",
-              "",
               "  } catch (error) {",
-              "",
-              "    console.error(error);",
+              "    console.log(error);",
               "    // Handle the error",
               "",
               "  }",
@@ -373,84 +595,264 @@
               "/* Returns items:",
               " * [",
               " *   {",
-              " *     \"_createdDate\": \"2021-03-30T12:42:06.000Z\",",
-              " *     \"_updatedDate\": \"2021-03-30T12:42:06.000Z\",",
-              " *     \"displayName\": \"New Lead\",",
-              " *     \"key\": \"custom.new-lead\",",
               " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"_createdDate\": \"2021-03-29T13:17:29.000Z\",",
-              " *     \"_updatedDate\": \"2021-03-29T13:17:29.000Z\",",
-              " *     \"displayName\": \"Marketing Your Business on Social Media\",",
-              " *     \"key\": \"custom.marketing-your-business-on-social-media\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"_createdDate\": \"2021-01-20T12:49:09.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T12:49:09.000Z\",",
-              " *     \"displayName\": \"Quick Win\",",
-              " *     \"key\": \"custom.quick-win\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"_createdDate\": \"2021-01-20T12:48:46.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T12:48:46.000Z\",",
-              " *     \"displayName\": \"Stale Lead\",",
-              " *     \"key\": \"custom.stale-lead\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"_createdDate\": \"2021-01-20T06:55:58.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T06:55:58.000Z\",",
-              " *     \"displayName\": \"White Glove Treatment\",",
-              " *     \"key\": \"custom.white-glove-treatment\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
-              " *   },",
-              " *   {",
-              " *     \"_createdDate\": \"2021-01-20T06:55:47.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T06:55:47.000Z\",",
-              " *     \"displayName\": \"At Risk\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
               " *     \"key\": \"custom.at-risk\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
+              " *     \"displayName\": \"At Risk\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *     \"_createdDate\": \"2023-12-25T08:38:36.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T08:38:36.000Z\"",
               " *   },",
               " *   {",
-              " *     \"_createdDate\": \"2021-01-20T00:31:41.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T00:31:41.000Z\",",
-              " *     \"displayName\": \"Active Customer\",",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
               " *     \"key\": \"custom.active-customer\",",
-              " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
+              " *     \"displayName\": \"Active Customer\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *     \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:21.000Z\"",
               " *   },",
               " *   {",
-              " *     \"_createdDate\": \"2021-01-19T21:38:49.000Z\",",
-              " *     \"_updatedDate\": \"2021-01-20T19:07:54.000Z\",",
-              " *     \"displayName\": \"Incoming\",",
-              " *     \"key\": \"custom.incoming-leads\",",
               " *     \"namespace\": \"custom\",",
-              " *     \"labelType\": \"USER_DEFINED\"",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.contact\",",
+              " *     \"displayName\": \"Contact\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"5fec05f8-eb03-4243-ad46-4c24535144f6\",",
+              " *     \"_createdDate\": \"2023-12-11T07:33:35.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-11T07:33:35.000Z\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Customers\",",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
               " *     \"key\": \"contacts.customers\",",
-              " *     \"namespace\": \"contacts\",",
-              " *     \"labelType\": \"SYSTEM\"",
+              " *     \"displayName\": \"Customers\",",
+              " *     \"labelType\": \"SYSTEM\",",
+              " *     \"legacyId\": \"contacts_server/customers\"",
               " *   },",
               " *   {",
-              " *     \"displayName\": \"Contacted Me\",",
-              " *     \"key\": \"contacts.contacted-me\",",
               " *     \"namespace\": \"contacts\",",
-              " *     \"labelType\": \"SYSTEM\"",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"contacts.contacted-me\",",
+              " *     \"displayName\": \"Contacted Me\",",
+              " *     \"labelType\": \"SYSTEM\",",
+              " *     \"legacyId\": \"contacts_server/contacted_me\"",
               " *   }",
               " * ]",
               " */"
             ]
+          },
+          {
+            "title": "Retrieve all labels (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myQueryLabelsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "    const queryResults = await elevatedQueryLabels()",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "    ",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "",
+              "  }",
+              "});",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.at-risk\",",
+              " *     \"displayName\": \"At Risk\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *     \"_createdDate\": \"2023-12-25T08:38:36.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T08:38:36.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.active-customer\",",
+              " *     \"displayName\": \"Active Customer\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *     \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:21.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.contact\",",
+              " *     \"displayName\": \"Contact\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"5fec05f8-eb03-4243-ad46-4c24535144f6\",",
+              " *     \"_createdDate\": \"2023-12-11T07:33:35.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-11T07:33:35.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"contacts.customers\",",
+              " *     \"displayName\": \"Customers\",",
+              " *     \"labelType\": \"SYSTEM\",",
+              " *     \"legacyId\": \"contacts_server/customers\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"contacts\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"contacts.contacted-me\",",
+              " *     \"displayName\": \"Contacted Me\",",
+              " *     \"labelType\": \"SYSTEM\",",
+              " *     \"legacyId\": \"contacts_server/contacted_me\"",
+              " *   }",
+              " * ]",
+              " */"
+            ]
+          },
+          {
+            "title": "Retrieve labels with specified `labelType` ",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const myQueryLabelsFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "    const queryResults = await elevatedQueryLabels()",
+              "      .eq(\"labelType\", \"USER_DEFINED\")",
+              "      .find();",
+              "",
+              "    const items = queryResults.items;",
+              "    const firstItem = items[0];",
+              "    const pageSize = queryResults.pageSize;",
+              "    const hasNext = queryResults.hasNext();",
+              "    const hasPrev = queryResults.hasPrev();",
+              "    const length = queryResults.length;",
+              "    const query = queryResults.query;",
+              "    console.log('Retrieved items:', items);",
+              "    ",
+              "    return items;",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "",
+              "  }",
+              "});",
+              "",
+              "/* Returns items:",
+              " * [",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.at-risk\",",
+              " *     \"displayName\": \"At Risk\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"65bd6a68-e10e-4831-8d92-c90e75be1570\",",
+              " *     \"_createdDate\": \"2023-12-25T08:38:36.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T08:38:36.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.active-customer\",",
+              " *     \"displayName\": \"Active Customer\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *     \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-25T06:13:21.000Z\"",
+              " *   },",
+              " *   {",
+              " *     \"namespace\": \"custom\",",
+              " *     \"namespaceDisplayName\": \"Labels\",",
+              " *     \"key\": \"custom.contact\",",
+              " *     \"displayName\": \"Contact\",",
+              " *     \"labelType\": \"USER_DEFINED\",",
+              " *     \"legacyId\": \"5fec05f8-eb03-4243-ad46-4c24535144f6\",",
+              " *     \"_createdDate\": \"2023-12-11T07:33:35.000Z\",",
+              " *     \"_updatedDate\": \"2023-12-11T07:33:35.000Z\"",
+              " *   }",
+              " * ]",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": " Add labels to a contact form as checkbox options  ",
+            "body": [
+              "/**********************************",
+              " * Backend code - contacts.web.js *",
+              " **********************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "",
+              "export const addLabelsAsCheckboxOptions = webMethod(Permissions.Anyone, async () => {",
+              "",
+              "  try {",
+              "    // Query specific labels to use as checkbox options",
+              "    const elevatedQueryLabels = elevate(labels.queryLabels);",
+              "    const myLabels = await elevatedQueryLabels()",
+              "    .startsWith('displayName', \"Contact by\")",
+              "    .find();",
+              "",
+              "    return myLabels.items",
+              "",
+              "  } catch (error) {",
+              "    // Handle the error",
+              "    console.log(error);",
+              "  }",
+              "});",
+              "",
+              "/*************",
+              " * Page code *",
+              " *************/",
+              "",
+              "import { addLabelsAsCheckboxOptions } from 'backend/labelsBackend.web';",
+              "",
+              "// Trigger when the email input field on a contact form is clicked",
+              "export async function inputEmail_click_1(event) {",
+              "",
+              "  try {",
+              "    let checkboxLabelOptions = [];",
+              "    const labels = await addLabelsAsCheckboxOptions();",
+              "",
+              "    // Add label display names to the array used to hold the checkbox options",
+              "    labels.forEach(item => {",
+              "      checkboxLabelOptions.push({label: item.displayName, value: item.key});",
+              "    });",
+              "",
+              "    // Set the checkbox group options as the label display names",
+              "    $w('#checkboxGroup2').options = checkboxLabelOptions;",
+              "    // Display the checkbox group element on the form",
+              "    $w('#checkboxGroup2').show();",
+              "  } catch (error) {",
+              "    console.log(error)",
+              "  }",
+              "}"
+            ],
+            "extra": {
+              "description": "This function uses `queryLabels()` to retrieve specific labels and then uses those label's display names as checkbox options for a checkbox group element on a contact form. "
+            }
           }
         ]
       },
@@ -473,7 +875,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label key.\n\n`key` is generated when the label is created\nand cannot be modified, even if `displayName` changes.",
+          "doc": "Label key.\n\n`key` is generated when the label is created.\nIt cannot be modified, even if `displayName` is updated.",
           "required": true
         },
         {
@@ -483,7 +885,7 @@
               "referenceType": "wix-crm-v2.Labels.RenameLabel"
             }
           ],
-          "doc": "Label display name to rename.",
+          "doc": "Label to rename.",
           "required": true
         },
         {
@@ -515,45 +917,99 @@
             }
           }
         ],
-        "doc": "Renames a label.\n\nThe `renameLabel()` function returns a Promise that resolves when the specified label's display name is changed.\n\n>**Note:**\n> Only visitors with **Manage Contacts** permissions can rename a label.\n"
+        "doc": "\n"
       },
       "docs": {
-        "summary": "Updates a label's specified properties.",
+        "summary": "Renames a label.",
         "description": [
-          "This function is not a universal function and runs only on the backend."
+          "The `renameLabel()` function returns a Promise that resolves when the specified label's display name is changed.\n"
         ],
         "examples": [
           {
-            "title": "Rename a label ",
+            "title": "Rename a label (dashboard page code)",
             "body": [
               "import { labels } from 'wix-crm.v2';",
               "",
-              "export function myRenameLabelFunction() {",
-              "  const key = 'custom.incoming-leads';",
-              "  const label = {",
-              "    displayName : 'Incoming'",
-              "  };",
+              "/* Sample key value:",
+              " *",
+              " * 'custom.active-customer'",
+              " * ",
+              " * Sample label object:",
+              " * {",
+              " *   displayName: \"Customer\"",
+              " * }",
+              " */",
               "",
-              "  return labels.renameLabel(key, label)",
-              "    .then((renamedLabel) => {",
-              "      return renamedLabel;",
-              "    })",
-              "    .catch((error) => {",
-              "      console.error(error);",
-              "    });",
-              "}",
+              "export async function myRenameLabelFunction(key, label) {",
+              "  ",
+              "  try {",
+              "      const renamedLabel = await labels.renameLabel(key, label);",
+              "      console.log('successfully renamed label:', renamedLabel);",
+              "   ",
+              "      return renamedLabel;  ",
+              "    } catch (error) {",
+              "      console.log(error);",
+              "      // Handle the error",
+              "    }",
+              "  }",
               "",
               "/* Promise resolves to:",
-              " *",
               " * {",
-              " *   \"_createdDate\": \"2021-01-19T21:38:49Z\",",
-              " *   \"_updatedDate\": \"2021-01-20T19:07:54Z\"",
               " *   \"namespace\": \"custom\",",
-              " *   \"key\": \"custom.incoming-leads\",",
-              " *   \"displayName\": \"Incoming\",",
-              " *   \"labelType\": \"USER_DEFINED\"",
+              " *   \"namespaceDisplayName\": \"Labels\",",
+              " *   \"key\": \"custom.active-customer\",",
+              " *   \"displayName\": \"Customer\",",
+              " *   \"labelType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *   \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T09:14:37.000Z\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Rename a label (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { labels } from 'wix-crm.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample key value:",
+              " *",
+              " * 'custom.active-customer'",
+              " * ",
+              " * Sample label object:",
+              " * {",
+              " *   displayName: \"Customer\"",
+              " * }",
+              " */",
+              "",
+              "export const myRenameLabelFunction = webMethod(Permissions.Anyone, async (key, label) => {",
+              "  try {",
+              "    const elevatedRenameLabel = elevate(labels.renameLabel);",
+              "    const renamedLabel = await elevatedRenameLabel(key, label);",
+              "    console.log('successfully renamed label:', renamedLabel);",
+              "   ",
+              "    return renamedLabel;  ",
+              "  } catch (error) {",
+              "    console.log(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"namespace\": \"custom\",",
+              " *   \"namespaceDisplayName\": \"Labels\",",
+              " *   \"key\": \"custom.active-customer\",",
+              " *   \"displayName\": \"Customer\",",
+              " *   \"labelType\": \"USER_DEFINED\",",
+              " *   \"legacyId\": \"74f1e5c6-d9d5-4485-b272-13081ea35f38\",",
+              " *   \"_createdDate\": \"2023-12-25T06:13:21.000Z\",",
+              " *   \"_updatedDate\": \"2023-12-25T09:14:37.000Z\"",
+              " * }",
+              " */",
+              ""
             ]
           }
         ]
@@ -569,6 +1025,26 @@
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "ContactLabel",
       "members": [
@@ -613,7 +1089,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label key.\n\n`key` is generated when the label is created\nand cannot be modified, even if `displayName` changes."
+          "doc": "Label key.\n\n`key` is generated when the label is created.\nIt cannot be modified, even if `displayName` is updated."
         },
         {
           "name": "labelType",
@@ -635,7 +1111,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label namespace.\n\nLabels created by site contributors or 3rd-party apps\nare automatically assigned to the `custom` namespace."
+          "doc": "Label namespace.\n\nLabels created by site admins or 3rd-party apps\nare automatically assigned to the `custom` namespace."
         },
         {
           "name": "namespaceDisplayName",
@@ -709,6 +1185,259 @@
     {
       "name": "DeleteLabelResponse",
       "members": [],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-crm-v2.Labels.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
+        }
+      ],
       "docs": {
         "description": [
           ""
@@ -921,7 +1650,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label key.\n\n`key` is generated when the label is created\nand cannot be modified, even if `displayName` changes.\n"
+          "doc": "Label key.\n\n`key` is generated when the label is created.\nIt cannot be modified, even if `displayName` is updated.\n"
         },
         {
           "name": "language",
@@ -1560,7 +2289,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Label namespace.\n\nLabels created by site contributors or 3rd-party apps\nare automatically assigned to the `custom` namespace."
+          "doc": "Label namespace.\n\nLabels created by site admins or 3rd-party apps\nare automatically assigned to the `custom` namespace."
         },
         {
           "name": "namespaceDisplayName",

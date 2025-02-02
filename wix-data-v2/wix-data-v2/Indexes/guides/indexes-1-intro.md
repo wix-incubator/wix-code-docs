@@ -4,7 +4,7 @@ title: Introduction
 
 # About the Indexes API
 
-&nbsp;
+<!-- &nbsp;
 
 <div style="background-color: #FEF1D1; padding: 18px 24px; border-radius: 6px; border: 1px solid #FDB10C; box-sizing: border-box; display: inline-block">
     <b>Developer Preview</b>
@@ -12,7 +12,7 @@ title: Introduction
     <span>APIs in <a href="https://www.wix.com/velo/reference/api-overview/developer-preview">Developer Preview</a> are subject to change and are not intended for use in production.<br/><a href="mailto:velo-preview-feedback@wix.com">Send us</a> your suggestions for improving this API. Your feedback is valuable to us.</span>
 </div>
 
-&nbsp;
+&nbsp; -->
 
 The Indexes API enables you to create indexes for data collections, to make querying data faster.
 
@@ -37,5 +37,5 @@ It's important to note the following points before starting to code:
 
 ## Terminology
 
-- **Regular index:** An index that increases query speed for up to 3 fields.
+- **Regular index:** An index that increases query speed. Up to 3 fields can be selected for a regular index.
 - **Unique index:** An index that increases query speed and enforces unique values for 1 field.

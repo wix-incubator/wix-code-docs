@@ -69,14 +69,7 @@ async function uploadMyFile(uploadUrl, fileContent) {
     "mediaType": "IMAGE",
     "media": {
       "image": {
-        "image": {
-          "id": "2acbb8_86485e224dd84143ba2f228777217bb7~mv2.jpeg",
-          "url": "https://static.wixstatic.com/media/2acbb8_86485e224dd84143ba2f228777217bb7~mv2.jpeg",
-          "height": 226,
-          "width": 370,
-          "filename": "myfilename.jpg",
-          "sizeInBytes": "15359"
-        },
+        "image": "wix:image://v1/0abec0_b291a9349a0b4da59067f76287e386fb~mv2.jpg/leon.jpg#originWidth=3024&originHeight=4032",
         "faces": []
       }
     },
@@ -89,8 +82,15 @@ async function uploadMyFile(uploadUrl, fileContent) {
 }
 ```
 
-
 ## Status/Error Codes
 Errors from this endpoint will include an HTTP status code.
-        
 
+### Use uploaded media on your site
+After making the REST HTTP request, you can either display the media on your site directly from the [Media Manager](https://support.wix.com/en/article/wix-media-about-the-media-manager#accessing-the-media-manager-1), or you can set the uploaded media to `$w` frontend elements.
+
+To display the media files on the frontend of your site with code, you first need to retrieve the file's Media Manager URL.
+
+To retrieve the Media Manager URL:
+1.  Call [`getFileDescriptor()`](https://www.wix.com/velo/reference/wix-media-v2/files/getfiledescriptor), passing in `file.id` from the Upload API's [response object](#Response) as its only parameter. 
+2. Retrieve the valid Media Manager URL from the `media` property in the `FileDescriptor` object that was returned in the previous step.
+3. To use the media in a `$w` element, set the value of the associated `media` property to the element's `src` property. 

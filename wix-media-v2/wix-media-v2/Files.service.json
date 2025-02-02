@@ -65,10 +65,9 @@
         ],
         "examples": [
           {
-            "title": "Bulk delete files",
+            "title": "Bulk delete files (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileIds value: ",
               " * [",
@@ -84,8 +83,7 @@
               "",
               "async function myBulkDeleteFilesFunction(fileIds, options) {",
               "  try {",
-              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles);",
-              "    await elevatedBulkDeleteFiles(fileIds, options);",
+              "    await files.bulkDeleteFiles(fileIds, options);",
               "",
               "    console.log('Permanently deleted files.');",
               "    return;",
@@ -95,58 +93,95 @@
               "  }",
               "}",
               "",
+              "/* Promise resolves to void */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk delete files (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample fileIds value: ",
+              " * [",
+              " *   'w8ide0_v12i2pi4549locqdfeb5yy5b8iyh39az.pdf',",
+              " *   'w8ide0_ye3x8yyf5izwe01ovn682pa76bzrrcyt.pdf'",
+              " * ]",
+              " * ",
+              " * Sample options value:",
+              " * {",
+              " *   permanent: true",
+              " * }",
+              " */",
+              "",
+              "export const myBulkDeleteFilesFunction = webMethod(Permissions.Anyone, async (fileIds, options) => {",
+              "  try {",
+              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles);",
+              "    await elevatedBulkDeleteFiles(fileIds, options);",
+              "",
+              "    console.log('Permanently deleted files.');",
+              "    return;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
               "/* Promise resolves to void */"
             ]
           },
           {
             "title": "Bulk delete all files found in a chosen folder ",
             "body": [
-              "/****************************************",
-              " * Backend code - bulk-delete-files.jsw *",
-              " ***************************************/",
+              "/*******************************************",
+              " * Backend code - bulk-delete-files.web.js *",
+              " ******************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-business-tools.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function deleteFiles (fileIds, options) {",
+              "export const deleteFiles = webMethod(Permissions.Anyone, async (fileIds, options) => {",
               "  try {",
-              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles)    ",
-              "    await elevatedBulkDeleteFiles(fileIds, options);  ",
+              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles);",
+              "    await elevatedBulkDeleteFiles(fileIds, options);",
               "",
               "    console.log(`Permanently deleted files with ids: ${fileIds.toString()}.`);",
               "    return true;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
-              "export async function searchFileIds (parentFolderId) {",
+              "export const searchFileIds = webMethod(Permissions.Anyone, async (parentFolderId) => {",
               "  try {",
-              "    const options = { parentFolder: parentFolderId}",
-              "    const elevatedSearchFiles = elevate(files.searchFiles)    ",
-              "    const returnedFiles = await elevatedSearchFiles(options);  ",
+              "    const options = { parentFolder: parentFolderId };",
+              "    const elevatedSearchFiles = elevate(files.searchFiles);",
+              "    const returnedFiles = await elevatedSearchFiles(options);",
               "",
               "    const fileIds = returnedFiles.map((file) => {",
-              "      return file._id",
+              "      return file._id;",
               "    });",
               "",
               "    return fileIds;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files';",
+              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#delete').onClick(async () => {",
               "    const isDeletePermanently = $w('#deletePermanently').checked;",
-              "    const options = {permanent: isDeletePermanently};",
+              "    const options = { permanent: isDeletePermanently };",
               "",
               "    const parentFolder = $w('#parentFolder').value;",
               "    const fileIds = await searchFileIds(parentFolder);",
@@ -154,7 +189,8 @@
               "    await deleteFiles(fileIds, options);",
               "    $w('#successMessage').show();",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code shows a page where the visitor chooses a folder by typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only visitors with permission to manage the site's media would have access to this page."
@@ -163,11 +199,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkDeleteFiles",
       "isAdminMethod": true
     },
@@ -224,14 +255,13 @@
       "docs": {
         "summary": "Imports a bulk of files to the Media Manager using external urls.",
         "description": [
-          "The `bulkImportFile()` function returns a Promise that resolves to an object containing bulk import metadata and an array of imported files' descriptors and metadata.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request."
+          "The `bulkImportFile()` function returns a Promise that resolves to an object containing bulk import metadata and an array of imported files' descriptors and metadata.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import files, you need to do one of the following for each file:\n- Pass its [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` field of the request. For example, `mimeType: 'image/jpeg'`.\n- Include its extension in either the `displayName` or `url` field of the request. For example, `displayName: 'Example Image.jpeg` or `url: https://www.example.com/image.jpeg`.\n- Ensure the server hosting the file supports HEAD requests. In these cases the Wix servers can retrieve the MIME type from the hosting server.\n  > **Note:** If you want to validate the media type, pass the file's expected media type in the optional `mediaType` field of the request.  For example, `mediaType: 'IMAGE'`."
         ],
         "examples": [
           {
-            "title": "Bulk import file ",
+            "title": "Bulk import file (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample importFileRequests value:",
               " * [",
@@ -258,8 +288,7 @@
               "",
               "async function mybulkImportFileFunction(importFileRequests) {",
               "  try {",
-              "    const elevatedbulkImportFile = elevate(files.bulkImportFile)",
-              "    const importedFiles = await elevatedbulkImportFile(importFileRequests);",
+              "    const importedFiles = await files.bulkImportFile(importFileRequests);",
               "",
               "    console.log(\"Imported files:\", importedFiles);",
               "    return importedFiles;",
@@ -373,8 +402,9 @@
             ]
           },
           {
-            "title": "Bulk import file with options",
+            "title": "Bulk import file (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -399,13 +429,156 @@
               " *     url: 'https://cdn.pixabay.com/example-video.mp4'",
               " *   }",
               " * ]",
-              " * Sample options value:",
-              " * {",
-              " *  returnEntity: false",
-              " * }",
               " */",
               "",
-              "async function mybulkImportFileFunction(importFileRequests, options) {",
+              "export const mybulkImportFileFunction = webMethod(Permissions.Anyone, async (importFileRequests) => {",
+              "  try {",
+              "    const elevatedbulkImportFile = elevate(files.bulkImportFile)",
+              "    const importedFiles = await elevatedbulkImportFile(importFileRequests);",
+              "",
+              "    console.log(\"Imported files:\", importedFiles);",
+              "    return importedFiles;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *   \"bulkActionMetadata\": {",
+              " *     \"totalFailures\": 0,",
+              " *     \"totalSuccesses\": 3,",
+              " *     \"undetailedFailures\": 0",
+              " *   },",
+              " *   \"results\": [",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"image1.jpg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"IMAGE\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://www.site1.com/example.jpg\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"url\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"originalIndex\": 0,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"vectorArt1.webp.svg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [\"label1\", \"label2\"],",
+              " *         \"mediaType\": \"VECTOR\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.vectorstock.com/example-vector-art.webp\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"url\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"originalIndex\": 1,",
+              " *         \"success\": true",
+              " *       }",
+              " *     },",
+              " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"video1.mp4\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"VIDEO\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.pixabay.com/example-video.mp4\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/54ece48fa04e492fa46bd79980105f0d.png\",",
+              " *         \"url\": \"https://video.wixstatic.com/video/a8a52b_fec67a695b474a729e3a31010afbb0af/file\"",
+              " *       },",
+              " *       \"itemMetadata\": {",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
+              " *         \"originalIndex\": 2,",
+              " *         \"success\": true",
+              " *       }",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk import file (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample importFileRequests value:",
+              " * [",
+              " *   {",
+              " *     displayName: 'image1',",
+              " *     mediaType: 'IMAGE',",
+              " *     mimeType: 'image/jpeg',",
+              " *     parentFolderId: 'igje5u22nij3qkltzsnol37j3dnthvvh',",
+              " *     url: 'https://www.site1.com/example.jpg'",
+              " *   }, ",
+              " *   {",
+              " *     displayName: 'vectorArt1',",
+              " *     mediaType: 'VECTOR',",
+              " *     labels : ['label1', 'label2'],",
+              " *     url: 'https://cdn.vectorstock.com/example-vector-art.webp'",
+              " *   },",
+              " *   {",
+              " *     displayName: 'video1',",
+              " *     mediaType: 'VIDEO',",
+              " *     url: 'https://cdn.pixabay.com/example-video.mp4'",
+              " *   }",
+              " * ]",
+              " */",
+              "",
+              "export const mybulkImportFileFunction = webMethod(Permissions.Anyone, async (importFileRequests, options) => {",
               "  try {",
               "    const elevatedbulkImportFile = elevate(files.bulkImportFile)",
               "    const importedFiles = await elevatedbulkImportFile(importFileRequests, options);",
@@ -416,33 +589,102 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
-              "/* Promise resolves to:",
+              "/* Promise resolves to: ",
               " * {",
               " *   \"bulkActionMetadata\": {",
-              " *     \"totalSuccesses\": 3,",
               " *     \"totalFailures\": 0,",
+              " *     \"totalSuccesses\": 3,",
               " *     \"undetailedFailures\": 0",
               " *   },",
               " *   \"results\": [",
               " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:31.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"image1.jpg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"IMAGE\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://www.site1.com/example.jpg\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
+              " *         \"url\": \"https://static.wixstatic.com/media/a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\"",
+              " *       },",
               " *       \"itemMetadata\": {",
-              " *         \"_id\": \"a8a52b_f8388ed2a42440c6a649e6b68194f18f~mv2.jpg\",",
+              " *         \"_id\": \"a8a52b_f8c86723942347488316f1ab35119411~mv2.jpg\",",
               " *         \"originalIndex\": 0,",
               " *         \"success\": true",
               " *       }",
               " *     },",
               " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"vectorArt1.webp.svg\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [\"label1\", \"label2\"],",
+              " *         \"mediaType\": \"VECTOR\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.vectorstock.com/example-vector-art.webp\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
+              " *         \"url\": \"https://static.wixstatic.com/shapes/a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\"",
+              " *       },",
               " *       \"itemMetadata\": {",
-              " *         \"_id\": \"a8a52b_21186dbad3154343a379786e9b6cd6c4-tmp.svg\",",
+              " *         \"_id\": \"a8a52b_43eb6841371f4d738ddfcb7fa2bb62be-tmp.svg\",",
               " *         \"originalIndex\": 1,",
               " *         \"success\": true",
               " *       }",
               " *     },",
               " *     {",
+              " *       \"item\": {",
+              " *         \"_createdDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
+              " *         \"_updatedDate\": \"2023-12-26T10:22:32.000Z\",",
+              " *         \"addedBy\": {",
+              " *           \"identityId\": \"a8a52bb9-bac0-4bba-a55c-0611b5cdaa16\",",
+              " *           \"identityType\": \"MEMBER\"",
+              " *         },",
+              " *         \"displayName\": \"video1.mp4\",",
+              " *         \"hash\": \"\",",
+              " *         \"internalTags\": [],",
+              " *         \"labels\": [],",
+              " *         \"mediaType\": \"VIDEO\",",
+              " *         \"operationStatus\": \"PENDING\",",
+              " *         \"parentFolderId\": \"media-root\",",
+              " *         \"private\": false,",
+              " *         \"siteId\": \"49dcb500-1081-47b0-b13b-368b9bed8fa9\",",
+              " *         \"sizeInBytes\": \"-1\",",
+              " *         \"sourceUrl\": \"https://cdn.pixabay.com/example-video.mp4\",",
+              " *         \"state\": \"OK\",",
+              " *         \"thumbnailUrl\": \"https://static.wixstatic.com/media/54ece48fa04e492fa46bd79980105f0d.png\",",
+              " *         \"url\": \"https://video.wixstatic.com/video/a8a52b_fec67a695b474a729e3a31010afbb0af/file\"",
+              " *       },",
               " *       \"itemMetadata\": {",
-              " *         \"_id\": \"a8a52b_722acdc3e90c4d509a656ea93d531dc6\",",
+              " *         \"_id\": \"a8a52b_fec67a695b474a729e3a31010afbb0af\",",
               " *         \"originalIndex\": 2,",
               " *         \"success\": true",
               " *       }",
@@ -457,13 +699,14 @@
             "title": "Bulk import files from visitor input into a form ",
             "body": [
               "/****************************************",
-              " * Backend code - bulk-import-files.jsw *",
+              " * Backend code - bulk-import-files.web.js *",
               " ***************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function importFiles(importFileRequests) {",
+              "export const importFiles = webMethod(Permissions.Anyone, async (importFileRequests) => {",
               "  try {",
               "    const elevatedBulkImportFile = elevate(files.bulkImportFile)",
               "    const importedFiles = await elevatedBulkImportFile(importFileRequests);",
@@ -474,14 +717,14 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "  ",
               "  ",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { importFiles } from 'backend/bulk-import-files';",
+              "import { importFiles } from 'backend/bulk-import-files.web';",
               "",
               "$w.onReady(() => {",
               "  const newMedia = [];",
@@ -517,7 +760,8 @@
               "      }, 10000);",
               "    }",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code shows a page where the visitor adds basic media file data to a form and then adds it to the `newMedia` array. When the visitor clicks the upload button, all added media files are uploaded using the `bulkImportFile()` function."
@@ -526,11 +770,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkImportFile",
       "isAdminMethod": true
     },
@@ -577,14 +816,13 @@
       "docs": {
         "summary": "> **Deprecated.**\n> This function has been replaced with `bulkImportFile()`, and will be removed on March 31, 2024.",
         "description": [
-          "The `bulkImportFiles()` function returns a Promise that resolves to an array of the imported files' descriptors.\n\nImports a bulk of files to the Media Manager using external urls.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request.\n\n>**Note:** The `media` property isn't returned in the `files` response object."
+          "The `bulkImportFiles()` function returns a Promise that resolves to an array of the imported files' descriptors.\n\nImports a bulk of files to the Media Manager using external urls.\n\nReturns information about the imported files. Use the `parentFolderId` parameter to specify in which folder you want each file to be imported.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\n>**Note:** The `media` property isn't returned in the `files` response object.\n\nTo import files, you need to do one of the following for each file:\n- Pass its [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` field of the request. For example, `mimeType: 'image/jpeg'`.\n- Include its extension in either the `displayName` or `url` field of the request. For example, `displayName: 'Example Image.jpeg` or `url: https://www.example.com/image.jpeg`.\n- Ensure the server hosting the file supports HEAD requests. In these cases the Wix servers can retrieve the MIME type from the hosting server.\n  > **Note:** If you want to validate the media type, pass the file's expected media type in the optional `mediaType` field of the request.  For example, `mediaType: 'IMAGE'`."
         ],
         "examples": [
           {
-            "title": "Bulk import files ",
+            "title": "Bulk import files (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample importFileRequests value:",
               " * [",
@@ -611,8 +849,7 @@
               "",
               "async function myBulkImportFilesFunction(importFileRequests) {",
               "  try {",
-              "    const elevatedBulkImportFiles = elevate(files.bulkImportFiles)",
-              "    const importedFiles = await elevatedBulkImportFiles(importFileRequests);",
+              "    const importedFiles = await files.bulkImportFiles(importFileRequests);",
               "",
               "    console.log(\"Imported files:\", importedFiles);",
               "    return importedFiles;",
@@ -691,16 +928,36 @@
             ]
           },
           {
-            "title": "Bulk import files from visitor input into a form ",
+            "title": "Bulk import files (export from backend code)",
             "body": [
-              "/****************************************",
-              " * Backend code - bulk-import-files.jsw *",
-              " ***************************************/",
-              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function importFiles(importFileRequests) {",
+              "/* Sample importFileRequests value:",
+              " * [",
+              " *   {",
+              " *     displayName: 'image1',",
+              " *     mediaType: 'IMAGE',",
+              " *     mimeType: 'image/jpeg',",
+              " *     parentFolderId: 'igje5u22nij3qkltzsnol37j3dnthvvh',",
+              " *     url: 'https://www.site1.com/example.jpg'",
+              " *   }, ",
+              " *   {",
+              " *     displayName: 'vectorArt1',",
+              " *     mediaType: 'VECTOR',",
+              " *     labels : ['label1', 'label2'],",
+              " *     url: 'https://cdn.vectorstock.com/example-vector-art.webp'",
+              " *   },",
+              " *   {",
+              " *     displayName: 'video1',",
+              " *     mediaType: 'VIDEO'",
+              " *     url: 'https://cdn.pixabay.com/example-video.mp4',",
+              " *   }",
+              " * ]",
+              " */",
+              "",
+              "export const myBulkImportFilesFunction = webMethod(Permissions.Anyone, async (importFileRequests) => {",
               "  try {",
               "    const elevatedBulkImportFiles = elevate(files.bulkImportFiles)",
               "    const importedFiles = await elevatedBulkImportFiles(importFileRequests);",
@@ -711,14 +968,107 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
+              "",
+              "/* Promise resolves to: ",
+              " * {",
+              " *  \"files\": [",
+              " *    {",
+              " *      \"_createdDate\": \"2023-07-23T12:15:49.000Z\",",
+              " *      \"_id\": \"w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\",",
+              " *      \"_updatedDate\": \"2023-07-23T12:15:49.000Z\",",
+              " *      \"displayName\": \"image1.jpg\",",
+              " *      \"hash\": \"\",",
+              " *      \"internalTags\": [],",
+              " *      \"labels\": [],",
+              " *      \"mediaType\": \"IMAGE\",",
+              " *      \"operationStatus\": \"PENDING\",",
+              " *      \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *      \"private\": false,",
+              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *      \"sizeInBytes\": \"-1\",",
+              " *      \"sourceUrl\": \"https://www.site1.com/example.jpg\",",
+              " *      \"state\": \"OK\",",
+              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\",",
+              " *      \"url\": \"https://static.wixstatic.com/media/w8ide0_h8bpmhc3j3qhgncce0et1nnkghsfozl2~mv2.jpg\"",
+              " *    },",
+              " *    {",
+              " *      \"_createdDate\": \"2023-07-23T12:15:50.000Z\",",
+              " *      \"_id\": \"w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\",",
+              " *      \"_updatedDate\": \"2023-07-23T12:15:50.000Z\",",
+              " *      \"displayName\": \"vectorArt1.webp.svg\",",
+              " *      \"hash\": \"\",",
+              " *      \"internalTags\": [],",
+              " *      \"labels\": [",
+              " *        \"label1\", ",
+              " *        \"label2\"",
+              " *      ],",
+              " *      \"mediaType\": \"VECTOR\",",
+              " *      \"operationStatus\": \"PENDING\",",
+              " *      \"parentFolderId\": \"media-root\",",
+              " *      \"private\": false,",
+              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *      \"sizeInBytes\": \"20532\",",
+              " *      \"sourceUrl\": \"https://cdn.vectorstock.com/example-vector-art.webp\",",
+              " *      \"state\": \"OK\",",
+              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/shapes/w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\",",
+              " *      \"url\": \"https://static.wixstatic.com/shapes/w8ide0_e9xsr959r1ze5aavswj2978r6jt05bwl-tmp.svg\"",
+              " *    },",
+              " *    {",
+              " *      \"_createdDate\": \"2023-07-23T12:15:50.000Z\",",
+              " *      \"_id\": \"w8ide0_f6e8f09e5055432286db483917ba923e\",",
+              " *      \"_updatedDate\": \"2023-07-23T12:15:50.000Z\",",
+              " *      \"displayName\": \"video1.mp4\",",
+              " *      \"hash\": \"\",",
+              " *      \"internalTags\": [],",
+              " *      \"labels\": [],",
+              " *      \"mediaType\": \"VIDEO\",",
+              " *      \"operationStatus\": \"PENDING\",",
+              " *      \"parentFolderId\": \"media-root\",",
+              " *      \"private\": false,",
+              " *      \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *      \"sizeInBytes\": \"-1\",",
+              " *      \"sourceUrl\": \"https://cdn.pixabay.com/example-video.mp4\",",
+              " *      \"state\": \"OK\",",
+              " *      \"thumbnailUrl\": \"https://static.wixstatic.com/media/yibv80byru0wei9ficri8fd8o1rghueu.png\",",
+              " *      \"url\": \"https://video.wixstatic.com/video/w8ide0_f6e8f09e5055432286db483917ba923e/file\"",
+              " *    }",
+              " *  ]",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk import files from visitor input into a form ",
+            "body": [
+              "/****************************************",
+              " * Backend code - bulk-import-files.web.js *",
+              " ***************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const importFiles = webMethod(Permissions.Anyone, async (importFileRequests) => {",
+              "  try {",
+              "    const elevatedBulkImportFiles = elevate(files.bulkImportFiles)",
+              "    const importedFiles = await elevatedBulkImportFiles(importFileRequests);",
+              "",
+              "    console.log(\"Imported files:\", importedFiles);",
+              "    return importedFiles;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
               "  ",
               "  ",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { importFiles } from 'backend/bulk-import-files';",
+              "import { importFiles } from 'backend/bulk-import-files.web';",
               "",
               "$w.onReady(() => {",
               "  const newMedia = [];",
@@ -754,7 +1104,8 @@
               "      }, 10000);",
               "    }",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code shows a page where the visitor adds basic media file data to a form and then adds it to the `newMedia` array. When the visitor clicks the upload button, all added media files are uploaded using the `bulkImportFiles()` function."
@@ -763,11 +1114,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkImportFiles",
       "isAdminMethod": true
     },
@@ -817,10 +1163,9 @@
         ],
         "examples": [
           {
-            "title": "Bulk restore deleted files by IDs",
+            "title": "Bulk restore deleted files by IDs (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileIds value:",
               " * [",
@@ -832,8 +1177,7 @@
               "",
               "async function myBulkRestoreFilesFromTrashBinFunction(fileIds) {",
               "  try {",
-              "    const elevatedBulkRestoreFilesFromTrashBin = elevate(files.bulkRestoreFilesFromTrashBin);",
-              "    const restoredFiles = await elevatedBulkRestoreFilesFromTrashBin(fileIds);",
+              "    const restoredFiles = await files.bulkRestoreFilesFromTrashBin(fileIds);",
               "",
               "    console.log('Restored Files:', restoredFiles);",
               "    return restoredFiles;",
@@ -846,15 +1190,47 @@
             ]
           },
           {
-            "title": "Bulk restores all non-permanently deleted files of chosen types ",
+            "title": "Bulk restore deleted files by IDs (export from backend code)",
             "body": [
-              "/*****************************************",
-              " * Backend code - bulk-restore-files.jsw *",
-              " ****************************************/",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "async function restoreFiles(mediaTypes) {",
+              "/* Sample fileIds value:",
+              " * [",
+              " *   'd4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg',",
+              " *   'd4dde1_32288e20a5aa4213a52b15426fb27c9f~mv2.png',",
+              " *   'd4dde1_8dd2bfe6121f43b29ebeaa63988abf54.svg'",
+              " * ]",
+              " */",
+              "",
+              "export const myBulkRestoreFilesFromTrashBinFunction = webMethod(Permissions.Anyone, async (fileIds) => {",
+              "  try {",
+              "    const elevatedBulkRestoreFilesFromTrashBin = elevate(files.bulkRestoreFilesFromTrashBin);",
+              "    const restoredFiles = await elevatedBulkRestoreFilesFromTrashBin(fileIds);",
+              "",
+              "    console.log('Restored Files:', restoredFiles);",
+              "    return restoredFiles;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to void */",
+              ""
+            ]
+          },
+          {
+            "title": "Bulk restores all non-permanently deleted files of chosen types ",
+            "body": [
+              "/********************************************",
+              " * Backend code - bulk-restore-files.web.js *",
+              " *******************************************/",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const restoreFiles = webMethod(Permissions.Anyone, async (mediaTypes) => {",
               "  let idList = []",
               "  try {",
               "    const options = {",
@@ -879,14 +1255,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { restoreFiles } from 'backend/bulk-import-files';",
+              "import { restoreFiles } from 'backend/bulk-restore-files.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#restoreMedia').onClick(async () => {",
@@ -928,11 +1304,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "bulkRestoreFilesFromTrashBin",
       "isAdminMethod": true
     },
@@ -981,21 +1352,19 @@
       "docs": {
         "summary": "Generates one or more temporary URLs for downloading a specific file in the Media Manager.",
         "description": [
-          "The `generateFileDownloadUrl()` function returns a Promise that resolves to an array containing download URLs for the assets specified in the options parameter.\n\nTo download different assets of the file, use the `assetKeys` parameter which generates a download URL for each asset.\nIf no asset key is specified, it defaults to `src`, which generates one download URL in the original file's format and quality.\n\nUse this endpoint to grant external clients access to a private media file. Use the `expirationInMinutes` parameter to set the URL expiration time, and the `expirationRedirectUrl` parameter to add a redirect URL when the URL expires."
+          "The `generateFileDownloadUrl()` function returns a Promise that resolves to an array containing download URLs for the assets specified in the options parameter.\n\nTo download different assets of the file, use the `assetKeys` parameter which generates a download URL for each asset.\nIf no asset key is specified, it defaults to `src`, which generates one download URL in the original file's format and quality.\n\nUse this function to grant external clients access to a private media file. Use the `expirationInMinutes` parameter to set the URL expiration time, and the `expirationRedirectUrl` parameter to add a redirect URL when the URL expires.\n\nTo generate a permanent URL for downloading a compressed file that contains multiple files in the Media Manager, use the `generateFilesDownloadUrl()` function.\nSince this is a permanent URL, it is less secure. Therefore, to download private files, use the `generateFileDownloadUrl()` function for each private file that you want to generate a download URL for."
         ],
         "examples": [
           {
-            "title": "Generate a file download URL ",
+            "title": "Generate a file download URL (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileId value: 'd4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg' */",
               "",
               "async function myGenerateFileDownloadUrlFunction(fileId) {",
               "  try {",
-              "    const elevatedGenerateFileDonwloadUrl = elevate(files.generateFileDownloadUrl)",
-              "    const result = await elevatedGenerateFileDonwloadUrl(fileId);",
+              "    const result = await files.generateFileDownloadUrl(fileId);",
               "",
               "    return result;",
               "  } catch (error) {",
@@ -1017,8 +1386,43 @@
             ]
           },
           {
+            "title": "Generate a file download URL (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// Sample fileId value: 'd4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg'",
+              "",
+              "export const myGenerateFileDownloadUrlFunction = webMethod(Permissions.Anyone, async (fileId) => {",
+              "  try {",
+              "    const elevatedGenerateFileDonwloadUrl = elevate(files.generateFileDownloadUrl)",
+              "    const result = await elevatedGenerateFileDonwloadUrl(fileId);",
+              "",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"downloadUrls\": [",
+              " *     {",
+              " *       \"assetKey\": \"src\",",
+              " *       \"url\": \"https://download-files.wixmp.com/media/d4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ1cm46YXBwOmU2NjYzMGU3MTRmMDQ5MGFhZWExZjE0OWIzYjY5ZTMyIiwic3ViIjoidXJuOmFwcDplNjY2MzBlNzE0ZjA0OTBhYWVhMWYxNDliM2I2OWUzMiIsImF1ZCI6WyJ1cm46c2VydmljZTpmaWxlLmRvd25sb2FkIl0sImlhdCI6MTY5MjAyMTMxNSwiZXhwIjoxNjkyMDU3MzI1LCJqdGkiOiJjZTA1MzUxYy1jNDA4LTRlYmMtYWI0OC04MWM0NWJlZDlkM2IiLCJvYmoiOltbeyJwYXRoIjoiL21lZGlhL2Q0ZGRlMV9kZWUxOGM5YWRhMTc0YTgxOGNjZjc1YzUwZTcyYzczOX5tdjIuanBnIn1dXSwiZGlzIjp7ImZpbGVuYW1lIjoibmVvbS1BZGtKLUxncFRyRS11bnNwbGFzaC5qcGciLCJ0eXBlIjoiYXR0YWNobWVudCJ9fQ.HfZiuG7UFavOpgh2T0lVn56oZ9NpLoV3z9Gmnqptt8Y\"",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
             "title": "Generate a file download URL with options ",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -1033,7 +1437,7 @@
               " * }",
               " */",
               "",
-              "async function myGenerateFileDownloadUrlFunction(fileId, options) {",
+              "export const myGenerateFileDownloadUrlFunction = webMethod(Permissions.Anyone, async (fileId, options) => {",
               "  try {",
               "    const elevatedGenerateFileDonwloadUrl = elevate(files.generateFileDownloadUrl)",
               "    const result = await elevatedGenerateFileDonwloadUrl(fileId, options);",
@@ -1044,7 +1448,7 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -1113,10 +1517,9 @@
         ],
         "examples": [
           {
-            "title": "Generate a file resumable upload url ",
+            "title": "Generate a file resumable upload url (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample mimeType value: 'image/jpeg'",
               " *",
@@ -1130,8 +1533,7 @@
               "",
               "async function myGenerateFileResumableUploadUrlFunction(mimeType, options) {",
               "  try {",
-              "    const elevatedGenerateFileResumableUploadUrl = elevate(files.generateFileResumableUploadUrl);",
-              "    const result = await elevatedGenerateFileResumableUploadUrl(mimeType, options);",
+              "    const result = await files.generateFileResumableUploadUrl(mimeType, options);",
               "  ",
               "    return result;",
               "  } catch (error) {",
@@ -1147,6 +1549,45 @@
               " *  \"uploadUrl\": \"https://upload.wixmp.com/upload/tus\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Generate a file resumable upload url (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample mimeType value: 'image/jpeg'",
+              " *",
+              " * Sample options value:",
+              " * {",
+              " *   fileName: 'image1.jpeg',",
+              " *   parentFolderId: '103601562ec94214bee61f470b403dd5',",
+              " *   labels: ['nature', 'outdoors']",
+              " * }",
+              " */",
+              "",
+              "export const myGenerateFileResumableUploadUrlFunction = webMethod(Permissions.Anyone, async (mimeType, options) => {",
+              "  try {",
+              "    const elevatedGenerateFileResumableUploadUrl = elevate(files.generateFileResumableUploadUrl);",
+              "    const result = await elevatedGenerateFileResumableUploadUrl(mimeType, options);",
+              "  ",
+              "    return result;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *  \"uploadProtocol\": \"TUS\",",
+              " *  \"uploadToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMWIwNTkxYi0wMTQyLTRkOTctYjg2My1lOTQwN2ZiZjdhMDEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE3MDIzNjM0NTIsImlhdCI6MTcwMTc1ODY0MiwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvYThhNTJiXzFhYTNkZDQzMTY4OTQxYjhiMDE0M2M0ZTA5MDY1M2U1fm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UY3dNVGMxT0RZME1pd2laWGh3SWpveE56QXhPREF4T0RReUxDSnFkR2tpT2lJME5EbGxNakE0WkdZNE5XRWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWhPR0UxTW1KZk1XRmhNMlJrTkRNeE5qZzVOREZpT0dJd01UUXpZelJsTURrd05qVXpaVFYtYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdllUaGhOVEppWHpGaFlUTmtaRFF6TVRZNE9UUXhZamhpTURFME0yTTBaVEE1TURZMU0yVTFmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJFNFlUVXlZbDh4WVdFelpHUTBNekUyT0RrME1XSTRZakF4TkROak5HVXdPVEEyTlRObE5YNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozU2taTVVqUk9UbTlJZDA1bGVsSlBTVnB2YmtWV2FUUlNaSE5OZDB0dVMzRTNOMUUwUW5GT1RUUnBaV1YwYWs1RFYzSmxjMnRRUXkwMVVsQllSbVp6YlVad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6UlJRVFpSU1MxQk5IUTJVVm94T0dSWlRVbEJjMDlxTkZNdFgyZHhTakYzTmxCb2NYSmhUR1pGWDNabWFrZDROMDlKUjJWSVFuZzBYMU51T1UxeGNteExRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMlZXa3pWMHMyY2xvdFNYbHhlRFZMU1ZFNFdFaDBjakkxYm1sU1p6VlNVMkYzUzFWS01FWlhNall4VDAxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5GcEZTbUZPVFZSYVdHeHVSM2xxY2tkWWFFWTRiMVI0VTJjMFJUUlFlVFJSV1V4NVRrbGhaREkzY21zOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5nN1FFMDduUk9CNTZ6MlljQ0ZLazdRUkZJaDJ6c0FnNUlXODlsSmJCejRnIiwiYWNsIjoicHVibGljIiwicHJvdG9jb2wiOiJ0dXMiLCJtaW1lVHlwZSI6ImltYWdlL2pwZWciLCJzZXNzaW9uVVJMIjoiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vdXBsb2FkL3N0b3JhZ2UvdjEvYi91cGxvYWQtdG1wLXdpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS9vP3ByZWRlZmluZWRBY2w9cHVibGljUmVhZFx1MDAyNnByb2plY3Rpb249ZnVsbFx1MDAyNnVwbG9hZFR5cGU9cmVzdW1hYmxlXHUwMDI2dXBsb2FkX2lkPUFCUHRjUHJ6QkVoaHRaTm1yM0ViZG5pOXcwUy1DVmdZZnFmYVgyUXZPT29yNEt2bFBhVUtRdGlwMkNwXzdYTndxblRWSmRaWkxOYlE3TU90M1NlTmx6R3pLOGpZRXZMNHA5QUFtbi1RTE96LThxQWQifQ.hHvZwmkHImDu4khcqyWx44TgWT_d26wIhcAbRUH37oI\",",
+              " *  \"uploadUrl\": \"https://upload.wixmp.com/upload/tus\"",
+              " * }",
+              " */",
+              ""
             ]
           },
           {
@@ -1180,11 +1621,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "generateFileResumableUploadUrl",
       "isAdminMethod": true
     },
@@ -1237,10 +1673,9 @@
         ],
         "examples": [
           {
-            "title": "Generate a file upload url ",
+            "title": "Generate a file upload url (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample mimeType value: 'image/jpeg'",
               " * Sample options value:",
@@ -1253,8 +1688,7 @@
               "",
               "async function myGenerateFileUploadUrlFunction(mimeType, options) {",
               "  try {",
-              "    const elevatedGenerateFileUploadUrl = elevate(files.generateFileUploadUrl);",
-              "    const result = await elevatedGenerateFileUploadUrl(mimeType, options);",
+              "    const result = await files.generateFileUploadUrl(mimeType, options);",
               "  ",
               "    const url = result.uploadUrl;",
               "    return url;",
@@ -1269,6 +1703,43 @@
               " *   \"uploadUrl\": \"https://upload.wixmp.com/upload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYTk0N2E5Ni01ZmFiLTQ0NjAtODVkNS1hNTIxNWRjNzRiMjEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE2OTM5MTk3MjksImlhdCI6MTY5MzgzMzMxOSwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvZDRkZGUxXzE4Nzk3M2ZhYWRmNjQ3MGM4OTRhN2JjNmMyNjA2Yjkzfm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UWTVNemd6TXpNeE9Td2laWGh3SWpveE5qa3pPRGMyTlRFNUxDSnFkR2tpT2lJeU9ERXpaR013T1dJNU9EQWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWtOR1JrWlRGZk1UZzNPVGN6Wm1GaFpHWTJORGN3WXpnNU5HRTNZbU0yWXpJMk1EWmlPVE4tYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdlpEUmtaR1V4WHpFNE56azNNMlpoWVdSbU5qUTNNR000T1RSaE4ySmpObU15TmpBMllqa3pmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJRMFpHUmxNVjh4T0RjNU56Tm1ZV0ZrWmpZME56QmpPRGswWVRkaVl6WmpNall3Tm1JNU0zNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozTm14R00xcFNRVkZST0RKWVpXRktRMmRWU1U1bFNHeFlkVTlzZWtNelVtSTFUQzFoTWtKRlVsQlpSRlpXWVRReWJEWTBiMnhzZUVKMk5qZG9lRjloU2tad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6ZG1ZWEV4VlhOaFpsSnZVRWx5UzBwVWEydE5NREZOUkMwNFUzVTFVR1l4WWpWTWVsRXhNV0ZpYWt4M1pVWXdVMnRmV2xKZldHSTVja3Q1U0hadWRVSkxRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMllXTnVjbTlRWDA5MGFTMUdOamRrU2tWelpWZFJhM0I2VW5WUGNIQkpTa1ZUUTJkMVpERkZRa2xOYlUxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5FRnFhSGRpWlZSemRVbEVSRGxFT1dWWGVtaG5VVGhQZUV3MWVHdElORXN3UTFOWE5qSkRRazlQUlVrOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5iRWJSTzdnYkQxaXR0TW9Hb29QUTBsbDZrbW5jSEdfc05pRjRXZzFZWTc0IiwiYWNsIjoicHVibGljIiwibWltZVR5cGUiOiJpbWFnZS9qcGVnIn0.pd9ZssMw0NOTIxmNm0gm3r5WP6ySCy4vBxlT8ufU_Vw\"",
               " * }",
               " */"
+            ]
+          },
+          {
+            "title": "Generate a file upload url (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample mimeType value: 'image/jpeg'",
+              " * Sample options value:",
+              " * {",
+              " *   fileName: 'image1.jpeg',",
+              " *   parentFolderId: '103601562ec94214bee61f470b403dd5',",
+              " *   labels: ['nature', 'outdoors']",
+              " * }",
+              " */",
+              "",
+              "export const myGenerateFileUploadUrlFunction = webMethod(Permissions.Anyone, async (mimeType, options) => {",
+              "  try {",
+              "    const elevatedGenerateFileUploadUrl = elevate(files.generateFileUploadUrl);",
+              "    const result = await elevatedGenerateFileUploadUrl(mimeType, options);",
+              "  ",
+              "    const url = result.uploadUrl;",
+              "    return url;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "  ",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"uploadUrl\": \"https://upload.wixmp.com/upload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYTk0N2E5Ni01ZmFiLTQ0NjAtODVkNS1hNTIxNWRjNzRiMjEiLCJhdWQiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJpc3MiOiJ1cm46c2VydmljZTp1cGxvYWQiLCJleHAiOjE2OTM5MTk3MjksImlhdCI6MTY5MzgzMzMxOSwiYnVja2V0IjoidXBsb2FkLXRtcC13aXhtcC1jZGZjMzg0ZjE1ODQxYWFhNWVhYjE2YjEiLCJwYXRoIjoibWVkaWEvZDRkZGUxXzE4Nzk3M2ZhYWRmNjQ3MGM4OTRhN2JjNmMyNjA2Yjkzfm12Mi5qcGVnIiwiY2FsbGJhY2tVcmwiOiJodHRwczovL3dpeG1wLWNkZmMzODRmMTU4NDFhYWE1ZWFiMTZiMS5hcHBzcG90LmNvbS9fYXBpL3YzL3VwbG9hZC9jYWxsYmFjaz91cGxvYWRUb2tlbj1leUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUoxY200NmMyVnlkbWxqWlRwbWFXeGxMblZ3Ykc5aFpDSXNJbUYxWkNJNkluVnlianB6WlhKMmFXTmxPbVpwYkdVdWRYQnNiMkZrSWl3aWMzVmlJam9pZFhKdU9tRndjRHBsTmpZMk16QmxOekUwWmpBME9UQmhZV1ZoTVdZeE5EbGlNMkkyT1dVek1pSXNJbWxoZENJNk1UWTVNemd6TXpNeE9Td2laWGh3SWpveE5qa3pPRGMyTlRFNUxDSnFkR2tpT2lJeU9ERXpaR013T1dJNU9EQWlMQ0ppYTNRaU9pSnpkR0YwYVdNdWQybDRjM1JoZEdsakxtTnZiU0lzSW5CMGFDSTZJaTl0WldScFlTOWtOR1JrWlRGZk1UZzNPVGN6Wm1GaFpHWTJORGN3WXpnNU5HRTNZbU0yWXpJMk1EWmlPVE4tYlhZeUxtcHdaV2NpTENKaFkyd2lPaUp3ZFdKc2FXTWlMQ0pzWm1NaU9tNTFiR3dzSW1Oc1lpSTZleUoxY213aU9pSm9kSFJ3Y3pvdkwzZHBlSEJ5YVhaaGRHVnRaV1JwWVM1aGNIQnpjRzkwTG1OdmJTOTJNeTl0Y0M5bWFXeGxjeTkxY0d4dllXUXZiV1ZrYVdFdlpEUmtaR1V4WHpFNE56azNNMlpoWVdSbU5qUTNNR000T1RSaE4ySmpObU15TmpBMllqa3pmbTEyTWk1cWNHVm5JaXdpWVhSMFlXTm9iV1Z1ZENJNmV5SndZWFJvSWpvaUwyMWxaR2xoTDJRMFpHUmxNVjh4T0RjNU56Tm1ZV0ZrWmpZME56QmpPRGswWVRkaVl6WmpNall3Tm1JNU0zNXRkakl1YW5CbFp5SXNJblZ3Ykc5aFpGOTBiMnRsYmlJNklrSk1iRlp0U0MxMFZVNDNhV2hIUWpOUGJFZEtTbnBVVm1WeVZqQjBPWFp2YkhFM2MzcFZSbkZ5YWpCS1QyOWhaalJMTkZwUE9IbENNSGhrT1dka2EyZzFMWFYxZEUxalpWcFRTblZhZEVKTVYyOTJjMFpOVERSbk9IQnVPWFJwWVZCV2JrOW9MVEZvWmtVNGJqTjFPWEZZVWxKSVdVWXdSMFF5ZVVSS1RraDNlVWxUUzBkaVUydGpNVEl3WDFCTFl5MXFTV2xMT1daVFptZDZkRkpFZFhWemJubDNWa1JyZEdsalgxOHhkazVUWTJOYVFXcHBORmt5UTJaWFJ6Sm1VemxaT0cxTGVqZEZZakpHWmtaTGJVSlBYMlIzUzBweVgweGFaakJqYTIxS1pEZHZaVlIzYjJwR2JFa3dWemR6UzNoVVNFdDRWbVZoYzFKMlYySnljbEU0V0RkeU1IcDNUREYyV1c5MVNXdE1ielJRWlhFMU5VNVNSMEpRZG5OVFpXbFZWV2xFVUZRMldrbG1WMmRQZFZoUGRrcGFkVWhDVTA5Vk9EbEdjbEozTm14R00xcFNRVkZST0RKWVpXRktRMmRWU1U1bFNHeFlkVTlzZWtNelVtSTFUQzFoTWtKRlVsQlpSRlpXWVRReWJEWTBiMnhzZUVKMk5qZG9lRjloU2tad1QwaGxRVlJXVW1NdFdqZFRZbTFIVTBGMFN6ZG1ZWEV4VlhOaFpsSnZVRWx5UzBwVWEydE5NREZOUkMwNFUzVTFVR1l4WWpWTWVsRXhNV0ZpYWt4M1pVWXdVMnRmV2xKZldHSTVja3Q1U0hadWRVSkxRMlJ1VWpCQlZGOTJjVnB5U2s5T1ZWbE1UM0JTVEU1bFExTlhjVzQzUzA1V2RuTjBVR2RyU3paMllXTnVjbTlRWDA5MGFTMUdOamRrU2tWelpWZFJhM0I2VW5WUGNIQkpTa1ZUUTJkMVpERkZRa2xOYlUxM1RWcGhWUzB4YUhoUk5HcFdWR2h2V1VJMU5FRnFhSGRpWlZSemRVbEVSRGxFT1dWWGVtaG5VVGhQZUV3MWVHdElORXN3UTFOWE5qSkRRazlQUlVrOUluMHNJbWhsWVdSbGNuTWlPbTUxYkd3c0luQmhjM04wYUhKdmRXZG9JanAwY25WbGZYMC5iRWJSTzdnYkQxaXR0TW9Hb29QUTBsbDZrbW5jSEdfc05pRjRXZzFZWTc0IiwiYWNsIjoicHVibGljIiwibWltZVR5cGUiOiJpbWFnZS9qcGVnIn0.pd9ZssMw0NOTIxmNm0gm3r5WP6ySCy4vBxlT8ufU_Vw\"",
+              " * }",
+              " */",
+              ""
             ]
           },
           {
@@ -1302,11 +1773,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "generateFileUploadUrl",
       "isAdminMethod": true
     },
@@ -1352,14 +1818,13 @@
       "docs": {
         "summary": "Generates a URL for downloading a compressed file containing specific files in the Media Manager.",
         "description": [
-          "The `generateFilesDownloadUrl()` function returns a Promise that resolves to a download URL.\n\nThe compressed file can contain up to 1000 files."
+          "The `generateFilesDownloadUrl()` function returns a Promise that resolves to a download URL.\n\nThe compressed file can contain up to 1000 files.\n\nTo generate one or more temporary URLs for downloading a specific file in the Media Manager, use the `generateFileDownloadUrl()` function.\nYou can use the `expirationInMinutes` parameter to set the URL expiration time, making it more secure than the `generateFilesDownloadUrl()` function.\nTherefore, to download private files, use the `generateFileDownloadUrl` function for each private file that you want to generate a download URL for."
         ],
         "examples": [
           {
-            "title": "Generate a download url for multiple files ",
+            "title": "Generate a download url for multiple files (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileIds value:",
               " * [",
@@ -1371,8 +1836,7 @@
               "",
               "async function myGenerateFilesDownloadUrlFunction(fileIds) {",
               "  try {",
-              "    const elevatedGenerateFilesDownloadUrl = elevate(files.generateFilesDownloadUrl)",
-              "    const generatedUrl = await elevatedGenerateFilesDownloadUrl(fileIds);",
+              "    const generatedUrl = await files.generateFilesDownloadUrl(fileIds);",
               "",
               "    const url = generatedUrl.downloadUrl;",
               "    return url;",
@@ -1386,20 +1850,57 @@
               " * {",
               " *   \"downloadUrl\": \"https://archive.wixmp.com/archive/wix/38f69e35c283495187e85be0c8c06caf\"",
               " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Generate a download url for multiple files (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample fileIds value:",
+              " * [",
+              " *   'd4dde1_dee18c9ada174a818ccf75c50e72c739~mv2.jpg',",
+              " *   'd4dde1_84a62b7aeb874f73a7b736cad663d6f2.pdf',",
+              " *   'd4dde1_e26da94b5cb440649ede0c433425449c~mv2.jpg'",
+              " * ]",
+              " */",
+              "",
+              "export const myGenerateFilesDownloadUrlFunction = webMethod(Permissions.Anyone, async (fileIds) => {",
+              "  try {",
+              "    const elevatedGenerateFilesDownloadUrl = elevate(files.generateFilesDownloadUrl)",
+              "    const generatedUrl = await elevatedGenerateFilesDownloadUrl(fileIds);",
+              "",
+              "    const url = generatedUrl.downloadUrl;",
+              "    return url;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"downloadUrl\": \"https://archive.wixmp.com/archive/wix/38f69e35c283495187e85be0c8c06caf\"",
+              " * }",
               " */"
             ]
           },
           {
             "title": "Generate a download url for all images in media ",
             "body": [
-              "/**************************************",
-              " * Backend code - download-files-url.jsw *",
-              " *************************************/",
+              "/********************************************",
+              " * Backend code - download-files-url.web.js *",
+              " *******************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function generateDownloadUrl(fileIds) {",
+              "export const generateDownloadUrl = webMethod(Permissions.Anyone, async (fileIds) => {",
               "  try {",
               "    const elevatedGenerateFilesDownloadUrl = elevate(files.generateFilesDownloadUrl)",
               "    const generatedUrl = await elevatedGenerateFilesDownloadUrl(fileIds);",
@@ -1408,9 +1909,9 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "  ",
-              "export async function listImages() {",
+              "export const listImages = webMethod(Permissions.Anyone, async () => {",
               "  const listOptions = {",
               "    mediaTypes: [\"IMAGE\"]",
               "  }",
@@ -1423,14 +1924,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { listImages, generateDownloadUrl } from 'backend/download-files-url';",
+              "import { listImages, generateDownloadUrl } from 'backend/download-files-url.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#downloadFiles').disable();",
@@ -1456,11 +1957,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "generateFilesDownloadUrl",
       "isAdminMethod": true
     },
@@ -1513,10 +2009,9 @@
         ],
         "examples": [
           {
-            "title": "Generate a video streaming url ",
+            "title": "Generate a video streaming url (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample ID value: 'd4dde1_6ce66a7e99db49f5964ef9f3ef97eefc'",
               " * ",
@@ -1528,8 +2023,7 @@
               "",
               "async function myGenerateVideoStreamingUrlFunction(fileId, options) {",
               "  try {",
-              "    const elevatedGenerateVideoStreamingUrl = elevate(files.generateVideoStreamingUrl);",
-              "    const streamingUrl = await elevatedGenerateVideoStreamingUrl(fileId, options);",
+              "    const streamingUrl = await files.generateVideoStreamingUrl(fileId, options);",
               "",
               "    return streamingUrl;",
               "  } catch (error) {",
@@ -1547,15 +2041,48 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Generate a video streaming url (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample ID value: 'd4dde1_6ce66a7e99db49f5964ef9f3ef97eefc'",
+              " * ",
+              " * Sample options value:",
+              " * {",
+              " *   format: 'HLS'",
+              " * }",
+              " */",
+              "",
+              "export const myGenerateVideoStreamingUrlFunction = webMethod(Permissions.Anyone, async (fileId, options) => {",
+              "  try {",
+              "    const elevatedGenerateVideoStreamingUrl = elevate(files.generateVideoStreamingUrl);",
+              "    const streamingUrl = await elevatedGenerateVideoStreamingUrl(fileId, options);",
+              "",
+              "    return streamingUrl;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"downloadUrl\": {",
+              " *     \"assetKey\": \"HLS\",",
+              " *     \"url\": \"https://repackager.wixmp.com/video.wixstatic.com/video/d4dde1_6ce66a7e99db49f5964ef9f3ef97eefc/,720p,360p,1080p,480p,/mp4/file.mp4.urlset/master.m3u8\"",
+              " *   }",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "generateVideoStreamingUrl",
       "isAdminMethod": true
     },
@@ -1598,17 +2125,15 @@
         ],
         "examples": [
           {
-            "title": "Get a file descriptor ",
+            "title": "Get a file descriptor (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileId value: 'w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg' */",
               "",
               "async function myGetFileDescriptorFunction(fileId) {",
               "  try {",
-              "    const elevatedGetFileDescriptor = elevate(files.getFileDescriptor);",
-              "    const descriptor = await elevatedGetFileDescriptor(fileId);",
+              "    const descriptor = await files.getFileDescriptor(fileId);",
               "",
               "    console.log('Retrieved descriptor:', descriptor);",
               "    return descriptor;",
@@ -1646,15 +2171,62 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Get a file descriptor (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "// Sample fileId value: 'w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg'",
+              "",
+              "export const myGetFileDescriptorFunction = webMethod(Permissions.Anyone, async (fileId) => {",
+              "  try {",
+              "    const elevatedGetFileDescriptor = elevate(files.getFileDescriptor);",
+              "    const descriptor = await elevatedGetFileDescriptor(fileId);",
+              "",
+              "    console.log('Retrieved descriptor:', descriptor);",
+              "    return descriptor;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *  \"_createdDate\": \"2023-07-23T10:33:00.000Z\",",
+              " *  \"_id\": \"w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\",",
+              " *  \"_updatedDate\": \"2023-07-23T10:33:00.000Z\",",
+              " *  \"displayName\": \"example.jpg\",",
+              " *  \"hash\": \"x5bq2o4p8fj68xqt25v49wdnasys04xe\",",
+              " *  \"internalTags\": [],",
+              " *  \"labels\": [],",
+              " *  \"media\": {",
+              " *    \"image\": {",
+              " *      \"faces\": [],",
+              " *      \"image\": \"wix:image://v1/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg/example.jpg\"",
+              " *    }",
+              " *  },",
+              " *  \"mediaType\": \"IMAGE\",",
+              " *  \"operationStatus\": \"READY\",",
+              " *  \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *  \"private\": false,",
+              " *  \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *  \"sizeInBytes\": \"47177\",",
+              " *  \"sourceUrl\": \"https://example.org/filename.jpg\",",
+              " *  \"state\": \"OK\",",
+              " *  \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\",",
+              " *  \"url\": \"https://static.wixstatic.com/media/w8ide0_989yy3iic89mi8880kq9jkr9x7nxiz7l~mv2.jpg\"",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getFileDescriptor",
       "isAdminMethod": true
     },
@@ -1704,10 +2276,9 @@
         ],
         "examples": [
           {
-            "title": "Get file descriptors ",
+            "title": "Get file descriptors (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample fileIds value:",
               " * [ ",
@@ -1719,8 +2290,7 @@
               "",
               "async function myGetFileDescriptorsFunction(fileIds) {",
               "  try {",
-              "    const elevatedGetFileDescriptors = elevate(files.getFileDescriptors);",
-              "    const descriptors = await elevatedGetFileDescriptors(fileIds);",
+              "    const descriptors = await files.getFileDescriptors(fileIds);",
               "",
               "    console.log('Retrieved descriptors:', descriptors);",
               "    return descriptors;",
@@ -1812,15 +2382,122 @@
               " * }",
               " */"
             ]
+          },
+          {
+            "title": "Get file descriptors (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample fileIds value:",
+              " * [ ",
+              " *   'w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2q', ",
+              " *   'w8ide0_mnk3lozhxu0w4f1g5wuusmwqedox2w1p~mv2.jpg', ",
+              " *   'w8ide0_578uul37zvr7b6d7ji3cbm91rlf5dvjy.zip'",
+              " * ]",
+              " */",
+              "",
+              "export const myGetFileDescriptorsFunction = webMethod(Permissions.Anyone, async (fileIds) => {",
+              "  try {",
+              "    const elevatedGetFileDescriptors = elevate(files.getFileDescriptors);",
+              "    const descriptors = await elevatedGetFileDescriptors(fileIds);",
+              "",
+              "    console.log('Retrieved descriptors:', descriptors);",
+              "    return descriptors;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " *  {",
+              " *   \"files\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-23T09:05:12.000Z\",",
+              " *       \"_id\": \"w8ide0_mnk3lozhxu0w4f1g5wuusmwqedox2w1p~mv2.jpg\",",
+              " *       \"_updatedDate\": \"2023-07-23T09:05:12.000Z\",",
+              " *       \"displayName\": \"image1.jpg\",",
+              " *       \"hash\": \"d7ltmbrrmdspiyrw3db29bpi1g8lsacz\",",
+              " *       \"internalTags\": [],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"image\": {",
+              " *           \"faces\": [],",
+              " *           \"image\": \"wix:image://v1/w8ide0_mnk3lozhxu0w4f1g5wuusmwqedox2w1p~mv2.jpg/image1.jpg#originWidth=1000&originHeight=714\"",
+              " *         }",
+              " *       },",
+              " *       \"mediaType\": \"IMAGE\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"112689\",",
+              " *       \"sourceUrl\": \"https://website.org/image1.jpg\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_mnk3lozhxu0w4f1g5wuusmwqedox2w1p~mv2.jpg\",",
+              " *       \"url\": \"https://static.wixstatic.com/media/w8ide0_mnk3lozhxu0w4f1g5wuusmwqedox2w1p~mv2.jpg\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:56:10.000Z\",",
+              " *       \"_id\": \"w8ide0_578uul37zvr7b6d7ji3cbm91rlf5dvjy.zip\",",
+              " *       \"_updatedDate\": \"2023-07-20T07:16:55.000Z\",",
+              " *       \"displayName\": \"pics\",",
+              " *       \"hash\": \"tmk0uafvzzgkddrgwgl6od1h9jsp1j9e\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"archive\": {",
+              " *           \"_id\": \"w8ide0_578uul37zvr7b6d7ji3cbm91rlf5dvjy.zip\",",
+              " *           \"filename\": \"riverpics\",",
+              " *           \"sizeInBytes\": \"49546083\",",
+              " *           \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/archives/w8ide0_578uul37zvr7b6d7ji3cbm91rlf5dvjy.zip\"",
+              " *         }",
+              " *       },",
+              " *       \"mediaType\": \"ARCHIVE\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"49546083\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/48c4fbc47d7298cd4406936294b4c532.png\",",
+              " *       \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/archives/w8ide0_578uul37zvr7b6d7ji3cbm91rlf5dvjy.zip\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-23T12:15:55.000Z\",",
+              " *       \"_id\": \"w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2q\",",
+              " *       \"_updatedDate\": \"2023-07-23T12:16:14.000Z\",",
+              " *       \"displayName\": \"video1.mp4\",",
+              " *       \"hash\": \"pdrepnjy3cdjq8bt2lzmpdvuc47mm921\",",
+              " *       \"internalTags\": [],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"video\": \"wix:video://v1/w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2q/video1.mp4#posterUri=w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2qf001.jpg&posterWidth=1280&posterHeight=720\"",
+              " *       },",
+              " *       \"mediaType\": \"VIDEO\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"4384468\",",
+              " *       \"sourceUrl\": \"https://cdn.pixabay.com/example.mp4\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2qf002.jpg\",",
+              " *       \"url\": \"https://video.wixstatic.com/video/w8ide0_87051wjiadg6qj2ywxb07vn5snqxxp2q/file\"",
+              " *     }",
+              " *   ]",
+              " * }",
+              " */",
+              ""
+            ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "getFileDescriptors",
       "isAdminMethod": true
     },
@@ -1869,21 +2546,19 @@
       "docs": {
         "summary": "Imports a file to the Media Manager using an external URL.",
         "description": [
-          "The `importFile()` function returns a Promise that resolves to the imported file's descriptor.\n\nThis function returns information about the imported file. Importing a file is the method through which you can add files to the Media Manager.\nUse the `parentFolderId` parameter to specify which folder you want the file to be imported to.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to pass one of the following:\n- The file's [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` parameter of the request. For example, `'image/png'`.\n- The file's name and extension. For example, `'my-image.png'`.\n- If you don't know the file's extension or MIME type, its [media type](https://support.wix.com/en/article/wix-media-supported-media-file-types-and-file-sizes) in the `mediaType` parameter of the request. For example, `'IMAGE'`. Note that this option only works if the server hosting the media allows a 'HEAD' request."
+          "The `importFile()` function returns a Promise that resolves to the imported file's descriptor.\n\nThis function returns information about the imported file. Importing a file is the method through which you can add files to the Media Manager.\nUse the `parentFolderId` parameter to specify which folder you want the file to be imported to.\nIf no folder is specified, the file is imported to the `media-root` folder.\n\nTo import a file, you need to do one of the following:\n- Pass its [MIME type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) in the `mimeType` field of the request. For example, `mimeType: 'image/jpeg'`.\n- Include its extension in either the `displayName` or `url` field of the request. For example, `displayName: 'Example Image.jpeg` or `url: https://www.example.com/image.jpeg`.\n- Ensure the server hosting the file supports HEAD requests. In these cases the Wix servers can retrieve the MIME type from the hosting server.\n  > **Note:** If you want to validate the media type, pass the file's expected media type in the optional `mediaType` field of the request.  For example, `mediaType: 'IMAGE'`."
         ],
         "examples": [
           {
-            "title": "Import a file ",
+            "title": "Import a file (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample url value: 'https://example.org/filename.jpg' */",
               "",
               "async function myImportFileFunction(url) {",
               "  try {",
-              "    const elevatedImportFile = elevate(files.importFile);",
-              "    const importedFile = await elevatedImportFile(url);",
+              "    const importedFile = await files.importFile(url);",
               "",
               "    console.log('Imported file successfully:', importedFile);",
               "    return importedFile;",
@@ -1920,23 +2595,63 @@
             ]
           },
           {
-            "title": "Import a file with options",
+            "title": "Import a file (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "/* Sample url value: 'https://example.org/myfilename.jpg'",
-              " * ",
-              " * Sample importOptions value:",
+              "// Sample url value: 'https://example.org/filename.jpg'",
+              "",
+              "export const myImportFileFunction = webMethod(Permissions.Anyone, async (url) => {",
+              "  try {",
+              "    const elevatedImportFile = elevate(files.importFile);",
+              "    const importedFile = await elevatedImportFile(url);",
+              "",
+              "    console.log('Imported file successfully:', importedFile);",
+              "    return importedFile;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
               " * {",
-              " *   displayName: 'example',",
-              " *   mediaType: 'IMAGE',",
-              " *   mimeType: 'image/jpeg',",
-              " *   parentFolderId: 'igje5u22nij3qkltzsnol37j3dnthvvh'",
+              " *   \"file\": {",
+              " *     \"_createdDate\": \"2023-07-23T09:19:05.000Z\",",
+              " *     \"_id\": \"w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\",",
+              " *     \"_updatedDate\": \"2023-07-23T09:19:05.000Z\",",
+              " *     \"displayName\": \"image1.jpg\",",
+              " *     \"hash\": \"\",",
+              " *     \"internalTags\": [],",
+              " *     \"labels\": [],",
+              " *     \"mediaType\": \"IMAGE\",",
+              " *     \"operationStatus\": \"PENDING\",",
+              " *     \"parentFolderId\": \"media-root\",",
+              " *     \"private\": false,",
+              " *     \"sizeInBytes\": \"20167\",",
+              " *     \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *     \"sourceUrl\": \"https://example.org/filename.jpg\",",
+              " *     \"state\": \"OK\",",
+              " *     \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\",",
+              " *     \"url\": \"https://static.wixstatic.com/media/w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\"",
+              " *   }",
               " * }",
               " */",
+              ""
+            ]
+          },
+          {
+            "title": "Import a file with options",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
               "",
-              "async function myImportFileFunction(url, importOptions) {",
+              "// Sample url value: 'https://example.org/filename.jpg'",
+              "",
+              "export const myImportFileFunction = webMethod(Permissions.Anyone, async (url, importOptions) => {",
               "  try {",
               "    const elevatedImportFile = elevate(files.importFile);",
               "    const importedFile = await elevatedImportFile(url, importOptions);",
@@ -1947,41 +2662,37 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
-              "/* Promise resolves to: ",
+              "/* Promise resolves to:",
               " * {",
               " *   \"file\": {",
-              " *     \"_createdDate\": \"2023-07-23T10:32:58.000Z\",",
-              " *     \"_id\": \"w8ide0_dvddpfvztq1dkhjqn4xz6e429vpk3oc1~mv2.jpg\",",
-              " *     \"_updatedDate\": \"2023-07-23T10:32:58.000Z\",",
-              " *     \"displayName\": \"example.jpg\",",
+              " *     \"_createdDate\": \"2023-07-23T09:19:05.000Z\",",
+              " *     \"_id\": \"w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\",",
+              " *     \"_updatedDate\": \"2023-07-23T09:19:05.000Z\",",
+              " *     \"displayName\": \"image1.jpg\",",
               " *     \"hash\": \"\",",
               " *     \"internalTags\": [],",
               " *     \"labels\": [],",
               " *     \"mediaType\": \"IMAGE\",",
               " *     \"operationStatus\": \"PENDING\",",
-              " *     \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *     \"parentFolderId\": \"media-root\",",
               " *     \"private\": false,",
-              " *     \"sizeInBytes\": \"47177\",",
+              " *     \"sizeInBytes\": \"20167\",",
               " *     \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
-              " *     \"sourceUrl\": \"https://example.org/myfilename.jpg\",",
+              " *     \"sourceUrl\": \"https://example.org/filename.jpg\",",
               " *     \"state\": \"OK\",",
-              " *     \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_dvddpfvztq1dkhjqn4xz6e429vpk3oc1~mv2.jpg\",",
-              " *     \"url\": \"https://static.wixstatic.com/media/w8ide0_dvddpfvztq1dkhjqn4xz6e429vpk3oc1~mv2.jpg\"",
+              " *     \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\",",
+              " *     \"url\": \"https://static.wixstatic.com/media/w8ide0_leac4pwk8o11v8725j9ugcbe70x3alc0~mv2.jpg\"",
               " *   }",
               " * }",
-              " */"
+              " */",
+              ""
             ]
           }
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "importFile",
       "isAdminMethod": true
     },
@@ -2022,15 +2733,13 @@
         ],
         "examples": [
           {
-            "title": "List deleted files ",
+            "title": "List deleted files (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "async function myListDeletedFilesFunction() {",
               "  try {",
-              "    const elevatedListDeletedFiles = elevate(files.listDeletedFiles)",
-              "    const deletedFiles = await elevatedListDeletedFiles();",
+              "    const deletedFiles = await files.listDeletedFiles();",
               "",
               "    console.log('Files in trash:', deletedFiles)",
               "    return deletedFiles;",
@@ -2188,26 +2897,16 @@
             ]
           },
           {
-            "title": "List deleted files with options ",
+            "title": "List deleted files (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "/* Sample options value:",
-              " * {",
-              " *   paging: {",
-              " *       limit: 2",
-              " *   },",
-              " *   sort: {",
-              " *       order: 'ASC'",
-              " *   }",
-              " * }",
-              " */",
-              "",
-              "async function listDeletedFiles(options) {",
+              "export const myListDeletedFilesFunction = webMethod(Permissions.Anyone, async () => {",
               "  try {",
               "    const elevatedListDeletedFiles = elevate(files.listDeletedFiles)",
-              "    const deletedFiles = await elevatedListDeletedFiles(options);",
+              "    const deletedFiles = await elevatedListDeletedFiles();",
               "",
               "    console.log('Files in trash:', deletedFiles)",
               "    return deletedFiles;",
@@ -2215,7 +2914,7 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -2224,7 +2923,7 @@
               " *       \"_createdDate\": \"2023-08-09T08:45:42.000Z\",",
               " *       \"_id\": \"d4dde1_32288e20a5aa4213a52b15426fb27c9f~mv2.png\",",
               " *       \"_updatedDate\": \"2023-08-09T08:45:42.000Z\",",
-              " *       \"displayName\": \"IMG1.png\",",
+              " *       \"displayName\": \"image1.png\",",
               " *       \"hash\": \"864d607a1ea270efbac32def181f039f\",",
               " *       \"internalTags\": [",
               " *         \"_fileOrigin_uploaded\"",
@@ -2314,7 +3013,7 @@
               " *             }",
               " *           },",
               " *           \"faces\": [],",
-              " *           \"image\": \"wix:image://v1/d4dde1_32288e20a5aa4213a52b15426fb27c9f~mv2.png/IMG1.png#originWidth=1170&originHeight=2532\"",
+              " *           \"image\": \"wix:image://v1/d4dde1_32288e20a5aa4213a52b15426fb27c9f~mv2.png/image1.png#originWidth=1170&originHeight=2532\"",
               " *         }",
               " *       },",
               " *       \"mediaType\": \"IMAGE\",",
@@ -2331,7 +3030,7 @@
               " *       \"_createdDate\": \"2023-08-09T08:45:37.000Z\",",
               " *       \"_id\": \"d4dde1_8dd2bfe6121f43b29ebeaa63988abf54.svg\",",
               " *       \"_updatedDate\": \"2023-08-09T08:45:37.000Z\",",
-              " *       \"displayName\": \"vectorArt1c.svg\",",
+              " *       \"displayName\": \"vectorArt1.svg\",",
               " *       \"hash\": \"e379083c3675d7f7891da00c0708539c\",",
               " *       \"internalTags\": [",
               " *         \"_fileOrigin_uploaded\"",
@@ -2340,7 +3039,7 @@
               " *       \"media\": {",
               " *         \"image\": {",
               " *           \"faces\": [],",
-              " *           \"image\": \"wix:image://v1/d4dde1_8dd2bfe6121f43b29ebeaa63988abf54.svg/vectorArt1c.svg#originWidth=1177&originHeight=2501\"",
+              " *           \"image\": \"wix:image://v1/d4dde1_8dd2bfe6121f43b29ebeaa63988abf54.svg/vectorArt1.svg#originWidth=1177&originHeight=2501\"",
               " *         }",
               " *       },",
               " *       \"mediaType\": \"VECTOR\",",
@@ -2368,13 +3067,14 @@
           {
             "title": "Bulk restores all non-permanently deleted files of chosen types ",
             "body": [
-              "/*****************************************",
-              " * Backend code - bulk-restore-files.jsw *",
-              " ****************************************/",
+              "/********************************************",
+              " * Backend code - bulk-restore-files.web.js *",
+              " *******************************************/",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "async function restoreFiles(mediaTypes) {",
+              "export const restoreFiles = webMethod(Permissions.Anyone, async (mediaTypes) => {",
               "  let idList = []",
               "  try {",
               "    const options = {",
@@ -2399,14 +3099,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { restoreFiles } from 'backend/bulk-import-files';",
+              "import { restoreFiles } from 'backend/bulk-restore-files.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#restoreMedia').onClick(async () => {",
@@ -2448,11 +3148,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "listDeletedFiles",
       "isAdminMethod": true
     },
@@ -2489,11 +3184,11 @@
       "docs": {
         "summary": "Retrieves a list of files in the Media Manager.",
         "description": [
-          "The `listFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nTo retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the endpoint retrieves only the list of files in the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted files, use the `listDeletedFiles()` function."
+          "The `listFiles()` function returns a Promise that resolves to an array of the specified files' descriptors and cursor information.\n\nTo retrieve a list of files within a specific folder in the Media Manager, pass the folder's ID in the `parentFolderId` parameter. If no folder is specified, the function retrieves only the list of files in the root folder of the Media Manager.\n\nTo retrieve a list of (non-permanently) deleted files, use the `listDeletedFiles()` function."
         ],
         "examples": [
           {
-            "title": "List files in a specific folder ",
+            "title": "List files in a specific folder (backend page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
@@ -2578,16 +3273,103 @@
             ]
           },
           {
-            "title": "Generate a download url for all images in media ",
+            "title": "List files in a specific folder (export from backend code)",
             "body": [
-              "/**************************************",
-              " * Backend code - download-files-url.jsw *",
-              " *************************************/",
-              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function generateDownloadUrl(fileIds) {",
+              "/* Sample listOptions value:",
+              " * {",
+              " *   parentFolderId : 'igje5u22nij3qkltzsnol37j3dnthvvh'",
+              " * }",
+              " */",
+              "",
+              "export const myListFilesFunction = webMethod(Permissions.Anyone, async (listOptions) => {",
+              "  try {",
+              "    const elevatedListFiles = elevate(files.listFiles);",
+              "    const fileList = await elevatedListFiles(listOptions);",
+              "",
+              "    console.log('Files in folder:', fileList);",
+              "    return fileList;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"files\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"_id\": \"w8ide0_f4dRFF610cKd7zkjVbaNddXgb181lXfg.pdf\",",
+              " *       \"_updatedDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"displayName\": \"file1.pdf\",",
+              " *       \"hash\": \"z3bxokp79p04ok6iiu9ao8srx5lrynfh\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"document\": \"wix:document://v1/w8ide0_f4dRFF610cKd7zkjVbaNddXgb181lXfg.pdf/file1.pdf\"",
+              " *       },",
+              " *       \"mediaType\": \"DOCUMENT\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"187199\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/it7ucst133nc8d9e0ff4d0nay1ucksc6.png\",",
+              " *       \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/ugd/w8ide0_f4dRFF610cKd7zkjVbaNddXgb181lXfg.pdf\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"_id\": \"w8ide0_170y03n3akmstnpt5jmsju89wvgs9tg4.pdf\",",
+              " *       \"_updatedDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"displayName\": \"file2.pdf\",",
+              " *       \"hash\": \"g6x41coggaystn596ndb09q1ecg036gk\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"document\": \"wix:document://v1/w8ide0_170y03n3akmstnpt5jmsju89wvgs9tg4.pdf/file2.pdf\"",
+              " *       },",
+              " *       \"mediaType\": \"DOCUMENT\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"igje5u22nij3qkltzsnol37j3dnthvvh\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"81624\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/it7ucst133nc8d9e0ff4d0nay1ucksc6.png\",",
+              " *       \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/ugd/w8ide0_170y03n3akmstnpt5jmsju89wvgs9tg4.pdf\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
+          },
+          {
+            "title": "Generate a download url for all images in media ",
+            "body": [
+              "/********************************************",
+              " * Backend code - download-files-url.web.js *",
+              " *******************************************/",
+              "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const generateDownloadUrl = webMethod(Permissions.Anyone, async (fileIds) => {",
               "  try {",
               "    const elevatedGenerateFilesDownloadUrl = elevate(files.generateFilesDownloadUrl)",
               "    const generatedUrl = await elevatedGenerateFilesDownloadUrl(fileIds);",
@@ -2596,9 +3378,9 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "  ",
-              "export async function listImages() {",
+              "export const listImages = webMethod(Permissions.Anyone, async () => {",
               "  const listOptions = {",
               "    mediaTypes: [\"IMAGE\"]",
               "  }",
@@ -2611,14 +3393,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { listImages, generateDownloadUrl } from 'backend/download-files-url';",
+              "import { listImages, generateDownloadUrl } from 'backend/download-files-url.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#downloadFiles').disable();",
@@ -2644,14 +3426,15 @@
           {
             "title": "Update a file's display name from visitor input ",
             "body": [
-              "/**********************************",
-              " * Backend code - update-file.jsw *",
-              " *********************************/",
+              "/*************************************",
+              " * Backend code - update-file.web.js *",
+              " ************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function updateFile(fileId, file) {",
+              "export const updateFile = webMethod(Permissions.Anyone, async (fileId, file) => {",
               "  try {",
               "    const elevatedUpdateFileDescriptor = elevate(files.updateFileDescriptor);",
               "    const updatedDescriptor = await elevatedUpdateFileDescriptor(fileId, file);",
@@ -2660,9 +3443,9 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
-              "export async function listImages() {",
+              "export const listImages = webMethod(Permissions.Anyone, async () => {",
               "  const listOptions = {",
               "    mediaTypes: [\"IMAGE\"]",
               "  }",
@@ -2675,14 +3458,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { updateFile, listImages } from 'backend/update-file';",
+              "import { updateFile, listImages } from 'backend/update-file.web';",
               "",
               "$w.onReady(async () => {",
               "  await populateImagesDropdown();",
@@ -2710,8 +3493,7 @@
               "  });",
               "",
               "  $w('#imagesDropdown').options = dropdownOptions;",
-              "};",
-              ""
+              "};"
             ],
             "extra": {
               "description": "This code uses the visitor's input on the page to update the display name of an image which they choose from a dropdown list on the page."
@@ -2720,11 +3502,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "listFiles",
       "isAdminMethod": true
     },
@@ -2765,15 +3542,13 @@
         ],
         "examples": [
           {
-            "title": "Search files ",
+            "title": "Search files (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "async function mySearchFilesFunction() {",
               "  try {",
-              "    const elevatedSearchFiles = elevate(files.searchFiles);",
-              "    const rootFiles = await elevatedSearchFiles();",
+              "    const rootFiles = await files.searchFiles();",
               "",
               "    console.log('Files in MEDIA_ROOT', rootFiles);",
               "    return rootFiles;",
@@ -3044,10 +3819,290 @@
               " *   }",
               " * }",
               " */"
-            ],
-            "extra": {
-              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder."
-            }
+            ]
+          },
+          {
+            "title": "Search files (export from backend code)",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "export const mySearchFilesFunction = webMethod(Permissions.Anyone, async () => {",
+              "  try {",
+              "    const elevatedSearchFiles = elevate(files.searchFiles);",
+              "    const rootFiles = await elevatedSearchFiles();",
+              "",
+              "    console.log('Files in MEDIA_ROOT', rootFiles);",
+              "    return rootFiles;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"files\": [",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:54:05.000Z\",",
+              " *       \"_id\": \"w8ide0_ouulk5w0mdr9omjkwsfyn71g4mb1olcf~mv2.jpg\",",
+              " *       \"_updatedDate\": \"2023-07-16T08:54:05.000Z\",",
+              " *       \"displayName\": \"image2.jpg\",",
+              " *       \"hash\": \"800fae3e0cb7908518a391c25864436c\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [",
+              " *         \"label1\",",
+              " *         \"label2\",",
+              " *         \"label3\",",
+              " *         \"label4\"",
+              " *       ],",
+              " *       \"media\": {",
+              " *         \"image\": {",
+              " *           \"colors\": {",
+              " *             \"palette\": [",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 47,",
+              " *                   \"g\": 36,",
+              " *                   \"r\": 31",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 155,",
+              " *                   \"g\": 153,",
+              " *                   \"r\": 195",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 141,",
+              " *                   \"g\": 123,",
+              " *                   \"r\": 138",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 177,",
+              " *                   \"g\": 161,",
+              " *                   \"r\": 190",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 179,",
+              " *                   \"g\": 178,",
+              " *                   \"r\": 217",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 160,",
+              " *                   \"g\": 176,",
+              " *                   \"r\": 229",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 176,",
+              " *                   \"g\": 151,",
+              " *                   \"r\": 162",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 93,",
+              " *                   \"g\": 78,",
+              " *                   \"r\": 71",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 45,",
+              " *                   \"g\": 63,",
+              " *                   \"r\": 107",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 104,",
+              " *                   \"g\": 88,",
+              " *                   \"r\": 82",
+              " *                 }",
+              " *               }",
+              " *             ],",
+              " *             \"prominent\": {",
+              " *               \"rgb\": {",
+              " *                 \"b\": 26,",
+              " *                 \"g\": 36,",
+              " *                 \"r\": 39",
+              " *               }",
+              " *             }",
+              " *           },",
+              " *           \"faces\": [],",
+              " *           \"image\": \"wix:image://v1/w8ide0_ouulk5w0mdr9omjkwsfyn71g4mb1olcf~mv2.jpg/image2.jpg#originWidth=5833&originHeight=3894\"",
+              " *         }",
+              " *       },",
+              " *       \"mediaType\": \"IMAGE\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"3013886\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_ouulk5w0mdr9omjkwsfyn71g4mb1olcf~mv2.jpg\",",
+              " *       \"url\": \"https://static.wixstatic.com/media/w8ide0_ouulk5w0mdr9omjkwsfyn71g4mb1olcf~mv2.jpg\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"_id\": \"w8ide0_suuti24j47vesffndm8hkd651u72vp3f~mv2.jpg\",",
+              " *       \"_updatedDate\": \"2023-07-16T08:56:07.000Z\",",
+              " *       \"displayName\": \"image1.jpg\",",
+              " *       \"hash\": \"fef0ylitxcnlyzxf0nahu8rh3k0i5t85\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [",
+              " *         \"label1\"",
+              " *       ],",
+              " *       \"media\": {",
+              " *         \"image\": {",
+              " *           \"colors\": {",
+              " *             \"palette\": [",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 26,",
+              " *                   \"g\": 36,",
+              " *                   \"r\": 39",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 135,",
+              " *                   \"g\": 125,",
+              " *                   \"r\": 119",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 208,",
+              " *                   \"g\": 209,",
+              " *                   \"r\": 208",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 40,",
+              " *                   \"g\": 108,",
+              " *                   \"r\": 130",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 133,",
+              " *                   \"g\": 101,",
+              " *                   \"r\": 75",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 36,",
+              " *                   \"g\": 78,",
+              " *                   \"r\": 94",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 178,",
+              " *                   \"g\": 161,",
+              " *                   \"r\": 148",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 192,",
+              " *                   \"g\": 177,",
+              " *                   \"r\": 163",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 159,",
+              " *                   \"g\": 184,",
+              " *                   \"r\": 208",
+              " *                 }",
+              " *               },",
+              " *               {",
+              " *                 \"rgb\": {",
+              " *                   \"b\": 137,",
+              " *                   \"g\": 159,",
+              " *                   \"r\": 183",
+              " *                 }",
+              " *               }",
+              " *             ],",
+              " *             \"prominent\": {",
+              " *               \"rgb\": {",
+              " *                 \"b\": 26,",
+              " *                 \"g\": 36,",
+              " *                 \"r\": 39",
+              " *               }",
+              " *             }",
+              " *           },",
+              " *           \"faces\": [],",
+              " *           \"image\": \"wix:image://v1/w8ide0_suuti24j47vesffndm8hkd651u72vp3f~mv2.jpg/image1.jpg#originWidth=5616&originHeight=3744\"",
+              " *         }",
+              " *       },",
+              " *       \"mediaType\": \"IMAGE\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"6312959\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/w8ide0_suuti24j47vesffndm8hkd651u72vp3f~mv2.jpg\",",
+              " *       \"url\": \"https://static.wixstatic.com/media/w8ide0_suuti24j47vesffndm8hkd651u72vp3f~mv2.jpg\"",
+              " *     },",
+              " *     {",
+              " *       \"_createdDate\": \"2023-07-16T08:56:10.000Z\",",
+              " *       \"_id\": \"w8ide0_9yvsg5vv40flojo0120h0rz6ki4g0tur.zip\",",
+              " *       \"_updatedDate\": \"2023-07-16T08:56:10.000Z\",",
+              " *       \"displayName\": \"file1.zip\",",
+              " *       \"hash\": \"urm9iak1w39pk381ucb9kqjphya8loro\",",
+              " *       \"internalTags\": [",
+              " *         \"_fileOrigin_uploaded\"",
+              " *       ],",
+              " *       \"labels\": [],",
+              " *       \"media\": {",
+              " *         \"archive\": {",
+              " *           \"_id\": \"w8ide0_9yvsg5vv40flojo0120h0rz6ki4g0tur.zip\",",
+              " *           \"filename\": \"file1.zip\",",
+              " *           \"sizeInBytes\": \"49546083\",",
+              " *           \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/archives/w8ide0_9yvsg5vv40flojo0120h0rz6ki4g0tur.zip\"",
+              " *         }",
+              " *       },",
+              " *       \"mediaType\": \"ARCHIVE\",",
+              " *       \"operationStatus\": \"READY\",",
+              " *       \"parentFolderId\": \"media-root\",",
+              " *       \"private\": false,",
+              " *       \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *       \"sizeInBytes\": \"49546083\",",
+              " *       \"state\": \"OK\",",
+              " *       \"thumbnailUrl\": \"https://static.wixstatic.com/media/48c4fbc47d7298cd4406936294b4c532.png\",",
+              " *       \"url\": \"https://3ecba886-4267-11ee-be56-0242ac120002.usrfiles.com/archives/w8ide0_9yvsg5vv40flojo0120h0rz6ki4g0tur.zip\"",
+              " *     }",
+              " *   ],",
+              " *   \"nextCursor\": {",
+              " *     \"cursors\": {",
+              " *       \"next\": \"\"",
+              " *     },",
+              " *     \"hasNext\": false",
+              " *   }",
+              " * }",
+              " */"
+            ]
           },
           {
             "title": "Search files with options ",
@@ -3229,58 +4284,59 @@
               " */"
             ],
             "extra": {
-              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the root folder."
+              "description": "When no `rootFolder` is specified in the options parameter, the search returns results from the 'MEDIA_ROOT' folder."
             }
           },
           {
             "title": "Bulk delete all files found in a chosen folder ",
             "body": [
-              "/****************************************",
-              " * Backend code - bulk-delete-files.jsw *",
-              " ***************************************/",
+              "/*******************************************",
+              " * Backend code - bulk-delete-files.web.js *",
+              " ******************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-business-tools.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function deleteFiles (fileIds, options) {",
+              "export const deleteFiles = webMethod(Permissions.Anyone, async (fileIds, options) => {",
               "  try {",
-              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles)    ",
-              "    await elevatedBulkDeleteFiles(fileIds, options);  ",
+              "    const elevatedBulkDeleteFiles = elevate(files.bulkDeleteFiles);",
+              "    await elevatedBulkDeleteFiles(fileIds, options);",
               "",
               "    console.log(`Permanently deleted files with ids: ${fileIds.toString()}.`);",
               "    return true;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
-              "export async function searchFileIds (parentFolderId) {",
+              "export const searchFileIds = webMethod(Permissions.Anyone, async (parentFolderId) => {",
               "  try {",
-              "    const options = { parentFolder: parentFolderId}",
-              "    const elevatedSearchFiles = elevate(files.searchFiles)    ",
-              "    const returnedFiles = await elevatedSearchFiles(options);  ",
+              "    const options = { parentFolder: parentFolderId };",
+              "    const elevatedSearchFiles = elevate(files.searchFiles);",
+              "    const returnedFiles = await elevatedSearchFiles(options);",
               "",
               "    const fileIds = returnedFiles.map((file) => {",
-              "      return file._id",
+              "      return file._id;",
               "    });",
               "",
               "    return fileIds;",
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files';",
+              "import { deleteFiles, searchFileIds } from 'backend/bulk-delete-files.web';",
               "",
               "$w.onReady(() => {",
               "  $w('#delete').onClick(async () => {",
               "    const isDeletePermanently = $w('#deletePermanently').checked;",
-              "    const options = {permanent: isDeletePermanently};",
+              "    const options = { permanent: isDeletePermanently };",
               "",
               "    const parentFolder = $w('#parentFolder').value;",
               "    const fileIds = await searchFileIds(parentFolder);",
@@ -3288,7 +4344,8 @@
               "    await deleteFiles(fileIds, options);",
               "    $w('#successMessage').show();",
               "  });",
-              "});"
+              "});",
+              ""
             ],
             "extra": {
               "description": "This code shows a page where the visitor chooses a folder by typing the folder's name in an input box, and then all the files in the chosen folder are deleted. Only visitors with permission to manage the site's media would have access to this page."
@@ -3297,11 +4354,6 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "searchFiles",
       "isAdminMethod": true
     },
@@ -3355,10 +4407,9 @@
         ],
         "examples": [
           {
-            "title": "Update a file's location",
+            "title": "Update a file's location (dashboard page code)",
             "body": [
               "import { files } from 'wix-media.v2';",
-              "import { elevate } from 'wix-auth';",
               "",
               "/* Sample id value: 'd4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg'",
               " *",
@@ -3370,8 +4421,7 @@
               "",
               "async function myUpdateFileDescriptorFunction(id, file) {",
               "  try {",
-              "    const elevatedUpdateFileDescriptor = elevate(files.updateFileDescriptor);",
-              "    const updatedDescriptor = await elevatedUpdateFileDescriptor(id, file);",
+              "    const updatedDescriptor = await files.updateFileDescriptor(id, file);",
               "",
               "    console.log(\"Updated:\", updatedDescriptor);",
               "    return updatedDescriptor;",
@@ -3514,8 +4564,170 @@
             ]
           },
           {
-            "title": "Update a file's display name and labels ",
+            "title": "Update a file's location (export from backend code)",
             "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
+              "import { files } from 'wix-media.v2';",
+              "import { elevate } from 'wix-auth';",
+              "",
+              "/* Sample id value: 'd4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg'",
+              " *",
+              " * Sample file value:",
+              " * {",
+              " *   parentFolderId: 'b2bc72834460412494c93617d88b8c89'",
+              " * }",
+              " */",
+              "",
+              "export const myUpdateFileDescriptorFunction = webMethod(Permissions.Anyone, async (id, file) => {",
+              "  try {",
+              "    const elevatedUpdateFileDescriptor = elevate(files.updateFileDescriptor);",
+              "    const updatedDescriptor = await elevatedUpdateFileDescriptor(id, file);",
+              "",
+              "    console.log(\"Updated:\", updatedDescriptor);",
+              "    return updatedDescriptor;",
+              "  } catch (error) {",
+              "    console.error(error);",
+              "    // Handle the error",
+              "  }",
+              "});",
+              "",
+              "/* Promise resolves to:",
+              " * {",
+              " *   \"_createdDate\": \"2023-08-09T08:45:50.000Z\",",
+              " *   \"_id\": \"d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\",",
+              " *   \"_updatedDate\": \"2023-09-10T09:53:50.000Z\",",
+              " *   \"displayName\": \"river.jpg\",",
+              " *   \"hash\": \"2f2a61275002b90e6e8fa1be4674c4a7\",",
+              " *   \"internalTags\": [",
+              " *     \"_fileOrigin_uploaded\"",
+              " *   ],",
+              " *   \"labels\": [",
+              " *     \"mountain stream\",",
+              " *     \"clear stream\",",
+              " *     \"flowing water\",",
+              " *     \"mountain torrent\",",
+              " *     \"free-flowing\",",
+              " *     \"streams\",",
+              " *     \"running water\",",
+              " *     \"downstream\",",
+              " *     \"watercourse\",",
+              " *     \"stream\",",
+              " *     \"riverbed\",",
+              " *     \"freshwater\",",
+              " *     \"landscape photograph\",",
+              " *     \"motion blur\",",
+              " *     \"fresh water\",",
+              " *     \"river bank\",",
+              " *     \"torrent\",",
+              " *     \"flow into\",",
+              " *     \"landscape photography\",",
+              " *     \"natural scenery\"",
+              " *   ],",
+              " *   \"media\": {",
+              " *     \"image\": {",
+              " *       \"colors\": {",
+              " *         \"palette\": [",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 41,",
+              " *               \"g\": 41,",
+              " *               \"r\": 24",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 135,",
+              " *               \"g\": 105,",
+              " *               \"r\": 62",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 195,",
+              " *               \"g\": 154,",
+              " *               \"r\": 105",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 230,",
+              " *               \"g\": 190,",
+              " *               \"r\": 141",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 96,",
+              " *               \"g\": 77,",
+              " *               \"r\": 44",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 144,",
+              " *               \"g\": 135,",
+              " *               \"r\": 99",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 64,",
+              " *               \"g\": 106,",
+              " *               \"r\": 64",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 178,",
+              " *               \"g\": 131,",
+              " *               \"r\": 80",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 247,",
+              " *               \"g\": 230,",
+              " *               \"r\": 185",
+              " *             }",
+              " *           },",
+              " *           {",
+              " *             \"rgb\": {",
+              " *               \"b\": 75,",
+              " *               \"g\": 145,",
+              " *               \"r\": 97",
+              " *             }",
+              " *           }",
+              " *         ],",
+              " *         \"prominent\": {",
+              " *           \"rgb\": {",
+              " *             \"b\": 41,",
+              " *             \"g\": 41,",
+              " *             \"r\": 24",
+              " *           }",
+              " *         }",
+              " *       },",
+              " *       \"faces\": [],",
+              " *       \"image\": \"wix:image://v1/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg/river.jpg#originWidth=5760&originHeight=3840\"",
+              " *     }",
+              " *   },",
+              " *   \"mediaType\": \"IMAGE\",",
+              " *   \"operationStatus\": \"READY\",",
+              " *   \"parentFolderId\": \"b2bc72834460412494c93617d88b8c89\",",
+              " *   \"private\": false,",
+              " *   \"siteId\": \"3ecba886-4267-11ee-be56-0242ac120002\",",
+              " *   \"sizeInBytes\": \"3677628\",",
+              " *   \"state\": \"OK\",",
+              " *   \"thumbnailUrl\": \"https://static.wixstatic.com/media/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\",",
+              " *   \"url\": \"https://static.wixstatic.com/media/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\"",
+              " * }",
+              " */",
+              ""
+            ]
+          },
+          {
+            "title": "Update a file's display name and labels",
+            "body": [
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
@@ -3528,7 +4740,7 @@
               " * }",
               " */",
               "",
-              "async function myUpdateFileDescriptorFunction(id, file) {",
+              "export const myUpdateFileDescriptorFunction = webMethod(Permissions.Anyone, async (id, file) => {",
               "  try {",
               "    const elevatedUpdateFileDescriptor = elevate(files.updateFileDescriptor);",
               "    const updatedDescriptor = await elevatedUpdateFileDescriptor(id, file);",
@@ -3539,7 +4751,7 @@
               "    console.error(error);",
               "    // Handle the error",
               "  }",
-              "}",
+              "});",
               "",
               "/* Promise resolves to:",
               " * {",
@@ -3653,21 +4865,21 @@
               " *   \"thumbnailUrl\": \"https://static.wixstatic.com/media/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\",",
               " *   \"url\": \"https://static.wixstatic.com/media/d4dde1_0c8b26126ba94f3daee16d9e9be04f0c~mv2.jpg\"",
               " * }",
-              " */",
-              ""
+              " */"
             ]
           },
           {
             "title": "Update a file's display name from visitor input ",
             "body": [
-              "/**********************************",
-              " * Backend code - update-file.jsw *",
-              " *********************************/",
+              "/*************************************",
+              " * Backend code - update-file.web.js *",
+              " ************************************/",
               "",
+              "import { Permissions, webMethod } from 'wix-web-module';",
               "import { files } from 'wix-media.v2';",
               "import { elevate } from 'wix-auth';",
               "",
-              "export async function updateFile(fileId, file) {",
+              "export const updateFile = webMethod(Permissions.Anyone, async (fileId, file) => {",
               "  try {",
               "    const elevatedUpdateFileDescriptor = elevate(files.updateFileDescriptor);",
               "    const updatedDescriptor = await elevatedUpdateFileDescriptor(fileId, file);",
@@ -3676,9 +4888,9 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
-              "export async function listImages() {",
+              "export const listImages = webMethod(Permissions.Anyone, async () => {",
               "  const listOptions = {",
               "    mediaTypes: [\"IMAGE\"]",
               "  }",
@@ -3691,14 +4903,14 @@
               "  } catch (error) {",
               "    console.error(error);",
               "  }",
-              "}",
+              "});",
               "",
               "",
               "/*************",
               " * Page code *",
               " ************/",
               "",
-              "import { updateFile, listImages } from 'backend/update-file';",
+              "import { updateFile, listImages } from 'backend/update-file.web';",
               "",
               "$w.onReady(async () => {",
               "  await populateImagesDropdown();",
@@ -3726,8 +4938,7 @@
               "  });",
               "",
               "  $w('#imagesDropdown').options = dropdownOptions;",
-              "};",
-              ""
+              "};"
             ],
             "extra": {
               "description": "This code uses the visitor's input on the page to update the display name of an image which they choose from a dropdown list on the page."
@@ -3736,16 +4947,31 @@
         ]
       },
       "isVeloEvent": false,
-      "customLabels": [
-        {
-          "id": "maturity-beta"
-        }
-      ],
       "syntaxName": "updateFileDescriptor",
       "isAdminMethod": true
     }
   ],
   "messages": [
+    {
+      "name": "ActionEvent",
+      "members": [
+        {
+          "name": "bodyAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
     {
       "name": "ApplicationError",
       "members": [
@@ -4362,7 +5588,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Pointer to the next or previous page in the list of results.\n\nYou can get the relevant cursor token\nfrom the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
+          "doc": "Pointer to the next or previous page in the list of results.\n\nPass the relevant cursor token from the `pagingMetadata` object in the previous call's response.\nNot relevant for the first request.\n"
         },
         {
           "name": "limit",
@@ -4372,7 +5598,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Number of items to load."
+          "doc": "Maximum number of items to return in the results."
         }
       ],
       "docs": {
@@ -4392,7 +5618,200 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Cursor pointing to next page in the list of results."
+          "doc": "Cursor string pointing to the next page in the list of results."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEvent",
+      "members": [
+        {
+          "name": "_id",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Unique event ID.\nAllows clients to ignore duplicate webhooks."
+        },
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "entityEventSequence",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "A sequence number defining the order of updates to the underlying entity.\nFor example, given that some entity was updated at 16:00 and than again at 16:01,\nit is guaranteed that the sequence number of the second update is strictly higher than the first.\nAs the consumer, you can use this value to ensure that you handle messages in the correct order.\nTo do so, you will need to persist this number on your end, and compare the sequence number from the\nmessage against the one you have stored. Given that the stored number is higher, you should ignore the message."
+        },
+        {
+          "name": "entityFqdn",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Assumes actions are also always typed to an entity_type\nExample: wix.stores.catalog.product, wix.bookings.session, wix.payments.transaction"
+        },
+        {
+          "name": "entityId",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "ID of the entity associated with the event."
+        },
+        {
+          "name": "eventTime",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "Date"
+            }
+          ],
+          "doc": "Event timestamp."
+        },
+        {
+          "name": "originatedFrom",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "If present, indicates the action that triggered the event."
+        },
+        {
+          "name": "slug",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "This is top level to ease client code dispatching of messages (switch on entity_fqdn+slug)\nThis is although the created/updated/deleted notion is duplication of the oneof types\nExample: created/updated/deleted/started/completed/email_opened"
+        },
+        {
+          "name": "triggeredByAnonymizeRequest",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "boolean"
+            }
+          ],
+          "doc": "Whether the event was triggered as a result of a privacy regulation application\n(for example, GDPR)."
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "extra": {
+        "oneOfGroups": [
+          {
+            "name": "oneOfDomainEventBodyOneOf",
+            "members": [
+              "actionEvent",
+              "createdEvent",
+              "deletedEvent",
+              "updatedEvent"
+            ]
+          }
+        ]
+      },
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "DomainEventBodyOneOf",
+      "members": [
+        {
+          "name": "actionEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.ActionEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "createdEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityCreatedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "deletedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityDeletedEvent"
+            }
+          ],
+          "doc": ""
+        },
+        {
+          "name": "updatedEvent",
+          "optional": true,
+          "type": [
+            {
+              "referenceType": "wix-media-v2.Files.EntityUpdatedEvent"
+            }
+          ],
+          "doc": ""
         }
       ],
       "docs": {
@@ -4423,6 +5842,66 @@
             }
           ],
           "doc": "The file download URL."
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityCreatedEvent",
+      "members": [
+        {
+          "name": "entityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": ""
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityDeletedEvent",
+      "members": [
+        {
+          "name": "deletedEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Entity that was deleted"
+        }
+      ],
+      "docs": {
+        "description": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "EntityUpdatedEvent",
+      "members": [
+        {
+          "name": "currentEntityAsJson",
+          "optional": true,
+          "type": [
+            {
+              "nativeType": "string"
+            }
+          ],
+          "doc": "Since platformized APIs only expose PATCH and not PUT we can't assume that the fields sent from the client are the actual diff.\nThis means that to generate a list of changed fields (as opposed to sent fields) one needs to traverse both objects.\nWe don't want to impose this on all developers and so we leave this traversal to the notification recipients which need it."
         }
       ],
       "docs": {
@@ -6641,7 +8120,7 @@
               "nativeType": "number"
             }
           ],
-          "doc": "Total number of items that match the query."
+          "doc": "Total number of items that match the query. Returned if offset paging is used and the `tooManyToCount` flag is not set."
         }
       ],
       "docs": {
@@ -7254,7 +8733,7 @@
               "nativeType": "string"
             }
           ],
-          "doc": "Video format\nPossible values: ['144p.mp4' '144p.webm' '240p.mp4' '240p.webm' '360p.mp4' '360p.webm' '480p.mp4' '480p.webm'\n'720p.mp4' '720p.webm' '1080p.mp4' '1080p.webm' ]"
+          "doc": "Video format\nPossible values: ['144p.mp4' '144p.webm' '240p.mp4' '240p.webm' '360p.mp4' '360p.webm' '480p.mp4' '480p.webm'\n'720p.mp4' '720p.webm' '1080p.mp4' '1080p.webm', 'hls' ]"
         },
         {
           "name": "height",
