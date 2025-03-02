@@ -42,7 +42,7 @@ class MyCustomElement extends HTMLElement {
 // Page code to listen for the event
 $w.onReady(function () {
   $w("#myCustomElement").on("dataFromElement", (event) => {
-    let data = event.detail;
+    const data = event.detail;
     console.log("Data from custom element:", data);
   });
 });
