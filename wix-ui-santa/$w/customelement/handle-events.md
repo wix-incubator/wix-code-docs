@@ -1,4 +1,4 @@
-# Event handling and data exchange
+# Handle events and exchange data
 
 Your site can interact with a custom element by handling events, updating attributes, and exchanging data.
 
