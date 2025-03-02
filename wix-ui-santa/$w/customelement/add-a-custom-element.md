@@ -2,8 +2,6 @@
 
 [Custom elements](https://dev.wix.com/docs/develop-websites/articles/wix-editor-elements/custom-elements/about-custom-elements) allow you to create advanced web components that extend beyond the standard editor elements. You can add a custom element to your site, either hosted externally or by Wix. This article guides you through the process of adding a custom element to your site.
 
-> **Note:** Custom elements don't have a defined width. Instead, you define the width inside its class constructor. For example, `this.style.width = '726px';` sets the width to `'726 px'`.
-
 ## Wix-hosted custom element
 
 To add a Wix-hosted custom element to your site:
