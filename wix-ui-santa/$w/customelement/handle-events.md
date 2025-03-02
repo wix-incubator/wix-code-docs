@@ -11,7 +11,7 @@ Custom elements can respond to both internal and site events:
 * **Internal events (DOM Events)**: Events related to the lifecycle of the custom element, like when it's attached or detached from the DOM. To handle these events, use lifecycle methods like `connectedCallback()` and `attributeChangedCallback()`.
 * **Site events**: The `$w.onReady()` event notifies the custom element when the page is fully loaded. Then, you can listen for other page-specific events, like scrolling or mouse actions, and pass data to your custom element by updating its attributes.
 
-The following example shows how to pass data from your site to the custom element.
+The following example shows how to pass data from your site to the custom element. When the button `#myButton` is clicked, it updates the `customData` attribute of the custom element `#myCustomElement`. This data can then be accessed by the custom element via the `attributeChangedCallback()` method.
 
 ```javascript
 // Page code
