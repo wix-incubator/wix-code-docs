@@ -2,8 +2,13 @@
 
 > **Note:** This feature is only available to Wix Studio users.
 
-The `FastGallery` element uses a nested container hierarchy. You can use the classes listed below
-to style your fast gallery with CSS.
+The `FastGallery` element features a complex nested structure of components. You can use the custom classes listed below to style your fast gallery with CSS. 
+
+<div style="text-align:center">
+  
+  <img src="./fastGalleryCssClasses.png" style="max-width:55vw" />
+
+</div>
 
 For more information on styling your elements with CSS, see
 [Styling Elements with CSS]($w/styling-elements-with-css) and the
