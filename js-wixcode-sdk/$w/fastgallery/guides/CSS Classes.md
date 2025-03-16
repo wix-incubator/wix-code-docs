@@ -95,7 +95,7 @@ Targets the overlay on the same level as the media container.
 For example:
 
 ```css
-.fast-gallery__overlay:hover {
+.fast-gallery__overlay {
   background-color: rgba(244, 244, 191, 0.3);
   border-radius: 6px;
 }
@@ -115,7 +115,7 @@ For example:
 
 ## `.fast-gallery__info`
 
-Targets the info container nested in the content container. Info included 
+Targets the info container nested in the content container.
 For example:
 
 ```css
