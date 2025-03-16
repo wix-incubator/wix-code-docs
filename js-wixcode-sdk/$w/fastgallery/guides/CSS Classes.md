@@ -52,7 +52,7 @@ For example:
 
 ## `.fast-gallery__item`
 
-Targets the item containers nested in the fast gallery container.
+Targets the item containers nested in the fast gallery container. 
 For example:
 
 ```css
@@ -91,7 +91,7 @@ For example:
 
 ## `.fast-gallery__overlay`
 
-Targets the overlay of the media container.
+Targets the overlay on the same level as the media container.
 For example:
 
 ```css
@@ -115,7 +115,7 @@ For example:
 
 ## `.fast-gallery__info`
 
-Targets the info container nested in the content container.
+Targets the info container nested in the content container. Info included 
 For example:
 
 ```css
