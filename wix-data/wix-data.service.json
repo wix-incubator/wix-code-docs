@@ -33,8 +33,8 @@
           "",
           " + The Data API can be used in your site’s frontend or backend code.",
           " + The maximum size of an item that you can save to a collection is 500 kb.",
-          " + When using data retrieval methods such as `query()` or `get()` following a change to your database collection, the data retrieved may not yet contain ",
-          "   your most recent changes. See [Wix-data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.",
+          " + When using data retrieval methods such as `query()` or `get()` following a change to your database collection, the data retrieved may not yet contain your most recent changes. See [Wix Data and Eventual Consistency](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information.",
+          " + To speed up data retrieval, the results of certain data queries are cached. Learn more about [caching data query results](https://dev.wix.com/docs/develop-websites/articles/databases/wix-data/data-api/about-caching-data-query-results).",
           " + When querying [Wix App Collections](https://support.wix.com/en/article/content-manager-working-with-wix-app-collections), check which fields can be filtered in the relevant [collection field article](https://support.wix.com/en/search?term=velo%20collection%20fields).",
           " + When your site makes a data request, it may take some time to receive a response. Wix Data places limits on how long a response can take before the [request times out](https://dev.wix.com/docs/develop-websites/articles/databases/wix-data/data-api/working-with-wix-data#request-timeouts). If the response time exceeds this limit, Wix Data returns an error instead of the intended result. ",
           " + [Updating](https://dev.wix.com/docs/velo/api-reference/wix-data/update) a collection item replaces the existing database item. If the existing item had properties with values and those properties are not included in the updated item, ",
@@ -111,7 +111,24 @@
           "if you attempt to retrieve data shortly after updating it, your latest changes may not yet be reflected in the data you get back. For example, initially `wixData.get('Collection', 'x');` may resolve to",
           "`null` following `wixData.insert('Collection', { _id: 'x' });`.  ",
           "  ",
-          "If you need a data retrieval function to get fully up-to-date data immediately after an update, you can set the `consistentRead` property in the `options` parameter to `true`. ",
+          "If you need a data retrieval function to get fully up-to-date data immediately after an update, you can set the `consistentRead` property in the `options` parameter to `true`. For example:",
+          "",
+          "   ```javascript",
+          "   import wixData from 'wix-data';",
+          "   ",
+          "   let options = {",
+          "     \"consistentRead\": true",
+          "   };",
+          "     ",
+          "   wixData.get(\"myCollection\", \"00001\", options)",
+          "     .then((item) => {",
+          "       console.log(item);",
+          "     })",
+          "     .catch((err) => {",
+          "       console.log(err);",
+          "     });",
+          "   ```",
+          "",
           "This slows down the operation but ensures the data is retrieved from the up-to-date primary database instance.",
           "",
           "### Data Quotas",
@@ -135,7 +152,7 @@
           { "type": "wix-data.WixDataAggregate",
             "doc": "An aggregate object." },
         "locations":
-          [ { "lineno": 1052,
+          [ { "lineno": 1069,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates an aggregation.",
@@ -236,7 +253,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk insert.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 866,
+          [ { "lineno": 883,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Adds a number of items to a collection.",
@@ -505,7 +522,7 @@
                   [ "wix-data.WixDataBulkRemoveResult" ] },
             "doc": "Fulfilled - The results of the bulk remove.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 473,
+          [ { "lineno": 490,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes a number of items from a collection.",
@@ -619,7 +636,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk save.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 929,
+          [ { "lineno": 946,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts or updates a number of items in a collection.",
@@ -887,7 +904,7 @@
                   [ "wix-data.WixDataBulkResult" ] },
             "doc": "Fulfilled - The results of the bulk save.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 990,
+          [ { "lineno": 1007,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Updates a number of items in a collection.",
@@ -1090,7 +1107,7 @@
           { "type": "wix-data.WixDataFilter",
             "doc": "A filter object." },
         "locations":
-          [ { "lineno": 361,
+          [ { "lineno": 378,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates a filter to be used with datasets and aggregations.",
@@ -1138,7 +1155,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The retrieved item or null if not found.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 193,
+          [ { "lineno": 210,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Retrieves an item from a collection.",
@@ -1147,18 +1164,19 @@
                 " `itemId` from the specified collection, or null if the `itemId` is not found. The Promise is rejected if the",
                 " current user does not have read permissions for the collection.",
                 "",
-                " If the specified collection contains reference fields, the ID of the referenced item is returned. To return the values of the referenced items use [`query()`](wix-data/query) and [`include()`](wix-data/wixdataquery/include).",
+                " If the specified collection contains reference fields, the ID of the referenced item is returned. To return the values of the referenced items use [`query()`](https://dev.wix.com/docs/velo/api-reference/wix-data/query) and [`include()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/include).",
                 "",
                 " If the `get()` function is passed the ID of a hidden item, it returns `null`.",
                 "",
-                " Calling the `get()` function triggers the [`beforeGet()`](wix-data.Hooks.html#beforeGet)",
-                " and [`afterGet()`](wix-data.Hooks.html#afterGet) hooks if they have been defined.",
+                " Calling the `get()` function triggers the [`beforeGet()`](https://dev.wix.com/docs/velo/api-reference/wix-data/hooks/before-get)",
+                " and [`afterGet()`](https://dev.wix.com/docs/velo/api-reference/wix-data/hooks/after-get) hooks if they have been defined.",
                 "",
                 " Use the `options` parameter to run `get()` from backend code without",
                 " checking for permissions or without its registered hooks.",
                 "",
                 " > **Notes:**",
-                " > - When using the `query()` or `get()` functions or another data retrieval method following a change to your database collection, the data retrieved may not contain your most recent changes. See [Wix-data and Eventual Consistency](wix-data.html#wix-data-and-eventual-consistency) for more information. To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function to delay retrieving data following any changes to your database collection.",
+                " > - When using the `query()` or `get()` functions or another data retrieval method following a change to your database collection, the data retrieved may not contain your most recent changes. See [Wix Data and Eventual Consistency](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information. To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function to delay retrieving data following any changes to your database collection.",
+                " > - To speed up data retrieval, the results of certain data queries are cached. Learn more about [caching data query results](https://dev.wix.com/docs/develop-websites/articles/databases/wix-data/data-api/about-caching-data-query-results).",
                 " > - An `itemId` is required to retrieve an item even from a single-item collection." ],
             "links": [],
             "examples":
@@ -1248,7 +1266,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The item that was added.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 230,
+          [ { "lineno": 248,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Adds an item to a collection.",
@@ -1536,7 +1554,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been inserted.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 720,
+          [ { "lineno": 737,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts a reference in the specified property.",
@@ -1620,7 +1638,7 @@
                   [ "boolean" ] },
             "doc": "Fulfilled - Whether the referring item contains a reference to the referenced item or not.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 822,
+          [ { "lineno": 839,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Checks if a reference to the referenced item exists in the specified\n  property of the referring item.",
@@ -1666,23 +1684,23 @@
           { "type": "wix-data.WixDataQuery",
             "doc": "A query object." },
         "locations":
-          [ { "lineno": 292,
+          [ { "lineno": 310,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates a query for retrieving items from a database collection.",
             "description":
               [ "The `query()` function builds a query on the specified collection and returns",
-                " a [`WixDataQuery`](wix-data.WixDataQuery.html) object.",
+                " a [`WixDataQuery`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/introduction) object.",
                 "",
                 " The returned object contains the query definition which is typically used",
                 " to run the query using the [`find()`](wix-data.WixDataQuery.html#find)",
                 " function.",
                 "",
-                " You can refine the query by chaining [`WixDataQuery`](wix-data.WixDataQuery.html)",
+                " You can refine the query by chaining [`WixDataQuery`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/introduction)",
                 " functions onto the query. `WixDataQuery` functions enable you to sort,",
                 " filter, and control the results a query returns.",
                 "",
-                " The `query()` runs with the following [`WixDataQuery`](wix-data.WixDataQuery.html)",
+                " The `query()` runs with the following [`WixDataQuery`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/introduction)",
                 " defaults that you can override:",
                 "",
                 " + [`skip`](wix-data.WixDataQuery.html#skip): `0`",
@@ -1700,7 +1718,7 @@
                 " order, per age value.",
                 "",
                 "",
-                "If the collection that you are querying has references to other collections, by default, the data from referenced collections will not be retrieved. To get the data from the referenced items, you must either use the [`include()`](wix-data.WixDataQuery.html#include) chained function before `find()` or use the [`queryReferenced()`](wix-data.html#queryReferenced) function instead of `query()`.",
+                "If the collection that you are querying has references to other collections, by default, the data from referenced collections will not be retrieved. To get the data from the referenced items, you must either use the [`include()`](wix-data.WixDataQuery.html#include) chained function before `find()` or use the [`queryReferenced()`](https://dev.wix.com/docs/velo/api-reference/wix-data/query-referenced) function instead of `query()`.",
                 "",
                 "Items marked as hidden in the collection are not returned.",
                 "",
@@ -1712,10 +1730,9 @@
                 " + Read-only",
                 "Check [which fields](https://support.wix.com/en/search?term=velo%20collection%20fields) can be used in a query.",
                 "",
-                " > **Note:**",
-                " When using the `query()` or `get()` functions or another data retrieval method following a change to your database collection,",
-                "the data retrieved may not contain your most recent changes. See [Wix-data and Eventual Consistency](wix-data.html#wix-data-and-eventual-consistency) for more information. To solve this problem,",
-                "you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function to delay retrieving data following any changes to your database collection." ],
+                " > **Notes:**",
+                " > - When using the `query()` or `get()` functions or another data retrieval method following a change to your database collection, the data retrieved may not contain your most recent changes. See [Wix Data and Eventual Consistency]https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information. To solve this problem, you can use the [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#setTimeout) function to delay retrieving data following any changes to your database collection.",
+                "> - To speed up data retrieval, the results of certain data queries are cached. Learn more about [caching data query results](https://dev.wix.com/docs/develop-websites/articles/databases/wix-data/data-api/about-caching-data-query-results)." ],
             "links": [],
             "examples":
               [ { "title": "Build a query",
@@ -1935,7 +1952,7 @@
                   [ "wix-data.WixDataQueryReferencedResult" ] },
             "doc": "Fulfilled - The referenced items.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 670,
+          [ { "lineno": 687,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Gets the full items referenced in the specified property.",
@@ -1954,8 +1971,8 @@
                 " it returns the full actor information for all actors in the specified movie.",
                 "",
                 " The `queryReferenced()` function can be used instead of a standard [`query()`](#query)",
-                " with an [`include()`](wix-data.WixDataQuery.html#include) to overcome the",
-                " limitations of the [`include()`](wix-data.WixDataQuery.html#include) function.",
+                " with an [`include()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/include) to overcome the",
+                " limitations of the [`include()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/include) function.",
                 "",
                 " You can optionally control the order of the returned referenced items by",
                 " passing a `WixDataQueryReferencedOptions` object.",
@@ -1965,7 +1982,7 @@
                 "  > - You can only use the `queryReferenced()` function with [multiple-item reference fields](https://support.wix.com/en/article/about-referencing-multiple-items-in-one-field), and not with single-item (regular) reference fields.",
                 "  > - The `queryReferenced()` function is not supported for Single Item Collections.",
                 "",
-                " For a discussion of when to use the similar [`include()`](wix-data.WixDataQuery.html#include)",
+                " For a discussion of when to use the similar [`include()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/include)",
                 " function and when to use `queryReferenced()`, see [Querying Items that Reference Other Items](https://support.wix.com/en/article/including-referenced-data-when-filtering)." ],
             "links": [],
             "examples":
@@ -2061,7 +2078,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The removed item, or `null` if the item was not found.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 389,
+          [ { "lineno": 406,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes an item from a collection.",
@@ -2198,7 +2215,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been removed.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 789,
+          [ { "lineno": 806,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes a reference from the specified property.",
@@ -2286,7 +2303,7 @@
                   [ "void" ] },
             "doc": "Fulfilled - When the references have been inserted.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 755,
+          [ { "lineno": 772,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Replaces current references with references in the specified property.",
@@ -2358,7 +2375,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The item that was either inserted or updated, depending on whether it previously existed in the collection.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 513,
+          [ { "lineno": 530,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Inserts or updates an item in a collection.",
@@ -2594,7 +2611,7 @@
           { "type": "wix-data.WixDataSort",
             "doc": "A sort object." },
         "locations":
-          [ { "lineno": 375,
+          [ { "lineno": 392,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Creates a sort to be used with the dataset `setSort()` function.",
@@ -2639,7 +2656,7 @@
                   [ "null" ] },
             "doc": "Fulfilled - When the items have been removed.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 429,
+          [ { "lineno": 446,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Removes all items from a collection.",
@@ -2720,7 +2737,7 @@
                   [ "Object" ] },
             "doc": "Fulfilled - The object that was updated.\nRejected - The error that caused the rejection." },
         "locations":
-          [ { "lineno": 569,
+          [ { "lineno": 586,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "Updates an item in a collection.",
@@ -3025,7 +3042,7 @@
   "messages":
     [ { "name": "WixDataBulkRemoveResult",
         "locations":
-          [ { "lineno": 463,
+          [ { "lineno": 480,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object returned by the `bulkRemove()` function.",
@@ -3057,7 +3074,7 @@
         "labels": [] },
       { "name": "WixDataBulkResult",
         "locations":
-          [ { "lineno": 854,
+          [ { "lineno": 871,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object returned by Wix Data bulk operations.",
@@ -3161,7 +3178,7 @@
               "optional": true },
             { "name": "consistentRead",
               "type": "boolean",
-              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
+              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
               "optional": true } ],
         "extra":
           {  },
@@ -3228,7 +3245,7 @@
               "optional": true },
             { "name": "consistentRead",
               "type": "boolean",
-              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
+              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
               "optional": true },
             { "name": "omitTotalCount",
               "type": "boolean",
@@ -3247,12 +3264,12 @@
         "labels": [] },
       { "name": "WixDataQueryReferencedOptions",
         "locations":
-          [ { "lineno": 637,
+          [ { "lineno": 654,
               "filename": "data-api.js" } ],
         "docs":
           { "summary": "An object for controlling the order of returned referenced items.",
             "description":
-              [ "Pass a `WixDataQueryReferencedOptions` object when calling the [`queryReferenced`](#queryReferenced)",
+              [ "Pass a `WixDataQueryReferencedOptions` object when calling the [`queryReferenced`](https://dev.wix.com/docs/velo/api-reference/wix-data/query-referenced)",
                 " function to control the order of the returned referenced items.",
                 "",
                 " The object's `order` property can have the following values:",
@@ -3309,7 +3326,7 @@
               "optional": true },
             { "name": "consistentRead",
               "type": "boolean",
-              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://www.wix.com/velo/reference/wix-data/introduction#wix-data_introduction_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
+              "doc": "When `true`, reads data from the primary database instance.\nThis decreases performance but ensures data retrieved is up to date even immediately after an update.\nSee [Wix Data and Eventual Consistency](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction#api-reference_wix-data_wix-data-and-eventual-consistency) for more information.\n\nDefault: `false`",
               "optional": true },
             { "name": "omitTotalCount",
               "type": "boolean",
