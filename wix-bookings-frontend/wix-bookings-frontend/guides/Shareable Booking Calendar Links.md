@@ -95,7 +95,7 @@ https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/s
 
 #### Locations
 
-To find the ID for a business location, use [`listLocations()`](/wix-business-tools-v2/locations/listlocations) or [`queryLocations()`](/wix-business-tools-v2/locations/querylocations).
+To find the ID for a business location, use [`listLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/list-locations) or [`queryLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/query-locations).
 
 #### Existing bookings
 
