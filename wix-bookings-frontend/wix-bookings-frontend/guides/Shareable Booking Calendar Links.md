@@ -1,20 +1,20 @@
 # Shareable Bookings Calendar Links
 
-With booking calendar page [query parameters](#query-parameters), you can:
+With shareable booking calendar page links, you can:
 
 + Create a link to a Wix site's [booking calendar page](https://support.wix.com/en/article/wix-bookings-customizing-your-calendar-page) with preset values you choose.
 + Create a link for rescheduling a specific existing booking.
 
-## Introduction 
+## Introduction
 
 When a site visitor navigates to make a booking on a Wix site, they are taken to a booking calendar page.
-Here they select their preferences for the date and time of their booking.
+Here, they select their preferences for the date and time of their booking.
 Depending on the site's settings, they may also be able to select a time zone, and filter by location and staff member.
 
 When the booking calendar page opens, the calendar typically appears with a default date, time, and time zone based on the site's settings.
 No location or staff member filters are selected.
 
-With query parameters, you can create and share a direct link to a booking calendar page with customized pre-filled default values of your choice.
+With [query parameters](#query-parameters), you can create and share a direct link to a booking calendar page with customized pre-filled default values of your choice.
 A site visitor who visits the page via your custom link can still change their selections, but the values you define appear as default choices.
 
 Using query parameters, you can select default values for these fields:
@@ -34,10 +34,10 @@ To create your customized shareable link, follow these steps:
 2. Determine which [query parameters](#query-parameters) you want to use.
 3. Find the values you need for the query parameters. For a resource or location, or to reschedule an existing booking, read more about [finding IDs](#finding-ids).
 
-### Booking calendar page URL 
+### Booking calendar page URL
 
-The booking calendar page is the page where a Wix site visitor selects details for an appointment or class and requests a booking.
-Query parameters are added at the end of the URL for this page.
+The booking calendar page is the page where a site visitor selects details for an appointment or class and requests a booking.
+You can add query parameters at the end of the URL for this page.
 
 You can find the full URL for a Wix site's booking calendar page by navigating to the page in a browser and looking in the address bar.
 
@@ -50,7 +50,7 @@ https://<SITE_URL>/booking-calendar/<SERVICE_SLUG>
 
 To find the service slug using the site dashboard, follow these steps:
 
-1. Log into the site dashboard.
+1. Log into the site's dashboard.
 2. Click "Booking Services" in the sidebar menu.
 3. Hover over the desired service in the list of services to make the "Edit" button appear, then click the "Edit" button. This opens the page for managing the service.
 4. Scroll down to the "Marketing & SEO" section on the right, then click "Edit SEO Settings". This opens the "SEO Settings" section.
@@ -62,9 +62,9 @@ For example, if a Wix site's URL is `www.my-example-site.com` and the service sl
 https://www.my-example-site.com/booking-calendar/initial-consultation
 ```
 
-### Query parameters 
+### Query parameters
 
-Attach any of the following query parameters to a Wix site booking calendar page URL to preset customized default settings of your choice:
+Attach any of the following query parameters to a booking calendar page URL to preset customized default settings of your choice:
 
 | Query Parameter | Description |
 | --------------- | ----------- |
@@ -74,15 +74,15 @@ Attach any of the following query parameters to a Wix site booking calendar page
 | `location`     | One or more business locations, identified by ID. Use commas to separate multiple location IDs.|
 | `bookingId`    | ID of an existing booking to reschedule. **Note:** The site member who booked the original session needs to be logged in.|
 
-### Finding IDs 
+### Finding IDs
 
-To set customized default resources (staff members) or locations, or to reschedule an existing booking, you need to obtain the relevant IDs. You can do this as follows:
+To set customized default resources (like a staff member) or locations, or to reschedule an existing booking, you need to obtain the relevant IDs. You can do this as follows:
 
 #### Resources
 
 To find the ID for a resource using the site dashboard, follow these steps:
 
-1. Log into the site dashboard.
+1. Log into the site's dashboard.
 2. Click "Booking Calendar" in the sidebar menu, then click "Staff" in the submenu that opens.
 3. Hover over the desired resource in the list of resources to make the "Edit" button appear, then click on the "Edit" button. This opens the page for editing the resource's details.
 4. Once you are on the resource's page, you can find their ID in the page URL in the address bar of the browser, after `/bookings/staff/details/`
@@ -95,15 +95,18 @@ https://manage.wix.com/dashboard/034bf758-3afd-4fae-877e-44508f1a003a/bookings/s
 
 #### Locations
 
-To find the ID for a business location, use [`listLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/list-locations) or [`queryLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/query-locations).
+To find the ID for a business location, call listLocations()
+([SDK](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/list-locations) | [Velo](https://dev.wix.com/docs/velo/apis/wix-business-tools-v2/locations/list-locations))
+or queryLocations() ([SDK](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/query-locations) | [Velo](https://dev.wix.com/docs/velo/apis/wix-business-tools-v2/locations/query-locations)).
 
 #### Existing bookings
 
-To find an existing booking's ID, use [`queryBookings()`](https://dev.wix.com/docs/velo/apis/wix-bookings-backend/bookings/query-bookings).
+To find an existing booking ID, call queryExtendedBookings()
+([SDK](https://dev.wix.com/docs/sdk/backend-modules/bookings/extended-bookings/query-extended-bookings) | [Velo](https://dev.wix.com/docs/velo/apis/wix-bookings-v2/extended-bookings/query-extended-bookings)).
 
-## Examples 
+## Examples
 
-The following are examples of shareable links for a Wix site's booking calendar page with query parameters that set customized default values.
+The following are examples of shareable links for a site's booking calendar page with query parameters set to customized default values.
 
 Preset date:
 
@@ -134,4 +137,3 @@ Booking ID to reschedule an existing booking, with preset date and locations:
 ```url
 www.your-site.com/booking-calendar/your-service?bookingId=27f1ca08-81fc-4e27-b245-989eea19fd24&date=2023-07-11&location=70a4f77e-cd37-455f-bb1d-ce1f0a55dd2b,9bb4326f-7446-4451-a4f4-bf154f1848c5
 ```
-
