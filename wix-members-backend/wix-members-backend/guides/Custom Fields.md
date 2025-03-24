@@ -63,7 +63,7 @@ export async function listCustomFieldKeys() {
 
 You can set the value of a custom field for a new site member in the `contactInfo` object
 using the [`authentication.register()`](/authentication/register) function.
-Use a key:value pair in the top level level of the `contactInfo` object, like this:
+Use a key:value pair in the top level of the `contactInfo` object, like this:
 
 ```js
 {options:
