@@ -41,7 +41,7 @@ viewing <strong>CSS Classes</strong> in your code panel:
 
 ![CSS Classes in code panel](../../../media/css_classes_code_panel.png "CSS Classes in code panel")
 
-Or add your own classes in the custom classes field. For more information, see [CustomClasslist](/custom-class-list/introduction).
+You can also add your own classes in the custom classes field. Custom classes are added to the root of the component.
 
 For reference, here is a list of global classes:
 - [Accordion]($w/accordion/css-classes)
@@ -81,7 +81,7 @@ For reference, here is a list of global classes:
 - [Repeater]($w/repeater/css-classes)
 - [Rich text box](/rich-text-box/css-classes)
 - [Search bar](#search-bar-classes)
-- [Section]($w/section/css-classes)
+- [Section](https://dev.wix.com/docs/velo/api-reference/$w/section/css-classes)
 - [Selection tags](/selection-tags/css-classes)
 - [Signature input](/signature-input/css-classes)
 - [Slideshow]($w/slideshow/css-classes)

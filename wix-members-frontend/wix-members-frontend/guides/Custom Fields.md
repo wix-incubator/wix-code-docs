@@ -4,7 +4,7 @@ Member profiles can contain custom data,
 located in the member object at `contactDetails.customFields`.
 The member object is returned when calling these functions:
 
-- [`currentMember.getMember()`](/current-member/get-member)
+- [`currentMember.getMember()`](https://dev.wix.com/docs/sdk/frontend-modules/members/current-member/get-member)
 - [`members.getMember()`](/members/get-member)
 - [`members.updateMember()`](/members/update-member)
 
@@ -14,7 +14,7 @@ Custom fields that haven't been added to the member profile
 aren't available through the Members API.
 When retrieving members, empty fields are not returned.
 You can query, create, rename, and delete custom field definitions with the Contacts
-[Extended Fields API](/contacts/about-extended-fields).
+[Extended Fields API](https://dev.wix.com/docs/sdk/backend-modules/crm/extended-fields/introduction).
 
 ## Data structure
 
@@ -63,7 +63,7 @@ export async function listCustomFieldKeys() {
 
 You can set the value of a custom field for a new site member in the `contactInfo`
 object using the [`authentication.register()`](/authentication/register) function.
-Use a key:value pair in the top level level of the `contactInfo` object, like this:
+Use a key:value pair in the top level of the `contactInfo` object, like this:
 
 ```js
 {options:
