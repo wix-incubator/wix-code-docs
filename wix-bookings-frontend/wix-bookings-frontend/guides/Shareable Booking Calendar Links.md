@@ -99,7 +99,7 @@ To find the ID for a business location, use [`listLocations()`](https://dev.wix.
 
 #### Existing bookings
 
-To find an existing booking's ID, use [`queryBookings()`](/wix-bookings-backend/bookings/querybookings).
+To find an existing booking's ID, use [`queryBookings()`](https://dev.wix.com/docs/velo/apis/wix-bookings-backend/bookings/query-bookings).
 
 ## Examples 
 
