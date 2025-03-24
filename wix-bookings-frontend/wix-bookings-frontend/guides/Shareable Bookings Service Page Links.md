@@ -19,8 +19,8 @@ To send a shareable Bookings service page link:
    dashboard by following
    [these steps](#how-to-get-the-bookings-service-page-url-from-your-dashboard).
 1. Retrieve the ID of the locations you want to preselect by using either
-   [`listLocations()`](/wix-business-tools-v2/locations/listlocations) or
-   [`queryLocations()`](/wix-business-tools-v2/locations/querylocations).
+   [`listLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/list-locations) or
+   [`queryLocations()`](https://dev.wix.com/docs/sdk/backend-modules/business-tools/locations/query-locations).
 1. Combine `<SITE_URL>`, `<SERVICE_SLUG>`, and `<LOCATION_ID>` to create the
    shareable link using the following format. If you want to preselect multiple
    locations, make sure to separate the IDs with commas.
