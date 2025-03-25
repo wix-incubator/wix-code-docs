@@ -1,16 +1,13 @@
-<!-- This article was published using the Doc Push single-sourcing tool. Any changes to this article MUST be made in the source file. Find it at www.github.com/wix-private/velo-docs.-->
-
-
-
 # Schema for Wix Search
 
+This article describes the Wix Booking fields you can
+search ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/search)),
+sort ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/wix-search-builder/ascending)),
+filter ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/filter)),
+and apply facets ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/wix-search-builder/facets))
+to when using the wix-search API ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/introduction)).
 
-
-
-
-This article describes the Wix Booking fields you can [search](https://www.wix.com/velo/reference/wix-search.html#search), [sort](https://www.wix.com/velo/reference/wix-search.WixSearchBuilder.html#ascending), [filter](https://www.wix.com/velo/reference/wix-search.html#filter), and [apply facets](https://www.wix.com/velo/reference/wix-search.WixSearchBuilder.html#facets) to when using the [wix-search API](https://www.wix.com/velo/reference/wix-search.html).
-
-To search Wix Booking services on your site, set the search document type as `"Bookings/Services"`:
+To search Wix Booking services on the site, set the search document type as `"Bookings/Services"`:
 
 ```javascript
 wixSearch.search(phrase)
@@ -24,7 +21,7 @@ wixSearch.search(phrase)
 > **Notes**
 > The Bookings fields supported by wix-search are not identical to the fields in your site's [Bookings/Services collection](https://support.wix.com/en/article/velo-wix-bookings-services-collection-fields).
 
-The following fields appear in each matching search result [document](https://www.wix.com/velo/reference/wix-search.WixSearchResult.html#documents) when searching Wix Booking services:
+The following fields appear in each matching search result document ([Velo](https://dev.wix.com/docs/velo/apis/wix-search/wix-search-result/documents)) when searching Wix Booking services:
 
 #### documentType 
 
