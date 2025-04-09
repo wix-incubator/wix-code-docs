@@ -4,22 +4,22 @@ Member profiles can contain custom data,
 located in the member object at `contactDetails.customFields`.
 The member object is returned when calling these functions:
 
-- [`currentMember.getMember()`](/current-member/get-member)
-- [`members.getMember()`](/members/get-member)
-- [`members.updateMember()`](/members/update-member)
+- `currentMember.getMember()`
+- `members.getMember()`
+- `members.updateMember()`
 
 The Members API works with [custom fields](https://support.wix.com/en/article/adding-custom-fields-to-contacts) that are
 [added to the member profile in the Dashboard](https://www.wix.com/my-account/site-selector/?buttonText=Select%20Site&title=Select%20a%20Site&autoSelectOnSingleSite=true&actionUrl=https:%2F%2Fwww.wix.com%2Fdashboard%2F%7B%7BmetaSiteId%7D%7D%2Fmembers-account).
 Custom fields that haven't been added to the member profile
 aren't available through the Members API.
 When retrieving members, empty fields are not returned.
-You can query, create, rename, and delete custom field definitions with the Contacts
-[Extended Fields API](/contacts/about-extended-fields).
+You can query, create, rename, and delete custom field definitions with the 
+Extended Fields API ([SDK](https://dev.wix.com/docs/sdk/backend-modules/crm/extended-fields/introduction) | [Velo](https://dev.wix.com/docs/velo/apis/wix-crm-v2/extended-fields/introduction)).
 
 ## Data structure
 
 The member's `customFields` object contains key:object pairs.
-The key is defined in the Contacts Extended Fields API.
+The key is defined in the Extended Fields API ([SDK](https://dev.wix.com/docs/sdk/backend-modules/crm/extended-fields/introduction) | [Velo](https://dev.wix.com/docs/velo/apis/wix-crm-v2/extended-fields/introduction)).
 The paired object is structured as follows:
 
 ```js
@@ -45,8 +45,21 @@ The paired object contains these properties:
 
 ## Retrieve custom field IDs
 
-For a list of your site's custom field IDs, use this function in your backend code:
+For a list of your site's custom field IDs, use this function in your backend code.
+**SDK:**
+```js
+import { extendedFields } from "@wix/crm";
 
+export async function listCustomFieldKeys() {
+  const queryResults = await queryExtendedFields().find();
+  // Filters for custom fields (where fieldType is USER_DEFINED), then converts to an array of keys
+  return queryResults.items
+    .filter((field) => field.fieldType === "USER_DEFINED")
+    .map((field) => field.key);
+}
+```
+
+**Velo:**
 ```js
 import { contacts } from "wix-crm-backend";
 
@@ -62,7 +75,7 @@ export async function listCustomFieldKeys() {
 ## Set a custom field for a new site member
 
 You can set the value of a custom field for a new site member in the `contactInfo` object
-using the [`authentication.register()`](/authentication/register) function.
+using the `authentication.register()` function.
 Use a key:value pair in the top level of the `contactInfo` object, like this:
 
 ```js
