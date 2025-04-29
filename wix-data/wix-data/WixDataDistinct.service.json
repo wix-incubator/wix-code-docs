@@ -2,30 +2,61 @@
   "memberOf": "wix-data",
   "mixes":
     [ "wix-data.WixDataFilter" ],
-  "labels": [],
+  "labels":
+    [ "changed" ],
   "location":
     { "lineno": 1,
       "filename": "distinct.js" },
   "docs":
     { "summary": "Provides functionality for refining a distinct data query.",
       "description":
-        [ "The `WixDataDistinct` methods allow you to run, sort, filter, and control the results of a distinct query.",
+        [ "The `WixDataDistinct` methods allow you to refine a distinct query before it runs, as well as sort and limit its results.",
           "",
-          "When you run a query with the [`distinct()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/distinct) method, the query only returns distinct items. For example, the following code queries a collection for customers over the age of 20 and logs their last names in ascending order, without duplicates:",
+          "To refine the distinct query, chain  `WixDataDistinct` methods to it in the [`beforeDistinct()`](https://dev.wix.com/docs/velo/events-service-plugins/data/hooks/wix-data-hooks/before-distinct) hook. The hook runs before the distinct query does, and is triggered when you call the [`distinct()`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/distinct) method on a [`WixDataQuery`](https://dev.wix.com/docs/velo/api-reference/wix-data/wix-data-query/introduction) object.",
+          "",
+          "",
+          "For example, the following hook refines the distinct query by adding an age requirement, and then sorts the results in ascending order:",
           "",
           "",
           " ```javascript",
-          " import wixData from 'wix-data';",
+          "// In site backend code",
           "",
-          " wixData.query(\"customers\")",
-          "   .gt(\"age\", 20)",
-          "   .distinct(\"lastName\")",
-          "   .then((results) => {",
-          "     console.log(results.items);",
-          "   });",
+          "import wixData from \"wix-data\";",
+          "",
+          "wixData",
+          "  .query(\"customers\")",
+          "  .distinct(\"lastName\") // Triggers the beforeDistinct() hook",
+          "  .then((results) => {",
+          "    if (results.items.length > 0) {",
+          "      let items = results.items;",
+          "    } else {",
+          "      // handle case where no matching items found",
+          "    }",
+          "  })",
+          "  .catch((error) => {",
+          "    let errorMsg = error.message;",
+          "    let code = error.code;",
+          "  });",
+          "",
+          "",
+          "// In data.js",
+          "",
+          "export function myCollection_beforeDistinct(distinct, context) {",
+          " // Get the current filter",
+          " const currentFilter = distinct.getFilter();",
+          "",
+          " // Add an age requirement",
+          " const updatedFilter = currentFilter.ge(\"age\", 18);",
+          "",
+          " // Set the updated filter and sort the results",
+          " const updatedDistinctQuery = distinct.filter(updatedFilter)",
+          "   .ascending();",
+          "",
+          " return updatedDistinctQuery;",
+          "}",
           " ```",
           "",
-          " You can then further refine the distinct query by calling `WixDataDistinct` methods in the [`beforeDistinct()`](https://dev.wix.com/docs/velo/events-service-plugins/data/hooks/wix-data-hooks/before-distinct) hook." ],
+          " You can further refine the distinct query by chaining additional `WixDataDistinct` methods." ],
       "links": [],
       "examples": [],
       "extra":
@@ -40,7 +71,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "The distinct query object." },
         "locations":
-          [ { "lineno": 92,
+          [ { "lineno": 122,
               "filename": "distinct.js" },
             { "lineno": 10,
               "filename": "sortMixin.js" } ],
@@ -69,7 +100,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "The distinct query object." },
         "locations":
-          [ { "lineno": 116,
+          [ { "lineno": 146,
               "filename": "distinct.js" },
             { "lineno": 41,
               "filename": "sortMixin.js" } ],
@@ -101,7 +132,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "The distinct query object." },
         "locations":
-          [ { "lineno": 41,
+          [ { "lineno": 71,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Sets the filter used to refine the distinct query.",
@@ -128,7 +159,7 @@
           { "type": "wix-data.WixDataFilter",
             "doc": "The filter used to refine the distinct query." },
         "locations":
-          [ { "lineno": 29,
+          [ { "lineno": 59,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Returns the filter used to refine the distinct query.",
@@ -155,7 +186,7 @@
           { "type": "string",
             "doc": "The property used to define the distinct query." },
         "locations":
-          [ { "lineno": 54,
+          [ { "lineno": 84,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Returns the name of the property used to define the distinct query.",
@@ -182,7 +213,7 @@
           { "type": "boolean",
             "doc": "Whether the results of the distinct query are sorted in ascending order." },
         "locations":
-          [ { "lineno": 80,
+          [ { "lineno": 110,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Whether the results of the distinct query are sorted in ascending order.",
@@ -209,7 +240,7 @@
           { "type": "boolean",
             "doc": "Whether the results of the distinct query are sorted in descending order." },
         "locations":
-          [ { "lineno": 104,
+          [ { "lineno": 134,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Whether the results of the distinct query are sorted in descending order.",
@@ -239,7 +270,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "A [`WixDataDistinct`](https://dev.wix.com/docs/velo/apis/wix-data/wix-data-distinct/introduction) object representing the refined distinct query." },
         "locations":
-          [ { "lineno": 128,
+          [ { "lineno": 158,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Limits the number of items the distinct query returns.",
@@ -275,7 +306,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "The distinct query object." },
         "locations":
-          [ { "lineno": 66,
+          [ { "lineno": 96,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Sets the property name by which to return distinct values.",
@@ -305,7 +336,7 @@
           { "type": "wix-data.WixDataDistinct",
             "doc": "A `WixDataDistinct` object representing the refined query." },
         "locations":
-          [ { "lineno": 146,
+          [ { "lineno": 176,
               "filename": "distinct.js" } ],
         "docs":
           { "summary": "Sets the number of items to skip before returning distinct query results.",
