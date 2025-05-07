@@ -1,0 +1,4 @@
+# Migrate from WixFormSubmitEvent to WixFormsV2
+As of April 2025, [WixFormSubmitEvent](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-form-submit-event/wix-form-fields) is deprecated and any new forms created will only work with [WixFormsV2](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/introduction). You can access the functionality of WixFormSubmitEvent using [`onSubmit()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/on-submit) in [WixFormsV2](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/introduction).
+
+Old forms will only work with the old APIs, WixForms, WixFormSubmitEvent, WixFormSubmittedErrorEvent, and WixFormSubmittedEvent. You can see which forms are old forms and which are new forms by looking at the forms and submissions page in a site dashboard, there's a tab for each. There is no easy way to distinguish in the editor, except that their menus are different.
