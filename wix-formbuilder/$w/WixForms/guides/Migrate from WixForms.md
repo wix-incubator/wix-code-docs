@@ -11,7 +11,6 @@ Instead of `collapsed` from [`WixForms`](https://dev.wix.com/docs/velo/velo-only
 ### [`hidden`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/hidden)
 Instead of `hidden` from [`WixForms`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/hidden), use [`hidden`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/hidden) from `WixFormsV2`.
 
-
 ### [`isVisible`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/is-visible)
 Instead of `isVisible` from [`WixForms`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/is-visible), use [`isVisible`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/is-visible) from `WixFormsV2`.
 
@@ -29,7 +28,6 @@ Instead of calling `collapse()` from [`WixForms`](https://dev.wix.com/docs/velo/
 
 ### [`expand()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/expand)
 Instead of calling `expand()` from [`WixForms`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/expand) to expand an element and sets its `collapsed` property to `false`, use [`expand()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/expand) from `WixFormsV2`.
-
 
 ### [`hide()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/hide)
 Instead of calling `hide()` from [`WixForms`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms/hide) to hide an element and sets its `hidden` property to `true`, use [`hide()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/wix-forms-v2/hide) from `WixFormsV2`.
