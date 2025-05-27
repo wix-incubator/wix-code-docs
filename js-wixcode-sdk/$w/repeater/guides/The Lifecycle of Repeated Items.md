@@ -41,7 +41,7 @@ The following sections explain how items are created, updated, and removed throu
 
 ## Create new items
 
-When you first add a repeater to your page, each repeated item uses the design and default values from the repeater's [item template](https://NewRepeatedItemTemplatePlaceHolder). When you set the repeater's `data` property in your code and add items, `onItemReady()` runs for each new item and updates its elements with the specific data you provide, overriding the template values.
+When you first add a repeater to your page, each repeated item uses the design and default values from the repeater's [item template](./Repeated%20Item%20Template.md). When you set the repeater's `data` property in your code and add items, `onItemReady()` runs for each new item and updates its elements with the specific data you provide, overriding the template values.
 
 
 ## Update existing items
