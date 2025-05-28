@@ -30,7 +30,6 @@ For example, a simple array of repeater data may look like this:
 
 The repeater doesn't automatically display data in the elements inside each repeated item. You control how to display data in those elements by using the `onItemReady()`, `onItemRemoved()`, `forItems()`, and `forEachItem()` callback functions.
 
-For more information on these functions, see the [API Reference](https://www.wix.com/velo/reference/$w.Repeater.html).
 
 ## You can work with repeaters in the following IDEs:
 * IDE in the editor
