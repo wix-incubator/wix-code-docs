@@ -1,13 +1,13 @@
 ---
 articleType: concept
 ---
-# Repeaters: The Lifecycle of Repeated Items
+# The Lifecycle of Repeated Items
 
 
 
-When you work with a repeater in code, it's important to understand how the items in the repeater are created, updated, and deleted. First, you need to know how each repeated item relates to the data that drives it.
+When you work with a [repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/introduction) in code, it's important to understand how the items in the repeater are created, updated, and deleted. First, you need to understand how a repeater's items connect to its data. 
 
-A repeater's data is stored as an array of objects, which you get or set using the repeater’s `data` property. Each object in this array must have a unique `_id` property that links the object to a specific repeated item in the repeater. The `_id` value can include only alphanumeric characters and hyphens (`-`). Besides `_id`, each object in the data array can include any other properties you need.
+A repeater's data is stored as an array of objects, which you get or set using the repeater's `data` property. Each object in this array must have a unique `_id` property that links the object to a specific repeated item in the repeater. The `_id` value can include only alphanumeric characters and hyphens (`-`). Besides `_id`, each object in the data array can include any other properties you need.
 
 For example, a simple array of repeater data may look like this:
 
@@ -28,11 +28,11 @@ For example, a simple array of repeater data may look like this:
 ]
 ```
 
-The repeater doesn't automatically bind data to the elements inside each repeated item. You control how to display data in those elements by using the `onItemReady()`, `onItemRemoved()`, `forItems()`, and `forEachItem()` callback functions.
+The repeater doesn't automatically display data in the elements inside each repeated item. You control how to display data in those elements by using the `onItemReady()`, `onItemRemoved()`, `forItems()`, and `forEachItem()` callback functions.
 
 For more information on these functions, see the [API Reference](https://www.wix.com/velo/reference/$w.Repeater.html).
 
-## Supported IDEs
+## You can work with repeaters in the following IDEs:
 * IDE in the editor
 * Wix IDE
 * Local IDE
@@ -41,7 +41,7 @@ The following sections explain how items are created, updated, and removed throu
 
 ## Create new items
 
-When you first add a repeater to your page, each repeated item uses the design and default values from the repeater's [item template](./Repeated%20Item%20Template.md). When you set the repeater's `data` property in your code and add items, `onItemReady()` runs for each new item and updates its elements with the specific data you provide, overriding the template values.
+When you first add a repeater to your page, each repeated item uses the design and default values from the repeater's [item template](./Repeated%20Item%20Template.md). When you set the repeater's `data` property in your code `onItemReady()` runs for any new item and updates its elements with the specific data you provide, overriding the template values.
 
 
 ## Update existing items
@@ -53,9 +53,9 @@ When you update a repeater's `data` property, repeated items with IDs that alrea
 
 When you set a repeater's `data` property, the repeater removes any repeated items whose IDs are no longer in the data array. For each removed item, the `onItemRemoved()` event handler runs.
 
-### Example
+## Example
 
-To demonstrate the full lifecycle of repeated items, consider the following simplified example. 
+To demonstrate the full lifecycle of repeated items, consider the following simplified example of a page with a repeater.
 
 <div style="text-align:center">
 
@@ -63,17 +63,17 @@ To demonstrate the full lifecycle of repeated items, consider the following simp
 
 </div>
 
-The example has the following page elements:
+The page has the following elements:
 
 *   Three buttons:
-    *   The **Add** button adds more items to the repeater.
-    *   The **Remove** button removes the added items from the repeater.
-    *   The **Update** button updates the first item in the repeater.
+    *   The **Add** button, which adds more items to the repeater.
+    *   The **Remove** button, which removes the added items from the repeater.
+    *   The **Update** button, which updates the first item in the repeater.
 *   A repeater where each repeated item in the repeater contains 2 text elements:
-    *   The text element on the left shows the item's ID.
-    *   The text element on the right shows the item's content.
+    *   The text element on the left, which shows the item's ID.
+    *   The text element on the right, which shows the item's content.
 
-The example has the code shown below that:
+The page has the following code:
 
 *   Defines two static arrays of data that you will use for the repeater.
 *   An `onReady()` function that:
@@ -125,28 +125,7 @@ $w.onReady(function () {
   } );
 } );
 ```
-## Retrieve repeater item data when clicked
- 
-Each repeated item in a repeater has a [`Container`](https://www.wix.com/velo/reference/$w.Container.html) element that holds all of its repeated elements. To retrieve the data associated with a specific repeated item when you click it, create an `onClick` event handler for the item's `Container`. Depending on how you populate the repeater with data, you either use the connected dataset or the repeater's `data` array to retrieve the clicked item's data in the event handler.
- 
- For a repeater populated by connecting it to a dataset:
- 
-  ```javascript
-  $w.onReady( function () {
-    $w("#repeatedContainer").onClick( (event) => {
-      let $item = $w.at(event.context);
-     let clickedItemData = $item("#myDataset").getCurrentItem();
-   } );
-  } );
-  ```
- 
- For a repeater populated by setting its [`data`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/data) property:
- 
-  ```javascript
-  $w.onReady( function () {
-    $w("#repeatedContainer").onClick( (event) => {
-      const data = $w("#myRepeater").data;
-      let clickedItemData = data.find(item => item._id === event.context.itemId);
-    } );
-  } );
-  ```
+
+    ## See also
+
+    - To learn more about connecting data to repeaters, see [Repeated Item Template](./Repeated%20Item%20Template.md).

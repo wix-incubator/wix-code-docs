@@ -1,12 +1,12 @@
 # Repeaters: Repeated Item Template
 
+Each repeater has an item template which defines the elements and initial data used when the repeater displays new items.
+The initial state of the template is based on the last repeated item shown in the Editor. In your code, you can set or get properties, or call functions on the template's elements by selection them with [`$w()`]($w.html#w-find-this-link), the [global scope](#global-scope-new-link-soon) selector function.
 
-  Each repeater has an item template that contains the elements and initial data
-  that are used when new items are created. The template's initial state is the
-  state of the first repeated item that appears in the Editor. Using code, you
-  can set the properties of, get the properties of, or call functions on the
-  elements of the item template by selecting the elements using
-  [`$w()`]($w.html#w-find-this-link), the [global scope](#global-scope-new-link-soon) selector function.
+  ## Supported IDEs
+* IDE in the editor
+* Wix IDE
+* Local IDE
 
   ## Example
 
