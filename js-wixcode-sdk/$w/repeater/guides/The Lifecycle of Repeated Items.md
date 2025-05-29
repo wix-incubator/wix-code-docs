@@ -61,6 +61,7 @@ $w.onReady(function () {
    $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
 });
+});
 ```
 
 
@@ -85,15 +86,15 @@ $w.onReady(function () {
   });
 });
 
-  data[0].name = "Alicia"; // Changed from Alice to Alicia
+data[0].name = "Alicia"; // Changed from Alice to Alicia
 
   // Reassigning the data array alone will NOT update the repeated items:
-  $w("#myRepeater").data = data; // No visible change
+$w("#myRepeater").data = data; // No visible change
 
   // To update the display, use forEachItem to manually refresh each element:
-  $w("#myRepeater").forEachItem(($item, itemData, index) => {
-    $item("#nameText").text = itemData.name; // This will now show "Alicia"
-  });
+$w("#myRepeater").forEachItem(($item, itemData, index) => {
+$item("#nameText").text = itemData.name; // This will now show "Alicia"
+});
 ```
 
 ## Remove items
