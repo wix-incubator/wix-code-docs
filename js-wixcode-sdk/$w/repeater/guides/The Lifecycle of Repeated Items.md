@@ -26,7 +26,7 @@ const data = [
 $w.onReady(function () {
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
-});
+  });
 
   $w('#myRepeater').data = data;
 });
@@ -43,16 +43,26 @@ To display your own data, set the repeater's `data` property to an array of obje
 Set a repeater with initial data. When the `addButton` is clicked, add another item to the repeater.
 
 ```javascript
+const data = [
+  { _id: "1", name: "Item 1" },
+  { _id: "2", name: "Item 2" }
+];
 $w.onReady(function () {
-  let counter = 0; 
+  let counter = data.length; 
+
+  $w('#myRepeater').onItemReady(($item, itemData) => {
+    $item('#nameText').text = itemData.name;
+  });
+
+  $w('#myRepeater').data = data;
 
   $w('#addButton').onClick(() => {
-    // Get current data from the repeater
-    let data = $w('#myRepeater').data;
-    // Add a new item with a unique _id and label
-    const newItem = { _id: String(counter), name: `Item ${counter}` };
     counter++;
-    $w('#myRepeater').data = [...data, newItem];
+
+    const repeaterData = $w('#myRepeater').data;
+    const newItem = { _id: String(counter), name: `Item ${counter}` };
+    $w('#myRepeater').data = [...repeaterData, newItem];
+
   });
 });
 ```
@@ -69,25 +79,26 @@ To ensure that changes to your data are populated into the repeated elements, us
 Set a repeater with initial data. When the `updateButton` is clicked, update an item in the repeater.
 
 ```javascript
+const data = [
+  { _id: "1", name: "Item 1" },
+  { _id: "2", name: "Item 2" }
+];
+
 $w.onReady(function () {
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
   });
-});
 
-$w('#updateButton').onClick(() => {
-  // Get the current data from the repeater
-  let data = $w('#myRepeater').data;
+  $w("#myRepeater").data = data;
 
-  // Update the first item's name
-  data[0].name = "Item -1"; // Changed from "Alice" to "Item -1"
+  $w('#updateButton').onClick(() => {
+    const repeaterData = $w('#myRepeater').data;
+    repeaterData[0].name = "Item 3";
+    $w("#myRepeater").data = repeaterData;
 
-  // Reassigning the data array alone will NOT update the repeated items:
-  $w("#myRepeater").data = data; // No visible change
-
-  // To update the display, use forEachItem to manually refresh each element:
-  $w("#myRepeater").forEachItem(($item, itemData, index) => {
-    $item("#nameText").text = itemData.name;
+    $w("#myRepeater").forEachItem(($item, itemData) => {
+      $item("#nameText").text = itemData.name;
+    });
   });
 });
 ```
@@ -102,26 +113,32 @@ As each item is removed, the `onItemRemoved()` event handler runs and the di
 
 ### Example 
 
-Set a repeater with initial data. When the `removeButton` is clicked, remove the item from the repeater. 
+Set a repeater with initial data. When the `removeButton` is clicked, remove the last item from the repeater. 
 
 ```javascript
-$w.onReady(function () {
-  let data = $w('#myRepeater').data;
+const data = [
+  { _id: "1", name: "Item 1" },
+  { _id: "2", name: "Item 2" },
+  { _id: "3", name: "Item 3" }
+];
 
+$w.onReady(function () {
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
   });
-});
-$w('#removeButton').onClick(() => {
-  data = data.filter(item => parseInt(item._id, 10) % 2 !== 0); //remove items with even-numbered IDs
+
   $w("#myRepeater").data = data;
+
+  $w('#removeButton').onClick(() => {
+    const repeaterData = $w("#myRepeater").data;
+    const filteredData = repeaterData.slice(0, -1);
+    $w("#myRepeater").data = filteredData;
+  });
+
+  $w("#myRepeater").onItemRemoved((itemData) => {
+    console.log(`Removed: ${itemData.name}`);
+  });
 });
-
-$w("#myRepeater").onItemRemoved((itemData) => {
-  console.log(`Removed: ${itemData.name}`);
-});
-
-
 ```
 
   ## See also
