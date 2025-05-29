@@ -10,22 +10,25 @@ When you work with a [repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/
 
 A repeater's data is an array of objects, which you get or set using the repeater's `data` property. Each object in this array must have a unique `_id` property that links the object to a specific repeated item in the repeater. The `_id` value can include only alphanumeric characters and hyphens (`-`). Besides `_id`, each object in the data array can include any other properties you need.
 
-The repeater doesn't automatically connect data in the elements inside each repeated item. You control how to connect data in those elements by using the `onItemReady()`, `onItemRemoved()`, `forItems()`, and `forEachItem()` callback functions.
+The repeater doesn't automatically populate it's data into the elements inside each repeated item. You control how to populate the data into those elements by using the `onItemReady()`, `onItemRemoved()`, `forItems()`, and `forEachItem()` callback functions.
 
 
-### Example:
+### Example
+
+Connect 2 items to a repeater.
 
 ```javascript
 const data = [
-  { _id: "1", name: "Alice" },
-  { _id: "2", name: "Bob" }
+  { _id: "1", name: "Item 1" },
+  { _id: "2", name: "Item 2" }
 ];
 
 $w.onReady(function () {
-  $w('#myRepeater').data = data;
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
-  });
+});
+
+  $w('#myRepeater').data = data;
 });
 ```
 
@@ -33,67 +36,59 @@ $w.onReady(function () {
 
 When you first add a repeater to your page, it displays repeated items using the design and default values from its [item template](https://github.com/wix-incubator/wix-code-docs/pull/3381/Repeated%20Item%20Template.md). At this stage, no custom data is shown.
 
-To display your own data, set the repeater’s `data` property to an array of objects, each with a unique `_id`. When you do this, the repeater creates new items for each object in the array.
+To display your own data, set the repeater's `data` property to an array of objects, each with a unique `_id`. When you do this, the repeater creates new items for each object in the array.
 
-As each new item is created, the `onItemReady()` event handler runs. This is where you write code to update the elements inside each repeated item with the specific data you want to display, replacing the template's default values.
+### Example
 
-### Example:
+Set a repeater with initial data. When the `addButton` is clicked, add another item to the repeater.
 
 ```javascript
-let data = [
-  { _id: "1", name: "Alice" },
-  { _id: "2", name: "Bob" },
-];
-
 $w.onReady(function () {
-  $w('#myRepeater').data = data;
-  $w('#myRepeater').onItemReady(($item, itemData) => {
-    $item('#nameText').text = itemData.name;
-  });
+  let counter = 0; 
 
-  // Example: Add a new item when a button is clicked
   $w('#addButton').onClick(() => {
-    // Create a new item with a unique _id
-    const newItem = { _id: "3", name: "John" };
-    data = [...data, newItem]; // Add the new item to the array
-    $w('#myRepeater').data = data; // Update the repeater with the new data
+    // Get current data from the repeater
+    let data = $w('#myRepeater').data;
+    // Add a new item with a unique _id and label
+    const newItem = { _id: String(counter), name: `Item ${counter}` };
+    counter++;
+    $w('#myRepeater').data = [...data, newItem];
   });
-   $w('#myRepeater').onItemReady(($item, itemData) => {
-    $item('#nameText').text = itemData.name;
-});
 });
 ```
 
 
 ## Update existing items
 
-When you update a repeater's `data` property, repeated items with the same _id values as before won't automatically display updated property values. Simply reassigning the `data` property doesn't refresh what's shown for those items.
+When you update a repeater's `data` property, repeated items with the same `_id` values as before won't automatically populate the updated values into the elements of each repeated item. Simply reassigning the `data` property doesn't refresh what's shown for those items if the `_id` values don't change.
 
-To ensure that any changes in your data are reflected in the UI, use the repeater's `forEachItem()` or `forItems()` functions. These functions update the elements inside each repeated item, so that the displayed content always matches the latest data in your array.
-### Example:
+To ensure that changes to your data are populated into the repeated elements, use the repeater's `forEachItem()` or `forItems()` methods. You can use these methods to update the elements inside each repeated item, so that the displayed content always matches the latest data in your array.
+
+### Example
+
+Set a repeater with initial data. When the `updateButton` is clicked, update an item in the repeater.
 
 ```javascript
-const data = [
-  { _id: "1", name: "Alice" },
-  { _id: "2", name: "Bob" },
-  {_id: "3", name: "John"}
-];
-
 $w.onReady(function () {
-  $w('#myRepeater').data = data;
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
   });
 });
 
-data[0].name = "Alicia"; // Changed from Alice to Alicia
+$w('#updateButton').onClick(() => {
+  // Get the current data from the repeater
+  let data = $w('#myRepeater').data;
+
+  // Update the first item's name
+  data[0].name = "Item -1"; // Changed from "Alice" to "Item -1"
 
   // Reassigning the data array alone will NOT update the repeated items:
-$w("#myRepeater").data = data; // No visible change
+  $w("#myRepeater").data = data; // No visible change
 
   // To update the display, use forEachItem to manually refresh each element:
-$w("#myRepeater").forEachItem(($item, itemData, index) => {
-$item("#nameText").text = itemData.name; // This will now show "Alicia"
+  $w("#myRepeater").forEachItem(($item, itemData, index) => {
+    $item("#nameText").text = itemData.name;
+  });
 });
 ```
 
@@ -105,26 +100,28 @@ The repeater then checks which repeated items are represented in the new data ar
 
 As each item is removed, the `onItemRemoved()` event handler runs and the display reflects the repeater without those items.
 
-```javascript
-const data = [
-  { _id: "1", name: "Alice" },
-  { _id: "2", name: "Bob" },
-  {_id: "3", name: "John"}
-];
+### Example 
 
+Set a repeater with initial data. When the `removeButton` is clicked, remove the item from the repeater. 
+
+```javascript
 $w.onReady(function () {
-  $w('#myRepeater').data = data;
+  let data = $w('#myRepeater').data;
+
   $w('#myRepeater').onItemReady(($item, itemData) => {
     $item('#nameText').text = itemData.name;
   });
 });
-// Remove the item with _id "2"
-data = data.filter(item => item._id !== "2");
-$w("#myRepeater").data = data; // The item for "Bob" is removed
+$w('#removeButton').onClick(() => {
+  data = data.filter(item => parseInt(item._id, 10) % 2 !== 0); //remove items with even-numbered IDs
+  $w("#myRepeater").data = data;
+});
 
 $w("#myRepeater").onItemRemoved((itemData) => {
-  console.log(`Removed: ${itemData.name}`); // Runs for "Bob"
+  console.log(`Removed: ${itemData.name}`);
 });
+
+
 ```
 
   ## See also
