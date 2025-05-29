@@ -2,9 +2,7 @@
 
 ## Repeated item template
 
-Each repeater has an item template that defines the elements and initial data used to populate new items.
-
-The template’s initial state matches the last repeated item that appears in the Editor.
+Each repeater has an item template that defines the elements and initial data used to populate new items. The template’s initial state matches the last repeated item that appears in the Editor.
 
 By default, new repeated items use the values from the item template. You can override these values by connecting the repeater to a dataset or by using the `onItemReady()` event handler.
 
