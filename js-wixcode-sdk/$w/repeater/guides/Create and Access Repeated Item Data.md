@@ -1,4 +1,6 @@
-# Repeated Item 
+# Create and Access Repeated Item Data
+
+A repeater displays multiple items, each with the same structure and design but different data. Every repeated item contains the same set of elements such as text, images, or buttons, all arranged the same way. However, the content of those elements can vary for each item.
 
 ## Repeated item template
 
@@ -6,7 +8,7 @@ Each repeater has an item template that defines the elements and initial data us
 
 By default, new repeated items use the values from the item template. You can override these values by connecting the repeater to a dataset or by using the `onItemReady()` event handler.
 
-In your code, use the [`$w()`]($w.html#w-find-this-link) [global scope](#global-scope-new-link-soon) selector function to select template elements. This allows you to get or set their properties, or call functions on the template elements.
+In your code, use the [`$w()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/introduction) [global scope](./Selector%20Scope.md#global-scope) selector function to select template elements. This allows you to get or set their properties, or call functions on the template elements.
 
 ## Retrieve repeater item data when clicked
  
@@ -35,4 +37,4 @@ Each repeated item in a repeater has a [`Container`](https://www.wix.com/velo/re
   ```
 
 ## See also
-[Learn more about scope](#comingsoon)
+[Learn more about scope](./Selector%20Scope.md)

@@ -23,13 +23,13 @@ const data = [
   { _id: "2", name: "Item 2" }
 ];
 
-$w.onReady(function () {
-  $w('#myRepeater').onItemReady(($item, itemData) => {
-    $item('#nameText').text = itemData.name;
-  });
+  $w.onReady(function () {
+    $w('#myRepeater').onItemReady(($item, itemData) => {
+      $item('#nameText').text = itemData.name;
+    });
 
-  $w('#myRepeater').data = data;
-});
+    $w('#myRepeater').data = data;
+  });
 ```
 
 ## Create new items
