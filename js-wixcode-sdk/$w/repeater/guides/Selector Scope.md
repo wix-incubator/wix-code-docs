@@ -1,8 +1,8 @@
 # Selector Scope
 
-Selector functions are used to select specific page elements so you can work with them in code. Depending on which selector you use, you are able to select elements from the different scopes described below.
+Selector methods are used to select specific page elements so you can work with them in code. Depending on which selector you use, you are able to select elements from the different scopes described below.
  
-There are two types of selector functions:
+There are two types of selector methods:
  
 + [Global Scope Selectors](#global-scope)
 + [Repeated Item Scope Selectors](#repeated-item-scope)
@@ -10,8 +10,7 @@ There are two types of selector functions:
  
 ## Global Scope
  
-The [`$w()`]($w.html#w) function that is available to your Page
-and Site code selects elements in the global scope.
+The [`$w()`]($w.html#w) method that selects elements in the global scope.
  
 A selector with global scope can be used to select any element that is not contained in a repeater. You can also use it to select an element that is contained in a repeater, but it's important to understand what that selection means.
  
@@ -21,7 +20,7 @@ For example, here `templateText` is the `text` value of the `myRepeatedText` ele
  
 ```javascript
    $w.onReady( function () {
-    let templateText = $w("#myRepeatedText").text;
+     let templateText = $w("#myRepeatedText").text;
    } );
    ```
  
@@ -30,7 +29,7 @@ When you select an element contained in a repeater from the global scope and you
  
 For example, here the item template is changed so that `"New Text"` is the `text` value of the `myRepeatedText` element. Also, all existing repeated items have the `text` value of their `myRepeatedText` element set to `"New Text"`.
  
-```javascript
+    ```javascript
    $w.onReady( function () {
      $w("#myRepeatedText").text = "New Text";
    } );

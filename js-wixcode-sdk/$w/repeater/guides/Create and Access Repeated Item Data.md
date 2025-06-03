@@ -6,7 +6,7 @@ A repeater displays multiple items, each with the same structure and design but 
 
 Each repeater has an item template that defines the elements and initial data used to populate new items. The template’s initial state matches the last repeated item that appears in the Editor.
 
-By default, new repeated items use the values from the item template. You can override these values by connecting the repeater to a dataset or by using the `onItemReady()` event handler.
+By default, new repeated items use the values from the item template. You can override these values by connecting a repeater to a dataset or by using the `onItemReady()` event handler.
 
 In your code, use the [`$w()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/introduction) [global scope](./Selector%20Scope.md#global-scope) selector function to select template elements. This allows you to get or set their properties, or call functions on the template elements.
 
@@ -16,13 +16,13 @@ Each repeated item in a repeater has a [`Container`](https://www.wix.com/velo/re
  
  For a repeater populated by connecting it to a dataset:
  
-  ```javascript
+```javascript
   $w.onReady( function () {
     $w("#repeatedContainer").onClick( (event) => {
-      let $item = $w.at(event.context);
-     let clickedItemData = $item("#myDataset").getCurrentItem();
-   } );
-  } );
+      const $item = $w.at(event.context);
+      const clickedItemData = $item("#myDataset").getCurrentItem();
+    });
+  });
   ```
  
  For a repeater populated by setting its [`data`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/data) property:
@@ -31,10 +31,10 @@ Each repeated item in a repeater has a [`Container`](https://www.wix.com/velo/re
   $w.onReady( function () {
     $w("#repeatedContainer").onClick( (event) => {
       const data = $w("#myRepeater").data;
-      let clickedItemData = data.find(item => item._id === event.context.itemId);
+      const clickedItemData = data.find(item => item._id === event.context.itemId);
     } );
   } );
   ```
 
 ## See also
-[Learn more about scope](./Selector%20Scope.md)
+[Read more about selector scope](./Selector%20Scope.md)
