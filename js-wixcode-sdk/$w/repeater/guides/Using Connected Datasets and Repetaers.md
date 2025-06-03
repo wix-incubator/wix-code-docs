@@ -4,7 +4,7 @@
 
 Sometimes you will need to connect a repeater and its elements to two datasets, one of which is filtered by the other. If you then want to control the datasets with code, you need to understand how the datasets behave when selected from different [scopes](https://support.wix.com/en/article/understanding-the-scope-of-w-selectors).
 
-For example, suppose you have some collections related to music. One collection stores information about bands and another collection stores information about songs. You can create a repeater which has an item for each band. The band items could also list all the songs related to each band. 
+For example, suppose you have some collections related to music. One collection stores information about bands and another collection stores information about songs. You can create a repeater which has an item for each band. The band items could also list all the songs related to each band.
 
 <div style="text-align:center">
 
