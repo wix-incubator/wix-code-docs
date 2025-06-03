@@ -4,7 +4,7 @@ Selector methods are used to select specific page elements so you can work with 
  
 There are two types of selector methods:
  
-+ [Global Scope Selectors](#global-scope)
++ [Global Scope Selectors](#global-scope)x
 + [Repeated Item Scope Selectors](#repeated-item-scope)
  
  
@@ -24,7 +24,7 @@ For example, here `templateText` is the `text` value of the `myRepeatedText` ele
    } );
    ```
  
-When you select an element contained in a repeater from the global scope and you set the value of one of the element's properties or call one of the element's functions, the value is set or the function is called on the repeater's [item template](#repeated-item-template) and all repeated instances of that element.
+When you select an element contained in a repeater from the global scope and you set the value of one of the element's properties or call one of the element's methods, the value is set or the method is called on the repeater's [item template](#repeated-item-template) and all repeated instances of that element.
  
  
 For example, here the item template is changed so that `"New Text"` is the `text` value of the `myRepeatedText` element. Also, all existing repeated items have the `text` value of their `myRepeatedText` element set to `"New Text"`.
@@ -77,4 +77,4 @@ And here, when each item is ready, the value of a text element is set to a value
 You can also use a selector with repeated item scope to select non-repeating elements from the global scope. However, you can't change a repeater's [item template](#repeated-item-template) using a selector with repeated item scope.
  
 You can restrict a selector with repeated item scope to only select
-elements from the current repeated items and their descendants, but not elements from the global scope by adding `.scoped()` to the selector so the function call looks like `$item.scoped("#idToSelect")`.
+elements from the current repeated items and their descendants, but not elements from the global scope by adding `.scoped()` to the selector so the method call looks like `$item.scoped("#idToSelect")`.
