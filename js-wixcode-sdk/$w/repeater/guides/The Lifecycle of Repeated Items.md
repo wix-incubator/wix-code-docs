@@ -34,7 +34,7 @@ const data = [
 
 ## Create new items
 
-When you first add a repeater to your page, it displays repeated items using the design and default values from its [item template](https://github.com/wix-incubator/wix-code-docs/pull/3381/Repeated%20Item%20Template.md). At this stage, no custom data is shown.
+When you first add a repeater to your page, it displays repeated items using the design and default values from its [item template](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data). At this stage, no custom data is shown.
 
 To display your own data, set the repeater's `data` property to an array of objects, each with a unique `_id`. When you do this, the repeater creates new items for each object in the array.
 
@@ -143,4 +143,4 @@ $w.onReady(function () {
 
   ## See also
 
-- To learn more about connecting data to repeaters, see [Repeated Item Template](./Repeated%20Item%20Template.md).
+- To learn more about connecting data to repeaters, see [Create and Access Repeated Item Data](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data).
