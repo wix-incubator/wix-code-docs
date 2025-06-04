@@ -6,7 +6,7 @@ A repeater displays multiple items, each with the same structure and design but 
 
 Each repeater has an item template that defines the elements and initial data used to populate new items. The template's initial state matches the last repeated item that appears in the editor.
 
-To edit default values of elements in the item template, use the [`$w()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/introduction) [global scope](./Selector%20Scope.md#global-scope) selector method to select template elements. This allows you to get or set their properties, or call methods on the template elements which determines the initial appearance and content for all repeated items. If you want each repeated item to display different data, you can override these default values by connecting the repeater to a dataset or by using the `onItemReady()` event handler to set properties for each item individually.
+To edit default values of elements in the item template, use the [`$w()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/introduction) [global scope](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated_item_scope) selector method to select template elements. This allows you to get or set their properties, or call methods on the template elements which determines the initial appearance and content for all repeated items. If you want each repeated item to display different data, you can override these default values by connecting the repeater to a dataset or by using the `onItemReady()` event handler to set properties for each item individually.
 
 ## Retrieve repeater item data when clicked
  

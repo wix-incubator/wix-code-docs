@@ -34,7 +34,7 @@ const data = [
 
 ## Create new items
 
-When you first add a repeater to your page, it displays repeated items using the design and default values from its [item template](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data). At this stage, no custom data is shown.
+When you first add a repeater to your page, it displays repeated items using the design and default values from its [item template](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data#velo-only-apis_$w_repeater_repeated_item_template). At this stage, no custom data is shown.
 
 To display your own data, set the repeater's `data` property to an array of objects, each with a unique `_id`. When you do this, the repeater creates new items for each object in the array.
 
