@@ -57,8 +57,8 @@ For example, here when the `myRepeatedImage` element is clicked, the value of a 
 ```javascript
 $w.onReady(function () {
   $w("#myRepeatedImage").onClick( (event) => {
-  let $item = $w.at(event.context);
-  $item("#myRepeatedText").text = "Selected";
+    let $item = $w.at(event.context);
+    $item("#myRepeatedText").text = "Selected";
   });
 });
 ```

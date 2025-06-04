@@ -25,7 +25,7 @@ $w.onReady(function () {
  
 For a repeater populated by setting its [`data`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/data) property:
  
-```javascript
+ ```javascript
 $w.onReady(function () {
   $w("#repeatedContainer").onClick( (event) => {
     const data = $w("#myRepeater").data;
