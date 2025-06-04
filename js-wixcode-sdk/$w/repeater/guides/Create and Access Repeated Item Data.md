@@ -12,27 +12,27 @@ To edit default values of elements in the item template, use the [`$w()`](https:
  
 Each repeated item in a repeater has a [`Container`](https://www.wix.com/velo/reference/$w.Container.html) element that holds all of its repeated elements. To retrieve the data associated with a specific repeated item when you click it, create an `onClick` event handler for the item's `Container`. Depending on how you populate the repeater with data, you either use the connected dataset or the repeater's `data` array to retrieve the clicked item's data in the event handler.
  
- For a repeater populated by connecting it to a dataset:
+For a repeater populated by connecting it to a dataset:
+ 
+ ```javascript
+$w.onReady(function () {
+  $w("#repeatedContainer").onClick( (event) => {
+    const $item = $w.at(event.context);
+    const clickedItemData = $item("#myDataset").getCurrentItem();
+  });
+});
+```
+ 
+For a repeater populated by setting its [`data`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/data) property:
  
 ```javascript
-  $w.onReady(function () {
-    $w("#repeatedContainer").onClick( (event) => {
-      const $item = $w.at(event.context);
-      const clickedItemData = $item("#myDataset").getCurrentItem();
-    });
+$w.onReady(function () {
+  $w("#repeatedContainer").onClick( (event) => {
+    const data = $w("#myRepeater").data;
+    const clickedItemData = data.find(item => item._id === event.context.itemId);
   });
-  ```
- 
- For a repeater populated by setting its [`data`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/data) property:
- 
-  ```javascript
-  $w.onReady(function () {
-    $w("#repeatedContainer").onClick( (event) => {
-      const data = $w("#myRepeater").data;
-      const clickedItemData = data.find(item => item._id === event.context.itemId);
-    } );
-  } );
-  ```
+});
+```
 
 ## See also
-[Read more about selector scope](./Selector%20Scope.md)
+[Read more about selector scope](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope)
