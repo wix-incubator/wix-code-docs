@@ -39,7 +39,7 @@ If your Songs collection contains a regular field that matches a field in the Ba
 
 ### Use connected datasets with code
 
-Before discussing each individual case, it is important to understand what is happening behind the scenes when you connect the datasets mentioned above to the elements in a repeater's items. Even though there is only one **Bands dataset** and one **Songs dataset**, you want those datasets to contain different items, depending on the context in which they are being used. 
+Before discussing each individual case, it's important to understand what's happening behind the scenes when you connect the datasets mentioned above to the elements in a repeater's items. Even though there is only one **Bands dataset** and one **Songs dataset**, you want those datasets to contain different items, depending on the context in which they're being used. 
 
 For example, above you connected a table which appears in each of the repeater's items to the **Songs dataset**. You don't want all of the songs in the **Songs** collection to appear in each repeater item. Instead, you only want to display the songs relevant to a particular item's band. 
 
@@ -54,7 +54,7 @@ The following are individual cases of how to use the types of datasets mentioned
 
 #### Use the filtered dataset inside the repeater
 
-When you select a dataset that is filtered using one of the methods mentioned above from a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated_item_scope), you are selecting a virtual dataset. That virtual dataset only contains the items that relate to the current item in the dataset it's connected to via a filter. It also only controls elements that are connected to it in the current repeater item.
+When you select a dataset that's filtered using one of the methods mentioned above from a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated_item_scope), you are selecting a virtual dataset. That virtual dataset only contains the items that relate to the current item in the dataset it's connected to via a filter. It also only controls elements that are connected to it in the current repeater item.
 
 For example, in each repeater item you only see the songs that are related to that item's band. If you want to let users sort that list of songs, you could use the dataset `setSort()` function. In the repeater shown above, what looks like the table header is actually a group of three buttons. Each of those buttons has an `onClick` event handler that sorts the songs table based on a field.
 
