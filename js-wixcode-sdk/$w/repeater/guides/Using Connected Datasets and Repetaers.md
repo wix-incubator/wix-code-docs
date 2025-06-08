@@ -59,24 +59,24 @@ When you select a dataset that is filtered using one of the methods mentioned ab
 For example, in each repeater item you only see the songs that are related to that item's band. If you want to let users sort that list of songs, you could use the dataset `setSort()` function. In the repeater shown above, what looks like the table header is actually a group of three buttons. Each of those buttons has an `onClick` event handler that sorts the songs table based on a field.
 
 ```javascript
-import wixData from 'wix-data';
+import { items } from '@wix/data';
 
-$w.onReady( () => {
-  $w("titleSort").onClick( (event) => {
-    let $item = $w.at(event.context);
-    $item("#songsDataset").setSort(wixData.sort().ascending("title"));
-  } );
-    
-  $w("lengthSort").onClick( (event) => {
-    let $item = $w.at(event.context);
-    $item("#songsDataset").setSort(wixData.sort().ascending("length"));
-  } );
-    
-  $w("albumSort").onClick( (event) => {
-    let $item = $w.at(event.context);
-    $item("#songsDataset").setSort(wixData.sort().ascending("album"));
-  } );
-} );
+$w.onReady(() => {
+  $w("#titleSort").onClick(async () => {
+    const result = await items.query('songsDataset').ascending('title').find();
+    $w("#myRepeater").data = result.items;
+  });
+
+  $w("#lengthSort").onClick(async () => {
+    const result = await items.query('songsDataset').ascending('length').find();
+    $w("#myRepeater").data = result.items;
+  });
+
+  $w("#albumSort").onClick(async () => {
+    const result = await items.query('songsDataset').ascending('album').find();
+    $w("#myRepeater").data = result.items;
+  });
+});
 ```
 
 Since the Songs dataset is selected using a repeated item scope selector, the sort is applied to a virtual dataset. So when a user clicks a button to sort the songs in one of the items the songs in all the other items are not affected. Note that you don't have to write the sorting code for each virtual dataset. You write the code only once and it is applied to the correct item automatically. 
