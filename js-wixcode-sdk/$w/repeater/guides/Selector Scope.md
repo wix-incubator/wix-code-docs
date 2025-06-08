@@ -4,8 +4,8 @@ Selector methods are used to select specific page elements so you can work with 
  
 There are two types of selector methods:
  
-+ [Global scope selectors](#global-scope)
-+ [Repeated item scope selectors](#repeated-item-scope)
++ [Global scope selectors](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global-scope)
++ [Repeated item scope selectors](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated-item-scope)
  
  
 ## Global Scope
