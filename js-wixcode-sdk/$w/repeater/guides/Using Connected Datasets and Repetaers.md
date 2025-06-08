@@ -5,7 +5,7 @@
 Sometimes you need to connect a repeater and its elements to 2 datasets, 1 of which is filtered by the other. If you then want to control the datasets with code, you need to understand how the datasets behave when selected from different [scopes](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope).
 
 
-![Band Repeater Example](./images/bandImage.png)
+![Band Repeater Example](images/bandImage.png)
 
 </div>
 
@@ -25,7 +25,7 @@ If your Songs collection contains a reference field that refers to items in the 
 
 <div style="text-align:center">
 
-![song data](./images/songData.png)
+![song data](images/songData.png)
 
 </div>
 
@@ -33,7 +33,7 @@ If your Songs collection contains a regular field that matches a field in the Ba
 
 <div style="text-align:center">
 
-![song band](./images/songBand.png)
+![song band](images/songBand.png)
 
 </div>
 
