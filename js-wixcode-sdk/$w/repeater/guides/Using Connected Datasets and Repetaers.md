@@ -79,11 +79,11 @@ $w.onReady(() => {
 });
 ```
 
-Since the Songs dataset is selected using a repeated item scope selector, the sort is applied to a virtual dataset. So when a user clicks a button to sort the songs in one of the items the songs in all the other items are not affected. Note that you don't have to write the sorting code for each virtual dataset. You write the code only once and it is applied to the correct item automatically. 
+Since the Songs dataset is selected using a repeated item scope selector, the sort is applied to a virtual dataset. So when a user clicks a button to sort the songs in one of the items the songs in all the other items aren't affected. Note that you don't have to write the sorting code for each virtual dataset. You write the code only once and it's applied to the correct item automatically. 
 
 #### Use the filtered dataset outside the repeater
 
-When you select a dataset that is filtered using one of the methods above from a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global_scope), you are selecting a regular dataset. That regular dataset only controls the elements connected to it that are not contained in repeater items. The elements inside repeater items are not affected even though they are connected to the same dataset.
+When you select a dataset that's filtered using one of the methods above from a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global_scope), you are selecting a regular dataset. That regular dataset only controls the elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
 
 For example, let's say you had a button outside the repeater shown above. If you called the dataset `setSort()` function in the button's `onClick` event handler nothing would happen to any of the songs tables in the repeater's items. If there was a table outside of the repeater connected to the dataset, its items would be sorted.
 
@@ -95,23 +95,26 @@ For example, each item in the repeater shown above has its own virtual **Bands d
 
 #### Use the unfiltered dataset outside the repeater
 
-When you select the dataset which the repeater itself is connected to using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global_scope), you are selecting a regular dataset. That regular dataset controls the number and order of the repeater items and any elements connected to it that aren't contained in repeater items. The elements inside repeater items are not affected even though they are connected to the same dataset.
+When you select the dataset which the repeater itself is connected to using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global_scope), you are selecting a regular dataset. That regular dataset controls the number and order of the repeater items and any elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
 
 For example, let's say you had a button outside the repeater shown above. You could use it to sort the items in the repeater by calling the dataset `setSort()` function in the button's `onClick` event handler. Nothing would happen to any of the elements inside the repeated items, but the items themselves would be sorted.
 
 ```javascript
-import wixData from 'wix-data';
+import { items } from '@wix/data';
 
-$w.onReady( () => {
-  $w("repeaterSort").onClick( (event) => {
-    if(event.target.label === "A-Z"){
-      $w("#bandsDataset").setSort(wixData.sort().ascending("name"));
-      event.target.label = "Z-A";
+$w.onReady(() => {
+  $w('#repeaterSort').onClick(async (event) => {
+    let sortOrder;
+    if (event.target.label === 'A-Z') {
+      sortOrder = 'ascending';
+      event.target.label = 'Z-A';
+    } else {
+      sortOrder = 'descending';
+      event.target.label = 'A-Z';
     }
-    else {
-      $w("#bandsDataset").setSort(wixData.sort().descending("name"));
-      event.target.label = "A-Z";
-    }
-  } );
-} );  
+
+    const result = await items.query('bandsDataset')[sortOrder]('name').find();
+    $w('#myRepeater').data = result.items;
+  });
+});
 ```
