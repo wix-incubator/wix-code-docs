@@ -43,18 +43,18 @@ Before discussing each individual case, it's important to understand what's happ
 
 For example, above you connected a table which appears in each of the repeater's items to the **Songs dataset**. You don't want all of the songs in the **Songs** collection to appear in each repeater item. Instead, you only want to display the songs relevant to a particular item's band. 
 
-In order to make that work, a virtual **Songs dataset** is created for each repeater item. When you select the Songs dataset using a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated-item-scope), you are selecting one of these virtual datasets. However, if you select the Songs dataset using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global-scope), you are selecting the regular dataset.  
+In order to make that work, a virtual **Songs dataset** is created for each repeater item. When you select the Songs dataset using a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting one of these virtual datasets. However, if you select the Songs dataset using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting the regular dataset.  
 
 The following are individual cases of how to use the types of datasets mentioned above with repeaters:
 
-*   [Use the filtered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-inside-the-repeater)
-*   [Use the filtered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-outside-the-repeater)
-*   [Use the unfiltered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-inside-the-repeater)
-*   [Use the unfiltered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-outside-the-repeater)
+*   [Use the filtered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/using-connected-datasets-and-repetaers#velo-only-apis_$w_repeater_use-the-filtered-dataset-inside-the-repeater)
+*   [Use the filtered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/using-connected-datasets-and-repetaers#velo-only-apis_$w_repeater_use-the-filtered-dataset-outside-the-repeater)
+*   [Use the unfiltered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/using-connected-datasets-and-repetaers#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-inside-the-repeater)
+*   [Use the unfiltered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/using-connected-datasets-and-repetaers#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-outside-the-repeater)
 
 #### Use the filtered dataset inside the repeater
 
-When you select a dataset that's filtered using one of the methods mentioned above from a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated-item-scope), you are selecting a virtual dataset. That virtual dataset only contains the items that relate to the current item in the dataset it's connected to via a filter. It also only controls elements that are connected to it in the current repeater item.
+When you select a dataset that's filtered using one of the methods mentioned above from a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting a virtual dataset. That virtual dataset only contains the items that relate to the current item in the dataset it's connected to via a filter. It also only controls elements that are connected to it in the current repeater item.
 
 For example, in each repeater item you only see the songs that are related to that item's band. If you want to let users sort that list of songs, you could use the dataset `setSort()` function. In the repeater shown above, what looks like the table header is actually a group of three buttons. Each of those buttons has an `onClick` event handler that sorts the songs table based on a field.
 
@@ -83,19 +83,19 @@ Since the Songs dataset is selected using a repeated item scope selector, the so
 
 #### Use the filtered dataset outside the repeater
 
-When you select a dataset that's filtered using one of the methods above from a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global-scope), you are selecting a regular dataset. That regular dataset only controls the elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
+When you select a dataset that's filtered using one of the methods above from a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting a regular dataset. That regular dataset only controls the elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
 
 For example, let's say you had a button outside the repeater shown above. If you called the dataset `setSort()` function in the button's `onClick` event handler nothing would happen to any of the songs tables in the repeater's items. If there was a table outside of the repeater connected to the dataset, its items would be sorted.
 
 #### Use the unfiltered dataset inside the repeater
 
-When you select the dataset that the repeater itself is connected to using a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_repeated-item-scope), you are selecting a virtual dataset. That virtual dataset contains only one item, the one that the current repeater item is based on.
+When you select the dataset that the repeater itself is connected to using a [repeated item scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting a virtual dataset. That virtual dataset contains only one item, the one that the current repeater item is based on.
 
 For example, each item in the repeater shown above has its own virtual **Bands dataset**. That dataset contains only one band, the band in the current repeater item.
 
 #### Use the unfiltered dataset outside the repeater
 
-When you select the dataset which the repeater itself is connected to using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope#velo-only-apis_$w_repeater_global-scope), you are selecting a regular dataset. That regular dataset controls the number and order of the repeater items and any elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
+When you select the dataset which the repeater itself is connected to using a [global scope selector](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/selector-scope), you are selecting a regular dataset. That regular dataset controls the number and order of the repeater items and any elements connected to it that aren't contained in repeater items. The elements inside repeater items aren't affected even though they're connected to the same dataset.
 
 For example, let's say you had a button outside the repeater shown above. You could use it to sort the items in the repeater by calling the dataset `setSort()` function in the button's `onClick` event handler. Nothing would happen to any of the elements inside the repeated items, but the items themselves would be sorted.
 
