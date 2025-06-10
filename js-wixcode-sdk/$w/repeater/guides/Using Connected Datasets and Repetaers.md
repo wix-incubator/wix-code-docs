@@ -47,10 +47,10 @@ In order to make that work, a virtual **Songs dataset** is created for each repe
 
 The following are individual cases of how to use the types of datasets mentioned above with repeaters:
 
-*   [Use the filtered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-inside-the-repeater)
-*   [Use the filtered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-outside-the-repeater)
-*   [Use the unfiltered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-inside-the-repeater)
-*   [Use the unfiltered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis/$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-outside-the-repeater)
+*   [Use the filtered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-inside-the-repeater)
+*   [Use the filtered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-filtered-dataset-outside-the-repeater)
+*   [Use the unfiltered dataset inside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-inside-the-repeater)
+*   [Use the unfiltered dataset outside the repeater](https://dev.wix.com/docs/velo/velo-only-apis$w#velo-only-apis_$w_repeater_use-the-unfiltered-dataset-outside-the-repeater)
 
 #### Use the filtered dataset inside the repeater
 

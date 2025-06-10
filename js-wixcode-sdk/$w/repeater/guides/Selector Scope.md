@@ -47,7 +47,7 @@ There are two ways to get a repeated-item-scope selector:
  
    + The `$item` parameter of the [`forEachItem()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/for-each-item),
      [`forItems()`](#forItems), and [`onItemReady()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/on-item-ready) event handlers.
-   + When calling the [$w.at()](https://dev.wix.com/docs/velo/velo-only-apis/$w/at) method and passing it an event whose [`context`](https://dev.wix.com/docs/velo/velo-only-apis/$w/at) is "COMPONENT_SCOPE". This is usually done in an event handler that handles an event on an element inside a repeater.
+   + When calling the [`$w.at()`](https://dev.wix.com/docs/velo/velo-only-apis/$w/at) method and passing it an event whose [`context`](https://dev.wix.com/docs/velo/velo-only-apis/$w/at) is `COMPONENT_SCOPE`. This is usually done in an event handler that handles an event on an element inside a repeater.
  
  
 A selector with repeated item scope can be used to select a specific instance of a repeating element.
