@@ -1,4 +1,4 @@
-# Migration Guide for wix-chat-backend
+# Migration Guide: wix-chat-backend
 
 This guide will help you migrate your chat functionality from the deprecated [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) to [Wix Inbox v2](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) and [Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
 
