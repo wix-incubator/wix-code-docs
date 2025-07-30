@@ -1,6 +1,8 @@
 # Migrate from wix-chat-backend to wix-inbox-v2
 
-Use this task to migrate your chat functionality from the deprecated [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) to [Wix Inbox v2](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) and [Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
+The [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) module is deprecated.
+
+Use this guide to migrate your chat functionality from Wix Chat Backend to [Wix Inbox v2](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) and [Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
 
 ## Key differences
 
