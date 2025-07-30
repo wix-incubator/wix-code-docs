@@ -1,6 +1,6 @@
-# Migration Guide: wix-chat-backend
+# Migrate from wix-chat-backend to wix-inbox-v2
 
-This guide will help you migrate your chat functionality from the deprecated [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) to [Wix Inbox v2](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) and [Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
+Use this task to migrate your chat functionality from the deprecated [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) to [Wix Inbox v2](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) and [Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
 
 ## Key differences
 
@@ -28,7 +28,7 @@ To migrate your code, follow these steps:
     import { messages } from 'wix-inbox.v2';
     ```
 
-2. Migrate send message functionality. 
+2. Migrate send message functionality.
 
     **wix-chat-backend**
     ```js
@@ -37,16 +37,16 @@ To migrate your code, follow these steps:
         channelId, 
         metadata, 
         sendAsVisitor
-    ){ 
-    wixChatBackend.sendMessage({
-        "messageText": messageText,
-        "channelId": channelId,
-        "metadata": { metadata },
-        "sendAsVisitor": sendAsVisitor
-    })
-    .then(() => {
-        console.log("Chat message sent")
-    })
+    ) { 
+        wixChatBackend.sendMessage({
+            "messageText": messageText,
+            "channelId": channelId,
+            "metadata": { metadata },
+            "sendAsVisitor": sendAsVisitor
+        })
+        .then(() => {
+            console.log("Chat message sent");
+        })
     }
     ```
 
@@ -72,15 +72,14 @@ To migrate your code, follow these steps:
             const result = await messages.sendMessage(conversationId, message);
             console.log("Inbox message sent:", result.message._id);
             return result;
-        } 
-        catch (error) {
-            console.error('Failed to send message:', error);
+        } catch (error) {
+            console.error("Failed to send message:", error);
             throw error;
         }
     } 
     ```
 
-3. Migrate event handlers. 
+3. Migrate event handlers.
 
     **wix-chat-backend**
     ```javascript
