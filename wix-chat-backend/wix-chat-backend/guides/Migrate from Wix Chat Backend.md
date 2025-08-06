@@ -1,4 +1,4 @@
-# Migrate from wix-chat-backend to Inbox SDK
+# Migrate from wix-chat-backend to the Inbox SDK
 
 The [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) module is deprecated.
 
