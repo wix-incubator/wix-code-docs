@@ -31,7 +31,7 @@ To migrate your code, follow these steps:
     import { messages } from "@wix/inbox";
     ```
 
-3. Migrate send message functionality. 
+3. Migrate send message functionality.
 
     **wix-chat-backend**
     ```js
@@ -78,7 +78,7 @@ To migrate your code, follow these steps:
         return result;
       } 
       catch (error) {
-        console.error('Failed to send message:', error);
+        console.error("Failed to send message:", error);
         throw error;
       }
     } 
