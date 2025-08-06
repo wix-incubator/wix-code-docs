@@ -1,5 +1,7 @@
 # Migrate from wix-chat-backend to Inbox SDK
 
+The [Wix Chat Backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) module is deprecated.
+
 Use this guide to migrate your chat functionality from the deprecated [wix-chat-backend](https://dev.wix.com/docs/velo/apis/wix-chat-backend/introduction) module to the [Inbox SDK](https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction) module and [Velo Inbox Events](https://dev.wix.com/docs/velo/events-service-plugins/inbox/events/on-message-sent-to-business).
 
 The wix-chat-backend module is a simpler, chat-focused API that sends text messages via chat widget interactions. The Inbox SDK module is a more comprehensive inbox messaging platform that handles structured conversations across multiple communication channels as well as basic chat widget interactions. 
