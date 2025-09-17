@@ -41,7 +41,7 @@
           "",
           "### Pages created with Wix Blocks",
           "",
-          "Dashboard pages created with Wix Blocks are always part of an [app](https://dev.wix.com/docs/build-an-app/develop-your-app/frameworks/wix-blocks/getting-started-with-blocks/welcome-to-wix-blocks). The code on these pages can access APIs with the permissions of the currently logged-in user, but only if the app has also been granted those permissions.",
+          "Dashboard pages created with Wix Blocks are always part of an [app](https://dev.wix.com/docs/build-apps/develop-your-app/frameworks/wix-blocks/about-wix-blocks). The code on these pages can access APIs with the permissions of the currently logged-in user, but only if the app has also been granted those permissions.",
           "",
           "![Dashboard Permissions](../assets/images/dashboard-permissions.png)",
           "",
@@ -53,7 +53,8 @@
   "properties": [],
   "operations":
     [ { "name": "addSitePlugin",
-        "labels": [],
+        "labels":
+          [ "changed" ],
         "nameParams": [],
         "params":
           [ { "name": "pluginId",
@@ -72,9 +73,9 @@
           [ { "lineno": 1,
               "filename": "sitePlugins.js" } ],
         "docs":
-          { "summary": "<blockquote class=\"important\">\n\n__Important:__\n\nThis API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. \n\n</blockquote>\n\nAdds a site plugin to one of the slots supported in an app created by Wix. You can specify a single slot in which you want to add the plugin, or add the plugin to one of the available slots based on a list of prioritized slots that you configure in the plugin's installation settings in your [app's dashboard](https://manage.wix.com/studio/custom-apps).",
+          { "summary": "<blockquote class=\"important\">\n\n__Important:__\n\nThis API is in [Developer Preview](https://www.wix.com/velo/reference/api-overview/developer-preview) and is subject to change. \n\n</blockquote>\n\nAdds a site plugin to one of the slots supported in an [app created by Wix](https://dev.wix.com/docs/sdk/articles/work-with-the-sdk/apps-created-by-wix). You can optionally specify a single slot in which you want to add the plugin. If you don't specify a slot, your plugin is placed in the first available slot according to the order you defined in the plugin's installation settings in your [app's dashboard](https://manage.wix.com/account/custom-apps). If that slot is occupied, it's added in the next available slot, and so on. If there are no available slots, it isn't added.",
             "description":
-              [ "> This function can only be used in page code files for dashboard pages created in the [Wix editor](https://support.wix.com/en/article/velo-working-with-dashboard-pages) or with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
+              [ "> This function can only be used in dashboard pages created with [Wix Blocks](https://support.wix.com/en/article/wix-blocks-creating-and-managing-blocks-dashboard-pages).",
                 "",
                 "The `addSitePlugin()` function returns a Promise that resolves when the plugin is added to the site.",
                 "",
@@ -88,13 +89,9 @@
                       "// ...",
                       "",
                       "const pluginId = '975bffb7-3c04-42cc-9840-3d48c24e73d5';",
-                      "const pluginPlacement = {",
-                      "    appDefinitionId: '13d21c63-b5ec-5912-8397-c3a5ddb27a97',",
-                      "    widgetId: 'a91a0543-d4bd-4e6b-b315-9410aa27bcde',",
-                      "    slotId: 'slot1',",
-                      "};",
+                      "const slotId = 'a91a0543-d4bd-4e6b-b315-9410aa27bcde';",
                       "",
-                      "addSitePlugin(pluginId, { placement: pluginPlacement })",
+                      "addSitePlugin(pluginId, { slotId })",
                       "  .then(() => {",
                       "    console.log('Plugin added successfully');",
                       "  })",
@@ -268,8 +265,7 @@
         "extra":
           {  } },
       { "name": "onBeforeUnload",
-        "labels":
-          [ "changed" ],
+        "labels": [],
         "nameParams": [],
         "params":
           [ { "name": "callback",
@@ -687,7 +683,7 @@
           [ { "lineno": 31,
               "filename": "sitePlugins.js" } ],
         "docs":
-          { "summary": "An object representing the options to use when adding a site plugin.",
+          { "summary": "An object representing the options to use when adding a site plugin.\n> **Note**: The `placement` property is deprecated. Use the `slotId` property instead.",
             "links": [],
             "examples": [],
             "extra":
@@ -695,11 +691,15 @@
         "members":
           [ { "name": "placement",
               "type": "wix-dashboard.PluginPlacement",
-              "doc": "Optional. Details of the slot in which you want to add the plugin. You can find this information in the articles about the [slots that are available on Wix app pages](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/supported-wix-app-pages/about-slots). If you do not include this property,  your plugin is placed in the first available slot according to the order you defined in the plugin's installation settings in your app's dashboard. If that slot is occupied, it is added in the next available slot, and so on. If there are no available slots, it is not added.",
-              "optional": true } ],
+              "doc": "**(Deprecated)** Optional. Details of the slot in which you want to add the plugin using the legacy slot notation method. Use the `slotId` property instead.",
+              "optional": true },
+            { "name": "slotId",
+              "type": "string",
+              "doc": "Optional. The ID of the slot in which you want to add the plugin. Learn more about the [slots available on Wix app pages](https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/supported-wix-app-pages/about-slots)." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Archive",
         "locations":
           [ { "lineno": 90,
@@ -1135,7 +1135,7 @@
         "labels": [] },
       { "name": "PluginPlacement",
         "locations":
-          [ { "lineno": 38,
+          [ { "lineno": 40,
               "filename": "sitePlugins.js" } ],
         "docs":
           { "summary": "An object representing a slot in which to add a plugin.",
@@ -1152,10 +1152,11 @@
               "doc": "ID of the host widget in which the slot is located." },
             { "name": "slotId",
               "type": "string",
-              "doc": "ID of the slot." } ],
+              "doc": "ID of the slot in the host widget using the legacy slot notation method." } ],
         "extra":
           {  },
-        "labels": [] },
+        "labels":
+          [ "changed" ] },
       { "name": "Serializable",
         "locations":
           [ { "lineno": 39,
