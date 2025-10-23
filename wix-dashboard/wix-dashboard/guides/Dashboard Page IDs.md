@@ -12,9 +12,7 @@ The IDs for your app's dashboard pages correspond to the IDs for [dashboard page
 * **Dev Center**: For extensions created in the Dev Center, you can find your page's ID on your dashboard page extension's configuration page. To open the page:
    1. Open your app's [**Extensions**](https://dev.wix.com/app-selector?title=Select+an+App&primaryButtonText=Select+Site&actionUrl=https%3A%2F%2Fdev.wix.com%2Fapps%2F%7BappId%7D%2Fextensions) page. 
    1. Find your dashboard page extension and click **Edit**. The page's ID is displayed under **Extension ID**.
-      ![](../images/dev-center-dashboard-page-id.png)
 * **CLI**: For extensions created using the [Wix CLI](https://dev.wix.com/docs/build-apps/developer-tools/cli/get-started/about-the-wix-cli-for-apps), you can find the ID in your dashboard page's `page.json` file.
-   ![](../images/cli-dashboard-page-id.png)
 
 ## Wix dashboard pages
 The following table lists IDs for dashboard pages added by apps built by Wix. Use these IDs to navigate between pages when using the SDK or when [adding a dashboard menu plugin extension](https://dev.wix.com/docs/build-apps/developer-tools/extensions/dashboard-extensions/dashboard-plugins/about-dashboard-menu-plugin-extensions). The table also includes site requirements necessary to make certain pages available.
