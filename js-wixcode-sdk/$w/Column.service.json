@@ -42,10 +42,14 @@
             "examples":
               [ { "title": "Set the accessibility properties of an element",
                   "body":
-                    [ "$w('#myColumn').accessibility.ariaDescribedBy = $w('#columnText');",
+                    [ "$w('#myColumn').accessibility.ariaAtomic = true;",
+                      "$w('#myColumn').accessibility.ariaBusy = false;",
+                      "$w('#myColumn').accessibility.ariaDescribedBy = $w('#columnDescription');",
                       "$w('#myColumn').accessibility.ariaHidden = false;",
-                      "$w('#myColumn').accessibility.ariaLabel = 'column content';",
-                      "$w('#myColumn').accessibility.ariaLabelledBy = $w('#columnLabel');",
+                      "$w('#myColumn').accessibility.ariaLabel = 'Column content';",
+                      "$w('#myColumn').accessibility.ariaLabelledBy = $w('#columnTitle');",
+                      "$w('#myColumn').accessibility.ariaLive = 'polite';",
+                      "$w('#myColumn').accessibility.ariaRelevant = 'additions';",
                       "$w('#myColumn').accessibility.role = 'region';" ],
                   "extra":
                     {  } },
@@ -65,9 +69,9 @@
         "type": "number",
         "defaultValue": "undefined",
         "locations":
-          [ { "lineno": 69,
+          [ { "lineno": 92,
               "filename": "Column.js" },
-            { "lineno": 84,
+            { "lineno": 108,
               "filename": "Column.js" } ],
         "docs":
           { "summary": "Sets or gets the tab index of an element on a site page.",
@@ -81,6 +85,11 @@
                   "body":
                     [ "const myElement = $w(\"#myElement\");",
                       "myElement.tabIndex = 0;" ],
+                  "extra":
+                    {  } },
+                { "title": "Get the tab index of an element",
+                  "body":
+                    [ "let myElement = $w(\"#myElement\").tabIndex; //0" ],
                   "extra":
                     {  } } ],
             "extra":
@@ -107,7 +116,7 @@
               "optional": true },
             { "name": "ariaHidden",
               "type": "boolean",
-              "doc": "Indicates whether the element is visible to or hidden from users that rely on assistive technologies. Use `ariaHidden` to hide decorative, redundant, or off-screen content from screen readers. When `true`, the element is hidden from assistive technologies but remains visible in the DOM. When `false`, the element is exposed to assistive technologies. If `ariaHidden` isn't explicitly set, the default is `undefined` and the property isn't read by assistive technologies.",
+              "doc": "Indicates whether the element is visible to or hidden from site visitors who rely on assistive technologies. Use `ariaHidden` to hide decorative, redundant, or off-screen content from screen readers. When `true`, the element is hidden from assistive technologies but remains visible in the DOM. When `false`, the element is exposed to assistive technologies. If `ariaHidden` isn't explicitly set, the default is `undefined` and the property isn't read by assistive technologies at all.",
               "optional": true },
             { "name": "ariaLabel",
               "type": "string",
@@ -117,13 +126,29 @@
               "type":
                 [ "$w.Text",
                   "$w.CollapsibleText" ],
-              "doc": "Sets or gets the accessible name or contextual label of an element by referencing another element by ID. `ariaLabelledBy` can reference either a single text element or a collapsible text element. Both visible and non-visible text elements can be referenced. When an element's accessible name is set using `ariaLabelledBy`, it takes precedence over any label set using the `ariaLabel` property. Make sure that any element referenced by `ariaLabelledBy` is present in the DOM to avoid errors and confusion for assistive technology users. \n\nExample: `$w(“#myElement”).accessibility.ariaLabelledBy = $w(\"#text1\");`",
+              "doc": "Sets or gets the accessible name or contextual label of an element by referencing another element by ID. `ariaLabelledBy` can reference either a single text element or a collapsible text element. Both visible and non-visible text elements can be referenced. When an element's accessible name is set using `ariaLabelledBy`, it takes precedence over any label set using the `ariaLabel` property. Make sure that any element referenced by `ariaLabelledBy` is present in the DOM to avoid errors and confusion for assistive technology users. \n\nExample: `$w(\"#myElement\").accessibility.ariaLabelledBy = $w(\"#text1\");`",
               "optional": true },
             { "name": "ariaDescribedBy",
               "type":
                 [ "$w.Text",
                   "$w.CollapsibleText" ],
-              "doc": "Sets or gets the contextual description of an element by referencing another element by ID. `ariaDescribedBy` can reference either a single text element or a collapsible text element. Both visible and non-visible text elements can be referenced. The contextual description can include descriptive text, instructions, or error messages that give more context to the element's label.  \n\nExample: `$w(“#myElement”).accessibility.ariaDescribedBy = $w(\"#text1\");`",
+              "doc": "Sets or gets the contextual description of an element by referencing another element by ID. `ariaDescribedBy` can reference either a single text element or a collapsible text element. Both visible and non-visible text elements can be referenced. The contextual description can include descriptive text, instructions, or error messages that give more context to the element's label.  \n\nExample: `$w(\"#myElement\").accessibility.ariaDescribedBy = $w(\"#text1\");`",
+              "optional": true },
+            { "name": "ariaAtomic",
+              "type": "boolean",
+              "doc": "Specifies how assistive technologies communicate updates made to an element's content. When set to `false`, assistive technologies announce only the updated content according to the value of `ariaRelevant`. When set to `true`, assistive technologies announce all content in the element, regardless of the `ariaRelevant` property. For example, if a container's content changes and `ariaAtomic` is `true`, assistive technologies announce all contents of the container, providing visitors with complete context for the update. This property only works when the element or one of its ancestors has `ariaLive` enabled.\n\nDefault: `false`",
+              "optional": true },
+            { "name": "ariaBusy",
+              "type": "boolean",
+              "doc": "Indicates to assistive technologies whether an element is currently updating or in a loading state, helping to convey the status of dynamic content to visitors. When set to `true`, this property informs assistive technologies that visitors shouldn't interact with the element until the update completes. After the update completes, set `ariaBusy` to `false` to allow assistive technologies to announce that the new content is now available. \n\nDefault: `false`",
+              "optional": true },
+            { "name": "ariaLive",
+              "type": "string",
+              "doc": "Sets or gets how to announce changes to an element for site visitors who rely on screen readers. This property allows you to manage the timing and urgency of notifications regarding updates, status changes, or errors for an element. \n\nUse `ariaLive` only when necessary, as excessive or unnecessary announcements can lead to confusion or overload for screen reader users. \nIf you don't set a value, the property defaults to the value set in the accessibility panel in the editor, or is otherwise `'off'`. \n\nSupported values: \n- `'polite'`: Updates are announced at the next available opportunity without interrupting the current speech of the screen reader. Useful for non-urgent notifications or messages. \n- `'assertive'`: Updates are announced immediately, interrupting any ongoing speech. Intended for urgent and critical alerts.\n- `'off'`: No live announcements are made when the content of the element changes.",
+              "optional": true },
+            { "name": "ariaRelevant",
+              "type": "string",
+              "doc": "Specifies which types of dynamic content updates are communicated to visitors by assistive technologies. This property helps minimize unnecessary announcements by ensuring that only relevant changes are reported. It's only effective when set on an element, or its parent, that also has `ariaLive` enabled.\n\nSupported values: \n- `'additions'`: Assistive technologies announce only newly added content. \n- `'removals'`: Assistive technologies announce only removed content. \n- `'text'`: Assistive technologies announce only changes to existing text content. \n- `'all'`: Assistive technologies announce all types of updates, including additions, removals, and text changes. \n\nDefault: `'additions'`",
               "optional": true } ],
         "extra":
           {  },
