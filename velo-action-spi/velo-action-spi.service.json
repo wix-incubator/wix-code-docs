@@ -1,0 +1,175 @@
+{ "name": "velo-action-spi",
+  "mixes": [],
+  "labels":
+    [ "changed" ],
+  "location":
+    { "lineno": 1,
+      "filename": "invoke-action-index.js" },
+  "docs":
+    { "summary": "The Velo Action Service Plugin.",
+      "description":
+        [ "When you create an automation on your site, you can choose from various predefined actions based on the apps installed on your site. ",
+          "The Velo Automations Actions service plugin (formerly SPI) extends this functionality by allowing you to create ",
+          "[custom actions](https://dev.wix.com/docs/develop-websites/articles/coding-with-velo/automations/about-custom-actions) ",
+          "tailored to your specific needs.",
+          "",
+          "Use this service plugin to write custom code for automation actions beyond the built-in options.  ",
+          "Custom actions are specific to the site they're created on and cannot be transferred to other sites." ],
+      "links": [],
+      "examples": [],
+      "extra":
+        {  } },
+  "properties": [],
+  "operations":
+    [ { "name": "invoke",
+        "labels": [],
+        "nameParams": [],
+        "params":
+          [ { "name": "options",
+              "type": "velo-action-spi.Options",
+              "doc": "The payload received from the trigger." },
+            { "name": "context",
+              "type": "velo-action-spi.Context",
+              "doc": "Metadata about the request." } ],
+        "ret":
+          { "type":
+              { "name": "Promise",
+                "typeParams":
+                  [ "Object" ] },
+            "doc": "Fulfilled - An additional payload to pass to a chained action. Empty if no action follows the current one." },
+        "locations":
+          [ { "lineno": 1,
+              "filename": "invoke-action.js" } ],
+        "docs":
+          { "summary": "Runs your custom action when an automation is triggered.",
+            "description":
+              [ "Wix calls this function when an automation is triggered, for example by a visitor submittingba form or completing an order. ",
+                "Write your custom action code inside the `invoke()` method and use the [JavaScript SDK APIs](https://dev.wix.com/docs/sdk) ",
+                "in the same way you use them in your site's page code.",
+                "",
+                "For example, let's say you want to save a site visitor's contact data to a collection when they submit a form. Call the relevant ",
+                "[Data Items API](https://dev.wix.com/docs/sdk/backend-modules/data/items/introduction) methods inside the `invoke()` method.",
+                "",
+                "The `invoke()` method receives the trigger payload as a parameter, which varies depending on your automation's trigger. You can access ",
+                "these payload fields and use them in your action code. This method expects an empty object to be returned." ],
+            "links": [],
+            "examples":
+              [ { "title": "Save data of a customer who purchased a plan",
+                  "body":
+                    [ "import wixData from 'wix-data';",
+                      "",
+                      "export const invoke = async ({payload}) => {",
+                      "",
+                      "  const toInsert = {",
+                      "    \"plan_id\": payload.plan_id,",
+                      "    \"plan_name\" : payload.plan_title,",
+                      "    \"name\": payload.contact.name ,",
+                      "    \"email\": payload.contact.email,",
+                      "    \"phone\": payload.contact.phone ",
+                      "  };",
+                      "",
+                      "  // Insert the customer data into our site collection",
+                      "  // of contact data for plan purchasers",
+                      "  try {",
+                      "    const results = await wixData.insert('CustomerData', toInsert);",
+                      "    console.log('Data inserted successfully:', results._id); // Log the ID of the inserted item",
+                      "  } catch (error) {",
+                      "    console.error('Error inserting data:', error);",
+                      "    // Handle the error",
+                      "  }",
+                      "",
+                      "  return {}; // The function must return an empty object",
+                      "}" ],
+                  "extra":
+                    {  } } ],
+            "extra":
+              {  } },
+        "extra":
+          {  } } ],
+  "callbacks": [],
+  "messages":
+    [ { "name": "Context",
+        "locations":
+          [ { "lineno": 24,
+              "filename": "invoke-action.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "currency",
+              "type": "string",
+              "doc": "[ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) 3-letter currency code representing the currency used in the request sent from Wix. The response should be returned in the same currency." },
+            { "name": "identity",
+              "type": "velo-action-spi.Identity",
+              "doc": "The identity that describes the identity that triggered this request." },
+            { "name": "languages",
+              "type":
+                { "name": "Array",
+                  "typeParams":
+                    [ "string" ] },
+              "doc": "An array of languages in which the response should be returned. Languages are strings in concatenated [ISO 639-1: 2 Alpha language-code](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) and [ISO 3166-1: 2 Alpha country-code](https://en.wikipedia.org/wiki/ISO_3166-1) format, such as \"en-US\"." },
+            { "name": "requestId",
+              "type": "string",
+              "doc": "A unique identifier of the request. You may print this ID to your logs to help with future debugging and easier correlation with Wix's logs." } ],
+        "extra":
+          {  },
+        "labels":
+          [ "changed" ] },
+      { "name": "Identity",
+        "locations":
+          [ { "lineno": 33,
+              "filename": "invoke-action.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "identityType",
+              "type": "string",
+              "doc": "Type of identity that triggered the request. Possible values are:\n+ `UNKNOWN`\n+ `ANONYMOUS_VISITOR`\n+ `MEMBER`\n+ `WIX_USER`\n+ `APP`" },
+            { "name": "anonymousVisitorId",
+              "type": "string",
+              "doc": "ID of a site visitor who has not logged in to the site. Only provided if `identityType` is `ANONYMOUS_VISITOR`.",
+              "optional": true },
+            { "name": "memberId",
+              "type": "string",
+              "doc": "ID of a site visitor who has logged in to the site. Only provided if `identityType` is `MEMBER`.",
+              "optional": true },
+            { "name": "wixUserId",
+              "type": "string",
+              "doc": "ID of a Wix user (site owner, contributor, etc.). Only provided if `identityType` is `WIX_USER`.",
+              "optional": true },
+            { "name": "appId",
+              "type": "string",
+              "doc": "ID of an app. Only provided if `identityType` is `APP`.",
+              "optional": true } ],
+        "extra":
+          { "oneOfGroups":
+              [ { "name": "id",
+                  "members":
+                    [ "anonymousVisitorId",
+                      "memberId",
+                      "wixUserId",
+                      "appId" ] } ] },
+        "labels": [] },
+      { "name": "Options",
+        "locations":
+          [ { "lineno": 48,
+              "filename": "invoke-action.js" } ],
+        "docs":
+          { "links": [],
+            "examples": [],
+            "extra":
+              {  } },
+        "members":
+          [ { "name": "payload",
+              "type": "velo-action-spi.Object",
+              "doc": "The payload object. Fields vary depending on the selected trigger." } ],
+        "extra":
+          {  },
+        "labels": [] } ],
+  "extra":
+    {  } }
