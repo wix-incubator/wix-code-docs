@@ -62,12 +62,11 @@ or a dynamic page, you can add [data binding router hooks](https://support.wix.c
 to intercept the process of the data getting bound to the page at certain
 points and insert additional logic.
 
-The hooks you can use are listed here in the order they are triggered:
+The hooks you can use are listed here in the order they're triggered:
 
 + [`beforeRouter`](/wix-router/beforeRouter) - Before the data binding router logic.
 + [`customizeQuery`](/wix-router/customizeQuery) - As the data binding router prepares a data query.
 + [`afterRouter`](/wix-router/afterRouter) - After the data binding router completes its logic, but before the page is displayed.
-+ [`afterSitemap`](/wix-router/afterSitemap) - After the data binding sitemap function completes preparing the list of urls.
 
 ### Prefixes
 
