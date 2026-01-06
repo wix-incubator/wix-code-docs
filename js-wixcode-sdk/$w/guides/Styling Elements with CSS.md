@@ -145,9 +145,11 @@ For example:
 
 ### Lightbox classes
 
+> **Note:** The terms popup and lightbox refer to the same element. While the editor and dashboard now refer to it as a [popup](https://support.wix.com/en/article/studio-editor-using-popups), the API methods continue to use the term lightbox for backward compatibility. The documentation uses both terms accordingly.
+
 #### `.lightbox`
 
-Targets lightbox elements.
+Targets popup (lightbox) elements.
 For example:
 
 ```css
@@ -160,7 +162,7 @@ For example:
 
 #### `.lightbox__close-button`
 
-Targets lightbox close buttons.
+Targets popup (lightbox) close buttons.
 For example:
 
 ```css
