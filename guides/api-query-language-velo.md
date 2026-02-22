@@ -1,20 +1,31 @@
-# API Query Language 
+# Querying Velo APIs
 
-The query language described in this article
-is implemented partially or in full by certain Wix Velo APIs that support query 
-capabilities.
+The following query techniques are used in Velo. 
 
-## Velo query techniques
-
-2 types of query techniques are available in Velo. See your specific API to check which technique the query function supports. 
+Check the Velo Reference to see which technique is supported for querying a specific API. 
     
-* **With query builders**: Call query functions that build a query to retrieve a list of items. You can recognize these query functions because they have associated `<item>QueryBuilder` and `<item>QueryResult` class objects. This is the standard Velo querying technique.
+* [With query builders](#with-query-builders): You call query functions that build a query to retrieve a list of items. You can recognize these query functions because they have associated `<item>QueryBuilder` and `<item>QueryResult` class objects. This is the standard Velo querying technique.
     
-    These query functions do not use the API query language syntax described here.  
-    
-* **Without query builders**: Some query functions retrieve a list of items using the API Query Language described in this article. For these queries, pass an object defining the query to the query function.
+* [With the API Query Language](#without-query-builders): Some query functions retrieve a list of items using the API Query Language instead of with query builders. For these queries, pass an object defining the query to the query function.
 
-## Query syntax
+
+## With query builders
+
+For querying with query builders, call the query functions dedicated to a specific API that build the query. Each query function supports different sets of operators and paging options. For example, the Pricing Plans [`queryPublicPlans()`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/plans/querypublicplans) function:
++ Processes the query specified with the [`PlansQueryBuilder`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/plans/plansquerybuilder/ascending) operators.
++ Presents the results using the [`PlansQueryResult`](https://www.wix.com/velo/reference/wix-pricing-plans-v2/plans/plansqueryresult/currentpage) specifications. 
+
+Alternatively, you can call the more generic yet robust Wix Data API to query any collection. The Wix Data API offers additional query functionality like aggregation and querying referenced items. Call the [`query()`](https://www.wix.com/velo/reference/wix-data/query) function with: 
++ [`DataItemsQueryBuilder`](https://www.wix.com/velo/reference/wix-data/wixdataquery) operators
++ [`DataItemsQueryResult`](https://www.wix.com/velo/reference/wix-data/wixdataqueryresult) specifications
+
+
+
+## With the API Query Language
+
+For querying without query builders, pass an object defining the query to the query function. Define the object with the API Query Language.
+
+### Query object syntax
 
 You can pass some or all of the following properties to the query function to define the query:
 
@@ -41,18 +52,18 @@ See your specific API for information on how to define the object you need to pa
 Specifying an empty object as a parameter to a query function returns all items according to the API's default paging and sort order.
 
 
-## The filter object
+### The filter object
 
 The `filter` is a single object `{ }` with the following syntax for specifying operators:
 
-### Equality
+#### Equality
 
 The format `{ "<field>": <value> }` specifies an equality condition.
 
 For example, `{ "status": "DONE" }`
 matches all entities where `status` is `"DONE"`.
 
-### Operators
+#### Operators
 
 Operators use the format `{ "<field>": { "$<operator>": <value> } }`.
 
@@ -61,7 +72,7 @@ matches all entities where status is `"PENDING"` or `"DONE"`.
 
 The operators specified below are supported. See the specific API for information on supported filter options for the query function you are using. 
 
-#### Comparison operators
+##### Comparison operators
 
 * `$eq`: Matches values that are equal to a specified value.
 * `$ne`: Matches all values that are not equal to a specified value.
@@ -75,7 +86,7 @@ The operators specified below are supported. See the specific API for informatio
 * `$isEmpty`: Matches strings or arrays that are empty or not empty,
   depending on whether the specified operand is `true` or `false`.
 
-#### Logical operators
+##### Logical operators
 
 * `$and`: Joins query clauses with a logical _AND_
   and returns all items that match the conditions of both clauses.
@@ -84,16 +95,17 @@ The operators specified below are supported. See the specific API for informatio
 * `$not`: Inverts the effect of a query expression
   and returns items that don't match the query expression.
 
-#### Element operators
+##### Element operators
 
 * `$exists`: Matches items where the specified field exists and has a non-null value.
 
-#### Array operators
+
+##### Array operators
 
 * `$hasAll`: Matches arrays that contain all elements specified in the query.
 * `$hasSome`: Matches arrays that contain at least one element specified in the query.
 
-### Sample queries
+#### Sample queries
 
 In the following example, the compound query returns all entities where the status equals `"A"` and either `qty` is less than `30` or `item` starts with the character `p`:
 
@@ -135,7 +147,7 @@ The following query matches entities that do not contain the `item` field, or wh
 }
 ```
 
-## The sort array
+### The sort array
 
 `sort` is an array of field names and sort order.
 If `order` is not specified for a field, the field is sorted in ascending order.
@@ -155,14 +167,14 @@ Sorting is applied to the first `sort` item, then the second, and so on:
 }
 ```
 
-## The paging object
+### The paging object
 
 The `paging` object describes the size of the data set to return per response
 and how many records to skip.
 Each API can support **offset paging**, **cursor paging**, or both.
 See your specific API for information on supported paging options.
 
-### Offset paging
+#### Offset paging
 
 With offset paging, you provide a `limit` and `offset` with each request.
 To retrieve additional pages,
@@ -180,7 +192,7 @@ For example, this offset request returns records 41 through 60:
 }
 ```
 
-### Cursor paging
+#### Cursor paging
 
 With cursor paging, each request returns a `cursors` object
 that contains cursor strings that point to the next page, previous page, or both.
@@ -233,7 +245,7 @@ and the entire `address` object:
 }
 ```
 
-## The fieldsets array
+### The fieldsets array
 
 An API may provide named projections to save clients from specifying individual fields in common cases.
 
