@@ -71,20 +71,6 @@ $w("#myRepeater").onItemReady( ($item, itemData, index) => {
 });
 ```
 
-### Control what you select with repeated item scope
-
-You can also use a selector with repeated item scope to select non-repeating elements from the global scope. However, you can't change a repeater's [item template](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data) using a selector with repeated item scope.
- 
-You can also restrict a selector with repeated item scope to only select elements from the current repeated items and their descendants, but not elements from the global scope, by adding `.scoped()` to the selector.
-
-For example, to select only the element with ID `#myElement` in the current repeated item, use:
-
-```javascript
-$w('#myRepeater').onItemReady(($item) => {
-  const scopedElement = $item.scoped('#myElement');
-});
-```
-
 ## See also
 
 [Learn how to create repeated items and access their data using selector scope](https://dev.wix.com/docs/velo/velo-only-apis/$w/repeater/create-and-access-repeated-item-data)
