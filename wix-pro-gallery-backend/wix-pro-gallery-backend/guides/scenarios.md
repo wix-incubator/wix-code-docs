@@ -11,7 +11,7 @@ There are 2 ways to create a pro gallery:
 
 When you add a pro gallery element to your site using the **Add Panel** in the Editor, a corresponding pro gallery is automatically created on your site's backend. These 2 galleries are synced, and have the same gallery ID. Changes to the pro gallery element in the UI affect the corresponding pro gallery on your site's backend, and changes to the pro gallery on your site's backend affect the corresponding pro gallery element on your site. 
 
-![Diagram1](images/diagram1.png)
+![Diagram1](https://raw.githubusercontent.com/wix/wix-code-docs/master/wix-pro-gallery-backend/wix-pro-gallery-backend/guides/images/diagram1.png)
 
 
 ### Scenario 2: Creating a Pro Gallery using the Pro Gallery Backend API (Not recommended)
@@ -35,5 +35,5 @@ Note the following limitations when converting backend gallery items to the fron
 + `text` items in your backend gallery won't appear on your site. This is because `text` items can't be converted to the frontend [$w.Gallery()](https://www.wix.com/velo/reference/$w/gallery/currentitem) items format. 
 + Items in your backend gallery that contain a link with text won't appear on your site. This is because the `text` property in the item's `link` object can't be converted to the frontend $w.Gallery() items format. 
 
-![Diagram2](images/diagram2.png)
+![Diagram2](https://raw.githubusercontent.com/wix/wix-code-docs/master/wix-pro-gallery-backend/wix-pro-gallery-backend/guides/images/diagram2.png)
 
